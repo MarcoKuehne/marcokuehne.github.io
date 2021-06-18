@@ -1,0 +1,74 @@
+---
+title: "Twitter Scrape"
+author: "Marco"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+## R Markdown
+
+I follow this link: <https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html> 
+
+```{r }
+## load rtweet
+library(rtweet)
+
+## store api keys (these are fake example values; replace with your own keys)
+api_key <- "SH1jq3B3kHTCKdBVtX4eTJyQ8"
+api_secret_key <- "yHCaHNmHqHWvAIgVX3vufX8T7aB4vNbVb4Rpi2hDtfLeRaojHm"
+
+## authenticate via web browser
+token <- create_token(
+  app = "rstatsjournalismresearch",
+  consumer_key = api_key,
+  consumer_secret = api_secret_key)
+```
+
+## Second trial
+
+```{r pressure, echo=FALSE}
+library(rtweet)
+
+create_token(
+  app = "AMCExperiment1",
+  consumer_key = "SH1jq3B3kHTCKdBVtX4eTJyQ8",
+  consumer_secret = "yHCaHNmHqHWvAIgVX3vufX8T7aB4vNbVb4Rpi2hDtfLeRaojHm",
+  access_token = "243525314-BlksRAb0fOUtsSsZ6GfM53iG6eHdCRlmy1YZK3lN",
+  access_secret = "dhvwQNIXSJKJlt9PnSYSgmX0G6Q2e1Nt3mwohJxNAC7g7")
+
+rt <- search_tweets("data OR analytics OR scraping OR dataanalytics", n = 100, include_rts = FALSE, retryonratelimit = TRUE)
+```
+
+
+## Deutsche Ärzte Finanz 
+
+```{r pressure, echo=FALSE}
+library(rtweet)
+
+create_token(
+  app = "AMCExperiment1",
+  consumer_key = "SH1jq3B3kHTCKdBVtX4eTJyQ8",
+  consumer_secret = "yHCaHNmHqHWvAIgVX3vufX8T7aB4vNbVb4Rpi2hDtfLeRaojHm",
+  access_token = "243525314-BlksRAb0fOUtsSsZ6GfM53iG6eHdCRlmy1YZK3lN",
+  access_secret = "dhvwQNIXSJKJlt9PnSYSgmX0G6Q2e1Nt3mwohJxNAC7g7")
+
+Buga2021 <- search_tweets("buga2021", n = 10, 
+                            include_rts = FALSE, 
+                            lang='de',
+                            retryonratelimit = TRUE)
+
+Pamela <- search_tweets("Pamela Reif", n = 10, 
+                            include_rts = FALSE, 
+                            lang='de',
+                            retryonratelimit = TRUE)
+
+Homeoffice <- search_tweets("Homeoffice", n = 100, 
+                            include_rts = FALSE, 
+                            lang='de',
+                            retryonratelimit = TRUE)
+```
+
+
+
+
+

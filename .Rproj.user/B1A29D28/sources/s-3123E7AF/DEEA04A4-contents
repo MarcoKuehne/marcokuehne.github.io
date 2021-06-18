@@ -1,0 +1,297 @@
+---
+title: "6 Gravity Models"
+subtitle: "European Economic Integration 2021"
+author: "Marco Kühne"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    css: "styles.css"
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+    toc_depth: 3
+---
+
+::: {.infobox2 .information data-latex="warning"}
+Please use **at least 5 polls** in your presentation. Questions should be about gravity models, data analysis and statistics, not about the R software and coding. 
+:::
+
+## Challenge 1: Gravity Models
+
+The gravity equation for international trade flows $F$ between countries $i$ and $j$ is given by:
+
+$$F_{ij}=\alpha\frac{G^{\beta_1}_{i}G^{\beta_2}_{j}}{D^{\beta_3}_{ij}}$$ 
+
+where $G$ represents market size (economic mass) and $D_{ij}$ represents distance between countries $i$ and $j$.
+
+### Log-linearization 
+
+Please transform the model such that it can be estimated with ordinary least squares (OLS) and state a fully specified estimation equation.
+
+### Interpretation log log 
+
+What is the interpretation of the coefficients in the log log model?
+
+### Gravity Data 
+
+**CEPII** is a French institute for research into international economics. It provides lots of data, among several gravity datasets. Go to:
+
+<http://www.cepii.fr/CEPII/en/welcome.asp>
+
+Go to *Data*, go to *Gravity*, register at CEPII. If you're logged in, go to *Download Page*. There are different gravity files in different file formats (Stata, CSV and R). Go for the legacy version. Download the "Lighter Version" from 2015 (that is about 25 MB). It is named *col_regfile09.zip* which contains `col_regfile09.dta` (Stata format). The lighter gravity data set covers trade flows (cleaned and treated as described in the data appendix) but restricted to observations where those trade flows are non-missing. You also find a documentation of the dataset. 
+
+Read this into R (use the `haven` package) and call it `gravity_1948_2006` (hint: it should have 1,204,671 observations).
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+library(haven)
+gravity_1948_2006 <- read_dta("C:\\Users\\Marco2020\\Desktop\\Gravity\\col_regfile09.dta")
+```
+
+<details>
+<summary>
+Here is a glimpse of the data
+</summary>
+```{r warning=FALSE, message=FALSE, echo=TRUE}
+library(tidyverse)
+glimpse(gravity_1948_2006)
+```
+</details>
+
+
+<!-- \footnote{Check for more information \url{http://www.cepii.fr/cepii/en/bdd_modele/presentation.asp?id=8}}  -->
+<!-- http://www.cepii.fr/DATA_DOWNLOAD/gravity/doc/LegacyGravity.html -->
+
+### Trade Flow 
+
+Apply the `summary` command on the `flow` variable. What is the maximum trade flow? Check out the documentation. What is trade flow, how is it measured? 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+summary(gravity_1948_2006$flow)
+```
+
+<!-- What is the trade  -->
+<!-- ow variable? It comes with CEPII. Their codebook says it comes from -->
+<!-- Head (2010)2 which says The DOTS database often reports two values for the same  -->
+<!-- ow from -->
+<!-- country A to B. This is because country A may report its imports from B and country B -->
+<!-- reports its exports to A. What is DOTS? Directions of Trade Statistics from IMF: https: -->
+<!-- //data.imf.org/regular.aspx?key=61013712 Here we can select exporter/importer relation -->
+<!-- in given years. Default unit is million US dollar. -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+library(tidyverse)
+
+# compare to https://data.imf.org/regular.aspx?key=61013712
+gravity_1948_2006 %>% filter(year == 2005) %>% filter(iso_o == "USA") %>% filter(iso_d == "BEL") %>% select(flow)
+gravity_1948_2006 %>% filter(year == 2005) %>% filter(iso_o == "USA") %>% filter(iso_d == "FRA") %>% select(flow)
+gravity_1948_2006 %>% filter(year == 2005) %>% filter(iso_o == "USA") %>% filter(iso_d == "DEU") %>% select(flow)
+gravity_1948_2006 %>% filter(year == 2005) %>% filter(iso_o == "USA") %>% filter(iso_d == "GRC") %>% select(flow)
+```
+
+### Data Manipulation
+
+Please filter for years since 1980 and exclude country pairs that did not trade in these years (where `flow` is zero). Call the new dataset `gravity_1980_2006` (hint: should have 473,843 observations). 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+gravity_1980_2006 <- gravity_1948_2006 %>% filter(year >= 1980) %>% filter(flow != 0)
+```
+
+### Data Visualization 
+
+Please create two scatterplots of `flow` versus `gdp_o` for the `gravity_1980_2006` subset. The first scatterplot should depict the raw relation between original scaled flow and GDP. The second version should use `log(flow)` and `log(gdp_o)`. Please explain what log transformation is used for. 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+# plot(flow ~ gdp_o, data=gravity1980)
+# plot(log(flow) ~ log(gdp_o), data=gravity1980)
+
+# take time....
+par(mfrow=c(1,2))    # set the plotting area into a 1*2 array
+plot(flow ~ gdp_o, data=gravity_1980_2006, 
+     main="Relationship between Trade Flows and GDP", cex.main=0.8, 
+     xlab="GDP of Origin Country", ylab="Trade Flows") 
+plot(log(flow) ~ log(gdp_o), data=gravity_1980_2006, 
+     main="Log Trade Flows and Log GDP", cex.main=0.8, 
+     xlab="Log of GDP of Origin Country", ylab="Log of Trade Flows") 
+```
+
+### Gravity Model Estimation 
+
+Please estimate a standard gravity model, where you regress `log(flow)` on `log(gdp_o)`, `log(gdp_d)` and `log(distw)`. Use the `lm` command and name it `gravity_model`. Interpret all coefficients (except for the constant). Reminder: The lecture told us: interpretation of coefficients involves assessment of magnitude of coefficient, algebraic sign and statistical significance. 
+	
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+# Run a OLS model for trade and gdp of both partners.
+gravity_model <- lm(log(flow) ~ log(gdp_o) + log(gdp_d) + log(distw), data=gravity_1980_2006)
+# More details on the model.
+summary(lm(log(flow) ~ log(gdp_o) + log(gdp_d) + log(distw), data=gravity_1980_2006))
+# What is the interpretation of the regression coefficient? 
+```	
+ 
+## Challenge 2
+
+### The Impact of Trade Agreements on Trade
+
+Ebell (2016) compares the trade enhancing effects of a membership in the European Economic Area (EEA) with those of a membership in a less comprehensive free trade agreement (FTA). 
+
+<!-- Please derive the equation (4) in Ebell (2016) step by step.  -->
+
+$$ \ln X_{ij} = \beta_0 + \beta_1 dist_{ij} + \beta_2 bord_{ij} + \beta_3 lang_{ij} + \beta_4 colony_{ij} + \beta_5 samecont_{ij} + \delta_1 EEA_{ij} + \delta_2 FTA_{ij} + \alpha_i + \gamma_j$$
+
+Explain all the terms of the equation (especially exporter  and  importer  fixed  effects). 
+
+### Interpretation log level 
+
+What is the interpretation of the coefficients in the log linear model?
+
+### Gravity Data 
+
+Ebell (2016) uses a data set for the year 2014. Go to:
+
+<http://www.cepii.fr/CEPII/en/welcome.asp>
+
+Go to *Data*, go to *Gravity*, register at CEPII. If you're logged in, go to *Download Page*. There are different gravity files in different file formats (Stata, CSV and R). Go for the legacy version. Download the "October 2020 version" in R format (that is about 98 MB). It is named *Gravity_rds_V202010.zip* which contains `Gravity_V202010.Rds` and `Countries_V202010.Rds`. 
+
+Load `Gravity_V202010.Rds` and store it as `gravity_1948_2019`. 
+<!-- Load `Countries_V202010.Rds` and store it as `countries_1948_2019`. -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+setwd("C:\\Users\\Marco2020\\Desktop\\Gravity")
+
+#filename <- file.choose()
+#gravity_1948_2019 <- readRDS(filename)
+#filename <- file.choose()
+#countries_1948_2019 <- readRDS(filename)
+
+gravity_1948_2019 <- readRDS("Gravity_V202010.Rds") 
+#countries_1948_2019 <- readRDS("Countries_V202010.Rds")  
+```
+
+### Data Manipulation
+
+Ebell (2016) utilizes only one year of data (cross-section) instead of multiple years (panel data). 
+
+* Please filter for this particular year and store the subset as `gravity_ebell` (Hint: it should have 61.504 observations).
+
+* Create a new variable `EEA` that indicates whether a country pair is from the European Economic Area or not. Hint for this task: 
+
+    + Create a new dyadic variable `EU` which indicates whether a country pair is from the European Union or not (based on `eu_o` and `eu_d`).
+    + The EEA consists of the 28 members of the European Union, plus Norway, Iceland and Liechtenstein.
+    + Create two intermediate variables `eea_o` and `eea_d` (similar to `eu_o` and `eu_d`). Note 
+    + Create `EEA` based on `eea_o` and `eea_d` as for the EU. 
+
+How many country pairs from the EEA does Ebell have, how many do you have? 
+
+<!-- The EEA consists of the 28 members of the European Union, plus Norway, Iceland and Liechtenstein.  -->
+<!-- The European Economic Area, abbreviated as EEA, consists of the Member States of the European Union (EU) and three countries of the European Free Trade Association (EFTA) (Iceland, Liechtenstein and Norway; excluding Switzerland).  -->
+<!-- Iceland == ISL  -->
+<!-- Liechtenstein == LIE  -->
+<!-- Norway == NOR  -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+gravity_ebell <- gravity_1948_2019 %>% filter(year == 2014)
+
+# create a EEA membership dummy
+gravity_ebell <- gravity_ebell %>%
+  mutate(EU = eu_o*eu_d)
+
+# table me iso code of EU member states
+#table(gravity_ebell$iso3_d[gravity_ebell$EU==1])
+#table(gravity_ebell$iso3_o[gravity_ebell$EU==1])
+
+# get names from table heading (n=28)
+EU_names <- names(table(gravity_ebell$iso3_d[gravity_ebell$EU==1]))
+# append extra 3 values
+EEA_names <- c(EU_names, "ISL", "LIE", "NOR")
+
+# create EEA_o and EEA_d
+gravity_ebell <- gravity_ebell %>%
+  mutate(EEA_o = ifelse(iso3_o %in% EEA_names, 1, 0),
+         EEA_d = ifelse(iso3_d %in% EEA_names, 1, 0),
+         EEA = EEA_o * EEA_d)
+
+# EBELL: 506 EEA-country-pairs (we have 462 OLD Data) NOW we have n = 961 ...
+# View(gravity_ebell %>% filter(EEA == 1))
+#table(gravity_ebell$EEA)
+```
+
+* Create a variable `FTA` indicating whether the `rta_type` equals `"FTA"`. 
+
+How many country pairs with a FTA does Ebell have, how many do you have? 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+# EBELL: 428 obs have FTA (we have 472)
+# table(gravity_ebell$rta_type)
+
+# ‘FTA_goods’  is  a  dummy  variable  which  takes  the  value  1  whenever  the  country-pair  has  registered  a  free  trade  or  economic  integration  agreement  with  the  WTO  covering  goods  which  was  in  effect  for  the entire calendar year 2014, but at least one of the country pair was not a member of the EEA. There are 214 such country-pairs in the dataset.
+
+# 'FTA_services’ is a dummy variable which takes the value  1  whenever  the  country-pair  has  registered  a  free  trade  or  economic  integration  agreement  with  the  WTO  covering  services  which  was  in  effect  for  the entire calendar year 2014, but at least one of the members of the country pair was not a member of the EEA. There are 107 such country-pairs in the dataset.
+
+gravity_ebell <- gravity_ebell %>%
+  mutate(FTA = ifelse(rta_type == "FTA", 1, 0))
+
+# table(gravity_ebell$FTA)
+```
+
+
+Check the missing values in `tradeflow_baci`. How many do you have? 
+
+* Please filter and exclude all missings for the variables `distcap`, `contig`, `comlang_off`, `comlang_ethno`, `EEA`, `FTA`. 
+* Please filter values in `tradeflow_baci` larger than 1 (the log of 1 is 0 and the log of values between 0 and 1 is a negative number). 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+# lot of missings
+#table(is.na(gravity_ebell$tradeflow_baci))
+# FALSE  TRUE 
+# 29648 31856 
+
+# complete case analysis
+gravity_ebell_sample <- gravity_ebell %>%
+  filter(!is.na(tradeflow_baci),
+         !is.na(dist),
+         !is.na(contig),
+         !is.na(comlang_off),
+         !is.na(comlang_ethno),
+         !is.na(EEA),
+         !is.na(FTA),
+         tradeflow_baci > 1)
+
+# table(gravity_ebell_sample$FTA)
+```
+
+### Gravity Model Estimation
+
+Please estimate two gravity models according to equation (4) in Ebell (2016) (using `lm` in R).
+
+* First, regress log of `tradeflow_baci` on `distcap`, `contig`, `comlang_off`, `comlang_ethno`, `EEA`, `FTA`. Save it as `ebell2016a`.
+* Second, regress log of `tradeflow_baci` on `distcap`, `contig`, `comlang_off`, `comlang_ethno`, `EEA`, `FTA` and `iso3_o` as well as `iso3_d`. Save it as `ebell2016b`.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+ebell2016a <- lm(log(tradeflow_baci) ~ distcap + contig + comcol + comlang_off + comlang_ethno + EEA + FTA, data=gravity_ebell_sample)
+
+# options("scipen"=10, "digits"=4)
+# summary(ebell2016)
+
+ebell2016b <- lm(log(tradeflow_baci) ~ distcap + contig + comcol + comlang_off + comlang_ethno + EEA + FTA + iso3_o + iso3_d, data=gravity_ebell_sample)
+```
+
+Compare the results between those two models and the results from Ebell in Tab. Ia. You can use this code for model comparison:
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE}
+library(stargazer)
+stargazer(ebell2016a, ebell2016b, type="text", omit = c("iso3_o", "iso3_d"))
+```
+
+Option: If you can't create `EEA`, use `EU` instead (a deduction of points is the consequence). 
+
+## Sources
+
+- Ebell, M. (2016). Assessing the impact of trade agreements on trade. National Institute Economic Review, 238(1), R31-R42.
+- Benoit, K. (2011). [Linear Regression Models with Logarithmic Transformations](https://kenbenoit.net/assets/courses/ME104/logmodels2.pdf)
+- UCLA Statistical Consulting: [FAQ How do I interpret a regression model when some variables are log transformed?](https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/)
+
+
+
+
+

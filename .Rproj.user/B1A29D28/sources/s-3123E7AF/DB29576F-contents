@@ -1,0 +1,523 @@
+---
+title: "Commuting Changes During Corona Crisis"
+subtitle: "A Scraping Project with Twitter API"
+author: "Marco Kühne http://marco-kuehne.com/"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+css: "styles.css"
+bibliography: scrape_refs.bib  
+output:
+  html_document: default
+  pdf_document: default
+---
+
+<!-- .tabset-dropdown -->
+<!-- # How Commuting Patterns Changed During Corona Crisis {.tabset} -->
+<!-- # Commuting Changes During Corona Crisis  -->
+
+# The Way to Homeoffice in Germany {.tabset}
+
+For most people, commuting to work is a daily routine which adds up to a tremendous amount of time over the course of a life time. At the dawn of the COVID-19 pandemic a good third were working partially or completely from home in Germany -- the majority was still commuting [@schroder2020covid]. On average employees commute a one-way distance of 25km each day. 
+
+::: {.infobox2 .information data-latex="warning"}
+Exploratory questions:
+
+- Do people in Germany tweet more about homeoffice (working from home) during the crisis?
+- How do people in Germany feel about homeoffice (working from home)? 
+- Do they tweet about homeoffice in a positive or negative way? 
+- What kind of location data is in Twitter? 
+- Can I use location data in Twitter to estimate commuting behavior (mobility)? 
+:::
+
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+setwd("E:\\!MethodSchools\\GSERM Data Scraping and Management for Social Scientists with R\\Scraping_Project")
+Homeoffice_Twitter <- readRDS("Homeoffice.Rda")
+Homeoffice_Twitter_en <- readRDS("Homeoffice_en.Rda")
+Tweets_Germany <- readRDS("Tweets_Germany.Rda")
+```
+
+## Google Trends
+
+Let's start with a quick Google search for "homeoffice" in Google Trends. I restrict the search to Germany in the last 5 years. 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+setwd("E:\\!MethodSchools\\GSERM Data Scraping and Management for Social Scientists with R\\Scraping_Project")
+library(rtweet)
+library(tidyverse)  
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(rvest)
+
+# https://stackoverflow.com/questions/33295686/rvest-error-in-open-connectionx-rb-timeout-was-reached
+url = "http://trends.google.de/trends/explore?date=today%205-y&geo=DE&q=homeoffice"
+download.file(url, destfile = "scrapedpage.html", quiet=TRUE)
+Google_Hits <- read_html("scrapedpage.html")
+
+Homeoffice_Google <- read_csv("multiTimeline.csv", col_names = TRUE)
+
+#head(Homeoffice_Google)
+colnames(Homeoffice_Google) <- c("Week", "Homeoffice")
+#str(Homeoffice_Google)
+
+Homeoffice_Google$Homeoffice <- gsub("<1", "0", Homeoffice_Google$Homeoffice)
+Homeoffice_Google$Homeoffice <- as.numeric(Homeoffice_Google$Homeoffice)
+```
+
+<br>
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+# ggplot(Homeoffice_Google, aes(x=as.Date(Week), y=Homeoffice)) + 
+#   geom_line() + geom_point() +
+#   labs(x="Time", y="Homeoffice (% with respect to highest value)", 
+#        title="Google Search for Homeoffice in Germany for last 5 years.") +
+#   theme_bw() 
+
+# Maximum Homeoffice Value in Homeoffice_Google
+# Homeoffice_Google[which.max(Homeoffice_Google$Homeoffice), ]
+# Homeoffice_Google Without Maximum Homeoffice 
+# Homeoffice_Google[-which.max(Homeoffice_Google$Homeoffice),]
+# First Highest Homeoffice Value
+# second_lockdown <- Homeoffice_Google[which.max(Homeoffice_Google$Homeoffice), ]
+
+lockdown  <- data.frame(Week = as.Date(c("2021-01-17", "2020-03-15")),
+                        Homeoffice = c(100, 46),
+                        Lockdown = c("2nd Lockdown", "1st Lockdown")) 
+
+a <- list(
+  x = lockdown$Week,
+  y = lockdown$Homeoffice,
+  text = lockdown$Lockdown,
+  xref = "x",
+  yref = "y",
+  showarrow = TRUE,
+  arrowhead = 7,
+  ax = -50,
+  ay = 40
+)
+
+library(plotly)
+plot_ly(Homeoffice_Google, x = ~Week, y = ~Homeoffice, 
+        type="scatter", mode = 'line') %>% # type = 'scatter'
+  layout(title = 'Google Trend for Homeoffice in Germany for last 5 years.', xaxis = list(title = 'Time by Week')) %>% 
+  add_markers() %>% 
+  layout(annotations = a) %>%
+  hide_legend()
+
+```
+
+
+> „**Twitter** doesn’t want its executives to come back to the office, at least not full time. [...] **Amazon**, on the other hand, believes the best way to keep its foothold as a leading tech giant is by bringing everyone back to an “office-centric culture,” as soon as it’s safely possible.“
+>
+> `r tufte::quote_footer('Heather Kelly and Rachel Lerman, June 4, 2021 -- The Washington Post')`
+
+
+<details>
+<summary>
+Google Trend data does not require any web scraping.
+</summary>
+```{r , echo=FALSE, out.width="60%", fig.cap="Result for 'Homeoffice' in Germany for the last 5 years.", fig.align='center'}
+knitr::include_graphics("Google_Hit_Download.png")
+```
+</details>
+
+
+<details>
+<summary>
+Show me the plotly code.
+</summary>
+```{r echo=TRUE, eval=FALSE}
+library(plotly)
+plot_ly(Homeoffice_Google, x = ~Week, y = ~Homeoffice, 
+        type="scatter", mode = 'line') %>% # type = 'scatter'
+  layout(title = 'Google Trend for Homeoffice in Germany for last 5 years.', xaxis = list(title = 'Time by Week')) %>% 
+  add_markers() %>% 
+  layout(annotations = a) %>%
+  hide_legend()
+```
+</details>
+
+
+```{r echo=FALSE, eval=FALSE}
+# post a tweet from R
+post_tweet("Look, i'm tweeting from R in my #GSERM #DataScrapingInR class!")
+```
+
+<br>
+
+## Data From Twitter
+
+The developer platforms explains what geospatial information to expect:
+
+<https://developer.twitter.com/en/docs/tutorials/tweet-geo-metadata>
+
+- Exact geo-coordinates if the option 'geo-tag- is used (very rare).
+- "Location" setting in a twitter profile (sometimes).
+- Mentions of locations in tweet text (a lot, but useful?). 
+
+First, register for Twitter API. This may take several days and requires to state your research goals and methods in detail as well as how you plan to present your results (individually or aggregate). I retrieve tweets which contain "homeoffice" in German (without retweets). You can either specify the language or country. Every time I run `search_tweets` I get different (updated) results (about 4000+). In the academic account 10.000.000 can be pulled. 
+
+```{r warning=FALSE, message=FALSE, eval=FALSE}
+library(rtweet)
+
+create_token(
+  app = "CommutingAPI",
+  consumer_key = "A",
+  consumer_secret = "B",
+  access_token = "C",
+  access_secret = "D")
+
+Homeoffice_Twitter <- search_tweets("Homeoffice", n = 10,
+                            include_rts = FALSE,
+                            lang='de',
+                            retryonratelimit = TRUE)
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+  #app = "AMCExperiment1",
+  #consumer_key = "SH1jq3B3kHTCKdBVtX4eTJyQ8",
+  #consumer_secret = "yHCaHNmHqHWvAIgVX3vufX8T7aB4vNbVb4Rpi2hDtfLeRaojHm",
+  #access_token = "243525314-BlksRAb0fOUtsSsZ6GfM53iG6eHdCRlmy1YZK3lN",
+  #access_secret = "dhvwQNIXSJKJlt9PnSYSgmX0G6Q2e1Nt3mwohJxNAC7g7")
+
+create_token(
+  app = "CommutingAPI",
+  consumer_key = "Ftj7SlzpfLi1Bw2o3UxDT5iHM",
+  consumer_secret = "FjolctDbK4A5vzmWmubcTU4Q6tDcPOYMlfgapJ7nsT89UR0tFG",
+  access_token = "1401795532645875714-7nELcTVV2hZVPFuBIHwUDYWfFJhZXy",
+  access_secret = "COE9PncpSp06UPqRNHWlsStrp4GMGHxn7GPIRJ9ZJZN9E"
+)
+```
+
+## Profile Location
+
+Profile Locations provide the largest source of geospatial metadata. Not everyone provides this information, and it can contain any phrase the user wants. One Twitter account could have its location set to “Living in the Colorado foothills”, while another could be set to a less helpful “My parents’ basement.”
+
+```{r warning=FALSE, message=FALSE}
+library(DT)
+
+datatable(Homeoffice_Twitter %>%
+  select(location, quoted_location, country, country_code, place_name))
+```
+
+The `location` may consist of two components, `city` and `country` (separated by a comma). We can access those directly. 
+
+### What are the most frequent locations of users?
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+Homeoffice_Twitter %>%
+  count(location, sort = TRUE) %>%
+  mutate(location = reorder(location, n)) %>%
+  top_n(20) %>%
+  ggplot(aes(x = location, y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Count",
+      y = "Location",
+      title = "Where Twitter users are from - unique locations ")
+```
+
+<details>
+<summary>
+Show me the code.
+</summary>
+```{r echo=TRUE, eval=FALSE}
+Homeoffice_Twitter %>%
+  count(location, sort = TRUE) %>%
+  mutate(location = reorder(location, n)) %>%
+  top_n(20) %>%
+  ggplot(aes(x = location, y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Count",
+      y = "Location",
+      title = "Where Twitter users are from - unique locations "
+```
+</details>
+
+### From which countries does German tweets come from?
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+###############################################################################
+# How to Create a Map using GGPlot2
+# https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/
+###############################################################################
+
+library(maps)
+library(viridis)
+theme_set(
+  theme_void()
+)
+
+# Country Location in Twitter
+twitter_countries <- names(table(Homeoffice_Twitter$country))
+
+# Retrieve the map data
+twitter_maps <- map_data("world", region = twitter_countries)
+
+# Compute the centroid as the mean longitude and lattitude
+# Used as label coordinate for country's names
+region.lab.data <- twitter_maps %>%
+  group_by(region) %>%
+  summarise(long = mean(long), lat = mean(lat))
+
+ggplot(twitter_maps, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = region))+
+  geom_text(aes(label = region), data = region.lab.data,  size = 3, hjust = 0.5)+
+  scale_fill_viridis_d()+
+  theme_void()+
+  theme(legend.position = "none")
+```
+
+<details>
+<summary>
+Show me the code.
+</summary>
+```{r echo=TRUE, eval=FALSE}
+library(maps)
+library(viridis)
+theme_set(
+  theme_void()
+)
+
+# Country Location in Twitter
+twitter_countries <- names(table(Homeoffice_Twitter$country))
+
+# Retrieve the map data
+twitter_maps <- map_data("world", region = twitter_countries)
+
+# Compute the centroid as the mean longitude and lattitude
+# Used as label coordinate for country's names
+region.lab.data <- twitter_maps %>%
+  group_by(region) %>%
+  summarise(long = mean(long), lat = mean(lat))
+
+ggplot(twitter_maps, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = region))+
+  geom_text(aes(label = region), data = region.lab.data,  size = 3, hjust = 0.5)+
+  scale_fill_viridis_d()+
+  theme_void()+
+  theme(legend.position = "none")
+```
+</details>
+
+## Mentions In Text
+
+Here is how individual tweet messages look like:
+
+```{r warning=FALSE, message=FALSE}
+head(Homeoffice_Twitter$text, n=4)
+```
+
+
+
+> "Durch Einsparen vom Arbeitsweg wg. Homeoffice **45min mehr Schlaf**, hier auch sehr gut."
+>
+> "Was ich **WIRKLICH am Homeoffice liebe** - ich muss meine Tanzausbrüche nicht mehr unterdrücken... "
+>
+> `r tufte::quote_footer('Examples From German Tweets About Homeoffice')`
+
+
+### Sentiment Analysis
+
+I am not interested in a specific location like a restaurant or other points of interest ("#berlinerfernsehturm"). 
+
+::: {.infobox2 .information data-latex="warning"}
+Not every English word is in the lexicons because many English words are pretty neutral. It is important to keep in mind that **these methods do not take into account qualifiers** before a word, such as in “no good” or “not true”; a lexicon-based method like this is **based on unigrams only**.
+:::
+
+<details>
+<summary>
+Check out what a dictionary is:
+</summary>
+```{r warning=FALSE, message=FALSE}
+library(tidytext)
+# different emotions
+get_sentiments("nrc")
+
+# positive / negative
+get_sentiments("bing")
+```
+</details>
+
+Use `get_sentiment` on the twitter text (dirty text). Everything here is for an English tweet list. 
+
+```{r warning=FALSE, message=FALSE}
+library(syuzhet)
+bing_vector <- get_sentiment(Homeoffice_Twitter_en$text, method="bing")
+summary(bing_vector)
+
+afinn_vector <- get_sentiment(Homeoffice_Twitter_en$text, method="afinn")
+summary(afinn_vector)
+```
+
+The median is 0, the mean is above zero. That's slightly positive. 
+
+### Tidy text
+
+Tidy text looks like a unique word list 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+if(!require("quanteda")) {install.packages("quanteda"); library("quanteda")}
+if(!require("readtext")) {install.packages("readtext"); library("readtext")}
+if(!require("tidyverse")) {install.packages("tidyverse"); library("tidyverse")}
+if(!require("lubridate")) {install.packages("lubridate"); library("lubridate")}
+```
+
+```{r warning=FALSE, message=FALSE}
+Tidy_Twitter <- Homeoffice_Twitter_en %>%
+  select(user_id, text) %>%
+  unnest_tokens(word, text)
+
+Tidy_Twitter
+```
+
+### How many words are joy related?
+
+```{r warning=FALSE, message=FALSE}
+nrc_joy <- get_sentiments("nrc") %>% 
+  filter(sentiment == "joy")
+
+Tidy_Twitter %>%
+  inner_join(nrc_joy) %>%
+  count(word, sort = TRUE)
+```
+
+### What emotion words are connected to homeoffice?
+
+The NRC Emotion Lexicon is a list of English words and their associations with eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive)
+
+```{r warning=FALSE, message=FALSE}
+Tidy_Twitter %>%
+  inner_join(get_sentiments("nrc")) %>%
+  count(word, sort = TRUE)
+```
+
+### Overall feelings about homeoffice
+
+```{r warning=FALSE, message=FALSE, fig.align='center'}
+Tidy_Twitter %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment) %>%
+  ggplot(aes(x="", y= n, fill=sentiment)) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y") +
+  theme(axis.ticks = element_blank(), 
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank()) 
+```
+
+> Did you know that pie charts with more than two forms can be confusing to the human eye? 
+>
+> `r tufte::quote_footer('<https://www.datahouse.ch/de/services/>')`
+
+
+## Geo-tag
+
+<!-- `geo_coords` does not work yet. -->
+
+Real GPS information is given by **longitude and latitude**. This provides the **highest level of precision**. Tweet Locations require no language parsing/processing to access the geographic information. The main drawback to relying on Tweet Locations is that **only 1-2% of Tweets are geo-tagged**. There are three ‘root-level’ JSON objects used to describe the location associated with a Tweet: place, geo and coordinates.
+
+How can we only load those tweets that are of interested? Can we filter on the server-side? 
+
+<details>
+<summary>
+How longitude and latitude work
+</summary>
+```{r , echo=FALSE, out.width="40%", fig.cap="How longitude and latitude work.", fig.align='center'}
+knitr::include_graphics("latitude-vs-longitude2.jpg")
+```
+</details>
+
+I select some tweets around a radius from Peine (mid of Germany).
+
+```{r warning=FALSE, message=FALSE, eval=FALSE}
+Tweets_Germany <- search_tweets(q="Homeoffice", n=500, 
+                                geocode = "52.31928,10.2352,500mi",
+                                include_rts = FALSE)
+```
+
+Although I made the request based on `geocode`, I only have 22 out of 500 tweets with that information. 
+
+```{r warning=FALSE, message=FALSE}
+# create lat/lng variables using all available tweet and profile geo-location data
+Tweets_Germany <- lat_lng(Tweets_Germany)
+
+table(!is.na(Tweets_Germany$lat))
+```
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+# Retrieve the map data for Germany
+twitter_maps <- map_data("world", region = "Germany")
+```
+
+```{r warning=FALSE, message=FALSE, fig.align='center', out.width="60%"}
+ggplot(twitter_maps, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group))+
+  scale_fill_viridis_d()+
+  theme_void()+
+  theme(legend.position = "none") +
+  geom_point(data=Tweets_Germany, aes(x = Tweets_Germany$lng, y=Tweets_Germany$lat), colour = "red", size=2) +
+  ggtitle("Geo-located Tweets about 'Homeoffice' in Germany.")
+```
+
+## ToDo
+
+Technical list:
+
+- Load all historical data from Twitter.
+- Find a German dictionary for sentiment analysis.
+- Explore the distribution of positive/negative feeling by geo-location.
+
+Location and commuting information:
+
+- Estimate home and job location based on frequency of tweets per user. 
+- Estimate commuting (location) based on time of tweet. 
+- Can commuting patterns per postcode (or region) be merged to household panel data?
+- Selection into twitter (younger people / mobile internet). 
+
+Others:
+
+- Scrape employer ratings with respect to work time flexibility and commuting.
+
+```{r , echo=FALSE, out.width="40%", fig.cap="The End.", fig.align='center'}
+knitr::include_graphics("end.png")
+```
+
+## Resources
+
+### Twitter API
+
+<https://developer.twitter.com/en/docs/tutorials/filtering-tweets-by-location>
+
+<https://developer.twitter.com/en/docs/twitter-api/enterprise/rules-and-filtering/enterprise-operators#listofoperators>
+
+<https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet> 
+
+### Twitter API with R 
+
+<https://cran.r-project.org/web/packages/rtweet/vignettes/intro.html>
+
+<https://www.earthdatascience.org/courses/earth-analytics/get-data-using-apis/use-twitter-api-r/>
+
+<https://rpubs.com/shinhaenglee/692598>
+
+<https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e>
+
+### Sentiment Analysis in R
+
+<http://inhaltsanalyse-mit-r.de/lexika.html>
+
+<https://www.tidytextmining.com/sentiment.html>
+
+- Easy sentiment analysis in R with `inner_join`. 
+- Show and explain different dictionaries, e.g. `afiin`, `bing` and `nrc`
+
+### Literature
+
+McNeill, G., Bright, J., & Hale, S. A. (2017). Estimating local commuting patterns from geolocated Twitter data. EPJ Data Science, 6, 1-16.
+
+### References
+
+

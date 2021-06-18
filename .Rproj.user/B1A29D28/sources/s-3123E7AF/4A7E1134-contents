@@ -1,0 +1,188 @@
+
+#install.packages("RSelenium")
+library('RSelenium')
+library("RMySQL")
+library("stringr")
+library("rvest")
+library("stringr")
+library("magick")
+
+
+#############################################################################################
+
+HASHTAG <- "aboutme" #put here the hashtag you want to scrape
+N_POSTS_TO_SCRAPE_MIN <- 20000 #put here the approx. number of posts you want to scrape
+DEBUG_LEVEL <- 2
+SLEEP_TIME <- 1
+SLEEP_TIME_LONG <- 5
+
+debug <- function(s, msgdebuglevel = 1){
+  if(DEBUG_LEVEL >= msgdebuglevel){
+    print(s)
+  }
+}
+
+getPageSource_viaSelenium <- function(urltoread, remDr){
+  debug(paste0("f:readViaSelenium-URL: ", urltoread))
+  
+  r <- NULL
+  success <- FALSE
+  i <- 1
+  while(!success && i < 10){
+    result = tryCatch({
+      remDr$navigate(urltoread)
+      r <- remDr$getPageSource()[[1]]
+      success <- TRUE
+      Sys.sleep(SLEEP_TIME)
+    }, error = function(e) {
+      print(e)
+      i <- i + 1
+      Sys.sleep(SLEEP_TIME)
+    })
+  }
+  r #return the page
+}
+
+read_html_viaSelenium <- function(urltoread, remDr){
+  debug(paste0("f:readViaSelenium-URL: ", urltoread))
+  
+  r <- read_html(getPageSource_viaSelenium(urltoread, remDr))
+  r
+}
+
+#############################################################################################
+
+#Initializing two browsers using Selenium
+rD <- rsDriver(port = 4467L, browser = c("chrome"), chromever = "89.0.4389.23")
+remDr <- rD[["client"]]
+
+rD2 <- rsDriver(port = 4468L, browser = c("chrome"), chromever = "89.0.4389.23")
+remDr2 <- rD2[["client"]]
+
+#Make sure to log in to your instagram account in each browser!
+
+#initializing DB connection
+con <- dbConnect(MySQL(),
+                 user = 'hofstett_scrape',
+                 password = 'UScraPe24778',
+                 host = 'hofstett.mysql.db.hostpoint.ch',
+                 dbname = 'hofstett_innolabs')
+
+#############################################################################################
+
+#define the hashtag you would like to scrape
+url_start <- str_glue("https://instagram.com/explore/tags/{HASHTAG}")
+url_scrape <- url_start
+
+src <- read_html_viaSelenium(url_scrape, remDr) 
+links <- html_nodes(src, "a[tabindex]")
+
+n_links_start <- 10 #the first 9 are the top posts, we want to skip them and only start reading after number 10
+n_links_end <- length(links)
+
+#now lets test the page scrolling functionality...
+hasmore <- TRUE
+i <- 1
+while(hasmore && i < N_POSTS_TO_SCRAPE_MIN){
+  for(n_links_index in n_links_start:n_links_end){ #iterate over all links we found on the page
+    debug(paste0("i=", i, "; n=", n_links_index))
+    
+    result = tryCatch({ #may trigger an error, e.g. if the link is not correct
+      read_post(links[n_links_index], remDr2, con)
+      i = i + 1
+    }, error = function(e) {
+      print(e)
+    })      
+    
+  }
+  #scroll down for more posts    
+  webElem <- remDr$findElement("css", "body")
+  webElem$sendKeysToElement(list(key = "end"))
+  Sys.sleep(SLEEP_TIME_LONG)
+  
+  #read new pages info & links
+  s <- remDr$getPageSource()[[1]]
+  src2 <- read_html(s)
+  links <- html_nodes(src2, "a[tabindex]")
+  n_links_end <- length(links)
+}
+
+
+
+read_post <- function(link, remDr2, con){
+  suburl <- substr(link, 10, 24) #pull out link
+  if(str_locate_all(suburl, "/p/")[[1]][1] == 1){ #check if link to post
+    post_id <- substr(suburl, 4, str_length(suburl)-1)
+    
+    #check if not already stored
+    sql <- paste0("select * from review_faces where post_id = '", post_id, "'")
+    results2 = dbSendQuery(con, sql)
+    data2 <- fetch(results2, n = -1)
+    if(length(data2[,1]) != 0){    
+      debug(paste0("Post ID '", post_id, "' already in DB"))
+    }else{
+      html <- read_html_viaSelenium(paste0("https://www.instagram.com", suburl), remDr2)
+      result = tryCatch({ #videos give an error, catch & ignore that error
+        
+        debug("scraping image", 2)
+        x <- html_nodes(html, "img[sizes][srcset]") #match the image
+        img_url <- html_attr(x, "srcset")
+        endpos <- str_locate(img_url, "640w")
+        img_url <- substr(img_url, 1, endpos[1,1]-1)
+        debug(paste0("downloading image: ", img_url))
+        img_dir <- str_glue("d:/data_instagram/{post_id}_{hashtag}_post_img.jpg")
+        download.file(img_url, img_dir, mode = 'wb', quiet = TRUE)
+        
+        #rescale image
+        image <- image_read(img_dir)
+        image2 <- image_scale(image,'300')
+        image_write(image2, path=img_dir, format="jpg")
+        
+        #draw into R viewer
+        #image_draw(image)
+        
+        #read nr of likes
+        likes <- html_nodes(html, "a[href$='/liked_by/']") #check selectors https://www.w3schools.com/cssref/css_selectors.asp
+        likes <- html_text(likes)
+        likes <- str_replace_all(likes, " like", "")
+        likes <- str_replace_all(likes, "s", "")
+        #could also be written as_
+        #likes <- src %>% html_nodes(., "a[href$='/liked_by/']") %>% html_text %>% str_replace_all(., " likes", "")
+        debug(paste0("scraping likes: ", likes), 2)
+        
+        time <- html_nodes(html, "time")[1]
+        time <- html_attr(time,"datetime")
+        debug(paste0("scraping time: ", time), 2)
+        
+        username <- html_nodes(html, "a[tabindex]")[2]
+        username <- html_text(username)
+        debug(paste0("scraping username: ", username), 2)
+        
+        #find the first div with an empty class attribute, this is our text...
+        divs <- html_nodes(html, "li span[class]")
+        j = 1
+        text = "NONE"
+        while(j <= length(divs)){
+          if(str_length(html_attr(divs[j], "class")) == 0){
+            text <- html_text(divs[j])
+            j = length(divs)+1 #stop loop
+          }
+          j = j + 1
+        }
+        debug(paste0("scraping text: ", text), 2)
+        
+        #store image & post into DB
+        debug("storing to DB", 2)
+        sql <- paste0("INSERT INTO review_faces(post_id,post_img_url,img_dir, post_likes, post_datetime, post_username, post_text) VALUES('", post_id, "', '", img_url, "', '",img_dir, "', '",likes,"', '", time, "', '",username,"', '", str_replace_all(text, "'", "") ,"' )")
+        print(sql)
+        query <- dbSendQuery(con, sql)
+        
+      }, error = function(e) {
+        print(e)
+      })
+      Sys.sleep(round(runif(1, 0, 4)))
+    }
+  }
+}
+
+###############################################################################

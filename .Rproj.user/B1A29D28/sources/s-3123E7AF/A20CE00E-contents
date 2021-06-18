@@ -1,0 +1,147 @@
+---
+title: "Scraping Twitter via API"
+author: "Reto Hofstetter, University of Lucerne, reto.hofstetter@unilu.ch"
+date: "29.04.2019"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
+  pdf_document:
+    toc: yes
+    toc_depth: 2
+editor_options:
+  chunk_output_type: console
+---
+
+##Setup
+For some APIs there is already an R package available that facilitates the access. In the case of Twitter there are many, we use the package `rtweet` for this example (see https://rtweet.info/).
+
+```{r eval=FALSE}
+#install.packages("rtweet")
+library(rtweet)
+library(stringr)
+```
+In order to be able to access the API, we need to create a Twitter app here: 
+
+https://developer.twitter.com/en/apps
+
+We can then find our API keys under "Details > Keys and Tokens" and create an access token using the `create_token` function from `rtweet`.
+
+```{r eval=FALSE}
+create_token(
+  app = "Tweetcrawlyer",
+  consumer_key = "HQ23883PTwODxzJjXCh4OkV0K",
+  consumer_secret = "OzCx6Cr8qHUhYr4cKzSTxJXcjVzuXf4tJmlKlrsSm1eA9RUTgp",
+  access_token = "243525314-z3IsO58lb3CISw2L2IoEuD2nQNgCoJGrImxf7mEK",
+  access_secret = "W7D5A5RvksjuzEBBngbjCwB7R08nNzB6Ni5pBIcI104TF")
+
+```
+
+##The Twitter API and rtweet
+Now we are ready to use the API. The Twitter API is quite sophisticated with a lot of options. One can search tweets, for instance, which is described here:
+https://developer.twitter.com/en/docs/tweets/search/overview
+
+The `rtweet` reference can be found here:
+https://rtweet.info/reference/index.html
+
+We now run a simple call to search for tweets and then display the results in an insightful way (example inspired by rtweet.info).
+
+First, we search for 18,000 tweets that contain the #dataanalytics hashtag. Twitter rate limits cap the number of search results returned to 18,000 every 15 minutes (see details on rate limits here: https://developer.twitter.com/en/docs/basics/rate-limits.html). To request more than that, simply set retryonratelimit = TRUE and rtweet will wait for rate limit resets for you.
+
+```{r eval=FALSE}
+rt <- search_tweets("data OR analytics OR scraping OR dataanalytics", n = 5000, include_rts = FALSE, retryonratelimit = TRUE)
+```
+
+##Analyze Tweets
+Now lets create a frequency chart of the hashtags used together with dataanalytics.
+
+```{r eval=FALSE}
+htags <- data.frame()
+htemp <- list()
+maxrows <- nrow(rt)
+
+for(i in 1:maxrows){
+  txt <- rt$text[i]
+  
+  #use a regular expression to match all hashtags
+  htemp <- str_extract_all(txt, "#\\S+", TRUE)
+  #\\S match non-whitespace characters, at least one
+
+  #iterate over all hashtags and store them into our table
+  if(ncol(htemp) != 0){
+    for(j in 1:ncol(htemp)){
+      htags[i,j] <- htemp[1,j]
+    }
+  }
+}
+```
+
+Change from data.frame to list (`unlist`), then, count number of occurrences using `table`.
+```{r eval=FALSE}
+htags_list <- unlist(htags)
+htags_list_withcounts <- table(htags_list)
+
+tagcounts <- as.data.frame(htags_list_withcounts)
+tagcounts_sorted <- tagcounts[order(-tagcounts$Freq),]
+```
+
+Lets see the most frequent hashtags and store them into a CSV file.
+
+```{r eval=FALSE}
+head(tagcounts_sorted)
+
+barplot(tagcounts_sorted[1:20,]$Freq, las = 2, names.arg = tagcounts_sorted[1:20,]$htags_list, cex.names = 0.8,
+        col ="lightblue", main ="Most frequent words",
+        ylab = "Word frequencies")
+
+#write to csv
+write.csv(tagcounts_sorted, "c:/temp/ht_sort_HASHTAG2.csv", fileEncoding = "UTF-8")
+```
+
+
+For fun, let's display a wordcloud based on the information about the hashtags and their frequencies. There is a convenient package available named `wordcloud` for this purpose.
+
+```{r eval=FALSE}
+#install.packages('wordcloud')
+library('wordcloud')
+
+wordcloud(tagcounts_sorted[0:200,1], tagcounts_sorted[0:200,2], random.order = FALSE)
+```
+
+
+##Tweets & Locations
+Example with geocodes.
+
+```{r eval=FALSE}
+
+## search for 10,000 tweets sent from the US
+rt <- search_tweets(
+  "#blm lang:en", geocode = lookup_coords("usa"), n = 5000
+)
+
+#backup tweets
+rtgeocode <- rt
+
+## create lat/lng variables using all available tweet and profile geo-location data
+rt <- lat_lng(rt)
+
+## plot state boundaries
+#install.packages("maps")
+par(mar = c(0, 0, 0, 0))
+maps::map("state", lwd = .25)
+
+## plot lat and lng points onto state map
+with(rt, points(lng, lat, pch = 21, cex = 1.75, col = rgb(0, .9, .7, .75)))
+
+rt$lng
+
+```
+
+
+
+##Exercises
+1. Try out different API endpoints, have a look at the rtweet reference for this purpose (https://rtweet.info/reference/index.html).
+2. *Run a sentiment analysis of the above tweets using the code from before.
+
+
+

@@ -1,0 +1,106 @@
+
+
+###############################################################################
+# https://stackoverflow.com/questions/64593420/how-to-put-geocoordinates-from-a-dataframe-on-a-map-in-r
+###############################################################################
+
+# Berlin on a Germany Map 
+library(ggplot2)
+require(maps)
+
+GER <- map_data("world", region = "Germany")
+
+ggplot(GER, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill="lightgray", colour = "white")+
+  geom_point(aes(x = 13.404954, y = 52.520008), color="red")+
+  geom_text(aes(x = 13.404954, y = 52.520008), label = "Berlin", color = "red", nudge_y = .2)
+
+###############################################################################
+# How to Create a Map using GGPlot2
+# https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/
+###############################################################################
+
+library(tidyverse)  
+library(ggplot2)
+library(dplyr)
+require(maps)
+require(viridis)
+theme_set(
+  theme_void()
+)
+
+# Some EU Contries
+some.eu.countries <- c(
+  "Portugal", "Spain", "France", "Switzerland", "Germany",
+  "Austria", "Belgium", "UK", "Netherlands",
+  "Denmark", "Poland", "Italy", 
+  "Croatia", "Slovenia", "Hungary", "Slovakia",
+  "Czech republic"
+)
+# Retrievethe map data
+some.eu.maps <- map_data("world", region = some.eu.countries)
+
+# Compute the centroid as the mean longitude and lattitude
+# Used as label coordinate for country's names
+region.lab.data <- some.eu.maps %>%
+  group_by(region) %>%
+  summarise(long = mean(long), lat = mean(lat))
+
+ggplot(some.eu.maps, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = region))+
+  geom_text(aes(label = region), data = region.lab.data,  size = 3, hjust = 0.5)+
+  scale_fill_viridis_d()+
+  theme_void()+
+  theme(legend.position = "none")
+###############################################################################
+
+
+###############################################################################
+### Map of Course Participants
+###############################################################################
+
+# Load packages
+library(tidyverse)  
+library(ggplot2)
+library(dplyr)
+require(maps)
+require(viridis)
+theme_set(
+  theme_void()
+)
+
+# Countries with Participants
+seminar_countries <- c("Germany", "Poland", "France")
+
+# Retrieve the map data for Participant Countries 
+seminar_maps <- map_data("world", region = seminar_countries)
+
+# Participants coordinates
+df <- data.frame(name = c("Marco", "Inna"),
+                          lat = c(52.34714, 53.34714),
+                          long = c(14.55062, 13.55062))
+
+# Plot World Map with Selected Country and Peoples Position 
+ggplot(seminar_maps, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill="lightgray", colour = "white")+
+  geom_point(data=df, aes(x=long,y=lat, group=name), color="blue",shape=16) +
+  geom_text(aes(label = name, group=name), data = df, size = 3, vjust = 1)+
+  scale_fill_viridis_d()+
+  theme_void()+
+  theme(legend.position = "none")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

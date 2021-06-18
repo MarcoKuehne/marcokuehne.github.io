@@ -1,0 +1,40 @@
+---
+title: "IMDB Scraper"
+author: "Marco"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+## rvest 
+
+Content stems from: <https://rpubs.com/anadeba/221055> 
+
+```{r warning=FALSE, message=FALSE}
+library("rvest")
+library("XML")
+```
+
+Use the url, read it with `read_html`, access information with `html_nodes`. 
+
+```{r warning=FALSE, message=FALSE}
+# IMDB Top 250 Movies
+url = "http://www.imdb.com/chart/top?ref_=nv_wl_img_3"
+page = read_html(url)
+
+movie.nodes = html_nodes(page,'.titleColumn a')
+# Check one node
+#xmlTreeParse(movie.nodes[[1]])
+movie.link = sapply(html_attrs(movie.nodes),`[[`,'href')
+movie.link = paste0("http://www.imdb.com", movie.link)
+movie.cast = sapply(html_attrs(movie.nodes),`[[`,'title')
+movie.name = html_text(movie.nodes)
+year = gsub(")","",gsub("\\(","",html_text(html_nodes(page,'.secondaryInfo'))))
+
+top250 = data.frame(movie.name, year, movie.cast, movie.link)
+head(top250)
+```
+
+
+
+
+

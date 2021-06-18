@@ -1,0 +1,85 @@
+
+
+
+
+
+rolldice <- function(){
+  dice <- sample(1:6, size=1)
+  print(paste0("I'm done with: ", dice))
+}
+
+rolldice()
+rolldice()
+
+# Also shows information if you dont output 
+n <- rolldice()
+
+rolldice_n <- function(sides){
+  dice <- sample(1:sides, size=1)
+  print(paste0("I'm done with: ", dice))
+}
+
+# A 15 sided dice 
+rolldice_n(15)
+
+# Default number 
+rolldice_n <- function(sides = 6){
+  dice <- sample(1:sides, size=1)
+  print(paste0("I'm done with: ", dice))
+}
+
+rolldice_n()
+rolldice_n(sides = 100)
+
+# always 1
+rolldice_n(TRUE)
+
+# sometimes 1 or 0
+rolldice_n(FALSE)
+
+# goes from 1 to -2 including 0 
+rolldice_n(-2)
+
+# Check preconditions
+rolldice_n <- function(sides = 6){
+  if(sides < 0){
+    print("Sides cannot be lower than zero.")
+  }     
+  dice <- sample(1:sides, size=1)
+  print(paste0("I'm done with: ", dice))  
+}
+
+rolldice_n(-2)
+
+rolldice_n <- function(sides = 6){
+  if(sides < 0){
+    print("Sides cannot be lower than zero.")
+    return(NA)
+  } else{
+    dice <- sample(1:sides, size=1)
+    print(paste0("I'm done with: ", dice))  
+  }
+}
+
+rolldice_n(-2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

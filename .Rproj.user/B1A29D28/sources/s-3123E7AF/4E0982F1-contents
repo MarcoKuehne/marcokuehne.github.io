@@ -1,0 +1,101 @@
+---
+title: "GSERM 2021: Scraping Yelp Reviews via Fusion API for Academic Purposes"
+author: "Reto Hofstetter, University of Lucerne, reto.hofstetter@unilu.ch"
+date: "June 2021"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
+  pdf_document:
+    toc: yes
+    toc_depth: 2
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+```{r eval=FALSE}
+require(tidyverse)
+require(jsonlite)
+require(httr)
+require(magick)
+```
+We need to generate an API key so that we are allowed to access the API. You will get an API key when you create an app on Yelp here:
+
+`https://www.yelp.com/developers/v3/manage_app`
+
+Then store your client ID and API key in R:
+```{r eval=FALSE}
+client_id <- "s4FhUYNkr2bU3AujtUgDzA"
+api_key <- "MNBPu35V2BESwcJDZ1Z_tFJBd5FSpk1y8SkPzeG0M1_BxWNT4tMOcwq2nmXHJDnLCCgW2pp2uRT4hp2ZnPRmy9J2PQ1P4zUImK439cfdt1edXaesyZpx7woU_QLAXHYx"
+```
+
+Now that we have the key we can start thinking about how to access the API. The available endpoints are:
+
+*/businesses/search
+*/businesses/search/phone
+*/transactions/{transaction_type}/search
+*/businesses/{id}
+*/businesses/matches
+*/businesses/{id}/reviews
+*/autocomplete
+
+See the Fusion API Documentation for further information about all these endpoints:
+
+`https://www.yelp.com/developers/documentation/v3/get_started`
+
+## Calling the API
+
+The Fusion API is quite convenient and does not require a complicated login procedure (such as OAuth). We can call the API direclty via HTTP GET requests. Just make sure to provide the API key as a header field (as documented in the authentication guide https://www.yelp.com/developers/documentation/v3/authentication).
+
+Lets test the API by calling the search endpoint. We add the key via the `àdd_headers` parameter. For Yelp we further need to provide a location, either as a name or long/lat coordinates. The search function will then find the businesses at the given location. We use Lucerne as the location, for example.
+
+```{r eval=FALSE}
+res <- GET("https://api.yelp.com/v3/businesses/search",
+           add_headers(Authorization = paste("Bearer", api_key)),
+           query = "latitude=47.049770&longitude=8.312501")
+```
+
+As a result, we get an HTTP response which contains JSON code in the content part. We can translate the JSON code into an R object using the `fromJSON` function (`jsonlite` package).
+
+```{r eval=FALSE}
+biz <- fromJSON(content(res, type = "text"))
+n_biz <- biz$total
+n_biz
+```
+
+There are 287 businesses listed in Lucerne and we read the first 20 (look into 'offset' and 'limit' if you want to read more). Now lets read the reviews for these businesses. We do this for the first business. 
+
+```{r eval=FALSE}
+id <- biz$businesses$id[1]
+
+res <- GET(str_glue("https://api.yelp.com/v3/businesses/{id}/reviews"),
+           add_headers(Authorization = paste("Bearer", api_key)),
+           query = "")
+rev <- fromJSON(content(res, type = "text"))
+rev
+```
+
+We now have the reviews and can store them in a file or data base of process them in any other way we like. E.g., calculate mean reviews. Note, however, that the API only gives you 3 reviews per restaurant.
+
+```{r eval=FALSE}
+mean(rev$reviews$rating)
+```
+Or display the profile image of the first rater (for fun).
+```{r eval=FALSE}
+image <- image_read(rev$reviews$user$image_url[3])
+print(image)
+```
+
+It would be easy to read not just the first business and review but the reviews for all restaurants at the location. These data could also be stored in a database or in a CSV file, similar to before.
+
+## Exercises
+1. Browse the API documentation here: https://www.yelp.com/developers/documentation/v3/get_started
+2. Think of a research question that you may be able to answer using data collected via the API.
+3. Call the API endpoint that will provide you these data.
+4. Analyze the data in a way to investigate your research question.
+
+
+
+
+
