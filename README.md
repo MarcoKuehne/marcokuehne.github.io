@@ -28,7 +28,7 @@ Some more git commands for the terminal:
 
 git init
 
-git add _
+git add .
 
 <https://rachaellappan.github.io/bookdown/>
 
