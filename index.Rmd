@@ -35,3 +35,109 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+
+
+# Introduction {#intro}
+
+- I need a R project on my local system. 
+- Get a repo at github which is connected to pages, only 1 for free. 
+- Only this can turn the branch into docs?
+- usethis in R:
+
+In R consol `usethis::use_git()` Always gives three different answers. 
+
+Is it ok to commit them? Confirm.
+
+# Git commands
+
+Use the terminal inside RStudio. Copy paste into terminal with:  CTRL + SHIFT + V 
+
+## git init
+
+Use git init to initialize the repository. It is used to create a new empty repository or directory consisting of files' with the hidden directory. '.git' is created at the top level of your project, which places all of the revision information in one place.
+
+Don't know what initiliaze means.
+
+`git init`
+
+I would like to have something like `git remote add ...` and `git push ...`, not working.
+
+Show what is connected with `git remote -v show`
+
+I can add and remove origins, dont know what it means: `git remote rm origin`
+
+Use git add . in your bash to add all the files to the given folder.
+
+Use git status in your bash to view all the files which are going to be staged to the first commit.
+
+## git remote add
+
+Create **git remote add**
+
+git remote add origin https://github.com/MarcoKuehne/marcokuehne.github.git 
+git remote add origin https://github.com/MarcoKuehne/marcokuehne.github.io
+git remote add origin https://github.com/MarcoKuehne/marcokuehne.github.io.git
+
+git remote add git@github.com:<username>/<repository-name>.git
+git remote add git@github.com:MarcoKuehne/marcokuehne.github.git
+git remote add git@github.com:MarcoKuehne/marcokuehne.github.io does not appear to be a repository 
+git remote add git@github.com:MarcoKuehne/marcokuehne.github.io.git combine both 
+
+## git push 
+
+**Push means upload** something
+
+git push -u origin main
+git push -u origin master
+git push origin master
+git push origin main 
+git push --set-upstream origin main
+git push -f origin main # worked somehow!!!
+
+If positive, it asks for github credentials. 
+
+# Resources
+
+<https://jules32.github.io/bookdown-tutorial/setup.html>
+
+<https://stackoverflow.com/questions/1221840/remote-origin-already-exists-on-git-push-to-a-new-repository>
+
+<https://jules32.github.io/bookdown-tutorial/setup.html>
+
+This tutorial worked to push a book to a standard repo. But it means that i cannot be displayed since there is no doc branch?!!?!? 
+
+<https://www.datacamp.com/community/tutorials/git-push-pull>
+
+
+# Something else
+
+
+You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+
+Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+
+```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
+par(mar = c(4, 4, .1, .1))
+plot(pressure, type = 'b', pch = 19)
+```
+
+Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+
+```{r nice-tab, tidy=FALSE}
+knitr::kable(
+  head(iris, 20), caption = 'Here is a nice table!',
+  booktabs = TRUE
+)
+```
+
+You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+
+  <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2578_RC01/embed_loader.js"></script>
+  <script type="text/javascript">
+    trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"homeoffice","geo":"DE","time":"today 5-y"}],"category":0,"property":""}, {"exploreQuery":"date=today%205-y&geo=DE&q=homeoffice","guestPath":"https://trends.google.de:443/trends/embed/"});
+  </script>
+  
+
+
+
+
