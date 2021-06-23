@@ -32,7 +32,9 @@ git add .
 
 <https://rachaellappan.github.io/bookdown/>
 
+git commit -m "Started book"
 
+https://marcokuehne.github.io/
 
 ### Jekyll Themes
 
