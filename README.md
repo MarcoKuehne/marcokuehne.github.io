@@ -10,16 +10,14 @@ You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.gi
 - Set up Github pages <https://pages.github.com/>
 - Download Git <https://git-scm.com/>
 
-## Working with Git
-
 Create a "special repository" for GitHub Pages. Only this can turn the branch into docs.
 
     Repository: https://github.com/MarcoKuehne/marcokuehne.github.io
     Homepage: https://marcokuehne.github.io/
 
-Create an R project. Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading #.
+Create (or re-open) your R project. In R console use `usethis::use_git()` which always gives three different answers in random order. Confirm accordingly.
 
-In R console use usethis::use_git(). Always gives three different answers. Confirm accordingly.
+## Working with Git
 
 I followed the video "How to create a bookdown book in 5 minutes":
 
