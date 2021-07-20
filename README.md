@@ -5,9 +5,10 @@ You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.gi
 
 ## Install Github and Git
 
-- Get a Github account <https://github.com/>
+- Get RStudio https://www.rstudio.com/products/rstudio/download/
+- Get Github account <https://github.com/>
 - Set up Github pages <https://pages.github.com/>
-- Download/install git <https://git-scm.com/>
+- Download Git <https://git-scm.com/>
 
 ## Working with Git
 
@@ -19,7 +20,6 @@ Create a "special repository" for GitHub Pages. Only this can turn the branch in
 Create an R project. Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading #.
 
 In R console use usethis::use_git(). Always gives three different answers. Confirm accordingly.
-
 
 I followed the video "How to create a bookdown book in 5 minutes":
 
