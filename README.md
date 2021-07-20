@@ -32,7 +32,7 @@ Now, you can commit (upload) changes from RStudio to Github Pages.
 
 ### Basic Work Routine
 
-I make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`.
+Make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
 
 Some more git commands for the terminal:
 
