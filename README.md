@@ -41,17 +41,9 @@ git add .
 
 git commit -m "Started book"
 
-
-
 ### Jekyll Themes
 
 Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/MarcoKuehne/marcokuehne.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### New Stuff
-
-I can upload html markdown files and link them as a sub-page, e.g.
-
-[First Regression](https://marcokuehne.github.io/FirstRegression.html)
 
 ### Upload New Stuff from RStudio 
 
@@ -61,4 +53,5 @@ Let's give it a try.
 
 This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
 
+## Upload Routine
 
