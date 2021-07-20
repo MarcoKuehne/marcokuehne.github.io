@@ -34,7 +34,7 @@ Now, you can commit (upload) changes from RStudio to Github Pages.
 
 Make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
 
-I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
+I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see <https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password>). Here you might use a personal access token. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
 
 ### More Git Commands
 
