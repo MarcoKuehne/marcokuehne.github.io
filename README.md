@@ -34,6 +34,8 @@ Now, you can commit (upload) changes from RStudio to Github Pages.
 
 Make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
 
+I add this sentence. I save on RStudio, thus it appears as a change in the Git panel. 
+
 Some more git commands for the terminal:
 
 git init
@@ -61,5 +63,4 @@ Let's give it a try.
 
 This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
 
-## Upload Routine
 
