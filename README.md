@@ -10,7 +10,7 @@ You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.gi
 - Set up Github pages <https://pages.github.com/>
 - Download Git <https://git-scm.com/>
 
-Create a "special repository" for GitHub Pages. Only this can turn the branch into docs.
+Create a "special repository" for GitHub Pages. Only this can turn the branch into docs (1 for free).
 
     Repository: https://github.com/MarcoKuehne/marcokuehne.github.io
     Homepage: https://marcokuehne.github.io/
@@ -34,16 +34,18 @@ Now, you can commit (upload) changes from RStudio to Github Pages.
 
 Make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
 
-I add this sentence. I save on RStudio, thus it appears as a change in the Git panel. 
+I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
+
+### More Git Commands
 
 Some more git commands for the terminal:
 
-git init
-git add .
+- `git init`
+- `git add .`
 
 <https://rachaellappan.github.io/bookdown/>
 
-git commit -m "Started book"
+- `git commit -m "Started book"`
 
 I followed the video "How to create a bookdown book in 5 minutes":
 
