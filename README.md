@@ -1,23 +1,31 @@
 
-## Welcome to My GitHub Pages
+## Welcome to My GitHub Pages / Bookdown
 
-You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files. Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-## Starting Github
-
-What I did was: 
+## Install Github and Git
 
 - Get a Github account <https://github.com/>
 - Set up Github pages <https://pages.github.com/>
 - Download/install git <https://git-scm.com/>
 
-Follow this video:
+## Working with Git
+
+Create a "special repository" for GitHub Pages. Only this can turn the branch into docs.
+
+    Repository: https://github.com/MarcoKuehne/marcokuehne.github.io
+    Homepage: https://marcokuehne.github.io/
+
+Create an R project. Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading #.
+
+In R console use usethis::use_git(). Always gives three different answers. Confirm accordingly.
+
+
+I followed the video "How to create a bookdown book in 5 minutes":
 
 <https://www.youtube.com/watch?v=m5D-yoH416Y>
 
-It did not work, I need to configure my github user information on my system. Use the terminal 
+It did not work. Next, configure github user information on my system. Use the R builtin terminal:
 
 git config --global user.email MAIL 
 git config --global user.name NAME  
@@ -27,14 +35,13 @@ Now, I can commit (upload) changes from RStudio to my Github pages.
 Some more git commands for the terminal:
 
 git init
-
 git add .
 
 <https://rachaellappan.github.io/bookdown/>
 
 git commit -m "Started book"
 
-https://marcokuehne.github.io/
+
 
 ### Jekyll Themes
 
