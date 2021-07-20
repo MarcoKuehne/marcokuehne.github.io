@@ -25,12 +25,12 @@ In R console use `usethis::use_git()` which always gives three different answers
 
 First, configure github user information on your system. Use the R builtin terminal:
 
-`git config --global user.email MAIL`
-`git config --global user.name NAME`
+- `git config --global user.email MAIL`
+- `git config --global user.name NAME`
 
 Now, you can commit (upload) changes from RStudio to Github Pages.
 
-### Some work routine
+### Basic Work Routine
 
 I make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`.
 
