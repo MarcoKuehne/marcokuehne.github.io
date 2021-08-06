@@ -14,8 +14,8 @@ This is a minimal example of a book based on R Markdown and **bookdown** (https:
 
 Create a "special repository" for GitHub Pages. Only this can turn the branch into docs (1 for free).
 
-    Repository: https://github.com/MarcoKuehne/marcokuehne.github.io
-    Homepage: https://marcokuehne.github.io/
+- Repository: https://github.com/MarcoKuehne/marcokuehne.github.io
+- Homepage: https://marcokuehne.github.io/
 
 Create (or re-open) your R project inside RStudio. 
 
@@ -31,12 +31,18 @@ Make changes to the `README.md` via GitHub web interface. I need to `pull` these
 
 I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see <https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password>). Here you might use a personal access token. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
 
+### git version
+
+Let's start with commands that cannot do any harm (it's 2.32 in 08/2021): 
+
+    `git version`
+
 ### git config 
 
 First, configure github user information on your system. Use the R builtin terminal:
 
-- `git config --global user.email MAIL`
-- `git config --global user.name NAME`
+    `git config --global user.email MAIL`
+    `git config --global user.name NAME`
 
 Now, you can commit (upload) changes from RStudio to Github Pages. Check out `git config --list`.
 
