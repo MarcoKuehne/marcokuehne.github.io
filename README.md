@@ -82,6 +82,10 @@ If positive, it asks for github credentials.
 
 <https://www.datacamp.com/community/tutorials/git-push-pull>
 
+### git status and diff
+
+Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use `git diff filename`, e.g. `git diff README.md` in the terminal. `git diff` without any filenames will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
+
 
 ## Resources
 
