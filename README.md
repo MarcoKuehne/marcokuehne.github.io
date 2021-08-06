@@ -48,6 +48,22 @@ Use `git init` to initialize the repository. It is used to create a new empty re
 
 Show what is connected with `git remote -v show`
 
+### git status and diff
+
+Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use `git diff filename`, e.g. `git diff README.md` in the terminal. `git diff` without any filenames will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
+
+### git commit 
+
+To save the changes in the staging area, you use the command `git commit`. It always saves everything that is in the staging area as one unit: as you will see later, when you want to undo changes to a project, you undo all of a commit or none of it.
+
+Commit requires a message (comment). How to write a good git commit message:l
+
+<https://chris.beams.io/posts/git-commit/>
+
+### git add
+
+
+
 ### git remote add
 
 I would like to have something like `git remote add ...` and `git push ...`, not working.
@@ -82,9 +98,6 @@ If positive, it asks for github credentials.
 
 <https://www.datacamp.com/community/tutorials/git-push-pull>
 
-### git status and diff
-
-Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use `git diff filename`, e.g. `git diff README.md` in the terminal. `git diff` without any filenames will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
 
 
 ## Resources
