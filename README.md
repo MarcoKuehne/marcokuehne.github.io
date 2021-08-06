@@ -27,20 +27,20 @@ In R console use `usethis::use_git()` which always gives three different answers
 
 Use the terminal inside RStudio. Copy paste into terminal with: `CTRL + SHIFT + V`.
 
-### Configuration 
+### Basic Work Routine
+
+Make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
+
+I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see <https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password>). Here you might use a personal access token. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
+
+### git config 
 
 First, configure github user information on your system. Use the R builtin terminal:
 
 - `git config --global user.email MAIL`
 - `git config --global user.name NAME`
 
-Now, you can commit (upload) changes from RStudio to Github Pages.
-
-### Basic Work Routine
-
-Make changes to the `README.md` via GitHub web interface. I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
-
-I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see <https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password>). Here you might use a personal access token. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
+Now, you can commit (upload) changes from RStudio to Github Pages. Check out `git config --list`.
 
 ### git init
 
@@ -62,13 +62,18 @@ Commit requires a message (comment). How to write a good git commit message:l
 
 ### git add
 
+Edit something in the README.md:
 
+- `git add README.md`
+- `git commit -m "added something in the readme"`
+
+How to push?
 
 ### git remote add
 
 I would like to have something like `git remote add ...` and `git push ...`, not working.
 
-I can add and remove origins, dont know what it means: `git remote rm origin`
+I can add and remove origins, don't know what it means: `git remote rm origin`
 
 Use git add . in your bash to add all the files to the given folder.
 
