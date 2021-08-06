@@ -85,9 +85,13 @@ If positive, it asks for github credentials.
 
 ## Resources
 
-### Easy 
+You can start reading about bookdowns from the inventor:
 
-Start a repo and book by copying "awesome book" from another repo.
+<https://bookdown.org/yihui/bookdown/>
+
+This is pretty advanced and I can't understand a tiny piece of it. 
+
+Another option is to start a repo and book by copying "awesome book" from another repo.
 
 <https://jules32.github.io/bookdown-tutorial/setup.html>
 
@@ -103,9 +107,6 @@ Another personal description can be found here:
 
 <https://rachaellappan.github.io/bookdown/>
 
-### Difficult
-
-<https://bookdown.org/yihui/bookdown/github.html>
 
 - `git commit -m "Started book"`
 
@@ -113,7 +114,7 @@ I followed the video "How to create a bookdown book in 5 minutes":
 
 <https://www.youtube.com/watch?v=m5D-yoH416Y>
 
-It did not work. Next, 
+It did not work.
 
 ## Jekyll Themes
 
