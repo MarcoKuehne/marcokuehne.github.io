@@ -45,7 +45,7 @@ First, configure github user information on your system. Use the R builtin termi
 
     git config --global user.email MAIL
     git config --global user.name NAME
-
+    
 Now, you can commit (upload) changes from RStudio to Github Pages. Check out `git config --list`.
 
 ### git init
@@ -72,10 +72,11 @@ Commit requires a message (comment). How to write a good git commit message:l
 
 Edit something in the README.md:
 
-- `git add README.md`
-- `git commit -m "added something in the readme"`
+    git add README.md
+    git commit -m "added something in the readme"
+    git push 
 
-How to push?
+How to push? Easy ... 
 
 ### git remote add
 
