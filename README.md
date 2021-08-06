@@ -5,6 +5,8 @@ You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.gi
 
 This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
 
+Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/MarcoKuehne/marcokuehne.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+
 ## Install Github and Git
 
 - Get RStudio <https://www.rstudio.com/products/rstudio/download/>
@@ -35,14 +37,14 @@ I add this sentence. I save on RStudio, thus it appears as a change to `README.m
 
 Let's start with commands that cannot do any harm (it's 2.32 in 08/2021): 
 
-    `git version`
+    git version
 
 ### git config 
 
 First, configure github user information on your system. Use the R builtin terminal:
 
-    `git config --global user.email MAIL`
-    `git config --global user.name NAME`
+    git config --global user.email MAIL
+    git config --global user.name NAME
 
 Now, you can commit (upload) changes from RStudio to Github Pages. Check out `git config --list`.
 
@@ -50,11 +52,13 @@ Now, you can commit (upload) changes from RStudio to Github Pages. Check out `gi
 
 Use `git init` to initialize the repository. It is used to create a new empty repository or directory consisting of files' with the hidden directory. '.git' is created at the top level of your project, which places all of the revision information in one place.
 
-Show what is connected with `git remote -v show`
+Show what is connected with:
+
+    git remote -v show
 
 ### git status and diff
 
-Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use `git diff filename`, e.g. `git diff README.md` in the terminal. `git diff` without any filenames will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
+Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use `git diff filename`, e.g. `git diff README.md` in the terminal. `git diff` without any file names will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
 
 ### git commit 
 
@@ -145,13 +149,13 @@ I followed the video "How to create a bookdown book in 5 minutes":
 
 It did not work.
 
-## Jekyll Themes
+Explaining terminology:
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/MarcoKuehne/marcokuehne.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+<https://www.notion.so/zarkom/Introduction-to-Git-ac396a0697704709a12b6a0e545db049>
 
-## Upload New Stuff from RStudio 
 
-Let's give it a try. 
+
+
 
 
 
