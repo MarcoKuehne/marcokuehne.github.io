@@ -1,9 +1,7 @@
 
-## Welcome to My GitHub Pages / Bookdown
+## Welcome to My GitHub Pages and Bookdown
 
 You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files. Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-## Bookdown
 
 This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
 
