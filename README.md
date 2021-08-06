@@ -107,6 +107,9 @@ Another personal description can be found here:
 
 <https://rachaellappan.github.io/bookdown/>
 
+    This enourmously helped with the understanding of commits and pushs on git:
+    
+    <http://www.differencebetween.net/technology/difference-between-commit-and-push/>
 
 - `git commit -m "Started book"`
 
