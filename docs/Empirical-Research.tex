@@ -124,126 +124,37 @@ We describe our methods in this chapter.
 \hypertarget{git-and-github}{%
 \chapter{Git and Github}\label{git-and-github}}
 
+Placeholder
+
 \hypertarget{install-github-and-git}{%
 \section{Install Github and Git}\label{install-github-and-git}}
-
-\begin{itemize}
-\tightlist
-\item
-  Get RStudio \url{https://www.rstudio.com/products/rstudio/download/}
-\item
-  Get Github account \url{https://github.com/}
-\item
-  Set up Github pages \url{https://pages.github.com/}
-\item
-  Download Git \url{https://git-scm.com/}
-\end{itemize}
-
-Create a ``special repository'' for GitHub Pages. Only this can turn the branch into docs (1 for free).
-
-\begin{itemize}
-\tightlist
-\item
-  Repository: \url{https://github.com/MarcoKuehne/marcokuehne.github.io}
-\item
-  Homepage: \url{https://marcokuehne.github.io/}
-\end{itemize}
-
-Create (or re-open) your R project inside RStudio.
-
-In R console use \texttt{usethis::use\_git()} which always gives three different answers in random order. Confirm accordingly.
 
 \hypertarget{working-with-git}{%
 \section{Working with Git}\label{working-with-git}}
 
-Use the terminal inside RStudio. Copy paste into terminal with: \texttt{CTRL\ +\ SHIFT\ +\ V}.
-
 \hypertarget{git-version}{%
 \subsection{git version}\label{git-version}}
-
-Let's start with commands that cannot do any harm (it's 2.32 in 08/2021):
-
-\begin{verbatim}
-git version
-\end{verbatim}
 
 \hypertarget{git-config}{%
 \subsection{git config}\label{git-config}}
 
-First, configure github user information on your system. Use the R builtin terminal:
-
-\begin{verbatim}
-git config --global user.email MAIL
-git config --global user.name NAME
-\end{verbatim}
-
-Now, you can commit (upload) changes from RStudio to Github Pages. Check out \texttt{git\ config\ -\/-list}.
-
 \hypertarget{git-init}{%
 \subsection{git init}\label{git-init}}
-
-Use \texttt{git\ init} to initialize the repository. It is used to create a new empty repository or directory consisting of files' with the hidden directory. `.git' is created at the top level of your project, which places all of the revision information in one place.
-
-Show what is connected with:
-
-\begin{verbatim}
-git remote -v show
-\end{verbatim}
 
 \hypertarget{git-status-and-diff}{%
 \subsection{git status and diff}\label{git-status-and-diff}}
 
-Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use \texttt{git\ diff\ filename}, e.g.~\texttt{git\ diff\ README.md} in the terminal. \texttt{git\ diff} without any file names will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
-
 \hypertarget{git-commit}{%
 \subsection{git commit}\label{git-commit}}
-
-To save the changes in the staging area, you use the command \texttt{git\ commit}. It always saves everything that is in the staging area as one unit: as you will see later, when you want to undo changes to a project, you undo all of a commit or none of it.
-
-Commit requires a message (comment). How to write a good git commit \url{message:l}
-
-\url{https://chris.beams.io/posts/git-commit/}
 
 \hypertarget{git-add}{%
 \subsection{git add}\label{git-add}}
 
-\ldots{}
-
 \hypertarget{git-remote-add}{%
 \subsection{git remote add}\label{git-remote-add}}
 
-I would like to have something like \texttt{git\ remote\ add\ ...} and \texttt{git\ push\ ...}, not working.
-
-I can add and remove origins, don't know what it means: \texttt{git\ remote\ rm\ origin}
-
-Use git add . in your bash to add all the files to the given folder.
-
-Use git status in your bash to view all the files which are going to be staged to the first commit.
-
-Create \textbf{git remote add}
-
-git remote add origin \url{https://github.com/MarcoKuehne/marcokuehne.github.git}
-git remote add origin \url{https://github.com/MarcoKuehne/marcokuehne.github.io}
-git remote add origin \url{https://github.com/MarcoKuehne/marcokuehne.github.io.git}
-
-git remote add \href{mailto:git@github.com}{\nolinkurl{git@github.com}}:/.git
-git remote add \href{mailto:git@github.com}{\nolinkurl{git@github.com}}:MarcoKuehne/marcokuehne.github.git
-git remote add \href{mailto:git@github.com}{\nolinkurl{git@github.com}}:MarcoKuehne/marcokuehne.github.io does not appear to be a repository
-git remote add \href{mailto:git@github.com}{\nolinkurl{git@github.com}}:MarcoKuehne/marcokuehne.github.io.git combine both
-
 \hypertarget{git-push}{%
 \subsection{git push}\label{git-push}}
-
-git push -u origin main
-git push -u origin master
-git push origin master
-git push origin main
-git push --set-upstream origin main
-git push -f origin main \# worked somehow!!!
-
-If positive, it asks for github credentials.
-
-\url{https://www.datacamp.com/community/tutorials/git-push-pull}
 
 \hypertarget{basic-routines}{%
 \section{Basic Routines}\label{basic-routines}}
@@ -251,78 +162,8 @@ If positive, it asks for github credentials.
 \hypertarget{add-commit-push}{%
 \subsection{Add + Commit + Push}\label{add-commit-push}}
 
-I make changes to any one of my markdown files, e.g.~the \texttt{README.md} (this can also be done via GitHub web interface) on my local machine. After notoriously saving this on my local machine (STRG+S) it appears in the \emph{stage area} in the right upper panel in RStudio. Commit and push can be either done in RStudio or via terminal line (also in RStudio).
-
-First, let's do it via ``clicking''. Select the staged file. Click ``commit''. A new windows opens and displays the changes in your file. Write a new commit message of amend a previous commit. Click ``close''. From this additional window (or the right upper panel in RStudio) click the green push arrow. Hopefully it will say ``HEAD -\textgreater{} main''. Close. Done. The result should be available on your github repository immediately.
-
-The same procedure via the terminal:
-
-\begin{verbatim}
-git add 05-git.Rmd
-git commit -m "Updated the git short tutorial"
-git push 
-\end{verbatim}
-
-How to push? Easy \ldots{}
-
-I need to \texttt{pull} these changes into RStudio. Check the right upper panel ``Diff''. Select \texttt{pull}. You can also find big blue down and green up arrows.
-
-I add this sentence. I save on RStudio, thus it appears as a change to \texttt{README.md} in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see \url{https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password}). Here you might use a personal access token. I click \texttt{commit}, enter a commit message, click \texttt{commit} again and close the extra window.
-
 \hypertarget{resources}{%
 \section{Resources}\label{resources}}
-
-You can start reading about bookdowns from the inventor:
-
-\url{https://bookdown.org/yihui/bookdown/}
-
-This is pretty advanced and I can't understand a tiny piece of it.
-
-Another option is to start a repo and book by copying ``awesome book'' from another repo.
-
-\url{https://jules32.github.io/bookdown-tutorial/setup.html}
-
-This tutorial worked to push a book to a standard repo. But there were problem with the doc branch.
-
-After I forgot how to start my project or where to find it, I checked:
-
-\url{https://happygitwithr.com/rstudio-git-github.html\#make-local-changes-save-commit}
-
-started a new project with my repo link and a new session. This forks or fetches or pulls or downloads the repo. Now I will try to re-upload the minimal change from today.
-
-Another personal description can be found here:
-
-\url{https://rachaellappan.github.io/bookdown/}
-
-\begin{verbatim}
-This enourmously helped with the understanding of commits and pushs on git:
-
-<http://www.differencebetween.net/technology/difference-between-commit-and-push/>
-\end{verbatim}
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{git\ commit\ -m\ "Started\ book"}
-\end{itemize}
-
-I followed the video ``How to create a bookdown book in 5 minutes'':
-
-\url{https://www.youtube.com/watch?v=m5D-yoH416Y}
-
-It did not work.
-
-Explaining terminology:
-
-\url{https://www.notion.so/zarkom/Introduction-to-Git-ac396a0697704709a12b6a0e545db049}
-
-Learn Git in 15 Min:
-
-\url{https://www.youtube.com/watch?v=USjZcfj8yxE}
-
-Learn GitHub in 20 Min:
-
-\url{https://www.youtube.com/watch?v=nhNq2kIvi9s}
 
   \bibliography{book.bib,packages.bib}
 
