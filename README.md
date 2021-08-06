@@ -155,6 +155,18 @@ Explaining terminology:
 <https://www.notion.so/zarkom/Introduction-to-Git-ac396a0697704709a12b6a0e545db049>
 
 
+Learn Git in 15 Min:
+
+<https://www.youtube.com/watch?v=USjZcfj8yxE>
+
+Learn GitHub in 20 Min:
+
+<https://www.youtube.com/watch?v=nhNq2kIvi9s> 
+
+
+
+
+
 
 
 
