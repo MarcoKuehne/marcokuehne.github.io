@@ -42,6 +42,46 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -85,7 +125,7 @@
 \makeatother
 \subtitle{Based On True Stories}
 \author{Marco Kühne}
-\date{2021-08-07}
+\date{2021-08-09}
 
 \begin{document}
 \maketitle
@@ -118,10 +158,254 @@ The .html files (which were compiled from the .Rmd files) are all stored within 
 
 Here is a review of existing methods.
 
+\url{https://mhweber.github.io/2020/02/12/trying-out-bookdown-and-publishing-to-github-pages/}
+
 \hypertarget{methods}{%
 \chapter{Methods}\label{methods}}
 
 We describe our methods in this chapter.
+
+\hypertarget{slope-fields}{%
+\chapter{Slope Fields}\label{slope-fields}}
+
+\hypertarget{definition}{%
+\section{Definition}\label{definition}}
+
+\begin{quote}
+Slope fields (also called direction fields) are a graphical representation of the solutions to a first-order differential equation of a scalar function. Solutions to a slope field are functions drawn as solid curves. A slope field shows the slope of a differential equation at certain vertical and horizontal intervals on the x-y plane, and can be used to determine the approximate tangent slope at a point on a curve, where the curve is some solution to the differential equation.
+
+\hfill Wikipedia contributors. (2021, May 17). Slope field. In Wikipedia, The Free Encyclopedia. Retrieved 05:51, June 16, 2021, from \url{https://en.wikipedia.org/w/index.php?title=Slope_field\&oldid=1023635282}
+\end{quote}
+
+\hypertarget{slope-fields-in-r}{%
+\section{Slope Fields in R}\label{slope-fields-in-r}}
+
+There's no need to build everything from scratch. The first useful resource I can find is:
+
+\url{https://www.r-bloggers.com/2014/09/generate-slope-fields-in-r-and-python/}
+
+Show me the code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Our differential equation}
+\NormalTok{diff }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x,y)}
+\NormalTok{\{}
+  \FunctionTok{return}\NormalTok{(x}\SpecialCharTok{/}\NormalTok{y) }\CommentTok{\#Try also x+y}
+\NormalTok{\}}
+
+\CommentTok{\# Line function}
+\NormalTok{TheLine }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1,y1,slp,d)}
+\NormalTok{\{}
+\NormalTok{  z }\OtherTok{=}\NormalTok{ slope}\SpecialCharTok{*}\NormalTok{(d}\SpecialCharTok{{-}}\NormalTok{x1)}\SpecialCharTok{+}\NormalTok{y1}
+  \FunctionTok{return}\NormalTok{(z)}
+\NormalTok{\}}
+
+\CommentTok{\# Domains}
+\NormalTok{x }\OtherTok{=} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{20}\NormalTok{,}\DecValTok{20}\NormalTok{,}\FloatTok{0.5}\NormalTok{)}
+\NormalTok{y }\OtherTok{=} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{20}\NormalTok{,}\DecValTok{20}\NormalTok{,}\FloatTok{0.5}\NormalTok{)}
+
+\CommentTok{\# Points to draw our graph}
+\NormalTok{f }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{) }
+\NormalTok{h }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(f,h,}\AttributeTok{main=}\StringTok{"Slope field"}\NormalTok{)}
+
+
+\CommentTok{\# Let\textquotesingle{}s generate the slope field}
+\ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in}\NormalTok{ x)}
+\NormalTok{\{}
+  \ControlFlowTok{for}\NormalTok{(k }\ControlFlowTok{in}\NormalTok{ y)}
+\NormalTok{  \{}
+\NormalTok{    slope }\OtherTok{=} \FunctionTok{diff}\NormalTok{(j,k)}
+\NormalTok{    domain }\OtherTok{=} \FunctionTok{seq}\NormalTok{(j}\FloatTok{{-}0.07}\NormalTok{,j}\FloatTok{+0.07}\NormalTok{,}\FloatTok{0.14}\NormalTok{)}
+\NormalTok{    z }\OtherTok{=} \FunctionTok{TheLine}\NormalTok{(j,k,slope,domain)}
+    \FunctionTok{arrows}\NormalTok{(domain[}\DecValTok{1}\NormalTok{],z[}\DecValTok{1}\NormalTok{],domain[}\DecValTok{2}\NormalTok{],z[}\DecValTok{2}\NormalTok{],}\AttributeTok{length=}\FloatTok{0.08}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+The post \url{https://stackoverflow.com/questions/47984874/how-to-create-a-slope-field-in-r} puts this into a \texttt{SlopeField} function.
+
+Show me the code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{SlopeField }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(FUN,}\AttributeTok{xi =} \SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\AttributeTok{xs =} \DecValTok{5}\NormalTok{,}\AttributeTok{yi =} \SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\AttributeTok{ys =} \DecValTok{5}\NormalTok{, }\AttributeTok{radius =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{grid.by =} \FloatTok{0.25}\NormalTok{)\{}
+  \CommentTok{\# FUN   {-} given function ODE i.e:  }
+  \CommentTok{\# xi,xs {-} lower and upper bound {-} x {-} plot}
+  \CommentTok{\# yi,ys {-} lower and upper bound {-} y {-} plot}
+  
+  \CommentTok{\# grid points}
+\NormalTok{  seqx }\OtherTok{=} \FunctionTok{seq}\NormalTok{(xi,xs,grid.by)}
+\NormalTok{  seqy }\OtherTok{=} \FunctionTok{seq}\NormalTok{(yi,ys,grid.by)}
+  
+  \CommentTok{\# plot}
+\NormalTok{  f }\OtherTok{=} \FunctionTok{c}\NormalTok{(xi,xs) }
+\NormalTok{  h }\OtherTok{=} \FunctionTok{c}\NormalTok{(yi,ys)}
+  \FunctionTok{plot}\NormalTok{(f,h,}\AttributeTok{main=}\StringTok{"Slope field"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Dependet variable"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Independet variable"}\NormalTok{, }\AttributeTok{pch =} \StringTok{"."}\NormalTok{)}
+  
+  \CommentTok{\# arrows}
+  
+  \ControlFlowTok{for}\NormalTok{(x }\ControlFlowTok{in}\NormalTok{ seqx)\{}
+    \ControlFlowTok{for}\NormalTok{(y }\ControlFlowTok{in}\NormalTok{ seqy)\{}
+\NormalTok{      ym }\OtherTok{=}\NormalTok{ y}
+\NormalTok{      xm }\OtherTok{=}\NormalTok{ x}
+      
+\NormalTok{      slope }\OtherTok{=} \FunctionTok{unlist}\NormalTok{(}\FunctionTok{FUN}\NormalTok{(x,y))}
+      
+      \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(slope))\{}
+\NormalTok{        cor }\OtherTok{=} \StringTok{"black"}
+\NormalTok{      \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(slope }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)\{}
+\NormalTok{        cor }\OtherTok{=} \StringTok{"blue"}
+\NormalTok{      \}}\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (slope }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{        cor }\OtherTok{=} \StringTok{"red"}
+\NormalTok{      \}}\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(slope }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{        cor }\OtherTok{=} \StringTok{"green"}
+\NormalTok{      \}}
+      \FunctionTok{arrows}\NormalTok{(radius}\SpecialCharTok{*}\FunctionTok{cos}\NormalTok{(}\FunctionTok{atan}\NormalTok{(slope)}\SpecialCharTok{+}\NormalTok{pi)}\SpecialCharTok{+}\NormalTok{xm,}
+\NormalTok{             radius}\SpecialCharTok{*}\FunctionTok{sin}\NormalTok{(}\FunctionTok{atan}\NormalTok{(slope)}\SpecialCharTok{+}\NormalTok{pi)}\SpecialCharTok{+}\NormalTok{ym,}
+\NormalTok{             radius}\SpecialCharTok{*}\FunctionTok{cos}\NormalTok{(}\FunctionTok{atan}\NormalTok{(slope))}\SpecialCharTok{+}\NormalTok{xm,}
+\NormalTok{             radius}\SpecialCharTok{*}\FunctionTok{sin}\NormalTok{(}\FunctionTok{atan}\NormalTok{(slope))}\SpecialCharTok{+}\NormalTok{ym, }
+             \AttributeTok{length =} \FloatTok{0.2}\SpecialCharTok{*}\NormalTok{radius, }\AttributeTok{col=}\NormalTok{ cor)}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{technical-example}{%
+\section{Technical Example}\label{technical-example}}
+
+We can specify an ODE in another function and plot its slope field. The suggested example is
+
+\[y'(t) = y^2 - t \]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ode }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(t, y)\{}
+\NormalTok{  dydt }\OtherTok{\textless{}{-}}\NormalTok{ y}\SpecialCharTok{\^{}}\DecValTok{2}\SpecialCharTok{{-}}\NormalTok{t}
+  \FunctionTok{list}\NormalTok{(dydt)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Let's draw the slope field.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{SlopeField}\NormalTok{(ode, }\AttributeTok{xi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{xs =} \DecValTok{5}\NormalTok{, }\AttributeTok{yi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{ys =} \DecValTok{2}\NormalTok{,}\AttributeTok{radius =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{grid.by =} \FloatTok{0.25}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+That looks good. But can how can we get the ODE solution from this graph?
+
+\hypertarget{understandable-examples}{%
+\section{Understandable Examples}\label{understandable-examples}}
+
+\hypertarget{y-y}{%
+\subsection{y' = y}\label{y-y}}
+
+Even without a background in differential equations, think about the following:
+
+\[y'(x) = y(x)\]
+We are looking for a function \(y(x)\) that is identical to its first derivative \(y'(x)\). Perhaps you remember such a function from your last math class (analysis). It is the exponential function, that basically does not change by differentiation.
+
+\[y(x) = e^x \Rightarrow y'(x) = e^x \]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ode\_1 }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(t, y)\{}
+\NormalTok{  dydt }\OtherTok{\textless{}{-}}\NormalTok{ y}
+  \FunctionTok{list}\NormalTok{(dydt)}
+\NormalTok{\}}
+
+\FunctionTok{SlopeField}\NormalTok{(ode\_1, }\AttributeTok{xi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{xs =} \DecValTok{5}\NormalTok{, }\AttributeTok{yi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{ys =} \DecValTok{2}\NormalTok{,}\AttributeTok{radius =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{grid.by =} \FloatTok{0.25}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Can you see something like the exponential function in this slope field?
+
+Show me how an exponential function looks like.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x\_value}\OtherTok{\textless{}{-}}\FunctionTok{runif}\NormalTok{(}\DecValTok{100}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{8}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(x\_value,}\FunctionTok{exp}\NormalTok{(x\_value))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Perhaps you can spot something like the \(y(x) = e^x\) in the blue area. But how about the red arrows? Any mirror at the x-axis is also a valid solution to the problem. How do we mirror? Use a factor in front of the e function. This may be negative.
+
+\[y(x) = C \cdot e^x \Rightarrow y'(x) = C \cdot e^x \]
+
+\hypertarget{y--y}{%
+\subsection{y' = -y}\label{y--y}}
+
+Let's give it another try. Which function equals its first derivative (after changing sign).
+
+\[y'(x) = -y(x)\]
+
+It is a sibling of the \(e^x\). The solution is \(y(x) = C \cdot e^{-x}\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ode\_2 }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(t, y)\{}
+\NormalTok{  dydt }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\NormalTok{y}
+  \FunctionTok{list}\NormalTok{(dydt)}
+\NormalTok{\}}
+
+\FunctionTok{SlopeField}\NormalTok{(ode\_2, }\AttributeTok{xi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{xs =} \DecValTok{5}\NormalTok{, }\AttributeTok{yi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{ys =} \DecValTok{2}\NormalTok{,}\AttributeTok{radius =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{grid.by =} \FloatTok{0.25}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{y-x2}{%
+\subsection{y' = x\^{}2}\label{y-x2}}
+
+Wait, there's no more y on the RHS. Don't worry. That'll make it even easier. What is the integral of \(x^2\)? You may expect
+
+\[y'(x) = x^2 \Rightarrow \int x^2 dx = 1/3 \cdot x^3 + C\]
+Okay, the general shape is a cubic function. Can you spot a cubic function?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ode\_3 }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(t, y)\{}
+\NormalTok{  dydt }\OtherTok{\textless{}{-}}\NormalTok{ t}\SpecialCharTok{\^{}}\DecValTok{2}
+  \FunctionTok{list}\NormalTok{(dydt)}
+\NormalTok{\}}
+
+\FunctionTok{SlopeField}\NormalTok{(ode\_3, }\AttributeTok{xi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{xs =} \DecValTok{5}\NormalTok{, }\AttributeTok{yi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{ys =} \DecValTok{2}\NormalTok{,}\AttributeTok{radius =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{grid.by =} \FloatTok{0.25}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\hypertarget{initial-value-problem}{%
+\section{Initial value problem}\label{initial-value-problem}}
+
+Recap, the prior solution was \(y(x) = 1/3 \cdot x^3 + C\). Due to \(C\) this is a family of curves. If we specify some of them, that's called the initial value problem. This \emph{problem} makes is actually even more easy to understand the slope field. Let's add two particular cubic functions for \(C = 0\) and \(C = 0.5\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{SlopeField}\NormalTok{(ode\_3, }\AttributeTok{xi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{xs =} \DecValTok{5}\NormalTok{, }\AttributeTok{yi =} \SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\AttributeTok{ys =} \DecValTok{2}\NormalTok{,}\AttributeTok{radius =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{grid.by =} \FloatTok{0.25}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(y,}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\SpecialCharTok{*}\NormalTok{x}\SpecialCharTok{*}\NormalTok{x}\SpecialCharTok{*}\NormalTok{x,}\AttributeTok{col=}\StringTok{"red"}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(y,}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\SpecialCharTok{*}\NormalTok{x}\SpecialCharTok{*}\NormalTok{x}\SpecialCharTok{*}\NormalTok{x}\FloatTok{+0.5}\NormalTok{,}\AttributeTok{col=}\StringTok{"orange"}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Empirical-Research_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+Enjoy. Learn. Share.
 
 \hypertarget{git-and-github}{%
 \chapter{Git and Github}\label{git-and-github}}
