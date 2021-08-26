@@ -8,55 +8,7 @@
 
 ## Slope Fields in R 
 
-There's no need to build everything from scratch. The first useful resource I can find is:
-
-<https://www.r-bloggers.com/2014/09/generate-slope-fields-in-r-and-python/>
-
-<details>
-<summary>
-Show me the code.
-</summary>
-```{r}
-# Our differential equation
-diff <- function(x,y)
-{
-  return(x/y) #Try also x+y
-}
-
-# Line function
-TheLine <- function(x1,y1,slp,d)
-{
-  z = slope*(d-x1)+y1
-  return(z)
-}
-
-# Domains
-x = seq(-20,20,0.5)
-y = seq(-20,20,0.5)
-
-# Points to draw our graph
-f = c(-5,5) 
-h = c(-5,5)
-plot(f,h,main="Slope field")
-
-
-# Let's generate the slope field
-for(j in x)
-{
-  for(k in y)
-  {
-    slope = diff(j,k)
-    domain = seq(j-0.07,j+0.07,0.14)
-    z = TheLine(j,k,slope,domain)
-    arrows(domain[1],z[1],domain[2],z[2],length=0.08)
-  }
-}
-```
-</details>
-
-<br>
-
-The post <https://stackoverflow.com/questions/47984874/how-to-create-a-slope-field-in-r> puts this into a `SlopeField` function. 
+There's no need to build everything from scratch. This original post <https://www.r-bloggers.com/2014/09/generate-slope-fields-in-r-and-python/> has been put into a `SlopeField` function here <https://stackoverflow.com/questions/47984874/how-to-create-a-slope-field-in-r>. 
 
 <details>
 <summary>
@@ -107,8 +59,6 @@ SlopeField = function(FUN,xi = -5,xs = 5,yi = -5,ys = 5, radius = 0.1, grid.by =
 ```
 </details>
 
-## Technical Example
-
 We can specify an ODE in another function and plot its slope field. The suggested example is 
 
 $$y'(t) = y^2 - t $$
@@ -126,7 +76,7 @@ Let's draw the slope field.
 SlopeField(ode, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
 ```
 
-That looks good. But can how can we get the ODE solution from this graph?
+The graph looks nice and interesting. But can how can we get the ODE solution from this graph? Can you spot the slip in the code and graph? 
 
 ## Understandable Examples
 
@@ -205,8 +155,8 @@ Recap, the prior solution was $y(x) = 1/3 \cdot x^3 + C$. Due to $C$ this is a f
 
 ```{r}
 SlopeField(ode_3, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
-lines(y,1/3*x*x*x,col="red", lwd=2)
-lines(y,1/3*x*x*x+0.5,col="orange", lwd=2)
+#lines(y,1/3*x*x*x,col="red", lwd=2)
+#lines(y,1/3*x*x*x+0.5,col="orange", lwd=2)
 ```
 
 Enjoy. Learn. Share. 

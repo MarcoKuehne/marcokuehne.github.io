@@ -1,0 +1,552 @@
+# A Question You Care About
+
+Are you passionate about something? Research starts off from a question you really care about. Math, statistics and programming are easier to digest when you are intrinsically motivated to find out more about your topic of interest. This is a brief guide on the main parts of the empirical research process. There's more to the end of it. After answering the research question, a theoretical interpretation can be derived, results are compared to earlier research and conclusions are drawn. 
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(DiagrammeR)
+
+grViz(diagram = "digraph flowchart {
+  node [fontname = arial, shape = oval, color = grey, style = filled]
+  tab1 [label = '@@1']
+  tab2 [label = '@@2']
+  tab3 [label = '@@3']
+  tab4 [label = '@@4']
+  tab5 [label = '@@5']
+  
+  tab1 -> tab2 -> tab3 -> tab4 -> tab5 -> tab1;
+}
+  
+  [1]: 'Research Idea'
+  [2]: 'Literature Review'
+  [3]: 'Empirical Research Question'    
+  [4]: 'Data Collection'    
+  [5]: 'Data Analysis'    
+  ")
+```
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>What you can learn ... </summary>
+- What is at the heart of empirical research: Questions. 
+- How to get and handle tabular data. 
+- The principles of relationships and trends.
+- How to model relationships with equations. 
+- Estimate a relationship with Regression. 
+- The implementation in the statistical software R.
+</details>
+:::
+
+<!-- how to do it yourself instead of relying on data and analysis from someone else. -->
+
+<!-- The chances are pretty high that there is data on your subject.  -->
+
+<!-- A good research question is essential to guide your research paper or thesis. It pinpoints exactly what you want to find out and gives your work a clear focus and purpose. All research questions should be focused, specific and relevant. An empirical research question can be answered by collecting and analyzing data. -->
+
+<!-- ```{r letter-a, echo=FALSE} -->
+<!-- library(learnr) -->
+<!-- question("What number is the letter A in the English alphabet?", -->
+<!--  answer("8"), -->
+<!--  answer("14"), -->
+<!--  answer("1", correct = TRUE), -->
+<!--  answer("23") -->
+<!-- ) -->
+<!-- ``` -->
+
+
+
+## From Zero To Hero
+
+<!-- The Workhorse -->
+
+This chapter introduces the workhorse of empirical research in the social science: Regression. 
+
+<!-- The most important statistical technique ever -->
+
+<!-- > "We are gonna talk about what has been, what is and what always will be the **most important statistical technique ever: Regression.** Almost every analysis you will read or see uses regression in some way of another." -->
+
+<!-- `r tufte::quote_footer('-- Prof. Matt Masten (Duke University)')` -->
+
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- library("vembedr") -->
+<!-- embed_url("https://www.youtube.com/watch?v=ROLeLaR-17U") %>% -->
+<!--   use_start_time("0m3") %>% -->
+<!--   use_align("center") -->
+<!-- ``` -->
+
+<!-- <p style="margin-bottom:1cm;"></p> -->
+
+<!-- "From First Semester To First Degree" -->
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri("workhorse.jpg"), 
+               alt = 'horse', 
+               style = 'position:absolute; top:0; right:0; padding:10px;',
+               width="100")
+```
+
+## From Artists and Economists
+<!-- Your favorite topic -->
+
+> “Every artist was first an amateur.”
+
+`r tufte::quote_footer('-- Ralph Waldo Emerson (1803--1882), US-American essayist, lecturer, philosopher, abolitionist and poet.')`
+
+<p style="margin-bottom:1cm;"></p>
+
+I speculate that the quote from Mr. Emerson is also true for social scientists. 
+
+::: {.infobox .information data-latex="warning"}
+The first and most important point is to choose a topic that you really care about. 
+:::
+
+This can be related to your hobbies, families or friends. Related to your education, job or neighborhood. It can be something from the present or past. It can be your pet as well as your personality, believes and attitudes. It can be gardening or Fortnite. Choose something that you are really interested in. Next, retain a neutral point of view. Collect and analyze data first, discuss and compare your results to others, conclude at the end. 
+
+In this primer I selected artists, specifically famous painter. First, I search for previous research on artists:
+
+<p style="margin-bottom:1cm;"></p>
+
+> "Paul Cezanne died in October 1906 at the age of 67. In time he would be generally regarded as the most influential painter who had worked in the nineteenth century (e.g., Clive Bell, 1982; Clement Greenberg, 1993). Art historians and critics would also agree that his greatest achievement was the work he did late in his life."
+
+`r tufte::quote_footer('-- Galenson, D. W., & Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.<sup>AER is a famous, reliable economic journal.</sup>')`
+
+<p style="margin-bottom:1cm;"></p>
+
+I wonder if there is a relationship between the age of an artist and his productivity? Do artists improve their skills and performance over an entire lifetime step-by-step such that older artists are better than younger artists since they had more "time to practice"? Or is there an optimum age for performance as compared to athletic performances which reaches a peak in youth? Perhaps no one can tell if and when you are kissed by a muse, so exceptional art happens randomly? Another channel could be that it requires time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
+
+That's a pretty good start for a research inquiry :) I raise the question:
+
+&nbsp;
+
+<center>
+**What is the relationship between the age of an artist and his productivity?**
+</center>
+
+&nbsp;
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **research question** is ...</summary>
+focused on a single issue, specific enough to answer thoroughly and feasible to answer within the given timeframe or practical constraints not to mention relevant to your field of study.   
+</details>
+:::
+
+<!-- There are high-quality journal paper analyzing this question.  -->
+
+<!-- Ekelund Jr, R. B., Jackson, J. D., & Tollison, R. D. (2015). Age and productivity: An empirical study of early American artists. Southern Economic Journal, 81(4), 1096-1116. -->
+
+<!-- ::: {.infobox .question data-latex="warning"} -->
+<!-- What exactly is productivity and how can we measure it?  -->
+<!-- ::: -->
+
+But what exactly is productivity and how can we measure it? To keep things simple we follow the literature and measure *productivity* via auction prices for paintings. That's a very *economic perspective* on art. 
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>**Operationalization** is ...</summary>
+the process of defining the measurement of a phenomenon that is not directly measurable 
+</details>
+:::
+
+<p style="color:#808080">What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ). Perhaps something else.</p>
+
+<!-- <sup>What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ),<sup>  -->
+
+## Data is everywhere
+
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- library("vembedr") -->
+<!-- embed_url("https://vimeo.com/303322440") %>% -->
+<!--   #use_start_time("1m32") %>% -->
+<!--   use_align("center") -->
+<!-- ``` -->
+
+<!-- Thus, the higher paintings were selling in an auction (in million US dollar, inflation adjusted), the higher is the artist's productivity. That's not ideal, but the best approach that we have at this time. I select some of the top selling paintings from a Wikipedia list: -->
+
+Researchers use auction price data for which they have to pay. I use free information from a Wikipedia [List of most expensive paintings](https://en.wikipedia.org/wiki/List_of_most_expensive_paintings) of all time. The auction prices are inflation-adjusted by consumer price index in millions of United States dollars in 2019. That's another interesting economic procedure, that we take for given at this analysis 
+
+### Data in a table
+
+<!-- https://www.askart.com/Search_Artist_Auction_Records.aspx -->
+<!-- https://datatables.net/ -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+#setwd("C:\\Users\\Marco2020\\Dropbox\\Viadrina\\Regression")
+artists <- read.csv(file = 'Artists.csv', sep=";", dec=",", encoding="UTF-8")
+names(artists)[1] <- "Artist"
+#names(artists)[4] <- "Age at Painting"
+#names(artists)[5] <- "Age at Death"
+#names(artists)[6] <- "Birth Year"
+```
+
+This is the data in **datatable** format (i.e. you can search and sort the data in the html document): 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+DT::datatable(artists, rownames = FALSE)
+```
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>**Tabular data** is...</summary>
+common in data analysis. You can create a table in Word or Excel. 
+</details>
+:::
+
+### Data in a graph
+
+Two variables from our data table can be depicted in what is called a **scatterplot**.
+
+<!-- The data from our The graph depicts the data from the table I decide to show the auction price of well-known paintings in relation to the age of the artist. It is called a **scatterplot**. -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+#artists
+
+images <- c("https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg/95px-Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg",  # CLINIC 
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Darmstadtmadonna.jpg/95px-Darmstadtmadonna.jpg", # Darmstadt Madonna
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg/95px-Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg", # Rideau 
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Claude_Monet_-_Meules_%28W_1273%29.jpg/95px-Claude_Monet_-_Meules_%28W_1273%29.jpg" # Meules
+         )
+               
+```
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+library(ggplot2)
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  xlim(20, 120) + ylim(80, 160) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  theme_bw()
+```
+
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>**The axes are called** ...</summary>
+**ordinate** or **y-axis** (here: price) and **abscicca** or **x-axis** (here: age). 
+</details>
+:::
+
+### The trend
+
+::: {.infobox .question data-latex="warning"}
+Can you spot a trend in the data? 
+:::
+
+The line plot suggests that the relationship between price and age exhibits a **positive trend**. There is an **increase** in price for older artists. The older the artist, the higher the auction prices.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+library(ggplot2)
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_line() + 
+  #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  geom_segment(aes(x = 50, y = 90, xend = 120, yend = 150),size = 3,
+                  arrow = arrow(length = unit(0.5, "cm"))) +
+  xlim(20, 120) + ylim(80, 160) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  theme_bw()
+```
+
+### The blackbox
+
+The mission is to find a mathematical function that describes the trend. In other words, we are looking for the black box that transforms the input into the output:
+
+<center>
+![alt text here](function-fx-x2.svg)
+</center>
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **mathematical function** is ...</summary>
+ an expression, rule, or law that defines a relationship between one variable (the **independent variable**, on the x-axis) and another variable (the **dependent variable**, on the y-axis).
+</details>
+:::
+
+From looking at the graph, here are two suggestions: 
+
+$$ \begin{align}
+\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+\text{price} = 90 + 0.2 \cdot \text{age} \tag{Suggestion 2} \\
+\end{align}$$
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **linear function** is ...</summary>
+ defined by two components, **intercept** (with the y-axis) and it's **slope**.
+</details>
+:::
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+library(ggplot2)
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  #geom_abline(intercept = 90, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_abline(intercept = 90, slope = 0.2, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  xlim(20, 120) + ylim(80, 160) +
+  theme_bw()
+```
+
+::: {.infobox .question data-latex="warning"}
+How can we compare the two suggested lines? Which linear function represents the relationship best?
+:::
+
+### Nobody's perfect
+
+<!-- https://drsimonj.svbtle.com/visualising-residuals -->
+
+We all make mistakes. So do the linear functions:
+
+$$ \begin{align}
+\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+101 = 80 + 0.5 \cdot 42 \tag{Calculation for Hohlbein} \\
+\end{align}$$
+
+The equation tells (or predicts) that for any artist at the age of 42 it expects a auction price for a painting of 101 million US Dollar. Darmstadt Madonna	was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line. 
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **residual** (or error) is ...</summary>
+the vertical distance between the actual and the predicted value.
+</details>
+:::
+
+
+<!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
+
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+fit <- lm(Price ~ Age.at.Death, data = artists)
+artists$predicted <- predict(fit)   # Save the predicted values
+artists$residuals <- residuals(fit) # Save the residual values
+
+artists$predicted_guess = 80 + 0.5*artists$Age.at.Death
+artists$residuals_guess = artists$predicted_guess - artists$Price
+
+# COLOR
+# High residuals (in abolsute terms) made more red on actual values.
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  xlim(20, 120) + ylim(80, 160) +
+  theme_bw() +
+  geom_segment(aes(xend = Age.at.Death, yend = predicted_guess), alpha = .2) +
+  # > Color adjustments made here...
+  geom_point(aes(color = abs(residuals_guess))) + # Color mapped to abs(residuals)
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  guides(color = FALSE) +  # Color legend removed
+  # <
+  geom_point(aes(y = predicted_guess), shape = 1) 
+```
+
+### Vocab Wrap-Up
+
+Let's wrap up our regression vocab! We want to find an equation that describes the phenomenon of interest:
+
+$$ \begin{align}
+\text{outcome} &= f(\text{explanatory}) + \text{noise} \tag{Generic statistical model} \\
+\text{outcome} &= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{Generic linear model} \\
+\end{align}$$
+
+A **regression model** is suggested by the researcher. A more concrete regression model looks like this:
+
+$$Y = \beta_1 + \beta_2 X + \epsilon$$
+
+A model can be easy or complicated. It definitely contains variables and parameters. 
+
+- **Variables**: Things that we measure (or have data).
+- **Parameters**: Constant values we believe to represent some fundamental truth about the relationship between the variables. 
+
+What we (i.e. the statistical software) actual do is an **estimation**. In textbooks the same equation can be found with hats:
+
+$$	 \widehat{Y}  = \widehat{\beta}_1 + \widehat{\beta}_2 \cdot X $$
+$\widehat{Y}$ are called the **fitted or predicted** values. $\widehat{\beta}$ are **regression coefficients** (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals $e = Y - \widehat{Y}$.
+
+## For the truly dedicated 
+
+::: {.infobox .information data-latex="warning"}
+Now we have all the ingredients we need. <details>
+<summary>*Let's get this party started!*</summary>
+![Carlton Dance](https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860)
+</details>
+:::
+
+<!-- ::: {.infobox .question data-latex="warning"} -->
+<!-- The overall goal is to make as little as possible mistakes! What kind of mistake? -->
+<!-- ::: -->
+
+The overall goal is to make as little as possible mistakes! What kind of mistake? The deviation from the observed values! What could come to your mind is to **minimize the sum of all errors**: 
+
+$$\sum e \rightarrow \min$$
+But wait, there is more. Is it fair to say that the sum should be small? Compare **The Scream** and **Meules**, their deviations are $+17.5$ and $-13.6$ (very similar). So taken these two together, there's almost not mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story: 
+
+$$\sum e^2 \rightarrow \min$$
+
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>The fitting procedure is ...</summary>
+is called **ordinary least squares** (short OLS). The goal of OLS is to **minimize the residual sum of squares**.
+</details>
+:::
+
+### Algebra 
+
+::: {.infobox .information data-latex="warning"}
+Algebra comes from Arabic, meaning "reunion of broken parts". We often work with matrices and vectors. 
+:::
+
+Now let's put all the things together. By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (column vector). Transpose is when we change the rows and columns. In order to square a vector we need the following:
+
+$$\sum e^2 = e^T \cdot e \rightarrow \min$$
+Let's introduce matrix notation (there are 6 observations and two parameters):
+
+$$ \begin{align}
+Y &= \beta_0 + \beta_1 X + \epsilon \tag{X is a variable, Y is a variable} \\
+\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{11} \\ 1 & X_{12} \\ 1 & X_{13} \\ 1 & X_{14} \\ 1 & X_{15} \\ 1 & X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} \\
+y &= X \beta + \epsilon \tag{X is a matrix, y is a vector}
+\end{align}$$
+
+The residual is $e = y - X \beta$ which we can plug in our minimal sum of squares: 
+
+$$\begin{align}
+	\sum e^2 &= e^T \cdot e \tag{short RSS}\\
+	&= (y - X \beta )^T (y - X \beta) \tag{$(A+B)^T = A^T + B^T$}\\
+	&= (y^T - X^T \beta^T) (y - X \beta) \\
+	&= y^T y - y^T X \beta - X^T \beta^T y + X^T \beta^T X \beta \\
+	&= y^2 \underbrace{- 2 \beta^T X^T y}_{??} + \beta^2 X^2  \\
+\end{align}$$
+
+Did you notice what happened in the middle? The transpose of the first term is equal to the second: 
+
+$$\begin{align}
+	(y^T X \beta)^T = y X^T \beta^T
+\end{align}$$
+
+### Analysis 
+
+::: {.infobox .information data-latex="warning"}
+In Analysis we often work with functions.
+:::
+
+Next, we are ready to **optimize**. Optimization (in math and economics) is done by **differentiation**:
+
+<!-- (setting the first derivative equal to zero). What are the betas? -->
+
+$$\begin{align}
+	\frac{\partial RSS}{\partial \beta} &= -2 X^T y + 2 \beta X^T X = 0 \tag{first derivative equal to zero} \\
+	2 \beta X^T X &= 2 X^T y \tag{rearrange terms}\\
+	\beta X^T X &= X^T y \tag{the "normal equation"} \\
+	\beta &= (X^T X)^{-1} X^T y \tag{Bam}\\
+\end{align}$$
+
+### Take the Long Way Home 
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>*The computer does the magic for us.*</summary>
+<center>
+![Magic Alice](https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif)
+</center>
+</details>
+:::
+
+Those $\beta$ coefficients are one of the most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time: 
+
+```{r echo=FALSE, warning=FALSE}
+#library(gt)
+#gt(artists[,c(3,5)]) 
+
+y <- as.vector(artists$Price)
+X <- as.matrix(cbind(rep(1, nrow(artists)), artists$Age.at.Death))
+```
+
+First, we retrieve matrix `X` from the data set:
+
+```{r echo=TRUE, warning=FALSE}
+X
+```
+
+Second, the transpose of `X` has two rows and six columns:
+
+```{r echo=TRUE, warning=FALSE}
+t(X)
+```
+
+Next, calculate the square of the matrix (transpose times original):
+
+```{r echo=TRUE, warning=FALSE}
+t(X)%*%X
+```
+
+Then, the inverse of everything in parentheses (the above matrix product):
+
+```{r echo=TRUE, warning=FALSE}
+solve(t(X)%*%X)
+```
+
+Next, the product of this inverse and the transpose:
+
+```{r echo=TRUE, warning=FALSE}
+solve(t(X)%*%X) %*% t(X)
+```
+
+Finally, we multiply the vector $y$:
+
+```{r echo=TRUE, warning=FALSE}
+solve(t(X)%*%X) %*% t(X) %*% y
+```
+
+There are two numbers. It's the $\beta$ vector! The first entry is the **intercept** and the second is the **slope** of the linear function:
+
+$$Price = 22.3452 + 1.1657 \cdot Age$$
+
+## Survival of the Fittest Line 
+
+::: {.infobox .information data-latex="warning"}
+The above equation is the linear function that best describes the given data.
+:::
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+fit <- lm(Price ~ Age.at.Death, data = artists)
+artists$predicted <- predict(fit)   # Save the predicted values
+artists$residuals <- residuals(fit) # Save the residual values
+
+# High residuals (in absolute terms) made more red on actual values.
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_smooth(method="lm", se=FALSE, color="darkgreen") +
+  #geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  xlim(20, 120) + ylim(80, 160) +
+  theme_bw() +
+  geom_segment(aes(xend = Age.at.Death, yend = predicted), alpha = .2) +
+  # > Color adjustments made here...
+  geom_point(aes(color = abs(residuals))) + # Color mapped to abs(residuals)
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  guides(color = FALSE) +  # Color legend removed
+  # <
+  geom_point(aes(y = predicted), shape = 1) 
+```
+
+## On the Shoulders of Giants 
+
+Fortunately, we are [standing on the shoulders of giants](https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants). Clever people implemented the linear regression and all kinds of regressions and statistical tests in R. 
+
+```{r echo=TRUE, warning=FALSE}
+lm(Price ~ Age.at.Death, data = artists)
+
+knitr::include_graphics("workhorse.jpg")
+```

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Slope Fields | Empirical Research (with R)</title>
+  <meta name="description" content="This is my first book." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Slope Fields | Empirical Research (with R)" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is my first book." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Slope Fields | Empirical Research (with R)" />
+  
+  <meta name="twitter:description" content="This is my first book." />
+  
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2021-08-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="section-git-and-github.html"/>
+<link rel="next" href="section-references.html"/>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Empirical Research</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="chapter" data-level="1" data-path="section-teach-learn-repeat.html"><a href="section-teach-learn-repeat.html"><i class="fa fa-check"></i><b>1</b> Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="2" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html"><i class="fa fa-check"></i><b>2</b> A Question You Care About</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-from-zero-to-hero"><i class="fa fa-check"></i><b>2.1</b> From Zero To Hero</a></li>
+<li class="chapter" data-level="2.2" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-from-artists-and-economists"><i class="fa fa-check"></i><b>2.2</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="2.3" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-data-is-everywhere"><i class="fa fa-check"></i><b>2.3</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-data-in-a-table"><i class="fa fa-check"></i><b>2.3.1</b> Data in a table</a></li>
+<li class="chapter" data-level="2.3.2" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-data-in-a-graph"><i class="fa fa-check"></i><b>2.3.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="2.3.3" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-the-trend"><i class="fa fa-check"></i><b>2.3.3</b> The trend</a></li>
+<li class="chapter" data-level="2.3.4" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-the-blackbox"><i class="fa fa-check"></i><b>2.3.4</b> The blackbox</a></li>
+<li class="chapter" data-level="2.3.5" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-nobodys-perfect"><i class="fa fa-check"></i><b>2.3.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="2.3.6" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-vocab-wrap-up"><i class="fa fa-check"></i><b>2.3.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-for-the-truly-dedicated"><i class="fa fa-check"></i><b>2.4</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-algebra"><i class="fa fa-check"></i><b>2.4.1</b> Algebra</a></li>
+<li class="chapter" data-level="2.4.2" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-analysis"><i class="fa fa-check"></i><b>2.4.2</b> Analysis</a></li>
+<li class="chapter" data-level="2.4.3" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-take-the-long-way-home"><i class="fa fa-check"></i><b>2.4.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-survival-of-the-fittest-line"><i class="fa fa-check"></i><b>2.5</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="2.6" data-path="section-a-question-you-care-about.html"><a href="section-a-question-you-care-about.html#section-on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>2.6</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html"><i class="fa fa-check"></i><b>3</b> From Zero To Hero</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-from-artists-and-economists-1"><i class="fa fa-check"></i><b>3.1</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="3.2" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-data-is-everywhere-1"><i class="fa fa-check"></i><b>3.2</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-data-in-a-table-1"><i class="fa fa-check"></i><b>3.2.1</b> Data in a table</a></li>
+<li class="chapter" data-level="3.2.2" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-data-in-a-graph-1"><i class="fa fa-check"></i><b>3.2.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="3.2.3" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-the-trend-1"><i class="fa fa-check"></i><b>3.2.3</b> The trend</a></li>
+<li class="chapter" data-level="3.2.4" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-the-blackbox-1"><i class="fa fa-check"></i><b>3.2.4</b> The blackbox</a></li>
+<li class="chapter" data-level="3.2.5" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-nobodys-perfect-1"><i class="fa fa-check"></i><b>3.2.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="3.2.6" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-vocab-wrap-up-1"><i class="fa fa-check"></i><b>3.2.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-for-the-truly-dedicated-1"><i class="fa fa-check"></i><b>3.3</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-algebra-1"><i class="fa fa-check"></i><b>3.3.1</b> Algebra</a></li>
+<li class="chapter" data-level="3.3.2" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-analysis-1"><i class="fa fa-check"></i><b>3.3.2</b> Analysis</a></li>
+<li class="chapter" data-level="3.3.3" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-take-the-long-way-home-1"><i class="fa fa-check"></i><b>3.3.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-survival-of-the-fittest-line-1"><i class="fa fa-check"></i><b>3.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="3.5" data-path="section-from-zero-to-hero-1.html"><a href="section-from-zero-to-hero-1.html#section-on-the-shoulders-of-giants-1"><i class="fa fa-check"></i><b>3.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="section-data-is-everywhere-2.html"><a href="section-data-is-everywhere-2.html"><i class="fa fa-check"></i><b>4</b> Data is everywhere</a></li>
+<li class="chapter" data-level="5" data-path="section-methods.html"><a href="section-methods.html"><i class="fa fa-check"></i><b>5</b> Methods</a></li>
+<li class="chapter" data-level="6" data-path="section-git-and-github.html"><a href="section-git-and-github.html"><i class="fa fa-check"></i><b>6</b> Git and Github</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-install-github-and-git"><i class="fa fa-check"></i><b>6.1</b> Install Github and Git</a></li>
+<li class="chapter" data-level="6.2" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-working-with-git"><i class="fa fa-check"></i><b>6.2</b> Working with Git</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-version"><i class="fa fa-check"></i><b>6.2.1</b> git version</a></li>
+<li class="chapter" data-level="6.2.2" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-config"><i class="fa fa-check"></i><b>6.2.2</b> git config</a></li>
+<li class="chapter" data-level="6.2.3" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-init"><i class="fa fa-check"></i><b>6.2.3</b> git init</a></li>
+<li class="chapter" data-level="6.2.4" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-status-and-diff"><i class="fa fa-check"></i><b>6.2.4</b> git status and diff</a></li>
+<li class="chapter" data-level="6.2.5" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-commit"><i class="fa fa-check"></i><b>6.2.5</b> git commit</a></li>
+<li class="chapter" data-level="6.2.6" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-add"><i class="fa fa-check"></i><b>6.2.6</b> git add</a></li>
+<li class="chapter" data-level="6.2.7" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-remote-add"><i class="fa fa-check"></i><b>6.2.7</b> git remote add</a></li>
+<li class="chapter" data-level="6.2.8" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-git-push"><i class="fa fa-check"></i><b>6.2.8</b> git push</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-basic-routines"><i class="fa fa-check"></i><b>6.3</b> Basic Routines</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-add-commit-push"><i class="fa fa-check"></i><b>6.3.1</b> Add + Commit + Push</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="section-git-and-github.html"><a href="section-git-and-github.html#section-resources"><i class="fa fa-check"></i><b>6.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="section-slope-fields.html"><a href="section-slope-fields.html"><i class="fa fa-check"></i><b>7</b> Slope Fields</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-definition"><i class="fa fa-check"></i><b>7.1</b> Definition</a></li>
+<li class="chapter" data-level="7.2" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-slope-fields-in-r"><i class="fa fa-check"></i><b>7.2</b> Slope Fields in R</a></li>
+<li class="chapter" data-level="7.3" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-understandable-examples"><i class="fa fa-check"></i><b>7.3</b> Understandable Examples</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-y-y"><i class="fa fa-check"></i><b>7.3.1</b> y’ = y</a></li>
+<li class="chapter" data-level="7.3.2" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-y--y"><i class="fa fa-check"></i><b>7.3.2</b> y’ = -y</a></li>
+<li class="chapter" data-level="7.3.3" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-y-x2"><i class="fa fa-check"></i><b>7.3.3</b> y’ = x^2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="section-slope-fields.html"><a href="section-slope-fields.html#section-initial-value-problem"><i class="fa fa-check"></i><b>7.4</b> Initial value problem</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="section-references.html"><a href="section-references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="8" data-path="section-group-comparison.html"><a href="section-group-comparison.html"><i class="fa fa-check"></i><b>8</b> Group comparison</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-understanding-data"><i class="fa fa-check"></i><b>8.1</b> Understanding Data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-loading-the-data"><i class="fa fa-check"></i><b>8.1.1</b> Loading the Data</a></li>
+<li class="chapter" data-level="8.1.2" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-inspect-the-data"><i class="fa fa-check"></i><b>8.1.2</b> Inspect the Data</a></li>
+<li class="chapter" data-level="8.1.3" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-summary-statistics"><i class="fa fa-check"></i><b>8.1.3</b> Summary statistics</a></li>
+<li class="chapter" data-level="8.1.4" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-missing-data"><i class="fa fa-check"></i><b>8.1.4</b> Missing data</a></li>
+<li class="chapter" data-level="8.1.5" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-standardization"><i class="fa fa-check"></i><b>8.1.5</b> Standardization</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-analysis-10-pt"><i class="fa fa-check"></i><b>8.2</b> Analysis (10 pt)</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-subsample-2-pt"><i class="fa fa-check"></i><b>8.2.1</b> Subsample (2 pt)</a></li>
+<li class="chapter" data-level="8.2.2" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-mean-per-group-2-pt"><i class="fa fa-check"></i><b>8.2.2</b> Mean per group (2 pt)</a></li>
+<li class="chapter" data-level="8.2.3" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-grouped-boxplot-4-pt"><i class="fa fa-check"></i><b>8.2.3</b> Grouped Boxplot (4 pt)</a></li>
+<li class="chapter" data-level="8.2.4" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-yarrr-the-pirates-quiz-2-pt"><i class="fa fa-check"></i><b>8.2.4</b> YaRrr! The Pirate’s Quiz (2 pt)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="section-group-comparison.html"><a href="section-group-comparison.html#section-advanced-graphics-4-pt-bonus"><i class="fa fa-check"></i><b>8.3</b> Advanced Graphics (4 pt bonus)</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Empirical Research (with R)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="section-slope-fields" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Slope Fields</h1>
+<div id="section-definition" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Definition</h2>
+<blockquote>
+<p>Slope fields (also called direction fields) are a graphical representation of the solutions to a first-order differential equation of a scalar function. Solutions to a slope field are functions drawn as solid curves. A slope field shows the slope of a differential equation at certain vertical and horizontal intervals on the x-y plane, and can be used to determine the approximate tangent slope at a point on a curve, where the curve is some solution to the differential equation.</p>
+<footer>
+Wikipedia contributors. (2021, May 17). Slope field. In Wikipedia, The Free Encyclopedia. Retrieved 05:51, June 16, 2021, from <a href="https://en.wikipedia.org/w/index.php?title=Slope_field&amp;oldid=1023635282" class="uri">https://en.wikipedia.org/w/index.php?title=Slope_field&amp;oldid=1023635282</a>
+</footer>
+</blockquote>
+</div>
+<div id="section-slope-fields-in-r" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Slope Fields in R</h2>
+<p>There’s no need to build everything from scratch. This original post <a href="https://www.r-bloggers.com/2014/09/generate-slope-fields-in-r-and-python/" class="uri">https://www.r-bloggers.com/2014/09/generate-slope-fields-in-r-and-python/</a> has been put into a <code>SlopeField</code> function here <a href="https://stackoverflow.com/questions/47984874/how-to-create-a-slope-field-in-r" class="uri">https://stackoverflow.com/questions/47984874/how-to-create-a-slope-field-in-r</a>.</p>
+<details>
+<summary>
+Show me the code.
+</summary>
+<div class="sourceCode" id="section-cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb40-1"><a href="section-slope-fields.html#section-cb40-1" aria-hidden="true" tabindex="-1"></a>SlopeField <span class="ot">=</span> <span class="cf">function</span>(FUN,<span class="at">xi =</span> <span class="sc">-</span><span class="dv">5</span>,<span class="at">xs =</span> <span class="dv">5</span>,<span class="at">yi =</span> <span class="sc">-</span><span class="dv">5</span>,<span class="at">ys =</span> <span class="dv">5</span>, <span class="at">radius =</span> <span class="fl">0.1</span>, <span class="at">grid.by =</span> <span class="fl">0.25</span>){</span>
+<span id="section-cb40-2"><a href="section-slope-fields.html#section-cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># FUN   - given function ODE i.e:  </span></span>
+<span id="section-cb40-3"><a href="section-slope-fields.html#section-cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># xi,xs - lower and upper bound - x - plot</span></span>
+<span id="section-cb40-4"><a href="section-slope-fields.html#section-cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># yi,ys - lower and upper bound - y - plot</span></span>
+<span id="section-cb40-5"><a href="section-slope-fields.html#section-cb40-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="section-cb40-6"><a href="section-slope-fields.html#section-cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># grid points</span></span>
+<span id="section-cb40-7"><a href="section-slope-fields.html#section-cb40-7" aria-hidden="true" tabindex="-1"></a>  seqx <span class="ot">=</span> <span class="fu">seq</span>(xi,xs,grid.by)</span>
+<span id="section-cb40-8"><a href="section-slope-fields.html#section-cb40-8" aria-hidden="true" tabindex="-1"></a>  seqy <span class="ot">=</span> <span class="fu">seq</span>(yi,ys,grid.by)</span>
+<span id="section-cb40-9"><a href="section-slope-fields.html#section-cb40-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="section-cb40-10"><a href="section-slope-fields.html#section-cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot</span></span>
+<span id="section-cb40-11"><a href="section-slope-fields.html#section-cb40-11" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">=</span> <span class="fu">c</span>(xi,xs) </span>
+<span id="section-cb40-12"><a href="section-slope-fields.html#section-cb40-12" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">=</span> <span class="fu">c</span>(yi,ys)</span>
+<span id="section-cb40-13"><a href="section-slope-fields.html#section-cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(f,h,<span class="at">main=</span><span class="st">&quot;Slope field&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Dependet variable&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Independet variable&quot;</span>, <span class="at">pch =</span> <span class="st">&quot;.&quot;</span>)</span>
+<span id="section-cb40-14"><a href="section-slope-fields.html#section-cb40-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="section-cb40-15"><a href="section-slope-fields.html#section-cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arrows</span></span>
+<span id="section-cb40-16"><a href="section-slope-fields.html#section-cb40-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="section-cb40-17"><a href="section-slope-fields.html#section-cb40-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(x <span class="cf">in</span> seqx){</span>
+<span id="section-cb40-18"><a href="section-slope-fields.html#section-cb40-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(y <span class="cf">in</span> seqy){</span>
+<span id="section-cb40-19"><a href="section-slope-fields.html#section-cb40-19" aria-hidden="true" tabindex="-1"></a>      ym <span class="ot">=</span> y</span>
+<span id="section-cb40-20"><a href="section-slope-fields.html#section-cb40-20" aria-hidden="true" tabindex="-1"></a>      xm <span class="ot">=</span> x</span>
+<span id="section-cb40-21"><a href="section-slope-fields.html#section-cb40-21" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="section-cb40-22"><a href="section-slope-fields.html#section-cb40-22" aria-hidden="true" tabindex="-1"></a>      slope <span class="ot">=</span> <span class="fu">unlist</span>(<span class="fu">FUN</span>(x,y))</span>
+<span id="section-cb40-23"><a href="section-slope-fields.html#section-cb40-23" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="section-cb40-24"><a href="section-slope-fields.html#section-cb40-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">is.na</span>(slope)){</span>
+<span id="section-cb40-25"><a href="section-slope-fields.html#section-cb40-25" aria-hidden="true" tabindex="-1"></a>        cor <span class="ot">=</span> <span class="st">&quot;black&quot;</span></span>
+<span id="section-cb40-26"><a href="section-slope-fields.html#section-cb40-26" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> <span class="cf">if</span>(slope <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="section-cb40-27"><a href="section-slope-fields.html#section-cb40-27" aria-hidden="true" tabindex="-1"></a>        cor <span class="ot">=</span> <span class="st">&quot;blue&quot;</span></span>
+<span id="section-cb40-28"><a href="section-slope-fields.html#section-cb40-28" aria-hidden="true" tabindex="-1"></a>      }<span class="cf">else</span> <span class="cf">if</span> (slope <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="section-cb40-29"><a href="section-slope-fields.html#section-cb40-29" aria-hidden="true" tabindex="-1"></a>        cor <span class="ot">=</span> <span class="st">&quot;red&quot;</span></span>
+<span id="section-cb40-30"><a href="section-slope-fields.html#section-cb40-30" aria-hidden="true" tabindex="-1"></a>      }<span class="cf">else</span> <span class="cf">if</span>(slope <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="section-cb40-31"><a href="section-slope-fields.html#section-cb40-31" aria-hidden="true" tabindex="-1"></a>        cor <span class="ot">=</span> <span class="st">&quot;green&quot;</span></span>
+<span id="section-cb40-32"><a href="section-slope-fields.html#section-cb40-32" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="section-cb40-33"><a href="section-slope-fields.html#section-cb40-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arrows</span>(radius<span class="sc">*</span><span class="fu">cos</span>(<span class="fu">atan</span>(slope)<span class="sc">+</span>pi)<span class="sc">+</span>xm,</span>
+<span id="section-cb40-34"><a href="section-slope-fields.html#section-cb40-34" aria-hidden="true" tabindex="-1"></a>             radius<span class="sc">*</span><span class="fu">sin</span>(<span class="fu">atan</span>(slope)<span class="sc">+</span>pi)<span class="sc">+</span>ym,</span>
+<span id="section-cb40-35"><a href="section-slope-fields.html#section-cb40-35" aria-hidden="true" tabindex="-1"></a>             radius<span class="sc">*</span><span class="fu">cos</span>(<span class="fu">atan</span>(slope))<span class="sc">+</span>xm,</span>
+<span id="section-cb40-36"><a href="section-slope-fields.html#section-cb40-36" aria-hidden="true" tabindex="-1"></a>             radius<span class="sc">*</span><span class="fu">sin</span>(<span class="fu">atan</span>(slope))<span class="sc">+</span>ym, </span>
+<span id="section-cb40-37"><a href="section-slope-fields.html#section-cb40-37" aria-hidden="true" tabindex="-1"></a>             <span class="at">length =</span> <span class="fl">0.2</span><span class="sc">*</span>radius, <span class="at">col=</span> cor)</span>
+<span id="section-cb40-38"><a href="section-slope-fields.html#section-cb40-38" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="section-cb40-39"><a href="section-slope-fields.html#section-cb40-39" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="section-cb40-40"><a href="section-slope-fields.html#section-cb40-40" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<p>We can specify an ODE in another function and plot its slope field. The suggested example is</p>
+<p><span class="math display">\[y&#39;(t) = y^2 - t \]</span></p>
+<div class="sourceCode" id="section-cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb41-1"><a href="section-slope-fields.html#section-cb41-1" aria-hidden="true" tabindex="-1"></a>ode <span class="ot">=</span> <span class="cf">function</span>(t, y){</span>
+<span id="section-cb41-2"><a href="section-slope-fields.html#section-cb41-2" aria-hidden="true" tabindex="-1"></a>  dydt <span class="ot">&lt;-</span> y<span class="sc">^</span><span class="dv">2</span><span class="sc">-</span>t</span>
+<span id="section-cb41-3"><a href="section-slope-fields.html#section-cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(dydt)</span>
+<span id="section-cb41-4"><a href="section-slope-fields.html#section-cb41-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Let’s draw the slope field.</p>
+<div class="sourceCode" id="section-cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb42-1"><a href="section-slope-fields.html#section-cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">SlopeField</span>(ode, <span class="at">xi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">xs =</span> <span class="dv">5</span>, <span class="at">yi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">ys =</span> <span class="dv">2</span>,<span class="at">radius =</span> <span class="fl">0.1</span>, <span class="at">grid.by =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p>The graph looks nice and interesting. But can how can we get the ODE solution from this graph? Can you spot the slip in the code and graph?</p>
+</div>
+<div id="section-understandable-examples" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Understandable Examples</h2>
+<div id="section-y-y" class="section level3" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> y’ = y</h3>
+<p>Even without a background in differential equations, think about the following:</p>
+<p><span class="math display">\[y&#39;(x) = y(x)\]</span>
+We are looking for a function <span class="math inline">\(y(x)\)</span> that is identical to its first derivative <span class="math inline">\(y&#39;(x)\)</span>. Perhaps you remember such a function from your last math class (analysis). It is the exponential function, that basically does not change by differentiation.</p>
+<p><span class="math display">\[y(x) = e^x \Rightarrow y&#39;(x) = e^x \]</span></p>
+<div class="sourceCode" id="section-cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb43-1"><a href="section-slope-fields.html#section-cb43-1" aria-hidden="true" tabindex="-1"></a>ode_1 <span class="ot">=</span> <span class="cf">function</span>(t, y){</span>
+<span id="section-cb43-2"><a href="section-slope-fields.html#section-cb43-2" aria-hidden="true" tabindex="-1"></a>  dydt <span class="ot">&lt;-</span> y</span>
+<span id="section-cb43-3"><a href="section-slope-fields.html#section-cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(dydt)</span>
+<span id="section-cb43-4"><a href="section-slope-fields.html#section-cb43-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="section-cb43-5"><a href="section-slope-fields.html#section-cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="section-cb43-6"><a href="section-slope-fields.html#section-cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">SlopeField</span>(ode_1, <span class="at">xi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">xs =</span> <span class="dv">5</span>, <span class="at">yi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">ys =</span> <span class="dv">2</span>,<span class="at">radius =</span> <span class="fl">0.1</span>, <span class="at">grid.by =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p>Can you see something like the exponential function in this slope field?</p>
+<details>
+<summary>
+Show me how an exponential function looks like.
+</summary>
+<div class="sourceCode" id="section-cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb44-1"><a href="section-slope-fields.html#section-cb44-1" aria-hidden="true" tabindex="-1"></a>x_value<span class="ot">&lt;-</span><span class="fu">runif</span>(<span class="dv">100</span>,<span class="dv">2</span>,<span class="dv">8</span>)</span>
+<span id="section-cb44-2"><a href="section-slope-fields.html#section-cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x_value,<span class="fu">exp</span>(x_value))</span></code></pre></div>
+<img src="Empirical-Research_files/figure-html/unnamed-chunk-41-1.png" width="672" />
+</details>
+<p>Perhaps you can spot something like the <span class="math inline">\(y(x) = e^x\)</span> in the blue area. But how about the red arrows? Any mirror at the x-axis is also a valid solution to the problem. How do we mirror? Use a factor in front of the e function. This may be negative.</p>
+<p><span class="math display">\[y(x) = C \cdot e^x \Rightarrow y&#39;(x) = C \cdot e^x \]</span></p>
+</div>
+<div id="section-y--y" class="section level3" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> y’ = -y</h3>
+<p>Let’s give it another try. Which function equals its first derivative (after changing sign).</p>
+<p><span class="math display">\[y&#39;(x) = -y(x)\]</span></p>
+<p>It is a sibling of the <span class="math inline">\(e^x\)</span>. The solution is <span class="math inline">\(y(x) = C \cdot e^{-x}\)</span>.</p>
+<div class="sourceCode" id="section-cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb45-1"><a href="section-slope-fields.html#section-cb45-1" aria-hidden="true" tabindex="-1"></a>ode_2 <span class="ot">=</span> <span class="cf">function</span>(t, y){</span>
+<span id="section-cb45-2"><a href="section-slope-fields.html#section-cb45-2" aria-hidden="true" tabindex="-1"></a>  dydt <span class="ot">&lt;-</span> <span class="sc">-</span>y</span>
+<span id="section-cb45-3"><a href="section-slope-fields.html#section-cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(dydt)</span>
+<span id="section-cb45-4"><a href="section-slope-fields.html#section-cb45-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="section-cb45-5"><a href="section-slope-fields.html#section-cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="section-cb45-6"><a href="section-slope-fields.html#section-cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">SlopeField</span>(ode_2, <span class="at">xi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">xs =</span> <span class="dv">5</span>, <span class="at">yi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">ys =</span> <span class="dv">2</span>,<span class="at">radius =</span> <span class="fl">0.1</span>, <span class="at">grid.by =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+</div>
+<div id="section-y-x2" class="section level3" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> y’ = x^2</h3>
+<!-- https://www.youtube.com/watch?v=4_R1vMB91Fs -->
+<p>Wait, there’s no more y on the RHS. Don’t worry. That’ll make it even easier. What is the integral of <span class="math inline">\(x^2\)</span>? You may expect</p>
+<p><span class="math display">\[y&#39;(x) = x^2 \Rightarrow \int x^2 dx = 1/3 \cdot x^3 + C\]</span>
+Okay, the general shape is a cubic function. Can you spot a cubic function?</p>
+<div class="sourceCode" id="section-cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb46-1"><a href="section-slope-fields.html#section-cb46-1" aria-hidden="true" tabindex="-1"></a>ode_3 <span class="ot">=</span> <span class="cf">function</span>(t, y){</span>
+<span id="section-cb46-2"><a href="section-slope-fields.html#section-cb46-2" aria-hidden="true" tabindex="-1"></a>  dydt <span class="ot">&lt;-</span> t<span class="sc">^</span><span class="dv">2</span></span>
+<span id="section-cb46-3"><a href="section-slope-fields.html#section-cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(dydt)</span>
+<span id="section-cb46-4"><a href="section-slope-fields.html#section-cb46-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="section-cb46-5"><a href="section-slope-fields.html#section-cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="section-cb46-6"><a href="section-slope-fields.html#section-cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">SlopeField</span>(ode_3, <span class="at">xi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">xs =</span> <span class="dv">5</span>, <span class="at">yi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">ys =</span> <span class="dv">2</span>,<span class="at">radius =</span> <span class="fl">0.1</span>, <span class="at">grid.by =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+</div>
+</div>
+<div id="section-initial-value-problem" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Initial value problem</h2>
+<p>Recap, the prior solution was <span class="math inline">\(y(x) = 1/3 \cdot x^3 + C\)</span>. Due to <span class="math inline">\(C\)</span> this is a family of curves. If we specify some of them, that’s called the initial value problem. This <em>problem</em> makes is actually even more easy to understand the slope field. Let’s add two particular cubic functions for <span class="math inline">\(C = 0\)</span> and <span class="math inline">\(C = 0.5\)</span>.</p>
+<div class="sourceCode" id="section-cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb47-1"><a href="section-slope-fields.html#section-cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">SlopeField</span>(ode_3, <span class="at">xi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">xs =</span> <span class="dv">5</span>, <span class="at">yi =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">ys =</span> <span class="dv">2</span>,<span class="at">radius =</span> <span class="fl">0.1</span>, <span class="at">grid.by =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<div class="sourceCode" id="section-cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="section-cb48-1"><a href="section-slope-fields.html#section-cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(y,1/3*x*x*x,col=&quot;red&quot;, lwd=2)</span></span>
+<span id="section-cb48-2"><a href="section-slope-fields.html#section-cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(y,1/3*x*x*x+0.5,col=&quot;orange&quot;, lwd=2)</span></span></code></pre></div>
+<p>Enjoy. Learn. Share.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="section-git-and-github.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="section-references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Empirical Research.pdf", "Empirical Research.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
