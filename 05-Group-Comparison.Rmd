@@ -1,4 +1,4 @@
-# Group comparison
+# Us Against The Rest 
 
 <!-- https://www.thelancet.com/journals/langlo/article/PIIS2214-109X(19)30034-8/fulltext -->
 
@@ -19,20 +19,125 @@
 </details>
 :::
 
-Groups can be compared via numeric figure or graphical instruments. Numeric summaries can be the mean, median or mode. A graphical representation can be a boxplot, histogram or density curve. Note that certain calculations and visualizations only make sense for continuous variables (cf. scale of measurements).
+Groups can be compared via numeric figures or graphical instruments. 
 
-```{r echo=FALSE, eval=FALSE}
+<!-- https://stackoverflow.com/questions/48522350/create-an-image-filled-chart-in-r-using-ggplot -->
+```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE}
 library(png)
-library(grid)
-library(gridExtra)
-img1 <-  rasterGrob(as.raster(readPNG("GPG_2019.png")), interpolate = FALSE)
-img2 <-  rasterGrob(as.raster(readPNG("Lancet.png")), interpolate = FALSE)
-grid.arrange(img1, img2, ncol = 2)
+library(ggplot2)
+
+genderselection <- read.table(text="
+  Gender Freq
+                              F   3281
+                              M   2299
+                              ", header=T)
+
+pcts <- round(prop.table(genderselection$Freq)*100)
+
+# Load png file from imgur as binary
+con <- url("https://i.imgur.com/vFDSFYX.png",
+           open='rb')
+rawpng <- readBin(con, what='raw', n=50000)
+close(con)
+
+img <- readPNG(rawpng)
+h <- dim(img)[1]
+w <- dim(img)[2]
+
+# Find the rows where feet starts and head ends
+pos1 <- which(apply(img[,,1], 1, function(y) any(y==1)))
+mn1 <- min(pos1)
+mx1 <- max(pos1)
+pospctM <- round((mx1-mn1)*pcts[2]/100+mn1)
+pospctF <- round((mx1-mn1)*pcts[1]/100+mn1)
+
+# Fill bodies with a different color according to percentages
+# Note that this relies on the fact that the png is a bitmap.
+# The png is expressed as a matrix with a cell for each pixel
+# and 3 layers for r,g,b.
+#dim(img)
+#> [1] 360 360   3
+
+# Create a 2d matrix by just taking the red values
+# Image is black and white so black corresponds to 0
+# white corresponds to 1. Then change the values of
+#  the cells to correspond to one of three categories.
+imgmtx <- img[h:1,,1]
+whitemtx <- (imgmtx==1)
+colmtx <- matrix(rep(FALSE,h*w),nrow=h)
+midpt <- round(w/2)-10
+colmtx[mx1:pospctM,1:midpt] <- TRUE
+colmtx[mx1:pospctF,(midpt+1):w] <- TRUE
+imgmtx[whitemtx & colmtx] <- 0.5
+
+# Need to melt the matrix into a data.frame that ggplot can understand
+df <- reshape2::melt(imgmtx)
+#head(df)
+#>   Var1 Var2 value
+#> 1    1    1     0
+#> 2    2    1     0
+#> 3    3    1     0
+#> 4    4    1     0
+#> 5    5    1     0
+#> 6    6    1     0
+
+cols <- c(rgb(255,255,255,maxColorValue = 255),
+          rgb(209,230,244,maxColorValue = 255), 
+          rgb(42,128,183,maxColorValue = 255))
 ```
 
-```{r, echo=FALSE, out.width="70%", fig.cap="\\label{fig:intro}Figure 1: Possible gender difference in working parttime.", fig.align='center'}
-knitr::include_graphics("images/parttime.png")
+```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, fig.align = 'center', fig.cap="\\label{fig:challenge} The proportion of male and female students. Source: [Gender and Origin of Students of Viadrina (22.11.2020)](https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2020-wintersemester/4_Staatsangehoerigkeiten.pdf) ",}
+# Then use a heatmap with 3 colours for background, and percentage fills
+# Converting the fill value to a factor causes a discrete scale.
+# geom_tile takes three columns: x, y, fill corresponding to 
+# x-coord, y-coord, and colour of the cell.
+ggplot(df, aes(x = Var2, y = Var1, fill = factor(value)))+
+  geom_tile() +
+  scale_fill_manual(values = cols) +
+  #theme_minimal() +
+  #labs(x="", y="") +
+  theme_void() +
+  theme(legend.position = "none") +
+  annotate("text", label = 'atop(bold("Men"),"41 %")', parse = TRUE, x = 0.27*(min(df$Var2) + max(df$Var2)), 
+           y = max(df$Var1), vjust = 0.5) +
+  annotate("text", label = 'atop(bold("Women"),"59 %")', parse = TRUE, x = 0.7*(min(df$Var2) + max(df$Var2)), 
+           y = max(df$Var1), vjust = 0.5) 
+  #annotate("text", label = "1", x = 0.27*(min(df$Var2) + max(df$Var2)), y =  max(df$Var1), vjust = 10) +
+  #annotate("text", label = "2", x = 0.7*(min(df$Var2) + max(df$Var2)), y = max(df$Var1), vjust = 10) 
+  #annotate(geom = 'text', label = 'sometext', x = -Inf, y = Inf, hjust = 0, vjust = 1)
+  #annotation_compass('testE','E') 
+  #geom_text(data=data.frame(), aes(label = 'sometext', x = -Inf, y = Inf), hjust = 0, vjust = 1)
+  
+  # geom_label(
+  #   label="Look at this!", 
+  #   x=100,
+  #   y=350,
+  #   label.padding = unit(0.55, "lines"), # Rectangle size around label
+  #   label.size = 0.35,
+  #   color = "black",
+  #   fill="#69b3a2"
+  # )
 ```
+
+In 2020 the majority of students at Viadrina was female (59 %). In 2019 men earned 4.44 € more per hour than women in Germany. 
+
+Number have different units. Numerical summaries can be the mean, median or mode. A graphical representation can be a boxplot, histogram or density curve. Note that certain calculations and visualizations only make sense for continuous variables (cf. scale of measurements).
+
+
+<!-- Remember Figure 1 where we easily compared two percentage numbers filled proportionally in pictograms of men and women? How could we possibly do something like that in R? The purpose of this challenge is to train your skills in searching the internet for similar solutions and adapting code for your own needs. -->
+
+<!-- If you google something like ["How to create a grouped boxplot in r"](https://lmgtfy.app/?q=How+to+create+a+grouped+boxplot+in+r) or ["How to create an image filled with percentage in r"](https://lmgtfy.app/?q=How+to+create+an+image+filled+with+percentage+in+r) the chances are extremely high that first, someone else had the same problem and second, **stackoverflow** will be one of the top google hits. SO is a famous question and answer site for professional and enthusiast programmers and statisticians. -->
+
+<!-- Your challenge: -->
+
+<!-- -   Find a gender difference that you are interested in and would like to share. -->
+<!-- -   Remember the source. Cite the source in the figure caption. -->
+<!-- -   Look up and modify (long and complicated) code, e.g. from stackoverflow. -->
+<!-- -   In the given ggplot `theme_void` is used to remove axes and background, the legend is removed by `legend.position = "none"` and labels are annotated manually via `annotate`. -->
+
+<!-- ```{r, echo=FALSE, out.width="70%", fig.cap="\\label{fig:intro} Possible gender difference in working parttime.", fig.align='center'} -->
+<!-- knitr::include_graphics("images/parttime.png") -->
+<!-- ``` -->
 
 ## Understanding Data
 
@@ -432,114 +537,3 @@ cat(
 
 <!-- How can we find examples of education change in the data? -->
 
-## Advanced Graphics (4 pt bonus)
-
-<!-- https://stackoverflow.com/questions/48522350/create-an-image-filled-chart-in-r-using-ggplot -->
-
-Remember Figure 1 where we easily compared two percentage numbers filled proportionally in pictograms of men and women? How could we possibly do something like that in R? The purpose of this challenge is to train your skills in searching the internet for similar solutions and adapting code for your own needs.
-
-If you google something like ["How to create a grouped boxplot in r"](https://lmgtfy.app/?q=How+to+create+a+grouped+boxplot+in+r) or ["How to create an image filled with percentage in r"](https://lmgtfy.app/?q=How+to+create+an+image+filled+with+percentage+in+r) the chances are extremely high that first, someone else had the same problem and second, **stackoverflow** will be one of the top google hits. SO is a famous question and answer site for professional and enthusiast programmers and statisticians.
-
-```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE}
-library(png)
-library(ggplot2)
-
-genderselection <- read.table(text="
-  Gender Freq
-                              F   3281
-                              M   2299
-                              ", header=T)
-
-pcts <- round(prop.table(genderselection$Freq)*100)
-
-# Load png file from imgur as binary
-con <- url("https://i.imgur.com/vFDSFYX.png",
-           open='rb')
-rawpng <- readBin(con, what='raw', n=50000)
-close(con)
-
-img <- readPNG(rawpng)
-h <- dim(img)[1]
-w <- dim(img)[2]
-
-# Find the rows where feet starts and head ends
-pos1 <- which(apply(img[,,1], 1, function(y) any(y==1)))
-mn1 <- min(pos1)
-mx1 <- max(pos1)
-pospctM <- round((mx1-mn1)*pcts[2]/100+mn1)
-pospctF <- round((mx1-mn1)*pcts[1]/100+mn1)
-
-# Fill bodies with a different color according to percentages
-# Note that this relies on the fact that the png is a bitmap.
-# The png is expressed as a matrix with a cell for each pixel
-# and 3 layers for r,g,b.
-#dim(img)
-#> [1] 360 360   3
-
-# Create a 2d matrix by just taking the red values
-# Image is black and white so black corresponds to 0
-# white corresponds to 1. Then change the values of
-#  the cells to correspond to one of three categories.
-imgmtx <- img[h:1,,1]
-whitemtx <- (imgmtx==1)
-colmtx <- matrix(rep(FALSE,h*w),nrow=h)
-midpt <- round(w/2)-10
-colmtx[mx1:pospctM,1:midpt] <- TRUE
-colmtx[mx1:pospctF,(midpt+1):w] <- TRUE
-imgmtx[whitemtx & colmtx] <- 0.5
-
-# Need to melt the matrix into a data.frame that ggplot can understand
-df <- reshape2::melt(imgmtx)
-#head(df)
-#>   Var1 Var2 value
-#> 1    1    1     0
-#> 2    2    1     0
-#> 3    3    1     0
-#> 4    4    1     0
-#> 5    5    1     0
-#> 6    6    1     0
-
-cols <- c(rgb(255,255,255,maxColorValue = 255),
-          rgb(209,230,244,maxColorValue = 255), 
-          rgb(42,128,183,maxColorValue = 255))
-```
-
-```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, fig.align = 'center', fig.cap="\\label{fig:challenge}Figure 3: The proportion of male and female students. Source: [Gender and Origin of Students of Viadrina (22.11.2020)](https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2020-wintersemester/4_Staatsangehoerigkeiten.pdf) ",}
-# Then use a heatmap with 3 colours for background, and percentage fills
-# Converting the fill value to a factor causes a discrete scale.
-# geom_tile takes three columns: x, y, fill corresponding to 
-# x-coord, y-coord, and colour of the cell.
-ggplot(df, aes(x = Var2, y = Var1, fill = factor(value)))+
-  geom_tile() +
-  scale_fill_manual(values = cols) +
-  #theme_minimal() +
-  #labs(x="", y="") +
-  theme_void() +
-  theme(legend.position = "none") +
-  annotate("text", label = 'atop(bold("Men"),"41 %")', parse = TRUE, x = 0.27*(min(df$Var2) + max(df$Var2)), 
-           y = max(df$Var1), vjust = 0.5) +
-  annotate("text", label = 'atop(bold("Women"),"59 %")', parse = TRUE, x = 0.7*(min(df$Var2) + max(df$Var2)), 
-           y = max(df$Var1), vjust = 0.5) 
-  #annotate("text", label = "1", x = 0.27*(min(df$Var2) + max(df$Var2)), y =  max(df$Var1), vjust = 10) +
-  #annotate("text", label = "2", x = 0.7*(min(df$Var2) + max(df$Var2)), y = max(df$Var1), vjust = 10) 
-  #annotate(geom = 'text', label = 'sometext', x = -Inf, y = Inf, hjust = 0, vjust = 1)
-  #annotation_compass('testE','E') 
-  #geom_text(data=data.frame(), aes(label = 'sometext', x = -Inf, y = Inf), hjust = 0, vjust = 1)
-  
-  # geom_label(
-  #   label="Look at this!", 
-  #   x=100,
-  #   y=350,
-  #   label.padding = unit(0.55, "lines"), # Rectangle size around label
-  #   label.size = 0.35,
-  #   color = "black",
-  #   fill="#69b3a2"
-  # )
-```
-
-Your challenge:
-
--   Find a gender difference that you are interested in and would like to share.
--   Remember the source. Cite the source in the figure caption.
--   Look up and modify (long and complicated) code, e.g. from stackoverflow.
--   In the given ggplot `theme_void` is used to remove axes and background, the legend is removed by `legend.position = "none"` and labels are annotated manually via `annotate`.
