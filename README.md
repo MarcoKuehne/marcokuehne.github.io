@@ -9,3 +9,7 @@ You can use the [editor on GitHub](https://github.com/MarcoKuehne/marcokuehne.gi
 This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
 
 Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/MarcoKuehne/marcokuehne.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+
+# Git Notes Book Routine
+
+Github Pages displays Book from doc folder. Compile "gitbook" in RStudio which updates material in doc folder. Only need to push new doc folder to github. 
