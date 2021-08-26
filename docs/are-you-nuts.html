@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Git and Github | Empirical Research (with R)</title>
+  <title>Chapter 4 Are you nuts | Empirical Research (with R)</title>
   <meta name="description" content="This is my first book." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Git and Github | Empirical Research (with R)" />
+  <meta property="og:title" content="Chapter 4 Are you nuts | Empirical Research (with R)" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Git and Github | Empirical Research (with R)" />
+  <meta name="twitter:title" content="Chapter 4 Are you nuts | Empirical Research (with R)" />
   
   <meta name="twitter:description" content="This is my first book." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="methods.html"/>
-<link rel="next" href="slope-fields.html"/>
+<link rel="prev" href="data-is-everywhere-1.html"/>
+<link rel="next" href="group-comparison.html"/>
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -246,143 +246,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="git-and-github" class="section level1" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Git and Github</h1>
-<div id="install-github-and-git" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Install Github and Git</h2>
-<ul>
-<li>Get RStudio <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></li>
-<li>Get Github account <a href="https://github.com/" class="uri">https://github.com/</a></li>
-<li>Set up Github pages <a href="https://pages.github.com/" class="uri">https://pages.github.com/</a></li>
-<li>Download Git <a href="https://git-scm.com/" class="uri">https://git-scm.com/</a></li>
-</ul>
-<p>Create a “special repository” for GitHub Pages. Only this can turn the branch into docs (1 for free).</p>
-<ul>
-<li>Repository: <a href="https://github.com/MarcoKuehne/marcokuehne.github.io" class="uri">https://github.com/MarcoKuehne/marcokuehne.github.io</a></li>
-<li>Homepage: <a href="https://marcokuehne.github.io/" class="uri">https://marcokuehne.github.io/</a></li>
-</ul>
-<p>Create (or re-open) your R project inside RStudio.</p>
-<p>In R console use <code>usethis::use_git()</code> which always gives three different answers in random order. Confirm accordingly.</p>
-</div>
-<div id="working-with-git" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> Working with Git</h2>
-<p>Use the terminal inside RStudio. Copy paste into terminal with: <code>CTRL + SHIFT + V</code>.</p>
-<div id="git-version" class="section level3" number="7.2.1">
-<h3><span class="header-section-number">7.2.1</span> git version</h3>
-<p>Let’s start with commands that cannot do any harm (it’s 2.32 in 08/2021):</p>
-<pre><code>git version</code></pre>
-</div>
-<div id="git-config" class="section level3" number="7.2.2">
-<h3><span class="header-section-number">7.2.2</span> git config</h3>
-<p>First, configure github user information on your system. Use the R builtin terminal:</p>
-<pre><code>git config --global user.email MAIL
-git config --global user.name NAME</code></pre>
-<p>Now, you can commit (upload) changes from RStudio to Github Pages. Check out <code>git config --list</code>.</p>
-</div>
-<div id="git-init" class="section level3" number="7.2.3">
-<h3><span class="header-section-number">7.2.3</span> git init</h3>
-<p>Use <code>git init</code> to initialize the repository. It is used to create a new empty repository or directory consisting of files’ with the hidden directory. ‘.git’ is created at the top level of your project, which places all of the revision information in one place.</p>
-<p>Show what is connected with:</p>
-<pre><code>git remote -v show</code></pre>
-</div>
-<div id="git-status-and-diff" class="section level3" number="7.2.4">
-<h3><span class="header-section-number">7.2.4</span> git status and diff</h3>
-<p>Shows you which files are in this staging area, and which files have changes that haven’t yet been put there. In order to compare the file as it currently is to what you last saved, you can use <code>git diff filename</code>, e.g. <code>git diff README.md</code> in the terminal. <code>git diff</code> without any file names will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.</p>
-</div>
-<div id="git-commit" class="section level3" number="7.2.5">
-<h3><span class="header-section-number">7.2.5</span> git commit</h3>
-<p>To save the changes in the staging area, you use the command <code>git commit</code>. It always saves everything that is in the staging area as one unit: as you will see later, when you want to undo changes to a project, you undo all of a commit or none of it.</p>
-<p>Commit requires a message (comment). How to write a good git commit <a href="message:l" class="uri">message:l</a></p>
-<p><a href="https://chris.beams.io/posts/git-commit/" class="uri">https://chris.beams.io/posts/git-commit/</a></p>
-</div>
-<div id="git-add" class="section level3" number="7.2.6">
-<h3><span class="header-section-number">7.2.6</span> git add</h3>
-<p>…</p>
-</div>
-<div id="git-remote-add" class="section level3" number="7.2.7">
-<h3><span class="header-section-number">7.2.7</span> git remote add</h3>
-<p>I would like to have something like <code>git remote add ...</code> and <code>git push ...</code>, not working.</p>
-<p>I can add and remove origins, don’t know what it means: <code>git remote rm origin</code></p>
-<p>Use git add . in your bash to add all the files to the given folder.</p>
-<p>Use git status in your bash to view all the files which are going to be staged to the first commit.</p>
-<p>Create <strong>git remote add</strong></p>
-<p>git remote add origin <a href="https://github.com/MarcoKuehne/marcokuehne.github.git" class="uri">https://github.com/MarcoKuehne/marcokuehne.github.git</a>
-git remote add origin <a href="https://github.com/MarcoKuehne/marcokuehne.github.io" class="uri">https://github.com/MarcoKuehne/marcokuehne.github.io</a>
-git remote add origin <a href="https://github.com/MarcoKuehne/marcokuehne.github.io.git" class="uri">https://github.com/MarcoKuehne/marcokuehne.github.io.git</a></p>
-<p>git remote add <a href="mailto:git@github.com" class="email">git@github.com</a>:<username>/<repository-name>.git
-git remote add <a href="mailto:git@github.com" class="email">git@github.com</a>:MarcoKuehne/marcokuehne.github.git
-git remote add <a href="mailto:git@github.com" class="email">git@github.com</a>:MarcoKuehne/marcokuehne.github.io does not appear to be a repository
-git remote add <a href="mailto:git@github.com" class="email">git@github.com</a>:MarcoKuehne/marcokuehne.github.io.git combine both</p>
-</div>
-<div id="git-push" class="section level3" number="7.2.8">
-<h3><span class="header-section-number">7.2.8</span> git push</h3>
-<p>git push -u origin main
-git push -u origin master
-git push origin master
-git push origin main
-git push –set-upstream origin main
-git push -f origin main # worked somehow!!!</p>
-<p>If positive, it asks for github credentials.</p>
-<p><a href="https://www.datacamp.com/community/tutorials/git-push-pull" class="uri">https://www.datacamp.com/community/tutorials/git-push-pull</a></p>
-</div>
-</div>
-<div id="basic-routines" class="section level2" number="7.3">
-<h2><span class="header-section-number">7.3</span> Basic Routines</h2>
-<div id="add-commit-push" class="section level3" number="7.3.1">
-<h3><span class="header-section-number">7.3.1</span> Add + Commit + Push</h3>
-<p>I make changes to any one of my markdown files, e.g. the <code>README.md</code> (this can also be done via GitHub web interface) on my local machine. After notoriously saving this on my local machine (STRG+S) it appears in the <em>stage area</em> in the right upper panel in RStudio. Commit and push can be either done in RStudio or via terminal line (also in RStudio).</p>
-<p>First, let’s do it via “clicking.” Select the staged file. Click “commit.” A new windows opens and displays the changes in your file. Write a new commit message of amend a previous commit. Click “close.” From this additional window (or the right upper panel in RStudio) click the green push arrow. Hopefully it will say “HEAD -&gt; main.” Close. Done. The result should be available on your github repository immediately.</p>
-<p>The same procedure via the terminal:</p>
-<pre><code>git add 05-git.Rmd
-git commit -m &quot;Updated the git short tutorial&quot;
-git push </code></pre>
-<p>How to push? Easy …</p>
-<p>I need to <code>pull</code> these changes into RStudio. Check the right upper panel “Diff.” Select <code>pull</code>. You can also find big blue down and green up arrows.</p>
-<p>I add this sentence. I save on RStudio, thus it appears as a change to <code>README.md</code> in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see <a href="https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password" class="uri">https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password</a>). Here you might use a personal access token. I click <code>commit</code>, enter a commit message, click <code>commit</code> again and close the extra window.</p>
-</div>
-</div>
-<div id="resources" class="section level2" number="7.4">
-<h2><span class="header-section-number">7.4</span> Resources</h2>
-<p>You can start reading about bookdowns from the inventor:</p>
-<p><a href="https://bookdown.org/yihui/bookdown/" class="uri">https://bookdown.org/yihui/bookdown/</a></p>
-<p>This is pretty advanced and I can’t understand a tiny piece of it.</p>
-<p>Another option is to start a repo and book by copying “awesome book” from another repo.</p>
-<p><a href="https://jules32.github.io/bookdown-tutorial/setup.html" class="uri">https://jules32.github.io/bookdown-tutorial/setup.html</a></p>
-<p>This tutorial worked to push a book to a standard repo. But there were problem with the doc branch.</p>
-<p>After I forgot how to start my project or where to find it, I checked:</p>
-<p><a href="https://happygitwithr.com/rstudio-git-github.html#make-local-changes-save-commit" class="uri">https://happygitwithr.com/rstudio-git-github.html#make-local-changes-save-commit</a></p>
-<p>started a new project with my repo link and a new session. This forks or fetches or pulls or downloads the repo. Now I will try to re-upload the minimal change from today.</p>
-<p>Another personal description can be found here:</p>
-<p><a href="https://rachaellappan.github.io/bookdown/" class="uri">https://rachaellappan.github.io/bookdown/</a></p>
-<pre><code>This enourmously helped with the understanding of commits and pushs on git:
+<div id="are-you-nuts" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Are you nuts</h1>
+<p>One Sample T-Test</p>
 
-&lt;http://www.differencebetween.net/technology/difference-between-commit-and-push/&gt;</code></pre>
-<ul>
-<li><code>git commit -m "Started book"</code></li>
-</ul>
-<p>I followed the video “How to create a bookdown book in 5 minutes”:</p>
-<p><a href="https://www.youtube.com/watch?v=m5D-yoH416Y" class="uri">https://www.youtube.com/watch?v=m5D-yoH416Y</a></p>
-<p>It did not work.</p>
-<p>Explaining terminology:</p>
-<p><a href="https://www.notion.so/zarkom/Introduction-to-Git-ac396a0697704709a12b6a0e545db049" class="uri">https://www.notion.so/zarkom/Introduction-to-Git-ac396a0697704709a12b6a0e545db049</a></p>
-<p>Learn Git in 15 Min:</p>
-<p><a href="https://www.youtube.com/watch?v=USjZcfj8yxE" class="uri">https://www.youtube.com/watch?v=USjZcfj8yxE</a></p>
-<p>Learn GitHub in 20 Min:</p>
-<p><a href="https://www.youtube.com/watch?v=nhNq2kIvi9s" class="uri">https://www.youtube.com/watch?v=nhNq2kIvi9s</a></p>
-<p><a href="https://medium.com/@delucmat/how-to-publish-bookdown-projects-with-github-actions-on-github-pages-6e6aecc7331e" class="uri">https://medium.com/@delucmat/how-to-publish-bookdown-projects-with-github-actions-on-github-pages-6e6aecc7331e</a></p>
-<p><a href="https://medium.com/@delucmat/how-to-publish-bookdown-projects-with-github-actions-on-github-pages-6e6aecc7331e" class="uri">https://medium.com/@delucmat/how-to-publish-bookdown-projects-with-github-actions-on-github-pages-6e6aecc7331e</a></p>
-<p>I need a _book directory:</p>
-<p>The .html files (which were compiled from the .Rmd files) are all stored within the _book directory which basically serves as a static website.</p>
-
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slope-fields.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-is-everywhere-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="group-comparison.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
