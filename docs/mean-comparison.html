@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Mean Comparison | Becoming Fluent in Data</title>
+  <meta name="description" content="This is my first gitbook." />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Mean Comparison | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/scream.jpg" />
+  <meta property="og:description" content="This is my first gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Mean Comparison | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="This is my first gitbook." />
+  <meta name="twitter:image" content="/scream.jpg" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2022-08-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="group-comparison.html"/>
+<link rel="next" href="panel-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.9/grViz.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Empirical Research</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="part"><span><b>I Preface</b></span></li>
+<li class="chapter" data-level="1" data-path="teach-learn-repeat.html"><a href="teach-learn-repeat.html"><i class="fa fa-check"></i><b>1</b> Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="2" data-path="a-question-you-care-about.html"><a href="a-question-you-care-about.html"><i class="fa fa-check"></i><b>2</b> A Question You Care About</a></li>
+<li class="chapter" data-level="3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>3</b> Data is everywhere</a></li>
+<li class="chapter" data-level="4" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>4</b> Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="regression.html"><a href="regression.html#from-zero-to-hero"><i class="fa fa-check"></i><b>4.1</b> From Zero To Hero</a></li>
+<li class="chapter" data-level="4.2" data-path="regression.html"><a href="regression.html#from-artists-and-economists"><i class="fa fa-check"></i><b>4.2</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="4.3" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>4.3</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>4.3.1</b> Data in a table</a></li>
+<li class="chapter" data-level="4.3.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>4.3.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="4.3.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>4.3.3</b> The trend</a></li>
+<li class="chapter" data-level="4.3.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>4.3.4</b> The blackbox</a></li>
+<li class="chapter" data-level="4.3.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>4.3.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="4.3.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>4.3.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>4.4</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>4.4.1</b> Algebra</a></li>
+<li class="chapter" data-level="4.4.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>4.4.2</b> Analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>4.4.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>4.5</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="4.6" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>4.6</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="part"><span><b>II Data Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="group-comparison.html"><a href="group-comparison.html"><i class="fa fa-check"></i><b>5</b> Group Comparison</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="group-comparison.html"><a href="group-comparison.html#learning-goals"><i class="fa fa-check"></i><b>5.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="group-comparison.html"><a href="group-comparison.html#story-telling"><i class="fa fa-check"></i><b>5.2</b> Story Telling</a></li>
+<li class="chapter" data-level="5.3" data-path="group-comparison.html"><a href="group-comparison.html#comparability"><i class="fa fa-check"></i><b>5.3</b> Comparability</a></li>
+<li class="chapter" data-level="5.4" data-path="group-comparison.html"><a href="group-comparison.html#soep-practice-data"><i class="fa fa-check"></i><b>5.4</b> SOEP Practice Data</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="group-comparison.html"><a href="group-comparison.html#loading-the-data"><i class="fa fa-check"></i><b>5.4.1</b> Loading the Data</a></li>
+<li class="chapter" data-level="5.4.2" data-path="group-comparison.html"><a href="group-comparison.html#inspect-the-data"><i class="fa fa-check"></i><b>5.4.2</b> Inspect the Data</a></li>
+<li class="chapter" data-level="5.4.3" data-path="group-comparison.html"><a href="group-comparison.html#stata-information"><i class="fa fa-check"></i><b>5.4.3</b> Stata information</a></li>
+<li class="chapter" data-level="5.4.4" data-path="group-comparison.html"><a href="group-comparison.html#summary-statistics"><i class="fa fa-check"></i><b>5.4.4</b> Summary statistics</a></li>
+<li class="chapter" data-level="5.4.5" data-path="group-comparison.html"><a href="group-comparison.html#missing-data"><i class="fa fa-check"></i><b>5.4.5</b> Missing data</a></li>
+<li class="chapter" data-level="5.4.6" data-path="group-comparison.html"><a href="group-comparison.html#standardization"><i class="fa fa-check"></i><b>5.4.6</b> Standardization</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="group-comparison.html"><a href="group-comparison.html#never-use-pie-charts"><i class="fa fa-check"></i><b>5.5</b> Never use pie charts</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mean-comparison.html"><a href="mean-comparison.html"><i class="fa fa-check"></i><b>6</b> Mean Comparison</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mean-comparison.html"><a href="mean-comparison.html#learning-goals-1"><i class="fa fa-check"></i><b>6.1</b> Learning Goals</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="mean-comparison.html"><a href="mean-comparison.html#data-preparation"><i class="fa fa-check"></i><b>6.1.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="6.1.2" data-path="mean-comparison.html"><a href="mean-comparison.html#grouped-mean"><i class="fa fa-check"></i><b>6.1.2</b> Grouped Mean</a></li>
+<li class="chapter" data-level="6.1.3" data-path="mean-comparison.html"><a href="mean-comparison.html#furious-with-factors"><i class="fa fa-check"></i><b>6.1.3</b> Furious with Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="mean-comparison.html"><a href="mean-comparison.html#students-t-test"><i class="fa fa-check"></i><b>6.2</b> Student’s t-test</a></li>
+<li class="chapter" data-level="6.3" data-path="mean-comparison.html"><a href="mean-comparison.html#plot-with-confidence"><i class="fa fa-check"></i><b>6.3</b> Plot with Confidence</a></li>
+<li class="chapter" data-level="6.4" data-path="mean-comparison.html"><a href="mean-comparison.html#independent-t-test"><i class="fa fa-check"></i><b>6.4</b> Independent t-test</a></li>
+<li class="chapter" data-level="6.5" data-path="mean-comparison.html"><a href="mean-comparison.html#dependent-t-test"><i class="fa fa-check"></i><b>6.5</b> Dependent t-test</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>7</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="panel-data.html"><a href="panel-data.html#learning-goals-2"><i class="fa fa-check"></i><b>7.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="panel-data.html"><a href="panel-data.html#paneldata"><i class="fa fa-check"></i><b>7.2</b> Paneldata</a></li>
+<li class="chapter" data-level="7.3" data-path="panel-data.html"><a href="panel-data.html#data-preparation-1"><i class="fa fa-check"></i><b>7.3</b> Data Preparation</a></li>
+<li class="chapter" data-level="7.4" data-path="panel-data.html"><a href="panel-data.html#group-by-person"><i class="fa fa-check"></i><b>7.4</b> Group by person</a></li>
+<li class="chapter" data-level="7.5" data-path="panel-data.html"><a href="panel-data.html#data-visualization"><i class="fa fa-check"></i><b>7.5</b> Data Visualization</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="panel-data.html"><a href="panel-data.html#average-health-per-year"><i class="fa fa-check"></i><b>7.5.1</b> Average Health per Year</a></li>
+<li class="chapter" data-level="7.5.2" data-path="panel-data.html"><a href="panel-data.html#individual-health-per-year"><i class="fa fa-check"></i><b>7.5.2</b> Individual Health per Year</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="panel-data.html"><a href="panel-data.html#within-and-between-variation"><i class="fa fa-check"></i><b>7.6</b> Within and Between Variation</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="panel-data.html"><a href="panel-data.html#xtsum-from-stata"><i class="fa fa-check"></i><b>7.6.1</b> XTSUM (from Stata)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text Mining</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#learning-goals-3"><i class="fa fa-check"></i><b>8.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#get-text"><i class="fa fa-check"></i><b>8.2</b> Get Text</a></li>
+<li class="chapter" data-level="8.3" data-path="text-mining.html"><a href="text-mining.html#translate-everything-to-english"><i class="fa fa-check"></i><b>8.3</b> Translate Everything To English</a></li>
+<li class="chapter" data-level="8.4" data-path="text-mining.html"><a href="text-mining.html#text-analysis"><i class="fa fa-check"></i><b>8.4</b> Text Analysis</a></li>
+<li class="chapter" data-level="8.5" data-path="text-mining.html"><a href="text-mining.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>8.5</b> Little bit of Scraping</a></li>
+</ul></li>
+<li class="part"><span><b>III Appendix</b></span></li>
+<li class="chapter" data-level="9" data-path="git-and-github.html"><a href="git-and-github.html"><i class="fa fa-check"></i><b>9</b> Git and Github</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="git-and-github.html"><a href="git-and-github.html#install-github-and-git"><i class="fa fa-check"></i><b>9.1</b> Install Github and Git</a></li>
+<li class="chapter" data-level="9.2" data-path="git-and-github.html"><a href="git-and-github.html#working-with-git"><i class="fa fa-check"></i><b>9.2</b> Working with Git</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="git-and-github.html"><a href="git-and-github.html#git-version"><i class="fa fa-check"></i><b>9.2.1</b> git version</a></li>
+<li class="chapter" data-level="9.2.2" data-path="git-and-github.html"><a href="git-and-github.html#git-config"><i class="fa fa-check"></i><b>9.2.2</b> git config</a></li>
+<li class="chapter" data-level="9.2.3" data-path="git-and-github.html"><a href="git-and-github.html#git-init"><i class="fa fa-check"></i><b>9.2.3</b> git init</a></li>
+<li class="chapter" data-level="9.2.4" data-path="git-and-github.html"><a href="git-and-github.html#git-status-and-diff"><i class="fa fa-check"></i><b>9.2.4</b> git status and diff</a></li>
+<li class="chapter" data-level="9.2.5" data-path="git-and-github.html"><a href="git-and-github.html#git-commit"><i class="fa fa-check"></i><b>9.2.5</b> git commit</a></li>
+<li class="chapter" data-level="9.2.6" data-path="git-and-github.html"><a href="git-and-github.html#git-add"><i class="fa fa-check"></i><b>9.2.6</b> git add</a></li>
+<li class="chapter" data-level="9.2.7" data-path="git-and-github.html"><a href="git-and-github.html#git-remote-add"><i class="fa fa-check"></i><b>9.2.7</b> git remote add</a></li>
+<li class="chapter" data-level="9.2.8" data-path="git-and-github.html"><a href="git-and-github.html#git-push"><i class="fa fa-check"></i><b>9.2.8</b> git push</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="git-and-github.html"><a href="git-and-github.html#basic-routines"><i class="fa fa-check"></i><b>9.3</b> Basic Routines</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="git-and-github.html"><a href="git-and-github.html#add-commit-push"><i class="fa fa-check"></i><b>9.3.1</b> Add + Commit + Push</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="git-and-github.html"><a href="git-and-github.html#resources"><i class="fa fa-check"></i><b>9.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="slope-fields.html"><a href="slope-fields.html"><i class="fa fa-check"></i><b>10</b> Slope Fields</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="slope-fields.html"><a href="slope-fields.html#definition"><i class="fa fa-check"></i><b>10.1</b> Definition</a></li>
+<li class="chapter" data-level="10.2" data-path="slope-fields.html"><a href="slope-fields.html#slope-fields-in-r"><i class="fa fa-check"></i><b>10.2</b> Slope Fields in R</a></li>
+<li class="chapter" data-level="10.3" data-path="slope-fields.html"><a href="slope-fields.html#understandable-examples"><i class="fa fa-check"></i><b>10.3</b> Understandable Examples</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="slope-fields.html"><a href="slope-fields.html#y-y"><i class="fa fa-check"></i><b>10.3.1</b> y’ = y</a></li>
+<li class="chapter" data-level="10.3.2" data-path="slope-fields.html"><a href="slope-fields.html#y--y"><i class="fa fa-check"></i><b>10.3.2</b> y’ = -y</a></li>
+<li class="chapter" data-level="10.3.3" data-path="slope-fields.html"><a href="slope-fields.html#y-x2"><i class="fa fa-check"></i><b>10.3.3</b> y’ = x^2</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="slope-fields.html"><a href="slope-fields.html#initial-value-problem"><i class="fa fa-check"></i><b>10.4</b> Initial value problem</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mean-comparison" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Mean Comparison<a href="mean-comparison.html#mean-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="learning-goals-1" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Learning Goals<a href="mean-comparison.html#learning-goals-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="infobox2 information">
+<ul>
+<li>Conceptual Skills: Compare means within and between people. What Student’s t-test has to do with beer.</li>
+<li>Data Concepts: Factor variables.</li>
+<li>Data Skills:
+<ul>
+<li>Data Manipulation: Several options to achieve a goal.</li>
+<li>Data Analysis: Hypothesis testing with t-Tests.</li>
+<li>Data Visualization: Error plots.</li>
+</ul></li>
+</ul>
+</div>
+<!-- https://methods.sagepub.com/reference/encyc-of-research-design/n237.xml -->
+<p>The term mean comparisons refers to the comparison of the average of one or more continuous variables over one or more categorical variables. It is a general term that can refer to a large number of different research questions and study designs. For example, one can compare the mean from one sample of data to a hypothetical population value, compare the means on a single variable from multiple independent groups, or compare the means for a single variable for one sample over multiple measurement occasions. In addition, more complex research designs can employ multiple continuous dependent variables simultaneously, as well as a combination of multiple groups and multiple measurement occasions. Overall, mean comparisons are of central interest in any experimental design and many correlational designs.</p>
+<div id="data-preparation" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Data Preparation<a href="mean-comparison.html#data-preparation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Load SOEP practice data from Github repository directly into memory. It makes data loading independent of paths.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="mean-comparison.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb36-2"><a href="mean-comparison.html#cb36-2" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/seminars_in_applied_economics/blob/main/Data/soep_lebensz_en.dta?raw=true&quot;</span>)</span>
+<span id="cb36-3"><a href="mean-comparison.html#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="mean-comparison.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Sample (complete case study)</span></span>
+<span id="cb36-5"><a href="mean-comparison.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb36-6"><a href="mean-comparison.html#cb36-6" aria-hidden="true" tabindex="-1"></a>soep_no_na <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span>
+<span id="cb36-7"><a href="mean-comparison.html#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="mean-comparison.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="do">## subset the year 2000</span></span>
+<span id="cb36-9"><a href="mean-comparison.html#cb36-9" aria-hidden="true" tabindex="-1"></a>soep_2000 <span class="ot">&lt;-</span> <span class="fu">subset</span>(soep_no_na, year <span class="sc">==</span> <span class="dv">2000</span>)</span>
+<span id="cb36-10"><a href="mean-comparison.html#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="mean-comparison.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixing factors</span></span>
+<span id="cb36-12"><a href="mean-comparison.html#cb36-12" aria-hidden="true" tabindex="-1"></a>soep_2000<span class="sc">$</span>sex_factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(soep_2000<span class="sc">$</span>sex)</span>
+<span id="cb36-13"><a href="mean-comparison.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(soep_2000<span class="sc">$</span>sex_factor) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>)</span>
+<span id="cb36-14"><a href="mean-comparison.html#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="mean-comparison.html#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Convert Stata format </span></span>
+<span id="cb36-16"><a href="mean-comparison.html#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
+<span id="cb36-17"><a href="mean-comparison.html#cb36-17" aria-hidden="true" tabindex="-1"></a>soep_2000 <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(soep_2000)  </span></code></pre></div>
+</div>
+<div id="grouped-mean" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Grouped Mean<a href="mean-comparison.html#grouped-mean" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are several options to calculate means per group.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="mean-comparison.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## TAPPLY</span></span>
+<span id="cb37-2"><a href="mean-comparison.html#cb37-2" aria-hidden="true" tabindex="-1"></a>means1 <span class="ot">&lt;-</span> <span class="fu">tapply</span>(soep_2000<span class="sc">$</span>health_org, <span class="at">INDEX=</span>soep_2000<span class="sc">$</span>sex, <span class="at">FUN=</span>mean)  </span>
+<span id="cb37-3"><a href="mean-comparison.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="mean-comparison.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="do">## AGGREGATE </span></span>
+<span id="cb37-5"><a href="mean-comparison.html#cb37-5" aria-hidden="true" tabindex="-1"></a>means2 <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(health_org<span class="sc">~</span>sex, soep_2000, mean)                </span>
+<span id="cb37-6"><a href="mean-comparison.html#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="mean-comparison.html#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="do">## BY </span></span>
+<span id="cb37-8"><a href="mean-comparison.html#cb37-8" aria-hidden="true" tabindex="-1"></a>means3 <span class="ot">&lt;-</span> <span class="fu">by</span>(soep_2000<span class="sc">$</span>health_org, soep_2000<span class="sc">$</span>sex, mean)</span>
+<span id="cb37-9"><a href="mean-comparison.html#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="mean-comparison.html#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="do">## DPLYR pipe </span></span>
+<span id="cb37-11"><a href="mean-comparison.html#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb37-12"><a href="mean-comparison.html#cb37-12" aria-hidden="true" tabindex="-1"></a>means4 <span class="ot">&lt;-</span> soep_2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb37-13"><a href="mean-comparison.html#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex)<span class="sc">%&gt;%</span> </span>
+<span id="cb37-14"><a href="mean-comparison.html#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">means =</span> <span class="fu">mean</span>(health_org))</span>
+<span id="cb37-15"><a href="mean-comparison.html#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="mean-comparison.html#cb37-16" aria-hidden="true" tabindex="-1"></a>means_m <span class="ot">&lt;-</span> soep_2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb37-17"><a href="mean-comparison.html#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-18"><a href="mean-comparison.html#cb37-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_education=</span><span class="fu">mean</span>(health_org))</span>
+<span id="cb37-19"><a href="mean-comparison.html#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-20"><a href="mean-comparison.html#cb37-20" aria-hidden="true" tabindex="-1"></a>means_f <span class="ot">&lt;-</span> soep_2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb37-21"><a href="mean-comparison.html#cb37-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-22"><a href="mean-comparison.html#cb37-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_education=</span><span class="fu">mean</span>(health_org)) </span></code></pre></div>
+<p>Check how different <code>means1</code>, <code>means2</code> and <code>means3</code> look like in the console.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="mean-comparison.html#cb38-1" aria-hidden="true" tabindex="-1"></a>means1</span></code></pre></div>
+<pre><code>##        0        1 
+## 3.509326 3.462017</code></pre>
+<!-- Means can be compared in plain text. The mean education of men in 2000 is 11.8848637 years and mean education of women in 2000 is 11.6438356 years. But how to evaluate this difference? Is there a meaningful difference? Is it almost equal? We add confidence intervals to group means as a measure of uncertainty. -->
+</div>
+<div id="furious-with-factors" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Furious with Factors<a href="mean-comparison.html#furious-with-factors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In order to make labels nice and usable, you need to define <code>sex</code> as a <strong>factor variable</strong>. A factor variable is a variable used for categorical data. Some categories are ordered (e.g. small, medium, large), some are not (e.g. men, women). An integer or string can be converted to a factor. Factors have hidden <strong>levels</strong>. Several R functions and packages treat factors fundamentally different from integers. When R handles <code>sex</code> as an integer, it assumes that values such as <code>sex=-3</code> and <code>sex=1.5</code> are possible. This is what happens to numbers.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="mean-comparison.html#cb40-1" aria-hidden="true" tabindex="-1"></a>gender_numbers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb40-2"><a href="mean-comparison.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gender_numbers)</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0     0.0     1.0     0.6     1.0     1.0</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="mean-comparison.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(gender_numbers)</span></code></pre></div>
+<pre><code>## gender_numbers
+## 0 1 
+## 2 3</code></pre>
+<p>A mean can be calculated. Compare to character coding.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="mean-comparison.html#cb44-1" aria-hidden="true" tabindex="-1"></a>gender_words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>, <span class="st">&quot;female&quot;</span>)</span>
+<span id="cb44-2"><a href="mean-comparison.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gender_words)</span></code></pre></div>
+<pre><code>##    Length     Class      Mode 
+##         5 character character</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="mean-comparison.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(gender_words)</span></code></pre></div>
+<pre><code>## gender_words
+## female   male 
+##      3      2</code></pre>
+<p>Now, convert the gender variable to a factor and calculate the mean again.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="mean-comparison.html#cb48-1" aria-hidden="true" tabindex="-1"></a>soep_2000<span class="sc">$</span>sex_factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(soep_2000<span class="sc">$</span>sex) </span>
+<span id="cb48-2"><a href="mean-comparison.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(soep_2000<span class="sc">$</span>sex_factor) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>) </span>
+<span id="cb48-3"><a href="mean-comparison.html#cb48-3" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(soep_2000<span class="sc">$</span>health_org, <span class="at">INDEX=</span>soep_2000<span class="sc">$</span>sex_factor, <span class="at">FUN=</span>mean) </span>
+<span id="cb48-4"><a href="mean-comparison.html#cb48-4" aria-hidden="true" tabindex="-1"></a>means</span></code></pre></div>
+<pre><code>##     male   female 
+## 3.509326 3.462017</code></pre>
+<!-- First, we analyze the statistical significance of the mean difference. Then, we plot the mean difference.  -->
+<p>The average health status is higher for men in comparison to women in the data. What else can we say about this difference? Is it small or large? A cause for concern? How can we become more confident of the result? We do a statistical test that compares the means.</p>
+<!-- The interval of all observed values can be investigated with the `summary(soep_2000$satisf_org)` as min/max.  -->
+<!-- https://www.statisticshowto.com/probability-and-statistics/hypothesis-testing/ -->
+<!-- A statistical hypothesis test is a method of statistical inference used to decide whether the data at hand sufficiently support a particular hypothesis.  -->
+<div class="infobox2 information">
+<p>Hypothesis testing in statistics is a way to test the results of a survey or experiment to see if there are meaningful results.</p>
+</div>
+<p>It’s basically testing whether the results are valid by figuring out the odds that the results have happened by chance. If the results may have happened by chance, the experiment won’t be repeatable and so has little use.</p>
+</div>
+</div>
+<div id="students-t-test" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Student’s t-test<a href="mean-comparison.html#students-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios/##how-to-compute-students-t-test-by-hand -->
+<!-- https://suinotes.wordpress.com/2009/11/30/understanding-t-test-in-r/ -->
+<div class="infobox2 beer">
+<details>
+<summary>
+<em>What this has do to with beer.</em>
+</summary>
+<strong>Student’s t-test</strong> or simply t-test was published W.S. Gossett who hid his name due to his position as a worker in a <strong>brewery company</strong> (Guiness Brewery Dublin).
+</details>
+</div>
+<p>Here is a t-test (it takes a formula as input, the relation between <code>health_org</code> and <code>sex</code>):</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="mean-comparison.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> sex, <span class="at">data=</span>soep_2000)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  health_org by sex
+## t = 1.3118, df = 2968.8, p-value = 0.1897
+## alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+## 95 percent confidence interval:
+##  -0.02340655  0.11802305
+## sample estimates:
+## mean in group 0 mean in group 1 
+##        3.509326        3.462017</code></pre>
+<p>Look at the output of the t-test:</p>
+<ul>
+<li>The so called t-statistic is 1.3117519</li>
+<li>The degrees of freedom are 2968.8493968</li>
+<li>The p-value of 0.1897053</li>
+<li>The 95% confidence interval is [-0.0234066;0.118023]</li>
+</ul>
+<p>The t-statistic is at the heart of the hypothesis test. The t value has to be compared to a critical value in a t table to decide whether or not to reject the <strong>null hypothesis</strong> (H0). The null states: Move along, there’s nothing to see here!</p>
+<p>The p-value can be seen as easy-alternative to the t-statistic. You probably never look up critical t values, do you? If you just want to glimpse at it, <a href="https://jimgrange.wordpress.com/2015/12/05/statistics-tables-where-do-the-numbers-come-from/">here is one</a>. We are looking forward getting <strong>small p-values</strong> (smaller than 0.05 by convention). If p &lt; 0.05 we say that we reject the null and conclude that there is actually something going on!</p>
+<div class="infobox2 information">
+<p>If a p value is less than 0.05, the result is called <strong>statistically significant</strong>.</p>
+</div>
+<p>The 95% confidence interval (CI) is another way of looking at the same issue. 95% of the values should be in the interval 0.1 to 0.3. Thus if zero is not in the CI we can be pretty sure that something is going on.</p>
+<p>Apparently, degrees of freedom prefer to keep an air of mystery about them.</p>
+<!-- When building models, you want to have more observations than parameters that are estimated for the model. These extra variables are called degrees of freedom.  -->
+<p>Actually there a <a href="https://en.wikipedia.org/wiki/Student%27s_t-test">several different versions</a> of the t.test and <code>t.test()</code> tells you that it’s a <strong>Welch Two Sample t-test</strong>. Unfortunately, Bernard Lewis Welch did not work for a Brewery company. The Welch’s t-test (or unequal variances t-test), is a two-sample location test which is used to test the hypothesis that two populations have equal means.</p>
+</div>
+<div id="plot-with-confidence" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Plot with Confidence<a href="mean-comparison.html#plot-with-confidence" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- http://www.sthda.com/english/wiki/plot-group-means-and-confidence-intervals-r-base-graphs -->
+<p>Time to plot. In addition to the group means we plot <strong>confidence intervals</strong> using the <code>gplots</code> package with the <code>plotmeans()</code> function. The result is this:</p>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><code>plotmeans()</code> nicely presents the number of observations and labels by default.</p>
+<div class="infobox2 information">
+<p>There is a statistically significant difference, when confidence intervals not overlap.</p>
+</div>
+<p>Conclusion: Don’t worry about the health differential.</p>
+<!-- A t-test is indeed more about a **t-value**. Although, applied researcher and data scientists are more interested in the **p-value**.  -->
+<!-- The formula on Wikipedia [Dependent t-test for paired samples](https://en.wikipedia.org/wiki/Student%27s_t-test##Dependent_t-test_for_paired_samples) comes as follows: -->
+<!-- $$ t = \frac{\bar{X}_D - \mu_0}{s_D/\sqrt n} $$ -->
+</div>
+<div id="independent-t-test" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Independent t-test<a href="mean-comparison.html#independent-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now we learn about two different versions of the two sample t-test:</p>
+<ul>
+<li>Independent (or unpaired) t-test</li>
+<li>Dependent (or paired or repeated) t-test</li>
+</ul>
+<p>There is a one sample t-test which does not help much for group comparison. You can read more about <a href="https://en.wikipedia.org/wiki/Student%27s_t-test##Unpaired_and_paired_two-sample_t-tests">Unpaired and paired two-sample t-tests</a>. The first <code>t.test</code> on health between gender was unpaired since the <strong>default</strong> option is <code>paired=FALSE</code>. We used the unpaired t-test for gender, since men and women are <em>independent</em> in the sense of statistical samples (though this may be different in other relationships).</p>
+<p>For the next calculation we create another subsample and focus on all women who are observed in 2000 and 2004. We can compare women to men. We can compare women to themselves.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="mean-comparison.html#cb52-1" aria-hidden="true" tabindex="-1"></a>women_before_after <span class="ot">&lt;-</span> soep_no_na <span class="sc">%&gt;%</span></span>
+<span id="cb52-2"><a href="mean-comparison.html#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="do">## filter all males</span></span>
+<span id="cb52-3"><a href="mean-comparison.html#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2000</span> <span class="sc">|</span> year <span class="sc">==</span> <span class="dv">2004</span>) <span class="sc">%&gt;%</span> <span class="do">## only use year 2000 or 2004</span></span>
+<span id="cb52-4"><a href="mean-comparison.html#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="do">## look at id groups</span></span>
+<span id="cb52-5"><a href="mean-comparison.html#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">==</span> <span class="dv">2</span>) <span class="do">## only keep groups with exactly two observations/rows</span></span></code></pre></div>
+<p>The unpaired t-test on women’s health is:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="mean-comparison.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> year, <span class="at">data=</span>women_before_after, <span class="at">paired=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  health_org by year
+## t = 3.6158, df = 1629.9, p-value = 0.0003085
+## alternative hypothesis: true difference in means between group 2000 and group 2004 is not equal to 0
+## 95 percent confidence interval:
+##  0.07850093 0.26463633
+## sample estimates:
+## mean in group 2000 mean in group 2004 
+##           3.497549           3.325980</code></pre>
+<!-- http://www.sthda.com/english/wiki/paired-samples-t-test-in-r -->
+<p>It looks like women have been significantly more healthy in 2000 than in 2004. Can you think of a reason? What happened to all those women?</p>
+</div>
+<div id="dependent-t-test" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Dependent t-test<a href="mean-comparison.html#dependent-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now run the t.test as <code>paired=TRUE</code>.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="mean-comparison.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> year, <span class="at">data=</span>women_before_after, <span class="at">paired=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  health_org by year
+## t = 5.7026, df = 815, p-value = 1.65e-08
+## alternative hypothesis: true mean difference is not equal to 0
+## 95 percent confidence interval:
+##  0.1125131 0.2306242
+## sample estimates:
+## mean difference 
+##       0.1715686</code></pre>
+<p>The paired t-test is a little bit more exiting in the way that we need data on something observed at two different points in time. In this before-and-after scenario, the person serves as something like its own control group. We’ll come back to that.</p>
+<p>The mean difference is exactly the same (can you see it? - ask your console to calculate the difference between 3.497549 and 3.325980). But all the other statistics seem to be different: t-value, degree of freedom, p-value …</p>
+<!-- https://scandiweb.com/blog/t-tests-explained/ -->
+<!-- The way it works is as follows. During any type of t-test, your sample data (size and variability) is processed and distilled to a single number – the t-value. The result equal to zero means that your data matches the null hypothesis and there are no irregularities found. The increase in the absolute value of the t-value signifies that the difference between the sample data and the null hypothesis is also increasing. -->
+<!-- Please hard code this formula by hand in R. In detail: -->
+<!-- - Calculate the differences (before/old and after/new) in the paired sample. -->
+<!-- - Calculate the mean of these differences.  -->
+<!-- - Calculate the number of pairs. -->
+<!-- - Calculate the standard deviation of the differences.  -->
+<!-- - Please store all those values in R objects, i.e. never assign a number such as `n <- 100`.  -->
+<!-- - Put everything together according to the formula above.  -->
+<!-- https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios/ -->
+<div class="infobox2 information">
+<p>In this scenario the mean difference from the <code>paired=TRUE</code> and <code>paired=FALSE</code> test are identical. But using the information from the <strong>paired sample</strong> (one person observed for two periods), the <strong>t-value became higher and thus the p-value lower</strong>. In a nutshell, we gained more statistical confidence in our estimate!</p>
+</div>
+<p>Once more we saw how valuable time is. We explore this in more detail in the next chapter.</p>
+<details>
+<summary>
+<em>Now, you can call yourself …</em>
+</summary>
+<img src="images/mr-t-test.jpg" />
+</details>
+<!-- ![half-size image](foo.jpg){##id .class width=50% height=50%} -->
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="group-comparison.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="panel-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Empirical Research.pdf", "Empirical Research.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toc_depth": 2,
+"toolbar": {
+"positon": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

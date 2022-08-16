@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Text Mining | Becoming Fluent in Data</title>
+  <meta name="description" content="This is my first gitbook." />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Text Mining | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/scream.jpg" />
+  <meta property="og:description" content="This is my first gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Text Mining | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="This is my first gitbook." />
+  <meta name="twitter:image" content="/scream.jpg" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2022-08-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="panel-data.html"/>
+<link rel="next" href="git-and-github.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.9/grViz.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Empirical Research</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="part"><span><b>I Preface</b></span></li>
+<li class="chapter" data-level="1" data-path="teach-learn-repeat.html"><a href="teach-learn-repeat.html"><i class="fa fa-check"></i><b>1</b> Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="2" data-path="a-question-you-care-about.html"><a href="a-question-you-care-about.html"><i class="fa fa-check"></i><b>2</b> A Question You Care About</a></li>
+<li class="chapter" data-level="3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>3</b> Data is everywhere</a></li>
+<li class="chapter" data-level="4" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>4</b> Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="regression.html"><a href="regression.html#from-zero-to-hero"><i class="fa fa-check"></i><b>4.1</b> From Zero To Hero</a></li>
+<li class="chapter" data-level="4.2" data-path="regression.html"><a href="regression.html#from-artists-and-economists"><i class="fa fa-check"></i><b>4.2</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="4.3" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>4.3</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>4.3.1</b> Data in a table</a></li>
+<li class="chapter" data-level="4.3.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>4.3.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="4.3.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>4.3.3</b> The trend</a></li>
+<li class="chapter" data-level="4.3.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>4.3.4</b> The blackbox</a></li>
+<li class="chapter" data-level="4.3.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>4.3.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="4.3.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>4.3.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>4.4</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>4.4.1</b> Algebra</a></li>
+<li class="chapter" data-level="4.4.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>4.4.2</b> Analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>4.4.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>4.5</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="4.6" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>4.6</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="part"><span><b>II Data Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="group-comparison.html"><a href="group-comparison.html"><i class="fa fa-check"></i><b>5</b> Group Comparison</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="group-comparison.html"><a href="group-comparison.html#learning-goals"><i class="fa fa-check"></i><b>5.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="group-comparison.html"><a href="group-comparison.html#story-telling"><i class="fa fa-check"></i><b>5.2</b> Story Telling</a></li>
+<li class="chapter" data-level="5.3" data-path="group-comparison.html"><a href="group-comparison.html#comparability"><i class="fa fa-check"></i><b>5.3</b> Comparability</a></li>
+<li class="chapter" data-level="5.4" data-path="group-comparison.html"><a href="group-comparison.html#soep-practice-data"><i class="fa fa-check"></i><b>5.4</b> SOEP Practice Data</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="group-comparison.html"><a href="group-comparison.html#loading-the-data"><i class="fa fa-check"></i><b>5.4.1</b> Loading the Data</a></li>
+<li class="chapter" data-level="5.4.2" data-path="group-comparison.html"><a href="group-comparison.html#inspect-the-data"><i class="fa fa-check"></i><b>5.4.2</b> Inspect the Data</a></li>
+<li class="chapter" data-level="5.4.3" data-path="group-comparison.html"><a href="group-comparison.html#stata-information"><i class="fa fa-check"></i><b>5.4.3</b> Stata information</a></li>
+<li class="chapter" data-level="5.4.4" data-path="group-comparison.html"><a href="group-comparison.html#summary-statistics"><i class="fa fa-check"></i><b>5.4.4</b> Summary statistics</a></li>
+<li class="chapter" data-level="5.4.5" data-path="group-comparison.html"><a href="group-comparison.html#missing-data"><i class="fa fa-check"></i><b>5.4.5</b> Missing data</a></li>
+<li class="chapter" data-level="5.4.6" data-path="group-comparison.html"><a href="group-comparison.html#standardization"><i class="fa fa-check"></i><b>5.4.6</b> Standardization</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="group-comparison.html"><a href="group-comparison.html#never-use-pie-charts"><i class="fa fa-check"></i><b>5.5</b> Never use pie charts</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mean-comparison.html"><a href="mean-comparison.html"><i class="fa fa-check"></i><b>6</b> Mean Comparison</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mean-comparison.html"><a href="mean-comparison.html#learning-goals-1"><i class="fa fa-check"></i><b>6.1</b> Learning Goals</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="mean-comparison.html"><a href="mean-comparison.html#data-preparation"><i class="fa fa-check"></i><b>6.1.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="6.1.2" data-path="mean-comparison.html"><a href="mean-comparison.html#grouped-mean"><i class="fa fa-check"></i><b>6.1.2</b> Grouped Mean</a></li>
+<li class="chapter" data-level="6.1.3" data-path="mean-comparison.html"><a href="mean-comparison.html#furious-with-factors"><i class="fa fa-check"></i><b>6.1.3</b> Furious with Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="mean-comparison.html"><a href="mean-comparison.html#students-t-test"><i class="fa fa-check"></i><b>6.2</b> Student’s t-test</a></li>
+<li class="chapter" data-level="6.3" data-path="mean-comparison.html"><a href="mean-comparison.html#plot-with-confidence"><i class="fa fa-check"></i><b>6.3</b> Plot with Confidence</a></li>
+<li class="chapter" data-level="6.4" data-path="mean-comparison.html"><a href="mean-comparison.html#independent-t-test"><i class="fa fa-check"></i><b>6.4</b> Independent t-test</a></li>
+<li class="chapter" data-level="6.5" data-path="mean-comparison.html"><a href="mean-comparison.html#dependent-t-test"><i class="fa fa-check"></i><b>6.5</b> Dependent t-test</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>7</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="panel-data.html"><a href="panel-data.html#learning-goals-2"><i class="fa fa-check"></i><b>7.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="panel-data.html"><a href="panel-data.html#paneldata"><i class="fa fa-check"></i><b>7.2</b> Paneldata</a></li>
+<li class="chapter" data-level="7.3" data-path="panel-data.html"><a href="panel-data.html#data-preparation-1"><i class="fa fa-check"></i><b>7.3</b> Data Preparation</a></li>
+<li class="chapter" data-level="7.4" data-path="panel-data.html"><a href="panel-data.html#group-by-person"><i class="fa fa-check"></i><b>7.4</b> Group by person</a></li>
+<li class="chapter" data-level="7.5" data-path="panel-data.html"><a href="panel-data.html#data-visualization"><i class="fa fa-check"></i><b>7.5</b> Data Visualization</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="panel-data.html"><a href="panel-data.html#average-health-per-year"><i class="fa fa-check"></i><b>7.5.1</b> Average Health per Year</a></li>
+<li class="chapter" data-level="7.5.2" data-path="panel-data.html"><a href="panel-data.html#individual-health-per-year"><i class="fa fa-check"></i><b>7.5.2</b> Individual Health per Year</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="panel-data.html"><a href="panel-data.html#within-and-between-variation"><i class="fa fa-check"></i><b>7.6</b> Within and Between Variation</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="panel-data.html"><a href="panel-data.html#xtsum-from-stata"><i class="fa fa-check"></i><b>7.6.1</b> XTSUM (from Stata)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text Mining</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#learning-goals-3"><i class="fa fa-check"></i><b>8.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#get-text"><i class="fa fa-check"></i><b>8.2</b> Get Text</a></li>
+<li class="chapter" data-level="8.3" data-path="text-mining.html"><a href="text-mining.html#translate-everything-to-english"><i class="fa fa-check"></i><b>8.3</b> Translate Everything To English</a></li>
+<li class="chapter" data-level="8.4" data-path="text-mining.html"><a href="text-mining.html#text-analysis"><i class="fa fa-check"></i><b>8.4</b> Text Analysis</a></li>
+<li class="chapter" data-level="8.5" data-path="text-mining.html"><a href="text-mining.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>8.5</b> Little bit of Scraping</a></li>
+</ul></li>
+<li class="part"><span><b>III Appendix</b></span></li>
+<li class="chapter" data-level="9" data-path="git-and-github.html"><a href="git-and-github.html"><i class="fa fa-check"></i><b>9</b> Git and Github</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="git-and-github.html"><a href="git-and-github.html#install-github-and-git"><i class="fa fa-check"></i><b>9.1</b> Install Github and Git</a></li>
+<li class="chapter" data-level="9.2" data-path="git-and-github.html"><a href="git-and-github.html#working-with-git"><i class="fa fa-check"></i><b>9.2</b> Working with Git</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="git-and-github.html"><a href="git-and-github.html#git-version"><i class="fa fa-check"></i><b>9.2.1</b> git version</a></li>
+<li class="chapter" data-level="9.2.2" data-path="git-and-github.html"><a href="git-and-github.html#git-config"><i class="fa fa-check"></i><b>9.2.2</b> git config</a></li>
+<li class="chapter" data-level="9.2.3" data-path="git-and-github.html"><a href="git-and-github.html#git-init"><i class="fa fa-check"></i><b>9.2.3</b> git init</a></li>
+<li class="chapter" data-level="9.2.4" data-path="git-and-github.html"><a href="git-and-github.html#git-status-and-diff"><i class="fa fa-check"></i><b>9.2.4</b> git status and diff</a></li>
+<li class="chapter" data-level="9.2.5" data-path="git-and-github.html"><a href="git-and-github.html#git-commit"><i class="fa fa-check"></i><b>9.2.5</b> git commit</a></li>
+<li class="chapter" data-level="9.2.6" data-path="git-and-github.html"><a href="git-and-github.html#git-add"><i class="fa fa-check"></i><b>9.2.6</b> git add</a></li>
+<li class="chapter" data-level="9.2.7" data-path="git-and-github.html"><a href="git-and-github.html#git-remote-add"><i class="fa fa-check"></i><b>9.2.7</b> git remote add</a></li>
+<li class="chapter" data-level="9.2.8" data-path="git-and-github.html"><a href="git-and-github.html#git-push"><i class="fa fa-check"></i><b>9.2.8</b> git push</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="git-and-github.html"><a href="git-and-github.html#basic-routines"><i class="fa fa-check"></i><b>9.3</b> Basic Routines</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="git-and-github.html"><a href="git-and-github.html#add-commit-push"><i class="fa fa-check"></i><b>9.3.1</b> Add + Commit + Push</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="git-and-github.html"><a href="git-and-github.html#resources"><i class="fa fa-check"></i><b>9.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="slope-fields.html"><a href="slope-fields.html"><i class="fa fa-check"></i><b>10</b> Slope Fields</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="slope-fields.html"><a href="slope-fields.html#definition"><i class="fa fa-check"></i><b>10.1</b> Definition</a></li>
+<li class="chapter" data-level="10.2" data-path="slope-fields.html"><a href="slope-fields.html#slope-fields-in-r"><i class="fa fa-check"></i><b>10.2</b> Slope Fields in R</a></li>
+<li class="chapter" data-level="10.3" data-path="slope-fields.html"><a href="slope-fields.html#understandable-examples"><i class="fa fa-check"></i><b>10.3</b> Understandable Examples</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="slope-fields.html"><a href="slope-fields.html#y-y"><i class="fa fa-check"></i><b>10.3.1</b> y’ = y</a></li>
+<li class="chapter" data-level="10.3.2" data-path="slope-fields.html"><a href="slope-fields.html#y--y"><i class="fa fa-check"></i><b>10.3.2</b> y’ = -y</a></li>
+<li class="chapter" data-level="10.3.3" data-path="slope-fields.html"><a href="slope-fields.html#y-x2"><i class="fa fa-check"></i><b>10.3.3</b> y’ = x^2</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="slope-fields.html"><a href="slope-fields.html#initial-value-problem"><i class="fa fa-check"></i><b>10.4</b> Initial value problem</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="text-mining" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Text Mining<a href="text-mining.html#text-mining" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="learning-goals-3" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Learning Goals<a href="text-mining.html#learning-goals-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="infobox2 information">
+<ul>
+<li>Conceptual Skills:
+<ul>
+<li>What text data is and where to get text data from.</li>
+<li>What API is and how to use an API inside R.</li>
+<li>What tidy (text) data format is.</li>
+</ul></li>
+<li>Data Skills:
+<ul>
+<li>Install packages from GitHub via <code>devtools</code>.</li>
+<li>Clean text data with <code>tidytext</code>, e.g. <code>str_remove_all()</code>, <code>str_to_lower()</code>, <code>str_trim()</code>.</li>
+<li>Create tidy text format with <code>unnest_tokens()</code></li>
+<li>Removing stop words <code>anti_join()</code>.</li>
+<li>Data Visualization: Term Frequency as Wordcloud and barchart.</li>
+</ul></li>
+</ul>
+</div>
+<!-- An application programming interface (API) is a connection between computers or between computer programs. It is a type of software interface, offering a service to other pieces of software.[1] A document or standard that describes how to build or use such a connection or interface is called an API specification. A computer system that meets this standard is said to implement or expose an API. The term API may refer either to the specification or to the implementation.  -->
+<p><strong>Text data</strong> usually consists of documents which can represent words, sentences or even paragraphs of free flowing text. The inherent <strong>unstructured</strong> (no neatly formatted data columns!) and <strong>noisy nature</strong> of textual data makes it harder for data analysts to directly work on raw text data.</p>
+<p>This material also introduces new features for R markdown reports:</p>
+<ul>
+<li><em>Code Folding</em> <a href="https://bookdown.org/yihui/rmarkdown-cookbook/fold-show.html" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/fold-show.html</a></li>
+<li><em>Tab Sets</em> <a href="https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html</a></li>
+</ul>
+<p>In your YAML header you can set an option under <code>html_document:</code> like <code>code_folding: hide</code>. Be aware of the necessary spacing in the html options. You can add the <code>{.tabset}</code> option to a headline and starting tab setting here. You end tab setting by an empty headline like <code>#### {-}</code>. In between you need to specify sub-headlines (at least one more hash-tag).</p>
+</div>
+<div id="get-text" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Get Text<a href="text-mining.html#get-text" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="text-datasets" class="section level4 tabset hasAnchor" number="8.2.0.1">
+<h4><span class="header-section-number">8.2.0.1</span> Text datasets<a href="text-mining.html#text-datasets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>There are various built-in datasets for text (e.g. <code>janeaustenr</code> package).</p>
+<div id="jane-austin-books" class="section level6 hasAnchor" number="8.2.0.1.0.1">
+<h6><span class="header-section-number">8.2.0.1.0.1</span> Jane Austin books<a href="text-mining.html#jane-austin-books" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p>This table gives a list of all the Jane Austin books included and their rownumbers.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="text-mining.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janeaustenr)</span>
+<span id="cb75-2"><a href="text-mining.html#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">austen_books</span>()<span class="sc">$</span>book)</span></code></pre></div>
+<pre><code>## 
+## Sense &amp; Sensibility   Pride &amp; Prejudice      Mansfield Park                Emma 
+##               12624               13030               15349               16235 
+##    Northanger Abbey          Persuasion 
+##                7856                8328</code></pre>
+</div>
+<div id="select-a-specific-book." class="section level6 hasAnchor" number="8.2.0.1.0.2">
+<h6><span class="header-section-number">8.2.0.1.0.2</span> Select a specific book.<a href="text-mining.html#select-a-specific-book." class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p>You can read entire books in R.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="text-mining.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb77-2"><a href="text-mining.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">austen_books</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb77-3"><a href="text-mining.html#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(book <span class="sc">==</span> <span class="st">&quot;Emma&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb77-4"><a href="text-mining.html#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">&gt;</span> <span class="dv">10</span>, <span class="fu">row_number</span>() <span class="sc">&lt;</span> <span class="dv">20</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 9 × 2
+##   text                                                                     book 
+##   &lt;chr&gt;                                                                    &lt;fct&gt;
+## 1 &quot;&quot;                                                                       Emma 
+## 2 &quot;CHAPTER I&quot;                                                              Emma 
+## 3 &quot;&quot;                                                                       Emma 
+## 4 &quot;&quot;                                                                       Emma 
+## 5 &quot;Emma Woodhouse, handsome, clever, and rich, with a comfortable home&quot;    Emma 
+## 6 &quot;and happy disposition, seemed to unite some of the best blessings of&quot;   Emma 
+## 7 &quot;existence; and had lived nearly twenty-one years in the world with ver… Emma 
+## 8 &quot;little to distress or vex her.&quot;                                         Emma 
+## 9 &quot;&quot;                                                                       Emma</code></pre>
+</div>
+</div>
+<div id="section" class="section level4 unnumbered">
+<h4 class="unnumbered"></h4>
+</div>
+<div id="ask-people-digital-literacy-at-viadrina" class="section level4 tabset hasAnchor" number="8.2.0.2">
+<h4><span class="header-section-number">8.2.0.2</span> Ask people: Digital Literacy at Viadrina<a href="text-mining.html#ask-people-digital-literacy-at-viadrina" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We ask people for their data, opinion or evaluation.</p>
+<p>Quick polls and questionnaires can be build in various software, like Zoom or Google.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> There are various provider for more sophisticated surveys (useful in research and theses), e.g. SoSci Survey or SurveyMonkey.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<div id="open-question" class="section level6 hasAnchor" number="8.2.0.2.0.1">
+<h6><span class="header-section-number">8.2.0.2.0.1</span> Open Question<a href="text-mining.html#open-question" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p><img src="images/Item2.png" /></p>
+</div>
+<div id="all-the-data" class="section level6 hasAnchor" number="8.2.0.2.0.2">
+<h6><span class="header-section-number">8.2.0.2.0.2</span> All the data<a href="text-mining.html#all-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p>Feather is a file format that can read and write faster. Storage is often reduced. The <code>arrow</code> package cannot read files from a web source (http). Download the file and use a local absolute or relative path to the data.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="text-mining.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb79-2"><a href="text-mining.html#cb79-2" aria-hidden="true" tabindex="-1"></a>digital <span class="ot">&lt;-</span> <span class="fu">read_feather</span>(<span class="st">&quot;data/Digital_Literacy_EN.feather&quot;</span>)</span>
+<span id="cb79-3"><a href="text-mining.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb79-4"><a href="text-mining.html#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(digital)</span></code></pre></div>
+<pre><code>## Rows: 77
+## Columns: 12
+## $ Research    &lt;int&gt; 5, 5, 4, 4, 5, 4, 4, 5, 4, 2, 4, 4, 2, 4, 4, 5, 3, 4, 5, 3…
+## $ Interaction &lt;int&gt; 5, 5, 3, 4, 1, 5, 4, 5, 5, 5, 5, 5, 5, 3, 4, 5, 4, 4, 5, 4…
+## $ Identity    &lt;int&gt; 3, 3, 3, 4, 3, 4, 2, 5, 5, 5, 3, 4, 4, 3, 4, 5, 2, 4, 5, 4…
+## $ Content     &lt;int&gt; 5, 4, NA, 3, 3, 4, 2, 4, 4, 1, 3, 4, 4, 4, 2, 3, 2, 4, 3, …
+## $ Privacy     &lt;int&gt; 4, 3, 2, 2, 5, 3, 2, 5, 4, 3, 4, 4, 3, 2, 1, 2, 2, 5, 3, 4…
+## $ Problems    &lt;int&gt; 3, 2, 1, 4, 3, 2, 2, 5, 3, 4, 4, 3, 3, 2, 3, 4, 4, 5, 2, 3…
+## $ Teaching    &lt;int&gt; 2, 4, 3, 4, 5, 1, 3, 5, 5, 5, 3, 4, 5, 4, 1, 5, 2, 5, 4, 4…
+## $ Skills      &lt;chr&gt; &quot;Excel&quot;, &quot;Neben den grundlegenden Komputerkentnissen noch …
+## $ Faculty     &lt;fct&gt; Econ, Econ, Econ, Econ, Econ, Econ, Econ, Econ, Econ, Econ…
+## $ Level       &lt;chr&gt; &quot;Master&quot;, &quot;Master&quot;, &quot;Master&quot;, &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Bac…
+## $ Gender      &lt;fct&gt; Female, Male, Female, Female, Female, Male, Male, Female, …
+## $ Skills_EN   &lt;chr&gt; &quot;Excel&quot;, &quot;Besides the basic computer skills, some basic kn…</code></pre>
+</div>
+<div id="the-open-answers" class="section level6 hasAnchor" number="8.2.0.2.0.3">
+<h6><span class="header-section-number">8.2.0.2.0.3</span> The Open Answers<a href="text-mining.html#the-open-answers" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p>In the <code>digital</code> data there are German and English answers to the question what digital competencies are required by students at Viadrina.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="text-mining.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(digital<span class="sc">$</span>Skills)</span></code></pre></div>
+<pre><code>## [1] &quot;Excel&quot;                                                                                                                                                                                                        
+## [2] &quot;Neben den grundlegenden Komputerkentnissen noch eininge Grundkentnissen von Microsoft und Google Leistungen (MS Office, Google drive etc.). Außerdem gibt&#39;s an Viadrina keine hohe digitale Voraussetzungen. &quot;
+## [3] &quot;&quot;                                                                                                                                                                                                             
+## [4] &quot;Ganz viel, ich habe das Gefühl dass meine Mitstudierenden keine Ahnung haben wie man richtig mit digitalen Medien umgeht und auch Programmen wie Office&quot;                                                      
+## [5] &quot;&quot;                                                                                                                                                                                                             
+## [6] &quot;Digital research, Data visualisation / Content creation, Digital security and Legal literacy in the respective area&quot;</code></pre>
+</div>
+</div>
+<div id="section-1" class="section level4 unnumbered">
+<h4 class="unnumbered"></h4>
+</div>
+</div>
+<div id="translate-everything-to-english" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Translate Everything To English<a href="text-mining.html#translate-everything-to-english" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="deepl-api" class="section level4 hasAnchor" number="8.3.0.1">
+<h4><span class="header-section-number">8.3.0.1</span> Deepl API<a href="text-mining.html#deepl-api" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Use <em>Deepl</em> to translate all German responses in <code>digital$Skills</code> into English. There are options:</p>
+<ul>
+<li>Use website manually <a href="https://www.deepl.com/translator" class="uri">https://www.deepl.com/translator</a></li>
+<li>Use Deepl API and R in a programmatic way <a href="https://www.deepl.com/pro##developer" class="uri">https://www.deepl.com/pro##developer</a></li>
+</ul>
+<p>An application programming interface (<strong>API</strong>) is another piece of software that connects computer programs. It is a type of software interface, offering a service to other pieces of software.</p>
+<p>Registration for the track <strong>DeepL API Free</strong> at <a href="https://www.deepl.com/pro##developer" class="uri">https://www.deepl.com/pro##developer</a> requires credit card information for identity check (but no payment). The documentation tells what is included in this pricing model: <em>DeepL API Free is a variant of our DeepL API Pro plan that allows developers to translate up to 500,000 characters per month for free.</em> <a href="https://support.deepl.com/hc/en-us/articles/360021200939-DeepL-API-Free" class="uri">https://support.deepl.com/hc/en-us/articles/360021200939-DeepL-API-Free</a></p>
+</div>
+<div id="deeplr" class="section level4 hasAnchor" number="8.3.0.2">
+<h4><span class="header-section-number">8.3.0.2</span> Deeplr<a href="text-mining.html#deeplr" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Use <code>deeplr</code>, a package that offers an interface to the <strong>Deepl API</strong> (use free version). Some packages are not yet released on the official CRAN server. Good packages can be found on GitHub.</p>
+<ul>
+<li><a href="https://github.com/zumbov2/deeplr" class="uri">https://github.com/zumbov2/deeplr</a></li>
+</ul>
+<p>Use <strong>devtools</strong> to install this package from the GitHub repo. The aim of <code>devtools</code> is to make package development easier by providing R functions that simplify and expedite common tasks.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="text-mining.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb83-2"><a href="text-mining.html#cb83-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;zumbov2/deeplr&quot;</span>)</span></code></pre></div>
+<p>Using the API inside R requires at least one authentication key (password).</p>
+<div class="infobox2 information">
+<p>Do not show or store your auth keys in a script.</p>
+</div>
+<!-- <https://cran.r-project.org/web/packages/httr/vignettes/secrets.html>  -->
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="text-mining.html#cb84-1" aria-hidden="true" tabindex="-1"></a>deeplr<span class="sc">::</span><span class="fu">usage2</span>(<span class="st">&quot;KEY&quot;</span>)</span></code></pre></div>
+<pre><code>## $character_count
+## [1] 0
+## 
+## $character_limit
+## [1] 500000</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb86-1"><a href="text-mining.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="do">## deeplr::translate2(</span></span>
+<span id="cb86-2"><a href="text-mining.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   text = &quot;R ist eine freie Programmiersprache für statistische Berechnungen und Grafiken. Sie wurde 1992 von Statistikern für Anwender mit statistischen Aufgaben neu entwickelt.&quot;,</span></span>
+<span id="cb86-3"><a href="text-mining.html#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   target_lang = &quot;EN&quot;,</span></span>
+<span id="cb86-4"><a href="text-mining.html#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   auth_key = &quot;KEY&quot;</span></span>
+<span id="cb86-5"><a href="text-mining.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   )</span></span></code></pre></div>
+<pre><code>## [1] &quot;R is a free programming language for statistical calculations and graphics. It was newly developed in 1992 by statisticians for users with statistical tasks.&quot;</code></pre>
+</div>
+</div>
+<div id="text-analysis" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Text Analysis<a href="text-mining.html#text-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For this analysis we focus on the intro information on R from English Wikipedia.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb88-1"><a href="text-mining.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wikifacts)</span>
+<span id="cb88-2"><a href="text-mining.html#cb88-2" aria-hidden="true" tabindex="-1"></a>R_EN <span class="ot">&lt;-</span> <span class="fu">wiki_define</span>(<span class="st">&#39;R (programming language)&#39;</span>)</span>
+<span id="cb88-3"><a href="text-mining.html#cb88-3" aria-hidden="true" tabindex="-1"></a>R_EN</span></code></pre></div>
+<pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              R (programming language) 
+## &quot;R is a programming language for statistical computing and graphics supported by the R Core Team and the R Foundation for Statistical Computing. Created by statisticians Ross Ihaka and Robert Gentleman, R is used among data miners, bioinformaticians and statisticians for data analysis and developing statistical software. Users have created packages to augment the functions of the R language.\nAccording to user surveys and studies of scholarly literature databases, R is one of the most commonly used programming languages used in data mining. As of March 2022, R ranks 11th in the TIOBE index, a measure of programming language popularity, in which the language peaked in 8th place in August 2020.The official R software environment is an open-source free software environment within the GNU package, available under the GNU General Public License.&quot;</code></pre>
+<div id="cleaning" class="section level4 hasAnchor" number="8.4.0.1">
+<h4><span class="header-section-number">8.4.0.1</span> Cleaning<a href="text-mining.html#cleaning" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Load the <code>tidytext</code> package. We summarize individual tasks like removing digits, punctuation, whitespaces and seting everything to lower case in the <code>clean_text()</code> function. There is a newline operator <code>\n</code> left. You can replace it with uncommenting the last command.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="text-mining.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb90-2"><a href="text-mining.html#cb90-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-3"><a href="text-mining.html#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="do">## text cleaning</span></span>
+<span id="cb90-4"><a href="text-mining.html#cb90-4" aria-hidden="true" tabindex="-1"></a>clean_text <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb90-5"><a href="text-mining.html#cb90-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span></span>
+<span id="cb90-6"><a href="text-mining.html#cb90-6" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Remove digits</span></span>
+<span id="cb90-7"><a href="text-mining.html#cb90-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">&quot;[:digit:]&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-8"><a href="text-mining.html#cb90-8" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Remove punctuation</span></span>
+<span id="cb90-9"><a href="text-mining.html#cb90-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_remove_all</span>(<span class="st">&quot;[[:punct:]]&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-10"><a href="text-mining.html#cb90-10" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Make everything lowercase</span></span>
+<span id="cb90-11"><a href="text-mining.html#cb90-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_to_lower</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb90-12"><a href="text-mining.html#cb90-12" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Remove any trailing whitespace around the text</span></span>
+<span id="cb90-13"><a href="text-mining.html#cb90-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_trim</span>(<span class="st">&quot;both&quot;</span>) <span class="do">##%&gt;%</span></span>
+<span id="cb90-14"><a href="text-mining.html#cb90-14" aria-hidden="true" tabindex="-1"></a>    <span class="do">##str_replace_all(&quot;[\r\n]&quot; , &quot; &quot;)</span></span>
+<span id="cb90-15"><a href="text-mining.html#cb90-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;r is a programming language for statistical computing and graphics supported by the r core team and the r foundation for statistical computing created by statisticians ross ihaka and robert gentleman r is used among data miners bioinformaticians and statisticians for data analysis and developing statistical software users have created packages to augment the functions of the r language\naccording to user surveys and studies of scholarly literature databases r is one of the most commonly used programming languages used in data mining as of march  r ranks th in the tiobe index a measure of programming language popularity in which the language peaked in th place in august the official r software environment is an opensource free software environment within the gnu package available under the gnu general public license&quot;</code></pre>
+</div>
+<div id="tidytext-format" class="section level4 hasAnchor" number="8.4.0.2">
+<h4><span class="header-section-number">8.4.0.2</span> Tidytext Format<a href="text-mining.html#tidytext-format" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Tidy data has a specific structure:</p>
+<ul>
+<li>Each variable is a column</li>
+<li>Each observation is a row</li>
+</ul>
+<p>We thus define the tidy text format as being a table with one-token-per-row. A token is a meaningful unit of text, such as a word, that we are interested in using for analysis, and tokenization is the process of splitting text into tokens.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="text-mining.html#cb92-1" aria-hidden="true" tabindex="-1"></a>tidytext <span class="ot">&lt;-</span> R_EN_clean <span class="sc">%&gt;%</span></span>
+<span id="cb92-2"><a href="text-mining.html#cb92-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb92-3"><a href="text-mining.html#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, value) <span class="sc">%&gt;%</span></span>
+<span id="cb92-4"><a href="text-mining.html#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort=</span><span class="cn">TRUE</span>)</span>
+<span id="cb92-5"><a href="text-mining.html#cb92-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tidytext)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   word      n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 the      10
+## 2 r         8
+## 3 and       6
+## 4 in        5
+## 5 of        5
+## 6 is        4</code></pre>
+</div>
+<div id="stopwords" class="section level4 hasAnchor" number="8.4.0.3">
+<h4><span class="header-section-number">8.4.0.3</span> Stopwords<a href="text-mining.html#stopwords" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Stop words are a set of commonly used words in a language. Examples of stop words in English are “a”, “the”, “is”, “are” and etc. Stop words are commonly used in Text Mining and Natural Language Processing (NLP) to eliminate words that are so commonly used that they carry very little useful information.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="text-mining.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(stop_words)</span>
+<span id="cb94-2"><a href="text-mining.html#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-3"><a href="text-mining.html#cb94-3" aria-hidden="true" tabindex="-1"></a>tidytext <span class="ot">&lt;-</span> tidytext <span class="sc">%&gt;%</span></span>
+<span id="cb94-4"><a href="text-mining.html#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words)</span>
+<span id="cb94-5"><a href="text-mining.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tidytext)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   word            n
+##   &lt;chr&gt;       &lt;int&gt;
+## 1 language        4
+## 2 data            3
+## 3 programming     3
+## 4 software        3
+## 5 statistical     3
+## 6 computing       2</code></pre>
+</div>
+<div id="term-frequency" class="section level4 hasAnchor" number="8.4.0.4">
+<h4><span class="header-section-number">8.4.0.4</span> Term Frequency<a href="text-mining.html#term-frequency" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Word clouds (also known as text clouds or tag clouds) work in a simple way: the more a specific word appears in a source of textual data (such as a speech, blog post, or database), the bigger and bolder it appears in the word cloud.</p>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+</div>
+</div>
+<div id="little-bit-of-scraping" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Little bit of Scraping<a href="text-mining.html#little-bit-of-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="text-mining.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb96-2"><a href="text-mining.html#cb96-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-3"><a href="text-mining.html#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/R_(programming_language)&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb96-4"><a href="text-mining.html#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extract paragraphs</span></span>
+<span id="cb96-5"><a href="text-mining.html#cb96-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;p&quot;</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb96-6"><a href="text-mining.html#cb96-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extract text</span></span>
+<span id="cb96-7"><a href="text-mining.html#cb96-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb96-8"><a href="text-mining.html#cb96-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## clean</span></span>
+<span id="cb96-9"><a href="text-mining.html#cb96-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_text</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb96-10"><a href="text-mining.html#cb96-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb96-11"><a href="text-mining.html#cb96-11" aria-hidden="true" tabindex="-1"></a>  <span class="do">## tidy text</span></span>
+<span id="cb96-12"><a href="text-mining.html#cb96-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, value) <span class="sc">%&gt;%</span></span>
+<span id="cb96-13"><a href="text-mining.html#cb96-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb96-14"><a href="text-mining.html#cb96-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## stopwords</span></span>
+<span id="cb96-15"><a href="text-mining.html#cb96-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words) <span class="sc">%&gt;%</span></span>
+<span id="cb96-16"><a href="text-mining.html#cb96-16" aria-hidden="true" tabindex="-1"></a>  <span class="do">## select first</span></span>
+<span id="cb96-17"><a href="text-mining.html#cb96-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb96-18"><a href="text-mining.html#cb96-18" aria-hidden="true" tabindex="-1"></a>  <span class="do">## reorder</span></span>
+<span id="cb96-19"><a href="text-mining.html#cb96-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">reorder</span>(word, n)) <span class="sc">%&gt;%</span></span>
+<span id="cb96-20"><a href="text-mining.html#cb96-20" aria-hidden="true" tabindex="-1"></a>  <span class="do">## create frequency plot </span></span>
+<span id="cb96-21"><a href="text-mining.html#cb96-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>word, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb96-22"><a href="text-mining.html#cb96-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb96-23"><a href="text-mining.html#cb96-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Term Frequency of top 20 clean words in Wikipedia aRticle&quot;</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+
+</div>
+</div>
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p><a href="https://www.google.de/intl/en/forms/about/" class="uri">https://www.google.de/intl/en/forms/about/</a><a href="text-mining.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>See <a href="https://www.soscisurvey.de/" class="uri">https://www.soscisurvey.de/</a> and <a href="https://www.surveymonkey.de/" class="uri">https://www.surveymonkey.de/</a><a href="text-mining.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="panel-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="git-and-github.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Empirical Research.pdf", "Empirical Research.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toc_depth": 2,
+"toolbar": {
+"positon": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

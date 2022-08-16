@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 13 Data Visualization | L04 Paneldata</title>
+  <meta name="description" content="This is my first gitbook." />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 13 Data Visualization | L04 Paneldata" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/scream.jpg" />
+  <meta property="og:description" content="This is my first gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 Data Visualization | L04 Paneldata" />
+  
+  <meta name="twitter:description" content="This is my first gitbook." />
+  <meta name="twitter:image" content="/scream.jpg" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2022-08-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="group-by-person.html"/>
+<link rel="next" href="within-and-between-variation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.9/grViz.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Empirical Research</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="part"><span><b>I Preface</b></span></li>
+<li class="chapter" data-level="1" data-path="teach-learn-repeat.html"><a href="teach-learn-repeat.html"><i class="fa fa-check"></i><b>1</b> Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="2" data-path="a-question-you-care-about.html"><a href="a-question-you-care-about.html"><i class="fa fa-check"></i><b>2</b> A Question You Care About</a></li>
+<li class="chapter" data-level="3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>3</b> Data is everywhere</a></li>
+<li class="part"><span><b>II Data Analysis</b></span></li>
+<li class="chapter" data-level="4" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>4</b> Regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="regression.html"><a href="regression.html#from-zero-to-hero"><i class="fa fa-check"></i><b>4.1</b> From Zero To Hero</a></li>
+<li class="chapter" data-level="4.2" data-path="regression.html"><a href="regression.html#from-artists-and-economists"><i class="fa fa-check"></i><b>4.2</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="4.3" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>4.3</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>4.3.1</b> Data in a table</a></li>
+<li class="chapter" data-level="4.3.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>4.3.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="4.3.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>4.3.3</b> The trend</a></li>
+<li class="chapter" data-level="4.3.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>4.3.4</b> The blackbox</a></li>
+<li class="chapter" data-level="4.3.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>4.3.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="4.3.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>4.3.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>4.4</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>4.4.1</b> Algebra</a></li>
+<li class="chapter" data-level="4.4.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>4.4.2</b> Analysis</a></li>
+<li class="chapter" data-level="4.4.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>4.4.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>4.5</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="4.6" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>4.6</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="part"><span><b>III Appendix</b></span></li>
+<li class="chapter" data-level="5" data-path="git-and-github.html"><a href="git-and-github.html"><i class="fa fa-check"></i><b>5</b> Git and Github</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="git-and-github.html"><a href="git-and-github.html#install-github-and-git"><i class="fa fa-check"></i><b>5.1</b> Install Github and Git</a></li>
+<li class="chapter" data-level="5.2" data-path="git-and-github.html"><a href="git-and-github.html#working-with-git"><i class="fa fa-check"></i><b>5.2</b> Working with Git</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="git-and-github.html"><a href="git-and-github.html#git-version"><i class="fa fa-check"></i><b>5.2.1</b> git version</a></li>
+<li class="chapter" data-level="5.2.2" data-path="git-and-github.html"><a href="git-and-github.html#git-config"><i class="fa fa-check"></i><b>5.2.2</b> git config</a></li>
+<li class="chapter" data-level="5.2.3" data-path="git-and-github.html"><a href="git-and-github.html#git-init"><i class="fa fa-check"></i><b>5.2.3</b> git init</a></li>
+<li class="chapter" data-level="5.2.4" data-path="git-and-github.html"><a href="git-and-github.html#git-status-and-diff"><i class="fa fa-check"></i><b>5.2.4</b> git status and diff</a></li>
+<li class="chapter" data-level="5.2.5" data-path="git-and-github.html"><a href="git-and-github.html#git-commit"><i class="fa fa-check"></i><b>5.2.5</b> git commit</a></li>
+<li class="chapter" data-level="5.2.6" data-path="git-and-github.html"><a href="git-and-github.html#git-add"><i class="fa fa-check"></i><b>5.2.6</b> git add</a></li>
+<li class="chapter" data-level="5.2.7" data-path="git-and-github.html"><a href="git-and-github.html#git-remote-add"><i class="fa fa-check"></i><b>5.2.7</b> git remote add</a></li>
+<li class="chapter" data-level="5.2.8" data-path="git-and-github.html"><a href="git-and-github.html#git-push"><i class="fa fa-check"></i><b>5.2.8</b> git push</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="git-and-github.html"><a href="git-and-github.html#basic-routines"><i class="fa fa-check"></i><b>5.3</b> Basic Routines</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="git-and-github.html"><a href="git-and-github.html#add-commit-push"><i class="fa fa-check"></i><b>5.3.1</b> Add + Commit + Push</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="git-and-github.html"><a href="git-and-github.html#resources"><i class="fa fa-check"></i><b>5.4</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="slope-fields.html"><a href="slope-fields.html"><i class="fa fa-check"></i><b>6</b> Slope Fields</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="slope-fields.html"><a href="slope-fields.html#definition"><i class="fa fa-check"></i><b>6.1</b> Definition</a></li>
+<li class="chapter" data-level="6.2" data-path="slope-fields.html"><a href="slope-fields.html#slope-fields-in-r"><i class="fa fa-check"></i><b>6.2</b> Slope Fields in R</a></li>
+<li class="chapter" data-level="6.3" data-path="slope-fields.html"><a href="slope-fields.html#understandable-examples"><i class="fa fa-check"></i><b>6.3</b> Understandable Examples</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="slope-fields.html"><a href="slope-fields.html#y-y"><i class="fa fa-check"></i><b>6.3.1</b> y’ = y</a></li>
+<li class="chapter" data-level="6.3.2" data-path="slope-fields.html"><a href="slope-fields.html#y--y"><i class="fa fa-check"></i><b>6.3.2</b> y’ = -y</a></li>
+<li class="chapter" data-level="6.3.3" data-path="slope-fields.html"><a href="slope-fields.html#y-x2"><i class="fa fa-check"></i><b>6.3.3</b> y’ = x^2</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="slope-fields.html"><a href="slope-fields.html#initial-value-problem"><i class="fa fa-check"></i><b>6.4</b> Initial value problem</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="7" data-path="group-comparison.html"><a href="group-comparison.html"><i class="fa fa-check"></i><b>7</b> Group Comparison</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="group-comparison.html"><a href="group-comparison.html#learning-goals"><i class="fa fa-check"></i><b>7.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="group-comparison.html"><a href="group-comparison.html#story-telling"><i class="fa fa-check"></i><b>7.2</b> Story Telling</a></li>
+<li class="chapter" data-level="7.3" data-path="group-comparison.html"><a href="group-comparison.html#comparability"><i class="fa fa-check"></i><b>7.3</b> Comparability</a></li>
+<li class="chapter" data-level="7.4" data-path="group-comparison.html"><a href="group-comparison.html#soep-practice-data"><i class="fa fa-check"></i><b>7.4</b> SOEP Practice Data</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="group-comparison.html"><a href="group-comparison.html#loading-the-data"><i class="fa fa-check"></i><b>7.4.1</b> Loading the Data</a></li>
+<li class="chapter" data-level="7.4.2" data-path="group-comparison.html"><a href="group-comparison.html#inspect-the-data"><i class="fa fa-check"></i><b>7.4.2</b> Inspect the Data</a></li>
+<li class="chapter" data-level="7.4.3" data-path="group-comparison.html"><a href="group-comparison.html#stata-information"><i class="fa fa-check"></i><b>7.4.3</b> Stata information</a></li>
+<li class="chapter" data-level="7.4.4" data-path="group-comparison.html"><a href="group-comparison.html#summary-statistics"><i class="fa fa-check"></i><b>7.4.4</b> Summary statistics</a></li>
+<li class="chapter" data-level="7.4.5" data-path="group-comparison.html"><a href="group-comparison.html#missing-data"><i class="fa fa-check"></i><b>7.4.5</b> Missing data</a></li>
+<li class="chapter" data-level="7.4.6" data-path="group-comparison.html"><a href="group-comparison.html#standardization"><i class="fa fa-check"></i><b>7.4.6</b> Standardization</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="group-comparison.html"><a href="group-comparison.html#never-use-pie-charts"><i class="fa fa-check"></i><b>7.5</b> Never use pie charts</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="mean-comparison.html"><a href="mean-comparison.html"><i class="fa fa-check"></i><b>8</b> Mean Comparison</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="mean-comparison.html"><a href="mean-comparison.html#learning-goals-1"><i class="fa fa-check"></i><b>8.1</b> Learning Goals</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="mean-comparison.html"><a href="mean-comparison.html#data-preparation"><i class="fa fa-check"></i><b>8.1.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="mean-comparison.html"><a href="mean-comparison.html#grouped-mean"><i class="fa fa-check"></i><b>8.1.2</b> Grouped Mean</a></li>
+<li class="chapter" data-level="8.1.3" data-path="mean-comparison.html"><a href="mean-comparison.html#furious-with-factors"><i class="fa fa-check"></i><b>8.1.3</b> Furious with Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="mean-comparison.html"><a href="mean-comparison.html#students-t-test"><i class="fa fa-check"></i><b>8.2</b> Student’s t-test</a></li>
+<li class="chapter" data-level="8.3" data-path="mean-comparison.html"><a href="mean-comparison.html#plot-with-confidence"><i class="fa fa-check"></i><b>8.3</b> Plot with Confidence</a></li>
+<li class="chapter" data-level="8.4" data-path="mean-comparison.html"><a href="mean-comparison.html#independent-t-test"><i class="fa fa-check"></i><b>8.4</b> Independent t-test</a></li>
+<li class="chapter" data-level="8.5" data-path="mean-comparison.html"><a href="mean-comparison.html#dependent-t-test"><i class="fa fa-check"></i><b>8.5</b> Dependent t-test</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="learning-goals-2.html"><a href="learning-goals-2.html"><i class="fa fa-check"></i><b>9</b> Learning Goals</a></li>
+<li class="chapter" data-level="10" data-path="paneldata.html"><a href="paneldata.html"><i class="fa fa-check"></i><b>10</b> Paneldata</a></li>
+<li class="chapter" data-level="11" data-path="data-preparation-1.html"><a href="data-preparation-1.html"><i class="fa fa-check"></i><b>11</b> Data Preparation</a></li>
+<li class="chapter" data-level="12" data-path="group-by-person.html"><a href="group-by-person.html"><i class="fa fa-check"></i><b>12</b> Group by person</a></li>
+<li class="chapter" data-level="13" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>13</b> Data Visualization</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="data-visualization.html"><a href="data-visualization.html#average-health-per-year"><i class="fa fa-check"></i><b>13.1</b> Average Health per Year</a></li>
+<li class="chapter" data-level="13.2" data-path="data-visualization.html"><a href="data-visualization.html#individual-health-per-year"><i class="fa fa-check"></i><b>13.2</b> Individual Health per Year</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="data-visualization.html"><a href="data-visualization.html#random-panel-sample"><i class="fa fa-check"></i><b>13.2.1</b> Random Panel Sample</a></li>
+<li class="chapter" data-level="13.2.2" data-path="data-visualization.html"><a href="data-visualization.html#personalize-functions"><i class="fa fa-check"></i><b>13.2.2</b> Personalize Functions</a></li>
+<li class="chapter" data-level="13.2.3" data-path="data-visualization.html"><a href="data-visualization.html#minimum-observations-per-group"><i class="fa fa-check"></i><b>13.2.3</b> Minimum Observations per Group</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="within-and-between-variation.html"><a href="within-and-between-variation.html"><i class="fa fa-check"></i><b>14</b> Within and Between Variation</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="within-and-between-variation.html"><a href="within-and-between-variation.html#xtsum-from-stata"><i class="fa fa-check"></i><b>14.1</b> XTSUM (from Stata)</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">L04 Paneldata</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-visualization" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">Chapter 13</span> Data Visualization<a href="data-visualization.html#data-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="average-health-per-year" class="section level2 hasAnchor" number="13.1">
+<h2><span class="header-section-number">13.1</span> Average Health per Year<a href="data-visualization.html#average-health-per-year" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A picture is worth a thousand words. Show a time trend or a relationship at the beginning of your analysis. People fancy plots. Your plot should be interesting and easy to understand. If you think obesity or crime is a problem for society and it’s increasing over time you made a good point of why we should talk about it or analyze it more thoroughly. Actually, after months and years of empirical research, the results often can be summarized in one single plot.</p>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p>Health status in Germany is stable.</p>
+</div>
+<div id="individual-health-per-year" class="section level2 hasAnchor" number="13.2">
+<h2><span class="header-section-number">13.2</span> Individual Health per Year<a href="data-visualization.html#individual-health-per-year" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- **Critical life events** (e.g. birth of a child, death of a loved one, suddenly becoming unemployed, winning the lottery) can have a dramatic effect on life satisfaction. Some events can be anticipated (e.g. birth or marriage). After the event adaptation might follow.  -->
+<!-- ::: -->
+<p>Next, we dig deeper into personal health stories.</p>
+<!-- ```{r warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE} -->
+<!-- soep %>%  -->
+<!--   filter(id < 10000) %>% # better filter for some IDs here, otherwise R crashes  -->
+<!--   ggplot(aes(x = year, y = health_org, group=as_factor(id), color=as_factor(id))) +   -->
+<!--   geom_line() + geom_point() + -->
+<!--   labs(title="Health status per Person",  -->
+<!--        x="Year", y="Health Status") +  -->
+<!--   ylim(1,5)  -->
+<!-- ``` -->
+<!-- <details> -->
+<!-- <summary> -->
+<!-- *Show me the mess.* -->
+<!-- </summary> -->
+<!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE} -->
+<!-- soep %>%  -->
+<!--   filter(id < 10000) %>% # better filter for some IDs here, otherwise R crashes  -->
+<!--   ggplot(aes(x = year, y = satisf_org, group=as_factor(id), color=as_factor(id))) +   -->
+<!--   geom_line() + geom_point() + -->
+<!--   labs(title="Life satisfaction per Person",  -->
+<!--        x="Year", y="Life Satisfaction") +  -->
+<!--   ylim(0,10)  -->
+<!-- ``` -->
+<!-- </details> -->
+<!-- Most observations are in the upper half. No one reports life satisfaction of 0 or 1. Still, this looks messy. Coloring and labeling groups does not help. Single lines cannot be distinguished. If we are interested in individual fate we need to filter for less units.  -->
+<!-- <details> -->
+<!-- <summary> -->
+<!-- *See the filter for id < 1000 * -->
+<!-- </summary> -->
+<!-- ```{r warning=FALSE, message=FALSE, echo=TRUE} -->
+<!-- soep %>%  -->
+<!--   filter(id < 1000) %>% # better filter for some IDs otherwise R crashes  -->
+<!--   ggplot(aes(x = year, y = satisf_org, group=as_factor(id), color=as_factor(id))) +   -->
+<!--   geom_line() + geom_point() + -->
+<!--   labs(title="Life satisfaction per Person",  -->
+<!--        x="Year", y="Life Satisfaction") +  -->
+<!--   ylim(0,10)  -->
+<!-- ``` -->
+<!-- Note that **several people are observed only once or twice**. If we are interested in critical life events we require information before and after an event (e.g. birth of children). Furthermore, panel estimations require at least two observations (which we will learn at the end of the course).  -->
+<!-- </details> -->
+<div id="random-panel-sample" class="section level3 hasAnchor" number="13.2.1">
+<h3><span class="header-section-number">13.2.1</span> Random Panel Sample<a href="data-visualization.html#random-panel-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s use <code>sample_n()</code> for random selection of observations. Each time this command is run, a different random set of observations is drawn. Note that these 5 random observations/rows do not stem from the same people.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="data-visualization.html#cb79-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">5</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 5 × 9
+##       id  year        sex education no_kids    health_org  satisf_org health_std
+##    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl+lbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl+lbl&gt;   &lt;dbl+lbl&gt;      &lt;dbl&gt;
+## 1 157813  2001 0 [male]        11         0 2 [poor]      5 [5 Satis…     -1.49 
+## 2 538654  2002 1 [female]      16         2 2 [poor]      5 [5 Satis…     -1.49 
+## 3 387882  2002 0 [male]        11.5       2 4 [good]      5 [5 Satis…      0.567
+## 4 532989  2000 0 [male]        14         1 5 [very good] 6 [6 Satis…      1.60 
+## 5  50921  2001 0 [male]        13         0 4 [good]      8 [8 Satis…      0.567
+## # … with 1 more variable: satisf_std &lt;dbl&gt;</code></pre>
+<p>If you plant a seed with <code>set.seed</code> randomness becomes reproducible.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="data-visualization.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb81-2"><a href="data-visualization.html#cb81-2" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">5</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 5 × 9
+##       id  year        sex education no_kids     health_org satisf_org health_std
+##    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl+lbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl+lbl&gt;  &lt;dbl+lbl&gt;      &lt;dbl&gt;
+## 1 564721  2001 1 [female]      11.5       0 4 [good]       8 [8 Sati…      0.567
+## 2 643474  2003 0 [male]        NA         2 4 [good]       7 [7 Sati…      0.567
+## 3 121058  2003 1 [female]      10.5       0 3 [satisfacto… 5 [5 Sati…     -0.464
+## 4 268036  2004 1 [female]      NA         0 3 [satisfacto… 9 [9 Sati…     -0.464
+## 5 481638  2004 0 [male]        11.5       2 4 [good]       8 [8 Sati…      0.567
+## # … with 1 more variable: satisf_std &lt;dbl&gt;</code></pre>
+</div>
+<div id="personalize-functions" class="section level3 hasAnchor" number="13.2.2">
+<h3><span class="header-section-number">13.2.2</span> Personalize Functions<a href="data-visualization.html#personalize-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Is there a <code>sample_n_groups</code> command in the tidyverse? Unfortunately not. Even in such a case, it’s unlikely that you need to invent something new. One of the first Google hits is: <a href="https://cmdlinetips.com/2019/07/how-to-randomly-select-groups-in-r-with-dplyr/" class="uri">https://cmdlinetips.com/2019/07/how-to-randomly-select-groups-in-r-with-dplyr/</a> and they suggest:</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="data-visualization.html#cb83-1" aria-hidden="true" tabindex="-1"></a>sample_n_groups <span class="ot">=</span> <span class="cf">function</span>(grouped_df, size, <span class="at">replace =</span> <span class="cn">FALSE</span>, <span class="at">weight=</span><span class="cn">NULL</span>) {</span>
+<span id="cb83-2"><a href="data-visualization.html#cb83-2" aria-hidden="true" tabindex="-1"></a>  grp_var <span class="ot">&lt;-</span> grouped_df <span class="sc">%&gt;%</span> </span>
+<span id="cb83-3"><a href="data-visualization.html#cb83-3" aria-hidden="true" tabindex="-1"></a>    groups <span class="sc">%&gt;%</span></span>
+<span id="cb83-4"><a href="data-visualization.html#cb83-4" aria-hidden="true" tabindex="-1"></a>    unlist <span class="sc">%&gt;%</span> </span>
+<span id="cb83-5"><a href="data-visualization.html#cb83-5" aria-hidden="true" tabindex="-1"></a>    as.character</span>
+<span id="cb83-6"><a href="data-visualization.html#cb83-6" aria-hidden="true" tabindex="-1"></a>  random_grp <span class="ot">&lt;-</span> grouped_df <span class="sc">%&gt;%</span> </span>
+<span id="cb83-7"><a href="data-visualization.html#cb83-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb83-8"><a href="data-visualization.html#cb83-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_n</span>(size, replace, weight) <span class="sc">%&gt;%</span> </span>
+<span id="cb83-9"><a href="data-visualization.html#cb83-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">unique_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">NROW</span>(.))</span>
+<span id="cb83-10"><a href="data-visualization.html#cb83-10" aria-hidden="true" tabindex="-1"></a>  grouped_df <span class="sc">%&gt;%</span> </span>
+<span id="cb83-11"><a href="data-visualization.html#cb83-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">right_join</span>(random_grp, <span class="at">by=</span>grp_var) <span class="sc">%&gt;%</span> </span>
+<span id="cb83-12"><a href="data-visualization.html#cb83-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by_</span>(grp_var) </span>
+<span id="cb83-13"><a href="data-visualization.html#cb83-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>If you run this chunk the function <code>sample_n_groups</code> appears in the right upper panel in RStudio. Now you can use this particular function in your current session. Don’t worry, you don’t have to understand everything from the code provided by others, but make sure that it behaves the way you expect it to. Since this function is based on <code>dplyr</code> commands you can use it within a pipe chain, e.g. pipe it into a ggplot.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="data-visualization.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span><span class="sc">+</span><span class="dv">42</span>)</span>
+<span id="cb84-2"><a href="data-visualization.html#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="data-visualization.html#cb84-3" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb84-4"><a href="data-visualization.html#cb84-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb84-5"><a href="data-visualization.html#cb84-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n_groups</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span> <span class="co"># select all given observations across time for 5 people </span></span>
+<span id="cb84-6"><a href="data-visualization.html#cb84-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> health_org, <span class="at">group=</span><span class="fu">as_factor</span>(id), <span class="at">color=</span><span class="fu">as_factor</span>(id))) <span class="sc">+</span>  </span>
+<span id="cb84-7"><a href="data-visualization.html#cb84-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb84-8"><a href="data-visualization.html#cb84-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Health Status per Person&quot;</span>, </span>
+<span id="cb84-9"><a href="data-visualization.html#cb84-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Health Status&quot;</span>, <span class="at">color=</span><span class="st">&quot;Person&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb84-10"><a href="data-visualization.html#cb84-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">1</span>,<span class="dv">5</span>) </span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p>This is test data from the practice data set. It might be helpful to understand what people we selected to compare our code results. Working with real questionnaire data, next show personal information. If you really need a graph like this, drop the legend.</p>
+<div class="infobox2 caution">
+<p>Never show person IDs in a report.</p>
+</div>
+</div>
+<div id="minimum-observations-per-group" class="section level3 hasAnchor" number="13.2.3">
+<h3><span class="header-section-number">13.2.3</span> Minimum Observations per Group<a href="data-visualization.html#minimum-observations-per-group" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://stackoverflow.com/questions/32565050/r-random-sampling-a-minimum-number-of-observations-from-a-category -->
+<!-- library(data.table) -->
+<!-- setDT(df)[,.SD[sample(.N, sample(min(5,.N):min(.N,14),1))], by=id] -->
+<p>The full potential of panel data is to track people over time. We can literally follow people from graduation, to their first job, marriage, first child and buying yourself a house. But we hardly see that from the previous plot for all people. We select <strong>randomly 3 people who are observed at least 3 times</strong> and plot their life satisfaction over time in a line plot (again, there are several options).</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="data-visualization.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span><span class="sc">+</span><span class="dv">42</span>)</span>
+<span id="cb85-2"><a href="data-visualization.html#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="data-visualization.html#cb85-3" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
+<span id="cb85-4"><a href="data-visualization.html#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb85-5"><a href="data-visualization.html#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>()<span class="sc">&gt;=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span>  <span class="co"># the moment we drop some data</span></span>
+<span id="cb85-6"><a href="data-visualization.html#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n_groups</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span> <span class="co"># select all given observations across time for 3 people</span></span>
+<span id="cb85-7"><a href="data-visualization.html#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> health_org, <span class="at">col=</span><span class="fu">factor</span>(id))) <span class="sc">+</span></span>
+<span id="cb85-8"><a href="data-visualization.html#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="co"># add points connected by lines</span></span>
+<span id="cb85-9"><a href="data-visualization.html#cb85-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Health Status over Time by Person&quot;</span>,</span>
+<span id="cb85-10"><a href="data-visualization.html#cb85-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">&quot;Random Sample of 3 People with at least 3 observations.&quot;</span>,</span>
+<span id="cb85-11"><a href="data-visualization.html#cb85-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Health Status&quot;</span>, <span class="at">colour=</span><span class="st">&quot;Person&quot;</span>) <span class="sc">+</span> <span class="co"># give some illustrative labels</span></span>
+<span id="cb85-12"><a href="data-visualization.html#cb85-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">1</span>,<span class="dv">5</span>) <span class="co"># limit the scale always to all possible values, to prevent random misperceptions</span></span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- Note that this is meaningless practice data. **Do not show person id numbers in your analysis.** -->
+<!-- ::: -->
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="group-by-person.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="within-and-between-variation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Empirical Research.pdf", "Empirical Research.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toc_depth": 2,
+"toolbar": {
+"positon": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
