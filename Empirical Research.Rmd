@@ -1,0 +1,1553 @@
+--- 
+title: "Becoming Fluent in Data"
+subtitle: "Empirical Research (with R) -- Based On True Stories"
+author: "Marco Kühne"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography:
+- book.bib
+- packages.bib
+biblio-style: apalike
+link-citations: yes
+description: This is my first book.
+always_allow_html: yes
+output:
+  html_document:
+    css: !expr here::here("C:/Users/Marco2020/Dropbox/EmpiricalResearch/marcokuehne.github.io/css/styles.css")
+    toc: true
+    toc_depth: 1
+bookdown::gitbook:
+  config:
+    toc_depth: 1
+    toc:
+      collapse: section 
+---
+
+# Dust and Dark {-}
+
+A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where R was introduced in my psychology undergraduate studies. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--chapter:end:index.Rmd-->
+
+# (PART) Preface {-} 
+
+# Teach -- Learn -- Repeat
+
+<!-- Conceptional Background -->
+<!-- A Question You Care About -->
+<!-- subtitle: "A Kickstart for Social Scientists" -->
+<!-- In order to pass a math class, become the head of a study group.  -->
+<!-- Humans feel positive emotion when they have social ties. -->
+
+I fell in love with [learning by teaching](https://en.wikipedia.org/wiki/Learning_by_teaching) the moment I came across this concept. It put the experiences I made into scientific context. I had to pass math classes in my undergraduates, and I became a math tutor for years. I really wanted to master ballroom dance, so I became a dance instructor for life. 
+
+The mode of teaching can differ. I started teaching in the classroom and ballroom and have a standing on Wikipedia. You can contribute on Wikipedia and will get feedback on your neutral point of view, academic writing and rigor. Feedback on YouTube and Social Media can be more diffuse. Now, I turn to writing a book from my collected notes (and questions) on empirical research. I hope to force myself to pinpoint exactly what I know and don't know and how to fill the gaps. Luckily, I am not alone with the approach of creating classes or writing books to learn. 
+
+> I could feel that econometrics was indispensable, and yet I was missing something. But what? It was a theory of causality […]. <b>So, desperate, I did what I always do when I want to learn something new — I developed a course on causality to force myself to learn all the things I didn’t know.</b>
+>
+> `r tufte::quote_footer('Scott Cunningham. In: Causal Inference – The Mixtape')`
+
+This project helped me to learn more about R, RStudio, R Markdown, R Bookdown, HTML/CSS, Git and Github, empirical research, causal inference, statistics, math, frustration tolerance and fun.
+
+<!-- I had the need to learn more about empirical analysis and causal inference. Thus I started a series of seminars covering a mixture of data science, econometrics, statistics and reporting.  -->
+
+<!-- <https://lindeloev.github.io/tests-as-linear/> -->
+
+
+
+<!--chapter:end:01-intro.Rmd-->
+
+# A Question You Care About
+
+Are you passionate about something? Research starts off from a question you really care about. Math, statistics and programming are easier to digest when you are intrinsically motivated to find out more about your topic of interest. This is a brief guide on the main parts of the empirical research process. There's more to the end of it. After answering the research question, a theoretical interpretation can be derived, results are compared to earlier research and conclusions are drawn. 
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(DiagrammeR)
+
+grViz(diagram = "digraph flowchart {
+  node [fontname = arial, shape = oval, color = grey, style = filled]
+  tab1 [label = '@@1']
+  tab2 [label = '@@2']
+  tab3 [label = '@@3']
+  tab4 [label = '@@4']
+  tab5 [label = '@@5']
+  
+  tab1 -> tab2 -> tab3 -> tab4 -> tab5 -> tab1;
+}
+  
+  [1]: 'Research Idea'
+  [2]: 'Literature Review'
+  [3]: 'Empirical Research Question'    
+  [4]: 'Data Collection'    
+  [5]: 'Data Analysis'    
+  ")
+```
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>What you can learn ... </summary>
+- What is at the heart of empirical research: Questions. 
+- How to get and handle tabular data. 
+- The principles of relationships and trends.
+- How to model relationships with equations. 
+- Estimate a relationship with Regression. 
+- The implementation in the statistical software R.
+</details>
+:::
+
+<!-- how to do it yourself instead of relying on data and analysis from someone else. -->
+
+<!-- The chances are pretty high that there is data on your subject.  -->
+
+<!-- A good research question is essential to guide your research paper or thesis. It pinpoints exactly what you want to find out and gives your work a clear focus and purpose. All research questions should be focused, specific and relevant. An empirical research question can be answered by collecting and analyzing data. -->
+
+<!-- ```{r letter-a, echo=FALSE} -->
+<!-- library(learnr) -->
+<!-- question("What number is the letter A in the English alphabet?", -->
+<!--  answer("8"), -->
+<!--  answer("14"), -->
+<!--  answer("1", correct = TRUE), -->
+<!--  answer("23") -->
+<!-- ) -->
+<!-- ``` -->
+
+
+
+## From Zero To Hero
+
+<!-- The Workhorse -->
+
+This chapter introduces the workhorse of empirical research in the social science: Regression. 
+
+<!-- The most important statistical technique ever -->
+
+<!-- > "We are gonna talk about what has been, what is and what always will be the **most important statistical technique ever: Regression.** Almost every analysis you will read or see uses regression in some way of another." -->
+
+<!-- `r tufte::quote_footer('-- Prof. Matt Masten (Duke University)')` -->
+
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- library("vembedr") -->
+<!-- embed_url("https://www.youtube.com/watch?v=ROLeLaR-17U") %>% -->
+<!--   use_start_time("0m3") %>% -->
+<!--   use_align("center") -->
+<!-- ``` -->
+
+<!-- <p style="margin-bottom:1cm;"></p> -->
+
+<!-- "From First Semester To First Degree" -->
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri("workhorse.jpg"), 
+               alt = 'horse', 
+               style = 'position:absolute; top:0; right:0; padding:10px;',
+               width="100")
+```
+
+## From Artists and Economists
+<!-- Your favorite topic -->
+
+> “Every artist was first an amateur.”
+
+`r tufte::quote_footer('-- Ralph Waldo Emerson (1803--1882), US-American essayist, lecturer, philosopher, abolitionist and poet.')`
+
+<p style="margin-bottom:1cm;"></p>
+
+I speculate that the quote from Mr. Emerson is also true for social scientists. 
+
+::: {.infobox .information data-latex="warning"}
+The first and most important point is to choose a topic that you really care about. 
+:::
+
+This can be related to your hobbies, families or friends. Related to your education, job or neighborhood. It can be something from the present or past. It can be your pet as well as your personality, believes and attitudes. It can be gardening or Fortnite. Choose something that you are really interested in. Next, retain a neutral point of view. Collect and analyze data first, discuss and compare your results to others, conclude at the end. 
+
+In this primer I selected artists, specifically famous painter. First, I search for previous research on artists:
+
+<p style="margin-bottom:1cm;"></p>
+
+> "Paul Cezanne died in October 1906 at the age of 67. In time he would be generally regarded as the most influential painter who had worked in the nineteenth century (e.g., Clive Bell, 1982; Clement Greenberg, 1993). Art historians and critics would also agree that his greatest achievement was the work he did late in his life."
+
+`r tufte::quote_footer('-- Galenson, D. W., & Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.<sup>AER is a famous, reliable economic journal.</sup>')`
+
+<p style="margin-bottom:1cm;"></p>
+
+I wonder if there is a relationship between the age of an artist and his productivity? Do artists improve their skills and performance over an entire lifetime step-by-step such that older artists are better than younger artists since they had more "time to practice"? Or is there an optimum age for performance as compared to athletic performances which reaches a peak in youth? Perhaps no one can tell if and when you are kissed by a muse, so exceptional art happens randomly? Another channel could be that it requires time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
+
+That's a pretty good start for a research inquiry :) I raise the question:
+
+&nbsp;
+
+<center>
+**What is the relationship between the age of an artist and his productivity?**
+</center>
+
+&nbsp;
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **research question** is ...</summary>
+focused on a single issue, specific enough to answer thoroughly and feasible to answer within the given timeframe or practical constraints not to mention relevant to your field of study.   
+</details>
+:::
+
+<!-- There are high-quality journal paper analyzing this question.  -->
+
+<!-- Ekelund Jr, R. B., Jackson, J. D., & Tollison, R. D. (2015). Age and productivity: An empirical study of early American artists. Southern Economic Journal, 81(4), 1096-1116. -->
+
+<!-- ::: {.infobox .question data-latex="warning"} -->
+<!-- What exactly is productivity and how can we measure it?  -->
+<!-- ::: -->
+
+But what exactly is productivity and how can we measure it? To keep things simple we follow the literature and measure *productivity* via auction prices for paintings. That's a very *economic perspective* on art. 
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>**Operationalization** is ...</summary>
+the process of defining the measurement of a phenomenon that is not directly measurable 
+</details>
+:::
+
+<p style="color:#808080">What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ). Perhaps something else.</p>
+
+<!-- <sup>What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ),<sup>  -->
+
+## Data is everywhere
+
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- library("vembedr") -->
+<!-- embed_url("https://vimeo.com/303322440") %>% -->
+<!--   #use_start_time("1m32") %>% -->
+<!--   use_align("center") -->
+<!-- ``` -->
+
+<!-- Thus, the higher paintings were selling in an auction (in million US dollar, inflation adjusted), the higher is the artist's productivity. That's not ideal, but the best approach that we have at this time. I select some of the top selling paintings from a Wikipedia list: -->
+
+Researchers use auction price data for which they have to pay. I use free information from a Wikipedia [List of most expensive paintings](https://en.wikipedia.org/wiki/List_of_most_expensive_paintings) of all time. The auction prices are inflation-adjusted by consumer price index in millions of United States dollars in 2019. That's another interesting economic procedure, that we take for given at this analysis 
+
+### Data in a table
+
+<!-- https://www.askart.com/Search_Artist_Auction_Records.aspx -->
+<!-- https://datatables.net/ -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+#setwd("C:\\Users\\Marco2020\\Dropbox\\Viadrina\\Regression")
+artists <- read.csv(file = 'Artists.csv', sep=";", dec=",", encoding="UTF-8")
+names(artists)[1] <- "Artist"
+#names(artists)[4] <- "Age at Painting"
+#names(artists)[5] <- "Age at Death"
+#names(artists)[6] <- "Birth Year"
+```
+
+This is the data in **datatable** format (i.e. you can search and sort the data in the html document): 
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+DT::datatable(artists, rownames = FALSE)
+```
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>**Tabular data** is...</summary>
+common in data analysis. You can create a table in Word or Excel. 
+</details>
+:::
+
+### Data in a graph
+
+Two variables from our data table can be depicted in what is called a **scatterplot**.
+
+<!-- The data from our The graph depicts the data from the table I decide to show the auction price of well-known paintings in relation to the age of the artist. It is called a **scatterplot**. -->
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+#artists
+
+images <- c("https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg/95px-Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg",  # CLINIC 
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Darmstadtmadonna.jpg/95px-Darmstadtmadonna.jpg", # Darmstadt Madonna
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg/95px-Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg", # Rideau 
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Claude_Monet_-_Meules_%28W_1273%29.jpg/95px-Claude_Monet_-_Meules_%28W_1273%29.jpg" # Meules
+         )
+               
+```
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+library(ggplot2)
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  xlim(20, 120) + ylim(80, 160) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  theme_bw()
+```
+
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>**The axes are called** ...</summary>
+**ordinate** or **y-axis** (here: price) and **abscicca** or **x-axis** (here: age). 
+</details>
+:::
+
+### The trend
+
+::: {.infobox .question data-latex="warning"}
+Can you spot a trend in the data? 
+:::
+
+The line plot suggests that the relationship between price and age exhibits a **positive trend**. There is an **increase** in price for older artists. The older the artist, the higher the auction prices.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+library(ggplot2)
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_line() + 
+  #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  geom_segment(aes(x = 50, y = 90, xend = 120, yend = 150),size = 3,
+                  arrow = arrow(length = unit(0.5, "cm"))) +
+  xlim(20, 120) + ylim(80, 160) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  theme_bw()
+```
+
+### The blackbox
+
+The mission is to find a mathematical function that describes the trend. In other words, we are looking for the black box that transforms the input into the output:
+
+<center>
+![alt text here](function-fx-x2.svg)
+</center>
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **mathematical function** is ...</summary>
+ an expression, rule, or law that defines a relationship between one variable (the **independent variable**, on the x-axis) and another variable (the **dependent variable**, on the y-axis).
+</details>
+:::
+
+From looking at the graph, here are two suggestions: 
+
+$$ \begin{align}
+\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+\text{price} = 90 + 0.2 \cdot \text{age} \tag{Suggestion 2} \\
+\end{align}$$
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **linear function** is ...</summary>
+ defined by two components, **intercept** (with the y-axis) and it's **slope**.
+</details>
+:::
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+library(ggplot2)
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  #geom_abline(intercept = 90, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_abline(intercept = 90, slope = 0.2, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  xlim(20, 120) + ylim(80, 160) +
+  theme_bw()
+```
+
+::: {.infobox .question data-latex="warning"}
+How can we compare the two suggested lines? Which linear function represents the relationship best?
+:::
+
+### Nobody's perfect
+
+<!-- https://drsimonj.svbtle.com/visualising-residuals -->
+
+We all make mistakes. So do the linear functions:
+
+$$ \begin{align}
+\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+101 = 80 + 0.5 \cdot 42 \tag{Calculation for Hohlbein} \\
+\end{align}$$
+
+The equation tells (or predicts) that for any artist at the age of 42 it expects a auction price for a painting of 101 million US Dollar. Darmstadt Madonna	was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line. 
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>A **residual** (or error) is ...</summary>
+the vertical distance between the actual and the predicted value.
+</details>
+:::
+
+
+<!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
+
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+fit <- lm(Price ~ Age.at.Death, data = artists)
+artists$predicted <- predict(fit)   # Save the predicted values
+artists$residuals <- residuals(fit) # Save the residual values
+
+artists$predicted_guess = 80 + 0.5*artists$Age.at.Death
+artists$residuals_guess = artists$predicted_guess - artists$Price
+
+# COLOR
+# High residuals (in abolsute terms) made more red on actual values.
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  xlim(20, 120) + ylim(80, 160) +
+  theme_bw() +
+  geom_segment(aes(xend = Age.at.Death, yend = predicted_guess), alpha = .2) +
+  # > Color adjustments made here...
+  geom_point(aes(color = abs(residuals_guess))) + # Color mapped to abs(residuals)
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  guides(color = FALSE) +  # Color legend removed
+  # <
+  geom_point(aes(y = predicted_guess), shape = 1) 
+```
+
+### Vocab Wrap-Up
+
+Let's wrap up our regression vocab! We want to find an equation that describes the phenomenon of interest:
+
+$$ \begin{align}
+\text{outcome} &= f(\text{explanatory}) + \text{noise} \tag{Generic statistical model} \\
+\text{outcome} &= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{Generic linear model} \\
+\end{align}$$
+
+A **regression model** is suggested by the researcher. A more concrete regression model looks like this:
+
+$$Y = \beta_1 + \beta_2 X + \epsilon$$
+
+A model can be easy or complicated. It definitely contains variables and parameters. 
+
+- **Variables**: Things that we measure (or have data).
+- **Parameters**: Constant values we believe to represent some fundamental truth about the relationship between the variables. 
+
+What we (i.e. the statistical software) actual do is an **estimation**. In textbooks the same equation can be found with hats:
+
+$$	 \widehat{Y}  = \widehat{\beta}_1 + \widehat{\beta}_2 \cdot X $$
+$\widehat{Y}$ are called the **fitted or predicted** values. $\widehat{\beta}$ are **regression coefficients** (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals $e = Y - \widehat{Y}$.
+
+## For the truly dedicated 
+
+::: {.infobox .information data-latex="warning"}
+Now we have all the ingredients we need. <details>
+<summary>*Let's get this party started!*</summary>
+![Carlton Dance](https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860)
+</details>
+:::
+
+<!-- ::: {.infobox .question data-latex="warning"} -->
+<!-- The overall goal is to make as little as possible mistakes! What kind of mistake? -->
+<!-- ::: -->
+
+The overall goal is to make as little as possible mistakes! What kind of mistake? The deviation from the observed values! What could come to your mind is to **minimize the sum of all errors**: 
+
+$$\sum e \rightarrow \min$$
+But wait, there is more. Is it fair to say that the sum should be small? Compare **The Scream** and **Meules**, their deviations are $+17.5$ and $-13.6$ (very similar). So taken these two together, there's almost not mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story: 
+
+$$\sum e^2 \rightarrow \min$$
+
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>The fitting procedure is ...</summary>
+is called **ordinary least squares** (short OLS). The goal of OLS is to **minimize the residual sum of squares**.
+</details>
+:::
+
+### Algebra 
+
+::: {.infobox .information data-latex="warning"}
+Algebra comes from Arabic, meaning "reunion of broken parts". We often work with matrices and vectors. 
+:::
+
+Now let's put all the things together. By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (column vector). Transpose is when we change the rows and columns. In order to square a vector we need the following:
+
+$$\sum e^2 = e^T \cdot e \rightarrow \min$$
+Let's introduce matrix notation (there are 6 observations and two parameters):
+
+$$ \begin{align}
+Y &= \beta_0 + \beta_1 X + \epsilon \tag{X is a variable, Y is a variable} \\
+\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{11} \\ 1 & X_{12} \\ 1 & X_{13} \\ 1 & X_{14} \\ 1 & X_{15} \\ 1 & X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} \\
+y &= X \beta + \epsilon \tag{X is a matrix, y is a vector}
+\end{align}$$
+
+The residual is $e = y - X \beta$ which we can plug in our minimal sum of squares: 
+
+$$\begin{align}
+	\sum e^2 &= e^T \cdot e \tag{short RSS}\\
+	&= (y - X \beta )^T (y - X \beta) \tag{$(A+B)^T = A^T + B^T$}\\
+	&= (y^T - X^T \beta^T) (y - X \beta) \\
+	&= y^T y - y^T X \beta - X^T \beta^T y + X^T \beta^T X \beta \\
+	&= y^2 \underbrace{- 2 \beta^T X^T y}_{??} + \beta^2 X^2  \\
+\end{align}$$
+
+Did you notice what happened in the middle? The transpose of the first term is equal to the second: 
+
+$$\begin{align}
+	(y^T X \beta)^T = y X^T \beta^T
+\end{align}$$
+
+### Analysis 
+
+::: {.infobox .information data-latex="warning"}
+In Analysis we often work with functions.
+:::
+
+Next, we are ready to **optimize**. Optimization (in math and economics) is done by **differentiation**:
+
+<!-- (setting the first derivative equal to zero). What are the betas? -->
+
+$$\begin{align}
+	\frac{\partial RSS}{\partial \beta} &= -2 X^T y + 2 \beta X^T X = 0 \tag{first derivative equal to zero} \\
+	2 \beta X^T X &= 2 X^T y \tag{rearrange terms}\\
+	\beta X^T X &= X^T y \tag{the "normal equation"} \\
+	\beta &= (X^T X)^{-1} X^T y \tag{Bam}\\
+\end{align}$$
+
+### Take the Long Way Home 
+
+::: {.infobox .information data-latex="warning"}
+<details>
+<summary>*The computer does the magic for us.*</summary>
+<center>
+![Magic Alice](https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif)
+</center>
+</details>
+:::
+
+Those $\beta$ coefficients are one of the most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time: 
+
+```{r echo=FALSE, warning=FALSE}
+#library(gt)
+#gt(artists[,c(3,5)]) 
+
+y <- as.vector(artists$Price)
+X <- as.matrix(cbind(rep(1, nrow(artists)), artists$Age.at.Death))
+```
+
+First, we retrieve matrix `X` from the data set:
+
+```{r echo=TRUE, warning=FALSE}
+X
+```
+
+Second, the transpose of `X` has two rows and six columns:
+
+```{r echo=TRUE, warning=FALSE}
+t(X)
+```
+
+Next, calculate the square of the matrix (transpose times original):
+
+```{r echo=TRUE, warning=FALSE}
+t(X)%*%X
+```
+
+Then, the inverse of everything in parentheses (the above matrix product):
+
+```{r echo=TRUE, warning=FALSE}
+solve(t(X)%*%X)
+```
+
+Next, the product of this inverse and the transpose:
+
+```{r echo=TRUE, warning=FALSE}
+solve(t(X)%*%X) %*% t(X)
+```
+
+Finally, we multiply the vector $y$:
+
+```{r echo=TRUE, warning=FALSE}
+solve(t(X)%*%X) %*% t(X) %*% y
+```
+
+There are two numbers. It's the $\beta$ vector! The first entry is the **intercept** and the second is the **slope** of the linear function:
+
+$$Price = 22.3452 + 1.1657 \cdot Age$$
+
+## Survival of the Fittest Line 
+
+::: {.infobox .information data-latex="warning"}
+The above equation is the linear function that best describes the given data.
+:::
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+fit <- lm(Price ~ Age.at.Death, data = artists)
+artists$predicted <- predict(fit)   # Save the predicted values
+artists$residuals <- residuals(fit) # Save the residual values
+
+# High residuals (in absolute terms) made more red on actual values.
+ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
+  geom_point(size=2) + 
+  geom_smooth(method="lm", se=FALSE, color="darkgreen") +
+  #geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
+  geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
+  ggtitle("The relationship between auction price and age of artist.") +
+  xlab("Age at Death") + ylab("Auction price (in million US $)") + 
+  xlim(20, 120) + ylim(80, 160) +
+  theme_bw() +
+  geom_segment(aes(xend = Age.at.Death, yend = predicted), alpha = .2) +
+  # > Color adjustments made here...
+  geom_point(aes(color = abs(residuals))) + # Color mapped to abs(residuals)
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  guides(color = FALSE) +  # Color legend removed
+  # <
+  geom_point(aes(y = predicted), shape = 1) 
+```
+
+## On the Shoulders of Giants 
+
+Fortunately, we are [standing on the shoulders of giants](https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants). Clever people implemented the linear regression and all kinds of regressions and statistical tests in R. 
+
+```{r echo=TRUE, warning=FALSE}
+lm(Price ~ Age.at.Death, data = artists)
+
+knitr::include_graphics("workhorse.jpg")
+```
+
+<!--chapter:end:02-questions.Rmd-->
+
+# Data is everywhere
+
+Get the data / understand your data
+
+
+
+<!--chapter:end:03-data.Rmd-->
+
+# (PART) Data Analysis {-} 
+
+# Are you nuts
+
+One Sample T-Test
+
+
+
+
+
+<!--chapter:end:04-are-you-nuts.Rmd-->
+
+# Us Against The Rest 
+
+<!-- https://www.thelancet.com/journals/langlo/article/PIIS2214-109X(19)30034-8/fulltext -->
+
+::: {.infobox2 .information data-latex="warning"}
+<details>
+
+<summary>
+
+*In this exercise you learn:*
+
+</summary>
+
+-   R Basics: Install and load a package. Load a Stata files into R.
+-   Data Manipulation: `tidyverse` language (glimpse, count, filter, summarise).
+-   Data Visualization: Grouped boxplots, advanced programming pictograms.
+-   How to find information on the web via Google.
+
+</details>
+:::
+
+Groups can be compared via numeric figures or graphical instruments. 
+
+<!-- https://stackoverflow.com/questions/48522350/create-an-image-filled-chart-in-r-using-ggplot -->
+```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE}
+library(png)
+library(ggplot2)
+
+genderselection <- read.table(text="
+  Gender Freq
+                              F   3281
+                              M   2299
+                              ", header=T)
+
+pcts <- round(prop.table(genderselection$Freq)*100)
+
+# Load png file from imgur as binary
+con <- url("https://i.imgur.com/vFDSFYX.png",
+           open='rb')
+rawpng <- readBin(con, what='raw', n=50000)
+close(con)
+
+img <- readPNG(rawpng)
+h <- dim(img)[1]
+w <- dim(img)[2]
+
+# Find the rows where feet starts and head ends
+pos1 <- which(apply(img[,,1], 1, function(y) any(y==1)))
+mn1 <- min(pos1)
+mx1 <- max(pos1)
+pospctM <- round((mx1-mn1)*pcts[2]/100+mn1)
+pospctF <- round((mx1-mn1)*pcts[1]/100+mn1)
+
+# Fill bodies with a different color according to percentages
+# Note that this relies on the fact that the png is a bitmap.
+# The png is expressed as a matrix with a cell for each pixel
+# and 3 layers for r,g,b.
+#dim(img)
+#> [1] 360 360   3
+
+# Create a 2d matrix by just taking the red values
+# Image is black and white so black corresponds to 0
+# white corresponds to 1. Then change the values of
+#  the cells to correspond to one of three categories.
+imgmtx <- img[h:1,,1]
+whitemtx <- (imgmtx==1)
+colmtx <- matrix(rep(FALSE,h*w),nrow=h)
+midpt <- round(w/2)-10
+colmtx[mx1:pospctM,1:midpt] <- TRUE
+colmtx[mx1:pospctF,(midpt+1):w] <- TRUE
+imgmtx[whitemtx & colmtx] <- 0.5
+
+# Need to melt the matrix into a data.frame that ggplot can understand
+df <- reshape2::melt(imgmtx)
+#head(df)
+#>   Var1 Var2 value
+#> 1    1    1     0
+#> 2    2    1     0
+#> 3    3    1     0
+#> 4    4    1     0
+#> 5    5    1     0
+#> 6    6    1     0
+
+cols <- c(rgb(255,255,255,maxColorValue = 255),
+          rgb(209,230,244,maxColorValue = 255), 
+          rgb(42,128,183,maxColorValue = 255))
+```
+
+```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, fig.align = 'center', fig.cap="\\label{fig:challenge} The proportion of male and female students. Source: [Gender and Origin of Students of Viadrina (22.11.2020)](https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2020-wintersemester/4_Staatsangehoerigkeiten.pdf) ",}
+# Then use a heatmap with 3 colours for background, and percentage fills
+# Converting the fill value to a factor causes a discrete scale.
+# geom_tile takes three columns: x, y, fill corresponding to 
+# x-coord, y-coord, and colour of the cell.
+ggplot(df, aes(x = Var2, y = Var1, fill = factor(value)))+
+  geom_tile() +
+  scale_fill_manual(values = cols) +
+  #theme_minimal() +
+  #labs(x="", y="") +
+  theme_void() +
+  theme(legend.position = "none") +
+  annotate("text", label = 'atop(bold("Men"),"41 %")', parse = TRUE, x = 0.27*(min(df$Var2) + max(df$Var2)), 
+           y = max(df$Var1), vjust = 0.5) +
+  annotate("text", label = 'atop(bold("Women"),"59 %")', parse = TRUE, x = 0.7*(min(df$Var2) + max(df$Var2)), 
+           y = max(df$Var1), vjust = 0.5) 
+  #annotate("text", label = "1", x = 0.27*(min(df$Var2) + max(df$Var2)), y =  max(df$Var1), vjust = 10) +
+  #annotate("text", label = "2", x = 0.7*(min(df$Var2) + max(df$Var2)), y = max(df$Var1), vjust = 10) 
+  #annotate(geom = 'text', label = 'sometext', x = -Inf, y = Inf, hjust = 0, vjust = 1)
+  #annotation_compass('testE','E') 
+  #geom_text(data=data.frame(), aes(label = 'sometext', x = -Inf, y = Inf), hjust = 0, vjust = 1)
+  
+  # geom_label(
+  #   label="Look at this!", 
+  #   x=100,
+  #   y=350,
+  #   label.padding = unit(0.55, "lines"), # Rectangle size around label
+  #   label.size = 0.35,
+  #   color = "black",
+  #   fill="#69b3a2"
+  # )
+```
+
+In 2020 the majority of students at Viadrina was female (59 %). In 2019 men earned 4.44 € more per hour than women in Germany. 
+
+Number have different units. Numerical summaries can be the mean, median or mode. A graphical representation can be a boxplot, histogram or density curve. Note that certain calculations and visualizations only make sense for continuous variables (cf. scale of measurements).
+
+
+<!-- Remember Figure 1 where we easily compared two percentage numbers filled proportionally in pictograms of men and women? How could we possibly do something like that in R? The purpose of this challenge is to train your skills in searching the internet for similar solutions and adapting code for your own needs. -->
+
+<!-- If you google something like ["How to create a grouped boxplot in r"](https://lmgtfy.app/?q=How+to+create+a+grouped+boxplot+in+r) or ["How to create an image filled with percentage in r"](https://lmgtfy.app/?q=How+to+create+an+image+filled+with+percentage+in+r) the chances are extremely high that first, someone else had the same problem and second, **stackoverflow** will be one of the top google hits. SO is a famous question and answer site for professional and enthusiast programmers and statisticians. -->
+
+<!-- Your challenge: -->
+
+<!-- -   Find a gender difference that you are interested in and would like to share. -->
+<!-- -   Remember the source. Cite the source in the figure caption. -->
+<!-- -   Look up and modify (long and complicated) code, e.g. from stackoverflow. -->
+<!-- -   In the given ggplot `theme_void` is used to remove axes and background, the legend is removed by `legend.position = "none"` and labels are annotated manually via `annotate`. -->
+
+<!-- ```{r, echo=FALSE, out.width="70%", fig.cap="\\label{fig:intro} Possible gender difference in working parttime.", fig.align='center'} -->
+<!-- knitr::include_graphics("images/parttime.png") -->
+<!-- ``` -->
+
+## Understanding Data
+
+### Loading the Data
+
+Go to <https://www.diw.de/en/diw_01.c.603154.en/soep_in_the_college_classroom.html> and download the Stata file `soep_lebensz_en.dta`. Put this file in the same directory as your R script or markdown and load data as follows (no path):
+
+```{r}
+# load package 
+library(haven)
+# load data
+#soep <- read_dta("soep_lebensz_en.dta")
+
+library(haven)
+temp <- tempfile()
+download.file("https://www.diw.de/documents/dokumentenarchiv/17/diw_01.c.412698.de/soep_lebensz_en.zip",temp)
+soep <- read_dta(unz(temp, "soep_lebensz_en.dta"))
+unlink(temp)
+```
+
+If data is somewhere else, you need to specify the exact path (relative or absolute path) to the data. If you use `haven` (or any other package) for the first time, you have to install (e.g. via a command `install.packages("haven")`). You can also install and check packages in the right lower panel (cf. "packages").
+
+### Inspect the Data
+
+The SOEP practice dataset consists of a total of 9 original variables and 12,922 measurements. We can see 9 variables as columns with the `glimpse()` function. The first two variable *(id, year) are identifier*. The panel data is in *long format, i.e. every row is a person-year combination*. It covers five time points. The last two variables are standardized versions (satisfaction and health). Actually we have 5 variables to analyze.
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+glimpse(soep)
+```
+
+First, let's check the consecutive time points. The `count()` function provides the number of occurrences for values of a variables.
+
+```{r}
+soep %>%
+  count(year)
+```
+
+We observe a decline in observations over time. People drop out of the survey for various reasons (**panel attrition**). SOEP regularly adds refreshment samples to compensate for this. Sometimes we miss data in between years. Person number 457 participated in 2000, 2002 and 2004:
+
+```{r}
+soep %>%
+  filter(id == 457)
+```
+
+Person 457 was not available in the year 2001 for some reason.
+
+### Summary statistics
+
+Now let's have a look at **summary statistics** for the dataset. The `stargazer` package (with `type="text"`) displays number of observations, mean, standard deviation, min, max and percentiles to the console or markdown file (it produces a .tex table by default). `stargazer` requires a dataframe as input. `haven` created a tibble from the Stata .dta file. Finally, we select all variables but the first two, since they are identifier and any calculation, e.g. the mean of personal IDs, does not make much sense here.
+
+```{r message=FALSE, warning=FALSE}
+library(stargazer)
+stargazer(as.data.frame(soep)[,(3:9)], type="text")
+```
+
+The mean of `sex` is 0.539. What does it tell you?
+
+### Missing data
+
+Check out the first `glimpse()` table. Have you noticed the value `NA` in `education`? **NA** stand for non available and is the indicator for **missing data in R**. We ask for a table count of all values in the data that are either missing or not missing.
+
+```{r message=FALSE, warning=FALSE}
+table(is.na(soep))
+```
+
+One option is substituting values (e.g. the mean) for missing cells (**imputation**). The alternative, for simplicitiy, is removing all rows which contain a missing value in any column. This is called a **complete case analysis**.
+
+```{r message=FALSE, warning=FALSE}
+soep_no_na <- soep %>% filter(complete.cases(.))
+```
+
+### Standardization
+
+Look again at the `glimpse()` output or `stargazer()` table. Notice two versions of satisfaction and health, i.e. `satisf_org` and `satisf_std` which represent satisfaction on the original scale (from 0 to 10) and a *standardized* version of satisfaction. Health is ranging from 1 to 5. How can we compare the mean of satisfaction and health?
+
+In statistics, **standardization** is the process of putting different variables on the same scale. This process allows you to compare scores between different types of variables (compare apples with apples instead of apples with bananas). Typically, to standardize variables, you calculate the mean and standard deviation for a variable (cf. z-score). Then, for each observed value of the variable, you subtract the mean and divide by the standard deviation.
+
+Consequently, standardized variables have a mean of 0 and a standard deviation of 1.
+
+```{r}
+soep_no_na %>%
+  summarise(across(c(satisf_std, health_std), list(mean, sd))) %>%
+  `colnames<-`(c("mean of std. satis", "sd of std. satis", 
+                 "mean of std. health", "sd of std. health"))
+```
+
+Here `summarise` is asked to apply the `mean()` and `sd()` function "across" the two columns `satisf_std` and `health_std`. The means are close to zero and the standard deviation is close to one. The minor differences result from our complete case analysis (we already dropped some cases which might have been used for the initial standardization).
+
+<!-- Now let's quickly redo this kind of standardization. There are built-in functions such as `scale()`, this should produce a more accurate mean and standard deviation.  -->
+
+<!-- # ```{r} -->
+
+<!-- # mean(scale(soep_no_na$satisf_std)) -->
+
+<!-- # sd(scale(soep_no_na$satisf_std)) -->
+
+<!-- # ``` -->
+
+<!-- Let's do it by hand.  -->
+
+<!-- ```{r} -->
+
+<!-- soep_no_na %>% -->
+
+<!--   mutate(satisf_std_2 = (satisf_org - mean(satisf_org))/sd(satisf_org), -->
+
+<!--          health_std_2 = (health_org - mean(health_org))/sd(health_org)) %>% -->
+
+<!--   dplyr::select(satisf_std, satisf_std_2, health_std, health_std_2) %>% -->
+
+<!--   head(n=5) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+
+<!-- soep_no_na %>% -->
+
+<!--   ggplot(aes(x=satisf_std, color=health_std, fill=health_std)) +  -->
+
+<!--   geom_density() -->
+
+<!-- df <- gather(soep_no_na, key = 'Std_Variable', value = 'Value', contains('std')) -->
+
+<!-- ggplot(df, aes(x = Value, group = Std_Variable, fill = Std_Variable, color = Std_Variable)) +  -->
+
+<!--   geom_density(alpha = 0.3) -->
+
+<!-- ``` -->
+
+## Analysis (10 pt)
+
+Now, it's your turn to find and implement R code in order to achieve the following tasks.
+
+### Subsample (2 pt)
+
+Create a subsample of people with no children in the household (subsetting). This should be $n=7428$ observations. Call it `nokids`.
+
+```{r,  results='asis', echo=F}
+cat(
+  '<pre class="r">
+  <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code>
+  </pre>
+  ')
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+
+# BASE R (keeps NA)
+nokids <- soep[soep$no_kids==0,]               # select columns
+nokids <- nokids[!is.na(nokids$no_kids),]      # remove NA
+
+# subset command (removes NA automatically)
+nokids2 <- subset(soep, no_kids == 0)
+
+# using dplyr pipe logic
+nokids3 <- soep %>%
+  filter(no_kids == 0)
+```
+
+### Mean per group (2 pt)
+
+Please calculate the mean of education for men and women and store the means into one or two objects (dependent on how you calculate it). You may use base R or tidyverse functions.
+
+```{r,  results='asis', echo=F}
+cat(
+  '<pre class="r">
+  <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code>
+  </pre>
+  ')
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+# TAPPLY
+nokids <- nokids[!is.na(nokids$education),]                     # remove NA in education first
+means1 <- tapply(nokids$education, INDEX=nokids$sex, FUN=mean)  # 11.87030 and  11.66355 
+
+# AGGREGATE (e.g. Ekaterina)
+means2 <- aggregate(education~sex, nokids, mean)                # 11.87030 and 11.66355
+
+# BY (e.g. Ornela)
+means3 <- by(nokids$education, nokids$sex, mean, na.rm=TRUE)
+
+# DPLYR pipe (e.g. Elena) 
+means_m <- nokids %>% na.omit() %>% 
+  filter(sex==0) %>% summarize(mean_education=mean(education))  # 11.86989
+means_f <- nokids %>% na.omit() %>% 
+  filter(sex==1) %>% summarize(mean_education=mean(education))  # 11.66308
+
+# DPLYR pipe (e.g. Cecilia)
+means4 <- nokids %>% group_by(sex)%>% summarize(means = mean(education, na.rm=TRUE))
+
+# Tick label before (e.g. by Egor / Oshin)
+nokids$sex2 <- factor(nokids$sex, levels = c(0, 1), labels = c("Male", "Female"))
+```
+
+### Grouped Boxplot (4 pt)
+
+Create a boxplot of years of education grouped by gender (fe/male). A **boxplot** is a method for graphically depicting groups of numerical data through their quartiles. It shows 50 % of the data in a box and the median in the middle of the box and whiskers outsider of the box.
+
+```{r,  results='asis', echo=F}
+cat(
+  '<pre class="r">
+  <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code>
+  </pre>
+  ')
+```
+
+Replicate the following figure. You can either do this with base R or `ggplot`. The labels (title, subtitle, axis) should be identical. Furthermore, add the mean of the groups to the boxplot (as red bold point or something similar).
+
+```{r echo = FALSE, eval=FALSE}
+###----------------------
+### BASE R 
+###----------------------
+
+## png("my_boxplot_0123456.png", width = 500, height = 400)        # graph environment saves file to directory 
+boxplot(education ~ sex, data=nokids, xlab="", col = "lightgray",
+        ylab="Years of Education", main="Boxplot of Education",
+        sub="Subsample of People with no children in household",
+        names=c("Men","Women"))                                     # Tick label afterwards 
+
+points(means1,col="red",pch=18,lwd=2, cex=2)
+## dev.off()
+
+boxplot(education ~ sex2, data=nokids, xlab="", col = "lightgray",
+        ylab="Years of Education", main="Boxplot of Education",
+        sub="Subsample of People with no children in household")                                     
+
+# Tick labels by the axis function (by Veronika)
+boxplot(education ~ sex, data=nokids, xlab="", col = "lightgray",
+        ylab="Years of Education", main="Boxplot of Education",
+        sub="Subsample of People with no children in household", axes=FALSE) # delete all axes
+box()                                                                        # rebuild it from cratch
+axis(side = 1, at = c(1:2), labels=c("Men", "Women"))
+axis(side = 2)
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.align = 'center', out.width = '80%'}
+###----------------------
+### GGplot2 (by Egor, modified by Marco) 
+###----------------------
+
+# when sex is a factor variable
+ggplot(nokids, aes(x = sex2, y = education)) + 
+  geom_boxplot() +
+  labs(title = "Boxplot of Education", 
+       x = "Subsample of People with no child in household", 
+       y = "Years of Education") + 
+  stat_summary(fun = mean, geom = "point", size = 3, color = "red")
+  #stat_summary(fun = mean, geom = "point", size = 3, color = "red", shape=21, fill="red")
+```
+
+The two boxplots look very similar. In both groups the mean is higher than the median. This is an indication that the distribution of education is **skewed** to the right.
+
+Is `education` a continuous variable? Not really. Actually, students usually graduate after 10 or 12 years of education in Germany.
+
+```{r echo = TRUE}
+table(soep_no_na$education)
+```
+
+### YaRrr! The Pirate's Quiz (2 pt)
+
+In chapter [9.1. workspace management functions](https://bookdown.org/ndphillips/YaRrr/workspace-management-functions.html) of the bookdown (yeah, that's right, you can create entire books from inside RStudio!) "YaRrr! The Pirate's Guide to R" you find a picture of pirate.
+
+<details>
+
+<summary>
+
+*Danger? I look on the wild side. I laugh in the face of danger! Show me the PiRate!*
+
+</summary>
+
+```{r, echo=FALSE, out.width="40%", fig.cap="\\label{fig:pirate}Figure 2: Who's that boy?", fig.align='center'}
+knitr::include_graphics("images/pirate.jpg")
+```
+
+</details>
+
+<br>
+
+He's not a random, no-name person. On the contrary, he has a wikipedia article in several languages. Who is he?
+
+```{r,  results='asis', echo=F}
+cat(
+  '<pre class="r">
+  <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code>
+  </pre>
+  ')
+```
+
+<!-- ### Grouped Density (2 pt) -->
+
+<!-- A density plot is a representation of the distribution of a numeric variable. It uses a kernel density estimate to show the probability density function of the variable. Please create a density plot of the distribution of education grouped by males and females. -->
+
+<!-- ```{r,  results='asis', echo=F} -->
+
+<!-- cat( -->
+
+<!--   '<pre class="r"> -->
+
+<!--   <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code> -->
+
+<!--   </pre> -->
+
+<!--   ') -->
+
+<!-- ``` -->
+
+<!-- ```{r echo = FALSE, message=FALSE, warning=FALSE, eval=TRUE} -->
+
+<!-- # Change density plot line colors by groups -->
+
+<!-- ggplot(soep_no_na, aes(x=education, color=as.factor(sex))) + -->
+
+<!--   geom_density() + -->
+
+<!--     labs(title = "Density plot of education",  -->
+
+<!--        subtitle = "Subsample of People with no child in household",  -->
+
+<!--        y = "Density", x="Years of education") + -->
+
+<!--   scale_color_discrete(name = "Female") -->
+
+<!--   #geom_vline(data=soep_no_na, aes(xintercept=grp.mean, color=sex2), -->
+
+<!--    #          linetype="dashed") -->
+
+<!-- ``` -->
+
+<!-- ### Group Means (t-test) (4 pt) -->
+
+<!-- https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios/#how-to-compute-students-t-test-by-hand -->
+
+<!-- **Student’s t-test** or t-test (the real name is W.S. Gossett who hid his name due to his position as a worker in a brewery company) is a simple yet very useful statistical test.  -->
+
+<!-- ```{r echo = TRUE} -->
+
+<!-- t.test(education ~ sex, data=soep_no_na) -->
+
+<!-- ``` -->
+
+<!-- Look at the output of the t-test: -->
+
+<!-- - The so called t-statistic is 4.1521 -->
+
+<!-- - The degrees of freedom are 10139 -->
+
+<!-- - The p-value of 3.321e-05 (scientific notation) -->
+
+<!-- - The 95% confidence interval is [0.1057920;0.2950069] -->
+
+<!-- ### Panel data -->
+
+<!-- It is easy to get a cross-section by filtering for a given year. We can be sure that every individual (id) is only included once. But perhaps someone is was not asked or was not part of the survey in this year, but in several other so called waves. Why don't we use his or her data as well? Let's use exactly one observation per person, irrespective of the year.  -->
+
+<!-- **Between** and **Within** Variation.  -->
+
+<!-- First, let's investigate if education is never changing  -->
+
+<!-- ```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, fig.align = 'center'} -->
+
+<!-- soep_no_na %>% -->
+
+<!--   filter(year == 2000) -->
+
+<!-- library(rlang) -->
+
+<!-- library(dplyr) -->
+
+<!-- XTSUM <- function(data, varname, unit) { -->
+
+<!--   varname <- enquo(varname) -->
+
+<!--   loc.unit <- enquo(unit) -->
+
+<!-- ores <- data %>% summarise(ovr.mean=mean(!! varname, na.rm=TRUE), ovr.sd=sd(!! varname, na.rm=TRUE), ovr.min = min(!! varname, na.rm=TRUE), ovr.max=max(!! varname, na.rm=TRUE), ovr.N=sum(as.numeric((!is.na(!! varname))))) -->
+
+<!-- bmeans <- data %>% group_by(!! loc.unit) %>% summarise(meanx=mean(!! varname, na.rm=T), t.count=sum(as.numeric(!is.na(!! varname)))) -->
+
+<!-- bres <- bmeans %>% ungroup() %>% summarise(between.sd = sd(meanx, na.rm=TRUE), between.min = min(meanx, na.rm=TRUE), between.max=max(meanx, na.rm=TRUE), Units=sum(as.numeric(!is.na(t.count))), t.bar=mean(t.count, na.rm=TRUE)) -->
+
+<!-- wdat <- data %>% group_by(!! loc.unit) %>% mutate(W.x = scale(!! varname, scale=FALSE)) -->
+
+<!-- wres <- wdat %>% ungroup() %>% summarise(within.sd=sd(W.x, na.rm=TRUE), within.min=min(W.x, na.rm=TRUE), within.max=max(W.x, na.rm=TRUE)) -->
+
+<!-- return(list(ores=ores,bres=bres,wres=wres)) -->
+
+<!-- } -->
+
+<!-- XTSUM(soep_no_na, varname=education, unit=id) -->
+
+<!-- ``` -->
+
+<!-- How can we find examples of education change in the data? -->
+
+
+<!--chapter:end:05-Group-Comparison.Rmd-->
+
+# Methods
+
+We describe our methods in this chapter.
+
+<!--chapter:end:05-method.Rmd-->
+
+# (PART) Appendix {-} 
+
+# Git and Github
+
+## Install Github and Git
+
+- Get RStudio <https://www.rstudio.com/products/rstudio/download/>
+- Get Github account <https://github.com/>
+- Set up Github pages <https://pages.github.com/>
+- Download Git <https://git-scm.com/>
+
+Create a "special repository" for GitHub Pages. Only this can turn the branch into docs (1 for free).
+
+- Repository: https://github.com/MarcoKuehne/marcokuehne.github.io
+- Homepage: https://marcokuehne.github.io/
+
+Create (or re-open) your R project inside RStudio. 
+
+In R console use `usethis::use_git()` which always gives three different answers in random order. Confirm accordingly.
+
+## Working with Git
+
+Use the terminal inside RStudio. Copy paste into terminal with: `CTRL + SHIFT + V`.
+
+### git version
+
+Let's start with commands that cannot do any harm (it's 2.32 in 08/2021): 
+
+    git version
+
+### git config 
+
+First, configure github user information on your system. Use the R builtin terminal:
+
+    git config --global user.email MAIL
+    git config --global user.name NAME
+    
+Now, you can commit (upload) changes from RStudio to Github Pages. Check out `git config --list`.
+
+### git init
+
+Use `git init` to initialize the repository. It is used to create a new empty repository or directory consisting of files' with the hidden directory. '.git' is created at the top level of your project, which places all of the revision information in one place.
+
+Show what is connected with:
+
+    git remote -v show
+
+### git status and diff
+
+Shows you which files are in this staging area, and which files have changes that haven't yet been put there. In order to compare the file as it currently is to what you last saved, you can use `git diff filename`, e.g. `git diff README.md` in the terminal. `git diff` without any file names will show you all the changes in your repository, while git diff directory will show you the changes to the files in some directory.
+
+### git commit 
+
+To save the changes in the staging area, you use the command `git commit`. It always saves everything that is in the staging area as one unit: as you will see later, when you want to undo changes to a project, you undo all of a commit or none of it.
+
+Commit requires a message (comment). How to write a good git commit message:l
+
+<https://chris.beams.io/posts/git-commit/>
+
+### git add
+
+... 
+
+### git remote add
+
+I would like to have something like `git remote add ...` and `git push ...`, not working.
+
+I can add and remove origins, don't know what it means: `git remote rm origin`
+
+Use git add . in your bash to add all the files to the given folder.
+
+Use git status in your bash to view all the files which are going to be staged to the first commit.
+
+Create **git remote add**
+
+git remote add origin https://github.com/MarcoKuehne/marcokuehne.github.git 
+git remote add origin https://github.com/MarcoKuehne/marcokuehne.github.io
+git remote add origin https://github.com/MarcoKuehne/marcokuehne.github.io.git
+
+git remote add git@github.com:<username>/<repository-name>.git
+git remote add git@github.com:MarcoKuehne/marcokuehne.github.git
+git remote add git@github.com:MarcoKuehne/marcokuehne.github.io does not appear to be a repository 
+git remote add git@github.com:MarcoKuehne/marcokuehne.github.io.git combine both 
+
+### git push 
+
+git push -u origin main
+git push -u origin master
+git push origin master
+git push origin main 
+git push --set-upstream origin main
+git push -f origin main # worked somehow!!!
+
+If positive, it asks for github credentials. 
+
+<https://www.datacamp.com/community/tutorials/git-push-pull>
+
+
+## Basic Routines
+
+### Add + Commit + Push 
+
+I make changes to any one of my markdown files, e.g. the `README.md` (this can also be done via GitHub web interface) on my local machine. After notoriously saving this on my local machine (STRG+S) it appears in the *stage area* in the right upper panel in RStudio. Commit and push can be either done in RStudio or via terminal line (also in RStudio). 
+
+First, let's do it via "clicking". Select the staged file. Click "commit". A new windows opens and displays the changes in your file. Write a new commit message of amend a previous commit. Click "close". From this additional window (or the right upper panel in RStudio) click the green push arrow. Hopefully it will say "HEAD -> main". Close. Done. The result should be available on your github repository immediately. 
+
+The same procedure via the terminal: 
+
+    git add 05-git.Rmd
+    git commit -m "Updated the git short tutorial"
+    git push 
+
+How to push? Easy ... 
+
+I need to `pull` these changes into RStudio. Check the right upper panel "Diff". Select `pull`. You can also find big blue down and green up arrows. 
+
+I add this sentence. I save on RStudio, thus it appears as a change to `README.md` in the Git panel. I select this file and green up arrow (push). I enter my credentials and close (see <https://docs.github.com/en/get-started/getting-started-with-git/why-is-git-always-asking-for-my-password>). Here you might use a personal access token. I click `commit`, enter a commit message, click `commit` again and close the extra window. 
+
+
+## Resources
+
+You can start reading about bookdowns from the inventor:
+
+<https://bookdown.org/yihui/bookdown/>
+
+This is pretty advanced and I can't understand a tiny piece of it. 
+
+Another option is to start a repo and book by copying "awesome book" from another repo.
+
+<https://jules32.github.io/bookdown-tutorial/setup.html>
+
+This tutorial worked to push a book to a standard repo. But there were problem with the doc branch.
+
+After I forgot how to start my project or where to find it, I checked:
+
+<https://happygitwithr.com/rstudio-git-github.html#make-local-changes-save-commit>
+
+started a new project with my repo link and a new session. This forks or fetches or pulls or downloads the repo. Now I will try to re-upload the minimal change from today. 
+
+Another personal description can be found here:
+
+<https://rachaellappan.github.io/bookdown/>
+
+    This enourmously helped with the understanding of commits and pushs on git:
+    
+    <http://www.differencebetween.net/technology/difference-between-commit-and-push/>
+
+- `git commit -m "Started book"`
+
+I followed the video "How to create a bookdown book in 5 minutes":
+
+<https://www.youtube.com/watch?v=m5D-yoH416Y>
+
+It did not work.
+
+Explaining terminology:
+
+<https://www.notion.so/zarkom/Introduction-to-Git-ac396a0697704709a12b6a0e545db049>
+
+
+Learn Git in 15 Min:
+
+<https://www.youtube.com/watch?v=USjZcfj8yxE>
+
+Learn GitHub in 20 Min:
+
+<https://www.youtube.com/watch?v=nhNq2kIvi9s> 
+
+<https://medium.com/@delucmat/how-to-publish-bookdown-projects-with-github-actions-on-github-pages-6e6aecc7331e>
+
+
+<https://medium.com/@delucmat/how-to-publish-bookdown-projects-with-github-actions-on-github-pages-6e6aecc7331e>
+
+I need a _book directory:
+
+The .html files (which were compiled from the .Rmd files) are all stored within the _book directory which basically serves as a static website.
+
+
+
+
+
+
+
+<!--chapter:end:97-git.Rmd-->
+
+# Slope Fields
+
+## Definition 
+
+>Slope fields (also called direction fields) are a graphical representation of the solutions to a first-order differential equation of a scalar function. Solutions to a slope field are functions drawn as solid curves. A slope field shows the slope of a differential equation at certain vertical and horizontal intervals on the x-y plane, and can be used to determine the approximate tangent slope at a point on a curve, where the curve is some solution to the differential equation. 
+>
+> `r tufte::quote_footer('Wikipedia contributors. (2021, May 17). Slope field. In Wikipedia, The Free Encyclopedia. Retrieved 05:51, June 16, 2021, from https://en.wikipedia.org/w/index.php?title=Slope_field&oldid=1023635282 ')`
+
+## Slope Fields in R 
+
+There's no need to build everything from scratch. This original post <https://www.r-bloggers.com/2014/09/generate-slope-fields-in-r-and-python/> has been put into a `SlopeField` function here <https://stackoverflow.com/questions/47984874/how-to-create-a-slope-field-in-r>. 
+
+<details>
+<summary>
+Show me the code.
+</summary>
+```{r}
+SlopeField = function(FUN,xi = -5,xs = 5,yi = -5,ys = 5, radius = 0.1, grid.by = 0.25){
+  # FUN   - given function ODE i.e:  
+  # xi,xs - lower and upper bound - x - plot
+  # yi,ys - lower and upper bound - y - plot
+  
+  # grid points
+  seqx = seq(xi,xs,grid.by)
+  seqy = seq(yi,ys,grid.by)
+  
+  # plot
+  f = c(xi,xs) 
+  h = c(yi,ys)
+  plot(f,h,main="Slope field", ylab = "Dependet variable", xlab = "Independet variable", pch = ".")
+  
+  # arrows
+  
+  for(x in seqx){
+    for(y in seqy){
+      ym = y
+      xm = x
+      
+      slope = unlist(FUN(x,y))
+      
+      if(is.na(slope)){
+        cor = "black"
+      } else if(slope > 0){
+        cor = "blue"
+      }else if (slope < 0) {
+        cor = "red"
+      }else if(slope == 0) {
+        cor = "green"
+      }
+      arrows(radius*cos(atan(slope)+pi)+xm,
+             radius*sin(atan(slope)+pi)+ym,
+             radius*cos(atan(slope))+xm,
+             radius*sin(atan(slope))+ym, 
+             length = 0.2*radius, col= cor)
+    }
+  }
+}
+
+```
+</details>
+
+We can specify an ODE in another function and plot its slope field. The suggested example is 
+
+$$y'(t) = y^2 - t $$
+
+```{r}
+ode = function(t, y){
+  dydt <- y^2-t
+  list(dydt)
+}
+``` 
+
+Let's draw the slope field. 
+
+```{r}
+SlopeField(ode, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
+```
+
+The graph looks nice and interesting. But can how can we get the ODE solution from this graph? Can you spot the slip in the code and graph? 
+
+## Understandable Examples
+
+### y' = y
+
+Even without a background in differential equations, think about the following:
+
+$$y'(x) = y(x)$$
+We are looking for a function $y(x)$ that is identical to its first derivative $y'(x)$. Perhaps you remember such a function from your last math class (analysis). It is the exponential function, that basically does not change by differentiation.
+
+$$y(x) = e^x \Rightarrow y'(x) = e^x $$
+```{r}
+ode_1 = function(t, y){
+  dydt <- y
+  list(dydt)
+}
+
+SlopeField(ode_1, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
+```
+
+Can you see something like the exponential function in this slope field? 
+
+<details>
+<summary>
+Show me how an exponential function looks like.
+</summary>
+```{r}
+x_value<-runif(100,2,8)
+plot(x_value,exp(x_value))
+``` 
+</details>
+
+Perhaps you can spot something like the $y(x) = e^x$ in the blue area. But how about the red arrows? Any mirror at the x-axis is also a valid solution to the problem. How do we mirror? Use a factor in front of the e function. This may be negative. 
+
+$$y(x) = C \cdot e^x \Rightarrow y'(x) = C \cdot e^x $$
+
+### y' = -y 
+
+Let's give it another try. Which function equals its first derivative (after changing sign). 
+
+$$y'(x) = -y(x)$$
+
+It is a sibling of the $e^x$. The solution is $y(x) = C \cdot e^{-x}$.
+
+```{r}
+ode_2 = function(t, y){
+  dydt <- -y
+  list(dydt)
+}
+
+SlopeField(ode_2, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
+```
+
+
+### y' = x^2
+<!-- https://www.youtube.com/watch?v=4_R1vMB91Fs -->
+
+Wait, there's no more y on the RHS. Don't worry. That'll make it even easier. What is the integral of $x^2$? You may expect 
+
+$$y'(x) = x^2 \Rightarrow \int x^2 dx = 1/3 \cdot x^3 + C$$
+Okay, the general shape is a cubic function. Can you spot a cubic function? 
+
+```{r}
+ode_3 = function(t, y){
+  dydt <- t^2
+  list(dydt)
+}
+
+SlopeField(ode_3, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
+```
+
+
+## Initial value problem
+
+Recap, the prior solution was $y(x) = 1/3 \cdot x^3 + C$. Due to $C$ this is a family of curves. If we specify some of them, that's called the initial value problem. This *problem* makes is actually even more easy to understand the slope field. Let's add two particular cubic functions for $C = 0$ and $C = 0.5$.
+
+```{r}
+SlopeField(ode_3, xi = -2, xs = 5, yi = -2, ys = 2,radius = 0.1, grid.by = 0.25)
+#lines(y,1/3*x*x*x,col="red", lwd=2)
+#lines(y,1/3*x*x*x+0.5,col="orange", lwd=2)
+```
+
+Enjoy. Learn. Share. 
+
+
+
+<!--chapter:end:98-SlopeFields.Rmd-->
+
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:99-references.Rmd-->
+
