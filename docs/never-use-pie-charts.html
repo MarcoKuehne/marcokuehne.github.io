@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Data is everywhere | L02 Group Comparison</title>
+  <title>Chapter 9 Never use pie charts | L02 Group Comparison</title>
   <meta name="description" content="This is my first book." />
   <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Data is everywhere | L02 Group Comparison" />
+  <meta property="og:title" content="Chapter 9 Never use pie charts | L02 Group Comparison" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is my first book." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Data is everywhere | L02 Group Comparison" />
+  <meta name="twitter:title" content="Chapter 9 Never use pie charts | L02 Group Comparison" />
   
   <meta name="twitter:description" content="This is my first book." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="a-question-you-care-about.html"/>
-<link rel="next" href="are-you-nuts.html"/>
+<link rel="prev" href="soep-practice-data.html"/>
+<link rel="next" href="git-and-github.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -242,9 +242,90 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="data-is-everywhere-1" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Chapter 3</span> Data is everywhere<a href="data-is-everywhere-1.html#data-is-everywhere-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Get the data / understand your data</p>
+<div id="never-use-pie-charts" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Never use pie charts<a href="never-use-pie-charts.html#never-use-pie-charts" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Pit charts are evil. Why? Check the <em>note</em> of the documentation of <code>pie()</code>:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="never-use-pie-charts.html#cb32-1" aria-hidden="true" tabindex="-1"></a>?<span class="fu">pie</span>()</span></code></pre></div>
+<p><em>Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.</em></p>
+<p><em>Cleveland (1985), page 264: “Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements.” This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.</em></p>
+<details>
+<summary>
+Synthetic data for a graph.
+</summary>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="never-use-pie-charts.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data for the graph.</span></span>
+<span id="cb33-2"><a href="never-use-pie-charts.html#cb33-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">14</span>, <span class="dv">62</span>, <span class="dv">17</span>, <span class="dv">53</span>)</span>
+<span id="cb33-3"><a href="never-use-pie-charts.html#cb33-3" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;London&quot;</span>, <span class="st">&quot;New York&quot;</span>, <span class="st">&quot;Singapore&quot;</span>, <span class="st">&quot;Mumbai&quot;</span>)</span></code></pre></div>
+</details>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="never-use-pie-charts.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the chart.</span></span>
+<span id="cb34-2"><a href="never-use-pie-charts.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(x,labels)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<details>
+<summary>
+Do a barplot instead.
+</summary>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="never-use-pie-charts.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the chart.</span></span>
+<span id="cb35-2"><a href="never-use-pie-charts.html#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">names.arg =</span> labels)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</details>
+<!-- https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2020-wintersemester/4_Staatsangehoerigkeiten.pdf) -->
+<!-- Your challenge: -->
+<!-- -   Find a gender difference that you are interested in and would like to share. -->
+<!-- -   Remember the source. Cite the source in the figure caption. -->
+<!-- -   Look up and modify (long and complicated) code, e.g. from stackoverflow. -->
+<!-- -   In the given ggplot `theme_void` is used to remove axes and background, the legend is removed by `legend.position = "none"` and labels are annotated manually via `annotate`. -->
+<!-- ### Grouped Density (2 pt) -->
+<!-- A density plot is a representation of the distribution of a numeric variable. It uses a kernel density estimate to show the probability density function of the variable. Please create a density plot of the distribution of education grouped by males and females. -->
+<!-- ```{r,  results='asis', echo=F} -->
+<!-- cat( -->
+<!--   '<pre class="r"> -->
+<!--   <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code> -->
+<!--   </pre> -->
+<!--   ') -->
+<!-- ``` -->
+<!-- ```{r echo = FALSE, message=FALSE, warning=FALSE, eval=TRUE} -->
+<!-- # Change density plot line colors by groups -->
+<!-- ggplot(soep_no_na, aes(x=education, color=as.factor(sex))) + -->
+<!--   geom_density() + -->
+<!--     labs(title = "Density plot of education",  -->
+<!--        subtitle = "Subsample of People with no child in household",  -->
+<!--        y = "Density", x="Years of education") + -->
+<!--   scale_color_discrete(name = "Female") -->
+<!--   #geom_vline(data=soep_no_na, aes(xintercept=grp.mean, color=sex2), -->
+<!--    #          linetype="dashed") -->
+<!-- ``` -->
+<!-- ### Group Means (t-test) (4 pt) -->
+<!-- https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios/#how-to-compute-students-t-test-by-hand -->
+<!-- **Student’s t-test** or t-test (the real name is W.S. Gossett who hid his name due to his position as a worker in a brewery company) is a simple yet very useful statistical test.  -->
+<!-- ```{r echo = TRUE} -->
+<!-- t.test(education ~ sex, data=soep_no_na) -->
+<!-- ``` -->
+<!-- Look at the output of the t-test: -->
+<!-- - The so called t-statistic is 4.1521 -->
+<!-- - The degrees of freedom are 10139 -->
+<!-- - The p-value of 3.321e-05 (scientific notation) -->
+<!-- - The 95% confidence interval is [0.1057920;0.2950069] -->
+<!-- ### Panel data -->
+<!-- It is easy to get a cross-section by filtering for a given year. We can be sure that every individual (id) is only included once. But perhaps someone is was not asked or was not part of the survey in this year, but in several other so called waves. Why don't we use his or her data as well? Let's use exactly one observation per person, irrespective of the year.  -->
+<!-- **Between** and **Within** Variation.  -->
+<!-- First, let's investigate if education is never changing  -->
+<!-- ```{r echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, fig.align = 'center'} -->
+<!-- soep_no_na %>% -->
+<!--   filter(year == 2000) -->
+<!-- library(rlang) -->
+<!-- library(dplyr) -->
+<!-- XTSUM <- function(data, varname, unit) { -->
+<!--   varname <- enquo(varname) -->
+<!--   loc.unit <- enquo(unit) -->
+<!-- ores <- data %>% summarise(ovr.mean=mean(!! varname, na.rm=TRUE), ovr.sd=sd(!! varname, na.rm=TRUE), ovr.min = min(!! varname, na.rm=TRUE), ovr.max=max(!! varname, na.rm=TRUE), ovr.N=sum(as.numeric((!is.na(!! varname))))) -->
+<!-- bmeans <- data %>% group_by(!! loc.unit) %>% summarise(meanx=mean(!! varname, na.rm=T), t.count=sum(as.numeric(!is.na(!! varname)))) -->
+<!-- bres <- bmeans %>% ungroup() %>% summarise(between.sd = sd(meanx, na.rm=TRUE), between.min = min(meanx, na.rm=TRUE), between.max=max(meanx, na.rm=TRUE), Units=sum(as.numeric(!is.na(t.count))), t.bar=mean(t.count, na.rm=TRUE)) -->
+<!-- wdat <- data %>% group_by(!! loc.unit) %>% mutate(W.x = scale(!! varname, scale=FALSE)) -->
+<!-- wres <- wdat %>% ungroup() %>% summarise(within.sd=sd(W.x, na.rm=TRUE), within.min=min(W.x, na.rm=TRUE), within.max=max(W.x, na.rm=TRUE)) -->
+<!-- return(list(ores=ores,bres=bres,wres=wres)) -->
+<!-- } -->
+<!-- XTSUM(soep_no_na, varname=education, unit=id) -->
+<!-- ``` -->
+<!-- How can we find examples of education change in the data? -->
 
 </div>
 
@@ -255,8 +336,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="a-question-you-care-about.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="are-you-nuts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="soep-practice-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="git-and-github.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
