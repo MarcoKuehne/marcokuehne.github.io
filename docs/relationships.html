@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Relationships | Becoming Fluent in Data</title>
+  <meta name="description" content="This is my first gitbook." />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Relationships | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/scream.jpg" />
+  <meta property="og:description" content="This is my first gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Relationships | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="This is my first gitbook." />
+  <meta name="twitter:image" content="/images/scream.jpg" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2022-08-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="text-mining.html"/>
+<link rel="next" href="regression.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.9/grViz.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Empirical Research</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="part"><span><b>I Preface</b></span></li>
+<li class="chapter" data-level="" data-path="teach-learn-repeat.html"><a href="teach-learn-repeat.html"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="" data-path="a-question-you-care-about.html"><a href="a-question-you-care-about.html"><i class="fa fa-check"></i>A Question You Care About</a></li>
+<li class="chapter" data-level="" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i>Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#methods"><i class="fa fa-check"></i><b>0.1</b> Methods</a></li>
+<li class="chapter" data-level="0.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#quantitative-vs-qualitative"><i class="fa fa-check"></i><b>0.2</b> Quantitative vs qualitative</a></li>
+<li class="chapter" data-level="0.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#primary-vs-secondary"><i class="fa fa-check"></i><b>0.3</b> Primary vs secondary</a></li>
+<li class="chapter" data-level="0.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#cross-sectional-vs.-longitudinal-data"><i class="fa fa-check"></i><b>0.4</b> Cross-sectional vs. longitudinal data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
+<li class="part"><span><b>II Data Analysis</b></span></li>
+<li class="chapter" data-level="1" data-path="group-comparison.html"><a href="group-comparison.html"><i class="fa fa-check"></i><b>1</b> Group Comparison</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="group-comparison.html"><a href="group-comparison.html#learning-goals"><i class="fa fa-check"></i><b>1.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="1.2" data-path="group-comparison.html"><a href="group-comparison.html#story-telling"><i class="fa fa-check"></i><b>1.2</b> Story Telling</a></li>
+<li class="chapter" data-level="1.3" data-path="group-comparison.html"><a href="group-comparison.html#comparability"><i class="fa fa-check"></i><b>1.3</b> Comparability</a></li>
+<li class="chapter" data-level="1.4" data-path="group-comparison.html"><a href="group-comparison.html#soep-practice-data"><i class="fa fa-check"></i><b>1.4</b> SOEP Practice Data</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="group-comparison.html"><a href="group-comparison.html#loading-the-data"><i class="fa fa-check"></i><b>1.4.1</b> Loading the Data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="group-comparison.html"><a href="group-comparison.html#inspect-the-data"><i class="fa fa-check"></i><b>1.4.2</b> Inspect the Data</a></li>
+<li class="chapter" data-level="1.4.3" data-path="group-comparison.html"><a href="group-comparison.html#stata-information"><i class="fa fa-check"></i><b>1.4.3</b> Stata information</a></li>
+<li class="chapter" data-level="1.4.4" data-path="group-comparison.html"><a href="group-comparison.html#summary-statistics"><i class="fa fa-check"></i><b>1.4.4</b> Summary statistics</a></li>
+<li class="chapter" data-level="1.4.5" data-path="group-comparison.html"><a href="group-comparison.html#missing-data"><i class="fa fa-check"></i><b>1.4.5</b> Missing data</a></li>
+<li class="chapter" data-level="1.4.6" data-path="group-comparison.html"><a href="group-comparison.html#standardization"><i class="fa fa-check"></i><b>1.4.6</b> Standardization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="group-comparison.html"><a href="group-comparison.html#never-use-pie-charts"><i class="fa fa-check"></i><b>1.5</b> Never use pie charts</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="mean-comparison.html"><a href="mean-comparison.html"><i class="fa fa-check"></i><b>2</b> Mean Comparison</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="mean-comparison.html"><a href="mean-comparison.html#learning-goals-1"><i class="fa fa-check"></i><b>2.1</b> Learning Goals</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="mean-comparison.html"><a href="mean-comparison.html#data-preparation"><i class="fa fa-check"></i><b>2.1.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="mean-comparison.html"><a href="mean-comparison.html#grouped-mean"><i class="fa fa-check"></i><b>2.1.2</b> Grouped Mean</a></li>
+<li class="chapter" data-level="2.1.3" data-path="mean-comparison.html"><a href="mean-comparison.html#furious-with-factors"><i class="fa fa-check"></i><b>2.1.3</b> Furious with Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="mean-comparison.html"><a href="mean-comparison.html#students-t-test"><i class="fa fa-check"></i><b>2.2</b> Student’s t-test</a></li>
+<li class="chapter" data-level="2.3" data-path="mean-comparison.html"><a href="mean-comparison.html#plot-with-confidence"><i class="fa fa-check"></i><b>2.3</b> Plot with Confidence</a></li>
+<li class="chapter" data-level="2.4" data-path="mean-comparison.html"><a href="mean-comparison.html#independent-t-test"><i class="fa fa-check"></i><b>2.4</b> Independent t-test</a></li>
+<li class="chapter" data-level="2.5" data-path="mean-comparison.html"><a href="mean-comparison.html#dependent-t-test"><i class="fa fa-check"></i><b>2.5</b> Dependent t-test</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>3</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="panel-data.html"><a href="panel-data.html#learning-goals-2"><i class="fa fa-check"></i><b>3.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="3.2" data-path="panel-data.html"><a href="panel-data.html#paneldata"><i class="fa fa-check"></i><b>3.2</b> Paneldata</a></li>
+<li class="chapter" data-level="3.3" data-path="panel-data.html"><a href="panel-data.html#data-preparation-1"><i class="fa fa-check"></i><b>3.3</b> Data Preparation</a></li>
+<li class="chapter" data-level="3.4" data-path="panel-data.html"><a href="panel-data.html#group-by-person"><i class="fa fa-check"></i><b>3.4</b> Group by person</a></li>
+<li class="chapter" data-level="3.5" data-path="panel-data.html"><a href="panel-data.html#data-visualization"><i class="fa fa-check"></i><b>3.5</b> Data Visualization</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="panel-data.html"><a href="panel-data.html#average-health-per-year"><i class="fa fa-check"></i><b>3.5.1</b> Average Health per Year</a></li>
+<li class="chapter" data-level="3.5.2" data-path="panel-data.html"><a href="panel-data.html#individual-health-per-year"><i class="fa fa-check"></i><b>3.5.2</b> Individual Health per Year</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="panel-data.html"><a href="panel-data.html#within-and-between-variation"><i class="fa fa-check"></i><b>3.6</b> Within and Between Variation</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="panel-data.html"><a href="panel-data.html#xtsum-from-stata"><i class="fa fa-check"></i><b>3.6.1</b> XTSUM (from Stata)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>4</b> Text Mining</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="text-mining.html"><a href="text-mining.html#learning-goals-3"><i class="fa fa-check"></i><b>4.1</b> Learning Goals</a></li>
+<li class="chapter" data-level="4.2" data-path="text-mining.html"><a href="text-mining.html#get-text"><i class="fa fa-check"></i><b>4.2</b> Get Text</a></li>
+<li class="chapter" data-level="4.3" data-path="text-mining.html"><a href="text-mining.html#translate-everything-to-english"><i class="fa fa-check"></i><b>4.3</b> Translate Everything To English</a></li>
+<li class="chapter" data-level="4.4" data-path="text-mining.html"><a href="text-mining.html#text-analysis"><i class="fa fa-check"></i><b>4.4</b> Text Analysis</a></li>
+<li class="chapter" data-level="4.5" data-path="text-mining.html"><a href="text-mining.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>4.5</b> Little bit of Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5</b> Relationships</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html#minimal-example"><i class="fa fa-check"></i><b>5.1</b> Minimal Example</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="relationships.html"><a href="relationships.html#variance"><i class="fa fa-check"></i><b>5.1.1</b> Variance</a></li>
+<li class="chapter" data-level="5.1.2" data-path="relationships.html"><a href="relationships.html#variation-around-the-mean"><i class="fa fa-check"></i><b>5.1.2</b> Variation ARound the Mean</a></li>
+<li class="chapter" data-level="5.1.3" data-path="relationships.html"><a href="relationships.html#scatterplot"><i class="fa fa-check"></i><b>5.1.3</b> Scatterplot</a></li>
+<li class="chapter" data-level="5.1.4" data-path="relationships.html"><a href="relationships.html#covariance"><i class="fa fa-check"></i><b>5.1.4</b> Covariance</a></li>
+<li class="chapter" data-level="5.1.5" data-path="relationships.html"><a href="relationships.html#covariance-visualization"><i class="fa fa-check"></i><b>5.1.5</b> Covariance Visualization</a></li>
+<li class="chapter" data-level="5.1.6" data-path="relationships.html"><a href="relationships.html#correlation"><i class="fa fa-check"></i><b>5.1.6</b> Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="relationships.html"><a href="relationships.html#application"><i class="fa fa-check"></i><b>5.2</b> Application</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="relationships.html"><a href="relationships.html#one-variable-graphics"><i class="fa fa-check"></i><b>5.2.1</b> One Variable Graphics</a></li>
+<li class="chapter" data-level="5.2.2" data-path="relationships.html"><a href="relationships.html#two-variable-graphics"><i class="fa fa-check"></i><b>5.2.2</b> Two Variable Graphics</a></li>
+<li class="chapter" data-level="5.2.3" data-path="relationships.html"><a href="relationships.html#correlation-and-regression"><i class="fa fa-check"></i><b>5.2.3</b> Correlation and Regression</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6</b> Regression</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html#from-artists-and-economists"><i class="fa fa-check"></i><b>6.1</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="6.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>6.2</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>6.2.1</b> Data in a table</a></li>
+<li class="chapter" data-level="6.2.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>6.2.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="6.2.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>6.2.3</b> The trend</a></li>
+<li class="chapter" data-level="6.2.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>6.2.4</b> The blackbox</a></li>
+<li class="chapter" data-level="6.2.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>6.2.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="6.2.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>6.2.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>6.3</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>6.3.1</b> Algebra</a></li>
+<li class="chapter" data-level="6.3.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>6.3.2</b> Analysis</a></li>
+<li class="chapter" data-level="6.3.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>6.3.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>6.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="6.5" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>6.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="relationships" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Relationships<a href="relationships.html#relationships" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<blockquote>
+<p>“[M]y ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us, binds us. Luminous beings are we, not this crude matter. You must feel the Force flow around you. Here, between you, me, the tree, the rock, yes, even <em>between</em> the land and the ship.”</b></p>
+<footer>
+Yoda. – Episode V: The Empire Strikes Back
+</footer>
+</blockquote>
+<p>The most interesting research questions in social science are about statistical relationships <em>between</em> variables. How can we make a relation between the tree and the land palpable? Relationships are measured via covariance or correlation. The relation between two variables may be expressed in a scatter plot.</p>
+<!-- Recall that there is a statistical relationship between two variables when the average score on one differs systematically across the levels of the other. In this section, we revisit the two basic forms of statistical relationship introduced earlier in the book—differences between groups or conditions and relationships between quantitative variables—and we consider how to describe them in more detail. -->
+<!-- https://plato.stanford.edu/entries/relations/ -->
+<!-- go together flow together -->
+<div id="minimal-example" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Minimal Example<a href="relationships.html#minimal-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here is some data.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="relationships.html#cb82-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">13</span>,<span class="dv">19</span>,<span class="dv">25</span>,<span class="dv">29</span>)</span>
+<span id="cb82-2"><a href="relationships.html#cb82-2" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">28</span>,<span class="dv">32</span>,<span class="dv">38</span>)</span></code></pre></div>
+<div id="variance" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Variance<a href="relationships.html#variance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong>. The variance is defined as the <strong>average quadratic deviation from the mean</strong>:</p>
+<p><span class="math display">\[var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2\]</span>
+The variance of <code>x</code> is 98 and can be calculated via <code>var()</code> in R.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="relationships.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Built-in command</span></span>
+<span id="cb83-2"><a href="relationships.html#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)</span></code></pre></div>
+<pre><code>## [1] 98</code></pre>
+<p>The variance of <code>x</code> can be calculated from its components in R as a combination of <code>sum()</code>, <code>mean()</code> and <code>length()</code>.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="relationships.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variance by hand</span></span>
+<span id="cb85-2"><a href="relationships.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( (x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span> )<span class="sc">/</span>(<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>) </span></code></pre></div>
+<pre><code>## [1] 98</code></pre>
+<p>The standard deviation is derived from variance and tells, on average, how far each value lies from the mean. It’s the square root of variance. Variance and standard deivation measure the variability of a variable.</p>
+<!-- https://www.scribbr.com/statistics/variance/ -->
+<p><strong>For the truly dedicated.</strong> When you have collected data from every member of the population that you’re interested in, you can get an exact value for population variance. When you collect data from a sample, the sample variance is used to make estimates or inferences about the population variance.</p>
+<p><strong>Nerd Fact. Geek Trivia. Sheldon.</strong> The term variance was first introduced by Ronald Fisher in his 1918 paper The Correlation Between Relatives on the Supposition of Mendelian Inheritance:[21]</p>
+</div>
+<div id="variation-around-the-mean" class="section level3 hasAnchor" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Variation ARound the Mean<a href="relationships.html#variation-around-the-mean" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- http://stla.overblog.com/schematizing-the-variance-as-a-moment-of-inertia -->
+<!-- https://stats.stackexchange.com/questions/72208/visualising-the-variance -->
+<p>The one-dimensional variable <code>x</code> is visualized as points on a line. The mean of <code>x</code> is 18 (red bold line). The standard variation of <code>x</code> is 9.8994949 and surrounds the mean.</p>
+<!-- https://stats.stackexchange.com/questions/311174/what-does-it-mean-when-three-standard-deviations-away-from-the-mean-i-land-ou -->
+<p><strong>For the truly dedicated.</strong> In statistics, the empirical rule states that 99.7% of data occurs within three standard deviations of the mean within a normal distribution. To this end, 68% of the observed data will occur within the first standard deviation, 95% will take place in the second deviation, and 97.5% within the third standard deviation.</p>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-70-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="scatterplot" class="section level3 hasAnchor" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Scatterplot<a href="relationships.html#scatterplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <em>scatterplot</em> is a two-dimensional instrument. It shows the original information from <code>x</code> and <code>y</code> and their respective means as bold red lines.</p>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-71-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="covariance" class="section level3 hasAnchor" number="5.1.4">
+<h3><span class="header-section-number">5.1.4</span> Covariance<a href="relationships.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Covariance is a measure of the joint variability of two variables. The main idea of covariance is to classify three types of relationships: positive, negative or no relationship. For each data point, we multiply the differences with the respective mean. When both values are smaller or greater than the mean, the result will be positive.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="relationships.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Built-in command</span></span>
+<span id="cb87-2"><a href="relationships.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(x,y)</span></code></pre></div>
+<pre><code>## [1] 117.5</code></pre>
+<p>The covariance of <code>x</code> can be calculated from its components in R as a combination of <code>sum()</code>, <code>mean()</code> and <code>length()</code>.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="relationships.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Covariance by hand</span></span>
+<span id="cb89-2"><a href="relationships.html#cb89-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">sum</span>((x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">*</span>(y<span class="sc">-</span><span class="fu">mean</span>(y)))) <span class="sc">/</span> (<span class="fu">length</span>(x)<span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 117.5</code></pre>
+</div>
+<div id="covariance-visualization" class="section level3 hasAnchor" number="5.1.5">
+<h3><span class="header-section-number">5.1.5</span> Covariance Visualization<a href="relationships.html#covariance-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://evangelinereynolds.netlify.app/post/geometric-covariance/ -->
+<!-- https://stats.stackexchange.com/questions/18058/how-would-you-explain-covariance-to-someone-who-understands-only-the-mean -->
+<p>Now we turn to the visualization of the covariance. For each data point, we multiply the differences with the respective mean. This results in several rectangular areas starting at the intersection of means as a new origin. The covariance sums up all these areas.</p>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-74-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>From the graph, can you validate the covariance result from <code>cov(x,y)</code> by mental calculation?</p>
+</div>
+<div id="correlation" class="section level3 hasAnchor" number="5.1.6">
+<h3><span class="header-section-number">5.1.6</span> Correlation<a href="relationships.html#correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Definition</strong> Covariance quantifies a relationship and is similar to correlation but when the covariance is calculated, the data are not standardized. Therefore, the covariance is expressed in units that vary with the data and is not converted to a standardized scale of 1 to +1. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117 can be very low for one relationship and 0.23 very high for another relationship). To assess the strength of a relationship between two variables use a correlation coefficient.</p>
+<p><code>cor()</code> is a basic function to calculate the correlation coefficient.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="relationships.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic function</span></span>
+<span id="cb91-2"><a href="relationships.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(x,y)</span></code></pre></div>
+<pre><code>## [1] 0.9564548</code></pre>
+<p><code>cor.test()</code> is a more sophisticated version including a hypothesis test.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="relationships.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># More advanced function </span></span>
+<span id="cb93-2"><a href="relationships.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  x and y
+## t = 5.6757, df = 3, p-value = 0.01084
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.4751038 0.9972195
+## sample estimates:
+##       cor 
+## 0.9564548</code></pre>
+<!-- ## Statistical significance: p<0.05 (or rule of thumb t>2) -->
+<!-- ## t value is 5.6757 -->
+<!-- ## p value is 0.01084  -->
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- The **correlation coefficient** is the preferred way to describe a linear relationship.  -->
+<!-- ::: -->
+<p>The correlation test is based on a t-value (t = 5.6757104) and returns a p-value (0.0108364) for statistical significance. t- and p-value can be calculated in R programmatically from basic commands as a combination of <code>cor()</code> and <code>sqrt()</code>. For the p-value you can use the <code>pt()</code>.</p>
+<!-- ## Calculate t-value for correlation -->
+<!-- ## Calculate p-value for correlation -->
+<!-- ## https://stackoverflow.com/questions/46186115/calculating-p-values-for-given-t-value-in-r -->
+<!-- ## needs: t, df and pt (Student t cumulative Distribution) -->
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="relationships.html#cb95-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">cor</span>(x,y) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">3</span>) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">cor</span>(x,y)<span class="sc">^</span><span class="dv">2</span>) </span>
+<span id="cb95-2"><a href="relationships.html#cb95-2" aria-hidden="true" tabindex="-1"></a>t</span></code></pre></div>
+<pre><code>## [1] 5.67571</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="relationships.html#cb97-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="at">q =</span> <span class="fu">abs</span>(t), <span class="at">df =</span> <span class="dv">3</span>))<span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb97-2"><a href="relationships.html#cb97-2" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<pre><code>## [1] 0.01083644</code></pre>
+</div>
+</div>
+<div id="application" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Application<a href="relationships.html#application" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now, the time has come to apply your knowledge to real questionnaire data – your data. Answers are anonymous, names and matriculation number have been removed. The data is provided on github.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="relationships.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb99-2"><a href="relationships.html#cb99-2" aria-hidden="true" tabindex="-1"></a>GF <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/seminars_in_applied_economics/main/Data/GF_2022_57.csv&quot;</span>)</span>
+<span id="cb99-3"><a href="relationships.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(GF)</span></code></pre></div>
+<pre><code>## Rows: 57
+## Columns: 8
+## $ Academic.level                 &lt;chr&gt; &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Master&quot;, &quot;Mast…
+## $ Gender                         &lt;chr&gt; &quot;Female&quot;, &quot;Female&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Ma…
+## $ Age                            &lt;dbl&gt; 23, 22, 23, 24, 27, 23, 20, 22, 27, 22,…
+## $ Total.Semesters                &lt;dbl&gt; 8, 10, 9, 2, 10, 7, 5, 8, 13, 10, 8, 8,…
+## $ Background.in.Statistics       &lt;dbl&gt; 2, 4, 4, 3, 2, 3, 2, 2, 4, 4, 2, 2, 2, …
+## $ Background.in.R                &lt;dbl&gt; 2, 3, 2, 1, 1, 1, 3, 1, 4, 4, 1, 2, 2, …
+## $ Background.in.Academic.Writing &lt;dbl&gt; 2, 2, 4, 3, 4, 2, 3, 2, 4, 3, 1, 2, 3, …
+## $ Expectations                   &lt;chr&gt; &quot;I want to be efficient in my knowledge…</code></pre>
+<div id="one-variable-graphics" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> One Variable Graphics<a href="relationships.html#one-variable-graphics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <em>histogram</em> shows the absolute frequency of semesters of students in 2022.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="relationships.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(GF<span class="sc">$</span>Total.Semesters, <span class="at">main=</span><span class="st">&quot;Histogram of Semester&quot;</span>, </span>
+<span id="cb101-2"><a href="relationships.html#cb101-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Semester&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>, <span class="at">breaks=</span><span class="dv">12</span>)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+</div>
+<div id="two-variable-graphics" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Two Variable Graphics<a href="relationships.html#two-variable-graphics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <em>scatterplot</em> show the relationship between age and semester. A regression line is added to the plot to illustrate the general tendency of the relationship. <code>lm()</code> builds a linear model. Inside goes a formula of <code>y ~ x</code> and a dataset with the <code>data</code> option. <code>abline()</code> adds an object after the plot in base R.</p>
+<!-- Hint: model relationship in lm(y~x) whereas plot(x,y)  -->
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="relationships.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters, <span class="at">main=</span><span class="st">&quot;Relationship between Age and Semester&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Semester&quot;</span>, <span class="at">cex=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">7</span>)</span>
+<span id="cb102-2"><a href="relationships.html#cb102-2" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span>
+<span id="cb102-3"><a href="relationships.html#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(linear_model)</span></code></pre></div>
+<p><img src="Empirical-Research_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+</div>
+<div id="correlation-and-regression" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> Correlation and Regression<a href="relationships.html#correlation-and-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://stats.stackexchange.com/questions/32464/how-does-the-correlation-coefficient-differ-from-regression-slope -->
+<p>What is the relationship between the relationship-measures correlation and simple regression?</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="relationships.html#cb103-1" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span>
+<span id="cb103-2"><a href="relationships.html#cb103-2" aria-hidden="true" tabindex="-1"></a>linear_model<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>## (Intercept)         Age 
+##   1.8010913   0.2323192</code></pre>
+<p>The regression coefficient of age is 0.2323192. The Pearson correlation coefficient (between -1 and 1) is</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="relationships.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.1992823</code></pre>
+<p>The correlation coefficient and regression coefficient are related and only coincide when the two variables are on the same scale. The most common way of achieving this is through <strong>standardization</strong>.</p>
+<p><span class="math display">\[\beta = cor(X,Y) \cdot \frac{SD(Y)}{SD(X)} \]</span></p>
+<p>We show the equivalence of the beta coefficient and the adjusted correlation coefficient. Access the regression coefficient of <code>age</code> from the linear model and store it as <code>reg_coef_age</code>.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="relationships.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Store coefficient </span></span>
+<span id="cb107-2"><a href="relationships.html#cb107-2" aria-hidden="true" tabindex="-1"></a>reg_coef_age <span class="ot">&lt;-</span> linear_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb107-3"><a href="relationships.html#cb107-3" aria-hidden="true" tabindex="-1"></a>reg_coef_age</span></code></pre></div>
+<pre><code>##       Age 
+## 0.2323192</code></pre>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="relationships.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternative access</span></span>
+<span id="cb109-2"><a href="relationships.html#cb109-2" aria-hidden="true" tabindex="-1"></a>reg_coef_age <span class="ot">&lt;-</span> <span class="fu">summary</span>(linear_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb109-3"><a href="relationships.html#cb109-3" aria-hidden="true" tabindex="-1"></a>reg_coef_age</span></code></pre></div>
+<pre><code>## [1] 0.2323192</code></pre>
+<p>Calculate and store the adjusted correlation coefficient as <code>adj_cor_coef</code>.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="relationships.html#cb111-1" aria-hidden="true" tabindex="-1"></a>adj_cor_coef <span class="ot">&lt;-</span> <span class="fu">cor</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters) <span class="sc">*</span> <span class="fu">sd</span>(GF<span class="sc">$</span>Total.Semesters) <span class="sc">/</span> <span class="fu">sd</span>(GF<span class="sc">$</span>Age)</span>
+<span id="cb111-2"><a href="relationships.html#cb111-2" aria-hidden="true" tabindex="-1"></a>adj_cor_coef</span></code></pre></div>
+<pre><code>## [1] 0.2323192</code></pre>
+<p>Print out the logical comparison of <code>reg_coef_age</code> and <code>adj_cor_coef</code>.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="relationships.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Are those betas perfectly equal?</span></span>
+<span id="cb113-2"><a href="relationships.html#cb113-2" aria-hidden="true" tabindex="-1"></a>reg_coef_age <span class="sc">==</span> adj_cor_coef</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>What happened? Round to 6 digits with <code>round()</code> and try again.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="relationships.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(reg_coef_age, <span class="dv">6</span>) <span class="sc">==</span> <span class="fu">round</span>(adj_cor_coef,<span class="dv">6</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<!-- https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y/22721##22721 -->
+<!-- A correlation is symmetrical; x is as correlated with y as y is with x. The Pearson product-moment correlation can be understood within a regression context, however. The correlation coefficient, r, is the slope of the regression line when both variables have been standardized first. That is, you first subtracted off the mean from each observation, and then divided the differences by the standard deviation. The cloud of data points will now be centered on the origin, and the slope would be the same whether you regressed y onto x, or x onto y (but note the comment by @DilipSarwate below).  -->
+<!-- #### Centering and Standardization -->
+<!-- <!-- ## Some useful literature:  -->
+<!-- <!-- ## https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y/22721##22721 -->
+<!-- <!-- ## https://stats.stackexchange.com/questions/29781/when-conducting-multiple-regression-when-should-you-center-your-predictor-varia -->
+<!-- <!-- ## https://statmodeling.stat.columbia.edu/2009/07/11/when_to_standar -->
+<!-- <!-- ## http://rstudio-pubs-static.s3.amazonaws.com/318113_6581029a53064b988b700fc3eee55864.html -->
+<!-- In regression, it is sometimes/often recommended to center the variables so that the predictors have mean 0. This makes it easier to interpret the intercept term as the expected value of $Y$ when the predictor values are set to their means. Otherwise, the intercept is interpreted as the expected value of $Y$ when the predictors are set to 0, which may not be a realistic or interpretable situation (e.g. what if the predictors were height and weight?). Note:In many models, you’re not really interested in the intercept.  -->
+<!-- ```{r, echo=TRUE} -->
+<!-- GF_scaled <- GF -->
+<!-- GF_scaled$Age <- scale(GF_scaled$Age, center = TRUE, scale = TRUE)  -->
+<!-- GF_scaled$Total.Semesters <- scale(GF_scaled$Total.Semesters, center = TRUE, scale = TRUE)  -->
+<!-- linear_model_scaled <- lm(Total.Semesters ~ Age, data=GF_scaled) -->
+<!-- ``` -->
+<!-- :::: {.infobox2 .information  data-latex="warning"} -->
+<!-- **Centering** describes subtracting the mean (or another constant) from a variable. What it does is redefine the 0 point for that predictor to be whatever value you subtracted. **Standardization** goes one step further by dividing by the standard deviation. The results will be data with mean = 0 and sd = 1. -->
+<!-- :::: -->
+<!-- ```{r, echo=FALSE} -->
+<!-- par(mfrow=c(1,2)) -->
+<!-- plot(GF$Age, GF$Total.Semesters, xlab ="Age", ylab="Semester") -->
+<!-- abline(linear_model) -->
+<!-- title(main="Original") -->
+<!-- plot(GF_scaled$Age, GF_scaled$Total.Semesters, xlab ="Age", ylab="Semester") -->
+<!-- abline(linear_model_scaled) -->
+<!-- title(main="Standardized") -->
+<!-- ``` -->
+<!-- Standardization changes the axes. The data cloud and regression line are identical. The correlation coefficient for these data sets are identical. If you compare the correlation coefficient and regression coefficient of the scaled data and scaled model, they are identical by design (without any further modification).  -->
+<!-- ```{r, echo=TRUE} -->
+<!-- ## Correlation is identical -->
+<!-- round(cor(GF$Age, GF$Total.Semesters),10) == round(cor(GF_scaled$Age, GF_scaled$Total.Semesters),10) -->
+<!-- ````  -->
+<!-- <!-- ## ```{r, echo=TRUE} -->
+<!-- <!-- ## ## Model2 age coef is equivalent to cor coef  -->
+<!-- <!-- ## summary(linear_model)$coefficients -->
+<!-- <!-- ## summary(linear_model_scaled)$coefficients  -->
+<!-- <!-- ## ``` -->
+
+<!-- # --- -->
+<!-- # title: Test -->
+<!-- # author: Marco -->
+<!-- # output: html_document -->
+<!-- # --- -->
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="text-mining.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Empirical Research.pdf", "Empirical Research.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toc_depth": 2,
+"toolbar": {
+"positon": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
