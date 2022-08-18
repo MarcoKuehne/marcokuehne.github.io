@@ -1,0 +1,590 @@
+## Logistic Regression 
+
+Please create a R markdown script and name it `R09_name.Rmd` replacing `name` by your name. Follow the structure of this document. 
+
+- Start each section with the appropriate heading by using a hashtag as first symbol. 
+- The final `R09_name.html` document is supposed to show code and its result. 
+- Hide warnings and messages. Make it clean and concise. 
+
+When you are done, knit your document in order to create a HTML file. Name it `R09_name.html` replacing name by your name. Upload `R09_name.Rmd` and `R09_name.html`. 
+
+## Logistic basics 
+#### Think inside of a box (2 pt)
+
+<!-- https://www.javatpoint.com/linear-regression-vs-logistic-regression-in-machine-learning -->
+
+The following table contains data on the relationship between *hours of study* and the *outcome of an exam* (pass/fail) sorted ascending for study hours:
+
+```{r, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+## mydata <- data.frame(to_be_or_not_to_be = (c(0,0,0,0,1,1,1,1)) ,
+##                                       happy = c(2,1,3,2,4,7,4,8))
+
+mydata <- data.frame(pass = c(0, 	0 ,	0 ,	0 ,	0 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1, 	1 ,	1 ,	1 ,	1 ,	1),
+                     hours = c(0.50,0.75, 	1.00, 	1.25 ,	1.50 ,	1.75, 	1.75, 	2.00 ,	2.25, 	2.50 ,	2.75, 	3.00 ,	3.25 ,	3.50 ,	4.00, 	4.25 ,	4.50 , 	4.75 	,5.00 ,	5.50 )        )
+
+mydata$pass <- as_factor(mydata$pass)
+
+library(knitr)
+library(kableExtra)
+as.data.frame(t(mydata)) %>% kable(col.names = NULL) %>% kable_styling(font_size = 11)
+``` 
+
+Load the data. 
+
+```{r, eval=FALSE, echo=TRUE, warning=FALSE, message=FALSE}
+mydata <- data.frame(pass = c(0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1),
+hours = c(0.50,0.75,1.00,1.25,1.50,1.75,1.75,2.00,2.25,2.50,2.75,3.00,3.25,3.50,4.00,4.25,4.50,4.75,5.00,5.50))
+
+mydata$pass <- as_factor(mydata$pass)
+```
+
+Please do a side-by-side plot via `ggplot` and `gridExtra` package with `pass` on the y-axis and `hours` of study on the x-axis. Please fit a line though the left panel and a squiggle through the right panel. Use the layer `geom_smooth` with `method` option either `lm` (linear model) or `glm` (general linear model). 
+
+```{r, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE, fig.align='center'}
+mydata <- data.frame(pass = c(0, 	0 ,	0 ,	0 ,	0 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1, 	1 ,	1 ,	1 ,	1 ,	1),
+                     hours = c(0.50,0.75, 	1.00, 	1.25 ,	1.50 ,	1.75, 	1.75, 	2.00 ,	2.25, 	2.50 ,	2.75, 	3.00 ,	3.25 ,	3.50 ,	4.00, 	4.25 ,	4.50 , 	4.75 	,5.00 ,	5.50 )        )
+
+library(gridExtra)
+plot1 <- ggplot(mydata, aes(x=hours, y=pass)) +
+  geom_point(size=2) + 
+  geom_smooth(method="lm", se=FALSE) + ylim(-0.1,1.05) +
+  labs(title= "Linear Regression")+ xlab("Hours of Study")
+plot2 <- ggplot(mydata, aes(x=hours, y=pass)) +
+  geom_point(size=2) + 
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se=FALSE) +
+  ggtitle("Logistic Regression") + xlab("Hours of Study") +
+  geom_segment(aes(x = 0, y = -0.03, xend = 6, yend = -0.03),size = 1.5) +
+  geom_segment(aes(x = 0, y = 1.03, xend = 6, yend = 1.03),size = 1.5) + ylim(-0.1,1.05)
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+<!-- The first step is to find the functional form that better describes the data then a linear function.  -->
+
+#### From probability to odds (1 pt)
+<!-- https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-how-do-i-interpret-odds-ratios-in-logistic-regression/ -->
+<!-- https://www.statisticshowto.com/log-odds/ -->
+
+Please do the following:
+
+- Create a data.frame called `data`.
+- Within `data`, create a sequence of values ranging from 0 to 1 in 0.01 steps and store it as `p` (probability).
+- Within `data`, calculate the corresponding odds, store as `odds`. 
+- Create a simple plot showing the relation between odds and probability using the `plotly` package. 
+
+<!-- Odds and Log Odds: https://www.youtube.com/watch?v=ARfXDSkQf1Y -->
+
+```{r eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+p <- seq(from=0, to=1, by=0.01)
+odds <- p/(1-p)
+data <- data.frame(p, odds)
+
+## par(mfrow=c(1,2))
+## plot(p, odds)
+## plot(p, odds, xlim=c(0,0.25), ylim = c(0,0.25))
+## mtext("My 'Title' in a strange place", side = 3, line = -21, outer = TRUE)
+```
+
+```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+head(data)
+```
+
+```{r eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+library(plotly)
+plot_ly(data = data, x = ~p, y = ~odds)
+``` 
+
+#### From odds to log of odds (1 pt)
+
+Please calculate the log of odds, store it as `logodds` (can be another object). Create a side-by-side graph showing the relation between probability and odds and probability and logodds with the `plotly` package. 
+
+```{r, eval=TRUE, echo=TRUE}
+logodds <- log(odds)
+
+## par(mfrow=c(1,2))
+## plot(p, odds)
+## plot(p, logodds)
+
+library(plotly)
+fig1 <- plot_ly(data = data, x = ~p, y = ~odds)
+fig1 <- fig1 %>% add_lines(name = ~"odds")
+fig2 <- plot_ly(data = data, x = ~p, y = ~logodds)
+fig2 <- fig2 %>% add_lines(name = ~"logodds")
+fig <- subplot(fig1, fig2)
+
+fig
+```
+
+Imagine you flip the axes, doesn't this look like the initial S curve we were looking for?
+<!-- https://www.graphpad.com/guides/prism/latest/curve-fitting/reg_simple_logistic_logodds.htm -->
+<!-- https://www.graphpad.com/guides/prism/latest/curve-fitting/reg_log_or_ln.htm -->
+<!-- https://www.graphpad.com/guides/prism/latest/curve-fitting/reg_simple_logistic_coefficients.htm -->
+<!-- http://faculty.cas.usf.edu/mbrannick/regression/Logistic.html -->
+<!-- Logistic regression estimation is based on the concept of Maximum Likelihood estimation.  -->
+
+## Titanic Survival 
+
+#### Data Management (2 pt)
+
+Please register at Kaggle. Go to <https://www.kaggle.com/c/titanic/data> and download the datasets (`train.csv`, `test.csv`, `gender_submission.csv`). Put them in your working directory. The following merge commands should work. 
+
+<!-- Let's merge the datasets and create a dataframe called `titanic`.  -->
+
+```{r, eval=TRUE, echo=TRUE}
+library(tidyverse)
+
+## load individual datasets
+titanic.train = read.csv('train.csv',  header = T, na.strings = c(''))
+titanic.test = read.csv('test.csv', header = T, na.strings = c(""))
+test.label = read.csv('gender_submission.csv', header = T, na.string=c(""))
+## merge labels with test
+titanic.test = merge(titanic.test, test.label, by = "PassengerId")
+## bind test and train (here we don't make the distinction)
+titanic = rbind(titanic.test, titanic.train)
+## convert Pclass to factor (from numeric)
+titanic$Pclass = as.factor(titanic$Pclass)
+## convert all character variables to factor
+titanic <- as.data.frame(titanic, stringsAsFactors=TRUE)
+titanic <- titanic %>% mutate_if(is.character,as.factor)
+```
+
+Let's check the number of missing values per variable: 
+
+```{r, eval=TRUE, echo=TRUE}
+## missings per variable n = 1309
+sapply(X = titanic, FUN = function(x) sum(is.na(x)))
+```
+
+There are 2 missing values in `Embarked` and 263 in `Age`. The most missings fall upon `Cabin` though. Cabin information is not a very useful predictor for survival, thus we can remove this information for our analysis. 
+
+<!-- Remove columns `PassengerId`, `Name` and `Ticket`. -->
+
+Conduct a *complete case analysis*. The dataset should look like this (n = 1043): 
+
+```{r, eval=TRUE, echo=TRUE}
+titanic <- titanic %>% select(!Cabin)
+
+## ## n = 1043
+## titanic <- titanic %>%
+##   filter(Age > 0)
+
+## complete cases n = 1043
+titanic <- titanic[complete.cases(titanic), ]
+glimpse(titanic)
+```
+
+```{r, eval=FALSE, echo=TRUE}
+## estimation
+titanic_estimation <- titanic %>% select(!c(PassengerId, Name, Ticket))
+```
+
+#### No Predictor Variables (1 pt)
+
+There is no predictor, only the intercept (empty model):
+
+$$logit (p) = \beta_0$$ 
+
+```{r, eval=TRUE, echo=TRUE}
+library(tidyverse)
+logistic0 = glm(Survived ~ 1, family = binomial(link = 'logit'), data = titanic)
+logistic0
+```
+
+<!-- In all logistic regression models regression coefficients are reported in log odds.  -->
+<!-- This means \( log (1/(1-p)) = \) `r round(logistic0$coefficients,2)`.  -->
+
+Please recalculate the intercept from model `logistic0`, i.e. the value `r logistic0$coefficients`.
+
+Use the probability of survival from `titanic` data (check the count of `titanic$Survived`). Store and show the probability of survival in a vector named `survive_p`. Store and show the odds of survival as `survive_odds`. Calculate and store the logodds of survival as `survive_logodds` (this should be equivalent to the empty model intercept). 
+
+<!-- From probability, calculate odds and logodds (this should be equivalent to the empty model intercept).  -->
+<!-- Let's take a look at the frequency table for survival and derive this value step by step: -->
+
+```{r, eval=TRUE, echo=TRUE}
+##table(titanic$Survived)
+##table(titanic$Survived)[1]
+##table(titanic$Survived)[2]
+
+survive_p <- table(titanic$Survived)[2]/(table(titanic$Survived)[2]+table(titanic$Survived)[1]) 
+survive_odds <- survive_p/(1-survive_p)
+survive_logodds <- log(survive_odds)
+
+## ## 38.9% survived
+## 398/(398+623)
+## ## The odds are
+## 0.3898139/ (1-0.3898139)
+## ## 0.6229509 and the log of the odds (logit) is
+## log(0.6388443)
+## ## -0.4480945, exactly what the regression intercept is
+```
+
+#### Single Dichotomous Predictor (1 pt)
+
+Now include gender as an explanatory variable. We expect being male reduces the probability of surviving.
+
+$$logit (p) = \beta_0 + \beta_1 \cdot sex$$  
+
+```{r, eval=TRUE, echo=TRUE}
+logistic1 = glm(Survived ~ Sex, family = binomial(link = 'logit'), data = titanic)
+logistic1
+```
+
+The dummy variable behaves as in the linear model:
+
+- The logodds of survival for men are: `r logistic1$coefficients[1] + logistic1$coefficients[2]`
+- The logodds of survival for women are: `r logistic1$coefficients[1]`
+
+Please calculate the logodds for men based on the frequencies of male and female survival: 
+
+```{r, eval=TRUE, echo=TRUE}
+table(titanic$Survived, titanic$Sex)
+```
+
+Please use a programmatic approach in R to access those values. All calculations and results need to be shown. 
+
+```{r, eval=FALSE, echo=TRUE}
+## odds ratio: odds for female to the odds for male: 2.876543/0.2329059 = 12.35067 == (233*468)/(81*109)
+## the odds for females are about 1235% higher than the odds for males
+
+## odds ratio: odds for male to the odds for female: 0.2329059/2.876543 = 0.08096729
+## the odds for male are about 8% of the odds for females
+
+## The coefficient for female is the log of odds ratio between the female group and male group: log(12.35067) = 2.51371
+## The coefficient for male is the log of odds ratio between the male group and female group: log(0.08096729) = -2.51371
+
+###### titanic full data
+table(titanic$Survived, titanic$Sex)
+
+## male survival: (~ 14%)
+table(titanic$Survived, titanic$Sex)[2,2]/(table(titanic$Survived, titanic$Sex)[2,2] + table(titanic$Survived, titanic$Sex)[1,2])
+
+## ## female survival: (~ 83%)
+table(titanic$Survived, titanic$Sex)[2,1]/(table(titanic$Survived, titanic$Sex)[2,1] + table(titanic$Survived, titanic$Sex)[1,1])
+
+## male odds:
+table(titanic$Survived, titanic$Sex)[2,2] / table(titanic$Survived, titanic$Sex)[1,2]
+
+## female odds:
+table(titanic$Survived, titanic$Sex)[2,1] / table(titanic$Survived, titanic$Sex)[1,1]
+
+## logodds male
+log(table(titanic$Survived, titanic$Sex)[2,2] / table(titanic$Survived, titanic$Sex)[1,2])
+## logodds female
+log(table(titanic$Survived, titanic$Sex)[2,1] / table(titanic$Survived, titanic$Sex)[1,1])
+
+## odds ratio: odds for male to the odds for female: 0.03277389
+(table(titanic$Survived, titanic$Sex)[2,2] / table(titanic$Survived, titanic$Sex)[1,2])/(table(titanic$Survived, titanic$Sex)[2,1] / table(titanic$Survived, titanic$Sex)[1,1])
+
+## odds ratio: odds for female to the odds for male: 30.5121
+(table(titanic$Survived, titanic$Sex)[2,1] / table(titanic$Survived, titanic$Sex)[1,1])/(table(titanic$Survived, titanic$Sex)[2,2] / table(titanic$Survived, titanic$Sex)[1,2])
+```
+
+<!-- The coefficient for male is the log of odds ratio between the male group and female group: -3.465955 -->
+<!--  log(0.03124315) -->
+ 
+<!-- https://data.library.virginia.edu/visualizing-the-effects-of-logistic-regression/ -->
+
+#### Effect plot (1 pt)
+
+Use a nested version of `plot()` on `allEffects()` on the `logistic1` model (`effects` package).
+
+```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+library(effects)
+plot(allEffects(logistic1))
+```
+
+What kind of effect does this plot show? And how did the effects package make those estimates? Inverse the logit function on the logodds estimates. Define the function `invLogit()`: 
+
+```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+invLogit <- function(x) exp(x)/(1 + exp(x))
+```
+
+Apply `invLogit()` on the logodds for males. Show that the results are equivalent to the numbers from the effect plot. 
+
+<!-- the results of the allEffects() function to an object and investigating. When we do it for this model we get a list object with two elements, one for each graph. Within each list element are several values used to create the effect plots. The model.matrix element for the first list element contains the independent variables used in generating the predictions for each sex. -->
+
+```{r, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
+invLogit <- function(x) exp(x)/(1 + exp(x))
+
+## logodds male
+invLogit(log(table(titanic$Survived, titanic$Sex)[2,2] / table(titanic$Survived, titanic$Sex)[1,2]))
+## logodds female
+invLogit(log(table(titanic$Survived, titanic$Sex)[2,1] / table(titanic$Survived, titanic$Sex)[1,1]))
+```
+
+<!-- ##https://stats.stackexchange.com/questions/181996/logistic-regression-interpretation -->
+
+<!-- ## First off, you need to understand that, because the "regression function" is S-shaped, -->
+<!-- ## the first derivative is not constant. You therefore need to calculate the marginal effect at a certain point. -->
+<!-- ## Comparatively, in a linear regression, we do not have to care about that since the slope of a line -->
+<!-- ## is the same everywhere on this line. You have different possibilities: calculate the marginal effect at the mean -->
+<!-- ## (in general the default option), at the median, or at particular data points. -->
+
+<!-- ##https://www.displayr.com/how-to-interpret-logistic-regression-coefficients/ -->
+
+<!-- ## In some areas it is common to use odds rather than probabilities when thinking about risk -->
+<!-- ## (e.g., gambling, medical statistics). If you are working in one of these areas, -->
+<!-- ## it is often necessary to interpret and present coefficients as odds ratios. If you are -->
+<!-- ## not in one of these areas, there is no need to read the rest of this post, as the -->
+<!-- ## concept of odds ratios is of sociological rather than logical importance (i.e., using -->
+<!-- ## odds ratios is not particularly useful except when communicating with people that require them). -->
+
+#### Chi Square Test For Independence (1 pt)
+
+The `epitab` package can improve the contingency tables of survival by gender. From looking at this table, a lot men died (n = 564) and a lot women survived (n = 322). Those who survied have been about 77% female, those who deceased are about 90% male. 
+
+```{r, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+library(epitab)
+titanic_fct <- titanic %>%
+  mutate(Survived_fct = factor(Survived))
+
+## levels = c("Deceased", "Survived")
+## levels(titanic_fct$Survived_fct) 
+
+tab <- contingency_table(list("Sex"='Sex'),
+                         outcomes=list('Survival'='Survived_fct'), ## need to be factors
+                         crosstab_funcs=list(freq()),
+                         data=titanic_fct)
+   
+neat_table(tab, format = c("html"))
+```
+
+The $\chi^2$ test is an alternative to test the relationship between two categorical variables. 
+
+```{r, eval=TRUE, echo=TRUE}
+chisq.test(titanic$Survived, titanic$Sex)
+```
+
+Please recalculate the test statistic, i.e. the value:
+
+```{r, eval=TRUE, echo=TRUE}
+chisq.test(titanic$Survived, titanic$Sex)$statistic
+```
+
+from the observed values. The formula for $X^2$ is:
+<!-- , calculate row and column sums and from here the expected absolute frequency per cell. -->
+
+```{r, eval=FALSE, echo=TRUE}
+addmargins(table(titanic$Survived, titanic$Sex))
+```
+
+
+
+$X^2 = \sum_i \frac{(O_i-E_i)^2}{E_i}$,
+
+where $O_i$ is the observed frequency and $E_i$ is the expected frequency. The following steps are suggested. 
+
+<!-- Luckily, there is a package and a function to simplify this step.  -->
+
+```{r, eval=FALSE, echo=TRUE}
+## Step 1: Store the observed values in a table
+tab_obs <- table(titanic$Survived, titanic$Sex)
+
+## Step 2: Calculate expected absolute frequency
+library("DescTools")
+tab_exp <- ExpFreq(XYZ, freq ="abs")
+
+## Step 3: Subtract the expected value from the observed value (and square differences)
+## ...
+
+## Step 4: Divide by expected values
+## ... 
+
+## Step 5: Sum up all
+## ... 
+```
+
+```{r, eval=FALSE, echo=TRUE}
+tab_margins <- addmargins(table(titanic$Survived, titanic$Sex))
+tab_obs <- table(titanic$Survived, titanic$Sex)
+
+## Step 1: Expected absolute frequency
+library("DescTools")
+tab_exp <- ExpFreq(table(titanic$Survived, titanic$Sex), freq ="abs")
+
+## Step 2: Subtract the expected value from the observed value (and square differences)
+(tab_obs-tab_exp)^2
+
+## Step 3: Divide by expected values
+(tab_obs-tab_exp)^2/tab_exp
+
+## Step 4: Sum up all
+tab_temp <- (tab_obs-tab_exp)^2/tab_exp
+tab_temp[1,1] + tab_temp[1,2] + tab_temp[2,1] + tab_temp[2,2]
+```
+
+
+## Addons 
+#### Some Are More Equal Than Others
+
+Let's extend the group analysis to multiple categories using the `Pclass` variable. The passenger class represents the socio-economic status of people. We hypothesize that people with more money used their influence to get into one of the lifeboats. First, the contingency table of the situation: 
+
+```{r, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+tab <- contingency_table(list("Passenger Class"='Pclass'),
+                         outcomes=list('Survival'='Survived_fct'), ## need to be factors
+                         crosstab_funcs=list(freq()),
+                         data=titanic_fct)
+   
+neat_table(tab, format = c("html"))
+```
+
+
+In first class, more people survived (n=168) than died (n=114) whereas this not true for the third class (365 died and 135 survived). All men may be created equal, but some are more equal than others. The logistic regression with one categorical variable is straightforward: 
+
+```{r, eval=TRUE, echo=TRUE}
+logistic2 = glm(Survived ~ Pclass, family = binomial(link = 'logit'), data = titanic)
+logistic2
+```
+
+The lower your socio-economic status, the less survival can you expect.  
+
+#### The Cheaper The Deader? 
+
+We have another option to investigate the effect of socio-economic class, the `Fare` variable (ticket price). The prices of tickets on the Titanic in 1912 ranged from £870 or \$4,350 for a first-class parlor suite to a maximum of £8 or \$40 for a third-class passage, according to The Washington Times. A century later, in 2012, those ticket prices equaled a range of \$50,000 to \$460.
+
+```{r, eval=TRUE, echo=TRUE}
+logistic3 = glm(Survived ~ Fare, family = binomial(link = 'logit'), data = titanic)
+logistic3
+```
+
+The coefficient and intercept estimates give us the following equation:
+
+$$ \text{logit}(p) = -0.80666  + 0.01109 \cdot \text{fare} $$
+
+In this case, the estimated coefficient for the **intercept** is the log odds of a passenger with a fare of zero surviving the accident. Of course, there is nothing like a free lunch. So the intercept in this model corresponds to the log odds of survival when fare is at the hypothetical value of zero. 
+
+How do we interpret the **slope** coefficient for `Fare`? Let's fix `Fare` at some value, e.g. the mean which roughly equals `r round(mean(titanic$Fare), 0)` (rounded to 0 decimals). Then the conditional logit of surviving when the fare is equal to the mean is: 
+
+<!-- `r logistic3$coefficients[1] + logistic3$coefficients[2] * round(mean(titanic$Fare), 0)` -->
+
+<!-- ## ```{r, eval=TRUE, echo=TRUE} -->
+<!-- ## logistic3$coefficients[1] + logistic3$coefficients[2] * mean(titanic$Fare) -->
+<!-- ## ``` -->
+
+<!-- When the fare is held at 36, the conditional logit of surviving is: `r logistic3$coefficients[1] + logistic3$coefficients[2] * (mean(titanic$Fare)+1)` -->
+ 
+$$\begin{aligned} 
+\text{logit}(p | \text{fare}=36) &= `r logistic3$coefficients[1] + logistic3$coefficients[2] * round(mean(titanic$Fare), 0)`  \\
+\text{logit}(p | \text{fare}=37) &= `r logistic3$coefficients[1] + logistic3$coefficients[2] * (round(mean(titanic$Fare), 0)+1)`  \\
+\end{aligned}$$
+
+We can examine the effect of a **one-unit increase** in fare by taking the difference of the two equations: 
+
+
+$$\text{logit}(p | \text{fare}=37) - \text{logit}(p | \text{fare}=36) = `r logistic3$coefficients[2] * (round(mean(titanic$Fare), 0)+1) - logistic3$coefficients[2] * round(mean(titanic$Fare), 0)`  $$
+
+In other words, for a one-unit increase in the fare price, the expected change in log odds is `r logistic3$coefficients[2] * (round(mean(titanic$Fare), 0)+1) - logistic3$coefficients[2] * round(mean(titanic$Fare), 0)`. Can we translate this change in log odds to the change in odds? Indeed, we can. Recall that logarithm converts multiplication and division to addition and subtraction. Its inverse, the exponentiation converts addition and subtraction back to multiplication and division. If we exponentiate both sides of our last equation, we have the following:
+
+$$ e^{\text{logit}(p | \text{fare}=37) - \text{logit}(p | \text{fare}=36)} = e^{`r logistic3$coefficients[2] * (round(mean(titanic$Fare), 0)+1) - logistic3$coefficients[2] * round(mean(titanic$Fare), 0)`} =  1.011148  $$
+
+So we can say for a one-unit increase in fare price, we expect to see about 1.1% increase in the odds of surviving. This 1.1% of increase does not depend on the value that fare is held at.
+
+<details>
+<summary>Information about Britain’s currency at that time.</summary>
+Before Britain’s currency was in terms of pounds and pence, it was in terms of pounds, shillings and pennies e.g. £18 15s 9d.  There were: 12 pennies per shilling and 20 shillings per pound.
+</details>
+
+<br>
+
+Can we get this information more directly? Yes, we can. 
+
+```{r, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+require(MASS)
+exp(cbind(coef(logistic3), confint(logistic3)))  
+```
+
+
+<!-- ## We can say now that the coefficient for fare is the difference in the log odds. -->
+<!-- ## In other words, for a one-unit increase in the fare, the expected change in log odds is 0.011493. -->
+
+<!-- ## exp[log(p/(1-p))(fare=34)-log(p/(1-p))(fare=33)] = -->
+<!-- ## exp(log(p/(1-p))(fare=34)) / exp(log(p/(1-p))(fare=33)) = -->
+<!-- ## odds(fare=34)/odds(fare=33) = -->
+<!-- ## exp(0.011493) = 1.011559 -->
+
+<!-- ## So we can say for a one-unit increase in fare, -->
+<!-- ## we expect to see about 2% increase in the odds of surviving. -->
+<!-- ## This 2% of increase does not depend on the value that fare is held at. -->
+<!-- ## (model is linear in parameters) -->
+
+#### The Bigger Picture 
+
+First, we take another subset, since `PassengerId`, `Name` and `Ticket` are not good predictors. 
+
+```{r, eval=TRUE, echo=TRUE}
+logistic4 = glm(Survived ~ ., family = binomial(link = 'logit'), data = titanic[,-c(1,3,8)]) 
+logistic4
+```
+
+For example, increase one unit in age will decrease the log odd of survival by 0.0257; being a male will decrease the log odd of survival by 3.78 compared to female; and being in class2 will decrease the log odd of survival by 1.17, being in class3 will decrease the log odd of survival by 1.97.
+
+Moreover, exponentiate the model coefficients can look at the result and interpret its meaning at a different angle. Below are table of the “odd ratio” value for each predictor coefficient relative to the survival and their respective 95% confident interval odd ratio value.
+
+```{r, eval=TRUE, echo=TRUE}
+exp(cbind(OR = coef(logistic4)))  
+```
+
+Now, the result can be interpreted as: for a unit increase in age, the odds of surviving from the incident decrease by a factor of 0.96; and being a third class (class3), the odds of surviving decrease by a factor of 0.12, etc.
+
+<!-- The overall survival rate for men was 20%. For women, it was 74%, and for children, 52% -->
+
+::: {.infobox2 .information data-latex="warning"}
+The logit model coefficients can be presented as **odds ratios**. But odds-ratios are often misinterpreted as if they were relative risks/probabilities. Nonetheless presenting odds-ratios is standard practice in the medical literature.
+:::
+
+#### Marginal Effects
+
+<!-- https://stats.stackexchange.com/questions/147612/interpretation-of-marginal-effects-in-logit-model-with-log-timesindependent-va -->
+<!-- https://www.youtube.com/watch?v=lJMO5kqWwIo -->
+
+Marginal effects is a way of presenting results as differences in probabilities, which is more informative than odds-ratios and relative risk. For continuous variables this represents the instantaneous change given that the ‘unit’ may be very small. For binary variables, the change is from 0 to 1, so one ‘unit’ as it is usually thought. 
+
+In order to express the more intuitive change in the predicted probability that the outcome equals 1 requires conditioning on all other included variables (i.e., selecting a set of values for all righthand-side variables) and running that set of values through the link function to convert log-odds to probabilities, thus making the marginal effect (in probability terms) of one variable a function of all other variables included in the model. 
+
+::: {.infobox2 .information data-latex="warning"}
+**Marginal effects** show the change in probability when the predictor or independent variable increases by one unit.
+:::
+
+ <!-- This is the definition of semi-elasticity, and can be interpreted as the -->
+ <!-- change in probability for a 1% change in x. -->
+
+ <!-- So we can say for a one-percent increase in fare, -->
+ <!-- we expect to see about 0.002544 increase in the probability of surviving -->
+ <!-- on a scale from 0 to 1. -->
+ <!-- We could also infer that a 10% price increase increases survival probability -->
+ <!-- by about 0.025 -->
+
+```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+library(margins)
+summary(margins(logistic4))
+```
+
+```{r , echo=TRUE, out.width="50%", fig.cap="\\label{fig:titanic}Figure 4: RMS Titanic.", fig.align='center'}
+knitr::include_graphics("titanic.png")
+```
+
+
+
+<!-- #### Odds Ratio -->
+
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- The **Odds Ratio** (OR) is a measure of association between an exposure and an outcome. -->
+<!-- ::: -->
+
+<!-- <!-- https://www.theanalysisfactor.com/why-use-odds-ratios/ -->
+<!-- <!-- The problem is that probability and odds have different properties that give odds some advantages in statistics. For example, --> 
+
+<!-- In logistic regression the odds ratio represents the constant effect of a predictor X, on the likelihood that one outcome will occur. The key phrase here is constant effect. In regression models, we often want a measure of the unique effect of each X on Y. If we try to express the effect of X on the likelihood of a categorical Y having a specific value through probability, the effect is not constant. What that means is there is no way to express in one number how X affects Y in terms of probability. The effect of X on the probability of Y has different values depending on the value of X. -->
+
+<!-- So we can get the odds ratio by exponentiating the coefficient for female. Most statistical packages display both the raw regression coefficients and -->
+<!--  the exponentiated coefficients for logistic regression models. -->
+
+<!-- ```{r, eval=TRUE, echo=TRUE} -->
+<!-- exp(coef(logistic1)) -->
+<!-- ``` -->
+
+
+
+
+
+
