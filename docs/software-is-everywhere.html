@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Intro to R | Becoming Fluent in Data</title>
+  <title>Chapter 2 Software is everywhere | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
   <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Intro to R | Becoming Fluent in Data" />
+  <meta property="og:title" content="Chapter 2 Software is everywhere | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="/images/warning.png" />
   <meta property="og:description" content="A guide to become fluent in data." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Intro to R | Becoming Fluent in Data" />
+  <meta name="twitter:title" content="Chapter 2 Software is everywhere | Becoming Fluent in Data" />
   
   <meta name="twitter:description" content="A guide to become fluent in data." />
   <meta name="twitter:image" content="/images/warning.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/icons8-trading-64.ico" type="image/x-icon" />
-<link rel="prev" href="software-is-everywhere.html"/>
-<link rel="next" href="group-comparison.html"/>
+<link rel="prev" href="data-is-everywhere.html"/>
+<link rel="next" href="intro-to-r.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -325,231 +325,13 @@ div.csl-indent {
 <div class = rmdreview>
 This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
 </div>
-<div id="intro-to-r" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Chapter 3</span> Intro to R<a href="intro-to-r.html#intro-to-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script>
-<p>An .R file is a text document. Open (and edit) it with a any text editor (or RStudio).</p>
-<!-- Comments start with one or multiple hash tags.  -->
-<p><a href="https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/intro-r.R" class="uri">https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/intro-r.R</a></p>
-<!-- http://seminars-in-applied-economics.de/wp-content/uploads/2020/08/SOEP_Practice_1.txt -->
-<!-- You can collapse sections in RStudio. -->
-<!-- You can navigate between sections in RStudio. -->
-<!-- Check out your four panels and what they contain. -->
-<!-- You can run/execute code in the console.  -->
-<!-- Type or copy commands in the console and hit enter.  -->
-<!-- Alternatively click 'run' in RStudio. -->
-<!-- Alternatively use shortcuts like STRG + ENTER (run 1 line) -->
-<div id="watching-paint-dry" class="section level2 unnumbered hasAnchor">
-<h2>Watching paint dry<a href="intro-to-r.html#watching-paint-dry" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<!-- By default, `tutorial` will convert all R chunks. -->
-<p>R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the <strong>script.R</strong> tab are executed by the <strong>Run</strong> bottom. It runs the entire script and prints out results in the <strong>R Console</strong>. This procedure is simplified but similar to a more complex integrated developer environment (IDE) like RStudio.</p>
-<p>Copy and paste (or modify) commands from lower sections into the script.</p>
-<p><strong>Your Turn</strong>. Try <code>1:20</code> and hit Run.</p>
-<div data-datacamp-exercise="" data-height="300" data-encoded="true">
-eyJsYW5ndWFnZSI6InIiLCJzYW1wbGUiOiIjIENvbW1lbnQ6IFIgYXMgYSBjYWxjdWxhdG9yIGlzIGEgYm9yaW5nIGFzIHdhdGNoaW5nIHBhaW50IGRyeS5cbjIxKjIgIn0=
-</div>
-</div>
-<div id="when-paint-becomes-art" class="section level2 unnumbered hasAnchor">
-<h2>When paint becomes art<a href="intro-to-r.html#when-paint-becomes-art" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Copy paste the below code into <strong>script.R</strong> and hit <strong>Run</strong>. It opens a new tab <strong>Plots</strong>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="intro-to-r.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> iris<span class="sc">$</span>Sepal.Length, <span class="at">y =</span> iris<span class="sc">$</span>Petal.Length,  <span class="co"># x and y variables</span></span>
-<span id="cb1-2"><a href="intro-to-r.html#cb1-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> iris<span class="sc">$</span>Species,                            <span class="co"># color by species! </span></span>
-<span id="cb1-3"><a href="intro-to-r.html#cb1-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="dv">2</span>,                             <span class="co"># aesthetic parameters </span></span>
-<span id="cb1-4"><a href="intro-to-r.html#cb1-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Sepal Length&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Petal Length&quot;</span>,  <span class="co"># axis labels</span></span>
-<span id="cb1-5"><a href="intro-to-r.html#cb1-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Flower characteristics in Iris&quot;</span>)       <span class="co"># title</span></span>
-<span id="cb1-6"><a href="intro-to-r.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="intro-to-r.html#cb1-7" aria-hidden="true" tabindex="-1"></a> <span class="co"># Adding grid: </span></span>
-<span id="cb1-8"><a href="intro-to-r.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span>
-<span id="cb1-9"><a href="intro-to-r.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="intro-to-r.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding a legend: </span></span>
-<span id="cb1-11"><a href="intro-to-r.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span> (<span class="at">x =</span> <span class="fl">4.5</span>, <span class="at">y =</span> <span class="dv">7</span>, <span class="at">legend =</span> <span class="fu">levels</span>(iris<span class="sc">$</span>Species), </span>
-<span id="cb1-12"><a href="intro-to-r.html#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>))</span></code></pre></div>
-<iframe width="100%" height="300" src="https://rdrr.io/snippets/embed/" frameborder="0">
-</iframe>
-<!-- Help, check the note of the pie chart function ?pie -->
-</div>
-<div id="define-objects" class="section level2 unnumbered hasAnchor">
-<h2>Define objects<a href="intro-to-r.html#define-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Define R objects for later use. Objects are <strong>case-sensitive</strong> (<code>X</code> is different from <code>x</code>). Objects can take any name, but its best to use something that makes sense to you, and will likely make sense to others who may read your code.</p>
-<div id="numeric-variables" class="section level3 unnumbered hasAnchor">
-<h3>Numeric Variables<a href="intro-to-r.html#numeric-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="intro-to-r.html#cb2-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb2-2"><a href="intro-to-r.html#cb2-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb2-3"><a href="intro-to-r.html#cb2-3" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span>
-<span id="cb2-4"><a href="intro-to-r.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span></code></pre></div>
-</div>
-<div id="logical-variables" class="section level3 unnumbered hasAnchor">
-<h3>Logical Variables<a href="intro-to-r.html#logical-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="intro-to-r.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> harvard               <span class="ot">&lt;-</span>        <span class="cn">TRUE</span> <span class="co"># spacing doesn&#39;t matter</span></span>
-<span id="cb3-2"><a href="intro-to-r.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> yale      <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb3-3"><a href="intro-to-r.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> princeton <span class="ot">&lt;-</span> F <span class="co"># short for FALSE</span></span>
-<span id="cb3-4"><a href="intro-to-r.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span>
-<span id="cb3-5"><a href="intro-to-r.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> <span class="co"># Attention: FALSE=0, TRUE=1</span></span>
-<span id="cb3-6"><a href="intro-to-r.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> harvard <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb3-7"><a href="intro-to-r.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span></code></pre></div>
-</div>
-<div id="string-variables" class="section level3 unnumbered hasAnchor">
-<h3>String Variables<a href="intro-to-r.html#string-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="intro-to-r.html#cb4-1" aria-hidden="true" tabindex="-1"></a>emily  <span class="ot">&lt;-</span> <span class="st">&#39;She is a friend.&#39;</span>     <span class="co"># string / character class / plain text</span></span>
-<span id="cb4-2"><a href="intro-to-r.html#cb4-2" aria-hidden="true" tabindex="-1"></a>libby  <span class="ot">&lt;-</span> <span class="st">&quot;she is a coworker&quot;</span>    <span class="co"># use &#39; and &quot; interchangeably</span></span>
-<span id="cb4-3"><a href="intro-to-r.html#cb4-3" aria-hidden="true" tabindex="-1"></a>other  <span class="ot">&lt;-</span> <span class="st">&quot;people&quot;</span>               <span class="co"># prefer &quot;</span></span></code></pre></div>
-</div>
-<div id="factor-variables" class="section level3 unnumbered hasAnchor">
-<h3>Factor Variables<a href="intro-to-r.html#factor-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A factor is an ordered categorical variable. <code>c()</code> is a generic function which combines its arguments.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="intro-to-r.html#cb5-1" aria-hidden="true" tabindex="-1"></a>fruit  <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">&quot;banana&quot;</span>, <span class="st">&quot;apple&quot;</span>)  ) <span class="co"># The default ordering is alphabetic</span></span>
-<span id="cb5-2"><a href="intro-to-r.html#cb5-2" aria-hidden="true" tabindex="-1"></a>fruit</span>
-<span id="cb5-3"><a href="intro-to-r.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] banana apple </span></span>
-<span id="cb5-4"><a href="intro-to-r.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Levels: apple banana</span></span>
-<span id="cb5-5"><a href="intro-to-r.html#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="intro-to-r.html#cb5-6" aria-hidden="true" tabindex="-1"></a>dose <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;high&quot;</span>)  ) <span class="co"># The default ordering is alphabetic</span></span>
-<span id="cb5-7"><a href="intro-to-r.html#cb5-7" aria-hidden="true" tabindex="-1"></a>dose</span>
-<span id="cb5-8"><a href="intro-to-r.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] low    medium high  </span></span>
-<span id="cb5-9"><a href="intro-to-r.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Levels: high low medium</span></span></code></pre></div>
-</div>
-<div id="combine-objects" class="section level3 unnumbered hasAnchor">
-<h3>Combine objects<a href="intro-to-r.html#combine-objects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="intro-to-r.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare new objects using other variables</span></span>
-<span id="cb6-2"><a href="intro-to-r.html#cb6-2" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> a <span class="sc">+</span> b <span class="sc">+</span> <span class="dv">10</span></span>
-<span id="cb6-3"><a href="intro-to-r.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="intro-to-r.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Open z object or put everything in parentheses</span></span>
-<span id="cb6-5"><a href="intro-to-r.html#cb6-5" aria-hidden="true" tabindex="-1"></a>(c <span class="ot">&lt;-</span> a <span class="sc">+</span> b <span class="sc">+</span> <span class="dv">10</span>)</span>
-<span id="cb6-6"><a href="intro-to-r.html#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 15</span></span></code></pre></div>
-</div>
-<div id="vectors" class="section level3 unnumbered hasAnchor">
-<h3>Vectors<a href="intro-to-r.html#vectors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Think of a vector as a single column in a spreadsheet.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro-to-r.html#cb7-1" aria-hidden="true" tabindex="-1"></a>vectorA <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,b)</span>
-<span id="cb7-2"><a href="intro-to-r.html#cb7-2" aria-hidden="true" tabindex="-1"></a>vectorB <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>)</span>
-<span id="cb7-3"><a href="intro-to-r.html#cb7-3" aria-hidden="true" tabindex="-1"></a>vectorC <span class="ot">&lt;-</span> <span class="fu">c</span>(emily, libby, other) </span>
-<span id="cb7-4"><a href="intro-to-r.html#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="intro-to-r.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector Operations</span></span>
-<span id="cb7-6"><a href="intro-to-r.html#cb7-6" aria-hidden="true" tabindex="-1"></a>vectorA <span class="sc">-</span> vectorB <span class="co"># Vector operation AND auto-change TRUE =1, FALSE=0</span></span>
-<span id="cb7-7"><a href="intro-to-r.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0 1 3</span></span></code></pre></div>
-</div>
-<div id="data-frame" class="section level3 unnumbered hasAnchor">
-<h3>Data frame<a href="intro-to-r.html#data-frame" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro-to-r.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># think of it conceptually like a spreadsheet</span></span>
-<span id="cb8-2"><a href="intro-to-r.html#cb8-2" aria-hidden="true" tabindex="-1"></a>dataDF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">numberVec    =</span> vectorA,</span>
-<span id="cb8-3"><a href="intro-to-r.html#cb8-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">trueFalseVec =</span> vectorB,</span>
-<span id="cb8-4"><a href="intro-to-r.html#cb8-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stringsVec   =</span> vectorC)</span>
-<span id="cb8-5"><a href="intro-to-r.html#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="intro-to-r.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine an entire data frame  </span></span>
-<span id="cb8-7"><a href="intro-to-r.html#cb8-7" aria-hidden="true" tabindex="-1"></a>dataDF</span>
-<span id="cb8-8"><a href="intro-to-r.html#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   numberVec trueFalseVec        stringsVec</span></span>
-<span id="cb8-9"><a href="intro-to-r.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1         TRUE  She is a friend.</span></span>
-<span id="cb8-10"><a href="intro-to-r.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2         TRUE she is a coworker</span></span>
-<span id="cb8-11"><a href="intro-to-r.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3        FALSE            people</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro-to-r.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare a new column</span></span>
-<span id="cb9-2"><a href="intro-to-r.html#cb9-2" aria-hidden="true" tabindex="-1"></a>dataDF<span class="sc">$</span>NewCol <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">9</span>,<span class="dv">8</span>)</span>
-<span id="cb9-3"><a href="intro-to-r.html#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="intro-to-r.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine with new column</span></span>
-<span id="cb9-5"><a href="intro-to-r.html#cb9-5" aria-hidden="true" tabindex="-1"></a>dataDF</span>
-<span id="cb9-6"><a href="intro-to-r.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   numberVec trueFalseVec        stringsVec NewCol</span></span>
-<span id="cb9-7"><a href="intro-to-r.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1         TRUE  She is a friend.     10</span></span>
-<span id="cb9-8"><a href="intro-to-r.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2         TRUE she is a coworker      9</span></span>
-<span id="cb9-9"><a href="intro-to-r.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3        FALSE            people      8</span></span>
-<span id="cb9-10"><a href="intro-to-r.html#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="intro-to-r.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine a single column</span></span>
-<span id="cb9-12"><a href="intro-to-r.html#cb9-12" aria-hidden="true" tabindex="-1"></a>dataDF<span class="sc">$</span>numberVec <span class="co"># by name</span></span>
-<span id="cb9-13"><a href="intro-to-r.html#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 3</span></span>
-<span id="cb9-14"><a href="intro-to-r.html#cb9-14" aria-hidden="true" tabindex="-1"></a>dataDF[,<span class="dv">1</span>] <span class="co"># by index...remember ROWS then COLUMNS</span></span>
-<span id="cb9-15"><a href="intro-to-r.html#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 3</span></span>
-<span id="cb9-16"><a href="intro-to-r.html#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="intro-to-r.html#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine a single row</span></span>
-<span id="cb9-18"><a href="intro-to-r.html#cb9-18" aria-hidden="true" tabindex="-1"></a>dataDF[<span class="dv">2</span>,] <span class="co"># by index position</span></span>
-<span id="cb9-19"><a href="intro-to-r.html#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   numberVec trueFalseVec        stringsVec NewCol</span></span>
-<span id="cb9-20"><a href="intro-to-r.html#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2         TRUE she is a coworker      9</span></span>
-<span id="cb9-21"><a href="intro-to-r.html#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-22"><a href="intro-to-r.html#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine a single value</span></span>
-<span id="cb9-23"><a href="intro-to-r.html#cb9-23" aria-hidden="true" tabindex="-1"></a>dataDF<span class="sc">$</span>numberVec[<span class="dv">2</span>] <span class="co"># column name, then position (2)</span></span>
-<span id="cb9-24"><a href="intro-to-r.html#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
-<span id="cb9-25"><a href="intro-to-r.html#cb9-25" aria-hidden="true" tabindex="-1"></a>dataDF[<span class="dv">1</span>,<span class="dv">2</span>] <span class="co">#by index row 1, column 2</span></span>
-<span id="cb9-26"><a href="intro-to-r.html#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
-</div>
-<div id="plots" class="section level3 unnumbered hasAnchor">
-<h3>Plots<a href="intro-to-r.html#plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<!-- # Save/read objects ---- -->
-<!-- # Check where the working directory is -->
-<!-- getwd() -->
-<!-- # Store data.frame as csv file  -->
-<!-- write.csv(dataDF,"example.csv", row.names=F)  -->
-<!-- # Read in a file as an object -->
-<!-- newDF<-read.csv("example.csv")  -->
-<!-- # Examine & Compare to original -->
-<!-- newDF -->
-<!-- dataDF -->
-<!-- ## Basic plotting ----  -->
-<!-- # MUCH more to come -->
-<!-- # Scatterplot  -->
-<!-- x <- c(1,2,3,4) -->
-<!-- y <- c(4,3,2,1) -->
-<!-- plot(x,y) -->
-<!-- plot(y,x) -->
-<!-- plot(x,x) -->
-<!-- data(anscombe) -->
-<!-- # Barplot  -->
-<!-- vec1 <- c('Harvard', 'Harvard','Yale','Harvard') -->
-<!-- table(vec1) -->
-<!-- barplot(table(vec1)) -->
-<!-- # Save a plot to disk programmatically -->
-<!-- jpeg('example.jpg') # open up a background graphics device, declare path and file name -->
-<!-- barplot(table(vec1)) # plot it -->
-<!-- dev.off() # turn off the background graphics device -->
-<!-- # Download file from source (to computer) -->
-<!-- download.file("https://memegenerator.net/img/images/300x300/1678051.jpg", 'meme.jpg', mode = 'wb') -->
-<!-- # Packages ----  -->
-<!-- # Install a package once (RStudio tells to install in a small pop up) -->
-<!-- # Load package  -->
-<!-- library(meme) -->
-<!-- # Create meme inside R -->
-<!-- u <- "https://memegenerator.net/img/images/300x300/1678051.jpg" # store URL -->
-<!-- meme(u, "\n Tries To Be Cool", "By Going Over Boring Class \n Procedures Using Memes. \n", size=1.5) -->
-<!-- ## Logical statements ---- -->
-<!-- # If statements -->
-<!-- someValue <- 1 # set it 1 or not -->
-<!-- if (someValue==1){ -->
-<!--   print('the value is 1') -->
-<!-- } -->
-<!-- otherValue <- TRUE -->
-<!-- if (otherValue==F){ -->
-<!--   print('value is FALSE') -->
-<!--   x <- 2+2 -->
-<!--   } else { -->
-<!--   print('value is TRUE') -->
-<!--   x <- 3+3 -->
-<!--   } -->
-<!-- x -->
-<!-- # For loop ----  -->
-<!-- for (i in 1:length(dataDF)){ -->
-<!--   print('R is easy') -->
-<!-- } -->
-<!-- <div data-datacamp-exercise data-lang="r"> -->
-<!--    <code data-type="pre-exercise-code"> -->
-<!--        # This will get executed each time the exercise gets initialized -->
-<!--        b = 6 -->
-<!--    </code> -->
-<!--    <code data-type="sample-code"> -->
-<!--        # Create a variable a, equal to 5 -->
-<!--        # Print out a -->
-<!--    </code> -->
-<!--    <code data-type="solution"> -->
-<!--        # Create a variable a, equal to 5 -->
-<!--        a <- 5 -->
-<!--        # Print out a -->
-<!--        print(a) -->
-<!--    </code> -->
-<!--    <code data-type="sct"> -->
-<!--        test_object("a") -->
-<!--        test_function("print") -->
-<!--        success_msg("Great job!") -->
-<!--    </code> -->
-<!--    <div data-type="hint">Use the assignment operator (<code><-</code>) to create the variable <code>a</code>.</div> -->
-<!-- </div> -->
+<div id="software-is-everywhere" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Software is everywhere<a href="software-is-everywhere.html#software-is-everywhere" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 
 </div>
-</div>
-</div>
+
+
+
 <div id="disqus_thread"></div>
 <script>
     /**
@@ -574,8 +356,8 @@ eyJsYW5ndWFnZSI6InIiLCJzYW1wbGUiOiIjIENvbW1lbnQ6IFIgYXMgYSBjYWxjdWxhdG9yIGlzIGEg
           </div>
         </div>
       </div>
-<a href="software-is-everywhere.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="group-comparison.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-is-everywhere.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="intro-to-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
