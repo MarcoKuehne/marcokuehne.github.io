@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-09-12" />
+<meta name="date" content="2022-09-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -68,6 +68,17 @@
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
 
 
 <style type="text/css">
@@ -413,80 +424,80 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <div id="data-preparation" class="section level3 hasAnchor" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Data Preparation<a href="mean-comparison.html#data-preparation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Load SOEP practice data from Github repository directly into memory.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="mean-comparison.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb21-2"><a href="mean-comparison.html#cb21-2" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/seminars_in_applied_economics/blob/main/Data/soep_lebensz_en.dta?raw=true&quot;</span>)</span>
-<span id="cb21-3"><a href="mean-comparison.html#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="mean-comparison.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Complete case study</span></span>
-<span id="cb21-5"><a href="mean-comparison.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb21-6"><a href="mean-comparison.html#cb21-6" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span>
-<span id="cb21-7"><a href="mean-comparison.html#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="mean-comparison.html#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Subset the year 2000</span></span>
-<span id="cb21-9"><a href="mean-comparison.html#cb21-9" aria-hidden="true" tabindex="-1"></a>soep_2000 <span class="ot">&lt;-</span> <span class="fu">subset</span>(soep, year <span class="sc">==</span> <span class="dv">2000</span>)</span>
-<span id="cb21-10"><a href="mean-comparison.html#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="mean-comparison.html#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ## Fixing factors</span></span>
-<span id="cb21-12"><a href="mean-comparison.html#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># soep_2000$sex_factor &lt;- as.factor(soep_2000$sex)</span></span>
-<span id="cb21-13"><a href="mean-comparison.html#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># levels(soep_2000$sex_factor) &lt;- c(&quot;male&quot;, &quot;female&quot;)</span></span>
-<span id="cb21-14"><a href="mean-comparison.html#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb21-15"><a href="mean-comparison.html#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ## Convert Stata format </span></span>
-<span id="cb21-16"><a href="mean-comparison.html#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sjlabelled)</span></span>
-<span id="cb21-17"><a href="mean-comparison.html#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># soep_2000 &lt;- remove_all_labels(soep_2000)  </span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="mean-comparison.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb23-2"><a href="mean-comparison.html#cb23-2" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/seminars_in_applied_economics/blob/main/Data/soep_lebensz_en.dta?raw=true&quot;</span>)</span>
+<span id="cb23-3"><a href="mean-comparison.html#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="mean-comparison.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Complete case study</span></span>
+<span id="cb23-5"><a href="mean-comparison.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb23-6"><a href="mean-comparison.html#cb23-6" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span>
+<span id="cb23-7"><a href="mean-comparison.html#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="mean-comparison.html#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Subset the year 2000</span></span>
+<span id="cb23-9"><a href="mean-comparison.html#cb23-9" aria-hidden="true" tabindex="-1"></a>soep_2000 <span class="ot">&lt;-</span> <span class="fu">subset</span>(soep, year <span class="sc">==</span> <span class="dv">2000</span>)</span>
+<span id="cb23-10"><a href="mean-comparison.html#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="mean-comparison.html#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ## Fixing factors</span></span>
+<span id="cb23-12"><a href="mean-comparison.html#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># soep_2000$sex_factor &lt;- as.factor(soep_2000$sex)</span></span>
+<span id="cb23-13"><a href="mean-comparison.html#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># levels(soep_2000$sex_factor) &lt;- c(&quot;male&quot;, &quot;female&quot;)</span></span>
+<span id="cb23-14"><a href="mean-comparison.html#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb23-15"><a href="mean-comparison.html#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ## Convert Stata format </span></span>
+<span id="cb23-16"><a href="mean-comparison.html#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sjlabelled)</span></span>
+<span id="cb23-17"><a href="mean-comparison.html#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># soep_2000 &lt;- remove_all_labels(soep_2000)  </span></span></code></pre></div>
 </div>
 <div id="grouped-mean" class="section level3 hasAnchor" number="4.1.2">
 <h3><span class="header-section-number">4.1.2</span> Grouped Mean<a href="mean-comparison.html#grouped-mean" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are several options to calculate means per group.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="mean-comparison.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## TAPPLY</span></span>
-<span id="cb22-2"><a href="mean-comparison.html#cb22-2" aria-hidden="true" tabindex="-1"></a>means1 <span class="ot">&lt;-</span> <span class="fu">tapply</span>(soep_2000<span class="sc">$</span>health_org, <span class="at">INDEX=</span>soep_2000<span class="sc">$</span>sex, <span class="at">FUN=</span>mean)  </span>
-<span id="cb22-3"><a href="mean-comparison.html#cb22-3" aria-hidden="true" tabindex="-1"></a>means1</span>
-<span id="cb22-4"><a href="mean-comparison.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        0        1 </span></span>
-<span id="cb22-5"><a href="mean-comparison.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.509326 3.462017</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="mean-comparison.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## AGGREGATE </span></span>
-<span id="cb23-2"><a href="mean-comparison.html#cb23-2" aria-hidden="true" tabindex="-1"></a>means2 <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(health_org<span class="sc">~</span>sex, soep_2000, mean)                </span>
-<span id="cb23-3"><a href="mean-comparison.html#cb23-3" aria-hidden="true" tabindex="-1"></a>means2</span>
-<span id="cb23-4"><a href="mean-comparison.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sex health_org</span></span>
-<span id="cb23-5"><a href="mean-comparison.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   0   3.509326</span></span>
-<span id="cb23-6"><a href="mean-comparison.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   1   3.462017</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="mean-comparison.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## BY </span></span>
-<span id="cb24-2"><a href="mean-comparison.html#cb24-2" aria-hidden="true" tabindex="-1"></a>means3 <span class="ot">&lt;-</span> <span class="fu">by</span>(soep_2000<span class="sc">$</span>health_org, soep_2000<span class="sc">$</span>sex, mean)</span>
-<span id="cb24-3"><a href="mean-comparison.html#cb24-3" aria-hidden="true" tabindex="-1"></a>means3</span>
-<span id="cb24-4"><a href="mean-comparison.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; soep_2000$sex: 0</span></span>
-<span id="cb24-5"><a href="mean-comparison.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.509326</span></span>
-<span id="cb24-6"><a href="mean-comparison.html#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------------ </span></span>
-<span id="cb24-7"><a href="mean-comparison.html#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; soep_2000$sex: 1</span></span>
-<span id="cb24-8"><a href="mean-comparison.html#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.462017</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="mean-comparison.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## TAPPLY</span></span>
+<span id="cb24-2"><a href="mean-comparison.html#cb24-2" aria-hidden="true" tabindex="-1"></a>means1 <span class="ot">&lt;-</span> <span class="fu">tapply</span>(soep_2000<span class="sc">$</span>health_org, <span class="at">INDEX=</span>soep_2000<span class="sc">$</span>sex, <span class="at">FUN=</span>mean)  </span>
+<span id="cb24-3"><a href="mean-comparison.html#cb24-3" aria-hidden="true" tabindex="-1"></a>means1</span>
+<span id="cb24-4"><a href="mean-comparison.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        0        1 </span></span>
+<span id="cb24-5"><a href="mean-comparison.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.509326 3.462017</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="mean-comparison.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## AGGREGATE </span></span>
+<span id="cb25-2"><a href="mean-comparison.html#cb25-2" aria-hidden="true" tabindex="-1"></a>means2 <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(health_org<span class="sc">~</span>sex, soep_2000, mean)                </span>
+<span id="cb25-3"><a href="mean-comparison.html#cb25-3" aria-hidden="true" tabindex="-1"></a>means2</span>
+<span id="cb25-4"><a href="mean-comparison.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sex health_org</span></span>
+<span id="cb25-5"><a href="mean-comparison.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   0   3.509326</span></span>
+<span id="cb25-6"><a href="mean-comparison.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   1   3.462017</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="mean-comparison.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## BY </span></span>
+<span id="cb26-2"><a href="mean-comparison.html#cb26-2" aria-hidden="true" tabindex="-1"></a>means3 <span class="ot">&lt;-</span> <span class="fu">by</span>(soep_2000<span class="sc">$</span>health_org, soep_2000<span class="sc">$</span>sex, mean)</span>
+<span id="cb26-3"><a href="mean-comparison.html#cb26-3" aria-hidden="true" tabindex="-1"></a>means3</span>
+<span id="cb26-4"><a href="mean-comparison.html#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; soep_2000$sex: 0</span></span>
+<span id="cb26-5"><a href="mean-comparison.html#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.509326</span></span>
+<span id="cb26-6"><a href="mean-comparison.html#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------------ </span></span>
+<span id="cb26-7"><a href="mean-comparison.html#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; soep_2000$sex: 1</span></span>
+<span id="cb26-8"><a href="mean-comparison.html#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.462017</span></span></code></pre></div>
 <p>The <code>class(means1)</code> is an <code>array</code>, <code>class(means3)</code> is <code>by</code>. <code>means2</code> is a dataframe. None of these base R functions reminds of what the values <code>0</code> and <code>1</code> stand for. The <code>tidyverse</code> package makes use of built in labels.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="mean-comparison.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DPLYR pipe </span></span>
-<span id="cb25-2"><a href="mean-comparison.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb25-3"><a href="mean-comparison.html#cb25-3" aria-hidden="true" tabindex="-1"></a>means4 <span class="ot">&lt;-</span> soep_2000 <span class="sc">%&gt;%</span> </span>
-<span id="cb25-4"><a href="mean-comparison.html#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex)<span class="sc">%&gt;%</span> </span>
-<span id="cb25-5"><a href="mean-comparison.html#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">means =</span> <span class="fu">mean</span>(health_org))</span>
-<span id="cb25-6"><a href="mean-comparison.html#cb25-6" aria-hidden="true" tabindex="-1"></a>means4</span>
-<span id="cb25-7"><a href="mean-comparison.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span id="cb25-8"><a href="mean-comparison.html#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          sex means</span></span>
-<span id="cb25-9"><a href="mean-comparison.html#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl+lbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb25-10"><a href="mean-comparison.html#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0 [male]    3.51</span></span>
-<span id="cb25-11"><a href="mean-comparison.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1 [female]  3.46</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="mean-comparison.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DPLYR pipe </span></span>
+<span id="cb27-2"><a href="mean-comparison.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-3"><a href="mean-comparison.html#cb27-3" aria-hidden="true" tabindex="-1"></a>means4 <span class="ot">&lt;-</span> soep_2000 <span class="sc">%&gt;%</span> </span>
+<span id="cb27-4"><a href="mean-comparison.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex)<span class="sc">%&gt;%</span> </span>
+<span id="cb27-5"><a href="mean-comparison.html#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">means =</span> <span class="fu">mean</span>(health_org))</span>
+<span id="cb27-6"><a href="mean-comparison.html#cb27-6" aria-hidden="true" tabindex="-1"></a>means4</span>
+<span id="cb27-7"><a href="mean-comparison.html#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span id="cb27-8"><a href="mean-comparison.html#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          sex means</span></span>
+<span id="cb27-9"><a href="mean-comparison.html#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl+lbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb27-10"><a href="mean-comparison.html#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0 [male]    3.51</span></span>
+<span id="cb27-11"><a href="mean-comparison.html#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1 [female]  3.46</span></span></code></pre></div>
 <!-- Check how different `means1`, `means2` and `means3` look like in the console.  -->
 <!-- Means can be compared in plain text. The mean education of men in 2000 is 11.8848637 years and mean education of women in 2000 is 11.6438356 years. But how to evaluate this difference? Is there a meaningful difference? Is it almost equal? We add confidence intervals to group means as a measure of uncertainty. -->
 </div>
 <div id="furious-with-factors" class="section level3 hasAnchor" number="4.1.3">
 <h3><span class="header-section-number">4.1.3</span> Furious with Factors<a href="mean-comparison.html#furious-with-factors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In order to make labels nice and usable, define <code>sex</code> as a <strong>factor variable</strong>. A factor variable is a variable used for categorical data. Some categories are ordered (e.g. small, medium, large), some are not (e.g. men, women). An integer or string can be converted to a factor. Factors have hidden <strong>levels</strong>. Several R functions and packages treat factors fundamentally different from integers. When R handles <code>sex</code> as an integer, it assumes that values such as <code>sex=-3</code> and <code>sex=1.5</code> are possible. This is what happens to numbers.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="mean-comparison.html#cb26-1" aria-hidden="true" tabindex="-1"></a>gender_numbers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb26-2"><a href="mean-comparison.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gender_numbers)</span>
-<span id="cb26-3"><a href="mean-comparison.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb26-4"><a href="mean-comparison.html#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0.0     0.0     1.0     0.6     1.0     1.0</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="mean-comparison.html#cb28-1" aria-hidden="true" tabindex="-1"></a>gender_numbers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb28-2"><a href="mean-comparison.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gender_numbers)</span>
+<span id="cb28-3"><a href="mean-comparison.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb28-4"><a href="mean-comparison.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0.0     0.0     1.0     0.6     1.0     1.0</span></span></code></pre></div>
 <p>A mean can be calculated. Compare to character coding.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="mean-comparison.html#cb27-1" aria-hidden="true" tabindex="-1"></a>gender_words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>, <span class="st">&quot;female&quot;</span>)</span>
-<span id="cb27-2"><a href="mean-comparison.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gender_words)</span>
-<span id="cb27-3"><a href="mean-comparison.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Length     Class      Mode </span></span>
-<span id="cb27-4"><a href="mean-comparison.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         5 character character</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="mean-comparison.html#cb29-1" aria-hidden="true" tabindex="-1"></a>gender_words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>, <span class="st">&quot;female&quot;</span>)</span>
+<span id="cb29-2"><a href="mean-comparison.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gender_words)</span>
+<span id="cb29-3"><a href="mean-comparison.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Length     Class      Mode </span></span>
+<span id="cb29-4"><a href="mean-comparison.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         5 character character</span></span></code></pre></div>
 <p>Now, convert the gender variable to a factor and calculate the mean again.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="mean-comparison.html#cb28-1" aria-hidden="true" tabindex="-1"></a>soep_2000<span class="sc">$</span>sex_factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(soep_2000<span class="sc">$</span>sex) </span>
-<span id="cb28-2"><a href="mean-comparison.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(soep_2000<span class="sc">$</span>sex_factor) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>) </span>
-<span id="cb28-3"><a href="mean-comparison.html#cb28-3" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(soep_2000<span class="sc">$</span>health_org, <span class="at">INDEX=</span>soep_2000<span class="sc">$</span>sex_factor, <span class="at">FUN=</span>mean) </span>
-<span id="cb28-4"><a href="mean-comparison.html#cb28-4" aria-hidden="true" tabindex="-1"></a>means</span>
-<span id="cb28-5"><a href="mean-comparison.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     male   female </span></span>
-<span id="cb28-6"><a href="mean-comparison.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.509326 3.462017</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="mean-comparison.html#cb30-1" aria-hidden="true" tabindex="-1"></a>soep_2000<span class="sc">$</span>sex_factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(soep_2000<span class="sc">$</span>sex) </span>
+<span id="cb30-2"><a href="mean-comparison.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(soep_2000<span class="sc">$</span>sex_factor) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>) </span>
+<span id="cb30-3"><a href="mean-comparison.html#cb30-3" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(soep_2000<span class="sc">$</span>health_org, <span class="at">INDEX=</span>soep_2000<span class="sc">$</span>sex_factor, <span class="at">FUN=</span>mean) </span>
+<span id="cb30-4"><a href="mean-comparison.html#cb30-4" aria-hidden="true" tabindex="-1"></a>means</span>
+<span id="cb30-5"><a href="mean-comparison.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     male   female </span></span>
+<span id="cb30-6"><a href="mean-comparison.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.509326 3.462017</span></span></code></pre></div>
 <!-- First, we analyze the statistical significance of the mean difference. Then, we plot the mean difference.  -->
 <p>The average health status is higher for men in comparison to women in the data. What can we learn from this difference? Is it small or large? Is it a cause for concern? How can we become more confident of the result? We do a statistical test that compares the means.</p>
 <!-- The interval of all observed values can be investigated with the `summary(soep_2000$satisf_org)` as min/max.  -->
@@ -511,18 +522,18 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </details>
 </div>
 <p>The <code>t.test()</code> in R takes a <code>formula</code> and <code>data</code> as input. The relationship between <code>health_org</code> and <code>sex</code> is specified as <code>health_org ~ sex</code>, i.e. explain or calculate the health_org by sex (if other way around, R returns an error message).</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="mean-comparison.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> sex, <span class="at">data=</span>soep_2000)</span>
-<span id="cb29-2"><a href="mean-comparison.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb29-3"><a href="mean-comparison.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
-<span id="cb29-4"><a href="mean-comparison.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb29-5"><a href="mean-comparison.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  health_org by sex</span></span>
-<span id="cb29-6"><a href="mean-comparison.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 1.3118, df = 2968.8, p-value = 0.1897</span></span>
-<span id="cb29-7"><a href="mean-comparison.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0</span></span>
-<span id="cb29-8"><a href="mean-comparison.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb29-9"><a href="mean-comparison.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -0.02340655  0.11802305</span></span>
-<span id="cb29-10"><a href="mean-comparison.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb29-11"><a href="mean-comparison.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group 0 mean in group 1 </span></span>
-<span id="cb29-12"><a href="mean-comparison.html#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        3.509326        3.462017</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="mean-comparison.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> sex, <span class="at">data=</span>soep_2000)</span>
+<span id="cb31-2"><a href="mean-comparison.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb31-3"><a href="mean-comparison.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb31-4"><a href="mean-comparison.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb31-5"><a href="mean-comparison.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  health_org by sex</span></span>
+<span id="cb31-6"><a href="mean-comparison.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 1.3118, df = 2968.8, p-value = 0.1897</span></span>
+<span id="cb31-7"><a href="mean-comparison.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0</span></span>
+<span id="cb31-8"><a href="mean-comparison.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb31-9"><a href="mean-comparison.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -0.02340655  0.11802305</span></span>
+<span id="cb31-10"><a href="mean-comparison.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb31-11"><a href="mean-comparison.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group 0 mean in group 1 </span></span>
+<span id="cb31-12"><a href="mean-comparison.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        3.509326        3.462017</span></span></code></pre></div>
 <p>Look at the output of the t-test:</p>
 <ul>
 <li>The so called t-statistic is 1.3117519</li>
@@ -544,7 +555,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <h2><span class="header-section-number">4.3</span> Plot with Confidence<a href="mean-comparison.html#plot-with-confidence" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <!-- http://www.sthda.com/english/wiki/plot-group-means-and-confidence-intervals-r-base-graphs -->
 <p>Time to plot. In addition to the group means we plot <strong>confidence intervals</strong> using the <code>gplots</code> package with the <code>plotmeans()</code> function. The result is this:</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-40-1.png" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-42-1.png" width="576" /></p>
 <p><code>plotmeans()</code> nicely presents the number of observations and labels by default.</p>
 <div class="defbox">
 <p>There is a statistically significant difference, <strong>when confidence intervals not overlap</strong>.</p>
@@ -563,42 +574,42 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </ul>
 <p>There is a one sample t-test which does not help much for group comparison. You can read more about <a href="https://en.wikipedia.org/wiki/Student%27s_t-test##Unpaired_and_paired_two-sample_t-tests">Unpaired and paired two-sample t-tests</a>. The first <code>t.test</code> on health between gender was unpaired since the <strong>default</strong> option is <code>paired=FALSE</code>. We used the unpaired t-test for gender, since men and women are <em>independent</em> in the sense of statistical samples (though this may be different in other relationships).</p>
 <p>For the next calculation we create another subsample and focus on all women who are observed in 2000 and 2004. We can compare women to men. We can compare women to themselves.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="mean-comparison.html#cb30-1" aria-hidden="true" tabindex="-1"></a>women_before_after <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span></span>
-<span id="cb30-2"><a href="mean-comparison.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="do">## filter all males</span></span>
-<span id="cb30-3"><a href="mean-comparison.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2000</span> <span class="sc">|</span> year <span class="sc">==</span> <span class="dv">2004</span>) <span class="sc">%&gt;%</span> <span class="do">## only use year 2000 or 2004</span></span>
-<span id="cb30-4"><a href="mean-comparison.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="do">## look at id groups</span></span>
-<span id="cb30-5"><a href="mean-comparison.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">==</span> <span class="dv">2</span>) <span class="do">## only keep groups with exactly two observations/rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="mean-comparison.html#cb32-1" aria-hidden="true" tabindex="-1"></a>women_before_after <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="mean-comparison.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="do">## filter all males</span></span>
+<span id="cb32-3"><a href="mean-comparison.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2000</span> <span class="sc">|</span> year <span class="sc">==</span> <span class="dv">2004</span>) <span class="sc">%&gt;%</span> <span class="do">## only use year 2000 or 2004</span></span>
+<span id="cb32-4"><a href="mean-comparison.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="do">## look at id groups</span></span>
+<span id="cb32-5"><a href="mean-comparison.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">==</span> <span class="dv">2</span>) <span class="do">## only keep groups with exactly two observations/rows</span></span></code></pre></div>
 <p>The unpaired t-test on women’s health is:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="mean-comparison.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> year, <span class="at">data=</span>women_before_after, <span class="at">paired=</span><span class="cn">FALSE</span>)</span>
-<span id="cb31-2"><a href="mean-comparison.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb31-3"><a href="mean-comparison.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
-<span id="cb31-4"><a href="mean-comparison.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb31-5"><a href="mean-comparison.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  health_org by year</span></span>
-<span id="cb31-6"><a href="mean-comparison.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 3.6158, df = 1629.9, p-value = 0.0003085</span></span>
-<span id="cb31-7"><a href="mean-comparison.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group 2000 and group 2004 is not equal to 0</span></span>
-<span id="cb31-8"><a href="mean-comparison.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb31-9"><a href="mean-comparison.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.07850093 0.26463633</span></span>
-<span id="cb31-10"><a href="mean-comparison.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb31-11"><a href="mean-comparison.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group 2000 mean in group 2004 </span></span>
-<span id="cb31-12"><a href="mean-comparison.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           3.497549           3.325980</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="mean-comparison.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> year, <span class="at">data=</span>women_before_after, <span class="at">paired=</span><span class="cn">FALSE</span>)</span>
+<span id="cb33-2"><a href="mean-comparison.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb33-3"><a href="mean-comparison.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb33-4"><a href="mean-comparison.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb33-5"><a href="mean-comparison.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  health_org by year</span></span>
+<span id="cb33-6"><a href="mean-comparison.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 3.6158, df = 1629.9, p-value = 0.0003085</span></span>
+<span id="cb33-7"><a href="mean-comparison.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group 2000 and group 2004 is not equal to 0</span></span>
+<span id="cb33-8"><a href="mean-comparison.html#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb33-9"><a href="mean-comparison.html#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.07850093 0.26463633</span></span>
+<span id="cb33-10"><a href="mean-comparison.html#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb33-11"><a href="mean-comparison.html#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group 2000 mean in group 2004 </span></span>
+<span id="cb33-12"><a href="mean-comparison.html#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           3.497549           3.325980</span></span></code></pre></div>
 <!-- http://www.sthda.com/english/wiki/paired-samples-t-test-in-r -->
 <p>It looks like women have been significantly more healthy in 2000 than in 2004. Can you think of a reason? What happened to all those women?</p>
 </div>
 <div id="dependent-t-test" class="section level2 hasAnchor" number="4.5">
 <h2><span class="header-section-number">4.5</span> Dependent t-test<a href="mean-comparison.html#dependent-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now run the t.test as <code>paired=TRUE</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="mean-comparison.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> year, <span class="at">data=</span>women_before_after, <span class="at">paired=</span><span class="cn">TRUE</span>)</span>
-<span id="cb32-2"><a href="mean-comparison.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb32-3"><a href="mean-comparison.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Paired t-test</span></span>
-<span id="cb32-4"><a href="mean-comparison.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb32-5"><a href="mean-comparison.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  health_org by year</span></span>
-<span id="cb32-6"><a href="mean-comparison.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 5.7026, df = 815, p-value = 1.65e-08</span></span>
-<span id="cb32-7"><a href="mean-comparison.html#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean difference is not equal to 0</span></span>
-<span id="cb32-8"><a href="mean-comparison.html#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb32-9"><a href="mean-comparison.html#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.1125131 0.2306242</span></span>
-<span id="cb32-10"><a href="mean-comparison.html#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb32-11"><a href="mean-comparison.html#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean difference </span></span>
-<span id="cb32-12"><a href="mean-comparison.html#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.1715686</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="mean-comparison.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(health_org <span class="sc">~</span> year, <span class="at">data=</span>women_before_after, <span class="at">paired=</span><span class="cn">TRUE</span>)</span>
+<span id="cb34-2"><a href="mean-comparison.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb34-3"><a href="mean-comparison.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Paired t-test</span></span>
+<span id="cb34-4"><a href="mean-comparison.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb34-5"><a href="mean-comparison.html#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  health_org by year</span></span>
+<span id="cb34-6"><a href="mean-comparison.html#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 5.7026, df = 815, p-value = 1.65e-08</span></span>
+<span id="cb34-7"><a href="mean-comparison.html#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean difference is not equal to 0</span></span>
+<span id="cb34-8"><a href="mean-comparison.html#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb34-9"><a href="mean-comparison.html#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.1125131 0.2306242</span></span>
+<span id="cb34-10"><a href="mean-comparison.html#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb34-11"><a href="mean-comparison.html#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean difference </span></span>
+<span id="cb34-12"><a href="mean-comparison.html#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.1715686</span></span></code></pre></div>
 <p>The paired t-test is a little bit more exiting in the way that we need data on something observed at two different points in time. In this before-and-after scenario, the person serves as something like its own control group. We’ll come back to that.</p>
 <p>The mean difference is exactly the same (can you see it? - ask your console to calculate the difference between 3.497549 and 3.325980). But all the other statistics seem to be different: t-value, degree of freedom, p-value …</p>
 <!-- https://scandiweb.com/blog/t-tests-explained/ -->
