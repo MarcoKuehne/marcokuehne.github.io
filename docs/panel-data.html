@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Panel Data | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Panel Data | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-09-18" />
+<meta name="date" content="2022-09-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,6 +53,21 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 <script async defer src="https://hypothes.is/embed.js"></script>
 
 <!-- Google tag (gtag.js) -->
@@ -168,11 +183,16 @@ div.csl-indent {
 <ul class="summary">
 <li><a href="https://marcokuehne.github.io/">Becoming Fluent in Data</a></li> <li><p class="aligncenter"> <img src="images/icons8-trading-64.png"> </p></li>
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="part"><span><b>I Preface</b></span></li>
+<li class="chapter" data-level="" data-path="teach-learn-repeat.html"><a href="teach-learn-repeat.html"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="" data-path="aim-of-this-books.html"><a href="aim-of-this-books.html"><i class="fa fa-check"></i>Aim of this books</a></li>
+<li class="chapter" data-level="" data-path="structure-of-this-books.html"><a href="structure-of-this-books.html"><i class="fa fa-check"></i>Structure of this books</a>
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#content"><i class="fa fa-check"></i>Content</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="structure-of-this-books.html"><a href="structure-of-this-books.html#content"><i class="fa fa-check"></i>Content</a></li>
+<li class="chapter" data-level="" data-path="structure-of-this-books.html"><a href="structure-of-this-books.html#color"><i class="fa fa-check"></i>Color</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
 <li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a>
 <ul>
 <li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#watching-paint-dry"><i class="fa fa-check"></i>Watching paint dry</a></li>
@@ -189,7 +209,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#plots"><i class="fa fa-check"></i>Plots</a></li>
 </ul></li>
 </ul></li>
-<li class="part"><span><b>I Data</b></span></li>
+<li class="part"><span><b>II Data</b></span></li>
 <li class="chapter" data-level="1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1</b> Data is everywhere</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#why-we-measure"><i class="fa fa-check"></i><b>1.1</b> Why we measure</a>
@@ -395,24 +415,18 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <div id="panel-data" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Panel Data<a href="panel-data.html#panel-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>Learning Goals</strong></p>
-<div class="defox">
-<ul>
-<li>Conceptual Skills:
-<ul>
-<li>Understand panel data. Panel attrition.</li>
-<li>Distinguish between and within variation.</li>
-<li>Compare the paired and unpaired t-Test to panel data.</li>
-</ul></li>
-<li>Data Skills:
-<ul>
-<li>How <code>set.seed()</code> defeats randomness.<br />
-</li>
-<li>Find and use <em>functions</em> from other people.</li>
-<li>Tidyverse e.g. <code>group_by()</code>, <code>sample_n()</code>, <code>summarize()</code>, <code>count()</code>, <code>arrange()</code>.</li>
-<li>Data Visualization: Panel plots (time series per group).</li>
-</ul></li>
-</ul>
-</div>
+<p>…</p>
+<!-- ::: {.defox} -->
+<!-- -   Conceptual Skills:  -->
+<!--       + Understand panel data. Panel attrition.  -->
+<!--       + Distinguish between and within variation.  -->
+<!--       + Compare the paired and unpaired t-Test to panel data.  -->
+<!-- -   Data Skills: -->
+<!--       +   How `set.seed()` defeats randomness.   -->
+<!--       +   Find and use *functions* from other people.  -->
+<!--       +   Tidyverse e.g. `group_by()`, `sample_n()`, `summarize()`, `count()`, `arrange()`. -->
+<!--       +   Data Visualization: Panel plots (time series per group). -->
+<!-- ::: -->
 <hr />
 <p>Panel data are observations for the same subjects over time. Subjects can be people, households, firms or countries. Panel data are a subset of longitudinal data. Key components are the panel identifier: person (id) and time (year). Every row is a person-year combination (so called <em>long format</em>).</p>
 <!-- ::: {.infobox2 .information data-latex="warning"} -->
@@ -421,7 +435,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <!-- -   *Repeated cross-section*: Different people. -->
 <!-- -   *Panel*: Repeated observations of the same individuals. -->
 <!-- ::: -->
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-62-1.png" width="576" /></p>
 <!-- ```{r, echo=FALSE, out.width="70%", fig.cap="\\label{fig:wb}Table 1: Types of Data.", fig.align='center'} -->
 <!-- knitr::include_graphics("images/paneldata.png") -->
 <!-- ``` -->
@@ -450,8 +464,8 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </blockquote>
 <div id="on-decline-in-germany" class="section level3 hasAnchor" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> On decline in Germany<a href="panel-data.html#on-decline-in-germany" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
-<img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-4-1.png" alt="Unemployment rate in Germany" width="672" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-63"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-63-1.png" alt="Unemployment rate in Germany" width="576" />
 <p class="caption">
 Figure 5.1: Unemployment rate in Germany
 </p>
@@ -479,11 +493,17 @@ Figure 5.1: Unemployment rate in Germany
 </div>
 <div id="measurement" class="section level3 hasAnchor" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Measurement<a href="panel-data.html#measurement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The <strong>unemployment rate</strong> represents the proportion of the <strong>civilian labour force</strong> that is unemployed. Consequently, measuring the unemployment rate requires identifying who is in the labour force. The labour force consists of all employed and unemployed persons of working age.</p>
+<p>The <strong>unemployment rate</strong> represents the proportion of the <strong>civilian labour force</strong> that is unemployed. Consequently, measuring the unemployment rate requires identifying who is in the labour force. The labour force consists of all employed and unemployed persons of working age. What exactly is defined as employment? Employment status can be defined via a threshold of working hours or income. Who is in the working age?</p>
 <div class="reading">
-<p><strong>How low can the unemployment rate be?</strong></p>
-<p><em>“Here are two things most economists can agree upon: They want an economy where everyone who seeks a job can get one. Yet for the economy to be dynamic, some people will always be unemployed, at least temporarily as they move between jobs.”</em></p>
-<p><a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html">Unemployment: Its Measurement and Types</a></p>
+<p>In Australia, the Australian Bureau of Statistics (ABS) conducts a survey each month – called the Labour Force Survey – in which it asks around 50,000 people. As part of this survey, the ABS groups people aged 15 years and over (the working-age population) into three broad categories:</p>
+<ul>
+<li><strong>Employed</strong> – includes people who are in a paid job for one hour or more in a week.</li>
+<li><strong>Unemployed</strong> – people who are not in a paid job, but who are actively looking for work.</li>
+<li><strong>Not in the labour force</strong> – people not in a paid job, and who are not looking for work.</li>
+</ul>
+<!-- This can include people who are studying, caring for children or family members on a voluntary basis, retired, or who are permanently unable to work. -->
+<p>Read More: <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a></p>
+<!-- <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a> -->
 </div>
 </div>
 </div>
@@ -491,516 +511,863 @@ Figure 5.1: Unemployment rate in Germany
 <h2><span class="header-section-number">5.2</span> Application<a href="panel-data.html#application-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="data-inspection" class="section level3 hasAnchor" number="5.2.1">
 <h3><span class="header-section-number">5.2.1</span> Data Inspection<a href="panel-data.html#data-inspection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Load SOEP practice data comes labeled and ready for analysis.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="panel-data.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb1-2"><a href="panel-data.html#cb1-2" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/practice_dataset_eng.dta?raw=true&quot;</span>)</span></code></pre></div>
-<p><code>group_by()</code> is a powerful command, especially when working with panel data. Use <code>count()</code> after <code>group_by()</code> to get the number of observations of each person (<code>id</code>) in the data. When wrapped with <code>head()</code> it display the first six observations.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="panel-data.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="panel-data.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">count</span>())</span></code></pre></div>
-<details>
-<summary>
-<em>See result.</em>
-</summary>
-<pre><code>## # A tibble: 6 × 2
-## # Groups:   id [6]
-##      id     n
-##   &lt;dbl&gt; &lt;int&gt;
-## 1     4     5
-## 2     8     5
-## 3    15     5
-## 4    17     5
-## 5    28     5
-## 6    29     5</code></pre>
-</details>
+<p>SOEP practice data (2015 - 2019) comes labeled and ready for analysis. SOEP provides a digital object identifier (DOI) for this data: <a href="https://doi.org/10.5684/soep.practice.v36" class="uri">https://doi.org/10.5684/soep.practice.v36</a>.<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="panel-data.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb45-2"><a href="panel-data.html#cb45-2" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/practice_dataset_eng.dta?raw=true&quot;</span>)</span></code></pre></div>
+<!-- Column names are German, but attribute labels are English.  -->
+This more comprehensive practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains 15 variables and 23522 observations.
+<table class="table table" style="width: auto !important; margin-left: auto; margin-right: auto; font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Unique (#)
+</th>
+<th style="text-align:right;">
+Missing (%)
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+Min
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+Max
+</th>
+<th style="text-align:right;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+syear
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2016.8
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+<td style="text-align:right;">
+2015.0
+</td>
+<td style="text-align:right;">
+2017.0
+</td>
+<td style="text-align:right;">
+2019.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="2.22" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="4.04" width="2.22" height="7.62" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.89" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.78" y="4.45" width="2.22" height="7.21" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.67" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="5.01" width="2.22" height="6.65" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.00" y="5.65" width="2.22" height="6.02" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="4.54" width="2.22" height="7.12" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.89" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.78" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.67" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.00" y="3.22" width="2.22" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+alter
+</td>
+<td style="text-align:right;">
+86
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+48.3
+</td>
+<td style="text-align:right;">
+18.3
+</td>
+<td style="text-align:right;">
+17.0
+</td>
+<td style="text-align:right;">
+48.0
+</td>
+<td style="text-align:right;">
+102.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="0.73" y="5.49" width="2.61" height="6.17" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="3.35" y="6.69" width="2.61" height="4.97" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.96" y="6.73" width="2.61" height="4.94" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.58" y="5.51" width="2.61" height="6.15" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="11.19" y="4.67" width="2.61" height="6.99" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="13.80" y="3.87" width="2.61" height="7.79" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="16.42" y="3.22" width="2.61" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.03" y="3.36" width="2.61" height="8.30" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.65" y="5.40" width="2.61" height="6.26" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.26" y="6.23" width="2.61" height="5.43" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.88" y="6.68" width="2.61" height="4.98" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="29.49" y="7.26" width="2.61" height="4.41" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.10" y="7.47" width="2.61" height="4.19" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="34.72" y="9.78" width="2.61" height="1.89" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="10.89" width="2.61" height="0.77" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.95" y="11.42" width="2.61" height="0.24" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="42.56" y="11.59" width="2.61" height="0.070" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="45.18" y="11.66" width="2.61" height="0.0070" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anz_pers
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2.9
+</td>
+<td style="text-align:right;">
+1.5
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+13.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="3.70" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.48" y="8.82" width="3.70" height="2.84" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="9.19" y="8.56" width="3.70" height="3.10" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.89" y="10.11" width="3.70" height="1.55" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="16.59" y="11.17" width="3.70" height="0.49" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="20.30" y="11.50" width="3.70" height="0.16" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.59" width="3.70" height="0.070" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="27.70" y="11.61" width="3.70" height="0.054" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="31.41" y="11.63" width="3.70" height="0.031" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.11" y="11.66" width="3.70" height="0.0057" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="38.81" y="11.66" width="3.70" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="42.52" y="11.66" width="3.70" height="0.00071" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anz_kind
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.7
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="2.22" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.00" y="9.34" width="2.22" height="2.32" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.44" y="9.53" width="2.22" height="2.13" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.89" y="10.85" width="2.22" height="0.81" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.33" y="11.44" width="2.22" height="0.22" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.78" y="11.60" width="2.22" height="0.062" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.22" y="11.63" width="2.22" height="0.031" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.67" y="11.65" width="2.22" height="0.0090" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.11" y="11.66" width="2.22" height="0.0042" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.56" y="11.66" width="2.22" height="0.00060" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.00" y="11.66" width="2.22" height="0.00060" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bildung
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+12.4
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+7.0
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="10.98" width="2.02" height="0.68" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="3.80" y="11.66" width="2.02" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.82" y="11.55" width="2.02" height="0.11" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="7.84" y="6.87" width="2.02" height="4.79" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="9.86" y="11.66" width="2.02" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="11.88" y="9.91" width="2.02" height="1.75" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="13.90" y="3.22" width="2.02" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.92" y="9.97" width="2.02" height="1.70" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.94" y="4.80" width="2.02" height="6.86" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.96" y="5.75" width="2.02" height="5.91" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.98" y="11.66" width="2.02" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="8.88" width="2.02" height="2.78" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.02" y="10.96" width="2.02" height="0.70" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.04" y="10.50" width="2.02" height="1.16" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.06" y="10.56" width="2.02" height="1.10" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.08" y="9.54" width="2.02" height="2.12" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="34.10" y="11.66" width="2.02" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="36.12" y="10.08" width="2.02" height="1.58" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="38.14" y="11.66" width="2.02" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="40.16" y="11.43" width="2.02" height="0.24" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="42.18" y="11.66" width="2.02" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.20" y="5.83" width="2.02" height="5.84" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+erwerb
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.65" width="4.44" height="8.01" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="8.46" width="4.44" height="3.21" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.02" width="4.44" height="0.64" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="10.33" width="4.44" height="1.33" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="3.22" width="4.44" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="11.64" width="4.44" height="0.027" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+branche
+</td>
+<td style="text-align:right;">
+84
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+60.5
+</td>
+<td style="text-align:right;">
+25.3
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+64.0
+</td>
+<td style="text-align:right;">
+99.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.32" y="11.15" width="2.27" height="0.52" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="3.59" y="10.83" width="2.27" height="0.84" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.86" y="11.46" width="2.27" height="0.20" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.13" y="10.70" width="2.27" height="0.96" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.39" y="9.72" width="2.27" height="1.94" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.66" y="7.84" width="2.27" height="3.83" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="14.93" y="10.83" width="2.27" height="0.84" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.20" y="11.38" width="2.27" height="0.29" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.46" y="9.14" width="2.27" height="2.53" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.73" y="6.37" width="2.27" height="5.29" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="10.27" width="2.27" height="1.40" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.27" y="10.16" width="2.27" height="1.50" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.54" y="9.15" width="2.27" height="2.51" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.80" y="10.35" width="2.27" height="1.31" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="33.07" y="10.38" width="2.27" height="1.28" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.34" y="11.35" width="2.27" height="0.31" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.61" y="3.22" width="2.27" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.87" y="4.51" width="2.27" height="7.15" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="42.14" y="10.76" width="2.27" height="0.90" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.41" y="10.95" width="2.27" height="0.71" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gesund_org
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2.6
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="9.41" width="2.22" height="2.26" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="3.22" width="2.22" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.89" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.78" y="4.92" width="2.22" height="6.74" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.67" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="8.91" width="2.22" height="2.75" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.00" y="11.01" width="2.22" height="0.65" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lebensz_org
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7.4
+</td>
+<td style="text-align:right;">
+1.7
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="11.60" width="2.22" height="0.066" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.00" y="11.57" width="2.22" height="0.088" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.44" y="11.45" width="2.22" height="0.21" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.89" y="11.22" width="2.22" height="0.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.33" y="11.05" width="2.22" height="0.61" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.78" y="9.71" width="2.22" height="1.95" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.22" y="9.68" width="2.22" height="1.98" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="30.67" y="6.74" width="2.22" height="4.93" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.11" y="3.22" width="2.22" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.56" y="7.52" width="2.22" height="4.15" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="11.66" width="2.22" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.00" y="10.23" width="2.22" height="1.43" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+einkommenj1
+</td>
+<td style="text-align:right;">
+13346
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+16775.8
+</td>
+<td style="text-align:right;">
+22707.6
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+5786.1
+</td>
+<td style="text-align:right;">
+269424.9
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="3.30" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.08" y="9.04" width="3.30" height="2.62" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.38" y="10.51" width="3.30" height="1.15" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="11.68" y="11.23" width="3.30" height="0.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="14.97" y="11.50" width="3.30" height="0.17" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="18.27" y="11.61" width="3.30" height="0.052" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.57" y="11.65" width="3.30" height="0.015" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.87" y="11.65" width="3.30" height="0.0088" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.17" y="11.66" width="3.30" height="0.0027" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="31.47" y="11.66" width="3.30" height="0.0022" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="34.77" y="11.66" width="3.30" height="0.0016" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="38.07" y="11.66" width="3.30" height="0.00055" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.37" y="11.66" width="3.30" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.67" y="11.66" width="3.30" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+einkommenj2
+</td>
+<td style="text-align:right;">
+1871
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+315.7
+</td>
+<td style="text-align:right;">
+1887.6
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+79179.9
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="2.81" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.58" y="11.56" width="2.81" height="0.10" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="7.39" y="11.64" width="2.81" height="0.022" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.20" y="11.65" width="2.81" height="0.012" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="13.00" y="11.65" width="2.81" height="0.0077" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.81" y="11.66" width="2.81" height="0.0029" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="18.62" y="11.66" width="2.81" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.42" y="11.66" width="2.81" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.23" y="11.66" width="2.81" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="27.04" y="11.66" width="2.81" height="0.00073" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="29.84" y="11.66" width="2.81" height="0.00037" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.65" y="11.66" width="2.81" height="0.00037" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.46" y="11.66" width="2.81" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="38.26" y="11.66" width="2.81" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.07" y="11.66" width="2.81" height="0.00037" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="43.88" y="11.66" width="2.81" height="0.00037" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+einkommenm1
+</td>
+<td style="text-align:right;">
+14067
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1645.6
+</td>
+<td style="text-align:right;">
+2220.6
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+852.9
+</td>
+<td style="text-align:right;">
+35260.9
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="2.52" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="4.30" y="8.70" width="2.52" height="2.96" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.82" y="10.66" width="2.52" height="1.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="9.34" y="11.32" width="2.52" height="0.34" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="11.86" y="11.57" width="2.52" height="0.097" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="14.38" y="11.63" width="2.52" height="0.036" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="16.90" y="11.64" width="2.52" height="0.018" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.42" y="11.65" width="2.52" height="0.012" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="21.94" y="11.66" width="2.52" height="0.0038" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.47" y="11.66" width="2.52" height="0.0044" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="26.99" y="11.66" width="2.52" height="0.0044" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="29.51" y="11.66" width="2.52" height="0.0016" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.03" y="11.66" width="2.52" height="0.0044" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="34.55" y="11.66" width="2.52" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.07" y="11.66" width="2.52" height="0.0016" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.59" y="11.66" width="2.52" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="42.11" y="11.66" width="2.52" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="44.63" y="11.66" width="2.52" height="0.00055" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+einkommenm2
+</td>
+<td style="text-align:right;">
+607
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+<td style="text-align:right;">
+134.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+12033.2
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewbox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clippath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clippath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="3.69" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.47" y="11.65" width="3.69" height="0.012" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="9.16" y="11.66" width="3.69" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.86" y="11.66" width="3.69" height="0.0011" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="16.55" y="11.66" width="3.69" height="0.00036" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="20.25" y="11.66" width="3.69" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="23.94" y="11.66" width="3.69" height="0.00072" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="27.63" y="11.66" width="3.69" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="31.33" y="11.66" width="3.69" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="35.02" y="11.66" width="3.69" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="38.71" y="11.66" width="3.69" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="42.41" y="11.66" width="3.69" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="46.10" y="11.66" width="3.69" height="0.00036" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- out.width="50%" -->
+<!-- R.options = list(width = 250) -->
+<p>Column names are German, but attribute labels are in English. <code>einkommenj1</code> contains <em>Gross Income from Main Job/Year</em>.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="panel-data.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(soep<span class="sc">$</span>einkommenj1)<span class="sc">$</span>label</span>
+<span id="cb46-2"><a href="panel-data.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Gross Income from Main Job/Year&quot;</span></span></code></pre></div>
+<p>The documentation (click the DOI) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (remember: panel data). Pipe <code>soep</code> into <code>count()</code> of personal <code>id</code>. This tibble output already contains the number of rows. To literally access the value, ask <code>nrow()</code>.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="panel-data.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># soep %&gt;% count(id) # try this as well</span></span>
+<span id="cb47-2"><a href="panel-data.html#cb47-2" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
+<span id="cb47-3"><a href="panel-data.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 6355</span></span></code></pre></div>
 <p>Adding <code>arrange()</code> means sorting the data by a variable (i.e. the temporarily created variable <code>n</code>) either ascending or descending (from high to low). Ascending is the default. For descending order apply the <code>desc()</code> command.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="panel-data.html#cb4-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">count</span>() <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span></code></pre></div>
+<p><code>group_by()</code> is a powerful command, especially when working with panel data. It can do any form of data manipulation or analysis with respect to the chosen variable. At this stage it’s a mere alternative <code>count()</code>.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="panel-data.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># soep %&gt;% group_by(id) %&gt;% count() %&gt;% arrange(n) # try this alternative </span></span>
+<span id="cb48-2"><a href="panel-data.html#cb48-2" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(n) </span>
+<span id="cb48-3"><a href="panel-data.html#cb48-3" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
 </summary>
-<pre><code>## # A tibble: 6,355 × 2
-## # Groups:   id [6,355]
-##       id     n
-##    &lt;dbl&gt; &lt;int&gt;
-##  1     4     5
-##  2     8     5
-##  3    15     5
-##  4    17     5
-##  5    28     5
-##  6    29     5
-##  7    53     5
-##  8    56     5
-##  9    71     5
-## 10    85     5
-## # … with 6,345 more rows</code></pre>
-Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. there are 3550 ID-groups (or units or people).
+<pre><code>#&gt; # A tibble: 6,355 × 2
+#&gt;       id     n
+#&gt;    &lt;dbl&gt; &lt;int&gt;
+#&gt;  1    96     1
+#&gt;  2   137     1
+#&gt;  3   147     1
+#&gt;  4   183     1
+#&gt;  5   189     1
+#&gt;  6   229     1
+#&gt;  7   368     1
+#&gt;  8   371     1
+#&gt;  9   384     1
+#&gt; 10   443     1
+#&gt; # … with 6,345 more rows</code></pre>
 </details>
 <p>Remember that the observation period is between 2015 and 2019, i.e. the minimum number of observations per individual is 1 year, the maximum is 5 years. Over the years, observations get less and less.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="panel-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>syear)</span></code></pre></div>
-<pre><code>## 
-## 2015 2016 2017 2018 2019 
-## 5527 4987 4720 4351 3937</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="panel-data.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>syear)</span>
+<span id="cb50-2"><a href="panel-data.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb50-3"><a href="panel-data.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2015 2016 2017 2018 2019 </span></span>
+<span id="cb50-4"><a href="panel-data.html#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5527 4987 4720 4351 3937</span></span></code></pre></div>
 <div class="defbox">
 <p><strong>Attrition</strong> is the process of dropout from a panel study.</p>
 </div>
-<p>How many people are observed in all years? Filter for a specific n and ask for the number of rows or observations (alternatively you can check the tibble size again).</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="panel-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">count</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(n <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<p>How many people are observed in all years? Filter for a specific <code>n</code> and ask for the number of rows or observations (alternatively you can check the tibble size again).</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="panel-data.html#cb51-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> <span class="fu">count</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(n <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
+<span id="cb51-2"><a href="panel-data.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3113</span></span></code></pre></div>
 <p><code>erwerb</code> is the employment status in SOEP. Its labels range from -7 to 6. Use the <code>attributes()</code> command on a specific variable. It returns a set of information (object class is <code>list</code>). We can access elements of this list by the <code>$</code> operator. Did you notice the small mistake in the labels? (Remember this is practice data.)</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="panel-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(soep<span class="sc">$</span>erwerb)<span class="sc">$</span>labels</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="panel-data.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(soep<span class="sc">$</span>erwerb)<span class="sc">$</span>labels</span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
 </summary>
-<pre><code>##         [-7] Only available in less restricted edition 
-##                                                     -7 
-##  [-6] Version of questionnaire with modified filtering 
-##                                                     -6 
-## [-5] Not included in this version of the questionnaire 
-##                                                     -5 
-##                    [-4] Inadmissable multiple response 
-##                                                     -4 
-##                                         [-3] not valid 
-##                                                     -3 
-##                                    [-2] does not apply 
-##                                                     -2 
-##                                         [-1] no answer 
-##                                                     -1 
-##                                [-1] Employed full-time 
-##                                                      1 
-##                                [-2] Employed part-time 
-##                                                      2 
-##                           [3] Training, apprenticeship 
-##                                                      3 
-##                [4] Irregular employment or in marginal 
-##                                                      4 
-##                                       [5] Not employed 
-##                                                      5 
-##                         [6] Garage for disabled people 
-##                                                      6</code></pre>
+<pre><code>#&gt;         [-7] Only available in less restricted edition 
+#&gt;                                                     -7 
+#&gt;  [-6] Version of questionnaire with modified filtering 
+#&gt;                                                     -6 
+#&gt; [-5] Not included in this version of the questionnaire 
+#&gt;                                                     -5 
+#&gt;                    [-4] Inadmissable multiple response 
+#&gt;                                                     -4 
+#&gt;                                         [-3] not valid 
+#&gt;                                                     -3 
+#&gt;                                    [-2] does not apply 
+#&gt;                                                     -2 
+#&gt;                                         [-1] no answer 
+#&gt;                                                     -1 
+#&gt;                                [-1] Employed full-time 
+#&gt;                                                      1 
+#&gt;                                [-2] Employed part-time 
+#&gt;                                                      2 
+#&gt;                           [3] Training, apprenticeship 
+#&gt;                                                      3 
+#&gt;                [4] Irregular employment or in marginal 
+#&gt;                                                      4 
+#&gt;                                       [5] Not employed 
+#&gt;                                                      5 
+#&gt;                         [6] Garage for disabled people 
+#&gt;                                                      6</code></pre>
 Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. there are 3550 ID-groups (or units or people).
 </details>
-<p>Negative values indicate several different form of missing data in SOEP. <a href="http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html">Read more on missing conventions</a> Actually, there are no negative values in this dataset. As for levels of a factor variables, labels can be empty.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="panel-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>erwerb)</span></code></pre></div>
-<pre><code>## 
-##    1    2    3    4    5    6 
-## 8700 3481  695 1446 9169   29</code></pre>
+<p>Negative values indicate several different forms of missing data in SOEP.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> Actually, there are no negative values in this dataset. As for levels of a factor variables, labels can be empty.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="panel-data.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>erwerb)</span>
+<span id="cb54-2"><a href="panel-data.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb54-3"><a href="panel-data.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    1    2    3    4    5    6 </span></span>
+<span id="cb54-4"><a href="panel-data.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8700 3481  695 1446 9169   29</span></span></code></pre></div>
 </div>
 <div id="data-preparation-1" class="section level3 hasAnchor" number="5.2.2">
 <h3><span class="header-section-number">5.2.2</span> Data Preparation<a href="panel-data.html#data-preparation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We drop small categories with the <code>filter()</code> command. Apply the <code>%in%</code> operator to search for values in a vector. Overwrite the existing data.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="panel-data.html#cb13-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="panel-data.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(erwerb <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>))</span></code></pre></div>
-<p>We summarize categories with a combination of <code>mutatae()</code> and <code>case_when()</code>. For each value in <code>erwerb</code> conduct a logical comparison via <code>==</code> and assign a new value. In this case it combines <em>Employed part-time</em> with <em>Irregular employment or in marginal</em>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="panel-data.html#cb14-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="panel-data.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">erwerb =</span> <span class="fu">case_when</span>(erwerb <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;fulltime&quot;</span>,</span>
-<span id="cb14-3"><a href="panel-data.html#cb14-3" aria-hidden="true" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;partime&quot;</span>, </span>
-<span id="cb14-4"><a href="panel-data.html#cb14-4" aria-hidden="true" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;partime&quot;</span>,</span>
-<span id="cb14-5"><a href="panel-data.html#cb14-5" aria-hidden="true" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;unemployed&quot;</span>,</span>
-<span id="cb14-6"><a href="panel-data.html#cb14-6" aria-hidden="true" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;NA&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="panel-data.html#cb55-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="panel-data.html#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(erwerb <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>))</span></code></pre></div>
+<p>We summarize categories with a combination of <code>mutate()</code> and <code>case_when()</code>. For each value in <code>erwerb</code> conduct a logical comparison via <code>==</code> and assign a new value. In this case it combines <em>Employed part-time</em> with <em>Irregular employment or in marginal</em>.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="panel-data.html#cb56-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb56-2"><a href="panel-data.html#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">erwerb =</span> <span class="fu">case_when</span>(erwerb <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;fulltime&quot;</span>,</span>
+<span id="cb56-3"><a href="panel-data.html#cb56-3" aria-hidden="true" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;partime&quot;</span>, </span>
+<span id="cb56-4"><a href="panel-data.html#cb56-4" aria-hidden="true" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;partime&quot;</span>,</span>
+<span id="cb56-5"><a href="panel-data.html#cb56-5" aria-hidden="true" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;unemployed&quot;</span>,</span>
+<span id="cb56-6"><a href="panel-data.html#cb56-6" aria-hidden="true" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;NA&quot;</span>))</span></code></pre></div>
 <p>The unemployment rate represents the proportion of the civilian labour force that is unemployed. The labour force consists of all employed and unemployed persons of working age. Filter for working age between 18 and 65 years.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="panel-data.html#cb15-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb15-2"><a href="panel-data.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(alter <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>))</span></code></pre></div>
-<p><code>group_by()</code> accepts multiple inputs. The following combination returns for each year and each employment status the number of observations.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="panel-data.html#cb16-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb16-2"><a href="panel-data.html#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="panel-data.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code></pre></div>
-<pre><code>## `summarise()` has grouped output by &#39;syear&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<pre><code>## # A tibble: 15 × 3
-## # Groups:   syear [5]
-##    syear erwerb         n
-##    &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;
-##  1  2015 fulltime    2007
-##  2  2015 partime     1084
-##  3  2015 unemployed  1163
-##  4  2016 fulltime    1798
-##  5  2016 partime      964
-##  6  2016 unemployed   969
-##  7  2017 fulltime    1736
-##  8  2017 partime      895
-##  9  2017 unemployed   893
-## 10  2018 fulltime    1612
-## 11  2018 partime      850
-## 12  2018 unemployed   776
-## 13  2019 fulltime    1465
-## 14  2019 partime      778
-## 15  2019 unemployed   643</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="panel-data.html#cb57-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="panel-data.html#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(alter <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">18</span><span class="sc">:</span><span class="dv">65</span>))</span></code></pre></div>
+<p>The moment of glory has come for <code>group_by()</code>. It accepts multiple inputs. The following combination returns for each year and each employment status the number of observations with help of <code>summarise()</code> and <code>n()</code>.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="panel-data.html#cb58-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb58-2"><a href="panel-data.html#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="panel-data.html#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb58-4"><a href="panel-data.html#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 3</span></span>
+<span id="cb58-5"><a href="panel-data.html#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Groups:   syear [5]</span></span>
+<span id="cb58-6"><a href="panel-data.html#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    syear erwerb         n</span></span>
+<span id="cb58-7"><a href="panel-data.html#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;</span></span>
+<span id="cb58-8"><a href="panel-data.html#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1  2015 fulltime    2007</span></span>
+<span id="cb58-9"><a href="panel-data.html#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2  2015 partime     1084</span></span>
+<span id="cb58-10"><a href="panel-data.html#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3  2015 unemployed  1163</span></span>
+<span id="cb58-11"><a href="panel-data.html#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4  2016 fulltime    1798</span></span>
+<span id="cb58-12"><a href="panel-data.html#cb58-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5  2016 partime      964</span></span>
+<span id="cb58-13"><a href="panel-data.html#cb58-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6  2016 unemployed   969</span></span>
+<span id="cb58-14"><a href="panel-data.html#cb58-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7  2017 fulltime    1736</span></span>
+<span id="cb58-15"><a href="panel-data.html#cb58-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8  2017 partime      895</span></span>
+<span id="cb58-16"><a href="panel-data.html#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9  2017 unemployed   893</span></span>
+<span id="cb58-17"><a href="panel-data.html#cb58-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10  2018 fulltime    1612</span></span>
+<span id="cb58-18"><a href="panel-data.html#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11  2018 partime      850</span></span>
+<span id="cb58-19"><a href="panel-data.html#cb58-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12  2018 unemployed   776</span></span>
+<span id="cb58-20"><a href="panel-data.html#cb58-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13  2019 fulltime    1465</span></span>
+<span id="cb58-21"><a href="panel-data.html#cb58-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14  2019 partime      778</span></span>
+<span id="cb58-22"><a href="panel-data.html#cb58-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15  2019 unemployed   643</span></span></code></pre></div>
+<p>From this table, the unemployment rate can be calculated manually. For 2015 it is:</p>
+<p><span class="math display">\[\frac{162}{2020+802} = 0.0574 = 5.74 \%\]</span></p>
 <p>Having done this, step back to focus on years again and use different n-values per year to figure out the unemployment. Relate <code>unemployed</code> to those working either <code>fulltime</code> or <code>partime</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="panel-data.html#cb19-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="panel-data.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="panel-data.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-4"><a href="panel-data.html#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-5"><a href="panel-data.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]))</span></code></pre></div>
-<pre><code>## `summarise()` has grouped output by &#39;syear&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<pre><code>## # A tibble: 15 × 4
-## # Groups:   syear [5]
-##    syear erwerb         n unemployment_rate
-##    &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;             &lt;dbl&gt;
-##  1  2015 fulltime    2007             0.376
-##  2  2015 partime     1084             0.376
-##  3  2015 unemployed  1163             0.376
-##  4  2016 fulltime    1798             0.351
-##  5  2016 partime      964             0.351
-##  6  2016 unemployed   969             0.351
-##  7  2017 fulltime    1736             0.339
-##  8  2017 partime      895             0.339
-##  9  2017 unemployed   893             0.339
-## 10  2018 fulltime    1612             0.315
-## 11  2018 partime      850             0.315
-## 12  2018 unemployed   776             0.315
-## 13  2019 fulltime    1465             0.287
-## 14  2019 partime      778             0.287
-## 15  2019 unemployed   643             0.287</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="panel-data.html#cb59-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a href="panel-data.html#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
+<span id="cb59-3"><a href="panel-data.html#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-4"><a href="panel-data.html#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-5"><a href="panel-data.html#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]))</span>
+<span id="cb59-6"><a href="panel-data.html#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 4</span></span>
+<span id="cb59-7"><a href="panel-data.html#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Groups:   syear [5]</span></span>
+<span id="cb59-8"><a href="panel-data.html#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    syear erwerb         n unemployment_rate</span></span>
+<span id="cb59-9"><a href="panel-data.html#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;             &lt;dbl&gt;</span></span>
+<span id="cb59-10"><a href="panel-data.html#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1  2015 fulltime    2007             0.376</span></span>
+<span id="cb59-11"><a href="panel-data.html#cb59-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2  2015 partime     1084             0.376</span></span>
+<span id="cb59-12"><a href="panel-data.html#cb59-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3  2015 unemployed  1163             0.376</span></span>
+<span id="cb59-13"><a href="panel-data.html#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4  2016 fulltime    1798             0.351</span></span>
+<span id="cb59-14"><a href="panel-data.html#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5  2016 partime      964             0.351</span></span>
+<span id="cb59-15"><a href="panel-data.html#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6  2016 unemployed   969             0.351</span></span>
+<span id="cb59-16"><a href="panel-data.html#cb59-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7  2017 fulltime    1736             0.339</span></span>
+<span id="cb59-17"><a href="panel-data.html#cb59-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8  2017 partime      895             0.339</span></span>
+<span id="cb59-18"><a href="panel-data.html#cb59-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9  2017 unemployed   893             0.339</span></span>
+<span id="cb59-19"><a href="panel-data.html#cb59-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10  2018 fulltime    1612             0.315</span></span>
+<span id="cb59-20"><a href="panel-data.html#cb59-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11  2018 partime      850             0.315</span></span>
+<span id="cb59-21"><a href="panel-data.html#cb59-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12  2018 unemployed   776             0.315</span></span>
+<span id="cb59-22"><a href="panel-data.html#cb59-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13  2019 fulltime    1465             0.287</span></span>
+<span id="cb59-23"><a href="panel-data.html#cb59-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14  2019 partime      778             0.287</span></span>
+<span id="cb59-24"><a href="panel-data.html#cb59-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15  2019 unemployed   643             0.287</span></span></code></pre></div>
 </div>
 <div id="data-visualization" class="section level3 hasAnchor" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Data Visualization<a href="panel-data.html#data-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="panel-data.html#cb22-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb22-2"><a href="panel-data.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
-<span id="cb22-3"><a href="panel-data.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-4"><a href="panel-data.html#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-5"><a href="panel-data.html#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>])) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-6"><a href="panel-data.html#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> syear, <span class="at">y =</span> unemployment_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<pre><code>## `summarise()` has grouped output by &#39;syear&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="panel-data.html#cb60-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb60-2"><a href="panel-data.html#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
+<span id="cb60-3"><a href="panel-data.html#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-4"><a href="panel-data.html#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-5"><a href="panel-data.html#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>])) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-6"><a href="panel-data.html#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> syear, <span class="at">y =</span> unemployment_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-81-1.png" width="576" /></p>
 <div id="obs-per-group" class="section level4 hasAnchor" number="5.2.3.1">
 <h4><span class="header-section-number">5.2.3.1</span> Obs per group<a href="panel-data.html#obs-per-group" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="panel-data.html#cb24-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb24-2"><a href="panel-data.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-3"><a href="panel-data.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb24-4"><a href="panel-data.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb24-5"><a href="panel-data.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of observations per individual&quot;</span>) <span class="sc">+</span></span>
-<span id="cb24-6"><a href="panel-data.html#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="panel-data.html#cb61-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb61-2"><a href="panel-data.html#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb61-3"><a href="panel-data.html#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb61-4"><a href="panel-data.html#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb61-5"><a href="panel-data.html#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of observations per individual&quot;</span>) <span class="sc">+</span></span>
+<span id="cb61-6"><a href="panel-data.html#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 </div>
 <div id="unemployment-1" class="section level4 hasAnchor" number="5.2.3.2">
 <h4><span class="header-section-number">5.2.3.2</span> Unemployment<a href="panel-data.html#unemployment-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="panel-data.html#cb25-1" aria-hidden="true" tabindex="-1"></a>soep<span class="sc">$</span>erwerb</span>
-<span id="cb25-2"><a href="panel-data.html#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="panel-data.html#cb25-3" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb25-4"><a href="panel-data.html#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-5"><a href="panel-data.html#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb25-6"><a href="panel-data.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb25-7"><a href="panel-data.html#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of observations per individual&quot;</span>) <span class="sc">+</span></span>
-<span id="cb25-8"><a href="panel-data.html#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<!-- ### Average Health per Year  -->
-<!-- A picture is worth a thousand words. Show a time trend or a relationship at the beginning of your analysis. People fancy plots. Your plot should be interesting and easy to understand. If you think obesity or crime is a problem for society and it's increasing over time you made a good point of why we should talk about it or analyze it more thoroughly. Actually, after months and years of empirical research, the results often can be summarized in one single plot.  -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE} -->
-<!-- soep %>%  -->
-<!--   group_by(year) %>% -->
-<!--   filter(!is.na(health_org)) %>% -->
-<!--   summarize(health_mean = mean(health_org)) %>% -->
-<!--   ggplot(aes(x = year, y = health_mean)) +  # plot satisfaction versus year colored by person -->
-<!--   geom_line() + geom_point() + # add points connected by lines -->
-<!--   labs(title="Population health over time",  -->
-<!--        subtitle="Mean Health Status in Germany between 2000 and 2004", -->
-<!--        x="Year", y="Health Status") + # give some illustrative labels -->
-<!--   ylim(1,5) # limit the scale always to all possible values, to prevent random misperceptions  -->
-<!-- ``` -->
-<!-- Health status in Germany is stable.  -->
-<!-- ### Individual Health per Year  -->
-<!-- <!-- ::: {.infobox2 .information data-latex="warning"} -->
-<p>–&gt;
-<!-- <!-- **Critical life events** (e.g. birth of a child, death of a loved one, suddenly becoming unemployed, winning the lottery) can have a dramatic effect on life satisfaction. Some events can be anticipated (e.g. birth or marriage). After the event adaptation might follow.  --> –&gt;
-<!-- <!-- ::: --> –&gt;</p>
-<!-- Next, we dig deeper into personal health stories.  -->
-<!-- <!-- ```{r warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE} -->
-<p>–&gt;
-<!-- <!-- soep %>%  --> –&gt;
-<!-- <!--   filter(id < 10000) %>% # better filter for some IDs here, otherwise R crashes  --> –&gt;
-<!-- <!--   ggplot(aes(x = year, y = health_org, group=as_factor(id), color=as_factor(id))) +   --> –&gt;
-<!-- <!--   geom_line() + geom_point() + --> –&gt;
-<!-- <!--   labs(title="Health status per Person",  --> –&gt;
-<!-- <!--        x="Year", y="Health Status") +  --> –&gt;
-<!-- <!--   ylim(1,5)  --> –&gt;
-<!-- <!-- ``` --> –&gt;</p>
-<!-- <!-- <details> -->
-<p>–&gt;
-<!-- <!-- <summary> --> –&gt;
-<!-- <!-- *Show me the mess.* --> –&gt;
-<!-- <!-- </summary> --> –&gt;
-<!-- <!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE} --> –&gt;
-<!-- <!-- soep %>%  --> –&gt;
-<!-- <!--   filter(id < 10000) %>% # better filter for some IDs here, otherwise R crashes  --> –&gt;
-<!-- <!--   ggplot(aes(x = year, y = satisf_org, group=as_factor(id), color=as_factor(id))) +   --> –&gt;
-<!-- <!--   geom_line() + geom_point() + --> –&gt;
-<!-- <!--   labs(title="Life satisfaction per Person",  --> –&gt;
-<!-- <!--        x="Year", y="Life Satisfaction") +  --> –&gt;
-<!-- <!--   ylim(0,10)  --> –&gt;
-<!-- <!-- ``` --> –&gt;
-<!-- <!-- </details> --> –&gt;</p>
-<!-- <!-- Most observations are in the upper half. No one reports life satisfaction of 0 or 1. Still, this looks messy. Coloring and labeling groups does not help. Single lines cannot be distinguished. If we are interested in individual fate we need to filter for less units.  -->
-<p>–&gt;</p>
-<!-- <!-- <details> -->
-<p>–&gt;
-<!-- <!-- <summary> --> –&gt;
-<!-- <!-- *See the filter for id < 1000 * --> –&gt;
-<!-- <!-- </summary> --> –&gt;
-<!-- <!-- ```{r warning=FALSE, message=FALSE, echo=TRUE} --> –&gt;
-<!-- <!-- soep %>%  --> –&gt;
-<!-- <!--   filter(id < 1000) %>% # better filter for some IDs otherwise R crashes  --> –&gt;
-<!-- <!--   ggplot(aes(x = year, y = satisf_org, group=as_factor(id), color=as_factor(id))) +   --> –&gt;
-<!-- <!--   geom_line() + geom_point() + --> –&gt;
-<!-- <!--   labs(title="Life satisfaction per Person",  --> –&gt;
-<!-- <!--        x="Year", y="Life Satisfaction") +  --> –&gt;
-<!-- <!--   ylim(0,10)  --> –&gt;
-<!-- <!-- ``` --> –&gt;</p>
-<!-- <!-- Note that **several people are observed only once or twice**. If we are interested in critical life events we require information before and after an event (e.g. birth of children). Furthermore, panel estimations require at least two observations (which we will learn at the end of the course).  -->
-<p>–&gt;
-<!-- <!-- </details> --> –&gt;</p>
-<!-- #### Random Panel Sample -->
-<!-- Let's use `sample_n()` for random selection of observations. Each time this command is run, a different random set of observations is drawn. Note that these 5 random observations/rows do not stem from the same people. -->
-<!-- ```{r warning=FALSE, message=FALSE} -->
-<!-- soep %>% sample_n(5)  -->
-<!-- ``` -->
-<!-- If you plant a seed with `set.seed` randomness becomes reproducible.  -->
-<!-- ```{r warning=FALSE, message=FALSE} -->
-<!-- set.seed(42) -->
-<!-- soep %>% sample_n(5)  -->
-<!-- ``` -->
-<!-- #### Personalize Functions  -->
-<!-- Is there a `sample_n_groups` command in the tidyverse? Unfortunately not. Even in such a case, it's unlikely that you need to invent something new. One of the first Google hits is: <https://cmdlinetips.com/2019/07/how-to-randomly-select-groups-in-r-with-dplyr/> and they suggest: -->
-<!-- ```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE} -->
-<!-- sample_n_groups = function(grouped_df, size, replace = FALSE, weight=NULL) { -->
-<!--   grp_var <- grouped_df %>%  -->
-<!--     groups %>% -->
-<!--     unlist %>%  -->
-<!--     as.character -->
-<!--   random_grp <- grouped_df %>%  -->
-<!--     summarise() %>%  -->
-<!--     sample_n(size, replace, weight) %>%  -->
-<!--     mutate(unique_id = 1:NROW(.)) -->
-<!--   grouped_df %>%  -->
-<!--     right_join(random_grp, by=grp_var) %>%  -->
-<!--     group_by_(grp_var)  -->
-<!-- } -->
-<!-- ``` -->
-<!-- If you run this chunk the function `sample_n_groups` appears in the right upper panel in RStudio. Now you can use this particular function in your current session. Don't worry, you don't have to understand everything from the code provided by others, but make sure that it behaves the way you expect it to. Since this function is based on `dplyr` commands you can use it within a pipe chain, e.g. pipe it into a ggplot. -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=TRUE} -->
-<!-- set.seed(42+42) -->
-<!-- soep %>%  -->
-<!--   group_by(id) %>%  -->
-<!--   sample_n_groups(3) %>% # select all given observations across time for 5 people  -->
-<!--   ggplot(aes(x = year, y = health_org, group=as_factor(id), color=as_factor(id))) +   -->
-<!--   geom_line() + geom_point() + -->
-<!--   labs(title="Health Status per Person",  -->
-<!--        x="Year", y="Health Status", color="Person") +  -->
-<!--   ylim(1,5)  -->
-<!-- ``` -->
-<!-- This is test data from the practice data set. It might be helpful to understand what people we selected to compare our code results. Working with real questionnaire data, next show personal information. If you really need a graph like this, drop the legend.  -->
-<!-- ::: {.infobox2 .caution data-latex="warning"} -->
-<!-- Never show person IDs in a report.  -->
-<!-- ::: -->
-<!-- #### Minimum Observations per Group  -->
-<!-- <!-- https://stackoverflow.com/questions/32565050/r-random-sampling-a-minimum-number-of-observations-from-a-category -->
-<p>–&gt;
-<!-- <!-- library(data.table) --> –&gt;
-<!-- <!-- setDT(df)[,.SD[sample(.N, sample(min(5,.N):min(.N,14),1))], by=id] --> –&gt;</p>
-<!-- The full potential of panel data is to track people over time. We can literally follow people from graduation, to their first job, marriage, first child and buying yourself a house. But we hardly see that from the previous plot for all people. We select **randomly 3 people who are observed at least 3 times** and plot their life satisfaction over time in a line plot (again, there are several options).  -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=F, eval=F} -->
-<!-- set.seed(42) -->
-<!-- soep %>%  -->
-<!--   group_by(id) %>% -->
-<!--   nest() %>%  -->
-<!--   filter(purrr::map_lgl(data, ~ nrow(.x) >= 3)) %>% -->
-<!--   unnest() %>% -->
-<!--   sample_n_groups(5) %>% # select all given observations across time for 3 people  -->
-<!--   ggplot(aes(x = year, y = satisf_org, col=factor(id))) +  -->
-<!--   geom_line() + geom_point() + # add points connected by lines -->
-<!--   labs(title="Life Satisfaction over Time by Person",  -->
-<!--        subtitle="Random Sample of 5 People with at least 3 observations.", -->
-<!--        x="Year", y="Life Satisfaction", colour="Person") + # give some illustrative labels -->
-<!--   ylim(0,10) # limit the scale always to all possible values, to prevent random misperceptions  -->
-<!-- ``` -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=TRUE} -->
-<!-- set.seed(42+42) -->
-<!-- soep %>% -->
-<!--   group_by(id) %>% -->
-<!--   filter(n()>=3) %>%  # the moment we drop some data -->
-<!--   sample_n_groups(3) %>% # select all given observations across time for 3 people -->
-<!--   ggplot(aes(x = year, y = health_org, col=factor(id))) + -->
-<!--   geom_line() + geom_point() + # add points connected by lines -->
-<!--   labs(title="Health Status over Time by Person", -->
-<!--        subtitle="Random Sample of 3 People with at least 3 observations.", -->
-<!--        x="Year", y="Health Status", colour="Person") + # give some illustrative labels -->
-<!--   ylim(1,5) # limit the scale always to all possible values, to prevent random misperceptions -->
-<!-- ``` -->
-<!-- <!-- ::: {.infobox2 .information data-latex="warning"} -->
-<p>–&gt;
-<!-- <!-- Note that this is meaningless practice data. **Do not show person id numbers in your analysis.** --> –&gt;
-<!-- <!-- ::: --> –&gt;</p>
-<!-- ## Within and Between Variation  -->
-<!-- <!-- Now focus on **within and between variation**. -->
-<p>–&gt;
-<!-- <!-- https://cran.r-project.org/web/packages/gghighlight/vignettes/gghighlight.html --> –&gt;</p>
-<!-- Here is a similar plot of life satisfaction for selected people. -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE} -->
-<!-- library(gghighlight) -->
-<!-- set.seed(42) -->
-<!-- highlights <- soep %>%  -->
-<!--   group_by(id) %>% -->
-<!--   nest() %>%  -->
-<!--   filter(purrr::map_lgl(data, ~ nrow(.x) >= 3)) %>% -->
-<!--   unnest() %>% -->
-<!--   sample_n_groups(5)  -->
-<!-- ``` -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE} -->
-<!--   highlights %>% -->
-<!--   ggplot(aes(x = year, y = satisf_org, col=factor(id))) +   -->
-<!--   geom_line() + geom_point() +  -->
-<!--   gghighlight(id %in% c(293973,317284), label_key = id) +  # label_key = id -->
-<!--   #geom_point(aes(x=2000,y=10, size=10)) + -->
-<!--   #geom_point(aes(x=2001,y=0, size=10)) + -->
-<!--   labs(title="Life Satisfaction over Time by Person",  -->
-<!--        subtitle="Highlighted with gghighlight.", -->
-<!--        x="Year", y="Life  -->
-<!--        Satisfaction", colour="Person") +  -->
-<!--   ylim(0,10) + -->
-<!--   theme(legend.position = "none") -->
-<!--   #facet_wrap(~ id) -->
-<!-- ``` -->
-<!-- Person 293973 reports a dramatic change in satisfaction from one year to another. Starting from perfect happiness in 2000 (= 10), it drops to complete misery (= 0) and recovers immediately in 2002 (= 10). -->
-<!-- <details> -->
-<!-- <summary> -->
-<!-- *Is person 293973 an outlier? Can you think of reasonable scenarios behind the data? * -->
-<!-- </summary> -->
-<!-- *Job's news*: take away all that a person holds dear, including children, health, and property. Because this is practice data and we cannot dig deeper into life events potentially triggering these changes. -->
-<!-- </details> -->
-<!-- <br>  -->
-<!-- Look at the previous graph from this perspective:  -->
-<!-- - **Within variation**: *Within* means per individual, group or unit over time.  -->
-<!-- - **Between variation**: *Between* means comparing individuals, groups or units (both at a point in time or over time).  -->
-<!-- In 2000 person 293973 and person 317284 both reported a happiness value of 10. In 2000, there is no **difference between** those two people. In 2001 though, 293973 experienced a critical shock and dropped to 0 while 317284 stayed at the very same value of 10. In 2001, the difference between both is 10.  -->
-<!-- Compare the years 2000 and 2001 for person 293973. The value changes within that person by -10, whereas there is no change for person 317284. You often read about **changes** within people (across time) and about **differences** between them. In the line plot, **within changes** happens along the horizontal x-axis, whereas **between differences** can be measured as the vertical distance on the y-axis.  -->
-<!-- **Between and within variation** are new properties of a panel data variable.  -->
-<!-- <!-- The question What is the within variation of happiness.  -->
-<p>–&gt;
-<!-- <!-- **Sufficient within variation** is required to apply panel data estimations (later in the course). --> –&gt;</p>
-<!-- ::: {.infobox2 .information data-latex="warning"} -->
-<!-- To fully exploit panel data, we need **enough within variation**. -->
-<!-- ::: -->
-<!-- <details> -->
-<!-- <summary> -->
-<!-- *Is there enough within variation?* -->
-<!-- </summary> -->
-<!-- ```{r, echo=FALSE, out.width="80%", fig.cap="\\label{fig:within}Figure 2: Screenshot from a [lecture script of Brüderl and Ludwig.](https://www.ls3.soziologie.uni-muenchen.de/studium-lehre/archiv/teaching-marterials/panel-analysis_april-2019.pdf) The software is Stata.", fig.align='center'} -->
-<!-- knitr::include_graphics("images/Within_Variation.png") -->
-<!-- ``` -->
-<!-- </details> -->
-<!-- <!-- ### Minimal working example (6 pt) -->
-<p>–&gt;
-<!-- <!-- http://rizaudinsahlan.blogspot.com/2016/06/within-and-between-variation-in-panel.html --> –&gt;</p>
-<!-- <!-- The following table shows between and within variation for a minimal panel data example. Three people are observed in three periods each (no missings). The panel data is **balanced** (all individuals are observed in all years, there are no gaps).  -->
-<p>–&gt;</p>
-<!-- <!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE} -->
-<p>–&gt;
-<!-- <!-- paneldata <- data.frame(id = rep(1:3, each=3), --> –&gt;
-<!-- <!--                         time = rep(1:3, times=3), --> –&gt;
-<!-- <!--                         x = c(9,10,11,20,20,20,25,30,35)) --> –&gt;
-<!-- <!-- paneldata --> –&gt;
-<!-- <!-- ``` --> –&gt;</p>
-<!-- <!-- Please calculate all columns according to table 1 for the two individuals (id 293973 and 317284). All necessary formulas are provided in the table. Please create all these values by computation. Hint: You may need tidyverse verbs `filter`, `select`, `group_by`, `ungroup` and `mutate`. In a list of commands you can turn the group mode on and off. First you `group_by` your data, do the calculation, `ungroup` and do more calculations. Furthermore, I suggest the `gt` package in order to clean up the table design. Your result should look like this: -->
-<p>–&gt;</p>
-<!-- <!-- ```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE} -->
-<p>–&gt;
-<!-- <!-- library(gt) --> –&gt;</p>
-<!-- <!-- library(sjlabelled) -->
-<p>–&gt;
-<!-- <!-- minipanel <- highlights %>% --> –&gt;
-<!-- <!--   filter(id %in% c(293973,317284)) %>% --> –&gt;
-<!-- <!--   remove_all_labels() --> –&gt;</p>
-<!-- <!-- wb <- highlights %>% -->
-<p>–&gt;
-<!-- <!--   filter(id %in% c(293973,317284)) %>% --> –&gt;
-<!-- <!--   select(id, year, satisf_org) %>% --> –&gt;
-<!-- <!--   group_by(id) %>% --> –&gt;
-<!-- <!--   mutate(Individual_Mean = round(mean(satisf_org),2)) %>% --> –&gt;
-<!-- <!--   ungroup() %>% --> –&gt;
-<!-- <!--   mutate(Overall_Mean = round(mean(satisf_org),2)) %>% --> –&gt;
-<!-- <!--   mutate(Between = Individual_Mean - Overall_Mean) %>% --> –&gt;
-<!-- <!--   group_by(id) %>% --> –&gt;
-<!-- <!--   mutate(Within = satisf_org - Individual_Mean) %>% --> –&gt;
-<!-- <!--   ungroup() %>% --> –&gt;
-<!-- <!--   mutate(Within_alt = satisf_org - Individual_Mean + Overall_Mean) --> –&gt;</p>
-<!-- <!--   wb %>% -->
-<p>–&gt;
-<!-- <!--   gt() %>%  --> –&gt;
-<!-- <!--   tab_header( --> –&gt;
-<!-- <!--     title = "Understanding between and within variation.") %>%  --> –&gt;
-<!-- <!--   tab_options( --> –&gt;
-<!-- <!--     heading.title.font.size = "small", --> –&gt;
-<!-- <!--     heading.subtitle.font.size = "small", --> –&gt;
-<!-- <!--     table.font.size = "small", --> –&gt;
-<!-- <!--     data_row.padding = px(2)) --> –&gt;</p>
-<!-- <!-- ``` -->
-<p>–&gt;</p>
-<!-- <!-- <br> -->
-<p>–&gt;</p>
-<!-- <!-- ```{r,  results='asis', echo=F} -->
-<p>–&gt;
-<!-- <!-- cat( --> –&gt;
-<!-- <!--   '<pre class="r"> --> –&gt;
-<!-- <!--   <code class = "hlsj"> <span class="hljs-string"> <br> <br> </span> </code> --> –&gt;
-<!-- <!--   </pre> --> –&gt;
-<!-- <!--   ') --> –&gt;
-<!-- <!-- ``` --> –&gt;</p>
-<!-- <!-- ::: {.infobox2 .information data-latex="warning"} -->
-<p>–&gt;
-<!-- <!-- A **minimal working example (MWE)** is useful to understand formulas or data manipulation and is often required in data science or programming discussion boards (such as stackoverflow or statalist.org) --> –&gt;
-<!-- <!-- ::: --> –&gt;</p>
-<!-- <!-- - <https://stackoverflow.com/help/minimal-reproducible-example> -->
-<p>–&gt;
-<!-- <!-- - <https://www.statalist.org/forums/help#stata> --> –&gt;</p>
-<!-- ### XTSUM (from Stata) -->
-<!-- In Stata there is a command **xtsum** which **calculates overall, between and within variation**. This is not implemented in any R package so far. Still, clever people created another personal function on Stack Overflow <https://stackoverflow.com/questions/49282083/xtsum-command-for-r>: -->
-<!-- <details> -->
-<!-- <summary> -->
-<!-- *Show me the crazy xtsum code.* -->
-<!-- </summary> -->
-<!-- ```{r echo = TRUE, eval=TRUE, warning=FALSE, message=FALSE} -->
-<!-- # Again, copy the code and run it, and you can use it in your R session.  -->
-<!-- library(rlang) -->
-<!-- XTSUM <- function(data, varname, unit) { -->
-<!--   varname <- enquo(varname) -->
-<!--   loc.unit <- enquo(unit) -->
-<!-- ores <- data %>% summarise(ovr.mean=mean(!! varname, na.rm=TRUE), ovr.sd=sd(!! varname, na.rm=TRUE), ovr.min = min(!! varname, na.rm=TRUE), ovr.max=max(!! varname, na.rm=TRUE), ovr.N=sum(as.numeric((!is.na(!! varname))))) -->
-<!-- bmeans <- data %>% group_by(!! loc.unit) %>% summarise(meanx=mean(!! varname, na.rm=T), t.count=sum(as.numeric(!is.na(!! varname)))) -->
-<!-- bres <- bmeans %>% ungroup() %>% summarise(between.sd = sd(meanx, na.rm=TRUE), between.min = min(meanx, na.rm=TRUE), between.max=max(meanx, na.rm=TRUE), Units=sum(as.numeric(!is.na(t.count))), t.bar=mean(t.count, na.rm=TRUE)) -->
-<!-- wdat <- data %>% group_by(!! loc.unit) %>% mutate(W.x = scale(!! varname, scale=FALSE)) -->
-<!-- wres <- wdat %>% ungroup() %>% summarise(within.sd=sd(W.x, na.rm=TRUE), within.min=min(W.x, na.rm=TRUE), within.max=max(W.x, na.rm=TRUE)) -->
-<!-- return(list(ores=ores,bres=bres,wres=wres)) -->
-<!-- } -->
-<!-- ``` -->
-<!-- </details> -->
-<!-- We can use this functionality to compare our prior results.  -->
-<!-- ```{r warning=FALSE, message=FALSE, echo=TRUE} -->
-<!-- library(sjlabelled) -->
-<!-- minipanel <- soep %>% -->
-<!--   filter(id %in% c(293973,317284)) %>% -->
-<!--   remove_all_labels() -->
-<!-- XTSUM(minipanel, varname=satisf_org, unit=id) -->
-<!-- ``` -->
-<!-- <!-- Understanding xtsum output -->
-<p>–&gt;
-<!-- <!-- http://stephenporter.org/files/xtsum_handout.pdf --> –&gt;</p>
-<!-- `XTSUM` tells us some more results. The overall mean is 8.62 as expected. The overall smallest value of satisfaction is 0, the highest is 10. We saw this in the graph. We have *N=8* observations or rows. But we only have *n=2* units (see the medium panel). Units (people) are observed on average for `t.bar = 4` periods (one person 3 years, one person 5 years, makes 4 years on average).  -->
-<!-- Standard deviation `sd` is at the core of **within and between variation** (since it is a measure of dispersion or variation). In the previous graph, we focused on **within changes** and **between differences**.  -->
-<!-- <!-- We don't compare or interpret the quantity of variation at this point.  -->
-<p>–&gt;</p>
-<!-- <!-- # ```{r echo = TRUE, eval=TRUE} -->
-<p>–&gt;
-<!-- <!-- # sd(c(6.67,9.80)) --> –&gt;
-<!-- <!-- # ``` --> –&gt;</p>
-<!-- ::: {.infobox2 .information data-latex="warning"} -->
-<!-- Think about examples (i.e. variables) that you expect to not have within variation. -->
-<!-- ::: -->
-<!-- <!-- Wait. Why should there be no within variation for a variable? There are plenty reasons! Think about gender. In the SOEP data gender is never changing (interesting questions about gender identity or transgender cannot be analyzed with SOEP).  -->
-<p>–&gt;</p>
-<!-- Run `XTSUM()` on different variables to test your knowledge.  -->
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="panel-data.html#cb62-1" aria-hidden="true" tabindex="-1"></a>soep<span class="sc">$</span>erwerb</span>
+<span id="cb62-2"><a href="panel-data.html#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="panel-data.html#cb62-3" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb62-4"><a href="panel-data.html#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb62-5"><a href="panel-data.html#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb62-6"><a href="panel-data.html#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb62-7"><a href="panel-data.html#cb62-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of observations per individual&quot;</span>) <span class="sc">+</span></span>
+<span id="cb62-8"><a href="panel-data.html#cb62-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 
 </div>
 </div>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="10">
+<li id="fn10"><p>Why are DOIs important? A DOI is a unique identifier for a digital document. DOIs are important in academic citation because they are more permanent than URLs, ensuring that your reader can reliably locate the source. Read More: <a href="https://www.scribbr.com/citing-sources/what-is-a-doi/" target="_blank">What is a DOI? | Finding and Using Digital Object Identifiers</a><a href="panel-data.html#fnref10" class="footnote-back">↩︎</a></p></li>
+<li id="fn11"><p>Read more on the SOEPcompanion <a href="http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html" target="_blank">Missing Conventions</a><a href="panel-data.html#fnref11" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 <div id="disqus_thread"></div>
 <script>
@@ -1088,6 +1455,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

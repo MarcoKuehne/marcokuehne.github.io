@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Regression | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Regression | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-09-17" />
+<meta name="date" content="2022-09-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -274,7 +274,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>5</b> Panel Data</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="panel-data.html"><a href="panel-data.html#unemployment"><i class="fa fa-check"></i><b>5.1</b> Unemployment</a></li>
+<li class="chapter" data-level="5.1" data-path="panel-data.html"><a href="panel-data.html#unemployment"><i class="fa fa-check"></i><b>5.1</b> Unemployment</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="panel-data.html"><a href="panel-data.html#on-decline-in-germany"><i class="fa fa-check"></i><b>5.1.1</b> On decline in Germany</a></li>
+<li class="chapter" data-level="5.1.2" data-path="panel-data.html"><a href="panel-data.html#measurement"><i class="fa fa-check"></i><b>5.1.2</b> Measurement</a></li>
+</ul></li>
 <li class="chapter" data-level="5.2" data-path="panel-data.html"><a href="panel-data.html#application-2"><i class="fa fa-check"></i><b>5.2</b> Application</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="panel-data.html"><a href="panel-data.html#data-inspection"><i class="fa fa-check"></i><b>5.2.1</b> Data Inspection</a></li>
@@ -444,7 +448,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <p>“Paul Cezanne died in October 1906 at the age of 67. In time he would be generally regarded as the most influential painter who had worked in the nineteenth century (e.g., Clive Bell, 1982; Clement Greenberg, 1993). Art historians and critics would also agree that his greatest achievement was the work he did late in his life.”</p>
 </blockquote>
 <footer>
-– Galenson, D. W., &amp; Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>
+– Galenson, D. W., &amp; Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>
 </footer>
 <!-- <sup>AER is a famous and reliable economic journal.</sup> -->
 <p style="margin-bottom:1cm;">
@@ -518,7 +522,7 @@ common in data analysis. You can create a table in Word or Excel.
 <h3><span class="header-section-number">8.2.2</span> Data in a graph<a href="regression.html#data-in-a-graph" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Two variables from our data table can be depicted in what is called a <strong>scatterplot</strong>.</p>
 <!-- The data from our The graph depicts the data from the table I decide to show the auction price of well-known paintings in relation to the age of the artist. It is called a **scatterplot**. -->
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-122-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-125-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div class="infobox information">
 <details>
 <summary>
@@ -534,7 +538,7 @@ common in data analysis. You can create a table in Word or Excel.
 <p>Can you spot a trend in the data?</p>
 </div>
 <p>The line plot suggests that the relationship between price and age exhibits a <strong>positive trend</strong>. There is an <strong>increase</strong> in price for older artists. The older the artist, the higher the auction prices.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-123-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-126-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="the-blackbox" class="section level3 hasAnchor" number="8.2.4">
 <h3><span class="header-section-number">8.2.4</span> The blackbox<a href="regression.html#the-blackbox" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -566,7 +570,7 @@ A <strong>linear function</strong> is …
 defined by two components, <strong>intercept</strong> (with the y-axis) and it’s <strong>slope</strong>.
 </details>
 </div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-124-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-127-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div class="infobox question">
 <p>How can we compare the two suggested lines? Which linear function represents the relationship best?</p>
 </div>
@@ -589,7 +593,7 @@ the vertical distance between the actual and the predicted value.
 </details>
 </div>
 <!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-125-1.png" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-128-1.png" width="576" /></p>
 </div>
 <div id="vocab-wrap-up" class="section level3 hasAnchor" number="8.2.6">
 <h3><span class="header-section-number">8.2.6</span> Vocab Wrap-Up<a href="regression.html#vocab-wrap-up" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -741,7 +745,7 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 <div class="infobox information">
 <p>The above equation is the linear function that best describes the given data.</p>
 </div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-133-1.png" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-136-1.png" width="576" /></p>
 </div>
 <div id="on-the-shoulders-of-giants" class="section level2 hasAnchor" number="8.5">
 <h2><span class="header-section-number">8.5</span> On the Shoulders of Giants<a href="regression.html#on-the-shoulders-of-giants" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -760,8 +764,8 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 </div>
 <div class="footnotes">
 <hr />
-<ol start="11">
-<li id="fn11"><p>AER is a famous and reliable economic journal.<a href="regression.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<ol start="14">
+<li id="fn14"><p>AER is a famous and reliable economic journal.<a href="regression.html#fnref14" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 <div id="disqus_thread"></div>
