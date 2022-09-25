@@ -1,0 +1,164 @@
+<!-- # (PART) Data Analysis {-}  -->
+
+# Intro to R {-}
+<!-- Comments start with one or multiple hash tags.  -->
+<!-- http://seminars-in-applied-economics.de/wp-content/uploads/2020/08/SOEP_Practice_1.txt -->
+
+An .R file is a text document. Open (and edit) it with a any text editor (or RStudio).^[Here is a minimal R script <https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/intro-r.R>] 
+
+<!-- You can collapse sections in RStudio. -->
+<!-- You can navigate between sections in RStudio. -->
+<!-- Check out your four panels and what they contain. -->
+<!-- You can run/execute code in the console.  -->
+<!-- Type or copy commands in the console and hit enter.  -->
+<!-- Alternatively click 'run' in RStudio. -->
+<!-- Alternatively use shortcuts like STRG + ENTER (run 1 line) -->
+
+## Watching paint dry {-}
+
+<!-- ```{r, include=FALSE} -->
+<!-- tutorial::go_interactive(greedy=FALSE) -->
+<!-- ``` -->
+
+<!-- By default, `tutorial` will convert all R chunks. -->
+
+R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the  **script.R** tab are executed by the **Run** bottom. It runs the entire script and prints out results in the **R Console**. This procedure is simplified but similar to a more complex integrated developer environment (IDE) like RStudio.
+
+<!-- <script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script> -->
+<script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script>
+
+Copy and paste (or modify) commands from lower sections into the script. 
+
+::: {.challenge}
+Try `1:20` and hit Run.
+:::
+
+```{r tut=TRUE}
+# Comment: R as a calculator is a boring as watching paint dry.
+21*2 
+```
+
+## When paint becomes art {-}
+
+Copy paste the below code into **script.R** and hit **Run**. It opens a new tab **Plots**. 
+
+```{r tut=FALSE, collapse=TRUE, eval=F} 
+plot(x = iris$Sepal.Length, y = iris$Petal.Length,  # x and y variables
+     col = iris$Species,                            # color by species! 
+     pch = 16, cex = 2,                             # aesthetic parameters 
+     xlab = "Sepal Length", ylab = "Petal Length",  # axis labels
+     main = "Flower characteristics in Iris")       # title
+
+ # Adding grid: 
+grid()
+
+# Adding a legend: 
+legend (x = 4.5, y = 7, legend = levels(iris$Species), 
+        pch = 16, col = c(1:3))
+```
+
+<iframe width='100%' height='300' src='https://rdrr.io/snippets/embed/' frameborder='0'></iframe>
+
+<!-- Help, check the note of the pie chart function ?pie -->
+
+## Define objects {-}
+
+Define R objects for later use. Objects are **case-sensitive** (`X` is different from `x`). Objects can take any name, but its best to use something that makes sense to you, and will likely make sense to others who may read your code.
+
+### Numeric Variables {-}
+```{r tut=FALSE, collapse=TRUE} 
+a <- 2
+b = 3
+a + b
+```
+
+### Logical Variables {-}
+
+```{r prompt=TRUE}
+harvard               <-        TRUE # spacing doesn't matter
+yale      <- FALSE
+princeton <- F # short for FALSE
+
+# Attention: FALSE=0, TRUE=1
+harvard + 1
+```
+
+### String Variables {-}
+
+```{r }
+emily  <- 'She is a friend.'     # string / character class / plain text
+libby  <- "she is a coworker"    # use ' and " interchangeably
+other  <- "people"               # prefer "
+``` 
+
+### Factor Variables {-}
+
+A factor is an ordered categorical variable. `c()` is a generic function which combines its arguments. 
+
+```{r tut=FALSE}
+fruit  <- as.factor(c("banana", "apple")  ) # The default ordering is alphabetic
+fruit
+
+dose <- as.factor(c("low", "medium", "high")  ) # The default ordering is alphabetic
+dose
+```
+
+### Combine objects {-}
+
+```{r tut=FALSE}
+# Declare new objects using other variables
+c <- a + b + 10
+
+# Open z object or put everything in parentheses
+(c <- a + b + 10)
+```
+
+### Vectors {-}
+
+Think of a vector as a single column in a spreadsheet.
+
+```{r tut=FALSE}
+vectorA <- c(1,2,b)
+vectorB <- c(TRUE,TRUE,FALSE)
+vectorC <- c(emily, libby, other) 
+
+# Vector Operations
+vectorA - vectorB # Vector operation AND auto-change TRUE =1, FALSE=0
+```
+
+### Data frame {-}
+
+```{r tut=FALSE}
+# think of it conceptually like a spreadsheet
+dataDF <- data.frame(numberVec    = vectorA,
+                     trueFalseVec = vectorB,
+                     stringsVec   = vectorC)
+
+# Examine an entire data frame  
+dataDF
+```
+
+```{r tut=FALSE}
+# Declare a new column
+dataDF$NewCol <- c(10,9,8)
+
+# Examine with new column
+dataDF
+
+# Examine a single column
+dataDF$numberVec # by name
+dataDF[,1] # by index...remember ROWS then COLUMNS
+
+# Examine a single row
+dataDF[2,] # by index position
+
+# Examine a single value
+dataDF$numberVec[2] # column name, then position (2)
+dataDF[1,2] #by index row 1, column 2
+```
+
+
+### Plots {-}
+
+To be announced ... 
+
