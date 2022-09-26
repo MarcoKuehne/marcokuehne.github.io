@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Data Scraping | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to become fluent in data." />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Data Scraping | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/warning.png" />
+  <meta property="og:description" content="A guide to become fluent in data." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Data Scraping | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to become fluent in data." />
+  <meta name="twitter:image" content="/images/warning.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2022-09-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/icons8-trading-64.ico" type="image/x-icon" />
+<link rel="prev" href="panel-data.html"/>
+<link rel="next" href="relationships.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://marcokuehne.github.io/">Becoming Fluent in Data</a></li> <li><p class="aligncenter"> <img src="images/icons8-trading-64.png"> </p></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="part"><span><b>I Preface</b></span></li>
+<li class="chapter" data-level="" data-path="teach-learn-repeat.html"><a href="teach-learn-repeat.html"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="" data-path="aim-of-this-books.html"><a href="aim-of-this-books.html"><i class="fa fa-check"></i>Aim of this books</a></li>
+<li class="chapter" data-level="" data-path="structure-of-this-books.html"><a href="structure-of-this-books.html"><i class="fa fa-check"></i>Structure of this books</a>
+<ul>
+<li class="chapter" data-level="" data-path="structure-of-this-books.html"><a href="structure-of-this-books.html#content"><i class="fa fa-check"></i>Content</a></li>
+<li class="chapter" data-level="" data-path="structure-of-this-books.html"><a href="structure-of-this-books.html#color"><i class="fa fa-check"></i>Color</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#watching-paint-dry"><i class="fa fa-check"></i>Watching paint dry</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#when-paint-becomes-art"><i class="fa fa-check"></i>When paint becomes art</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#define-objects"><i class="fa fa-check"></i>Define objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#numeric-variables"><i class="fa fa-check"></i>Numeric Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#logical-variables"><i class="fa fa-check"></i>Logical Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#string-variables"><i class="fa fa-check"></i>String Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#factor-variables"><i class="fa fa-check"></i>Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#combine-objects"><i class="fa fa-check"></i>Combine objects</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#data-frame"><i class="fa fa-check"></i>Data frame</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#plots"><i class="fa fa-check"></i>Plots</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#why-we-measure"><i class="fa fa-check"></i><b>1.1</b> Why we measure</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#women-are-having-far-fewer-children."><i class="fa fa-check"></i><b>1.1.1</b> Women are having far fewer children.</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#global-surface-temperature-is-rising."><i class="fa fa-check"></i><b>1.1.2</b> Global surface temperature is rising.</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#how-we-measure"><i class="fa fa-check"></i><b>1.2</b> How we measure</a></li>
+<li class="chapter" data-level="1.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#types-of-data"><i class="fa fa-check"></i><b>1.3</b> Types of data</a></li>
+<li class="chapter" data-level="1.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-reality-behind-the-data"><i class="fa fa-check"></i><b>1.4</b> The reality behind the data</a></li>
+<li class="chapter" data-level="1.5" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#data-sources"><i class="fa fa-check"></i><b>1.5</b> Data sources</a></li>
+<li class="chapter" data-level="1.6" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#dataset-collections"><i class="fa fa-check"></i><b>1.6</b> Dataset collections</a></li>
+<li class="chapter" data-level="1.7" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#open-data"><i class="fa fa-check"></i><b>1.7</b> Open data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html"><i class="fa fa-check"></i><b>2</b> Software is everywhere</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#software"><i class="fa fa-check"></i><b>2.1</b> Software</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#command-line-interface-cli"><i class="fa fa-check"></i><b>2.1.1</b> Command line interface (CLI)</a></li>
+<li class="chapter" data-level="2.1.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#graphical-user-interface-gui"><i class="fa fa-check"></i><b>2.1.2</b> Graphical user interface (GUI)</a></li>
+<li class="chapter" data-level="2.1.3" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#integrated-development-environment-ide"><i class="fa fa-check"></i><b>2.1.3</b> Integrated development environment (IDE)</a></li>
+<li class="chapter" data-level="2.1.4" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#software-in-your-browser"><i class="fa fa-check"></i><b>2.1.4</b> Software in your browser</a></li>
+<li class="chapter" data-level="2.1.5" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#software-in-the-cloud"><i class="fa fa-check"></i><b>2.1.5</b> Software in the cloud</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#file-formats"><i class="fa fa-check"></i><b>2.2</b> File formats</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#text-files"><i class="fa fa-check"></i><b>2.2.1</b> Text files</a></li>
+<li class="chapter" data-level="2.2.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#text-with-structure"><i class="fa fa-check"></i><b>2.2.2</b> Text with structure</a></li>
+<li class="chapter" data-level="2.2.3" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#file-formats-1"><i class="fa fa-check"></i><b>2.2.3</b> File formats</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="group-comparison.html"><a href="group-comparison.html"><i class="fa fa-check"></i><b>3</b> Group Comparison</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="group-comparison.html"><a href="group-comparison.html#story-telling"><i class="fa fa-check"></i><b>3.1</b> Story Telling</a></li>
+<li class="chapter" data-level="3.2" data-path="group-comparison.html"><a href="group-comparison.html#comparability"><i class="fa fa-check"></i><b>3.2</b> Comparability</a></li>
+<li class="chapter" data-level="3.3" data-path="group-comparison.html"><a href="group-comparison.html#never-use-pie-charts"><i class="fa fa-check"></i><b>3.3</b> Never use pie charts</a></li>
+<li class="chapter" data-level="3.4" data-path="group-comparison.html"><a href="group-comparison.html#application"><i class="fa fa-check"></i><b>3.4</b> Application</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="group-comparison.html"><a href="group-comparison.html#loading-the-data"><i class="fa fa-check"></i><b>3.4.1</b> Loading the data</a></li>
+<li class="chapter" data-level="3.4.2" data-path="group-comparison.html"><a href="group-comparison.html#look-into-data"><i class="fa fa-check"></i><b>3.4.2</b> Look into data</a></li>
+<li class="chapter" data-level="3.4.3" data-path="group-comparison.html"><a href="group-comparison.html#fly-over-data"><i class="fa fa-check"></i><b>3.4.3</b> Fly over data</a></li>
+<li class="chapter" data-level="3.4.4" data-path="group-comparison.html"><a href="group-comparison.html#missing-data"><i class="fa fa-check"></i><b>3.4.4</b> Missing data</a></li>
+<li class="chapter" data-level="3.4.5" data-path="group-comparison.html"><a href="group-comparison.html#explore-data"><i class="fa fa-check"></i><b>3.4.5</b> Explore data</a></li>
+<li class="chapter" data-level="3.4.6" data-path="group-comparison.html"><a href="group-comparison.html#standardization"><i class="fa fa-check"></i><b>3.4.6</b> Standardization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="mean-comparison.html"><a href="mean-comparison.html"><i class="fa fa-check"></i><b>4</b> Mean Comparison</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="mean-comparison.html"><a href="mean-comparison.html#application-1"><i class="fa fa-check"></i><b>4.1</b> Application</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="mean-comparison.html"><a href="mean-comparison.html#data-preparation"><i class="fa fa-check"></i><b>4.1.1</b> Data Preparation</a></li>
+<li class="chapter" data-level="4.1.2" data-path="mean-comparison.html"><a href="mean-comparison.html#grouped-mean"><i class="fa fa-check"></i><b>4.1.2</b> Grouped Mean</a></li>
+<li class="chapter" data-level="4.1.3" data-path="mean-comparison.html"><a href="mean-comparison.html#furious-with-factors"><i class="fa fa-check"></i><b>4.1.3</b> Furious with Factors</a></li>
+<li class="chapter" data-level="4.1.4" data-path="mean-comparison.html"><a href="mean-comparison.html#plot-with-confidence"><i class="fa fa-check"></i><b>4.1.4</b> Plot with Confidence</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="mean-comparison.html"><a href="mean-comparison.html#students-t-test"><i class="fa fa-check"></i><b>4.2</b> Student’s t-test</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="mean-comparison.html"><a href="mean-comparison.html#independent-t-test"><i class="fa fa-check"></i><b>4.2.1</b> Independent t-test</a></li>
+<li class="chapter" data-level="4.2.2" data-path="mean-comparison.html"><a href="mean-comparison.html#dependent-t-test"><i class="fa fa-check"></i><b>4.2.2</b> Dependent t-test</a></li>
+<li class="chapter" data-level="4.2.3" data-path="mean-comparison.html"><a href="mean-comparison.html#one-sample-t-test"><i class="fa fa-check"></i><b>4.2.3</b> One sample t-test</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>5</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="panel-data.html"><a href="panel-data.html#unemployment"><i class="fa fa-check"></i><b>5.1</b> Unemployment</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="panel-data.html"><a href="panel-data.html#on-decline-in-germany"><i class="fa fa-check"></i><b>5.1.1</b> On decline in Germany</a></li>
+<li class="chapter" data-level="5.1.2" data-path="panel-data.html"><a href="panel-data.html#measurement"><i class="fa fa-check"></i><b>5.1.2</b> Measurement</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="panel-data.html"><a href="panel-data.html#application-2"><i class="fa fa-check"></i><b>5.2</b> Application</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="panel-data.html"><a href="panel-data.html#data-inspection"><i class="fa fa-check"></i><b>5.2.1</b> Data Inspection</a></li>
+<li class="chapter" data-level="5.2.2" data-path="panel-data.html"><a href="panel-data.html#data-preparation-1"><i class="fa fa-check"></i><b>5.2.2</b> Data Preparation</a></li>
+<li class="chapter" data-level="5.2.3" data-path="panel-data.html"><a href="panel-data.html#data-visualization"><i class="fa fa-check"></i><b>5.2.3</b> Data Visualization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="data-scraping.html"><a href="data-scraping.html"><i class="fa fa-check"></i><b>6</b> Data Scraping</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="data-scraping.html"><a href="data-scraping.html#student-numbers-are-on-the-decline"><i class="fa fa-check"></i><b>6.1</b> Student numbers are on the decline</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="data-scraping.html"><a href="data-scraping.html#pdf-scraping"><i class="fa fa-check"></i><b>6.1.1</b> PDF scraping</a></li>
+<li class="chapter" data-level="6.1.2" data-path="data-scraping.html"><a href="data-scraping.html#web-scraping"><i class="fa fa-check"></i><b>6.1.2</b> Web scraping</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>7</b> Relationships</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="relationships.html"><a href="relationships.html#minimal-example"><i class="fa fa-check"></i><b>7.1</b> Minimal Example</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="relationships.html"><a href="relationships.html#variance"><i class="fa fa-check"></i><b>7.1.1</b> Variance</a></li>
+<li class="chapter" data-level="7.1.2" data-path="relationships.html"><a href="relationships.html#variation-around-the-mean"><i class="fa fa-check"></i><b>7.1.2</b> Variation ARound the Mean</a></li>
+<li class="chapter" data-level="7.1.3" data-path="relationships.html"><a href="relationships.html#scatterplot"><i class="fa fa-check"></i><b>7.1.3</b> Scatterplot</a></li>
+<li class="chapter" data-level="7.1.4" data-path="relationships.html"><a href="relationships.html#covariance"><i class="fa fa-check"></i><b>7.1.4</b> Covariance</a></li>
+<li class="chapter" data-level="7.1.5" data-path="relationships.html"><a href="relationships.html#covariance-visualization"><i class="fa fa-check"></i><b>7.1.5</b> Covariance Visualization</a></li>
+<li class="chapter" data-level="7.1.6" data-path="relationships.html"><a href="relationships.html#correlation"><i class="fa fa-check"></i><b>7.1.6</b> Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="relationships.html"><a href="relationships.html#application-3"><i class="fa fa-check"></i><b>7.2</b> Application</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="relationships.html"><a href="relationships.html#one-variable-graphics"><i class="fa fa-check"></i><b>7.2.1</b> One Variable Graphics</a></li>
+<li class="chapter" data-level="7.2.2" data-path="relationships.html"><a href="relationships.html#two-variable-graphics"><i class="fa fa-check"></i><b>7.2.2</b> Two Variable Graphics</a></li>
+<li class="chapter" data-level="7.2.3" data-path="relationships.html"><a href="relationships.html#correlation-and-regression"><i class="fa fa-check"></i><b>7.2.3</b> Correlation and Regression</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>8</b> Regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="regression.html"><a href="regression.html#from-artists-and-economists"><i class="fa fa-check"></i><b>8.1</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="8.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>8.2</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>8.2.1</b> Data in a table</a></li>
+<li class="chapter" data-level="8.2.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>8.2.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="8.2.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>8.2.3</b> The trend</a></li>
+<li class="chapter" data-level="8.2.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>8.2.4</b> The blackbox</a></li>
+<li class="chapter" data-level="8.2.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>8.2.5</b> Nobody’s perfect</a></li>
+<li class="chapter" data-level="8.2.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>8.2.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>8.3</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>8.3.1</b> Algebra</a></li>
+<li class="chapter" data-level="8.3.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>8.3.2</b> Analysis</a></li>
+<li class="chapter" data-level="8.3.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>8.3.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>8.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="8.5" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>8.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>9</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="logistic-regression.html"><a href="logistic-regression.html#minimal-example-1"><i class="fa fa-check"></i><b>9.1</b> Minimal Example</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#think-inside-of-a-box"><i class="fa fa-check"></i><b>9.1.1</b> Think inside of a box</a></li>
+<li class="chapter" data-level="9.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#from-probability-to-odds"><i class="fa fa-check"></i><b>9.1.2</b> From probability to odds</a></li>
+<li class="chapter" data-level="9.1.3" data-path="logistic-regression.html"><a href="logistic-regression.html#from-odds-to-log-of-odds"><i class="fa fa-check"></i><b>9.1.3</b> From odds to log of odds</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="logistic-regression.html"><a href="logistic-regression.html#application-titanic-survival"><i class="fa fa-check"></i><b>9.2</b> Application: Titanic Survival</a></li>
+<li class="chapter" data-level="9.3" data-path="logistic-regression.html"><a href="logistic-regression.html#addons"><i class="fa fa-check"></i><b>9.3</b> Addons</a></li>
+<li class="chapter" data-level="9.4" data-path="logistic-regression.html"><a href="logistic-regression.html#motivation"><i class="fa fa-check"></i><b>9.4</b> Motivation</a></li>
+<li class="chapter" data-level="9.5" data-path="logistic-regression.html"><a href="logistic-regression.html#load-and-merge"><i class="fa fa-check"></i><b>9.5</b> Load and Merge</a></li>
+<li class="chapter" data-level="9.6" data-path="logistic-regression.html"><a href="logistic-regression.html#data-manipulation"><i class="fa fa-check"></i><b>9.6</b> Data Manipulation</a></li>
+<li class="chapter" data-level="9.7" data-path="logistic-regression.html"><a href="logistic-regression.html#simple-linear-model"><i class="fa fa-check"></i><b>9.7</b> Simple linear model</a></li>
+<li class="chapter" data-level="9.8" data-path="logistic-regression.html"><a href="logistic-regression.html#multiple-regression-with-control"><i class="fa fa-check"></i><b>9.8</b> Multiple regression with control</a>
+<ul>
+<li class="chapter" data-level="9.8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#regression-model"><i class="fa fa-check"></i><b>9.8.1</b> Regression model</a></li>
+<li class="chapter" data-level="9.8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#visualization-parallel-slopes"><i class="fa fa-check"></i><b>9.8.2</b> Visualization (parallel slopes)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.9" data-path="logistic-regression.html"><a href="logistic-regression.html#multiple-regression-with-moderator"><i class="fa fa-check"></i><b>9.9</b> Multiple regression with moderator</a>
+<ul>
+<li class="chapter" data-level="9.9.1" data-path="logistic-regression.html"><a href="logistic-regression.html#interaction-dummy-dummy"><i class="fa fa-check"></i><b>9.9.1</b> Interaction (dummy * dummy)</a></li>
+<li class="chapter" data-level="9.9.2" data-path="logistic-regression.html"><a href="logistic-regression.html#interaction-categorical-dummy"><i class="fa fa-check"></i><b>9.9.2</b> Interaction (categorical * dummy)</a></li>
+<li class="chapter" data-level="9.9.3" data-path="logistic-regression.html"><a href="logistic-regression.html#interaction-continuous-dummy"><i class="fa fa-check"></i><b>9.9.3</b> Interaction (continuous * dummy)</a></li>
+<li class="chapter" data-level="9.9.4" data-path="logistic-regression.html"><a href="logistic-regression.html#visualization-non-parallel-slopes"><i class="fa fa-check"></i><b>9.9.4</b> Visualization (non-parallel slopes)</a></li>
+<li class="chapter" data-level="9.9.5" data-path="logistic-regression.html"><a href="logistic-regression.html#interaction-continuous-continuous"><i class="fa fa-check"></i><b>9.9.5</b> Interaction (continuous * continuous)</a></li>
+<li class="chapter" data-level="9.9.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualization-non-parallel-slopes-1"><i class="fa fa-check"></i><b>9.9.6</b> Visualization (non-parallel slopes)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.10" data-path="logistic-regression.html"><a href="logistic-regression.html#marginal-effects-1"><i class="fa fa-check"></i><b>9.10</b> Marginal Effects</a>
+<ul>
+<li class="chapter" data-level="9.10.1" data-path="logistic-regression.html"><a href="logistic-regression.html#marginal-effects-at-representatives-task"><i class="fa fa-check"></i><b>9.10.1</b> Marginal effects at representatives (TASK)</a></li>
+<li class="chapter" data-level="9.10.2" data-path="logistic-regression.html"><a href="logistic-regression.html#marginal-effects-at-the-mean-task"><i class="fa fa-check"></i><b>9.10.2</b> Marginal effects at the mean (TASK)</a></li>
+<li class="chapter" data-level="9.10.3" data-path="logistic-regression.html"><a href="logistic-regression.html#average-marginal-effects"><i class="fa fa-check"></i><b>9.10.3</b> Average marginal effects</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="fixed-effects.html"><a href="fixed-effects.html"><i class="fa fa-check"></i><b>10</b> Fixed effects</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="fixed-effects.html"><a href="fixed-effects.html#cross-sectional-data-2-pt"><i class="fa fa-check"></i><b>10.1</b> Cross-sectional Data (2 pt)</a></li>
+<li class="chapter" data-level="10.2" data-path="fixed-effects.html"><a href="fixed-effects.html#panel-data-2-pt"><i class="fa fa-check"></i><b>10.2</b> Panel Data (2 pt)</a></li>
+<li class="chapter" data-level="10.3" data-path="fixed-effects.html"><a href="fixed-effects.html#fixed-effects-regression"><i class="fa fa-check"></i><b>10.3</b> Fixed Effects Regression</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="fixed-effects.html"><a href="fixed-effects.html#first-difference-2-pt"><i class="fa fa-check"></i><b>10.3.1</b> First Difference (2 pt)</a></li>
+<li class="chapter" data-level="10.3.2" data-path="fixed-effects.html"><a href="fixed-effects.html#within-estimator-2-pt"><i class="fa fa-check"></i><b>10.3.2</b> Within Estimator (2 pt)</a></li>
+<li class="chapter" data-level="10.3.3" data-path="fixed-effects.html"><a href="fixed-effects.html#lsdv-1-pt"><i class="fa fa-check"></i><b>10.3.3</b> LSDV (1 pt)</a></li>
+<li class="chapter" data-level="10.3.4" data-path="fixed-effects.html"><a href="fixed-effects.html#comparison-1-pt"><i class="fa fa-check"></i><b>10.3.4</b> Comparison (1 pt)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="first-difference.html"><a href="first-difference.html"><i class="fa fa-check"></i><b>11</b> First Difference</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="first-difference.html"><a href="first-difference.html#application-mincer-earnings-function"><i class="fa fa-check"></i><b>11.1</b> Application: Mincer earnings function</a></li>
+<li class="chapter" data-level="11.2" data-path="first-difference.html"><a href="first-difference.html#data-management-4-pt"><i class="fa fa-check"></i><b>11.2</b> Data Management (4 pt)</a></li>
+<li class="chapter" data-level="11.3" data-path="first-difference.html"><a href="first-difference.html#data-visualization-2-pt"><i class="fa fa-check"></i><b>11.3</b> Data Visualization (2 pt)</a></li>
+<li class="chapter" data-level="11.4" data-path="first-difference.html"><a href="first-difference.html#data-modeling-2-pt"><i class="fa fa-check"></i><b>11.4</b> Data Modeling (2 pt)</a></li>
+<li class="chapter" data-level="11.5" data-path="first-difference.html"><a href="first-difference.html#minimal-example-2"><i class="fa fa-check"></i><b>11.5</b> Minimal Example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="data-scraping" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Data Scraping<a href="data-scraping.html#data-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<blockquote>
+<p>“Over the last two years alone, 90 percent of the data in the world was generated.”</b></p>
+<footer>
+Bernard Marr (2018) <em>How Much Data Do We Create Every Day? The Mind-Blowing Stats Everyone Should Read</em> <a href="https://www.forbes.com/sites/bernardmarr/2018/05/21/how-much-data-do-we-create-every-day-the-mind-blowing-stats-everyone-should-read/#4472289660ba" target="_blank">Forbes.</a>
+</footer>
+</blockquote>
+<p><strong>Data scraping</strong> is a technique where a computer program extracts data from human-readable output coming from another program. Data scraping often takes place in <strong>web scraping</strong> (also known as crawling or spidering). In this process, an application is used to extract valuable information from a website. <strong>PDF scraping</strong> or more general <strong>report mining</strong> is the extraction of data from human-readable computer reports.</p>
+<p>Consider alternatives before start scraping data:</p>
+<ul>
+<li>Look for a download button.</li>
+<li>Search same or similar data somewhere else.</li>
+<li>Check if there is an API.</li>
+<li>Ask the website owner for the data.</li>
+</ul>
+<div id="student-numbers-are-on-the-decline" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Student numbers are on the decline<a href="data-scraping.html#student-numbers-are-on-the-decline" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Did you notice less and less fellow students sitting next to you? We analyse enrollment numbers of Viadrina European University. <em>Dezernat 1</em> administers and publishes student statistics. There is an overview page where they provide some time series data (overall student numbers from 1992 to 2020) and the number of study programs (between 1992 to 2014).</p>
+<iframe src="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/index.html" width="576" height="400px" data-external="1">
+</iframe>
+<p>Information is presented in two ways, as <strong>tables in PDF</strong>, e.g. the time series on total student numbers:<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a></p>
+<!-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf> -->
+<!-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Anzahl-der-Studiengaenge.pdf> -->
+<object data="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf" width="800" height="500">
+</object>
+<p>And as <strong>tables in HTML</strong>. For each semester there is summary information on the webpage (and more comprehensive data in PDF), like for summer term 2022:</p>
+<iframe src="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-Sommersemester/index.html" width="576" height="400px" data-external="1">
+</iframe>
+<p>Let’s investigate the student numbers.</p>
+<div id="pdf-scraping" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> PDF scraping<a href="data-scraping.html#pdf-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://www.dataquest.io/blog/web-scraping-in-r-rvest/ -->
+<!-- https://www.r-bloggers.com/2019/09/pdf-scraping-in-r-with-tabulizer/ -->
+<!-- https://www.brodrigues.co/blog/2018-06-10-scraping_pdfs/-->
+<!-- https://blog.az.sg/posts/reading-pdfs-in-r/ -->
+<!-- https://tabula.technology/ -->
+<!-- https://cran.r-hub.io/web/packages/tabulizer/vignettes/tabulizer.html -->
+<!-- https://crimebythenumbers.com/scrape-table.html -->
+<!-- https://academy.datawrapper.de/article/135-how-to-extract-data-out-of-pdfs -->
+<!-- https://www.europa-uni.de/de/ueber_uns/zahlen_fakten/index.html -->
+<!-- https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-Sommersemester/Uebersicht.pdf -->
+<!-- https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf -->
+<p>Apply a programmatic way to download a PDF Use the built in <code>download.file()</code> function and specify an url and a destination and file name.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="data-scraping.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set URL for PDF </span></span>
+<span id="cb63-2"><a href="data-scraping.html#cb63-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf&quot;</span></span>
+<span id="cb63-3"><a href="data-scraping.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify destination where file should be saved (and name)</span></span>
+<span id="cb63-4"><a href="data-scraping.html#cb63-4" aria-hidden="true" tabindex="-1"></a>destfile <span class="ot">&lt;-</span> <span class="st">&quot;data/Viadrina/Gesamtstudierendenzahl.pdf&quot;</span></span>
+<span id="cb63-5"><a href="data-scraping.html#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply download.file function in R</span></span>
+<span id="cb63-6"><a href="data-scraping.html#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(url, destfile, <span class="at">mode =</span> <span class="st">&quot;wb&quot;</span>)</span></code></pre></div>
+<!-- https://www.youtube.com/watch?v=jfBZzuDMN0o -->
+<p>To extract a table from a PDF we use the <code>pdftables</code> package.<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a> The package is a wrapper for the <strong>PDFTables API</strong>. It requires an API key from <a href="https://pdftables.com/" class="uri">https://pdftables.com/</a>. You can register and get one for free. The result is stored as <code>.csv</code> file.</p>
+<div class="defbox">
+<p>An <strong>application programming interface (API)</strong> is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software.</p>
+</div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="data-scraping.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pdftables)</span>
+<span id="cb64-2"><a href="data-scraping.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_pdf</span>(<span class="at">input_file =</span> destfile, </span>
+<span id="cb64-3"><a href="data-scraping.html#cb64-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">output_file =</span> <span class="st">&quot;data/Viadrina/viadrina_students.csv&quot;</span>, </span>
+<span id="cb64-4"><a href="data-scraping.html#cb64-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">api_key =</span> <span class="st">&quot;YOUR_KEY&quot;</span>)</span></code></pre></div>
+<p>Scraped data often requires a lot of cleaning.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="data-scraping.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb65-2"><a href="data-scraping.html#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="co"># read csv file</span></span>
+<span id="cb65-3"><a href="data-scraping.html#cb65-3" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020_before <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Viadrina/viadrina_students.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb65-4"><a href="data-scraping.html#cb65-4" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020_before</span>
+<span id="cb65-5"><a href="data-scraping.html#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="co"># replace header names by first row</span></span>
+<span id="cb65-6"><a href="data-scraping.html#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="dv">1</span>,]</span>
+<span id="cb65-7"><a href="data-scraping.html#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="co"># drop first row</span></span>
+<span id="cb65-8"><a href="data-scraping.html#cb65-8" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="sc">-</span><span class="dv">1</span>,] </span>
+<span id="cb65-9"><a href="data-scraping.html#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="co"># drop last row</span></span>
+<span id="cb65-10"><a href="data-scraping.html#cb65-10" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="sc">-</span><span class="dv">30</span>,] </span>
+<span id="cb65-11"><a href="data-scraping.html#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="co"># remove all \n</span></span>
+<span id="cb65-12"><a href="data-scraping.html#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;[</span><span class="sc">\r\n</span><span class="st">]&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(viadrina_1992_2020)) </span>
+<span id="cb65-13"><a href="data-scraping.html#cb65-13" aria-hidden="true" tabindex="-1"></a><span class="co"># readable column names</span></span>
+<span id="cb65-14"><a href="data-scraping.html#cb65-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Total&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Female_Pct&quot;</span>, </span>
+<span id="cb65-15"><a href="data-scraping.html#cb65-15" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;German&quot;</span>, <span class="st">&quot;German_Pct&quot;</span>, <span class="st">&quot;Foreign&quot;</span>, <span class="st">&quot;Foreign_Pct&quot;</span>,</span>
+<span id="cb65-16"><a href="data-scraping.html#cb65-16" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Pole&quot;</span>, <span class="st">&quot;Pole_Pct&quot;</span>)</span>
+<span id="cb65-17"><a href="data-scraping.html#cb65-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-18"><a href="data-scraping.html#cb65-18" aria-hidden="true" tabindex="-1"></a><span class="co"># remove percentage sign </span></span>
+<span id="cb65-19"><a href="data-scraping.html#cb65-19" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020 <span class="sc">%&gt;%</span>  </span>
+<span id="cb65-20"><a href="data-scraping.html#cb65-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">ifelse</span>(<span class="fu">str_detect</span>(.x, <span class="st">&quot;%&quot;</span>),</span>
+<span id="cb65-21"><a href="data-scraping.html#cb65-21" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">parse_number</span>(.x) <span class="sc">/</span> <span class="dv">10</span>, </span>
+<span id="cb65-22"><a href="data-scraping.html#cb65-22" aria-hidden="true" tabindex="-1"></a>                                       .x)))</span>
+<span id="cb65-23"><a href="data-scraping.html#cb65-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-24"><a href="data-scraping.html#cb65-24" aria-hidden="true" tabindex="-1"></a><span class="co"># convert all chr to numeric</span></span>
+<span id="cb65-25"><a href="data-scraping.html#cb65-25" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020 <span class="sc">%&gt;%</span> <span class="fu">mutate_if</span>(is.character,as.numeric)</span>
+<span id="cb65-26"><a href="data-scraping.html#cb65-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-27"><a href="data-scraping.html#cb65-27" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(viadrina_1992_2020)</span>
+<span id="cb65-28"><a href="data-scraping.html#cb65-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 29</span></span>
+<span id="cb65-29"><a href="data-scraping.html#cb65-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 10</span></span>
+<span id="cb65-30"><a href="data-scraping.html#cb65-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Year        &lt;dbl&gt; 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001…</span></span>
+<span id="cb65-31"><a href="data-scraping.html#cb65-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Total       &lt;dbl&gt; 472, 997, 1443, 1810, 2321, 2835, 3132, 3451, 3802, 4170, …</span></span>
+<span id="cb65-32"><a href="data-scraping.html#cb65-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Female      &lt;dbl&gt; 236, 546, 724, 949, 1242, 1584, 1841, 2057, 2308, 2559, 20…</span></span>
+<span id="cb65-33"><a href="data-scraping.html#cb65-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Female_Pct  &lt;dbl&gt; 50.0, 54.8, 50.2, 52.4, 53.5, 55.9, 58.8, 59.6, 60.7, 61.4…</span></span>
+<span id="cb65-34"><a href="data-scraping.html#cb65-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ German      &lt;dbl&gt; 325, 598, 841, 1030, 1348, 1662, 1824, 2048, 2226, 2393, 2…</span></span>
+<span id="cb65-35"><a href="data-scraping.html#cb65-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ German_Pct  &lt;dbl&gt; 68.9, 60.0, 58.3, 56.9, 58.1, 58.6, 58.2, 59.3, 58.5, 57.4…</span></span>
+<span id="cb65-36"><a href="data-scraping.html#cb65-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Foreign     &lt;dbl&gt; 169, 399, 602, 780, 973, 1173, 1308, 1403, 1576, 1777, 193…</span></span>
+<span id="cb65-37"><a href="data-scraping.html#cb65-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Foreign_Pct &lt;dbl&gt; 35.8, 40.0, 41.7, 43.1, 41.9, 41.4, 41.8, 40.7, 41.5, 42.6…</span></span>
+<span id="cb65-38"><a href="data-scraping.html#cb65-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Pole        &lt;dbl&gt; 167, 384, 566, 731, 883, 1053, 1179, 1247, 1364, 1440, 151…</span></span>
+<span id="cb65-39"><a href="data-scraping.html#cb65-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Pole_Pct    &lt;dbl&gt; 35.4, 38.5, 39.2, 40.4, 38.0, 37.1, 37.6, 36.1, 35.9, 34.5…</span></span></code></pre></div>
+<p>Let’s look at the student numbers over time.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="data-scraping.html#cb66-1" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span> </span>
+<span id="cb66-2"><a href="data-scraping.html#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year)) <span class="sc">+</span></span>
+<span id="cb66-3"><a href="data-scraping.html#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">colour =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb66-4"><a href="data-scraping.html#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Female, <span class="at">colour =</span> <span class="st">&quot;Female&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb66-5"><a href="data-scraping.html#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb66-6"><a href="data-scraping.html#cb66-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Share of female students&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-89-1.png" width="576" /></p>
+<p>Now how are the components made up.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="data-scraping.html#cb67-1" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span> </span>
+<span id="cb67-2"><a href="data-scraping.html#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year)) <span class="sc">+</span></span>
+<span id="cb67-3"><a href="data-scraping.html#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">fill =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb67-4"><a href="data-scraping.html#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> German, <span class="at">fill =</span> <span class="st">&quot;German&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb67-5"><a href="data-scraping.html#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Foreign, <span class="at">fill =</span> <span class="st">&quot;Foreign&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb67-6"><a href="data-scraping.html#cb67-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb67-7"><a href="data-scraping.html#cb67-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Share of foreign students&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-90-1.png" width="576" /></p>
+</div>
+<div id="web-scraping" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Web scraping<a href="data-scraping.html#web-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To get more recent numbers, we rely on the webpage information. How can we access all semester data? Investigate the pattern of the URLs.</p>
+<p><small></p>
+<ul>
+<li><a href="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2013-Wintersemester/index.html" class="uri">https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2013-Wintersemester/index.html</a></li>
+<li><a href="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2014-Sommersemester/index.html" class="uri">https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2014-Sommersemester/index.html</a></li>
+<li><a href="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2014-Wintersemester/index.html" class="uri">https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2014-Wintersemester/index.html</a></li>
+<li><a href="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2015-Sommersemester/index.html" class="uri">https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2015-Sommersemester/index.html</a></li>
+<li><a href="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2015-wintersemester/index.html" class="uri">https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2015-wintersemester/index.html</a></li>
+</ul>
+<p></small></p>
+<p>Usually the pattern is <em>year</em> hypen <em>semester</em>. Some winter semesters are capitalized, some are not. We use the <code>rvest</code> package to web scrape static html content. It always starts with reading in the html data. Then pipe and use <code>html_table()</code> to extract tabular information (lucky us, there is only one table).</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="data-scraping.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb68-2"><a href="data-scraping.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_html</span>(<span class="st">&quot;https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2013-Wintersemester/index.html&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb68-3"><a href="data-scraping.html#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>() </span>
+<span id="cb68-4"><a href="data-scraping.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb68-5"><a href="data-scraping.html#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 7 × 2</span></span>
+<span id="cb68-6"><a href="data-scraping.html#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   X1                      X2</span></span>
+<span id="cb68-7"><a href="data-scraping.html#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                &lt;int&gt;</span></span>
+<span id="cb68-8"><a href="data-scraping.html#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Studierende gesamt    6645</span></span>
+<span id="cb68-9"><a href="data-scraping.html#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 weiblich              4206</span></span>
+<span id="cb68-10"><a href="data-scraping.html#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 männlich              2439</span></span>
+<span id="cb68-11"><a href="data-scraping.html#cb68-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Deutsche              5001</span></span>
+<span id="cb68-12"><a href="data-scraping.html#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 Ausländer/innen       1644</span></span>
+<span id="cb68-13"><a href="data-scraping.html#cb68-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 1. Fachsemester       1783</span></span>
+<span id="cb68-14"><a href="data-scraping.html#cb68-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 1. Hochschulsemester  1110</span></span></code></pre></div>
+<p>Now, we would like to do this for every subpage (semester) and combine the data in one table. Focus on the variable component in the URL and create a vector of all semesters.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="data-scraping.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the manual way</span></span>
+<span id="cb69-2"><a href="data-scraping.html#cb69-2" aria-hidden="true" tabindex="-1"></a>winters <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">2013</span>, <span class="at">to=</span><span class="dv">2021</span>)</span>
+<span id="cb69-3"><a href="data-scraping.html#cb69-3" aria-hidden="true" tabindex="-1"></a>summers <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">2014</span>, <span class="at">to=</span><span class="dv">2022</span>)</span>
+<span id="cb69-4"><a href="data-scraping.html#cb69-4" aria-hidden="true" tabindex="-1"></a>winters <span class="ot">&lt;-</span> <span class="fu">paste0</span>(winters, <span class="st">&quot;-wintersemester&quot;</span>)</span>
+<span id="cb69-5"><a href="data-scraping.html#cb69-5" aria-hidden="true" tabindex="-1"></a>summers <span class="ot">&lt;-</span> <span class="fu">paste0</span>(summers, <span class="st">&quot;-Sommersemester&quot;</span>)</span>
+<span id="cb69-6"><a href="data-scraping.html#cb69-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-7"><a href="data-scraping.html#cb69-7" aria-hidden="true" tabindex="-1"></a>all_terms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rbind</span>(winters, summers))</span>
+<span id="cb69-8"><a href="data-scraping.html#cb69-8" aria-hidden="true" tabindex="-1"></a>all_terms[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2013-Wintersemester&quot;</span></span>
+<span id="cb69-9"><a href="data-scraping.html#cb69-9" aria-hidden="true" tabindex="-1"></a>all_terms[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2014-Wintersemester&quot;</span></span>
+<span id="cb69-10"><a href="data-scraping.html#cb69-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-11"><a href="data-scraping.html#cb69-11" aria-hidden="true" tabindex="-1"></a><span class="co"># we can paste them together</span></span>
+<span id="cb69-12"><a href="data-scraping.html#cb69-12" aria-hidden="true" tabindex="-1"></a>all_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/&quot;</span>, all_terms, <span class="st">&quot;/index.html&quot;</span>)</span></code></pre></div>
+<p>Create a <code>for</code> loop to repeat the <code>rvest</code> procedure for each element in the URL list.</p>
+<div class="defbox">
+<p>A <strong>loop</strong> is a programming structure that repeats a sequence of instructions until a specific condition is met.</p>
+</div>
+<p>There are two more components. We initialize a <code>list</code> to store each iteration of the loop.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="data-scraping.html#cb70-1" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb70-2"><a href="data-scraping.html#cb70-2" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb70-3"><a href="data-scraping.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="data-scraping.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_url)){</span>
+<span id="cb70-5"><a href="data-scraping.html#cb70-5" aria-hidden="true" tabindex="-1"></a>  table <span class="ot">&lt;-</span> all_url[i] <span class="sc">%&gt;%</span> </span>
+<span id="cb70-6"><a href="data-scraping.html#cb70-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_html</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb70-7"><a href="data-scraping.html#cb70-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_table</span>()</span>
+<span id="cb70-8"><a href="data-scraping.html#cb70-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-9"><a href="data-scraping.html#cb70-9" aria-hidden="true" tabindex="-1"></a>  tables[index] <span class="ot">&lt;-</span> table</span>
+<span id="cb70-10"><a href="data-scraping.html#cb70-10" aria-hidden="true" tabindex="-1"></a>  index <span class="ot">&lt;-</span> index <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb70-11"><a href="data-scraping.html#cb70-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb70-12"><a href="data-scraping.html#cb70-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-13"><a href="data-scraping.html#cb70-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&quot;cbind&quot;</span>, tables)</span></code></pre></div>
+<p>More and more cleaning.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="data-scraping.html#cb71-1" aria-hidden="true" tabindex="-1"></a>df[,<span class="fu">c</span>(<span class="fu">seq</span>(<span class="at">from=</span><span class="dv">3</span>, <span class="at">to=</span><span class="dv">35</span> , <span class="at">by=</span><span class="dv">2</span>))] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb71-2"><a href="data-scraping.html#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Variable&quot;</span>, all_terms)</span>
+<span id="cb71-3"><a href="data-scraping.html#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-4"><a href="data-scraping.html#cb71-4" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022 <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(df))</span>
+<span id="cb71-5"><a href="data-scraping.html#cb71-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-6"><a href="data-scraping.html#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="co"># replace header names by first row</span></span>
+<span id="cb71-7"><a href="data-scraping.html#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(viadrina_2013_2022) <span class="ot">&lt;-</span> viadrina_2013_2022[<span class="dv">1</span>,]</span>
+<span id="cb71-8"><a href="data-scraping.html#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co"># drop first row</span></span>
+<span id="cb71-9"><a href="data-scraping.html#cb71-9" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022 <span class="ot">&lt;-</span> viadrina_2013_2022[<span class="sc">-</span><span class="dv">1</span>,] </span>
+<span id="cb71-10"><a href="data-scraping.html#cb71-10" aria-hidden="true" tabindex="-1"></a><span class="co"># all chr to numeric</span></span>
+<span id="cb71-11"><a href="data-scraping.html#cb71-11" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022 <span class="ot">&lt;-</span> viadrina_2013_2022 <span class="sc">%&gt;%</span> <span class="fu">mutate_if</span>(is.character,as.numeric)</span>
+<span id="cb71-12"><a href="data-scraping.html#cb71-12" aria-hidden="true" tabindex="-1"></a><span class="co"># round all numbers</span></span>
+<span id="cb71-13"><a href="data-scraping.html#cb71-13" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022 <span class="ot">&lt;-</span> viadrina_2013_2022 <span class="sc">%&gt;%</span> <span class="fu">mutate_if</span>(is.numeric, round)</span>
+<span id="cb71-14"><a href="data-scraping.html#cb71-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-15"><a href="data-scraping.html#cb71-15" aria-hidden="true" tabindex="-1"></a><span class="co"># multiply some rows by 1000</span></span>
+<span id="cb71-16"><a href="data-scraping.html#cb71-16" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022[<span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">17</span>),] <span class="ot">&lt;-</span> viadrina_2013_2022[<span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">17</span>),] <span class="sc">%&gt;%</span> </span>
+<span id="cb71-17"><a href="data-scraping.html#cb71-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="at">.funs =</span> <span class="fu">funs</span>(. <span class="sc">*</span> <span class="dv">1000</span>))</span>
+<span id="cb71-18"><a href="data-scraping.html#cb71-18" aria-hidden="true" tabindex="-1"></a><span class="co"># fix last column and divide by 1000</span></span>
+<span id="cb71-19"><a href="data-scraping.html#cb71-19" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022[<span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">17</span>),<span class="dv">7</span>] <span class="ot">&lt;-</span> viadrina_2013_2022[<span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">17</span>),<span class="dv">7</span>]<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb71-20"><a href="data-scraping.html#cb71-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create a semester variable</span></span>
+<span id="cb71-21"><a href="data-scraping.html#cb71-21" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">substr</span>(all_terms, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">stop =</span> <span class="dv">4</span>)</span>
+<span id="cb71-22"><a href="data-scraping.html#cb71-22" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022<span class="sc">$</span>term <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;winter&quot;</span>, <span class="st">&quot;summer&quot;</span>), <span class="dv">9</span>)</span>
+<span id="cb71-23"><a href="data-scraping.html#cb71-23" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022<span class="sc">$</span>semester <span class="ot">&lt;-</span> <span class="fu">paste0</span>(viadrina_2013_2022<span class="sc">$</span>year, <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;-02&quot;</span>, <span class="st">&quot;-01&quot;</span>), <span class="dv">9</span>))</span>
+<span id="cb71-24"><a href="data-scraping.html#cb71-24" aria-hidden="true" tabindex="-1"></a><span class="co"># row names</span></span>
+<span id="cb71-25"><a href="data-scraping.html#cb71-25" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(viadrina_2013_2022) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(viadrina_2013_2022) </span></code></pre></div>
+<p>Now we plot</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="data-scraping.html#cb72-1" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022 <span class="sc">%&gt;%</span> </span>
+<span id="cb72-2"><a href="data-scraping.html#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>semester)) <span class="sc">+</span></span>
+<span id="cb72-3"><a href="data-scraping.html#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Studierende gesamt</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb72-4"><a href="data-scraping.html#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">1. Fachsemester</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">&quot;First years&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb72-5"><a href="data-scraping.html#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">1. Hochschulsemester</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">&quot;First sem&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb72-6"><a href="data-scraping.html#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb72-7"><a href="data-scraping.html#cb72-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Share of female students&quot;</span>) <span class="sc">+</span></span>
+<span id="cb72-8"><a href="data-scraping.html#cb72-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-95-1.png" width="576" /></p>
+<p>Long term perspective</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="data-scraping.html#cb73-1" aria-hidden="true" tabindex="-1"></a>viadrina_2013_2022 <span class="sc">%&gt;%</span> </span>
+<span id="cb73-2"><a href="data-scraping.html#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>semester)) <span class="sc">+</span></span>
+<span id="cb73-3"><a href="data-scraping.html#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Studierende gesamt</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb73-4"><a href="data-scraping.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">1. Fachsemester</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">&quot;First years&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb73-5"><a href="data-scraping.html#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">1. Hochschulsemester</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">&quot;First sem&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb73-6"><a href="data-scraping.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb73-7"><a href="data-scraping.html#cb73-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Share of female students&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-8"><a href="data-scraping.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="data-scraping.html#cb74-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-2"><a href="data-scraping.html#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(viadrina_1992_2020, <span class="fu">c</span>(<span class="dv">2021</span>, viadrina_2013_2022<span class="sc">$</span><span class="st">`</span><span class="at">Studierende gesamt</span><span class="st">`</span>[<span class="dv">17</span>]</span>
+<span id="cb74-3"><a href="data-scraping.html#cb74-3" aria-hidden="true" tabindex="-1"></a>                            ))</span>
+<span id="cb74-4"><a href="data-scraping.html#cb74-4" aria-hidden="true" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span> </span>
+<span id="cb74-5"><a href="data-scraping.html#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year)) <span class="sc">+</span></span>
+<span id="cb74-6"><a href="data-scraping.html#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">fill =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb74-7"><a href="data-scraping.html#cb74-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Female, <span class="at">fill =</span> <span class="st">&quot;Female&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb74-8"><a href="data-scraping.html#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb74-9"><a href="data-scraping.html#cb74-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Share of female students&quot;</span>)</span></code></pre></div>
+
+<!-- --- -->
+<!-- title: Test -->
+<!-- author: Marco -->
+<!-- output: html_document -->
+<!-- --- -->
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="12">
+<li id="fn12"><p>Get the PDF <a href="https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf" class="uri">https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf</a><a href="data-scraping.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p>You may use other free services. Search for <em>Online converter PDF to csv/xlsx</em><a href="data-scraping.html#fnref13" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-marcokuehne-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="panel-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="relationships.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Becoming Fluent In Data.pdf", "Becoming Fluent In Data.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": false
+},
+"toc_depth": 1,
+"toc-title": "Table of Contents",
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
