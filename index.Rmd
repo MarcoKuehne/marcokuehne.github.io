@@ -2,7 +2,7 @@
 title: "Becoming Fluent in Data"
 subtitle: "A Personal Journey -- Every Time."
 description: "A guide to become fluent in data."
-cover-image: "images/warning.png"
+cover-image: "images/icons8-trading-64.png"
 author: "Marco Kühne"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -38,6 +38,7 @@ output:
       before_body: top_message.html
       after_body: disqus.html
       in_header: [hypothesis.html, google_analytics.html]
+always_allow_html: yes
 favicon: "images/icons8-trading-64.ico"
 css: "style.css"
 tags: [Data Analysis, Data Fluency, Textbook, Tutorial]
@@ -46,9 +47,11 @@ tags: [Data Analysis, Data Fluency, Textbook, Tutorial]
 <!-- Empirical Research (with R) -- Based On True Stories -->
 
 <!-- Global Code Chunk Options -->
-```{r, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  comment = "#>", echo = TRUE, eval = TRUE, fig.width = 6, warning = FALSE, message = FALSE, collapse = TRUE, tut=FALSE
+  comment = "#>", echo = TRUE, eval = TRUE, 
+  warning = FALSE, message = FALSE, 
+  collapse = TRUE, tut=FALSE, fig.width = 6
 )
 ```
 
@@ -56,7 +59,70 @@ knitr::opts_chunk$set(
 
 A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where R was introduced in my psychology undergraduate studies. -- The Times They Are A-Changin'. 
 
+```{r echo = FALSE}
+library('tippy')
+tippy("word.", tooltip = "Definition of word that pops up in a box upon hovering")
+```
+
+
+::: columns
+::: {.column width="30%" data-latex="{0.20\textwidth}"}
 ![Lecture Hall. Melanchthonianum. MLU University of Halle-Wittenberg](https://wiki.llz.uni-halle.de/images/thumb/b/bb/HS_XX_003.jpg/300px-HS_XX_003.jpg)
+:::
+
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+::: {.column width="65%" data-latex="{0.75\textwidth}"}
+```{r, echo=F}
+library(tidyverse)
+library(gganimate)
+library(ggthemes)
+
+# library(gapminder)
+# gapminder %>% 
+#   filter(continent %in% c("Africa", "Asia", "Europe")) %>% 
+#   ggplot(aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+#   geom_point(alpha = 0.7, show.legend = FALSE) +
+#   scale_colour_manual(values = country_colors) +
+#   scale_size(range = c(2, 10)) +
+#   #scale_x_log10() +
+#   scale_x_continuous(labels = scales::comma, limits = c(0, 45000)) +
+#   facet_wrap(~continent) +
+#   # Here comes the gganimate specific bits
+#   labs(title = "Life Expectancy and Income Across Time",
+#        subtitle = 'Year: {frame_time}', 
+#        x = 'GDP per capita', y = 'Life Expectancy') +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) + 
+#   transition_time(year) +
+#   ease_aes('linear')
+
+course <- readxl::read_xlsx("data/Course/CourseData.xlsx")
+
+course %>% 
+  ggplot(aes(x=Female, y = Grades)) + 
+  geom_point(aes(size = Participants), show.legend = "none") +
+  geom_text(aes(label = paste0(Participants, " students in ", Term)),
+           # position=position_dodge(width=0.2),
+            hjust=0.5, vjust = -0.9, colour="black") +
+  labs(title = "Average grade and female share over time.",
+       subtitle = "Number of students as circle size.", 
+         #'Year: {round(frame_time)}', 
+       x = 'Female Share', y = 'Average Grade') +
+  scale_x_continuous(limits = 0:1, labels = scales::percent) + 
+  scale_y_continuous(limits = c(1, 4)) + 
+  #theme_economist_white() +
+  theme_clean() +
+  transition_manual(Date) +
+  #transition_time(Date) +
+  ease_aes('linear') 
+``` 
+:::
+:::
+
 
 <!-- > Luminous beings are we, not this crude matter.</b> -->
 <!-- > -->
@@ -65,6 +131,7 @@ A dusty lecture hall. The light cut through the darkness from the left side of t
 <!-- ```{r, echo=FALSE, out.width="30%", fig.align="center", fig.cap="\\label{fig:figs}Scream and Shout"} -->
 <!-- knitr::include_graphics(path = "images/scream.jpg") -->
 <!-- ``` -->
+
 
 # (PART) Preface {-} 
 
@@ -86,13 +153,15 @@ By writing the gitbook I hope to force myself to pinpoint exactly what I know an
 
 > I could feel that econometrics was indispensable, and yet I was missing something. But what? It was a theory of causality […]. <b>So, desperate, I did what I always do when I want to learn something new — I developed a course on causality to force myself to learn all the things I didn’t know.</b>
 >
-> `r tufte::quote_footer('Scott Cunningham. In: Causal Inference – The Mixtape')`
+> `r tufte::quote_footer('@cunningham2021causal')`
 
 This project helped me to learn more about R, RStudio, R Markdown, R Bookdown, HTML/CSS, Git and Github, empirical research, causal inference, statistics, math, frustration tolerance and fun.
 
 <!-- I had the need to learn more about empirical analysis and causal inference. Thus I started a series of seminars covering a mixture of data science, econometrics, statistics and reporting.  -->
 
 <!-- <https://lindeloev.github.io/tests-as-linear/> -->
+
+![Teaching in 2014.](images/teaching.jpg)
 
 # Aim of this books {-}
 
@@ -116,6 +185,57 @@ In addition and independent of specific career, I would like to foster people's 
 
 I would like to enable and empower all people to understand the data work of others. Don't take numbers for granted. It's a long journey to get them. Don't be satisfied with a summary or conclusion from someone else. It's worthwhile checking data sources and data work. Either to replicate and validate the data work of others or to form your own opinion.
 
+Not to mention, coding is fun. 
+
+<!-- https://nebula.tv/what-is-code -->
+You might be under the impression, to code, your favorite thing must be computers. Or I've heard *I'm bad a math, I can't code*. None of this is true. Think about it, what is your passion.
+
+Learn to code, is something that you can do. And something that may just expand the way you approach and think about the passions in your life. Be their personal or professional. 
+
+<!-- Find your motivation -->
+
+<!-- - Dance -->
+<!-- - Music -->
+<!-- - Gardening -->
+<!-- - .... -->
+
+<!-- https://www.dataquest.io/blog/learn-r-for-data-science/ -->
+<!-- pak::pkg_install("romainfrancois/dance") -->
+<!-- https://cran.r-project.org/web/packages/music/index.html -->
+
+:::::: {.columns}
+
+::: {.column width="70%" data-latex="{0.70\textwidth}"}
+```{r, animation.hook="gifski", echo=F, fig.align='center'}
+library("wordcloud")
+library("RColorBrewer")
+library("SnowballC")
+
+GF <- read.csv("data/Course/GF_2020.csv", stringsAsFactors = FALSE)
+txt <- GF %>% select(starts_with("Expectations"))
+write.table(txt, file = "data/Course/gf.txt", row.names = F, sep = " ")
+source('http://www.sthda.com/upload/rquery_wordcloud.r')
+filePath <- "data/Course/gf.txt"
+
+for (i in c(6,4,2)) {
+  res<-rquery.wordcloud(filePath, type ="file", lang = "english",
+                      min.freq = i, max.words = 150, colorPalette = "Paired")
+}
+```
+:::
+
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+::: {.column width="25%" data-latex="{0.25\textwidth}"}
+<br> <br>
+A wordcloud of 25 students answers (2020) on the question: *What do you expect to learn in this seminar?* <br> The animation is created by the `gifski` package. 
+:::
+::::::
+
 # Structure of this books {-}
 
 ## Content {-}
@@ -132,7 +252,7 @@ The workhorse procedure is regression, a statistical technique that relates a ou
 
 Colored paragraphs give you a visual overview of things to watch out:
 
-::: {.defbox}
+::: {.titeldefbox}
 A **definition** is a statement of the meaning of a term.
 :::
 
@@ -183,7 +303,7 @@ Welcome! My name is **Marco Kühne**. The very first thing I want to do is to in
 
 I am a PhD candidate in Economics at the European University Viadrina (<https://www.wiwi.europa-uni.de/>). I am generally keen on teaching topics related to research design, quantitative methods, and statistical software. My main methodological interests in quantitative social science include panel data modelling, causal inference with observational data and R programming.
 
-I am also a gardening fanatic, a coffee enthusiast, an engaged ballroom dancer, a (vegetarian) food lover. I enjoy cutting down big trees and practicing new languages in its own sake. Feel free to contact me!
+I am also a gardening fanatic, a coffee enthusiast, a committed ballroom and Discofox dancer, a (vegetarian) food lover. I enjoy cutting down big trees and practicing new languages in its own sake. Feel free to contact me!
 
 
 <!-- ```{r, echo=FALSE, out.width="60%", fig.align="center", fig.cap="\\label{fig:figs}plotting example"} -->
