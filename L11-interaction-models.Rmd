@@ -1,0 +1,322 @@
+## Motivation
+
+<!-- https://www.researchgate.net/post/Is_there_any_different_between_control_variable_and_moderating_variable2 -->
+<!-- In many contexts, the effect of one variable on another might be allowed to vary. For example, the relationship between income and mortality is nonlinear, so the effect of an additional dollar of income on mortality is different for someone earning \$20,000/year than for someone earning $100,000/year. Or maybe the relationship between income and mortality differs depending on how many years of education you have. A marginal effects plot displays the effect of X on Y for different values of Z (or X).  -->
+<!-- The plot will often include confidence intervals as well. The same code will often work if there's not an explicit interaction, but you are, for example, estimating a logit model where the effect of one variable changes with the values of the others. -->
+<!-- - Interactions often have poor statistical power, and you will generally need a lot of observations to tell if the effect of X on Y is different for two given different values of Z. -->
+<!-- - Make sure your graph has clearly labeled axes, so readers can tell whether your y-axis is the predicted value of Y or the marginal effect of X on Y. -->
+<!-- https://www.spss-tutorials.com/spss-regression-with-moderation-interaction-effect/ -->
+
+A sports doctor routinely measures the muscle percentages of his clients. He also asks them how many hours per week they typically spend on training. Our doctor suspects that clients who train more are also more muscled. Furthermore, he thinks that the effect of training on muscularity declines with age. In multiple regression analysis, this is known as a **moderation or interaction effect**. The figure below illustrates it.
+
+<center>
+
+![](moderation-interaction-in-regression-diagram.png)
+
+</center>
+
+::: {.infobox2 .information data-latex="warning"}
+Imagine a `r round(as.numeric(difftime(Sys.Date(), as.Date("1988-08-18"), unit="weeks")/52.25),0)` year old student and a `r round(as.numeric(difftime(Sys.Date(), as.Date("1973-10-18"), unit="weeks")/52.25),0)` year old professor who work out at McFit (Lenne Passage). They exercise exactly the same amount of time per week (3 day split), the same exercises (McFit usually provides multiple identical machines next to each other), the same time of the day, they take the nutritional supplements, etc. etc. everything else is constant. Do you think they will experience different results in terms of muscle gains?
+:::
+
+In mathematical terms the interaction is a multiplication:
+
+$$ muscle = training + age + training*age  $$
+
+## Load and Merge
+
+We analyze the details of the weight-height relationship.
+
+```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+library(haven)
+
+pequiv <- read_dta("C:/Users/Marco2020/Desktop/test/pequiv.dta", col_select = c("pid", "syear", "d11101", "d11102ll", "l11102", "d11104")) 
+health <- read_dta("C:/Users/Marco2020/Desktop/test/health.dta", col_select = c("pid", "syear", "height", "weight"))
+
+master <- merge(pequiv, health, by = c("pid", "syear"))
+```
+
+```{r, eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+#setwd("C:/Users/Marco/Dropbox/Viadrina/2022 SS/Seminar in Applied Economics/R10 Interaction Models")
+#library(haven)
+#master <- read_dta("master.dta")
+# region l11102, marital d11104, d11101 age, d11102ll gender
+```
+
+## Data Manipulation
+
+Drop Stata labels, rename the variables, and create factor variables.
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE}
+library(sjlabelled)
+soep <- remove_all_labels(master)
+
+library(tidyverse)
+soep <- soep %>%
+  rename(region = l11102,
+         marital = d11104,
+         age = d11101,
+         gender = d11102ll) %>%
+  filter(height > 0, weight > 0, marital > 0) %>%
+  mutate(marital = factor(marital, levels = c(1, 2, 3, 4, 5)), 
+         region = factor(region, levels = c(1, 2)),
+         gender = factor(gender, levels = c(1, 2)))
+
+levels(soep$marital) = c("married", "single", "widowed", "divorced", "separated") 
+levels(soep$region) = c("west", "east")
+levels(soep$gender) = c("male", "female")
+```
+
+<!-- Real data -->
+```{r, eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+# write_dta(soep, "soep.dta")
+```
+
+Inspect the data (check for missings and outliers):
+
+```{r warning=FALSE, message=FALSE}
+library(gtsummary)
+tbl_summary(soep[-c(1,2)])
+```
+
+## Simple linear model
+
+You learned that simple regression is almost identical to correlation between two variables.
+
+```{r}
+simple <- lm(weight ~ height, data=soep)
+simple
+```
+
+## Multiple regression with control
+
+### Regression model
+
+Here comes multiple regression. We have seen this before:
+
+```{r}
+multiple <- lm(weight ~ height + gender, data=soep)
+multiple
+```
+
+### Visualization (parallel slopes)
+
+We have seen parallel slopes before:
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
+library(ggplot2)
+library(moderndive)
+ggplot(soep, aes(x=height, y=weight, color=gender)) +
+  geom_point() +
+  geom_parallel_slopes(se=FALSE, size=2) +
+  labs(title="Scatter plot of weight by height with parallel slopes",
+       caption ="SOEP Teaching Sample of 2016") +
+  theme(legend.position = "none")
+```
+
+::: {.infobox2 .information data-latex="warning"}
+Conclusion: The **fundamental truth** is that the effect of body height on body weight is identical across gender (i.e. for males and females). Males and female are equipped (by nature) with a different starting body weight on average.
+:::
+
+## Multiple regression with moderator
+
+### Interaction (dummy \* dummy)
+<!-- https://www.theanalysisfactor.com/interaction-dummy-variables-in-linear-regression/ -->
+<!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
+<!-- Categorical by categorical interactions: All the tools described here require at least one variable to be continuous. A separate vignette describes cat_plot, which handles the plotting of interactions in which all the focal predictors are categorical variables. -->
+
+```{r}
+interact0a <- lm(weight ~ region*gender, data=soep)
+summary(interact0a)
+```
+
+First glimpse at the `margins` package. 
+
+```{r}
+library(margins)
+#margins(interact0a)
+summary(margins(interact0a, at = list(region = c("west", "east"))))
+```
+
+Interaction plot from the `interactions` package. 
+
+```{r}
+# Dedicated package makes everything easier.
+library(interactions)
+cat_plot(interact0a, pred = gender, modx = region)
+```
+
+### Interaction (categorical \* dummy)
+
+```{r}
+interact0b <- lm(weight ~ marital*gender, data=soep)
+interact0b
+```
+
+### Interaction (continuous \* dummy)
+<!-- https://r4ds.had.co.nz/model-basics.html#interactions-continuous-and-categorical -->
+<!-- https://moderndive.com/6-multiple-regression.html#model4interactiontable -->
+
+Note that R automatically adds main effects if you use multiplication operator:
+
+Thus $$ height * female $$
+
+translates to
+
+$$ height + female + height*female $$
+
+```{r}
+interact1 <- lm(weight ~ height*gender, data=soep)
+interact1
+```
+
+### Visualization (non-parallel slopes)
+<!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
+
+```{r warning=FALSE}
+library(interactions)
+interact_plot(interact1, pred = height, modx = gender,
+              main.title = "Each group has a different slope.")
+```
+
+::: {.infobox2 .information data-latex="warning"}
+Conclusion: The **fundamental truth** is that the effect of body height on body weight is similar but not identical between males and females. A boy and and girl of exact same body height who experience growth by 1cm are expected to end up with different weight gains. There is **effect heterogeneity**.
+:::
+
+<!-- Now it is no longer a parallel slopes model. A different slope is equivalent to a different effect of height on weight for the two genders.  -->
+
+### Interaction (continuous \* continuous)
+<!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
+<!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
+
+```{r}
+interact2 <- lm(weight ~ height*age, data=soep)
+interact2
+```
+
+The interaction of two continuous variables is harder to interpret. We cannot set the moderator (age) equal to zero, since there is no person with an age of zero (in SOEP).
+
+### Visualization (non-parallel slopes)
+
+There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.
+
+```{r}
+interact_plot(interact2, pred = height, modx = age)
+```
+
+This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.
+
+You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.
+
+::: {.infobox2 .information data-latex="warning"}
+Conclusion: The **fundamental truth** is that the effect of body height on body weight is identical across age. In the regression output age has non-significant coefficients. The interaction plot is suggesting that there is no effect heterogeneity with respect to age (multiple parallel slopes).
+:::
+
+## Marginal Effects
+
+Now we better understand that the effect of our main explanatory variable might be increased or decreased by another variable. Still, a question is open to answer: What exactly is the effect of our main explanatory variable in the interaction model?
+
+::: {.infobox2 .information data-latex="warning"}
+In OLS framework **regression coefficients** have direct interpretation as **unconditional marginal effects**: predicted change in y due to a unit change in x. Interactions or higher-order terms (e.g. age square) make interpretation difficult or impossible. For interpretation of the effect and the statistical significance, we have to investigate all interacted variables at the same time. Marginal effects are **partial derivatives** of the regression equation with respect to a variable from the model.
+:::
+
+$$
+\begin{align}
+weight &= \beta_0 + \beta_1 \cdot height \tag{simple regression} \\
+\frac{\partial weight}{\partial height} &= \beta_1 \tag{unconditional effect}  \\
+weight &= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \cdot height \cdot female \tag{moderated regression} \\
+\frac{\partial weight}{\partial height} &= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
+\end{align}
+$$
+
+```{r warning=FALSE, message=FALSE}
+library(stargazer)
+stargazer(simple, interact1, type="text")
+```
+
+For the simple regression, the coefficient is identical (unconditional).
+
+```{r warning=FALSE, message=FALSE}
+library(margins)
+margins(simple)
+```
+
+### Marginal effects at representatives (TASK)
+
+We can use representative values which we literally plug in the equation. These are the effects for each group (what we have seen before in the interaction plot):
+
+$$
+\begin{align}
+weight &= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \cdot height \cdot female \tag{interact1} \\
+\frac{\partial weight}{\partial height} &= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
+\end{align}
+$$ 
+
+<!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 1 = 0.845 \tag{effect for males}  \\ -->
+<!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 2 = 0.621 \tag{effect for females}  \\ -->
+
+Here is the R code:
+
+```{r warning=FALSE, message=FALSE}
+margins(interact1, at = list(gender = c("male", "female")))
+```
+
+Please calculate the MER of height in `interact1` for the two gender programmtic in R. 
+
+### Marginal effects at the mean (TASK)
+
+Plugging in values is not always as easy as it seems to be. What should we use for age? Values as 0, 1 or 2 does not makes sense for age. Okay, we could use some representative age, e.g. 30 and 40. But what is our theoretical justification to report the effect for age 30 and not age 31? Another strategy is to use mean values of the variables.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+mean_age <- mean(soep$age)
+#mean_age
+```
+
+<!-- \frac{\partial weight}{\partial height} &= 0.9318 + 0.0009254 \cdot 48.57654 = 0.97675 \tag{ME at means}  \\ -->
+
+$$
+\begin{align}
+weight &= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot age + \beta_3 \cdot height \cdot age \tag{interact2} \\
+\frac{\partial weight}{\partial height} &= \beta_1 + \beta_3 \cdot age \tag{conditional effect}  \\
+\end{align}
+$$ 
+
+```{r warning=FALSE, message=FALSE}
+library("stargazer")
+stargazer(simple, interact2, type="text")
+```
+
+Here is the R code with margins:
+
+```{r warning=FALSE, message=FALSE}
+interact2 <- lm(weight ~ height*age, data=soep)
+interact2
+
+#summary(margins(interact2))
+margins(interact2, at = list(age = mean_age))
+```
+
+Please calculate the MEM of height in `interact2` programmtic in R. 
+
+### Average marginal effects
+
+The default *margins* commands shows you something else than MER and MEM, namely **average marginal effects**. AMEs calculate marginal effects at every observed value of X and average across the resulting effect estimates. AMEs are particularly useful because -- unlike MEMs -- produce a single quantity summary that reflects the full distribution of X rather than an arbitrary prediction.
+
+```{r warning=FALSE, message=FALSE}
+margins(interact1)
+```
+
+A summary provides you with information that cannot easily be calculated by hand, e.g. standard error, p-value, confidence interval:
+
+```{r warning=FALSE, message=FALSE}
+summary(margins(interact1))
+```
+
+
+<!-- ## Personal Project (6 pt) -->
+
+<!-- Please think about a reasonable 2x2 interaction for your topic (continuous and dummy or continuous). Please build the model and store it as `my_interaction`. Please visualize the interaction in a plot. Are there heterogeneous effects? Do they behave as expected?  -->
+
+
+
+

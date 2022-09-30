@@ -1,0 +1,421 @@
+# Panel Data
+
+**Learning Goals**
+
+...
+
+<!-- ::: {.defox} -->
+<!-- -   Conceptual Skills:  -->
+<!--       + Understand panel data. Panel attrition.  -->
+<!--       + Distinguish between and within variation.  -->
+<!--       + Compare the paired and unpaired t-Test to panel data.  -->
+<!-- -   Data Skills: -->
+<!--       +   How `set.seed()` defeats randomness.   -->
+<!--       +   Find and use *functions* from other people.  -->
+<!--       +   Tidyverse e.g. `group_by()`, `sample_n()`, `summarize()`, `count()`, `arrange()`. -->
+<!--       +   Data Visualization: Panel plots (time series per group). -->
+<!-- ::: -->
+
+---
+
+```{r message=FALSE, warning=FALSE, echo=F, eval=T}
+library(tidyverse)
+
+crosssection <- data.frame(id = c(1:6),
+                           year = rep(2016,6),
+                           income = c(20,15,35,10,76,23))
+repeatedcross <- data.frame(id = c(1:6),
+                           year = c(rep(2015,3),rep(2016,3)),
+                           income = c(20,15,35,10,76,23))
+paneldata <- data.frame(id = c(rep(1,3), rep(2,3)),
+                           year = rep(c(2014:2016),2),
+                           income = c(20,15,35,10,76,23))
+```
+
+```{r message=FALSE, warning=FALSE, echo=F, eval=F}
+library(gt)
+library(webshot2)
+
+crosssection %>%
+  gt() %>%
+  tab_header(
+    title = "Cross-Section", 
+    subtitle = "One time measurement."
+  ) %>% 
+  data_color(
+    columns = year,
+    colors = "azure3") %>% gtsave("p11.png", path = "Data/")
+
+repeatedcross %>%
+  gt() %>%
+  tab_header(
+    title = "Repeated Cross-Section",
+    subtitle = html("Different people, <br> different years.")) %>% 
+  data_color(
+    columns = year,
+      colors = scales::col_numeric(
+      palette = c("azure3", "coral"),
+      domain = c(2015,2016))) %>%
+  gtsave("p12.png", path = "Data/")
+
+paneldata %>%
+  gt() %>%
+  tab_header(
+    title = "Paneldata",
+    subtitle = html("Repeated observations <br> of the same individuals.")) %>%
+  data_color(
+    columns = id,
+      colors = scales::col_numeric(
+      palette = c("azure3", "coral"),
+      domain = c(1,2))) %>% 
+  data_color(
+    columns = year,
+      colors = scales::col_numeric(
+      palette = c("azure3", "coral"),
+      domain = c(2014:2016))) %>% 
+  gtsave("p13.png", path = "Data/")
+```
+
+Panel data are observations for the same subjects over time. Subjects can be people, households, firms or countries. Panel data are a subset of longitudinal data. Key components are the panel identifier: person (id) and time (year). Every row is a person-year combination (so called *long format*).
+
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- Compare these types of data: -->
+
+<!-- -   *Cross-section*: One time measurement. -->
+<!-- -   *Repeated cross-section*: Different people. -->
+<!-- -   *Panel*: Repeated observations of the same individuals. -->
+<!-- ::: -->
+
+```{r message=FALSE, warning=FALSE, echo=F}
+library(cowplot)
+library(magick)
+p111 <- ggdraw() + draw_image("Data/p11.png", scale = 0.7)
+p112 <- ggdraw() + draw_image("Data/p12.png", scale = 0.9)
+p113 <- ggdraw() + draw_image("Data/p13.png", scale = 0.67)
+plot_grid(p111, p112, p113, nrow = 1)
+```
+
+<!-- ```{r, echo=FALSE, out.width="70%", fig.cap="\\label{fig:wb}Table 1: Types of Data.", fig.align='center'} -->
+<!-- knitr::include_graphics("images/paneldata.png") -->
+<!-- ``` -->
+
+With panel data we know the time-ordering of events. Panel data allow to identify causal effects under weaker assumptions (compared to cross-sectional data). Especially, panel data allows for certain statistical analyses, e.g. [fixed effects regression][Fixed effects].  Different types of data can answer different types of questions:
+
+-   Levels: How many people are poor in 2016 in Germany?
+-   Trends: Has poverty increased or decreased?
+-   Change: How many people went in and out of poverty?
+
+Famous household panel data studies include:
+
+- United States: Panel Study of Income Dynamics (PSID) since 1968 
+- Germany: Socio-Economic Panel (SOEP) since 1984
+- United Kingdom: British Household Panel Survey (BHPS) since 1991
+- Australia: Household, Income and Labour Dynamics in Australia Survey (HILDA) since 2001
+
+These scientific datasets can often be analyzed for research and student theses free of charge.  
+
+## Unemployment 
+
+Unemployment occurs when someone is willing and able to work but does not have a paid job. Unemployment is measured by the unemployment rate. The unemployment rate is the most commonly used indicator for understanding conditions in the labour market.
+
+> The personal and social costs of unemployment include severe financial hardship and poverty, debt, homelessness and housing stress, family tensions and breakdown, boredom, alienation, shame and stigma, increased social isolation, crime, erosion of confidence and self-esteem, the atrophying of work skills and ill-health.</b>
+>
+> `r tufte::quote_footer('@mcclelland1998social')`
+
+### On decline in Germany
+
+```{r message=FALSE, warning=FALSE, echo=F, fig.align='center', fig.cap='Unemployment rate in Germany'}
+unemploy <- readxl::read_xlsx("Data/Germany_Unemployment_2005_2022.xlsx")
+unemploy %>% 
+  mutate(Unemployment_pct = Unemployment,
+         Unemployment = Unemployment/100) %>% 
+  ggplot(aes(x=Year, y=Unemployment)) + 
+  geom_bar(stat="identity", width=0.6, fill = "#2876DD") +
+  geom_text(aes(label=paste0(Unemployment_pct, "%")), vjust=-1, size = 3) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 0.1),
+                     limits = c(0,0.15), breaks = seq(0,0.15,0.025)) + # Add percent sign 
+  labs(title="Annual average unemployment rate in Germany from 2005 to 2022",
+       subtitle = "Source: Bundesagentur für Arbeit", x="", y="Unemployment Rate") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) +
+  theme_minimal()
+```
+::: {.reading}
+**How low can the unemployment rate be?** 
+
+*"Here are two things most economists can agree upon: They want an economy where everyone who seeks a job can get one. Yet for the economy to be dynamic, some people will always be unemployed, at least temporarily as they move between jobs."*
+
+[How Low Can Unemployment Really Go? Economists Have No Idea](https://www.nytimes.com/2018/02/28/upshot/how-low-can-unemployment-really-go-economists-have-no-idea.html)
+:::
+
+<details>
+<summary>
+*Life after collage.*
+</summary>
+![](images/lifeaftercollege.png "Life After Collage"){width=350px}
+</details>
+
+<!-- The unemployment rate in Germany is about 5 \% over the last few years (Source: [Annual average unemployment rate in Germany from 2005 to 2022 ](https://www.statista.com/statistics/227005/unemployment-rate-in-germany/)). How bad is 5 \%? -->
+
+
+<!-- ::: {.defbox} -->
+<!-- Imagine a college graduate from Viadrina Frankfurt (Oder) enters the job market. It takes about 3 month to search for jobs, send applications and do the job interviews. Finally she finds a perfect match. After some years the college graduate falls in love with someone who lives in Buxtehude, so the graduate moves to this place, again looking for a job at a new employer.  -->
+
+<!-- Imagine, after some years the collage graduate falls in love with someone who lives in another city, so the student moves to this city for personal reasons, again looking for a new job. Do you think that is a cause for concern?  --> 
+
+<!-- Imagine another college graduate. He sends 5 applications for various jobs per week. He has several mini jobs to keep afloat. The student realizes that he did not acquire the skills that are expected on the job market. After 2 years, he finally finds a suitable position. -->
+
+<!-- Do you think that is a cause for concern? -->
+<!-- ::: -->
+
+<br>
+
+Panel data allows to analyze the level of unemployment in Germany as well as the changes and trajectories of individuals. We can separate a *frictional unemployment* component and a *permanent unemployment* share. Frictional unemployment is a form of unemployment reflecting the gap between someone voluntarily leaving a job and finding another. As such, it is sometimes called search unemployment. Is search unemployment acceptable? Is it different from long-term unemployment? What do you think. 
+
+### Measurement 
+
+The **unemployment rate** represents the proportion of the **civilian labour force** that is unemployed. Consequently, measuring the unemployment rate requires identifying who is in the labour force. The labour force consists of all employed and unemployed persons of working age. What exactly is defined as employment? Employment status can be defined via a threshold of working hours or income. Who is in the working age?
+
+::: {.reading}
+In Australia, the Australian Bureau of Statistics (ABS) conducts a survey each month – called the Labour Force Survey – in which it asks around 50,000 people. As part of this survey, the ABS groups people aged 15 years and over (the working-age population) into three broad categories: 
+
+- **Employed** – includes people who are in a paid job for one hour or more in a week.
+- **Unemployed** – people who are not in a paid job, but who are actively looking for work.
+- **Not in the labour force** – people not in a paid job, and who are not looking for work.
+
+<!-- This can include people who are studying, caring for children or family members on a voluntary basis, retired, or who are permanently unable to work. -->
+
+Read More: [Unemployment: Its Measurement and Types](https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html){target="_blank"}
+
+<!-- <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a> -->
+:::
+
+
+## Application
+
+### Data Inspection
+
+SOEP practice data (2015 - 2019) comes labeled and ready for analysis. SOEP provides a digital object identifier (DOI) for this data: <https://doi.org/10.5684/soep.practice.v36>.^[Why are DOIs important? A DOI is a unique identifier for a digital document. DOIs are important in academic citation because they are more permanent than URLs, ensuring that your reader can reliably locate the source. Read More: [What is a DOI? | Finding and Using Digital Object Identifiers](https://www.scribbr.com/citing-sources/what-is-a-doi/){target="_blank"}]
+
+```{r warning=FALSE, message=FALSE}
+library(haven)
+soep <- read_dta("https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true")
+```
+
+<!-- Column names are German, but attribute labels are English.  -->
+
+```{r warning=FALSE, message=FALSE, echo=F, eval=F}
+library(DT)
+datatable(soep, width = "50%")
+```
+
+This more comprehensive practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains `r ncol(soep)` variables and `r nrow(soep)` observations. 
+```{r message=FALSE, warning=FALSE, echo=F, eval=T}
+library(modelsummary)
+library(kableExtra)
+library(sjlabelled)
+
+remove_all_labels(soep) %>% 
+  select(2:15) %>% 
+  datasummary_skim() |>
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+
+<!-- out.width="50%" -->
+<!-- R.options = list(width = 250) -->
+
+Column names are German, but attribute labels are in English. `einkommenj1` contains *Gross Income from Main Job/Year*.
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+attributes(soep$einkommenj1)$label
+```
+
+The documentation (click the DOI <https://doi.org/10.5684/soep.practice.v36>) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (remember: panel data). Pipe `soep` into `count()` of personal `id`. This tibble output already contains the number of rows. To literally access the value, ask `nrow()`.
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+# soep %>% count(id) # try this as well
+soep %>% count(id) %>% nrow()
+```
+
+Adding `arrange()` means sorting the data by a variable (i.e. the temporarily created variable `n`) either ascending or descending (from high to low). Ascending is the default. For descending order apply the `desc()` command. `group_by()` is a powerful command, especially when working with panel data. It can do any form of data manipulation or analysis with respect to the chosen variable. At this stage it's a mere alternative `count()`.
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE}
+# soep %>% group_by(id) %>% count() %>% arrange(n) # try this alternative 
+soep %>% count(id) %>% arrange(n) 
+soep %>% count(id) %>% arrange(desc(n)) 
+```
+
+<details>
+<summary>
+*See result.*
+</summary>
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE}
+soep %>% count(id) %>% arrange(n)
+```
+</details>
+
+Remember that the observation period is between `r min(soep$syear)` and `r max(soep$syear)`, i.e. the minimum number of observations per individual is 1 year, the maximum is 5 years. Over the years, observations get less and less.
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE}
+table(soep$syear)
+```
+
+::: {.defbox}
+**Attrition** is the process of dropout from a panel study. 
+:::
+
+How many people are observed in all years? Filter for a specific `n` and ask for the number of rows or observations (alternatively you can check the tibble size again).
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+soep %>% group_by(id) %>% count() %>% filter(n == 5) %>% nrow()
+```
+
+`erwerb` is the employment status in SOEP. Its labels range from -7 to 6. Use the `attributes()` command on a specific variable. It returns a set of information (object class is `list`). We can access elements of this list by the `$` operator. Did you notice the small mistake in the labels? (Remember this is practice data.)
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=F}
+attributes(soep$erwerb)$labels
+```
+
+<details>
+<summary>
+*See result.*
+</summary>
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE}
+attributes(soep$erwerb)$labels
+```
+
+Note that the output further tells you `# A tibble: 3,550 x 2`, i.e. there are 3550 ID-groups (or units or people).
+</details>
+
+Negative values indicate several different forms of missing data in SOEP.^[Read more on the SOEPcompanion [Missing Conventions](http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html){target="_blank"}] Actually, there are no negative values in this dataset. As for levels of a factor variables, labels can be empty.  
+
+```{r}
+table(soep$erwerb)
+```
+
+### Data Preparation 
+
+<!-- We drop small categories with the `filter()` command. Apply the `%in%` operator to search for values in a vector. Overwrite the existing data.  -->
+
+<!-- ```{r} -->
+<!-- soep <- soep %>%  -->
+<!--   filter(erwerb %in% c(1, 2, 4, 5)) -->
+<!-- ``` -->
+
+We summarize categories with a combination of `mutate()` and `case_when()`. For each value in `erwerb` conduct a logical comparison via `==` and assign a new value. In this case it combines *Employed part-time* with *Irregular employment or in marginal*.
+
+```{r}
+soep <- soep %>% 
+  mutate(erwerb = case_when(erwerb == 1 ~ "fulltime",
+                            erwerb == 2 ~ "partime",
+                            erwerb == 3 ~ "partime", 
+                            erwerb == 4 ~ "partime",
+                            erwerb == 5 ~ "unemployed",
+                            erwerb == 6 ~ "partime",
+                            TRUE ~ "NA"))
+```
+
+The unemployment rate represents the proportion of the civilian labour force that is unemployed. The labour force consists of all employed and unemployed persons of working age. Filter for working age between 18 and 67 years. There are `r table(soep$alter<18)[2]` observations younger than 18 and `r table(soep$alter>67)[2]` older than 67.
+
+```{r}
+soep <- soep %>% 
+  filter(alter %in% c(18:67))
+```
+
+The moment of glory has come for `group_by()`. It accepts multiple inputs. The following combination returns for each year and each employment status the number of observations with help of `summarise()` and `n()`. 
+
+```{r, echo=T, eval=F}
+soep %>% 
+  group_by(syear, erwerb) %>%
+  summarise(n = n())
+```
+
+<details>
+<summary>
+*See result.*
+</summary>
+```{r, echo=F, eval=T}
+soep %>% 
+  group_by(syear, erwerb) %>%
+  summarise(n = n())
+```
+</details>
+
+From this table, the unemployment rate for 2015 can be calculated manually:
+
+$$\frac{1268}{2013+1100} = 0.4073241 = 40.7 \%$$
+ 
+Having done this, step back to focus on years again and use different n-values per year to figure out the unemployment. Relate `unemployed` to those working either `fulltime` or `partime`. 
+
+```{r, echo=T, eval=F}
+soep %>% 
+  group_by(syear, erwerb) %>%
+  summarise(n = n()) %>% 
+  group_by(syear) %>% 
+  mutate(unemployment_rate = n[3]/(n[1]+n[2]))
+```
+
+<details>
+<summary>
+*See result.*
+</summary>
+```{r, echo=F, eval=T}
+soep %>% 
+  group_by(syear, erwerb) %>%
+  summarise(n = n()) %>% 
+  group_by(syear) %>% 
+  mutate(unemployment_rate = n[3]/(n[1]+n[2]))
+```
+</details>
+
+::: {.defbox}
+**Tidy data** principles are: 
+
+- Every column is a variable.
+- Every row is an observation.
+- Every cell is a single value.
+:::
+
+The unemployment rate in this data is unreasonably high.
+
+### Data Visualization
+
+#### Unemployment status 
+
+Pick up the calculation of the unemployment rate and pipe it into a `ggplot()` call. Define the axes elements within `aes()` (for aesthetics) and ask for points that are connected by a line. 
+
+```{r, fig.align='center'}
+soep %>% 
+  group_by(syear, erwerb) %>%
+  summarise(n = n()) %>% 
+  group_by(syear) %>% 
+  mutate(unemployment_rate = n[3]/(n[1]+n[2])) %>% 
+  ggplot(aes(x = syear, y = unemployment_rate)) + geom_point() + geom_line() +
+  labs(x="Year", y="Unemployment Rate", 
+       title = "Unemployment Rate in Germany between 2015 and 2019",
+       subtitle = "SOEP practice data")
+```
+
+#### Obs per individual
+
+Pick up the number of observations per individual and pipe it in a barplot with `geom_bar()`.
+
+```{r fig.align='center'}
+soep %>% 
+  group_by(id) %>% 
+  count() %>% 
+  ggplot(aes(x = n)) + geom_bar() +
+  labs(title = "Number of observations per individual") +
+  theme_classic()
+```
+
+
+
+
+
+
+
+
+
+
+
+

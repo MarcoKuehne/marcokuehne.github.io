@@ -1,0 +1,245 @@
+# Fixed effects
+
+## Cross-sectional Data (2 pt)
+
+Suppose you want to learn the **effect of price on the demand** for back massages. Read in the following data from four Midwest locations (call it `crosssection`) and print the table with the `gt` package. 
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE, fig.align='center'}
+# Crosssection
+crosssection <- data.frame(Location = c("Chicago", "Peoria", "Milwaukee", "Madison"),
+                           Year = rep(2003, 4), 
+                           Price = c(75, 50, 60, 55),
+                           Quantity = c(2.0, 1.0, 1.5, 0.8))
+
+library(ggplot2)
+library(gt)
+table_1 <-
+  gt(data = crosssection) %>%
+  tab_header(title = "Table 1: Cross-sectional Data") %>%
+  cols_label(
+    Location = md("**Location**"),
+    Year = md("**Year**"),
+    Price = md("**Price**"),
+    Quantity = md("**Per Capita<br>Quantity**")
+  )  
+
+# Show the gt Table
+table_1
+```
+
+Please create the plot (in Base R or `ggplot`).
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE, fig.align='center'}
+# Plot relationship
+plot(crosssection$Price, crosssection$Quantity, 
+     main="Relationship between Price and Demand in 2003",
+     xlab="Price", ylab="Quantity")
+abline(lm(Quantity ~ Price, data=crosssection))
+```
+
+## Panel Data (2 pt)
+
+Read in additional data from Table 2 (call it `paneldata`). 
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE, fig.align='center'}
+library(ggplot2)
+library(tidyverse)
+
+# Panel Data
+paneldata <- data.frame(Location = c("Chicago", "Chicago", "Peoria", "Peoria", "Milwaukee", "Milwaukee", "Madison", "Madison"),
+                           Year = rep(2003:2004, 4), 
+                           Price = c(75, 85, 50, 48, 60, 65, 55, 60),
+                           Quantity = c(2.0, 1.8, 1.0, 1.1, 1.5, 1.4, 0.8, 0.7))
+
+table_2 <-
+  gt(data = paneldata) %>%
+  tab_header(title = "Table 2: Panel Data") %>%
+  cols_label(
+    Location = md("**Location**"),
+    Year = md("**Year**"),
+    Price = md("**Price**"),
+    Quantity = md("**Per Capita<br>Quantity**")
+  )  
+table_2
+```
+
+Please create the plot.
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE, fig.align='center'}
+ggplot(paneldata, aes(x=Price, y=Quantity)) + 
+  geom_point() + 
+  labs(title="Relationship between Price and Quantity",
+       x="Price", y="Quantity") +
+  geom_smooth(aes(colour = Location), method = "lm", se = FALSE) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## Fixed Effects Regression
+
+### First Difference (2 pt)
+
+Please add two columns, i.e. the change in price (name it `P_diff`) and the change in quantity (name it `Q_diff`) to your dataframe (1 pt).
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE, results='asis', fig.align='center'}
+table3 <- paneldata %>%
+  group_by(Location) %>%
+  mutate(P_diff = Price - lag(Price),
+         Q_diff = Quantity - lag(Quantity))
+
+#library(xtable) # may handle formulas in colnames
+#print(xtable(table3)), type = "html")
+#print(xtable(head(cars)), type = "html")
+#print(xtable(table3), type = "html")
+
+library(gt)
+gt(data = table3, rowname_col = TRUE, groupname_col=FALSE) %>%
+  tab_header(title = "Table 3: Data for Difference Equation Estimation.") %>%
+  cols_label(
+    Location = md("**Location**"),
+    Year = md("**Year**"),
+    Price = md("**Price**"),
+    Quantity = md("**Per Capita<br>Quantity**"),
+    P_diff = md("**Delta P**"),
+    Q_diff = md("**Delta Q**")) 
+```
+
+
+<!-- ```{=html} -->
+<!-- <style type="text/css"> -->
+<!-- .tg  {border-collapse:collapse;border-spacing:0;} -->
+<!-- .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px; -->
+<!--   overflow:hidden;padding:10px 5px;word-break:normal;} -->
+<!-- .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px; -->
+<!--   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;} -->
+<!-- .tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top} -->
+<!-- .tg .tg-0lax{text-align:left;vertical-align:top} -->
+<!-- </style> -->
+<!-- ``` -->
+
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Location  | Year | Price | Per Capita Quantity  | $$       | $$       | -->
+<!-- |           |      |       |                      | \Delta P | \Delta Q | -->
+<!-- |           |      |       |                      | $$       | $$       | -->
+<!-- +:==========+======+=======+======================+==========+==========+ -->
+<!-- | Chicago   | 2003 | 75    | 2.0                  |          |          | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Chicago   | 2004 | 85    | 1.8                  | 10       | -0.2     | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Milwaukee | 2003 | 60    | 1.5                  |          |          | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Milwaukee | 2004 | 65    | 1.4                  | 5        | -0.1     | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Madison   | 2003 | 55    | 0.8                  |          |          | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Madison   | 2004 | 60    | 0.7                  | 5        | -0.1     | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Peoria    | 2003 | 50    | 1.0                  |          |          | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+<!-- | Peoria    | 2004 | 48    | 1.1                  | -2       | 0.1      | -->
+<!-- +-----------+------+-------+----------------------+----------+----------+ -->
+
+<!-- : Table 3: Data for Difference Equation Estimation. -->
+
+Run a first difference estimation by regressing change in quantity on change in price (1 pt).
+
+### Within Estimator (2 pt)
+
+Run a within fixed effects regression in two ways. 
+
+- Function `plm()` from `plm` package.
+- Replicate time demeaning programmatic in R. 
+    + Calculate the mean of Q and P per individual (group). 
+    + Subtract the individual mean from each observation. 
+    + Regress these time-demeaned observation (with standard lm command).
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE, results='asis', fig.align='center'}
+table4 <- paneldata %>%
+  group_by(Location) %>%
+  mutate(P_diff = Price - lag(Price),
+         Q_diff = Quantity - lag(Quantity),
+         P_P_mean = Price - mean(Price),
+         Q_Q_mean = Quantity - mean(Quantity))
+
+library(gt)
+gt(data = table4, rowname_col = TRUE, groupname_col=FALSE) %>%
+  tab_header(title = "Table 4: Data for Within Time Demean Estimation.") %>%
+  cols_label(
+    Location = md("**Location**"),
+    Year = md("**Year**"),
+    Price = md("**Price**"),
+    Quantity = md("**Per Capita<br>Quantity**"),
+    P_diff = md("**Delta P**"),
+    Q_diff = md("**Delta Q**"),
+    P_P_mean = md("**P - mean(P)**"),
+    Q_Q_mean = md("**Q - mean(Q)**")) 
+```
+
+### LSDV (1 pt)
+
+Run a LSDV regression, i.e. include all individuals as dummy variables in your standard `lm` regression.
+
+### Comparison (1 pt)
+
+Create a model overview with `stargazer`. Start with a pooling model. You should have 5 models in total. You need to play around with stargazer options in order to make it good looking. Drop the constant in all your models. Drop `model.numbers` and `dep.var.labels.include` or the F statistic. You can relabel `column.labels` in stargazer as well. Your result should look like this:
+
+```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE}
+paneldata <- data.frame(Location = c("Chicago", "Chicago", "Peoria", "Peoria", 
+                                     "Milwaukee", "Milwaukee", "Madison", "Madison"),
+                        Year = rep(2003:2004, 4),
+                        Price = c(75, 85, 50, 48, 60, 65, 55, 60),
+                        Quantity = c(2.0, 1.8, 1.0, 1.1, 1.5, 1.4, 0.8, 0.7))
+
+library(sjmisc)
+library(tidyverse)
+
+paneldata <- paneldata %>%
+  group_by(Location) %>%
+  mutate(dP = last(Price) - first(Price),
+         dQ = last(Quantity) - first(Quantity),
+         dP=replace(dP, row_number()==1, NA),
+         dQ=replace(dQ, row_number()==1, NA),
+         mean_P = mean(Price),
+         mean_Q = mean(Quantity),
+         P_mean_P = Price - mean_P,
+         Q_mean_Q = Quantity - mean_Q,
+         Price_ave = Price - ave(Price, Location),
+         Quantity_ave = Quantity - ave(Quantity, Location)) %>%
+  mutate_at(.vars = c("Quantity","Price"),
+            .funs = list("centered" = center)) %>%
+  ungroup()
+
+# for better comparison in stargazer
+paneldata_demeaned <- with(paneldata,
+                           data.frame(Quantity = Quantity - ave(Quantity, Location),
+                                      Price = Price - ave(Price, Location)))
+
+# Pooling
+pooling <- lm(Quantity ~ Price - 1, data=paneldata)
+
+# First Difference Estimation
+FD <- lm(dQ ~ dP -1, data=paneldata)
+names(FD$coefficients) <- c('Price')
+
+# Time demean
+TDM <- lm(Quantity ~ Price -1, data=paneldata_demeaned)
+
+# Fixed Effects
+library(plm)
+FE <- plm(Quantity ~ Price -1, data=paneldata,
+          model="within",
+          index = c("Location","Year"))
+
+# Least Squares Dummy Variable Estimation (Individual FE)
+LSDV <- lm(Quantity ~ Price + Location -1, data=paneldata)
+```
+
+```{r warning=FALSE, message=FALSE, echo=TRUE}
+# Stargazer Comparison
+library(stargazer)
+stargazer(pooling, FD, TDM, FE, LSDV, type="text", keep=c("Price"),
+          column.labels=c("Pooling", "FD", "TD", "FE", "LSDV"),
+          dep.var.labels.include = FALSE, model.numbers = FALSE,
+          omit.stat="f")
+```
+
+
