@@ -1,15 +1,20 @@
 --- 
 title: "Becoming Fluent in Data"
-subtitle: "A Personal Journey -- Every Time."
+subtitle: "A Personal Journey – Every Time."
 description: "A guide to become fluent in data."
 cover-image: "images/icons8-trading-64.png"
 author: "Marco Kühne"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
+documentclass: book
 delete_merged_file: true
 bibliography: references.bib
 biblio-style: apalike
 link-citations: yes
+always_allow_html: yes
+favicon: "images/icons8-trading-64.ico"
+css: [css/style.css, css/jessi.css] 
+tags: [Data Science, Data Analysis, Data Fluency, Textbook, Tutorial, R]
 output: 
   bookdown::gitbook:
     split_by: chapter
@@ -35,13 +40,8 @@ output:
         # fuse.js, refer to https://fusejs.io/api/options.html)
         options: null
     includes:
-      before_body: [top_message.html]
-      after_body: disqus.html
       in_header: [hypothesis.html, google_analytics.html]
-always_allow_html: yes
-favicon: "images/icons8-trading-64.ico"
-css: "style.css"
-tags: [Data Science, Data Analysis, Data Fluency, Textbook, Tutorial, R]
+      before_body: [top_message.html]
 ---
 
 <!-- Empirical Research (with R) -- Based On True Stories -->
@@ -58,18 +58,23 @@ if (!requireNamespace("webexercises")) {
 } else {
  library("webexercises")
 }
-```
 
+library('tippy')
+```
 
 # Dust and Dark {-}
 
-A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where R was introduced in my psychology undergraduate studies. -- The Times They Are A-Changin'. 
+A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where **R** was introduced in my psychology undergraduate studies. -- <u id='word'>The Times They Are A-Changin'</u>.
 
-```{r echo = FALSE, eval = FALSE}
-library('tippy')
-tippy("word.", tooltip = "Definition of word that pops up in a box upon hovering")
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "word", tooltip = "is a song written by Bob Dylan and released as the title track of his 1964 album of the same name.")
 ```
 
+<!-- `r tippy("The Times They Are A-Changin'", tooltip = "is a song written by Bob Dylan and released as the title track of his 1964 album of the same name.")`.  -->
+
+<br>
+<center> Are you `r fitb("r", ignore_case = TRUE)` eady to join the journey? </center>
+<br>
 
 ::: columns
 ::: {.column width="30%" data-latex="{0.20\textwidth}"}
@@ -129,29 +134,6 @@ course %>%
 :::
 :::
 
-
-## Total Correct (`total_correct()`)
-
-The function `total_correct()` displays a running total of correct responses. Change the `elem` argument to display in a different style (e.g., `h2` or `h3` for header styles). If you're comfortable with css styles or classes, you can add them with the `args` argument. 
-
-`r total_correct(elem = "h3", args = "style='color:#003366;'")`
-
-## Fill-In-The-Blanks (`fitb()`)
-
-Create fill-in-the-blank questions using `fitb()`, providing the answer as the first argument.
-
-- 2 + 2 is `r fitb(4)`
-
-You can also create these questions dynamically, using variables from your R session.
-
-```{r echo = FALSE}
-x <- sample(2:8, 1)
-```
-
-- The square root of `r x^2` is: `r fitb(x)`
-
-
-
 <!-- > Luminous beings are we, not this crude matter.</b> -->
 <!-- > -->
 <!-- > `r tufte::quote_footer('Master Yoda.')` -->
@@ -186,14 +168,16 @@ By writing the gitbook I hope to force myself to pinpoint exactly what I know an
 This project helped me to learn more about R, RStudio, R Markdown, R Bookdown, HTML/CSS, Git and Github, empirical research, causal inference, statistics, math, frustration tolerance and fun.
 
 <!-- I had the need to learn more about empirical analysis and causal inference. Thus I started a series of seminars covering a mixture of data science, econometrics, statistics and reporting.  -->
-
 <!-- <https://lindeloev.github.io/tests-as-linear/> -->
+<!-- https://de.wikipedia.org/wiki/Benutzer:Jeanpol -->
 
 ![Teaching in 2014.](images/teaching.jpg)
 
+*Learning by teaching* was originally defined by `r mcq(c("Jimmy Wales", "Linus Torvalds", answer = "Jean-Pol Martin", "Richard E. Pattis"))` in the 1980s. Did you know that some people who [have Wikipedia articles](https://en.wikipedia.org/wiki/Jean-Pol_Martin) also have [user accounts on Wikipedia](https://de.wikipedia.org/wiki/Benutzer:Jeanpol)? 
+
 # Aim of this books {-}
 
-I welcome you to join me on the way to become fluent in data.
+I welcome you to join us on our way to become fluent in data.
 
 You go from zero you hero in data analysis and data science and will become data fluent and learn major skills that you can use in your academic and business career. 
 
@@ -205,7 +189,7 @@ You go from zero you hero in data analysis and data science and will become data
 
 <!-- https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/hal-varian-on-how-the-web-challenges-managers -->
 
-In addition and independent of specific career, I would like to foster people's **data literacy**.
+In addition and independent of a specific career, I would like to foster people's **data literacy**.
 
 ::: {.defbox}
 **Data literacy** is the ability to read, understand, create, and communicate data as information.
@@ -280,7 +264,11 @@ The workhorse procedure is regression, a statistical technique that relates a ou
 
 Colored paragraphs give you a visual overview of things to watch out:
 
-::: {.titeldefbox}
+::: {.defbox .titeldefbox .svgdefbox}
+A **definition** is a statement of the meaning of a term.
+:::
+
+::: {.defbox}
 A **definition** is a statement of the meaning of a term.
 :::
 
@@ -337,9 +325,3 @@ I am also a gardening fanatic, a coffee enthusiast, a committed ballroom and Dis
 <!-- ```{r, echo=FALSE, out.width="60%", fig.align="center", fig.cap="\\label{fig:figs}plotting example"} -->
 <!-- knitr::include_graphics(path = "images/Marco-scaled.jpg") -->
 <!-- ``` -->
-
-
-
-
-
-
