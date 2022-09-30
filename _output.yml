@@ -1,16 +1,17 @@
 bookdown::gitbook:
-  css: style.css
+  css:
+  - style.css
+  - www/webex.css
   config:
     toc:
       before: |
         <li><a href="./">Empirical Research</a></li>
       after: |
         <li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
-    download: ["pdf", "epub"]
-bookdown::pdf_book:
+    download:
+    - pdf
+    - epub
   includes:
-    in_header: preamble.tex
-  latex_engine: xelatex
-  citation_package: natbib
-  keep_tex: yes
-bookdown::epub_book: default
+    after_body: www/webex.js
+  md_extensions: -smart
+

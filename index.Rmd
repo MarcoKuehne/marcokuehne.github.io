@@ -27,21 +27,21 @@ output:
       toolbar:
         position: fixed 
       sharing:
-        facebook: true
-        twitter: true
+        facebook: false
+        twitter: false
       search:
         engine: lunr # or fuse
         # options to control/tune search engine behavior (for
         # fuse.js, refer to https://fusejs.io/api/options.html)
         options: null
     includes:
-      before_body: top_message.html
+      before_body: [top_message.html]
       after_body: disqus.html
       in_header: [hypothesis.html, google_analytics.html]
 always_allow_html: yes
 favicon: "images/icons8-trading-64.ico"
 css: "style.css"
-tags: [Data Analysis, Data Fluency, Textbook, Tutorial]
+tags: [Data Science, Data Analysis, Data Fluency, Textbook, Tutorial, R]
 ---
 
 <!-- Empirical Research (with R) -- Based On True Stories -->
@@ -53,7 +53,13 @@ knitr::opts_chunk$set(
   warning = FALSE, message = FALSE, 
   collapse = TRUE, tut=FALSE, fig.width = 6
 )
+if (!requireNamespace("webexercises")) {
+ stop("You must have the 'webexercises' package installed to knit to HTML.\n   install.packages(\"webexercises\")")
+} else {
+ library("webexercises")
+}
 ```
+
 
 # Dust and Dark {-}
 
@@ -122,6 +128,28 @@ course %>%
 ``` 
 :::
 :::
+
+
+## Total Correct (`total_correct()`)
+
+The function `total_correct()` displays a running total of correct responses. Change the `elem` argument to display in a different style (e.g., `h2` or `h3` for header styles). If you're comfortable with css styles or classes, you can add them with the `args` argument. 
+
+`r total_correct(elem = "h3", args = "style='color:#003366;'")`
+
+## Fill-In-The-Blanks (`fitb()`)
+
+Create fill-in-the-blank questions using `fitb()`, providing the answer as the first argument.
+
+- 2 + 2 is `r fitb(4)`
+
+You can also create these questions dynamically, using variables from your R session.
+
+```{r echo = FALSE}
+x <- sample(2:8, 1)
+```
+
+- The square root of `r x^2` is: `r fitb(x)`
+
 
 
 <!-- > Luminous beings are we, not this crude matter.</b> -->
