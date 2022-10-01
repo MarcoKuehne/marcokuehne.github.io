@@ -13,7 +13,7 @@ biblio-style: apalike
 link-citations: yes
 always_allow_html: yes
 favicon: "images/icons8-trading-64.ico"
-css: [css/style.css, css/jessi.css] 
+css: [css/style.css, css/jessi.css, css/toc.css] 
 tags: [Data Science, Data Analysis, Data Fluency, Textbook, Tutorial, R]
 output: 
   bookdown::gitbook:
@@ -44,8 +44,6 @@ output:
       before_body: [top_message.html]
 ---
 
-<!-- Empirical Research (with R) -- Based On True Stories -->
-
 <!-- Global Code Chunk Options -->
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -65,7 +63,7 @@ library('tippy')
 
 # Dust and Dark {-}
 
-A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where **R** was introduced in my psychology undergraduate studies. --- <u id='word'>The Times They Are A-Changin'</u>.
+A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where **R** was introduced in my psychology undergraduate studies. – <u id='word'>The Times They Are A-Changin'</u>.
 
 ```{r, echo=FALSE}
 tippy::tippy_this(elementId = "word", tooltip = "is a song written by Bob Dylan and released as the title track of his 1964 album of the same name.")
@@ -79,7 +77,9 @@ tippy::tippy_this(elementId = "word", tooltip = "is a song written by Bob Dylan 
 
 ::: columns
 ::: {.column width="30%" data-latex="{0.20\textwidth}"}
-![Lecture Hall. Melanchthonianum. MLU University of Halle-Wittenberg](https://wiki.llz.uni-halle.de/images/thumb/b/bb/HS_XX_003.jpg/300px-HS_XX_003.jpg)
+![Lecture Hall. Melanchthonianum. MLU University of Halle-Wittenberg](https://wiki.llz.uni-halle.de/images/thumb/b/bb/HS_XX_003.jpg/300px-HS_XX_003.jpg) 
+
+The animation on the right side is created with the `gganimate` package. It shows past course data.
 :::
 
 ::: {.column width="5%" data-latex="{0.05\textwidth}"}
@@ -90,7 +90,6 @@ a column separator -->
 
 ::: {.column width="65%" data-latex="{0.75\textwidth}"}
 ```{r, echo=F}
-library(tidyverse)
 library(gganimate)
 library(ggthemes)
 
@@ -146,7 +145,7 @@ course %>%
 
 # (PART) Preface {-} 
 
-# Teach -- Learn -- Repeat {-}
+# Teach – Learn – Repeat {-}
 
 <!-- Conceptional Background -->
 <!-- A Question You Care About -->
@@ -245,9 +244,13 @@ a column separator -->
 
 ::: {.column width="25%" data-latex="{0.25\textwidth}"}
 <br> <br>
-A wordcloud of 25 students answers (2020) on the question: *What do you expect to learn in this seminar?* <br> The animation is created by the `gifski` package. 
+A <u id='wordcloud'>wordcloud</u> of 25 students answers (2020) on the question: *What do you expect to learn in this seminar?* <br> The animation is created by the `gifski` package. 
 :::
 ::::::
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "wordcloud", tooltip = "is a visual representation of text data that shows term freuency.")
+```
 
 # Structure of this books {-}
 
@@ -292,6 +295,19 @@ Do you like to **read more** about this?
 <!-- ::: {.infobox .caution data-latex="warning"} -->
 <!-- It's your turn to accept the **challenge**. -->
 <!-- ::: -->
+
+## Components {-} 
+
+The `tippy` package allows <u id='tippy'>underlined text</u> to display tooltips. 
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "tippy", tooltip = "underlined text indicated a tooltip.")
+```
+
+The `webexercises` package allows interactive web pages that you can use in `r mcq(c("ballroom dancing", answer = "self-guided learning", "vegan cooking", "your stamp collection"))`.
+. What is the [Answer to the Ultimate Question of Life](https://lmgtfy.app/?q=Answer+to+the+Ultimate+Question+of+Life)  `r fitb(42)`.
+
+The most powerful interaction comes from the web annotation tool <https://web.hypothes.is/>. You may *annotate* or *highlight* all text by <mark>selecting it with the cursor</mark> and then click the on the pop-up menu. You can also see the annotations of others: click the in the upper right hand corner of the page. You need to create an account for this feature.  
 
 # About the author {-}
 
