@@ -21,21 +21,19 @@ An .R file is a **text document**. Open (and edit) it with a any **text editor**
 <!-- # tutorial::go_interactive(greedy=FALSE) -->
 <!-- # ``` -->
 
-R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the  **script.R** tab are executed by the **Run** bottom. It runs the entire script and prints out results in the **R Console**. This procedure is simplified but similar to a more complex integrated developer environment (IDE) like RStudio.
+R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the  **script.R** tab are executed by the **Run** bottom. It runs the entire script and prints out results in the **R Console**. This setting is simplified but reflects the procedure in a more complex integrated developer environment (IDE) like RStudio.
 
+<!-- https://cdn.datacamp.com/dcl-react-prod/index.html -->
 <!-- <script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script> -->
 <!-- <script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script> -->
 
-Copy and paste (or modify) commands from lower sections into the script. 
+<!-- <iframe src="DCL/intro_1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe> -->
+
+<iframe src="DCL/playground1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
 
 ::: {.challenge}
-Try `1:20` and hit Run.
+Now it's your turn. Delete all code, try `1:20` and hit Run.
 :::
-
-```{r tut=TRUE}
-# Comment: R as a calculator is a boring as watching paint dry.
-21*2 
-```
 
 ## When paint becomes art {-}
 
@@ -56,15 +54,19 @@ legend (x = 4.5, y = 7, legend = levels(iris$Species),
         pch = 16, col = c(1:3))
 ```
 
-<iframe width='100%' height='300' src='https://rdrr.io/snippets/embed/' frameborder='0'></iframe>
+<iframe src="DCL/playground2.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
 
-<!-- Help, check the note of the pie chart function ?pie -->
+<!-- rdrr.io is working but does not look nice -->
+<!-- <iframe width='100%' height='500' src='https://rdrr.io/snippets/embed/' frameborder='1'></iframe> -->
 
 ## Define objects {-}
 
 Define R objects for later use. Objects are **case-sensitive** (`X` is different from `x`). Objects can take any name, but its best to use something that makes sense to you, and will likely make sense to others who may read your code.
 
 ### Numeric Variables {-}
+
+The standard assignment operator is `<-`.
+
 ```{r tut=FALSE, collapse=TRUE} 
 a <- 2
 b = 3
@@ -72,6 +74,8 @@ a + b
 ```
 
 ### Logical Variables {-}
+
+Logical values are `TRUE` and `FALSE`. Abbreviations work.
 
 ```{r prompt=TRUE}
 harvard               <-        TRUE # spacing doesn't matter
@@ -83,6 +87,8 @@ harvard + 1
 ```
 
 ### String Variables {-}
+
+Text is stored as *string* or *character*.
 
 ```{r }
 emily  <- 'She is a friend.'     # string / character class / plain text
@@ -159,5 +165,27 @@ dataDF[1,2] #by index row 1, column 2
 
 ### Plots {-}
 
-To be announced ... 
+There are *base R* graphs. There are `ggplot2` plots. 
+
+```{r tut=FALSE}
+# Create some variables
+x <- 1:10
+y1 <- x*x
+y2  <- 2*y1
+
+# Create a first line
+plot(x, y1, type = "b", frame = FALSE, pch = 19, 
+     col = "red", xlab = "x", ylab = "y")
+# Add a second line
+lines(x, y2, pch = 18, col = "blue", type = "b", lty = 2)
+# Add a legend to the plot
+legend("topleft", legend=c("Line 1", "Line 2"),
+       col=c("red", "blue"), lty = 1:2, cex=0.8)
+```
+
+
+<iframe src="DCL/playground2.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
+
+
+
 
