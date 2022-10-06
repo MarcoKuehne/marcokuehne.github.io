@@ -5,21 +5,29 @@
 <!-- https://blog.devgenius.io/why-r-not-excel-not-python-3ffd7668f854 -->
 <!-- https://r4stats.wordpress.com/articles/popularity/ -->
 
+> "The Zen of Organization is not to be found in Fancy Software."
+>
+> `r tufte::quote_footer('--- Kieran Healy. 2019. ')`
+
 Data is inseparable from software.^[Check the [category of data analysis software](https://en.wikipedia.org/wiki/Category:Data_analysis_software) and the [list of statistical software](https://en.wikipedia.org/wiki/List_of_statistical_software).] Data comes in various file formats that are connected to a specific software. Although most software can handle most of the common file formats. So, if almost all software can handle almost all data, how should we choose one? 
 
-When choosing a software for data analysis there are many factors to consider:
+When choosing a software for data analysis there are many factors to consider:^[Check out the versatile discussion on the measurement of data analysis software popularity by Robert München: [The Popularity of Data Analysis Software](https://r4stats.wordpress.com/articles/popularity/)]
 
 - Does it run on your computer?
 - Can you afford it? 
 - Do your colleagues use it? 
 - Does the software provide all the methods you need? 
 
-
-::: {.reading}
-Check out the versatile discussion on the measurement of data analysis software popularity by Robert München: [The Popularity of Data Analysis Software](https://r4stats.wordpress.com/articles/popularity/)
+:::: {.reading}
+::: {.titelreading}
+<h2> Reading </h2>
 :::
+Kieran Healy (2019): [The Plain Person’s Guide to Plain Text Social Science](https://plain-text.co/)
+::::
 
 ## Software 
+
+Irrespective of the software, how to talk with it? 
 
 ### Command line interface (CLI)
 
@@ -82,6 +90,12 @@ knitr::include_graphics(url)
 
 An online compiler allows to test a statistical (or programming) language, without any download, install or payment. There are various programming and web languages available at <https://onecompiler.com/>.
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+Copy paste the code in the console below. Click Run. Scroll for results.
+
 ```{r echo = T, eval = F}
 1*2*3*4
 factorial(4)
@@ -89,11 +103,9 @@ class(4)
 1:4
 ```
 
-::: {.challenge}
-Copy paste the above code in the console below. Click Run.
-:::
+<iframe width='100%' height='300' src='https://rdrr.io/snippets/embed/?code=print(%22Hello%2C%20world!%22)' frameborder='0'></iframe>
+::::
 
-<iframe width='100%' height='470' src='https://rdrr.io/snippets/embed/' frameborder='0'></iframe>
 
 <!-- <iframe src="https://trinket.io/embed/python/edd948bf08" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe> -->
 
@@ -147,11 +159,18 @@ chat
 ### Text with structure 
 <!-- https://blog.sqlizer.io/posts/csv-history/ -->
 
-The trusty `.csv` (comma separated values) file is, still, one of the most common file types for data storage and exchange. It is knocking around ten years before the first personal computer (that’s since 1972 ![](images/young_sheldon_50px.jpg)). A `.csv` file stores tabular data in plain text format. Each line is a data record and each record has one or more fields, separated by commas. Tabular data can also be separated by a TAB or semicolon. 
+The trusty `.csv` (comma separated values) file is, still, one of the most common file types for data storage and exchange. It is knocking around ten years before the <u id='PC'>first personal computer</u>. A `.csv` file stores tabular data in plain text format. Each line is a data record and each record has one or more fields, separated by commas. Tabular data can also be separated by a TAB or semicolon. 
 
-::: {.defbox}
-**Tabular data** refers to data that is organized in a table with rows and columns. Within the table, the rows represent observations and the columns represent attributes.
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "PC", tooltip = "that’s since 1972")
+```
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+**Tabular data** refers to data that is organized in a table with rows and columns. Within the table, the rows represent observations and the columns represent attributes.
+::::
 
 Here is a minimal example:^[The minimal file `chat.csv` is here: <https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/chat.csv>] 
 
@@ -167,9 +186,12 @@ haven::write_dta(chat, "data/chat.dta")
 save(mtcars, file="data/chat.Rdata")
 ```
 
-::: {.challenge}
-Do you think text information is outdated? If you have a Netflix account, request your data from Netflix. It's easy and fun. Check what Netflix knows about your devices, ratings, profiles, avatars, subscriptions, billing and more. It comes in about two dozen `.txt` and `.csv` files.
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
 :::
+Do you think text information is outdated? If you have a Netflix account, request your data from Netflix. It's easy and fun. Check what Netflix knows about your devices, ratings, profiles, avatars, subscriptions, billing and more. It comes in about two dozen `.txt` and `.csv` files.
+::::
 
 ### File formats
 
@@ -181,13 +203,16 @@ Interesting file types
 - The `.Rdata` file comes from R.  
 - The `.JSON` stand for JavaScript Object Notation. JSON is a standard text-based format for representing structured data based on JavaScript object syntax.
 
-::: {.reading}
-Amazing information on file formats (file-format classes, bitstream structures etc.) can be found at [**Library of Congress Collections**](https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml).
+:::: {.reading}
+::: {.titelreading}
+<h2> Reading </h2>
 :::
+Amazing information on file formats (file-format classes, bitstream structures etc.) can be found at [**Library of Congress Collections**](https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml).
+::::
 
 <!-- https://www.rstudio.com/blog/feather/ -->
 
-A more modern approach is `.feather`. Feather was created to improve exchange of data between R and Python. Feather is a fast, lightweight, and easy-to-use binary file format for storing data frames. 
+How to choose between file formats? Think about it. 
 
 > CSV’s are costing you time, disk space, and money. It’s time to end it.
 >
@@ -195,7 +220,7 @@ A more modern approach is `.feather`. Feather was created to improve exchange of
 >
 > `r tufte::quote_footer('Dario Radečić (2021) [Stop Using CSVs for Storage — This File Format Is 150 Times Faster](https://towardsdatascience.com/stop-using-csvs-for-storage-this-file-format-is-150-times-faster-158bd322074e)')`
 
-
+`.feather` is a young file format created to improve exchange of data between `R` and `Python`. Feather is a fast, lightweight, and easy-to-use binary file format for storing data frames. 
 
 
 

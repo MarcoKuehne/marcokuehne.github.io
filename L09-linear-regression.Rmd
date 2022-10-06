@@ -164,9 +164,9 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
   geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
   xlim(20, 120) + ylim(80, 160) +
-  ggtitle("The relationship between auction price and age of artist.") +
+  #ggtitle("The relationship between auction price and age of artist.") +
   xlab("Age at Death") + ylab("Auction price (in million US $)") + 
-  theme_bw()
+  theme_minimal()
 ```
 
 
@@ -189,15 +189,15 @@ The line plot suggests that the relationship between price and age exhibits a **
 library(ggplot2)
 ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
   geom_point(size=2) + 
-  geom_line() + 
+  #geom_line() + 
   #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
   geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
   geom_segment(aes(x = 50, y = 90, xend = 120, yend = 150),size = 3,
                   arrow = arrow(length = unit(0.5, "cm"))) +
   xlim(20, 120) + ylim(80, 160) +
-  ggtitle("The relationship between auction price and age of artist.") +
+  #ggtitle("The relationship between auction price and age of artist.") +
   xlab("Age at Death") + ylab("Auction price (in million US $)") + 
-  theme_bw()
+  theme_minimal()
 ```
 
 ### The blackbox
@@ -237,10 +237,10 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   #geom_abline(intercept = 90, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
   geom_abline(intercept = 90, slope = 0.2, color="lightgrey", linetype="dashed", size=1.5)+
   geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
-  ggtitle("The relationship between auction price and age of artist.") +
+  #ggtitle("The relationship between auction price and age of artist.") +
   xlab("Age at Death") + ylab("Auction price (in million US $)") + 
   xlim(20, 120) + ylim(80, 160) +
-  theme_bw()
+  theme_minimal()
 ```
 
 ::: {.infobox .question data-latex="warning"}
@@ -285,10 +285,10 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   geom_point(size=2) + 
   geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
   geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
-  ggtitle("The relationship between auction price and age of artist.") +
+  #ggtitle("The relationship between auction price and age of artist.") +
   xlab("Age at Death") + ylab("Auction price (in million US $)") + 
   xlim(20, 120) + ylim(80, 160) +
-  theme_bw() +
+  theme_minimal() +
   geom_segment(aes(xend = Age.at.Death, yend = predicted_guess), alpha = .2) +
   # > Color adjustments made here...
   geom_point(aes(color = abs(residuals_guess))) + # Color mapped to abs(residuals)
@@ -480,10 +480,10 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   geom_smooth(method="lm", se=FALSE, color="darkgreen") +
   #geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
   geom_text(aes(label=Painting),hjust=-0.05, vjust=0) +
-  ggtitle("The relationship between auction price and age of artist.") +
+  #ggtitle("The relationship between auction price and age of artist.") +
   xlab("Age at Death") + ylab("Auction price (in million US $)") + 
   xlim(20, 120) + ylim(80, 160) +
-  theme_bw() +
+  theme_minimal() +
   geom_segment(aes(xend = Age.at.Death, yend = predicted), alpha = .2) +
   # > Color adjustments made here...
   geom_point(aes(color = abs(residuals))) + # Color mapped to abs(residuals)

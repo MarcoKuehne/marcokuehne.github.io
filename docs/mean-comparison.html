@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 Mean Comparison | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Mean Comparison | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
@@ -428,31 +428,29 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </div>
 <div id="mean-comparison" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Mean Comparison<a href="mean-comparison.html#mean-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="infobox2 information">
-<p><strong>Learning Goals</strong></p>
-<ul>
-<li>Conceptual Skills:
-<ul>
-<li>How to calculate the mean.</li>
-<li>Compare means between people or groups.</li>
-<li>Compare means for people or groups over time</li>
-<li>Compare yourself to the rest of the world.</li>
-<li>What Student’s t-test has to do with beer.</li>
-</ul></li>
-<li>Data Concepts: Factor variables.</li>
-<li>R Skills:
-<ul>
-<li>Data Manipulation: Several options to achieve a goal.</li>
-<li>Data Analysis: Hypothesis testing with t-Tests.</li>
-<li>Data Visualization: Error plots.</li>
-</ul></li>
-</ul>
-</div>
+<!-- ::: {.infobox data-latex="warning"} -->
+<!-- **Learning Goals** -->
+<!-- - Conceptual Skills:  -->
+<!--   + How to calculate the mean.  -->
+<!--   + Compare means between people or groups. -->
+<!--   + Compare means for people or groups over time -->
+<!--   + Compare yourself to the rest of the world.  -->
+<!--   + What Student’s t-test has to do with beer.  -->
+<!-- - Data Concepts: Factor variables. -->
+<!-- - R Skills:  -->
+<!--     +   Data Manipulation: Several options to achieve a goal.  -->
+<!--     +   Data Analysis: Hypothesis testing with t-Tests.  -->
+<!--     +   Data Visualization: Error plots.  -->
+<!-- ::: -->
 <!-- https://methods.sagepub.com/reference/encyc-of-research-design/n237.xml -->
 <p>The term mean comparisons refers to the comparison of the average of one or more continuous variables over one or more categorical variables. It is a general term that can refer to a large number of different research questions and study designs. For example, one can compare the mean from one sample of data to a hypothetical population value, compare the means on a single variable from multiple independent groups, or compare the means for a single variable for one sample over multiple measurement occasions. In addition, more complex research designs can employ multiple continuous dependent variables simultaneously, as well as a combination of multiple groups and multiple measurement occasions. Overall, mean comparisons are of central interest in any experimental design and many correlational designs.</p>
-<div class="sheldon">
-<p>The <strong>mean</strong> usually refers to the <strong>arithmetic mean</strong>.</p>
-<p>Together with the <strong>geometric</strong> and the <strong>harmonic mean</strong> it satisfies the relationship <span class="math inline">\(\mathrm{AM} \ge \mathrm{GM} \ge \mathrm{HM}\)</span>.</p>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated
+</h2>
+</div>
+<p>The <strong>mean</strong> usually refers to the <strong>arithmetic mean</strong>. Together with the <strong>geometric</strong> and the <strong>harmonic mean</strong> it satisfies the relationship <span class="math inline">\(\mathrm{AM} \ge \mathrm{GM} \ge \mathrm{HM}\)</span>.</p>
 </div>
 <p>The arithmetic mean is calculated as:</p>
 <p><span class="math inline">\(\bar{x} = \frac{1}{n}\left (\sum_{i=1}^n{x_i}\right ) = \frac{x_1+x_2+\cdots +x_n}{n}\)</span></p>
@@ -515,6 +513,11 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <h3><span class="header-section-number">4.1.3</span> Furious with Factors<a href="mean-comparison.html#furious-with-factors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>dplyr</code> solution uses labels (notice the type <code>&lt;dbl+lbl&gt;</code> for <code>sex</code> and <code>&lt;dbl&gt;</code> for <code>means</code>). Only few datasets comes with labels. And not all packages can handle them. The old fashioned way in R to have a readable and usable label is to define <code>sex</code> as a <strong>factor variable</strong>.</p>
 <div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
 <p>A <strong>factor variable</strong> is a variable used for categorical data.</p>
 </div>
 <p>Categories can be ordered (e.g. small, medium, large) or without order (e.g. men, women). An integer or string can be converted to a factor. Factors have hidden <strong>levels</strong>. Several R functions and packages treat factors fundamentally different from integers. When R handles <code>sex</code> as an integer, it assumes that values such as <code>sex=-3</code> and <code>sex=1.5</code> are possible.</p>
@@ -540,7 +543,12 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <!-- The interval of all observed values can be investigated with the `summary(soep_2000$satisf_org)` as min/max.  -->
 <!-- https://www.statisticshowto.com/probability-and-statistics/hypothesis-testing/ -->
 <!-- A statistical hypothesis test is a method of statistical inference used to decide whether the data at hand sufficiently support a particular hypothesis.  -->
-<div class="defbox information">
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
 <p><strong>Hypothesis testing</strong> in statistics is a way to test the results of a survey or experiment to see if there are meaningful results.</p>
 </div>
 <p>It's basically testing whether the results are valid by figuring out the odds that the results have happened by chance. If the results may have happened by chance, the experiment won’t be repeatable and so has little use.</p>
@@ -551,7 +559,12 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <p>Time to plot. In addition to the group means we plot <strong>confidence intervals</strong> using the <code>gplots</code> package with the <code>plotmeans()</code> function. The result is this:</p>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-65-1.png" width="576" /></p>
 <p><code>plotmeans()</code> nicely presents the number of observations and labels by default.</p>
-<div class="defbox">
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated
+</h2>
+</div>
 <p>There is a statistically significant difference, <strong>when confidence intervals not overlap</strong>.</p>
 </div>
 <p>Conclusion: Don't worry about the health differential.</p>
@@ -564,16 +577,21 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <h2><span class="header-section-number">4.2</span> Student's t-test<a href="mean-comparison.html#students-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <!-- https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios/##how-to-compute-students-t-test-by-hand -->
 <!-- https://suinotes.wordpress.com/2009/11/30/understanding-t-test-in-r/ -->
-<div class="sheldon beer">
 <details>
 <summary>
 <em>What this has do to with beer.</em>
 </summary>
-<strong>Student's t-test</strong> or simply t-test was published by W.S. Gossett who hid his name due to his position as a worker in a <strong>brewery company</strong> (Guiness Brewery Dublin).
-</details>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated
+</h2>
 </div>
+<p><strong>Student's t-test</strong> or simply t-test was published by W.S. Gossett who hid his name due to his position as a worker in a <strong>brewery company</strong> (Guiness Brewery Dublin).</p>
+</div>
+</details>
 <!-- Now we learn about two different versions of the two sample t-test that either work for one measurement (one point in time) or two measurements (before-after setting). -->
-<p>There are several versions of a t-test. The first distinction is whether there are one or two samples (groups). If there are two groups, the second distinction is whether there are one or two measurements in time.<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a></p>
+<p>There are several versions of a <a href="https://en.wikipedia.org/wiki/Student%27s_t-test">Student's t-test</a>. The first distinction is whether there are one or two samples (groups). If there are two groups, the second distinction is whether there are one or two measurements in time.<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a></p>
 <ul>
 <li>One sample t-test</li>
 <li>Two sample tests
@@ -587,9 +605,6 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </ul></li>
 </ul>
 <p>Which is the most common one? Ask the simple implementation <code>t.test()</code> that tells you that it's a <strong>Welch Two Sample t-test</strong>.<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> The Welch's t-test (or unequal variances t-test), is a two-sample location test which is used to test the hypothesis that two populations have equal means when the assumption of equal variances is dropped. The <code>t.test()</code> is unpaired since the <strong>default</strong> option is <code>paired=FALSE</code>. We will use the unpaired t-test for mean comparison between genders, since men and women are <em>independent</em> in the sense of statistical samples (though they may be related in other circumstances).</p>
-<div class="reading">
-<p>Read more about <a href="https://en.wikipedia.org/wiki/Student%27s_t-test">Student's t-test</a>.</p>
-</div>
 <div id="independent-t-test" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Independent t-test<a href="mean-comparison.html#independent-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>t.test()</code> in R takes a <code>formula</code> and <code>data</code> as input. The relationship between <code>health_org</code> and <code>sex_factor</code> is specified as <code>health_org ~ sex_factor</code>, i.e. explain or calculate the <code>health_org</code> by <code>sex_factor</code> (if other way around, R returns an error message).</p>
@@ -614,7 +629,12 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </ul>
 <p>The t-statistic is at the heart of this hypothesis test. The t value has to be compared to a critical value in a t table to decide whether or not to reject the <strong>null hypothesis</strong> (H0). The null states: Move along, there's nothing to see here!</p>
 <p>The p-value can be seen as easy-alternative to the t-statistic. You probably never look up critical t values, do you? If you just want to glimpse at it, <a href="https://jimgrange.wordpress.com/2015/12/05/statistics-tables-where-do-the-numbers-come-from/">here is one</a>. We are looking forward getting <strong>small p-values</strong> (smaller than 0.05 by convention). If p &lt; 0.05 we say that we reject the null and conclude that there is actually something going on!</p>
-<div class="defbox information">
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
 <p>If a p value is less than 0.05, the result is called <strong>statistically significant</strong>.</p>
 </div>
 <p>The 95% confidence interval (CI) is another way of looking at the same issue. 95% of the values should be in the interval 0.1 to 0.3. Thus if zero is not in the CI we can be pretty sure that something is going on.</p>
@@ -645,6 +665,11 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <span id="cb43-12"><a href="mean-comparison.html#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.1715686</span></span></code></pre></div>
 <p>It looks like women have been significantly more healthy in 2000 than in 2004. Can you think of a reason? What happened to all those women?</p>
 <div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
 <p>Can you name a reason for the significant difference in health?</p>
 </div>
 <p>The paired t-test is a little bit more demanding in the way that we need data on something observed at two different points in time. In this before-and-after scenario, the person serves as something like its own control group. We'll come back to that.</p>
@@ -662,7 +687,12 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <span id="cb44-11"><a href="mean-comparison.html#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group 2000 mean in group 2004 </span></span>
 <span id="cb44-12"><a href="mean-comparison.html#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           3.497549           3.325980</span></span></code></pre></div>
 <p>The mean difference is exactly the same. Can you spot it? Ask your console to calculate the difference between 3.497549 and 3.325980). But all the other statistics seem to be different: t-value, degree of freedom, p-value ...</p>
-<div class="defbox">
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
+</div>
 <p>In this scenario the mean difference from the <code>paired=TRUE</code> and <code>paired=FALSE</code> test are identical. But using the information from the <strong>paired sample</strong> (one person observed for two periods), the <strong>t-value became higher and thus the p-value lower</strong>. In a nutshell, we gained more statistical confidence in our estimate!</p>
 </div>
 <p>Once more we saw how valuable time is. We explore this in more detail in the next chapter.</p>

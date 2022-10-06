@@ -1,30 +1,31 @@
 # Mean Comparison
 
-::: {.infobox2 .information data-latex="warning"}
-**Learning Goals**
+<!-- ::: {.infobox data-latex="warning"} -->
+<!-- **Learning Goals** -->
 
-- Conceptual Skills: 
-  + How to calculate the mean. 
-  + Compare means between people or groups.
-  + Compare means for people or groups over time
-  + Compare yourself to the rest of the world. 
-  + What Student’s t-test has to do with beer. 
-- Data Concepts: Factor variables.
-- R Skills: 
-    +   Data Manipulation: Several options to achieve a goal. 
-    +   Data Analysis: Hypothesis testing with t-Tests. 
-    +   Data Visualization: Error plots. 
-:::
+<!-- - Conceptual Skills:  -->
+<!--   + How to calculate the mean.  -->
+<!--   + Compare means between people or groups. -->
+<!--   + Compare means for people or groups over time -->
+<!--   + Compare yourself to the rest of the world.  -->
+<!--   + What Student’s t-test has to do with beer.  -->
+<!-- - Data Concepts: Factor variables. -->
+<!-- - R Skills:  -->
+<!--     +   Data Manipulation: Several options to achieve a goal.  -->
+<!--     +   Data Analysis: Hypothesis testing with t-Tests.  -->
+<!--     +   Data Visualization: Error plots.  -->
+<!-- ::: -->
 
 <!-- https://methods.sagepub.com/reference/encyc-of-research-design/n237.xml -->
 
 The term mean comparisons refers to the comparison of the average of one or more continuous variables over one or more categorical variables. It is a general term that can refer to a large number of different research questions and study designs. For example, one can compare the mean from one sample of data to a hypothetical population value, compare the means on a single variable from multiple independent groups, or compare the means for a single variable for one sample over multiple measurement occasions. In addition, more complex research designs can employ multiple continuous dependent variables simultaneously, as well as a combination of multiple groups and multiple measurement occasions. Overall, mean comparisons are of central interest in any experimental design and many correlational designs.
 
-::: {.sheldon}
-The **mean** usually refers to the **arithmetic mean**. 
-
-Together with the **geometric** and the **harmonic mean** it satisfies the relationship $\mathrm{AM} \ge \mathrm{GM} \ge \mathrm{HM}$.
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
 :::
+The **mean** usually refers to the **arithmetic mean**. Together with the **geometric** and the **harmonic mean** it satisfies the relationship $\mathrm{AM} \ge \mathrm{GM} \ge \mathrm{HM}$.
+::::
 
 The arithmetic mean is calculated as: 
 
@@ -70,7 +71,6 @@ means2 <- aggregate(health_org~sex, soep_2000, mean)
 means2
 ```
 
-
 ```{r message=FALSE, warning=FALSE}
 ## BY 
 means3 <- by(soep_2000$health_org, soep_2000$sex, mean)
@@ -96,9 +96,12 @@ means4
 
 The `dplyr` solution uses labels (notice the type `<dbl+lbl>` for `sex` and `<dbl>` for `means`). Only few datasets comes with labels. And not all packages can handle them. The old fashioned way in R to have a readable and usable label is to define `sex` as a **factor variable**. 
 
-::: {.defbox}
-A **factor variable** is a variable used for categorical data. 
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+A **factor variable** is a variable used for categorical data. 
+::::
 
 Categories can be ordered (e.g. small, medium, large) or without order (e.g. men, women). An integer or string can be converted to a factor. Factors have hidden **levels**. Several R functions and packages treat factors fundamentally different from integers. When R handles `sex` as an integer, it assumes that values such as `sex=-3` and `sex=1.5` are possible. 
 
@@ -133,9 +136,12 @@ The average health status is higher for men in comparison to women in the data. 
 <!-- https://www.statisticshowto.com/probability-and-statistics/hypothesis-testing/ -->
 <!-- A statistical hypothesis test is a method of statistical inference used to decide whether the data at hand sufficiently support a particular hypothesis.  -->
 
-::: {.defbox .information data-latex="warning"}
-**Hypothesis testing** in statistics is a way to test the results of a survey or experiment to see if there are meaningful results.
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+**Hypothesis testing** in statistics is a way to test the results of a survey or experiment to see if there are meaningful results.
+::::
 
 It's basically testing whether the results are valid by figuring out the odds that the results have happened by chance. If the results may have happened by chance, the experiment won’t be repeatable and so has little use. 
 
@@ -152,9 +158,12 @@ plotmeans(health_org ~ sex_factor, data = soep_2000, frame = FALSE)
 
 `plotmeans()` nicely presents the number of observations and labels by default.
 
-::: {.defbox}
-There is a statistically significant difference, **when confidence intervals not overlap**.
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
 :::
+There is a statistically significant difference, **when confidence intervals not overlap**.
+::::
 
 Conclusion: Don't worry about the health differential. 
 
@@ -168,17 +177,22 @@ Conclusion: Don't worry about the health differential.
 <!-- https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios/##how-to-compute-students-t-test-by-hand -->
 <!-- https://suinotes.wordpress.com/2009/11/30/understanding-t-test-in-r/ -->
 
-::: {.sheldon .beer}
 <details>
 <summary>
 *What this has do to with beer.*
 </summary>
-**Student's t-test** or simply t-test was published by W.S. Gossett who hid his name due to his position as a worker in a **brewery company** (Guiness Brewery Dublin). 
-</details>
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
 :::
+**Student's t-test** or simply t-test was published by W.S. Gossett who hid his name due to his position as a worker in a **brewery company** (Guiness Brewery Dublin). 
+::::
+
+</details>
+
 
 <!-- Now we learn about two different versions of the two sample t-test that either work for one measurement (one point in time) or two measurements (before-after setting). -->
-There are several versions of a t-test. The first distinction is whether there are one or two samples (groups). If there are two groups, the second distinction is whether there are one or two measurements in time.^[There was a specific reason why we filtered for a particular year at the beginning.]
+There are several versions of a [Student's t-test](https://en.wikipedia.org/wiki/Student%27s_t-test). The first distinction is whether there are one or two samples (groups). If there are two groups, the second distinction is whether there are one or two measurements in time.^[There was a specific reason why we filtered for a particular year at the beginning.]
 
 * One sample t-test
 * Two sample tests
@@ -188,10 +202,6 @@ There are several versions of a t-test. The first distinction is whether there a
   + Dependent (or paired or repeated) t-test
 
 Which is the most common one? Ask the simple implementation `t.test()` that tells you that it's a **Welch Two Sample t-test**.^[Unfortunately, Bernard Lewis Welch did not work for a Brewery company.] The Welch's t-test (or unequal variances t-test), is a two-sample location test which is used to test the hypothesis that two populations have equal means when the assumption of equal variances is dropped. The `t.test()` is unpaired since the **default** option is `paired=FALSE`. We will use the unpaired t-test for mean comparison between genders, since men and women are *independent* in the sense of statistical samples (though they may be related in other circumstances). 
-
-::: {.reading}
-Read more about [Student's t-test](https://en.wikipedia.org/wiki/Student%27s_t-test).
-:::
 
 ### Independent t-test 
 
@@ -216,9 +226,12 @@ The t-statistic is at the heart of this hypothesis test. The t value has to be c
 
 The p-value can be seen as easy-alternative to the t-statistic. You probably never look up critical t values, do you? If you just want to glimpse at it, [here is one]( https://jimgrange.wordpress.com/2015/12/05/statistics-tables-where-do-the-numbers-come-from/). We are looking forward getting **small p-values** (smaller than 0.05 by convention). If p < 0.05 we say that we reject the null and conclude that there is actually something going on! 
 
-::: {.defbox .information data-latex="warning"}
-If a p value is less than 0.05, the result is called **statistically significant**.
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+If a p value is less than 0.05, the result is called **statistically significant**.
+::::
 
 The 95% confidence interval (CI) is another way of looking at the same issue. 95% of the values should be in the interval 0.1 to 0.3. Thus if zero is not in the CI we can be pretty sure that something is going on.
 
@@ -247,9 +260,12 @@ t.test(health_org ~ year, data=women_before_after, paired=TRUE)
 
 It looks like women have been significantly more healthy in 2000 than in 2004. Can you think of a reason? What happened to all those women? 
 
-::: {.challenge}
-Can you name a reason for the significant difference in health? 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
 :::
+Can you name a reason for the significant difference in health? 
+::::
 
 The paired t-test is a little bit more demanding in the way that we need data on something observed at two different points in time. In this before-and-after scenario, the person serves as something like its own control group. We'll come back to that. 
 
@@ -261,9 +277,12 @@ t.test(health_org ~ year, data=women_before_after, paired=FALSE)
 
 The mean difference is exactly the same. Can you spot it? Ask your console to calculate the difference between 3.497549 and 3.325980). But all the other statistics seem to be different: t-value, degree of freedom, p-value ... 
 
-::: {.defbox}
-In this scenario the mean difference from the `paired=TRUE` and `paired=FALSE` test are identical. But using the information from the **paired sample** (one person observed for two periods), the **t-value became higher and thus the p-value lower**. In a nutshell, we gained more statistical confidence in our estimate! 
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Amazing Fact </h2>
 :::
+In this scenario the mean difference from the `paired=TRUE` and `paired=FALSE` test are identical. But using the information from the **paired sample** (one person observed for two periods), the **t-value became higher and thus the p-value lower**. In a nutshell, we gained more statistical confidence in our estimate!
+::::
 
 Once more we saw how valuable time is. We explore this in more detail in the next chapter. 
 
