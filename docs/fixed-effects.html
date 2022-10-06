@@ -302,11 +302,13 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="6" data-path="data-scraping.html"><a href="data-scraping.html"><i class="fa fa-check"></i><b>6</b> Data Scraping</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="data-scraping.html"><a href="data-scraping.html#student-numbers-are-on-the-decline"><i class="fa fa-check"></i><b>6.1</b> Student numbers are on the decline</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="data-scraping.html"><a href="data-scraping.html#pdf-scraping"><i class="fa fa-check"></i><b>6.1.1</b> PDF scraping</a></li>
-<li class="chapter" data-level="6.1.2" data-path="data-scraping.html"><a href="data-scraping.html#web-scraping"><i class="fa fa-check"></i><b>6.1.2</b> Web scraping</a></li>
-</ul></li>
+<li class="chapter" data-level="6.1" data-path="data-scraping.html"><a href="data-scraping.html#student-numbers-at-viadrina"><i class="fa fa-check"></i><b>6.1</b> Student numbers at Viadrina</a></li>
+<li class="chapter" data-level="6.2" data-path="data-scraping.html"><a href="data-scraping.html#pdf-scraping"><i class="fa fa-check"></i><b>6.2</b> PDF scraping</a></li>
+<li class="chapter" data-level="6.3" data-path="data-scraping.html"><a href="data-scraping.html#share-of-female-students"><i class="fa fa-check"></i><b>6.3</b> Share of female students</a></li>
+<li class="chapter" data-level="6.4" data-path="data-scraping.html"><a href="data-scraping.html#share-of-foreign-students"><i class="fa fa-check"></i><b>6.4</b> Share of foreign students</a></li>
+<li class="chapter" data-level="6.5" data-path="data-scraping.html"><a href="data-scraping.html#web-scraping"><i class="fa fa-check"></i><b>6.5</b> Web scraping</a></li>
+<li class="chapter" data-level="6.6" data-path="data-scraping.html"><a href="data-scraping.html#most-recent-student-numbers"><i class="fa fa-check"></i><b>6.6</b> Most recent student numbers</a></li>
+<li class="chapter" data-level="6.7" data-path="data-scraping.html"><a href="data-scraping.html#the-long-run-trend"><i class="fa fa-check"></i><b>6.7</b> The long run trend</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>7</b> Relationships</a>
 <ul>
@@ -431,26 +433,26 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <div id="cross-sectional-data-2-pt" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> Cross-sectional Data (2 pt)<a href="fixed-effects.html#cross-sectional-data-2-pt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Suppose you want to learn the <strong>effect of price on the demand</strong> for back massages. Read in the following data from four Midwest locations (call it <code>crosssection</code>) and print the table with the <code>gt</code> package.</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="fixed-effects.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crosssection</span></span>
-<span id="cb147-2"><a href="fixed-effects.html#cb147-2" aria-hidden="true" tabindex="-1"></a>crosssection <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Location =</span> <span class="fu">c</span>(<span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Madison&quot;</span>),</span>
-<span id="cb147-3"><a href="fixed-effects.html#cb147-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Year =</span> <span class="fu">rep</span>(<span class="dv">2003</span>, <span class="dv">4</span>), </span>
-<span id="cb147-4"><a href="fixed-effects.html#cb147-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Price =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">55</span>),</span>
-<span id="cb147-5"><a href="fixed-effects.html#cb147-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Quantity =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">0.8</span>))</span>
-<span id="cb147-6"><a href="fixed-effects.html#cb147-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb147-7"><a href="fixed-effects.html#cb147-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb147-8"><a href="fixed-effects.html#cb147-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb147-9"><a href="fixed-effects.html#cb147-9" aria-hidden="true" tabindex="-1"></a>table_1 <span class="ot">&lt;-</span></span>
-<span id="cb147-10"><a href="fixed-effects.html#cb147-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">data =</span> crosssection) <span class="sc">%&gt;%</span></span>
-<span id="cb147-11"><a href="fixed-effects.html#cb147-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 1: Cross-sectional Data&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb147-12"><a href="fixed-effects.html#cb147-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb147-13"><a href="fixed-effects.html#cb147-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
-<span id="cb147-14"><a href="fixed-effects.html#cb147-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
-<span id="cb147-15"><a href="fixed-effects.html#cb147-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
-<span id="cb147-16"><a href="fixed-effects.html#cb147-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>)</span>
-<span id="cb147-17"><a href="fixed-effects.html#cb147-17" aria-hidden="true" tabindex="-1"></a>  )  </span>
-<span id="cb147-18"><a href="fixed-effects.html#cb147-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb147-19"><a href="fixed-effects.html#cb147-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the gt Table</span></span>
-<span id="cb147-20"><a href="fixed-effects.html#cb147-20" aria-hidden="true" tabindex="-1"></a>table_1</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="fixed-effects.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crosssection</span></span>
+<span id="cb149-2"><a href="fixed-effects.html#cb149-2" aria-hidden="true" tabindex="-1"></a>crosssection <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Location =</span> <span class="fu">c</span>(<span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Madison&quot;</span>),</span>
+<span id="cb149-3"><a href="fixed-effects.html#cb149-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Year =</span> <span class="fu">rep</span>(<span class="dv">2003</span>, <span class="dv">4</span>), </span>
+<span id="cb149-4"><a href="fixed-effects.html#cb149-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Price =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">55</span>),</span>
+<span id="cb149-5"><a href="fixed-effects.html#cb149-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Quantity =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">0.8</span>))</span>
+<span id="cb149-6"><a href="fixed-effects.html#cb149-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-7"><a href="fixed-effects.html#cb149-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb149-8"><a href="fixed-effects.html#cb149-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb149-9"><a href="fixed-effects.html#cb149-9" aria-hidden="true" tabindex="-1"></a>table_1 <span class="ot">&lt;-</span></span>
+<span id="cb149-10"><a href="fixed-effects.html#cb149-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">data =</span> crosssection) <span class="sc">%&gt;%</span></span>
+<span id="cb149-11"><a href="fixed-effects.html#cb149-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 1: Cross-sectional Data&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb149-12"><a href="fixed-effects.html#cb149-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb149-13"><a href="fixed-effects.html#cb149-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
+<span id="cb149-14"><a href="fixed-effects.html#cb149-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
+<span id="cb149-15"><a href="fixed-effects.html#cb149-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
+<span id="cb149-16"><a href="fixed-effects.html#cb149-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>)</span>
+<span id="cb149-17"><a href="fixed-effects.html#cb149-17" aria-hidden="true" tabindex="-1"></a>  )  </span>
+<span id="cb149-18"><a href="fixed-effects.html#cb149-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-19"><a href="fixed-effects.html#cb149-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the gt Table</span></span>
+<span id="cb149-20"><a href="fixed-effects.html#cb149-20" aria-hidden="true" tabindex="-1"></a>table_1</span></code></pre></div>
 <div id="nittaaofuj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -901,30 +903,30 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </table>
 </div>
 <p>Please create the plot (in Base R or <code>ggplot</code>).</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-209-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-212-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="panel-data-2-pt" class="section level2 hasAnchor" number="10.2">
 <h2><span class="header-section-number">10.2</span> Panel Data (2 pt)<a href="fixed-effects.html#panel-data-2-pt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Read in additional data from Table 2 (call it <code>paneldata</code>).</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="fixed-effects.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb148-2"><a href="fixed-effects.html#cb148-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb148-3"><a href="fixed-effects.html#cb148-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb148-4"><a href="fixed-effects.html#cb148-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel Data</span></span>
-<span id="cb148-5"><a href="fixed-effects.html#cb148-5" aria-hidden="true" tabindex="-1"></a>paneldata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Location =</span> <span class="fu">c</span>(<span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Madison&quot;</span>, <span class="st">&quot;Madison&quot;</span>),</span>
-<span id="cb148-6"><a href="fixed-effects.html#cb148-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Year =</span> <span class="fu">rep</span>(<span class="dv">2003</span><span class="sc">:</span><span class="dv">2004</span>, <span class="dv">4</span>), </span>
-<span id="cb148-7"><a href="fixed-effects.html#cb148-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Price =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">85</span>, <span class="dv">50</span>, <span class="dv">48</span>, <span class="dv">60</span>, <span class="dv">65</span>, <span class="dv">55</span>, <span class="dv">60</span>),</span>
-<span id="cb148-8"><a href="fixed-effects.html#cb148-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Quantity =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">1.8</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>, <span class="fl">1.5</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>))</span>
-<span id="cb148-9"><a href="fixed-effects.html#cb148-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb148-10"><a href="fixed-effects.html#cb148-10" aria-hidden="true" tabindex="-1"></a>table_2 <span class="ot">&lt;-</span></span>
-<span id="cb148-11"><a href="fixed-effects.html#cb148-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">data =</span> paneldata) <span class="sc">%&gt;%</span></span>
-<span id="cb148-12"><a href="fixed-effects.html#cb148-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 2: Panel Data&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb148-13"><a href="fixed-effects.html#cb148-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb148-14"><a href="fixed-effects.html#cb148-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
-<span id="cb148-15"><a href="fixed-effects.html#cb148-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
-<span id="cb148-16"><a href="fixed-effects.html#cb148-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
-<span id="cb148-17"><a href="fixed-effects.html#cb148-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>)</span>
-<span id="cb148-18"><a href="fixed-effects.html#cb148-18" aria-hidden="true" tabindex="-1"></a>  )  </span>
-<span id="cb148-19"><a href="fixed-effects.html#cb148-19" aria-hidden="true" tabindex="-1"></a>table_2</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="fixed-effects.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb150-2"><a href="fixed-effects.html#cb150-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb150-3"><a href="fixed-effects.html#cb150-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-4"><a href="fixed-effects.html#cb150-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel Data</span></span>
+<span id="cb150-5"><a href="fixed-effects.html#cb150-5" aria-hidden="true" tabindex="-1"></a>paneldata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Location =</span> <span class="fu">c</span>(<span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Madison&quot;</span>, <span class="st">&quot;Madison&quot;</span>),</span>
+<span id="cb150-6"><a href="fixed-effects.html#cb150-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Year =</span> <span class="fu">rep</span>(<span class="dv">2003</span><span class="sc">:</span><span class="dv">2004</span>, <span class="dv">4</span>), </span>
+<span id="cb150-7"><a href="fixed-effects.html#cb150-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Price =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">85</span>, <span class="dv">50</span>, <span class="dv">48</span>, <span class="dv">60</span>, <span class="dv">65</span>, <span class="dv">55</span>, <span class="dv">60</span>),</span>
+<span id="cb150-8"><a href="fixed-effects.html#cb150-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Quantity =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">1.8</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>, <span class="fl">1.5</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>))</span>
+<span id="cb150-9"><a href="fixed-effects.html#cb150-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-10"><a href="fixed-effects.html#cb150-10" aria-hidden="true" tabindex="-1"></a>table_2 <span class="ot">&lt;-</span></span>
+<span id="cb150-11"><a href="fixed-effects.html#cb150-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">data =</span> paneldata) <span class="sc">%&gt;%</span></span>
+<span id="cb150-12"><a href="fixed-effects.html#cb150-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 2: Panel Data&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb150-13"><a href="fixed-effects.html#cb150-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb150-14"><a href="fixed-effects.html#cb150-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
+<span id="cb150-15"><a href="fixed-effects.html#cb150-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
+<span id="cb150-16"><a href="fixed-effects.html#cb150-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
+<span id="cb150-17"><a href="fixed-effects.html#cb150-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>)</span>
+<span id="cb150-18"><a href="fixed-effects.html#cb150-18" aria-hidden="true" tabindex="-1"></a>  )  </span>
+<span id="cb150-19"><a href="fixed-effects.html#cb150-19" aria-hidden="true" tabindex="-1"></a>table_2</span></code></pre></div>
 <div id="bkyrlkseyb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1391,39 +1393,39 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </table>
 </div>
 <p>Please create the plot.</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="fixed-effects.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(paneldata, <span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>Quantity)) <span class="sc">+</span> </span>
-<span id="cb149-2"><a href="fixed-effects.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb149-3"><a href="fixed-effects.html#cb149-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Relationship between Price and Quantity&quot;</span>,</span>
-<span id="cb149-4"><a href="fixed-effects.html#cb149-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Price&quot;</span>, <span class="at">y=</span><span class="st">&quot;Quantity&quot;</span>) <span class="sc">+</span></span>
-<span id="cb149-5"><a href="fixed-effects.html#cb149-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">colour =</span> Location), <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb149-6"><a href="fixed-effects.html#cb149-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-211-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="fixed-effects.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(paneldata, <span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>Quantity)) <span class="sc">+</span> </span>
+<span id="cb151-2"><a href="fixed-effects.html#cb151-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb151-3"><a href="fixed-effects.html#cb151-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Relationship between Price and Quantity&quot;</span>,</span>
+<span id="cb151-4"><a href="fixed-effects.html#cb151-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Price&quot;</span>, <span class="at">y=</span><span class="st">&quot;Quantity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb151-5"><a href="fixed-effects.html#cb151-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">colour =</span> Location), <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb151-6"><a href="fixed-effects.html#cb151-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-214-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="fixed-effects-regression" class="section level2 hasAnchor" number="10.3">
 <h2><span class="header-section-number">10.3</span> Fixed Effects Regression<a href="fixed-effects.html#fixed-effects-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="first-difference-2-pt" class="section level3 hasAnchor" number="10.3.1">
 <h3><span class="header-section-number">10.3.1</span> First Difference (2 pt)<a href="fixed-effects.html#first-difference-2-pt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Please add two columns, i.e. the change in price (name it <code>P_diff</code>) and the change in quantity (name it <code>Q_diff</code>) to your dataframe (1 pt).</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="fixed-effects.html#cb150-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="ot">&lt;-</span> paneldata <span class="sc">%&gt;%</span></span>
-<span id="cb150-2"><a href="fixed-effects.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
-<span id="cb150-3"><a href="fixed-effects.html#cb150-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">P_diff =</span> Price <span class="sc">-</span> <span class="fu">lag</span>(Price),</span>
-<span id="cb150-4"><a href="fixed-effects.html#cb150-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_diff =</span> Quantity <span class="sc">-</span> <span class="fu">lag</span>(Quantity))</span>
-<span id="cb150-5"><a href="fixed-effects.html#cb150-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-6"><a href="fixed-effects.html#cb150-6" aria-hidden="true" tabindex="-1"></a><span class="co">#library(xtable) # may handle formulas in colnames</span></span>
-<span id="cb150-7"><a href="fixed-effects.html#cb150-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print(xtable(table3)), type = &quot;html&quot;)</span></span>
-<span id="cb150-8"><a href="fixed-effects.html#cb150-8" aria-hidden="true" tabindex="-1"></a><span class="co">#print(xtable(head(cars)), type = &quot;html&quot;)</span></span>
-<span id="cb150-9"><a href="fixed-effects.html#cb150-9" aria-hidden="true" tabindex="-1"></a><span class="co">#print(xtable(table3), type = &quot;html&quot;)</span></span>
-<span id="cb150-10"><a href="fixed-effects.html#cb150-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-11"><a href="fixed-effects.html#cb150-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb150-12"><a href="fixed-effects.html#cb150-12" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(<span class="at">data =</span> table3, <span class="at">rowname_col =</span> <span class="cn">TRUE</span>, <span class="at">groupname_col=</span><span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb150-13"><a href="fixed-effects.html#cb150-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 3: Data for Difference Equation Estimation.&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb150-14"><a href="fixed-effects.html#cb150-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb150-15"><a href="fixed-effects.html#cb150-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
-<span id="cb150-16"><a href="fixed-effects.html#cb150-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
-<span id="cb150-17"><a href="fixed-effects.html#cb150-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
-<span id="cb150-18"><a href="fixed-effects.html#cb150-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>),</span>
-<span id="cb150-19"><a href="fixed-effects.html#cb150-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta P**&quot;</span>),</span>
-<span id="cb150-20"><a href="fixed-effects.html#cb150-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta Q**&quot;</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="fixed-effects.html#cb152-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="ot">&lt;-</span> paneldata <span class="sc">%&gt;%</span></span>
+<span id="cb152-2"><a href="fixed-effects.html#cb152-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
+<span id="cb152-3"><a href="fixed-effects.html#cb152-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">P_diff =</span> Price <span class="sc">-</span> <span class="fu">lag</span>(Price),</span>
+<span id="cb152-4"><a href="fixed-effects.html#cb152-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_diff =</span> Quantity <span class="sc">-</span> <span class="fu">lag</span>(Quantity))</span>
+<span id="cb152-5"><a href="fixed-effects.html#cb152-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-6"><a href="fixed-effects.html#cb152-6" aria-hidden="true" tabindex="-1"></a><span class="co">#library(xtable) # may handle formulas in colnames</span></span>
+<span id="cb152-7"><a href="fixed-effects.html#cb152-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print(xtable(table3)), type = &quot;html&quot;)</span></span>
+<span id="cb152-8"><a href="fixed-effects.html#cb152-8" aria-hidden="true" tabindex="-1"></a><span class="co">#print(xtable(head(cars)), type = &quot;html&quot;)</span></span>
+<span id="cb152-9"><a href="fixed-effects.html#cb152-9" aria-hidden="true" tabindex="-1"></a><span class="co">#print(xtable(table3), type = &quot;html&quot;)</span></span>
+<span id="cb152-10"><a href="fixed-effects.html#cb152-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-11"><a href="fixed-effects.html#cb152-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb152-12"><a href="fixed-effects.html#cb152-12" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(<span class="at">data =</span> table3, <span class="at">rowname_col =</span> <span class="cn">TRUE</span>, <span class="at">groupname_col=</span><span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb152-13"><a href="fixed-effects.html#cb152-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 3: Data for Difference Equation Estimation.&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb152-14"><a href="fixed-effects.html#cb152-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb152-15"><a href="fixed-effects.html#cb152-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
+<span id="cb152-16"><a href="fixed-effects.html#cb152-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
+<span id="cb152-17"><a href="fixed-effects.html#cb152-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
+<span id="cb152-18"><a href="fixed-effects.html#cb152-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>),</span>
+<span id="cb152-19"><a href="fixed-effects.html#cb152-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta P**&quot;</span>),</span>
+<span id="cb152-20"><a href="fixed-effects.html#cb152-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta Q**&quot;</span>)) </span></code></pre></div>
 <div id="fbewmzteiw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1954,25 +1956,25 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <li>Regress these time-demeaned observation (with standard lm command).</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="fixed-effects.html#cb151-1" aria-hidden="true" tabindex="-1"></a>table4 <span class="ot">&lt;-</span> paneldata <span class="sc">%&gt;%</span></span>
-<span id="cb151-2"><a href="fixed-effects.html#cb151-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
-<span id="cb151-3"><a href="fixed-effects.html#cb151-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">P_diff =</span> Price <span class="sc">-</span> <span class="fu">lag</span>(Price),</span>
-<span id="cb151-4"><a href="fixed-effects.html#cb151-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_diff =</span> Quantity <span class="sc">-</span> <span class="fu">lag</span>(Quantity),</span>
-<span id="cb151-5"><a href="fixed-effects.html#cb151-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">P_P_mean =</span> Price <span class="sc">-</span> <span class="fu">mean</span>(Price),</span>
-<span id="cb151-6"><a href="fixed-effects.html#cb151-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_Q_mean =</span> Quantity <span class="sc">-</span> <span class="fu">mean</span>(Quantity))</span>
-<span id="cb151-7"><a href="fixed-effects.html#cb151-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb151-8"><a href="fixed-effects.html#cb151-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb151-9"><a href="fixed-effects.html#cb151-9" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(<span class="at">data =</span> table4, <span class="at">rowname_col =</span> <span class="cn">TRUE</span>, <span class="at">groupname_col=</span><span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb151-10"><a href="fixed-effects.html#cb151-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 4: Data for Within Time Demean Estimation.&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb151-11"><a href="fixed-effects.html#cb151-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb151-12"><a href="fixed-effects.html#cb151-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
-<span id="cb151-13"><a href="fixed-effects.html#cb151-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
-<span id="cb151-14"><a href="fixed-effects.html#cb151-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
-<span id="cb151-15"><a href="fixed-effects.html#cb151-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>),</span>
-<span id="cb151-16"><a href="fixed-effects.html#cb151-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta P**&quot;</span>),</span>
-<span id="cb151-17"><a href="fixed-effects.html#cb151-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta Q**&quot;</span>),</span>
-<span id="cb151-18"><a href="fixed-effects.html#cb151-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_P_mean =</span> <span class="fu">md</span>(<span class="st">&quot;**P - mean(P)**&quot;</span>),</span>
-<span id="cb151-19"><a href="fixed-effects.html#cb151-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q_Q_mean =</span> <span class="fu">md</span>(<span class="st">&quot;**Q - mean(Q)**&quot;</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="fixed-effects.html#cb153-1" aria-hidden="true" tabindex="-1"></a>table4 <span class="ot">&lt;-</span> paneldata <span class="sc">%&gt;%</span></span>
+<span id="cb153-2"><a href="fixed-effects.html#cb153-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
+<span id="cb153-3"><a href="fixed-effects.html#cb153-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">P_diff =</span> Price <span class="sc">-</span> <span class="fu">lag</span>(Price),</span>
+<span id="cb153-4"><a href="fixed-effects.html#cb153-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_diff =</span> Quantity <span class="sc">-</span> <span class="fu">lag</span>(Quantity),</span>
+<span id="cb153-5"><a href="fixed-effects.html#cb153-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">P_P_mean =</span> Price <span class="sc">-</span> <span class="fu">mean</span>(Price),</span>
+<span id="cb153-6"><a href="fixed-effects.html#cb153-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_Q_mean =</span> Quantity <span class="sc">-</span> <span class="fu">mean</span>(Quantity))</span>
+<span id="cb153-7"><a href="fixed-effects.html#cb153-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb153-8"><a href="fixed-effects.html#cb153-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb153-9"><a href="fixed-effects.html#cb153-9" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(<span class="at">data =</span> table4, <span class="at">rowname_col =</span> <span class="cn">TRUE</span>, <span class="at">groupname_col=</span><span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb153-10"><a href="fixed-effects.html#cb153-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Table 4: Data for Within Time Demean Estimation.&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb153-11"><a href="fixed-effects.html#cb153-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb153-12"><a href="fixed-effects.html#cb153-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Location =</span> <span class="fu">md</span>(<span class="st">&quot;**Location**&quot;</span>),</span>
+<span id="cb153-13"><a href="fixed-effects.html#cb153-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
+<span id="cb153-14"><a href="fixed-effects.html#cb153-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Price =</span> <span class="fu">md</span>(<span class="st">&quot;**Price**&quot;</span>),</span>
+<span id="cb153-15"><a href="fixed-effects.html#cb153-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quantity =</span> <span class="fu">md</span>(<span class="st">&quot;**Per Capita&lt;br&gt;Quantity**&quot;</span>),</span>
+<span id="cb153-16"><a href="fixed-effects.html#cb153-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta P**&quot;</span>),</span>
+<span id="cb153-17"><a href="fixed-effects.html#cb153-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q_diff =</span> <span class="fu">md</span>(<span class="st">&quot;**Delta Q**&quot;</span>),</span>
+<span id="cb153-18"><a href="fixed-effects.html#cb153-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_P_mean =</span> <span class="fu">md</span>(<span class="st">&quot;**P - mean(P)**&quot;</span>),</span>
+<span id="cb153-19"><a href="fixed-effects.html#cb153-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Q_Q_mean =</span> <span class="fu">md</span>(<span class="st">&quot;**Q - mean(Q)**&quot;</span>)) </span></code></pre></div>
 <div id="fovtibkxlx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -2482,78 +2484,78 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <div id="comparison-1-pt" class="section level3 hasAnchor" number="10.3.4">
 <h3><span class="header-section-number">10.3.4</span> Comparison (1 pt)<a href="fixed-effects.html#comparison-1-pt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Create a model overview with <code>stargazer</code>. Start with a pooling model. You should have 5 models in total. You need to play around with stargazer options in order to make it good looking. Drop the constant in all your models. Drop <code>model.numbers</code> and <code>dep.var.labels.include</code> or the F statistic. You can relabel <code>column.labels</code> in stargazer as well. Your result should look like this:</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="fixed-effects.html#cb152-1" aria-hidden="true" tabindex="-1"></a>paneldata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Location =</span> <span class="fu">c</span>(<span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, </span>
-<span id="cb152-2"><a href="fixed-effects.html#cb152-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Madison&quot;</span>, <span class="st">&quot;Madison&quot;</span>),</span>
-<span id="cb152-3"><a href="fixed-effects.html#cb152-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Year =</span> <span class="fu">rep</span>(<span class="dv">2003</span><span class="sc">:</span><span class="dv">2004</span>, <span class="dv">4</span>),</span>
-<span id="cb152-4"><a href="fixed-effects.html#cb152-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Price =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">85</span>, <span class="dv">50</span>, <span class="dv">48</span>, <span class="dv">60</span>, <span class="dv">65</span>, <span class="dv">55</span>, <span class="dv">60</span>),</span>
-<span id="cb152-5"><a href="fixed-effects.html#cb152-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Quantity =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">1.8</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>, <span class="fl">1.5</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>))</span>
-<span id="cb152-6"><a href="fixed-effects.html#cb152-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-7"><a href="fixed-effects.html#cb152-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjmisc)</span>
-<span id="cb152-8"><a href="fixed-effects.html#cb152-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb152-9"><a href="fixed-effects.html#cb152-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-10"><a href="fixed-effects.html#cb152-10" aria-hidden="true" tabindex="-1"></a>paneldata <span class="ot">&lt;-</span> paneldata <span class="sc">%&gt;%</span></span>
-<span id="cb152-11"><a href="fixed-effects.html#cb152-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
-<span id="cb152-12"><a href="fixed-effects.html#cb152-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dP =</span> <span class="fu">last</span>(Price) <span class="sc">-</span> <span class="fu">first</span>(Price),</span>
-<span id="cb152-13"><a href="fixed-effects.html#cb152-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">dQ =</span> <span class="fu">last</span>(Quantity) <span class="sc">-</span> <span class="fu">first</span>(Quantity),</span>
-<span id="cb152-14"><a href="fixed-effects.html#cb152-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">dP=</span><span class="fu">replace</span>(dP, <span class="fu">row_number</span>()<span class="sc">==</span><span class="dv">1</span>, <span class="cn">NA</span>),</span>
-<span id="cb152-15"><a href="fixed-effects.html#cb152-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">dQ=</span><span class="fu">replace</span>(dQ, <span class="fu">row_number</span>()<span class="sc">==</span><span class="dv">1</span>, <span class="cn">NA</span>),</span>
-<span id="cb152-16"><a href="fixed-effects.html#cb152-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">mean_P =</span> <span class="fu">mean</span>(Price),</span>
-<span id="cb152-17"><a href="fixed-effects.html#cb152-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">mean_Q =</span> <span class="fu">mean</span>(Quantity),</span>
-<span id="cb152-18"><a href="fixed-effects.html#cb152-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">P_mean_P =</span> Price <span class="sc">-</span> mean_P,</span>
-<span id="cb152-19"><a href="fixed-effects.html#cb152-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_mean_Q =</span> Quantity <span class="sc">-</span> mean_Q,</span>
-<span id="cb152-20"><a href="fixed-effects.html#cb152-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Price_ave =</span> Price <span class="sc">-</span> <span class="fu">ave</span>(Price, Location),</span>
-<span id="cb152-21"><a href="fixed-effects.html#cb152-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">Quantity_ave =</span> Quantity <span class="sc">-</span> <span class="fu">ave</span>(Quantity, Location)) <span class="sc">%&gt;%</span></span>
-<span id="cb152-22"><a href="fixed-effects.html#cb152-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="at">.vars =</span> <span class="fu">c</span>(<span class="st">&quot;Quantity&quot;</span>,<span class="st">&quot;Price&quot;</span>),</span>
-<span id="cb152-23"><a href="fixed-effects.html#cb152-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">.funs =</span> <span class="fu">list</span>(<span class="st">&quot;centered&quot;</span> <span class="ot">=</span> center)) <span class="sc">%&gt;%</span></span>
-<span id="cb152-24"><a href="fixed-effects.html#cb152-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb152-25"><a href="fixed-effects.html#cb152-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-26"><a href="fixed-effects.html#cb152-26" aria-hidden="true" tabindex="-1"></a><span class="co"># for better comparison in stargazer</span></span>
-<span id="cb152-27"><a href="fixed-effects.html#cb152-27" aria-hidden="true" tabindex="-1"></a>paneldata_demeaned <span class="ot">&lt;-</span> <span class="fu">with</span>(paneldata,</span>
-<span id="cb152-28"><a href="fixed-effects.html#cb152-28" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">data.frame</span>(<span class="at">Quantity =</span> Quantity <span class="sc">-</span> <span class="fu">ave</span>(Quantity, Location),</span>
-<span id="cb152-29"><a href="fixed-effects.html#cb152-29" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">Price =</span> Price <span class="sc">-</span> <span class="fu">ave</span>(Price, Location)))</span>
-<span id="cb152-30"><a href="fixed-effects.html#cb152-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-31"><a href="fixed-effects.html#cb152-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Pooling</span></span>
-<span id="cb152-32"><a href="fixed-effects.html#cb152-32" aria-hidden="true" tabindex="-1"></a>pooling <span class="ot">&lt;-</span> <span class="fu">lm</span>(Quantity <span class="sc">~</span> Price <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>paneldata)</span>
-<span id="cb152-33"><a href="fixed-effects.html#cb152-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-34"><a href="fixed-effects.html#cb152-34" aria-hidden="true" tabindex="-1"></a><span class="co"># First Difference Estimation</span></span>
-<span id="cb152-35"><a href="fixed-effects.html#cb152-35" aria-hidden="true" tabindex="-1"></a>FD <span class="ot">&lt;-</span> <span class="fu">lm</span>(dQ <span class="sc">~</span> dP <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata)</span>
-<span id="cb152-36"><a href="fixed-effects.html#cb152-36" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(FD<span class="sc">$</span>coefficients) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Price&#39;</span>)</span>
-<span id="cb152-37"><a href="fixed-effects.html#cb152-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-38"><a href="fixed-effects.html#cb152-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Time demean</span></span>
-<span id="cb152-39"><a href="fixed-effects.html#cb152-39" aria-hidden="true" tabindex="-1"></a>TDM <span class="ot">&lt;-</span> <span class="fu">lm</span>(Quantity <span class="sc">~</span> Price <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata_demeaned)</span>
-<span id="cb152-40"><a href="fixed-effects.html#cb152-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-41"><a href="fixed-effects.html#cb152-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
-<span id="cb152-42"><a href="fixed-effects.html#cb152-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb152-43"><a href="fixed-effects.html#cb152-43" aria-hidden="true" tabindex="-1"></a>FE <span class="ot">&lt;-</span> <span class="fu">plm</span>(Quantity <span class="sc">~</span> Price <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata,</span>
-<span id="cb152-44"><a href="fixed-effects.html#cb152-44" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;within&quot;</span>,</span>
-<span id="cb152-45"><a href="fixed-effects.html#cb152-45" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;Location&quot;</span>,<span class="st">&quot;Year&quot;</span>))</span>
-<span id="cb152-46"><a href="fixed-effects.html#cb152-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb152-47"><a href="fixed-effects.html#cb152-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Least Squares Dummy Variable Estimation (Individual FE)</span></span>
-<span id="cb152-48"><a href="fixed-effects.html#cb152-48" aria-hidden="true" tabindex="-1"></a>LSDV <span class="ot">&lt;-</span> <span class="fu">lm</span>(Quantity <span class="sc">~</span> Price <span class="sc">+</span> Location <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata)</span></code></pre></div>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="fixed-effects.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stargazer Comparison</span></span>
-<span id="cb153-2"><a href="fixed-effects.html#cb153-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb153-3"><a href="fixed-effects.html#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(pooling, FD, TDM, FE, LSDV, <span class="at">type=</span><span class="st">&quot;text&quot;</span>, <span class="at">keep=</span><span class="fu">c</span>(<span class="st">&quot;Price&quot;</span>),</span>
-<span id="cb153-4"><a href="fixed-effects.html#cb153-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels=</span><span class="fu">c</span>(<span class="st">&quot;Pooling&quot;</span>, <span class="st">&quot;FD&quot;</span>, <span class="st">&quot;TD&quot;</span>, <span class="st">&quot;FE&quot;</span>, <span class="st">&quot;LSDV&quot;</span>),</span>
-<span id="cb153-5"><a href="fixed-effects.html#cb153-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels.include =</span> <span class="cn">FALSE</span>, <span class="at">model.numbers =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb153-6"><a href="fixed-effects.html#cb153-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat=</span><span class="st">&quot;f&quot;</span>)</span>
-<span id="cb153-7"><a href="fixed-effects.html#cb153-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb153-8"><a href="fixed-effects.html#cb153-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
-<span id="cb153-9"><a href="fixed-effects.html#cb153-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                              Dependent variable:                         </span></span>
-<span id="cb153-10"><a href="fixed-effects.html#cb153-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     ---------------------------------------------------------------------</span></span>
-<span id="cb153-11"><a href="fixed-effects.html#cb153-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          OLS            OLS            OLS         panel        OLS      </span></span>
-<span id="cb153-12"><a href="fixed-effects.html#cb153-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                   linear                 </span></span>
-<span id="cb153-13"><a href="fixed-effects.html#cb153-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        Pooling           FD             TD          FE          LSDV     </span></span>
-<span id="cb153-14"><a href="fixed-effects.html#cb153-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------------------------------------------</span></span>
-<span id="cb153-15"><a href="fixed-effects.html#cb153-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Price                  0.021***      -0.021***      -0.021***    -0.021***   -0.021***   </span></span>
-<span id="cb153-16"><a href="fixed-effects.html#cb153-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        (0.002)        (0.003)        (0.002)      (0.003)     (0.003)    </span></span>
-<span id="cb153-17"><a href="fixed-effects.html#cb153-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                          </span></span>
-<span id="cb153-18"><a href="fixed-effects.html#cb153-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------------------------------------------</span></span>
-<span id="cb153-19"><a href="fixed-effects.html#cb153-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations              8              4              8            8           8       </span></span>
-<span id="cb153-20"><a href="fixed-effects.html#cb153-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2                      0.953          0.950          0.950        0.950       1.000     </span></span>
-<span id="cb153-21"><a href="fixed-effects.html#cb153-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2             0.947          0.933          0.943        0.883       1.000     </span></span>
-<span id="cb153-22"><a href="fixed-effects.html#cb153-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error 0.314 (df = 7) 0.034 (df = 3) 0.016 (df = 7)           0.024 (df = 3)</span></span>
-<span id="cb153-23"><a href="fixed-effects.html#cb153-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
-<span id="cb153-24"><a href="fixed-effects.html#cb153-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:                                                         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="fixed-effects.html#cb154-1" aria-hidden="true" tabindex="-1"></a>paneldata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Location =</span> <span class="fu">c</span>(<span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Chicago&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, <span class="st">&quot;Peoria&quot;</span>, </span>
+<span id="cb154-2"><a href="fixed-effects.html#cb154-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Milwaukee&quot;</span>, <span class="st">&quot;Madison&quot;</span>, <span class="st">&quot;Madison&quot;</span>),</span>
+<span id="cb154-3"><a href="fixed-effects.html#cb154-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Year =</span> <span class="fu">rep</span>(<span class="dv">2003</span><span class="sc">:</span><span class="dv">2004</span>, <span class="dv">4</span>),</span>
+<span id="cb154-4"><a href="fixed-effects.html#cb154-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Price =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">85</span>, <span class="dv">50</span>, <span class="dv">48</span>, <span class="dv">60</span>, <span class="dv">65</span>, <span class="dv">55</span>, <span class="dv">60</span>),</span>
+<span id="cb154-5"><a href="fixed-effects.html#cb154-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Quantity =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">1.8</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>, <span class="fl">1.5</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>))</span>
+<span id="cb154-6"><a href="fixed-effects.html#cb154-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-7"><a href="fixed-effects.html#cb154-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjmisc)</span>
+<span id="cb154-8"><a href="fixed-effects.html#cb154-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb154-9"><a href="fixed-effects.html#cb154-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-10"><a href="fixed-effects.html#cb154-10" aria-hidden="true" tabindex="-1"></a>paneldata <span class="ot">&lt;-</span> paneldata <span class="sc">%&gt;%</span></span>
+<span id="cb154-11"><a href="fixed-effects.html#cb154-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span></span>
+<span id="cb154-12"><a href="fixed-effects.html#cb154-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dP =</span> <span class="fu">last</span>(Price) <span class="sc">-</span> <span class="fu">first</span>(Price),</span>
+<span id="cb154-13"><a href="fixed-effects.html#cb154-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">dQ =</span> <span class="fu">last</span>(Quantity) <span class="sc">-</span> <span class="fu">first</span>(Quantity),</span>
+<span id="cb154-14"><a href="fixed-effects.html#cb154-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">dP=</span><span class="fu">replace</span>(dP, <span class="fu">row_number</span>()<span class="sc">==</span><span class="dv">1</span>, <span class="cn">NA</span>),</span>
+<span id="cb154-15"><a href="fixed-effects.html#cb154-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">dQ=</span><span class="fu">replace</span>(dQ, <span class="fu">row_number</span>()<span class="sc">==</span><span class="dv">1</span>, <span class="cn">NA</span>),</span>
+<span id="cb154-16"><a href="fixed-effects.html#cb154-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">mean_P =</span> <span class="fu">mean</span>(Price),</span>
+<span id="cb154-17"><a href="fixed-effects.html#cb154-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">mean_Q =</span> <span class="fu">mean</span>(Quantity),</span>
+<span id="cb154-18"><a href="fixed-effects.html#cb154-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">P_mean_P =</span> Price <span class="sc">-</span> mean_P,</span>
+<span id="cb154-19"><a href="fixed-effects.html#cb154-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">Q_mean_Q =</span> Quantity <span class="sc">-</span> mean_Q,</span>
+<span id="cb154-20"><a href="fixed-effects.html#cb154-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Price_ave =</span> Price <span class="sc">-</span> <span class="fu">ave</span>(Price, Location),</span>
+<span id="cb154-21"><a href="fixed-effects.html#cb154-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">Quantity_ave =</span> Quantity <span class="sc">-</span> <span class="fu">ave</span>(Quantity, Location)) <span class="sc">%&gt;%</span></span>
+<span id="cb154-22"><a href="fixed-effects.html#cb154-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="at">.vars =</span> <span class="fu">c</span>(<span class="st">&quot;Quantity&quot;</span>,<span class="st">&quot;Price&quot;</span>),</span>
+<span id="cb154-23"><a href="fixed-effects.html#cb154-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">.funs =</span> <span class="fu">list</span>(<span class="st">&quot;centered&quot;</span> <span class="ot">=</span> center)) <span class="sc">%&gt;%</span></span>
+<span id="cb154-24"><a href="fixed-effects.html#cb154-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb154-25"><a href="fixed-effects.html#cb154-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-26"><a href="fixed-effects.html#cb154-26" aria-hidden="true" tabindex="-1"></a><span class="co"># for better comparison in stargazer</span></span>
+<span id="cb154-27"><a href="fixed-effects.html#cb154-27" aria-hidden="true" tabindex="-1"></a>paneldata_demeaned <span class="ot">&lt;-</span> <span class="fu">with</span>(paneldata,</span>
+<span id="cb154-28"><a href="fixed-effects.html#cb154-28" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">data.frame</span>(<span class="at">Quantity =</span> Quantity <span class="sc">-</span> <span class="fu">ave</span>(Quantity, Location),</span>
+<span id="cb154-29"><a href="fixed-effects.html#cb154-29" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">Price =</span> Price <span class="sc">-</span> <span class="fu">ave</span>(Price, Location)))</span>
+<span id="cb154-30"><a href="fixed-effects.html#cb154-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-31"><a href="fixed-effects.html#cb154-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Pooling</span></span>
+<span id="cb154-32"><a href="fixed-effects.html#cb154-32" aria-hidden="true" tabindex="-1"></a>pooling <span class="ot">&lt;-</span> <span class="fu">lm</span>(Quantity <span class="sc">~</span> Price <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>paneldata)</span>
+<span id="cb154-33"><a href="fixed-effects.html#cb154-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-34"><a href="fixed-effects.html#cb154-34" aria-hidden="true" tabindex="-1"></a><span class="co"># First Difference Estimation</span></span>
+<span id="cb154-35"><a href="fixed-effects.html#cb154-35" aria-hidden="true" tabindex="-1"></a>FD <span class="ot">&lt;-</span> <span class="fu">lm</span>(dQ <span class="sc">~</span> dP <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata)</span>
+<span id="cb154-36"><a href="fixed-effects.html#cb154-36" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(FD<span class="sc">$</span>coefficients) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Price&#39;</span>)</span>
+<span id="cb154-37"><a href="fixed-effects.html#cb154-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-38"><a href="fixed-effects.html#cb154-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Time demean</span></span>
+<span id="cb154-39"><a href="fixed-effects.html#cb154-39" aria-hidden="true" tabindex="-1"></a>TDM <span class="ot">&lt;-</span> <span class="fu">lm</span>(Quantity <span class="sc">~</span> Price <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata_demeaned)</span>
+<span id="cb154-40"><a href="fixed-effects.html#cb154-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-41"><a href="fixed-effects.html#cb154-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
+<span id="cb154-42"><a href="fixed-effects.html#cb154-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb154-43"><a href="fixed-effects.html#cb154-43" aria-hidden="true" tabindex="-1"></a>FE <span class="ot">&lt;-</span> <span class="fu">plm</span>(Quantity <span class="sc">~</span> Price <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata,</span>
+<span id="cb154-44"><a href="fixed-effects.html#cb154-44" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;within&quot;</span>,</span>
+<span id="cb154-45"><a href="fixed-effects.html#cb154-45" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;Location&quot;</span>,<span class="st">&quot;Year&quot;</span>))</span>
+<span id="cb154-46"><a href="fixed-effects.html#cb154-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-47"><a href="fixed-effects.html#cb154-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Least Squares Dummy Variable Estimation (Individual FE)</span></span>
+<span id="cb154-48"><a href="fixed-effects.html#cb154-48" aria-hidden="true" tabindex="-1"></a>LSDV <span class="ot">&lt;-</span> <span class="fu">lm</span>(Quantity <span class="sc">~</span> Price <span class="sc">+</span> Location <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>paneldata)</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="fixed-effects.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stargazer Comparison</span></span>
+<span id="cb155-2"><a href="fixed-effects.html#cb155-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb155-3"><a href="fixed-effects.html#cb155-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(pooling, FD, TDM, FE, LSDV, <span class="at">type=</span><span class="st">&quot;text&quot;</span>, <span class="at">keep=</span><span class="fu">c</span>(<span class="st">&quot;Price&quot;</span>),</span>
+<span id="cb155-4"><a href="fixed-effects.html#cb155-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels=</span><span class="fu">c</span>(<span class="st">&quot;Pooling&quot;</span>, <span class="st">&quot;FD&quot;</span>, <span class="st">&quot;TD&quot;</span>, <span class="st">&quot;FE&quot;</span>, <span class="st">&quot;LSDV&quot;</span>),</span>
+<span id="cb155-5"><a href="fixed-effects.html#cb155-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels.include =</span> <span class="cn">FALSE</span>, <span class="at">model.numbers =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb155-6"><a href="fixed-effects.html#cb155-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat=</span><span class="st">&quot;f&quot;</span>)</span>
+<span id="cb155-7"><a href="fixed-effects.html#cb155-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb155-8"><a href="fixed-effects.html#cb155-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
+<span id="cb155-9"><a href="fixed-effects.html#cb155-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                              Dependent variable:                         </span></span>
+<span id="cb155-10"><a href="fixed-effects.html#cb155-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     ---------------------------------------------------------------------</span></span>
+<span id="cb155-11"><a href="fixed-effects.html#cb155-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          OLS            OLS            OLS         panel        OLS      </span></span>
+<span id="cb155-12"><a href="fixed-effects.html#cb155-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                   linear                 </span></span>
+<span id="cb155-13"><a href="fixed-effects.html#cb155-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        Pooling           FD             TD          FE          LSDV     </span></span>
+<span id="cb155-14"><a href="fixed-effects.html#cb155-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------------------------------------------</span></span>
+<span id="cb155-15"><a href="fixed-effects.html#cb155-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Price                  0.021***      -0.021***      -0.021***    -0.021***   -0.021***   </span></span>
+<span id="cb155-16"><a href="fixed-effects.html#cb155-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        (0.002)        (0.003)        (0.002)      (0.003)     (0.003)    </span></span>
+<span id="cb155-17"><a href="fixed-effects.html#cb155-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                          </span></span>
+<span id="cb155-18"><a href="fixed-effects.html#cb155-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------------------------------------------</span></span>
+<span id="cb155-19"><a href="fixed-effects.html#cb155-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations              8              4              8            8           8       </span></span>
+<span id="cb155-20"><a href="fixed-effects.html#cb155-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2                      0.953          0.950          0.950        0.950       1.000     </span></span>
+<span id="cb155-21"><a href="fixed-effects.html#cb155-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2             0.947          0.933          0.943        0.883       1.000     </span></span>
+<span id="cb155-22"><a href="fixed-effects.html#cb155-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error 0.314 (df = 7) 0.034 (df = 3) 0.016 (df = 7)           0.024 (df = 3)</span></span>
+<span id="cb155-23"><a href="fixed-effects.html#cb155-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
+<span id="cb155-24"><a href="fixed-effects.html#cb155-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:                                                         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
 
 </div>
 </div>

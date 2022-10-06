@@ -13,11 +13,11 @@ Consider alternatives before start scraping data:
 - Check if there is an API.
 - Ask the website owner for the data.
 
-## Student numbers are on the decline 
+## Student numbers at Viadrina 
 
 Did you notice less and less fellow students sitting next to you? We analyse enrollment numbers of Viadrina European University. *Dezernat 1* administers and publishes student statistics. There is an overview page where they provide some time series data (overall student numbers from 1992 to 2020) and the number of study programs (between 1992 to 2014).
 
-```{r webshot, echo=F, eval=T}
+```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
 library(webshot)
 knitr::include_url("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/index.html")
 
@@ -38,13 +38,13 @@ Information is presented in two ways, as **tables in PDF**, e.g. the time series
 
 And as **tables in HTML**. For each semester there is summary information on the webpage (and more comprehensive data in PDF), like for summer term 2022:
 
-```{r, echo=F, eval=T}
+```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
 knitr::include_url("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-Sommersemester/index.html")
 ```
 
 Let's investigate the student numbers. 
 
-### PDF scraping 
+## PDF scraping 
 
 <!-- https://www.dataquest.io/blog/web-scraping-in-r-rvest/ -->
 <!-- https://www.r-bloggers.com/2019/09/pdf-scraping-in-r-with-tabulizer/ -->
@@ -54,25 +54,8 @@ Let's investigate the student numbers.
 <!-- https://cran.r-hub.io/web/packages/tabulizer/vignettes/tabulizer.html -->
 <!-- https://crimebythenumbers.com/scrape-table.html -->
 <!-- https://academy.datawrapper.de/article/135-how-to-extract-data-out-of-pdfs -->
-
-```{r pdftools-difficult, echo=F, eval=F}
-# library(pdftools)
-# t <- pdf_text("data/Viadrina/Entwicklung-der-Gesamtstudierendenzahl_1992_2020.pdf")
-# d <- pdf_data("data/Viadrina/Entwicklung-der-Gesamtstudierendenzahl_1992_2020.pdf")
-```
-
-```{r tabulizer-offline, echo=F, eval=F}
-# devtools::install_github("ropensci/tabulizer")
-# https://www.youtube.com/watch?v=nlsWjezvsg8
-# library(rJava)      # Needed for tabulizer
-# library(tabulizer)  # Handy tool for PDF Scraping
-# library(tidyverse)  # Core data manipulation and visualization libraries
-
-# viadrina_students_2022 <- extract_tables(
-#     file   = "data/Uebersicht.pdf", 
-#     method = "decide", 
-#     output = "data.frame")
-```
+<!-- pdftools difficult -->
+<!-- tabulizer offline -->
 
 <!-- https://www.europa-uni.de/de/ueber_uns/zahlen_fakten/index.html -->
 <!-- https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-Sommersemester/Uebersicht.pdf -->
@@ -93,15 +76,19 @@ download.file(url, destfile, mode = "wb")
 
 To extract a table from a PDF we use the `pdftables` package.^[You may use other free services. Search for *Online converter PDF to csv/xlsx*] The package is a wrapper for the **PDFTables API**. It requires an API key from <https://pdftables.com/>. You can register and get one for free. The result is stored as `.csv` file. 
 
-::: {.defbox}
-An **application programming interface (API)** is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software.
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+An **application programming interface (API)** is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software.
+::::
 
-Be careful with your API keys. If you only use a file locally on your computer, you might be fine. Don't share this file. Don't upload it. If you upload an API key on GIT, you get a notifcation mail from <https://www.gitguardian.com/>. Instead, put your API in your environment. This can be done by a .Renviron file. Use `usethis::edit_r_environ(scope = "project")` in order to acess and edit your information. Read more <https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html> <https://resources.numbat.space/using-rprofile-and-renviron.html>
+Be careful with your API keys. If you only use a file locally on your computer, you might be fine. Don't share this file. Don't upload it. If you upload an API key on GIT, you get a notification mail from <https://www.gitguardian.com/>. Instead, put your API in your environment. This can be done by a .Renviron file. Use `usethis::edit_r_environ(scope = "project")` in order to access and edit your information. 50 pages are for free.
 
-<https://github.com/expersso/pdftables>
-
-(Note: All functions in the package require that you provide your api key in the api_key argument. By default this looks for an environment variable called pdftable_api, but you can also provide it directly.) free 50 page
+Read more 
+* <https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html> 
+* <https://resources.numbat.space/using-rprofile-and-renviron.html>
+* <https://github.com/expersso/pdftables>
 
 ```{r, echo=F, eval=F}
 library(pdftables)
@@ -144,11 +131,16 @@ viadrina_1992_2020 <- viadrina_1992_2020 %>%
 
 # convert all chr to numeric
 viadrina_1992_2020 <- viadrina_1992_2020 %>% mutate_if(is.character,as.numeric)
-
-glimpse(viadrina_1992_2020)
 ```
 
-Let's look at the student numbers over time. 
+```{r}
+library(DT)
+datatable(viadrina_1992_2020)
+```
+
+## Share of female students
+
+The share of female students over time in a line plot. 
 
 ```{r}
 viadrina_1992_2020 %>% 
@@ -159,7 +151,9 @@ viadrina_1992_2020 %>%
        subtitle = "Share of female students")
 ```
 
-Now how are the components made up. 
+## Share of foreign students
+
+The share of foreign students over time in a stacked barplot. 
 
 ```{r}
 viadrina_1992_2020 %>% 
@@ -171,7 +165,7 @@ viadrina_1992_2020 %>%
        subtitle = "Share of foreign students")
 ```
 
-### Web scraping 
+## Web scraping 
 
 To get more recent numbers, we rely on the webpage information. How can we access all semester data? Investigate the pattern of the URLs. 
 
@@ -185,7 +179,7 @@ To get more recent numbers, we rely on the webpage information. How can we acces
 
 </small>
 
-Usually the pattern is *year* hypen *semester*. Some winter semesters are capitalized, some are not. We use the `rvest` package to web scrape static html content. It always starts with reading in the html data. Then pipe and use `html_table()` to extract tabular information (lucky us, there is only one table). 
+Usually the pattern is `year-semester`. Some winter semesters are capitalized, some are not (`Wintersemester` vs. `wintersemester`). We use the `rvest` package to web scrape static html content. It always starts with reading in the html data. Then pipe and use `html_table()` to extract tabular information (lucky us, there is only one table). 
 
 ```{r}
 library(rvest)
@@ -212,9 +206,12 @@ all_url <- paste0("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/s
 
 Create a `for` loop to repeat the `rvest` procedure for each element in the URL list. 
 
-::: {.defbox}
-A **loop** is a programming structure that repeats a sequence of instructions until a specific condition is met. 
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+A **loop** is a programming structure that repeats a sequence of instructions until a specific condition is met. 
+::::
 
 There are two more components. We initialize a `list` to store each iteration of the loop. 
 
@@ -239,68 +236,84 @@ More and more cleaning.
 ```{r}
 df[,c(seq(from=3, to=35 , by=2))] <- NULL
 colnames(df) <- c("Variable", all_terms)
-
+# transpose dataframe
 viadrina_2013_2022 <- as.data.frame(t(df))
-
 # replace header names by first row
 names(viadrina_2013_2022) <- viadrina_2013_2022[1,]
 # drop first row
 viadrina_2013_2022 <- viadrina_2013_2022[-1,] 
+```
+
+Once more, there are slightly different formats for numbers in winter term 2019, 2020 and 2021. In these terms they use a `.` for digit grouping, e.g. `3.607` instead of `3607`.
+
+```{r}
 # all chr to numeric
+# viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,parse_number)
+#viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,as_numeric)
 viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,as.numeric)
+
+# row 13, 15, 17, columns 1 to 6, multiply by 1000
+viadrina_2013_2022[c(13,15,17), c(1:6)] <- viadrina_2013_2022[c(13,15,17), c(1:6)] * 1000
+
 # round all numbers
-viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.numeric, round)
+# viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.numeric, round)
 
 # multiply some rows by 1000
-viadrina_2013_2022[c(13,15,17),] <- viadrina_2013_2022[c(13,15,17),] %>% 
-  mutate_all(.funs = funs(. * 1000))
+# viadrina_2013_2022[c(13,15,17),] <- viadrina_2013_2022[c(13,15,17),] %>% 
+#   mutate_all(.funs = funs(. * 1000))
+
 # fix last column and divide by 1000
-viadrina_2013_2022[c(13,15,17),7] <- viadrina_2013_2022[c(13,15,17),7]/1000
+# viadrina_2013_2022[c(13,15,17),7] <- viadrina_2013_2022[c(13,15,17),7]/1000
+
 # create a semester variable
 viadrina_2013_2022$year <- substr(all_terms, start = 1, stop = 4)
 viadrina_2013_2022$term <- rep(c("winter", "summer"), 9)
 viadrina_2013_2022$semester <- paste0(viadrina_2013_2022$year, rep(c("-02", "-01"), 9))
 # row names
 rownames(viadrina_2013_2022) <- 1:nrow(viadrina_2013_2022) 
-
 ```
 
-Now we plot
+## Most recent student numbers 
+
+There is a structural difference between summer and winter term. Most new enrollments are in winter. 
 
 ```{r}
 viadrina_2013_2022 %>% 
-  ggplot(aes(x=semester)) +
-  geom_point(aes(y = `Studierende gesamt`, fill = "Total")) + 
-  geom_point(aes(y = `1. Fachsemester`, fill = "First years")) +
-  geom_point(aes(y = `1. Hochschulsemester`, fill = "First sem")) +
-  labs(title = "Student numbers at Viadrina",
-       subtitle = "Share of female students") +
+  ggplot(aes(x=semester, y = `Studierende gesamt`)) +
+  geom_point(aes(col=term), size=2) + 
+  #geom_point(aes(y = `Studierende gesamt`, fill = "Total")) + 
+  #geom_point(aes(y = `1. Fachsemester`, fill = "First years")) +
+  #geom_point(aes(y = `1. Hochschulsemester`, fill = "First sem")) +
+  labs(title = "Student numbers at Viadrina") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
-Long term perspective
+## The long run trend 
 
-```{r, eval=F}
-viadrina_2013_2022 %>% 
-  ggplot(aes(x=semester)) +
-  geom_point(aes(y = `Studierende gesamt`, fill = "Total")) + 
-  geom_point(aes(y = `1. Fachsemester`, fill = "First years")) +
-  geom_point(aes(y = `1. Hochschulsemester`, fill = "First sem")) +
-  labs(title = "Student numbers at Viadrina",
-       subtitle = "Share of female students") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+Combine old and new data.
+
+```{r}
+via_1992_2020 <- viadrina_1992_2020 %>% 
+  select(Year, Total) %>% 
+  mutate(Term = "winter")
+
+via_2013_2022 <- viadrina_2013_2022 %>% 
+  rename(Year = year, Term = term, Total = `Studierende gesamt`) %>% 
+  select(Year, Total, Term)
+
+via_1992_2022 <- rbind(via_1992_2020, via_2013_2022)
+via_1992_2022$Year <- as.numeric(via_1992_2022$Year)
 ```
 
-```{r, eval=F}
+Plot. 
 
-rbind(viadrina_1992_2020, c(2021, viadrina_2013_2022$`Studierende gesamt`[17]
-                            ))
-viadrina_1992_2020 %>% 
-  ggplot(aes(x=Year)) +
-  geom_col(aes(y = Total, fill = "Total")) + 
-  geom_col(aes(y = Female, fill = "Female")) +
-  labs(title = "Student numbers at Viadrina",
-       subtitle = "Share of female students")
+```{r}
+via_1992_2022 %>% 
+  filter(Term == "winter") %>% 
+  ggplot(aes(x=Year, y=Total)) +
+  geom_point() + geom_smooth(method = "gam") +
+  labs(title = "Student numbers at Viadrina") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 

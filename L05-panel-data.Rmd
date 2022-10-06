@@ -138,13 +138,13 @@ unemploy %>%
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) +
   theme_minimal()
 ```
-::: {.reading}
-**How low can the unemployment rate be?** 
 
-*"Here are two things most economists can agree upon: They want an economy where everyone who seeks a job can get one. Yet for the economy to be dynamic, some people will always be unemployed, at least temporarily as they move between jobs."*
-
-[How Low Can Unemployment Really Go? Economists Have No Idea](https://www.nytimes.com/2018/02/28/upshot/how-low-can-unemployment-really-go-economists-have-no-idea.html)
+:::: {.reading}
+::: {.titelreading}
+<h2> Reading </h2>
 :::
+**[How Low Can Unemployment Really Go? Economists Have No Idea](https://www.nytimes.com/2018/02/28/upshot/how-low-can-unemployment-really-go-economists-have-no-idea.html)** "Here are two things most economists can agree upon: They want an economy where everyone who seeks a job can get one. Yet for the economy to be dynamic, some people will always be unemployed, at least temporarily as they move between jobs."
+::::
 
 <details>
 <summary>
@@ -174,7 +174,9 @@ Panel data allows to analyze the level of unemployment in Germany as well as the
 
 The **unemployment rate** represents the proportion of the **civilian labour force** that is unemployed. Consequently, measuring the unemployment rate requires identifying who is in the labour force. The labour force consists of all employed and unemployed persons of working age. What exactly is defined as employment? Employment status can be defined via a threshold of working hours or income. Who is in the working age?
 
-::: {.reading}
+:::: {.reading}
+::: {.titelreading}
+<h2> Reading </h2>
 In Australia, the Australian Bureau of Statistics (ABS) conducts a survey each month – called the Labour Force Survey – in which it asks around 50,000 people. As part of this survey, the ABS groups people aged 15 years and over (the working-age population) into three broad categories: 
 
 - **Employed** – includes people who are in a paid job for one hour or more in a week.
@@ -186,8 +188,7 @@ In Australia, the Australian Bureau of Statistics (ABS) conducts a survey each m
 Read More: [Unemployment: Its Measurement and Types](https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html){target="_blank"}
 
 <!-- <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a> -->
-:::
-
+::::
 
 ## Application
 
@@ -252,15 +253,11 @@ soep %>% count(id) %>% arrange(n)
 ```
 </details>
 
-Remember that the observation period is between `r min(soep$syear)` and `r max(soep$syear)`, i.e. the minimum number of observations per individual is 1 year, the maximum is 5 years. Over the years, observations get less and less.
+Remember that the observation period is between `r min(soep$syear)` and `r max(soep$syear)`, i.e. the minimum number of observations per individual is 1 year, the maximum is 5 years. Over the years, observations get less and less (panel attrition).
 
 ```{r warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE}
 table(soep$syear)
 ```
-
-::: {.defbox}
-**Attrition** is the process of dropout from a panel study. 
-:::
 
 How many people are observed in all years? Filter for a specific `n` and ask for the number of rows or observations (alternatively you can check the tibble size again).
 
@@ -366,13 +363,16 @@ soep %>%
 ```
 </details>
 
-::: {.defbox}
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
 **Tidy data** principles are: 
 
 - Every column is a variable.
 - Every row is an observation.
 - Every cell is a single value.
-:::
+::::
 
 The unemployment rate in this data is unreasonably high.
 
