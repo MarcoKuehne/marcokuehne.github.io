@@ -1,0 +1,443 @@
+# Text Mining 
+
+<!-- ## Learning Goals  -->
+
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- -   Conceptual Skills:  -->
+<!--       + What text data is and where to get text data from. -->
+<!--       + What API is and how to use an API inside R. -->
+<!--       + What tidy (text) data format is.  -->
+<!-- -   Data Skills: -->
+<!--       +   Install packages from GitHub via `devtools`. -->
+<!--       +   Clean text data with `tidytext`, e.g. `str_remove_all()`, `str_to_lower()`, `str_trim()`. -->
+<!--       +   Create tidy text format with `unnest_tokens()` -->
+<!--       +   Removing stop words `anti_join()`. -->
+<!--       +   Data Visualization: Term Frequency as Wordcloud and barchart.  -->
+<!-- ::: -->
+
+**Text data** usually consists of documents which can represent words, sentences or even paragraphs of free flowing text. The inherent **unstructured** (no neatly formatted data columns!) and **noisy nature** of textual data makes it harder for data analysts to directly work on raw text data.
+
+<!-- This material also introduces new features for R markdown reports:  -->
+<!-- - *Code Folding* <https://bookdown.org/yihui/rmarkdown-cookbook/fold-show.html> -->
+<!-- - *Tab Sets* <https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html> -->
+<!-- In your YAML header you can set an option under `html_document:` like `code_folding: hide`. Be aware of the necessary spacing in the html options. You can add the `{.tabset}` option to a headline and starting tab setting here. You end tab setting by an empty headline like `#### {-}`. In between you need to specify sub-headlines (at least one more hash-tag). -->
+
+<!-- #### Text datasets {.tabset} -->
+<!-- There are various built-in datasets for text (e.g. `janeaustenr` package).  -->
+<!-- ###### Jane Austin books -->
+<!-- This table gives a list of all the Jane Austin books included and their rownumbers.  -->
+<!-- ```{r warning=FALSE, message=FALSE, echo=T, eval=T} -->
+<!-- library(janeaustenr) -->
+<!-- table(austen_books()$book) -->
+<!-- ``` -->
+<!-- ###### Select a specific book. -->
+<!-- You can read entire books in R.  -->
+<!-- ```{r warning=FALSE, message=FALSE, echo=T, eval=T} -->
+<!-- library(tidyverse) -->
+<!-- austen_books() %>% -->
+<!--   filter(book == "Emma") %>% -->
+<!--   filter(row_number() > 10, row_number() < 20) -->
+<!-- ``` -->
+
+## Field Trip to Berlin 
+
+On Thursday, 02 June 2022, the class went on a field trip to Humboldt Forum, Berlin to visit the exhibition *Berlin Global*. [Get the virtual tour](https://berlin-global-ausstellung.de/360-grad-weltdenken/?startTour){target="_blank"}
+
+Berlin Global feels very modern. It combines historical information and stories with modern art and  design as well as interactive features. The interaction comes from decisions you can make yourself and interactive elements like a wheel that needs about 5 people to start a video sequence. It triggers interactions between visitors and people who are normally strangers who would not have interacted otherwise. It is educational and fun. Although it covers some of the darkest parts of history. 
+
+<!-- {#id .class width=70% height=70%} -->
+![](images/group2.jpeg)
+
+Students wrote down their impressions as in a diary entry or personal report and post them on [tripadvisor](https://www.tripadvisor.de/Attraction_Review-g187323-d23632357-Reviews-Berlin_Global-Berlin.html){target="_blank"}. All reviews should address the following questions:
+
+-	How is *globality* represented in "Berlin Global"?
+-	How is the colonial past depicted in Room 1 "Weltdenken"?
+
+At the time, the exhibition did not have any review on tripadvisor. Thus almost all reviews on tripadvisor stem from students of the class of 2022. We use this review data on tripadivsor to learn about the student experience. 
+
+#### Start Browser 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+library('DT')
+library('tidyverse')
+library('RSelenium')
+# 4449L can use almost any port
+# cannot use 2 port twice
+rD <- rsDriver(port = 4888L, browser = c("firefox")) 
+remDr <- rD[["client"]]
+```
+
+#### Navigate to Page 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+remDr$navigate("https://www.tripadvisor.de/Attraction_Review-g187323-d23632357-Reviews-Berlin_Global-Berlin.html")
+Sys.sleep(5)
+```
+
+![RSelenium Browser opening Tripadvisor.](images/selenium-browser.png)
+
+#### Accept cookies 
+
+Find out CSS or xpath to the accept bottom. 
+
+```{r, message=FALSE, warning=FALSE, eval=F, echo=TRUE}
+# #onetrust-accept-btn-handler
+# //*[(@id = "onetrust-accept-btn-handler")]
+webElems <- remDr$findElements(using = "css", "#onetrust-accept-btn-handler")
+
+# We can check if we did get the proper button by checking the text of the element:
+unlist(lapply(webElems, function(x) {x$getElementText()}))
+
+# We found the two button, and we want to click the first one:
+webElems[[1]]$clickElement()
+```
+
+#### Download html 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+library(rvest)
+
+html <- remDr$getPageSource()[[1]]
+html <- read_html(html)
+
+xml2::write_html(html, "data/tripadvisor_page1.xml")
+``` 
+
+```{r, eval=TRUE, echo=F}
+html <- xml2::read_html("data/tripadvisor_page1.xml")
+```
+
+#### Extract Authors
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+authors <- html %>% # Name a variable reviews and take a look at the html
+  html_elements(".zpDvc") %>% 
+  html_text() %>% 
+  as_tibble()
+
+#gsub("\\D+","", authors$value) # numbers
+authors$value <- gsub("\\d+.*","", authors$value) # numbers and everything after
+```
+
+#### Extract Reviews
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+# .wnNQG some other elements
+# .KxBGd contains reviews and other stuff
+# .yCeTE headlines and reviews
+
+reviews <- html %>% # Name a variable reviews and take a look at the html
+  html_elements(".yCeTE") %>% # In particular, look at the class named .cPQsENeY / yCeTE / yCeTE / biGQs _P pZUbB KxBGd
+  html_text() %>% # Grab the text contained with this class .yCeTE 
+  as_tibble() # And save it as a tibble to reviews.
+
+# Extract headlines
+headlines <- reviews %>%
+ slice(which(row_number() %% 2 == 1)) %>%  # nice modulo operation 
+ slice(1:(n()-1))
+
+# Extract text
+texts <- reviews %>%
+ slice(which(row_number() %% 2 == 0))
+```
+
+#### Combine Data 
+
+Create a dataframe for all tripadvisor reviews that contain information about the author, title and review text. 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=TRUE}
+tripadvisor <- data.frame(author = authors$value,
+                          title = headlines,
+                          text = texts)
+
+colnames(tripadvisor) <- c("Author", "Title", "Text")
+#head(tripadvisor)
+```
+
+
+## Loop all Reviews
+
+```{r, eval=F, echo=FALSE}
+library(rvest)
+
+# Initialize Dataframe
+tripadvisor <- data.frame(Author = character(),
+                          Title = character(),
+                          Text = character(),
+                          stringsAsFactors=FALSE) 
+
+for (i in c("", "or10-", "or20-", "or30-", "or40-")) {
+  
+  # Navigate each page
+  remDr$navigate(paste0("https://www.tripadvisor.de/Attraction_Review-g187323-d23632357-Reviews-", i, "Berlin_Global-Berlin.html"))
+  
+  # Download html
+  html <- remDr$getPageSource()[[1]]
+  html <- read_html(html)
+  
+  # Extract Authors
+  authors <- html %>% # Name a variable reviews and take a look at the html
+    html_elements(".zpDvc") %>% 
+    html_text() %>% 
+    as_tibble() %>% 
+    mutate(value = gsub("\\d+.*","", value))
+  # Extract Title
+  reviews <- html %>% # Name a variable reviews and take a look at the html
+    html_elements(".yCeTE") %>% # In particular, look at the class named .cPQsENeY / yCeTE / yCeTE / biGQs _P pZUbB KxBGd
+    html_text() %>% 
+    as_tibble() 
+  # Extract headlines
+  titles <- reviews %>%
+    slice(which(row_number() %% 2 == 1)) %>% 
+    slice(1:(n()-1))
+  # Extract text
+  texts <- reviews %>%
+    slice(which(row_number() %% 2 == 0))
+  # Combine data
+  mydata <- data.frame(Author = authors$value,
+                       Title = titles$value,
+                       Text = texts$value)
+  # Row bind each iteration
+  tripadvisor <- rbind(tripadvisor, mydata)
+
+  Sys.sleep(5)
+  
+}
+```
+
+```{r, eval=TRUE, echo=FALSE}
+#glimpse(tripadvisor)
+#write.csv(tripadvisor, "data/tripadvisor_berlin_global.csv")
+tripadvisor <- read.csv("data/tripadvisor_berlin_global.csv")
+```
+
+```{r, message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE}
+library(DT)
+datatable(tripadvisor)
+```
+
+
+
+
+
+
+## Text Analysis 
+
+For this analysis we focus on the intro information on R from English Wikipedia. 
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T, class.source = 'fold-show'}
+library(wikifacts)
+R_EN <- wiki_define('R (programming language)')
+R_EN
+```
+
+#### Cleaning 
+
+Load the `tidytext` package. We summarize individual tasks like removing digits, punctuation, whitespaces and seting everything to lower case in the `clean_text()` function. There is a newline operator `\n` left. You can replace it with uncommenting the last command. 
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+library(tidytext)
+
+## text cleaning
+clean_text <- function(x) {
+  x %>%
+    ## Remove digits
+    str_remove_all("[:digit:]") %>%
+    ## Remove punctuation
+    str_remove_all("[[:punct:]]") %>%
+    ## Make everything lowercase
+    str_to_lower() %>%
+    ## Remove any trailing whitespace around the text
+    str_trim("both") ##%>%
+    ##str_replace_all("[\r\n]" , " ")
+}
+```
+
+```{r warning=FALSE, message=FALSE, echo=F, eval=T}
+R_EN_clean <- clean_text(R_EN)
+R_EN_clean
+```
+
+#### Tidytext Format 
+
+Tidy data has a specific structure: 
+
+- Each variable is a column
+- Each observation is a row
+
+We thus define the tidy text format as being a table with one-token-per-row. A token is a meaningful unit of text, such as a word, that we are interested in using for analysis, and tokenization is the process of splitting text into tokens.
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+tidytext <- R_EN_clean %>%
+  as_tibble() %>%
+  unnest_tokens(word, value) %>%
+  count(word, sort=TRUE)
+head(tidytext)
+```
+
+#### Stopwords 
+
+Stop words are a set of commonly used words in a language. Examples of stop words in English are “a”, “the”, “is”, “are” and etc. Stop words are commonly used in Text Mining and Natural Language Processing (NLP) to eliminate words that are so commonly used that they carry very little useful information.
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+data(stop_words)
+
+tidytext <- tidytext %>%
+  anti_join(stop_words)
+head(tidytext)
+```
+
+#### Term Frequency
+
+Word clouds (also known as text clouds or tag clouds) work in a simple way: the more a specific word appears in a source of textual data (such as a speech, blog post, or database), the bigger and bolder it appears in the word cloud.
+
+```{r warning=FALSE, message=FALSE, echo=F, eval=T}
+## tidytext %>%
+##   ggplot(aes(y=n, x=word)) +
+##   geom_histogram() 
+library(wordcloud)
+
+wordcloud(words = tidytext$word, freq = tidytext$n, min.freq = 2, max.words=200, 
+          random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+```
+
+## Little bit of Scraping
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+library(rvest)
+
+read_html("https://en.wikipedia.org/wiki/R_(programming_language)") %>%
+  ## extract paragraphs
+  html_nodes("p")  %>%
+  ## extract text
+  html_text() %>%
+  ## clean
+  clean_text() %>%
+  as_tibble() %>%
+  ## tidy text
+  unnest_tokens(word, value) %>%
+  count(word, sort=TRUE) %>%
+  ## stopwords
+  anti_join(stop_words) %>%
+  ## select first
+  top_n(20) %>%
+  ## reorder
+  mutate(word = reorder(word, n)) %>%
+  ## create frequency plot 
+  ggplot(aes(x=word, y = n)) +
+  geom_col() + coord_flip() + 
+  ggtitle("Term Frequency of top 20 clean words in Wikipedia aRticle")
+```
+
+
+
+# Text Preparation
+
+```{r, message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE}
+library(tidyverse)
+library(tidytext)
+library(stringr)
+
+# text cleaning
+clean_text <- function(x) {
+  x %>%
+    # Remove digits
+    str_remove_all("[:digit:]") %>%
+    # Remove punctuation
+    str_remove_all("[[:punct:]]") %>%
+    # Make everything lowercase
+    str_to_lower() %>%
+    # Remove any trailing whitespace around the text
+    str_trim("both")
+}
+
+tripadvisor$Text_Clean <- clean_text(tripadvisor$Text)
+datatable(tripadvisor)
+
+# tidy text format for all text
+tidytext <- tripadvisor %>%
+  unnest_tokens(word, Text_Clean) %>%
+  count(word, sort=TRUE)
+#head(tidytext)
+
+# tidy text per use
+tidy_reviews <- tripadvisor %>%
+  group_by(Author) %>%
+  unnest_tokens(word, Text_Clean)
+
+# stopwords
+data(stop_words)
+
+tidytext <- tidytext %>%
+  anti_join(stop_words)
+#head(tidytext)
+# 
+# # Sentiment with Tidy Text
+# nrc_joy <- get_sentiments("nrc") %>% 
+#   filter(sentiment == "joy")
+# 
+# tidytext %>%
+#   #filter(book == "Emma") %>%
+#   inner_join(nrc_joy) %>%
+#   count(word, sort = TRUE)
+```
+
+# Sentiment Analysis 
+
+The `sentimentr` package offers several options to analyse sentiments at the sentence or aggregate level. A description can be found on GitHub <https://github.com/trinker/sentimentr>. 
+
+## Aggregate Level (1 pt)
+
+The aggregate level summarizes all text information by author into one text block. The `sentiment()` function displays the total word count and an overall sentiment score (the higher the more positive). 
+
+```{r, message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE}
+library(sentimentr)
+library(magrittr)
+library(dplyr)
+
+head(sentiment(tripadvisor$Text_Clean), n=15)
+```
+
+## Sentence Level (2 pt)
+
+Create a table from all reviews such that each sentence per person is a row. Use `get_sentences()` from the `sentimentr` package. It returns a list object. Find a way to unlist and collect the information in a dataframe. 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE}
+sentences <- get_sentences(tripadvisor$Text)
+
+sentence_level <- data.frame(id = character(),
+                             sentence = character(),
+                             stringsAsFactors=FALSE) 
+
+for (i in 1:nrow(tripadvisor)) {
+  # Create data frame for 1 person all sentences
+  tmp <- as.data.frame(sentences[i], col.names = "sentence") %>%
+  mutate(id = i)
+  # Row bind each iteration
+  sentence_level <- rbind(sentence_level, tmp)
+}
+
+datatable(sentence_level)
+
+# Yeah
+sentence_level %>%
+    mutate(review = get_sentences(sentence)) %$%
+    sentiment_by(sentence, id) %>%
+    highlight()
+```
+
+<!-- ![](polarity.png) -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
