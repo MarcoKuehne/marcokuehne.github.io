@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 11 Fixed effects | Make A Long Character Readable in R</title>
+  <title>Chapter 11 Fixed effects | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 11 Fixed effects | Make A Long Character Readable in R" />
+  <meta property="og:title" content="Chapter 11 Fixed effects | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="/images/icons8-trading-64.png" />
   <meta property="og:description" content="A guide to become fluent in data." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 11 Fixed effects | Make A Long Character Readable in R" />
+  <meta name="twitter:title" content="Chapter 11 Fixed effects | Becoming Fluent in Data" />
   
   <meta name="twitter:description" content="A guide to become fluent in data." />
   <meta name="twitter:image" content="/images/icons8-trading-64.png" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-10-07" />
+<meta name="date" content="2022-10-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -316,7 +316,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="text-mining.html"><a href="text-mining.html#wikipedia"><i class="fa fa-check"></i><b>7.1</b> Wikipedia</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="text-mining.html"><a href="text-mining.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>7.1.1</b> Little bit of Scraping</a></li>
+<li class="chapter" data-level="7.1.1" data-path="text-mining.html"><a href="text-mining.html#cleaning"><i class="fa fa-check"></i><b>7.1.1</b> Cleaning</a></li>
+<li class="chapter" data-level="7.1.2" data-path="text-mining.html"><a href="text-mining.html#tidytext-format"><i class="fa fa-check"></i><b>7.1.2</b> Tidytext Format</a></li>
+<li class="chapter" data-level="7.1.3" data-path="text-mining.html"><a href="text-mining.html#stopwords"><i class="fa fa-check"></i><b>7.1.3</b> Stopwords</a></li>
+<li class="chapter" data-level="7.1.4" data-path="text-mining.html"><a href="text-mining.html#term-frequency"><i class="fa fa-check"></i><b>7.1.4</b> Term Frequency</a></li>
+<li class="chapter" data-level="7.1.5" data-path="text-mining.html"><a href="text-mining.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>7.1.5</b> Little bit of Scraping</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="text-mining.html"><a href="text-mining.html#field-trip-to-berlin"><i class="fa fa-check"></i><b>7.2</b> Field Trip to Berlin</a>
 <ul>
@@ -420,7 +424,6 @@ div.csl-indent {
 <li class="chapter" data-level="12.4" data-path="first-difference.html"><a href="first-difference.html#data-modeling-2-pt"><i class="fa fa-check"></i><b>12.4</b> Data Modeling (2 pt)</a></li>
 <li class="chapter" data-level="12.5" data-path="first-difference.html"><a href="first-difference.html#minimal-example-2"><i class="fa fa-check"></i><b>12.5</b> Minimal Example</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="wikipedia-1.html"><a href="wikipedia-1.html"><i class="fa fa-check"></i><b>13</b> Wikipedia</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
@@ -433,7 +436,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Make A Long Character Readable in R</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
           </h1>
         </div>
 
@@ -843,15 +846,6 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   font-size: 65%;
 }
 
-#dvjxsmnimw .gt_two_val_uncert {
-  display: inline-block;
-  line-height: 1em;
-  text-align: right;
-  font-size: 60%;
-  vertical-align: -0.25em;
-  margin-left: 0.1em;
-}
-
 #dvjxsmnimw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
@@ -864,37 +858,39 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   vertical-align: 0;
 }
 
-#dvjxsmnimw .gt_slash_mark {
-  font-size: 0.7em;
-  line-height: 0.7em;
-  vertical-align: 0.15em;
+#dvjxsmnimw .gt_indent_1 {
+  text-indent: 5px;
 }
 
-#dvjxsmnimw .gt_fraction_numerator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: 0.45em;
+#dvjxsmnimw .gt_indent_2 {
+  text-indent: 10px;
 }
 
-#dvjxsmnimw .gt_fraction_denominator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: -0.05em;
+#dvjxsmnimw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dvjxsmnimw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dvjxsmnimw .gt_indent_5 {
+  text-indent: 25px;
 }
 </style>
 <table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 1: Cross-sectional Data</th>
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 1: Cross-sectional Data</td>
     </tr>
     
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Location</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Year</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Price</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Per Capita<br>Quantity</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Location</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Year</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Price</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Per Capita<br>Quantity</strong></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
@@ -1317,15 +1313,6 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   font-size: 65%;
 }
 
-#oszjmafuvc .gt_two_val_uncert {
-  display: inline-block;
-  line-height: 1em;
-  text-align: right;
-  font-size: 60%;
-  vertical-align: -0.25em;
-  margin-left: 0.1em;
-}
-
 #oszjmafuvc .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
@@ -1338,37 +1325,39 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   vertical-align: 0;
 }
 
-#oszjmafuvc .gt_slash_mark {
-  font-size: 0.7em;
-  line-height: 0.7em;
-  vertical-align: 0.15em;
+#oszjmafuvc .gt_indent_1 {
+  text-indent: 5px;
 }
 
-#oszjmafuvc .gt_fraction_numerator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: 0.45em;
+#oszjmafuvc .gt_indent_2 {
+  text-indent: 10px;
 }
 
-#oszjmafuvc .gt_fraction_denominator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: -0.05em;
+#oszjmafuvc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#oszjmafuvc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#oszjmafuvc .gt_indent_5 {
+  text-indent: 25px;
 }
 </style>
 <table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 2: Panel Data</th>
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 2: Panel Data</td>
     </tr>
     
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Location</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Year</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Price</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Per Capita<br>Quantity</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Location</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Year</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Price</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Per Capita<br>Quantity</strong></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
@@ -1816,15 +1805,6 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   font-size: 65%;
 }
 
-#osaqrooudn .gt_two_val_uncert {
-  display: inline-block;
-  line-height: 1em;
-  text-align: right;
-  font-size: 60%;
-  vertical-align: -0.25em;
-  margin-left: 0.1em;
-}
-
 #osaqrooudn .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
@@ -1837,39 +1817,41 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   vertical-align: 0;
 }
 
-#osaqrooudn .gt_slash_mark {
-  font-size: 0.7em;
-  line-height: 0.7em;
-  vertical-align: 0.15em;
+#osaqrooudn .gt_indent_1 {
+  text-indent: 5px;
 }
 
-#osaqrooudn .gt_fraction_numerator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: 0.45em;
+#osaqrooudn .gt_indent_2 {
+  text-indent: 10px;
 }
 
-#osaqrooudn .gt_fraction_denominator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: -0.05em;
+#osaqrooudn .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#osaqrooudn .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#osaqrooudn .gt_indent_5 {
+  text-indent: 25px;
 }
 </style>
 <table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 3: Data for Difference Equation Estimation.</th>
+      <td colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 3: Data for Difference Equation Estimation.</td>
     </tr>
     
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Location</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Year</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Price</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Per Capita<br>Quantity</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Delta P</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Delta Q</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Location</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Year</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Price</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Per Capita<br>Quantity</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Delta P</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Delta Q</strong></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
@@ -2365,15 +2347,6 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   font-size: 65%;
 }
 
-#nqjpwvjqnf .gt_two_val_uncert {
-  display: inline-block;
-  line-height: 1em;
-  text-align: right;
-  font-size: 60%;
-  vertical-align: -0.25em;
-  margin-left: 0.1em;
-}
-
 #nqjpwvjqnf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
@@ -2386,41 +2359,43 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   vertical-align: 0;
 }
 
-#nqjpwvjqnf .gt_slash_mark {
-  font-size: 0.7em;
-  line-height: 0.7em;
-  vertical-align: 0.15em;
+#nqjpwvjqnf .gt_indent_1 {
+  text-indent: 5px;
 }
 
-#nqjpwvjqnf .gt_fraction_numerator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: 0.45em;
+#nqjpwvjqnf .gt_indent_2 {
+  text-indent: 10px;
 }
 
-#nqjpwvjqnf .gt_fraction_denominator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: -0.05em;
+#nqjpwvjqnf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#nqjpwvjqnf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#nqjpwvjqnf .gt_indent_5 {
+  text-indent: 25px;
 }
 </style>
 <table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="8" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 4: Data for Within Time Demean Estimation.</th>
+      <td colspan="8" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Table 4: Data for Within Time Demean Estimation.</td>
     </tr>
     
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Location</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Year</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Price</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Per Capita<br>Quantity</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Delta P</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Delta Q</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>P - mean(P)</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Q - mean(Q)</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Location</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Year</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Price</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Per Capita<br>Quantity</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Delta P</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Delta Q</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>P - mean(P)</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col"><strong>Q - mean(Q)</strong></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
