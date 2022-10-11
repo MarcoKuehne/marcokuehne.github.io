@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Relationships | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Relationships | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
@@ -462,36 +462,46 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 Yoda. -- Episode V: The Empire Strikes Back
 </footer>
 </blockquote>
-<p>The most interesting research questions in social science are about relationships. What is a relationship? The way in which two or more things are connected. Things are variables, everything that can be measured. How can the relation between the tree and the land be made palpable? Relationships are measured via <em>covariance</em> or <em>correlation</em>. The relation between two (continuous) variables may be illustrated in a scatter plot.</p>
+<p>The most interesting research questions in social science are about relationships. What is a relationship? The way in which two or more things are connected. Things are variables. Everything that can be measured. How can the relation between the tree and the land be made palpable? Relationships are quantified via <em>covariance</em> or <em>correlation</em>. The relation between two (continuous) variables may be illustrated in a scatter plot.</p>
 <!-- Recall that there is a statistical relationship between two variables when the average score on one differs systematically across the levels of the other. In this section, we revisit the two basic forms of statistical relationship introduced earlier in the book—differences between groups or conditions and relationships between quantitative variables—and we consider how to describe them in more detail. -->
 <!-- https://plato.stanford.edu/entries/relations/ -->
 <!-- go together flow together -->
 <div id="minimal-example" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Minimal Example<a href="relationships.html#minimal-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Here is some data.</p>
+<p>This is <s>Sparta</s> data.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="relationships.html#cb89-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">13</span>,<span class="dv">19</span>,<span class="dv">25</span>,<span class="dv">29</span>)</span>
 <span id="cb89-2"><a href="relationships.html#cb89-2" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">28</span>,<span class="dv">32</span>,<span class="dv">38</span>)</span></code></pre></div>
 <div id="variance" class="section level3 hasAnchor" number="8.1.1">
 <h3><span class="header-section-number">8.1.1</span> Variance<a href="relationships.html#variance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
 <p>The <strong>variance</strong> is defined as the <strong>average quadratic deviation from the mean</strong>.</p>
 </div>
 <p><span class="math display">\[var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2\]</span>
-The variance of <code>x</code> is 98 and can be calculated via <code>var()</code> in R.</p>
+The <u id='variance'>variance</u> of <code>x</code> is 98 and can be calculated via <code>var()</code> in R.</p>
+<span id="htmlwidget-baee53fd12f6c309cd44" class="tippy html-widget" width="576" height="480"></span>
+<script type="application/json" data-for="htmlwidget-baee53fd12f6c309cd44">{"x":{"element":"variance","opts":{"content":"The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*."}},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="relationships.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Built-in command</span></span>
 <span id="cb90-2"><a href="relationships.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)</span>
 <span id="cb90-3"><a href="relationships.html#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 98</span></span></code></pre></div>
-<p>The variance of <code>x</code> can be calculated from its components in R as a combination of <code>sum()</code>, <code>mean()</code> and <code>length()</code>.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="relationships.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variance by hand</span></span>
-<span id="cb91-2"><a href="relationships.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( (x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span> )<span class="sc">/</span>(<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>) </span>
-<span id="cb91-3"><a href="relationships.html#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 98</span></span></code></pre></div>
+<!-- The variance of `x` can be calculated from its components in R as a combination of `sum()`, `mean()` and `length()`. -->
+<!-- ```{r, echo=TRUE, eval=TRUE, message=FALSE, warning=FALSE} -->
+<!-- # Variance by hand -->
+<!-- sum( (x-mean(x))^2 )/(length(x) - 1)  -->
+<!-- ``` -->
 <p>The standard deviation is derived from variance and tells, on average, how far each value lies from the mean. It’s the square root of variance. Variance and standard deivation measure the variability of a variable.</p>
 <!-- https://www.scribbr.com/statistics/variance/ -->
 <div class="dedicated">
-<p><strong>For the truly dedicated.</strong> When you have collected data from every member of the population that you’re interested in, you can get an exact value for population variance. When you collect data from a sample, the sample variance is used to make estimates or inferences about the population variance.</p>
+<div class="titeldedicated">
+<h2>
+Truly Dedicated
+</h2>
 </div>
-<div class="defbox">
-<p><strong>Nerd Fact. Geek Trivia. Sheldon.</strong> The term variance was first introduced by Ronald Fisher in his 1918 paper <em>The Correlation Between Relatives on the Supposition of Mendelian Inheritance</em>.</p>
+<p>When you have collected data from every member of the population that you’re interested in, you can get an exact value for population variance. When you collect data from a sample, the sample variance is used to make estimates or inferences about the population variance.</p>
 </div>
 </div>
 <div id="variation-around-the-mean" class="section level3 hasAnchor" number="8.1.2">
@@ -499,11 +509,16 @@ The variance of <code>x</code> is 98 and can be calculated via <code>var()</code
 <!-- http://stla.overblog.com/schematizing-the-variance-as-a-moment-of-inertia -->
 <!-- https://stats.stackexchange.com/questions/72208/visualising-the-variance -->
 <p>The one-dimensional variable <code>x</code> is visualized as points on a line. The mean of <code>x</code> is 18 (red bold line). The standard variation of <code>x</code> is 9.8994949 and surrounds the mean.</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-131-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <!-- https://stats.stackexchange.com/questions/311174/what-does-it-mean-when-three-standard-deviations-away-from-the-mean-i-land-ou -->
 <div class="dedicated">
-<p><strong>For the truly dedicated.</strong> In statistics, the empirical rule states that 99.7% of data occurs within three standard deviations of the mean within a normal distribution. To this end, 68% of the observed data will occur within the first standard deviation, 95% will take place in the second deviation, and 97.5% within the third standard deviation.</p>
+<div class="titeldedicated">
+<h2>
+Truly Dedicated
+</h2>
 </div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-131-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>In statistics, the empirical rule states that 99.7% of data occurs within three standard deviations of the mean within a normal distribution. To this end, 68% of the observed data will occur within the first standard deviation, 95% will take place in the second deviation, and 97.5% within the third standard deviation.</p>
+</div>
 </div>
 <div id="scatterplot" class="section level3 hasAnchor" number="8.1.3">
 <h3><span class="header-section-number">8.1.3</span> Scatterplot<a href="relationships.html#scatterplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -513,46 +528,59 @@ The variance of <code>x</code> is 98 and can be calculated via <code>var()</code
 <div id="covariance" class="section level3 hasAnchor" number="8.1.4">
 <h3><span class="header-section-number">8.1.4</span> Covariance<a href="relationships.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Covariance is a measure of the joint variability of two variables. The main idea of covariance is to classify three types of relationships: positive, negative or no relationship. For each data point, we multiply the differences with the respective mean. When both values are smaller or greater than the mean, the result will be positive.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="relationships.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Built-in command</span></span>
-<span id="cb92-2"><a href="relationships.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(x,y)</span>
-<span id="cb92-3"><a href="relationships.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 117.5</span></span></code></pre></div>
-<p>The covariance of <code>x</code> can be calculated from its components in R as a combination of <code>sum()</code>, <code>mean()</code> and <code>length()</code>.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="relationships.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Covariance by hand</span></span>
-<span id="cb93-2"><a href="relationships.html#cb93-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">sum</span>((x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">*</span>(y<span class="sc">-</span><span class="fu">mean</span>(y)))) <span class="sc">/</span> (<span class="fu">length</span>(x)<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb93-3"><a href="relationships.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 117.5</span></span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="relationships.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Built-in command</span></span>
+<span id="cb91-2"><a href="relationships.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(x,y)</span>
+<span id="cb91-3"><a href="relationships.html#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 117.5</span></span></code></pre></div>
+<!-- The covariance of `x` can be calculated from its components in R as a combination of `sum()`, `mean()` and `length()`. -->
+<!-- ```{r, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE} -->
+<!-- # Covariance by hand -->
+<!-- (sum((x-mean(x))*(y-mean(y)))) / (length(x)-1) -->
+<!-- ``` -->
 </div>
 <div id="covariance-visualization" class="section level3 hasAnchor" number="8.1.5">
 <h3><span class="header-section-number">8.1.5</span> Covariance Visualization<a href="relationships.html#covariance-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- https://evangelinereynolds.netlify.app/post/geometric-covariance/ -->
 <!-- https://stats.stackexchange.com/questions/18058/how-would-you-explain-covariance-to-someone-who-understands-only-the-mean -->
 <p>Now we turn to the visualization of the covariance. For each data point, we multiply the differences with the respective mean. This results in several rectangular areas starting at the intersection of means as a new origin. The covariance sums up all these areas.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-135-1.png" width="80%" style="display: block; margin: auto;" /></p>
-<p>From the graph, can you validate the covariance result from <code>cov(x,y)</code> by mental calculation?</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-134-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>From the graph, validate the covariance result from <code>cov(x,y)</code> by mental calculation?</p>
+</div>
 </div>
 <div id="correlation" class="section level3 hasAnchor" number="8.1.6">
 <h3><span class="header-section-number">8.1.6</span> Correlation<a href="relationships.html#correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Covariance quantifies a relationship and is similar to correlation but when the covariance is calculated, the data are not standardized. Therefore, the covariance is expressed in units that vary with the data and is not converted to a standardized scale of 1 to +1. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117 can be very low for one relationship and 0.23 very high for another relationship). To assess the strength of a relationship between two variables use a correlation coefficient.</p>
 <div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
 <p>The <strong>correlation coefficient</strong> is a statistical measure of the strength and direction of the relationship between two variables.</p>
 </div>
 <p><code>cor()</code> is a basic function to calculate the correlation coefficient.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="relationships.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic function</span></span>
-<span id="cb94-2"><a href="relationships.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(x,y)</span>
-<span id="cb94-3"><a href="relationships.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9564548</span></span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="relationships.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic function</span></span>
+<span id="cb92-2"><a href="relationships.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(x,y)</span>
+<span id="cb92-3"><a href="relationships.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9564548</span></span></code></pre></div>
 <p><code>cor.test()</code> is a more sophisticated version including a hypothesis test.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="relationships.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># More advanced function </span></span>
-<span id="cb95-2"><a href="relationships.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span>
-<span id="cb95-3"><a href="relationships.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb95-4"><a href="relationships.html#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Pearson&#39;s product-moment correlation</span></span>
-<span id="cb95-5"><a href="relationships.html#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb95-6"><a href="relationships.html#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  x and y</span></span>
-<span id="cb95-7"><a href="relationships.html#cb95-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 5.6757, df = 3, p-value = 0.01084</span></span>
-<span id="cb95-8"><a href="relationships.html#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true correlation is not equal to 0</span></span>
-<span id="cb95-9"><a href="relationships.html#cb95-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb95-10"><a href="relationships.html#cb95-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.4751038 0.9972195</span></span>
-<span id="cb95-11"><a href="relationships.html#cb95-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb95-12"><a href="relationships.html#cb95-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       cor </span></span>
-<span id="cb95-13"><a href="relationships.html#cb95-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.9564548</span></span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="relationships.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># More advanced function </span></span>
+<span id="cb93-2"><a href="relationships.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span>
+<span id="cb93-3"><a href="relationships.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb93-4"><a href="relationships.html#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Pearson&#39;s product-moment correlation</span></span>
+<span id="cb93-5"><a href="relationships.html#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb93-6"><a href="relationships.html#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  x and y</span></span>
+<span id="cb93-7"><a href="relationships.html#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 5.6757, df = 3, p-value = 0.01084</span></span>
+<span id="cb93-8"><a href="relationships.html#cb93-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true correlation is not equal to 0</span></span>
+<span id="cb93-9"><a href="relationships.html#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb93-10"><a href="relationships.html#cb93-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.4751038 0.9972195</span></span>
+<span id="cb93-11"><a href="relationships.html#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb93-12"><a href="relationships.html#cb93-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       cor </span></span>
+<span id="cb93-13"><a href="relationships.html#cb93-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.9564548</span></span></code></pre></div>
 <!-- ## Statistical significance: p<0.05 (or rule of thumb t>2) -->
 <!-- ## t value is 5.6757 -->
 <!-- ## p value is 0.01084  -->
@@ -560,53 +588,46 @@ The variance of <code>x</code> is 98 and can be calculated via <code>var()</code
 <!-- The **correlation coefficient** is the preferred way to describe a linear relationship.  -->
 <!-- ::: -->
 <p>The correlation test is based on a t-value (t = 5.6757104) and returns a p-value (0.0108364) for statistical significance.</p>
-<p>Please look up the exact formula to produce this t- and p-value and code it in R (each 1 pt).</p>
-<p>Hint: For the t-value you can use a combination of <code>cor()</code> and <code>sqrt()</code>. For the p-value you can use the <code>pt()</code>.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="relationships.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate t-value for correlation</span></span>
-<span id="cb96-2"><a href="relationships.html#cb96-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">cor</span>(x,y) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">3</span>) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">cor</span>(x,y)<span class="sc">^</span><span class="dv">2</span>) </span>
-<span id="cb96-3"><a href="relationships.html#cb96-3" aria-hidden="true" tabindex="-1"></a>t</span>
-<span id="cb96-4"><a href="relationships.html#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5.67571</span></span>
-<span id="cb96-5"><a href="relationships.html#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate p-value for correlation</span></span>
-<span id="cb96-6"><a href="relationships.html#cb96-6" aria-hidden="true" tabindex="-1"></a><span class="do">## https://stackoverflow.com/questions/46186115/calculating-p-values-for-given-t-value-in-r</span></span>
-<span id="cb96-7"><a href="relationships.html#cb96-7" aria-hidden="true" tabindex="-1"></a><span class="do">## needs: t, df and pt (Student t cumulative Distribution)</span></span>
-<span id="cb96-8"><a href="relationships.html#cb96-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="at">q =</span> <span class="fu">abs</span>(t), <span class="at">df =</span> <span class="dv">3</span>))<span class="sc">*</span><span class="dv">2</span></span>
-<span id="cb96-9"><a href="relationships.html#cb96-9" aria-hidden="true" tabindex="-1"></a>p</span>
-<span id="cb96-10"><a href="relationships.html#cb96-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.01083644</span></span></code></pre></div>
+<!-- Please look up the exact formula to produce this t- and p-value and code it in R (each 1 pt).  -->
+<!-- Hint: For the t-value you can use a combination of `cor()` and `sqrt()`. For the p-value you can use the `pt()`.  -->
+<!-- ```{r, echo=TRUE, message=FALSE, warning=FALSE} -->
+<!-- ## Calculate t-value for correlation -->
+<!-- t <- cor(x,y) * sqrt(3) / sqrt(1-cor(x,y)^2)  -->
+<!-- t -->
+<!-- ## Calculate p-value for correlation -->
+<!-- ## https://stackoverflow.com/questions/46186115/calculating-p-values-for-given-t-value-in-r -->
+<!-- ## needs: t, df and pt (Student t cumulative Distribution) -->
+<!-- p <- (1 - pt(q = abs(t), df = 3))*2 -->
+<!-- p -->
+<!-- ``` -->
 </div>
 </div>
 <div id="application-3" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Application<a href="relationships.html#application-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now, the time has come to apply your knowledge to real questionnaire data -- your data. Answers are anonymous, names and matriculation number have been removed. The data is provided on github.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="relationships.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb97-2"><a href="relationships.html#cb97-2" aria-hidden="true" tabindex="-1"></a>GF <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/seminars_in_applied_economics/main/Data/GF_2022_57.csv&quot;</span>)</span>
-<span id="cb97-3"><a href="relationships.html#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(GF)</span>
-<span id="cb97-4"><a href="relationships.html#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 57</span></span>
-<span id="cb97-5"><a href="relationships.html#cb97-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb97-6"><a href="relationships.html#cb97-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Academic.level                 &lt;chr&gt; &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Master&quot;, &quot;Mast…</span></span>
-<span id="cb97-7"><a href="relationships.html#cb97-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Gender                         &lt;chr&gt; &quot;Female&quot;, &quot;Female&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Ma…</span></span>
-<span id="cb97-8"><a href="relationships.html#cb97-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Age                            &lt;dbl&gt; 23, 22, 23, 24, 27, 23, 20, 22, 27, 22,…</span></span>
-<span id="cb97-9"><a href="relationships.html#cb97-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Total.Semesters                &lt;dbl&gt; 8, 10, 9, 2, 10, 7, 5, 8, 13, 10, 8, 8,…</span></span>
-<span id="cb97-10"><a href="relationships.html#cb97-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Background.in.Statistics       &lt;dbl&gt; 2, 4, 4, 3, 2, 3, 2, 2, 4, 4, 2, 2, 2, …</span></span>
-<span id="cb97-11"><a href="relationships.html#cb97-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Background.in.R                &lt;dbl&gt; 2, 3, 2, 1, 1, 1, 3, 1, 4, 4, 1, 2, 2, …</span></span>
-<span id="cb97-12"><a href="relationships.html#cb97-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Background.in.Academic.Writing &lt;dbl&gt; 2, 2, 4, 3, 4, 2, 3, 2, 4, 3, 1, 2, 3, …</span></span>
-<span id="cb97-13"><a href="relationships.html#cb97-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Expectations                   &lt;chr&gt; &quot;I want to be efficient in my knowledge…</span></span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="relationships.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb94-2"><a href="relationships.html#cb94-2" aria-hidden="true" tabindex="-1"></a>GF <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/seminars_in_applied_economics/main/Data/GF_2022_57.csv&quot;</span>)</span>
+<span id="cb94-3"><a href="relationships.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb94-4"><a href="relationships.html#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(GF)</span></code></pre></div>
+<div id="htmlwidget-06d7d3881884e63b0600" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-06d7d3881884e63b0600">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57"],["Bachelor","Bachelor","Master","Master","Master","Master","Bachelor","Bachelor","Master","Master","Bachelor","Bachelor","Master","Master","Master","Master","Bachelor","Master","Master","Master","Bachelor","Bachelor","Bachelor","Bachelor","Master","Master","Bachelor","Bachelor","Bachelor","Master","Bachelor","Master","Master","Master","Master","Bachelor","Master","Master","Bachelor","Master","Bachelor","Bachelor","Bachelor","Bachelor","Bachelor","Master","Bachelor","Master","Bachelor","Bachelor","Master","Master","Bachelor","Master","Master","Master","Master"],["Female","Female","Male","Male","Male","Male","Female","Female","Male","Female","Male","Female","Female","Male","Male","Male","Male","Female","Male","Female","Female","Male","Female","Male","Female","Male","Male","Female","Female","Male","Female","Male","Male","Male","Female","Female","Female","Female","Male","Male","Female","Female","Male","Female","Male","Female","Male","Female","Male","Female","Male","Male","Male","Female","Female","Male","Male"],[23,22,23,24,27,23,20,22,27,22,28,22,21,23,24,27,31,29,25,23,23,24,23,36,26,25,21,23,27,26,22,29,25,28,25,21,24,25,22,32,25,21,21,23,23,33,26,25,28,21,25,24,22,25,26,24,24],[8,10,9,2,10,7,5,8,13,10,8,8,7,7,9,15,6,9,1,8,8,8,5,4,8,9,2,9,12,15,8,10,9,10,10,4,11,10,8,14,6,3,1,8,3,3,7,14,2,1,13,11,6,11,4,1,2],[2,4,4,3,2,3,2,2,4,4,2,2,2,2,3,3,1,3,2,4,3,2,2,3,2,2,3,3,3,3,4,1,1,3,2,2,1,3,3,4,1,2,2,4,1,1,2,4,1,3,4,4,4,3,2,1,1],[2,3,2,1,1,1,3,1,4,4,1,2,2,1,2,3,1,3,2,3,2,1,1,1,3,3,1,2,2,3,3,1,1,3,1,1,1,1,1,1,1,1,1,3,1,1,1,3,1,1,1,2,2,3,1,1,1],[2,2,4,3,4,2,3,2,4,3,1,2,3,1,3,2,1,3,3,3,3,3,3,3,3,3,1,1,1,3,2,5,3,2,2,1,1,4,4,4,2,3,3,2,1,4,3,4,1,1,3,3,4,4,1,1,3],["I want to be efficient in my knowledge of Data","I would like to become more fluent in Data","basic knowledge and methods to analyze data in my own daily life","Handling Big data","Find out statistical data by an efficient way for necessary questions for the preparation of the master thesis","I want to learn programming and use it to solve real life corporate problems.","I expect to learn a lot about different ways of managing and interpreting data from different sources as well as learning new methods and applications for real life and cases.","Deepen my knowledge about analytics and data management","I expect 1) to gain some new R experience using it in a real-world project, 2) to learn some new packages, 3)to apply my existing knowledge in R and Statistics in a particular study.","How to analyze data with R","To obtain knowledge on how to use the R software to analyse data based on statistics.","To improve my skills in Data Analytics","I expect to learn the basics in programming","I will get to learn different prescpectives of Data Management and also get to learn about the R language","I expect to refresh and expand my knowledge of statistics and R.","Data Analysis","Learning and using R in a most practical way e.g. real scenario","Required skills to get better in data analysis","Learn about how to manage and translate Quantitative data into possible solutions","To learn more about programming in R and statistics.","I would like to learn how to work with data, especially where to start when it comes to finding a solution for a hypothesis or a problem and how to evaluate it to make data-based forecasts. Moreover, I want to become more familiar with different programming languages and lose my \"fear\" of programming.","Academic data analysis and usage of tools to find solutions for questions","How to work with and interpret big data sets.","Analysis of statistical Data in R.","to become fluent in the programming language R","I would like to learn more about data and improve in exploratory data analysis. My goal is to become a data/business analyst where working with data will be my daily routine and I hope to become more comfortable (\"fluent\") and observant with data by participating in this course.","Being able to understand information and what it represents and how can the knowledge aquired can be aplied","Get to work with real-world data and analyze it using R.","Analyze data with R or other equipment","More skils about data analysis and maybe data visualization with R and other analytical programs.","proper ways of data analysis and empirical research, some hands on application of the knowledge learned instead of simply theory","R programming and the use of statistics in real programme with R.","To understand the fundamentals of Data analysis and the tools (programs) used in my studies as well as in the professional world.","During my job search, i have learned the things that the companies want their employees to have. I believe this seminar will get me familiar with \"Git\" and I believe I can develop myself further with the exercises of 'R'.","to learn how to work with R","R coding and empirical research procedures","Learn how to deal with data, learn more about R, prepare for a thesis","Programming","To learn how to use R-Programming for academic research and to draw conclusion based on the database. Find out correlations and causations based on the data to support an academic theory.","would love to learn the data sciences from the scratch.","To become fluent in data tools.","I would like to understand more about websites and the way they work, and also i would like to have an introduction about programmation because I have a friend who does some programmation and that seems really interesting.","Learn the R language and improve my data analysis","repeat staff and learn smt new :)","I expect to retain no knowledge after participation, as is the case with most of my classes. But I would be happy if I am wrong, and in that case, I hope to develop useful skills and acquaint myself with helpful tools and software.","I expert to be fluent in data Analysis by the end of the course","To understand the nature of data.","I would like to get familiar with R and learn how to apply theoritical statistical knowledge on real-life examples","To understand a lot programming languages in Statistics","I expect to learn fundamental topics in R programming and its various aspects and how to implement these for effective data analysis.","I am expecting to familiarize myself with basic concepts of Data Analysis and grasping basic foundations of softwares related to Data like R","I expect to take on interesting projects with relation to data, and improve my fundamental understanding of data and expand the arsenal of what I can do.","I expect to become fluent in the basics of R and looking forward to the introduction of Github in order to start working on my own analytics projects and accelerate my studies as well","i want to improve my skills in R and overall become better in data analytics","To somehow be able to navigate the data.","To build my knowledge in data analysis and data science","how to program1"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Academic.level<\/th>\n      <th>Gender<\/th>\n      <th>Age<\/th>\n      <th>Total.Semesters<\/th>\n      <th>Background.in.Statistics<\/th>\n      <th>Background.in.R<\/th>\n      <th>Background.in.Academic.Writing<\/th>\n      <th>Expectations<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <div id="one-variable-graphics" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> One Variable Graphics<a href="relationships.html#one-variable-graphics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Please create the histogram (in base R or ggplot).</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="relationships.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(GF<span class="sc">$</span>Total.Semesters, <span class="at">main=</span><span class="st">&quot;Histogram of Semester&quot;</span>, </span>
-<span id="cb98-2"><a href="relationships.html#cb98-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Semester&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>, <span class="at">breaks=</span><span class="dv">12</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-140-1.png" width="576" /></p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="relationships.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(GF<span class="sc">$</span>Total.Semesters, <span class="at">main=</span><span class="st">&quot;Histogram of Semester&quot;</span>, </span>
+<span id="cb95-2"><a href="relationships.html#cb95-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Semester&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>, <span class="at">breaks=</span><span class="dv">12</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-138-1.png" width="576" /></p>
 </div>
 <div id="two-variable-graphics" class="section level3 hasAnchor" number="8.2.2">
 <h3><span class="header-section-number">8.2.2</span> Two Variable Graphics<a href="relationships.html#two-variable-graphics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Replicate the following graph. It is a scatterplot of age versus semester (either base R or ggplot). Add a regression line to the plot to illustrate the general tendency of the relationship.</p>
 <p>Hint: Use <code>lm()</code> to build a linear model. Inside goes a formula of <code>y ~ x</code> and a dataset with the <code>data</code> option. Use <code>abline()</code> in base R.</p>
 <!-- Hint: model relationship in lm(y~x) whereas plot(x,y)  -->
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="relationships.html#cb99-1" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span></code></pre></div>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="relationships.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters, <span class="at">main=</span><span class="st">&quot;Relationship between Age and Semester&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Semester&quot;</span>, <span class="at">cex=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">7</span>)</span>
-<span id="cb100-2"><a href="relationships.html#cb100-2" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span>
-<span id="cb100-3"><a href="relationships.html#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(linear_model)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-142-1.png" width="576" /></p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="relationships.html#cb96-1" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="relationships.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters, <span class="at">main=</span><span class="st">&quot;Relationship between Age and Semester&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Age&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Semester&quot;</span>, <span class="at">cex=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">7</span>)</span>
+<span id="cb97-2"><a href="relationships.html#cb97-2" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span>
+<span id="cb97-3"><a href="relationships.html#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(linear_model)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-140-1.png" width="576" /></p>
 <!-- There seems to be an **outlier** (perhaps a typo?). Remove unreasonable high ages by filter for values less than 99 (I can program such a *plausibility check* in the questionnaire to prevent this happening). Call this data `GF_less_99` Please create a scatterplot of age versus semester (without outlier). Please add a linear regression line to the scatterplot (the plot can be base R or ggplot). Add nice labels. You may play around with design. -->
 <!-- ```{r, echo=FALSE, eval=TRUE} -->
 <!-- library(tidyverse) -->
@@ -625,38 +646,38 @@ The variance of <code>x</code> is 98 and can be calculated via <code>var()</code
 <h3><span class="header-section-number">8.2.3</span> Correlation and Regression<a href="relationships.html#correlation-and-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- https://stats.stackexchange.com/questions/32464/how-does-the-correlation-coefficient-differ-from-regression-slope -->
 <p>What's the difference between correlation and simple regression?</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="relationships.html#cb101-1" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span>
-<span id="cb101-2"><a href="relationships.html#cb101-2" aria-hidden="true" tabindex="-1"></a>linear_model<span class="sc">$</span>coefficients</span>
-<span id="cb101-3"><a href="relationships.html#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)         Age </span></span>
-<span id="cb101-4"><a href="relationships.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.8010913   0.2323192</span></span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="relationships.html#cb98-1" aria-hidden="true" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters<span class="sc">~</span>Age, <span class="at">data=</span>GF)</span>
+<span id="cb98-2"><a href="relationships.html#cb98-2" aria-hidden="true" tabindex="-1"></a>linear_model<span class="sc">$</span>coefficients</span>
+<span id="cb98-3"><a href="relationships.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)         Age </span></span>
+<span id="cb98-4"><a href="relationships.html#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1.8010913   0.2323192</span></span></code></pre></div>
 <p>The regression coefficient of age is 0.2323192. What is the Pearson correlation coefficient (between -1 and 1)?</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="relationships.html#cb102-1" aria-hidden="true" tabindex="-1"></a>GF_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb102-2"><a href="relationships.html#cb102-2" aria-hidden="true" tabindex="-1"></a>GF_cor</span>
-<span id="cb102-3"><a href="relationships.html#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.1992823</span></span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="relationships.html#cb99-1" aria-hidden="true" tabindex="-1"></a>GF_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb99-2"><a href="relationships.html#cb99-2" aria-hidden="true" tabindex="-1"></a>GF_cor</span>
+<span id="cb99-3"><a href="relationships.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.1992823</span></span></code></pre></div>
 <p>The correlation coefficient and regression coefficient are related and only coincide when the two variables are on the same scale. The most common way of achieving this is through standardization.</p>
 <p><span class="math display">\[\beta = cor(Y,X) \cdot \frac{SD(Y)}{SD(X)} \]</span></p>
 <p>Please code the above formula for the given GF data and show the equivalence of the beta coefficient and the adjusted correlation coefficient. Access the regression coefficient of <code>age</code> from the linear model and store it as <code>reg_coef_age</code>. Store the adjusted correlation coefficient as <code>adj_cor_coef</code>.</p>
 <p>Print out the logical comparison of <code>reg_coef_age</code> and <code>adj_cor_coef</code>.</p>
 <!-- `GF_beta` and the correlation coefficient `GF_cor` after standardization with standard deviations. Please conduct a *logical comparison* such that `GF_beta == GF_cor` returns `TRUE`. Hint: Extract `GF_beta` from the object `linear_model`. You can find more information on `linear_model` in the right upper panel by clicking on it. Multiply `GF_cor` with standard deviations. If this returns `FALSE`, think about why (inspect the returns) and find a solution.  -->
 <p>If it returns <code>FALSE</code>, compare versions of <code>reg_coef_age</code> and <code>adj_cor_coef</code> that are rounded to 6 digits. Use <code>round()</code>.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="relationships.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print the regression coefficient (beta) from model1</span></span>
-<span id="cb103-2"><a href="relationships.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Save as beta</span></span>
-<span id="cb103-3"><a href="relationships.html#cb103-3" aria-hidden="true" tabindex="-1"></a>beta_a <span class="ot">&lt;-</span> linear_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
-<span id="cb103-4"><a href="relationships.html#cb103-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-5"><a href="relationships.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="do">## nice alternative</span></span>
-<span id="cb103-6"><a href="relationships.html#cb103-6" aria-hidden="true" tabindex="-1"></a>beta_a <span class="ot">&lt;-</span> <span class="fu">summary</span>(linear_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">1</span>]</span>
-<span id="cb103-7"><a href="relationships.html#cb103-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-8"><a href="relationships.html#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Compare with the formula: cor(Y,X) * SD(Y)/SD(X)</span></span>
-<span id="cb103-9"><a href="relationships.html#cb103-9" aria-hidden="true" tabindex="-1"></a>beta_b <span class="ot">&lt;-</span> <span class="fu">cor</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters) <span class="sc">*</span> <span class="fu">sd</span>(GF<span class="sc">$</span>Total.Semesters) <span class="sc">/</span> <span class="fu">sd</span>(GF<span class="sc">$</span>Age)</span>
-<span id="cb103-10"><a href="relationships.html#cb103-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-11"><a href="relationships.html#cb103-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Are those betas perfectly equal?</span></span>
-<span id="cb103-12"><a href="relationships.html#cb103-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Please compare those two betas insofar that the console returns a logical value</span></span>
-<span id="cb103-13"><a href="relationships.html#cb103-13" aria-hidden="true" tabindex="-1"></a>beta_a <span class="sc">==</span> beta_b</span>
-<span id="cb103-14"><a href="relationships.html#cb103-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb103-15"><a href="relationships.html#cb103-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-16"><a href="relationships.html#cb103-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Round the betas to 4 digits and check again. </span></span>
-<span id="cb103-17"><a href="relationships.html#cb103-17" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(beta_a, <span class="dv">6</span>) <span class="sc">==</span> <span class="fu">round</span>(beta_b,<span class="dv">6</span>)</span>
-<span id="cb103-18"><a href="relationships.html#cb103-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="relationships.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Print the regression coefficient (beta) from model1</span></span>
+<span id="cb100-2"><a href="relationships.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Save as beta</span></span>
+<span id="cb100-3"><a href="relationships.html#cb100-3" aria-hidden="true" tabindex="-1"></a>beta_a <span class="ot">&lt;-</span> linear_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb100-4"><a href="relationships.html#cb100-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-5"><a href="relationships.html#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="do">## nice alternative</span></span>
+<span id="cb100-6"><a href="relationships.html#cb100-6" aria-hidden="true" tabindex="-1"></a>beta_a <span class="ot">&lt;-</span> <span class="fu">summary</span>(linear_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb100-7"><a href="relationships.html#cb100-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-8"><a href="relationships.html#cb100-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Compare with the formula: cor(Y,X) * SD(Y)/SD(X)</span></span>
+<span id="cb100-9"><a href="relationships.html#cb100-9" aria-hidden="true" tabindex="-1"></a>beta_b <span class="ot">&lt;-</span> <span class="fu">cor</span>(GF<span class="sc">$</span>Age, GF<span class="sc">$</span>Total.Semesters) <span class="sc">*</span> <span class="fu">sd</span>(GF<span class="sc">$</span>Total.Semesters) <span class="sc">/</span> <span class="fu">sd</span>(GF<span class="sc">$</span>Age)</span>
+<span id="cb100-10"><a href="relationships.html#cb100-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-11"><a href="relationships.html#cb100-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Are those betas perfectly equal?</span></span>
+<span id="cb100-12"><a href="relationships.html#cb100-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Please compare those two betas insofar that the console returns a logical value</span></span>
+<span id="cb100-13"><a href="relationships.html#cb100-13" aria-hidden="true" tabindex="-1"></a>beta_a <span class="sc">==</span> beta_b</span>
+<span id="cb100-14"><a href="relationships.html#cb100-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
+<span id="cb100-15"><a href="relationships.html#cb100-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-16"><a href="relationships.html#cb100-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Round the betas to 4 digits and check again. </span></span>
+<span id="cb100-17"><a href="relationships.html#cb100-17" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(beta_a, <span class="dv">6</span>) <span class="sc">==</span> <span class="fu">round</span>(beta_b,<span class="dv">6</span>)</span>
+<span id="cb100-18"><a href="relationships.html#cb100-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <!-- https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y/22721##22721 -->
 <!-- A correlation is symmetrical; x is as correlated with y as y is with x. The Pearson product-moment correlation can be understood within a regression context, however. The correlation coefficient, r, is the slope of the regression line when both variables have been standardized first. That is, you first subtracted off the mean from each observation, and then divided the differences by the standard deviation. The cloud of data points will now be centered on the origin, and the slope would be the same whether you regressed y onto x, or x onto y (but note the comment by @DilipSarwate below).  -->
 <!-- #### Centering and Standardization -->

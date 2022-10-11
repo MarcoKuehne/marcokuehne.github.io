@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 12 First Difference | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 12 First Difference | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
@@ -461,25 +461,25 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </div>
 <div id="data-management-4-pt" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> Data Management (4 pt)<a href="first-difference.html#data-management-4-pt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="first-difference.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
-<span id="cb168-2"><a href="first-difference.html#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb168-3"><a href="first-difference.html#cb168-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb168-4"><a href="first-difference.html#cb168-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb168-5"><a href="first-difference.html#cb168-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb168-6"><a href="first-difference.html#cb168-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Read</span></span>
-<span id="cb168-7"><a href="first-difference.html#cb168-7" aria-hidden="true" tabindex="-1"></a>pl <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./SOEPteaching/pl_reduced.rds&quot;</span>)</span>
-<span id="cb168-8"><a href="first-difference.html#cb168-8" aria-hidden="true" tabindex="-1"></a>pequiv <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./SOEPteaching/pequiv_reduced.rds&quot;</span>)</span>
-<span id="cb168-9"><a href="first-difference.html#cb168-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb168-10"><a href="first-difference.html#cb168-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge data</span></span>
-<span id="cb168-11"><a href="first-difference.html#cb168-11" aria-hidden="true" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">merge</span>(pl, pequiv, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>, <span class="st">&quot;syear&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="first-difference.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
+<span id="cb165-2"><a href="first-difference.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb165-3"><a href="first-difference.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb165-4"><a href="first-difference.html#cb165-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb165-5"><a href="first-difference.html#cb165-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb165-6"><a href="first-difference.html#cb165-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Read</span></span>
+<span id="cb165-7"><a href="first-difference.html#cb165-7" aria-hidden="true" tabindex="-1"></a>pl <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./SOEPteaching/pl_reduced.rds&quot;</span>)</span>
+<span id="cb165-8"><a href="first-difference.html#cb165-8" aria-hidden="true" tabindex="-1"></a>pequiv <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./SOEPteaching/pequiv_reduced.rds&quot;</span>)</span>
+<span id="cb165-9"><a href="first-difference.html#cb165-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb165-10"><a href="first-difference.html#cb165-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge data</span></span>
+<span id="cb165-11"><a href="first-difference.html#cb165-11" aria-hidden="true" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">merge</span>(pl, pequiv, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>, <span class="st">&quot;syear&quot;</span>))</span></code></pre></div>
 <p>All negative values represent missing values. Do a complete case analysis (n should be 338892). Drop all Stata labels with <code>remove_all_labels()</code> from <code>sjlabelled</code> package.</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="first-difference.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop missings</span></span>
-<span id="cb169-2"><a href="first-difference.html#cb169-2" aria-hidden="true" tabindex="-1"></a>master[master <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb169-3"><a href="first-difference.html#cb169-3" aria-hidden="true" tabindex="-1"></a>master <span class="ot">&lt;-</span> master[<span class="fu">complete.cases</span>(master), ]</span>
-<span id="cb169-4"><a href="first-difference.html#cb169-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb169-5"><a href="first-difference.html#cb169-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop labels </span></span>
-<span id="cb169-6"><a href="first-difference.html#cb169-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
-<span id="cb169-7"><a href="first-difference.html#cb169-7" aria-hidden="true" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="first-difference.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop missings</span></span>
+<span id="cb166-2"><a href="first-difference.html#cb166-2" aria-hidden="true" tabindex="-1"></a>master[master <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb166-3"><a href="first-difference.html#cb166-3" aria-hidden="true" tabindex="-1"></a>master <span class="ot">&lt;-</span> master[<span class="fu">complete.cases</span>(master), ]</span>
+<span id="cb166-4"><a href="first-difference.html#cb166-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb166-5"><a href="first-difference.html#cb166-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop labels </span></span>
+<span id="cb166-6"><a href="first-difference.html#cb166-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
+<span id="cb166-7"><a href="first-difference.html#cb166-7" aria-hidden="true" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span></code></pre></div>
 <p>Calculate each information in <code>master</code> per individual (group by <code>id</code>). <em>Rename</em> <code>plh0182</code> to <code>satis</code>, <code>d11109</code> to <code>years_educ</code> and <code>d11101</code> to <code>age</code>.</p>
 <ol style="list-style-type: decimal">
 <li><strong>Hourly wages</strong> can be calculated as total annual income (<code>ijob1</code>) divided by total annual work hours (<code>e11101</code>).
@@ -498,33 +498,33 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 </ul></li>
 </ol>
 <p>Store the prepared data as <code>mincer</code>. Summary statistics should roughly be equal to the following table:</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="first-difference.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data stuff</span></span>
-<span id="cb170-2"><a href="first-difference.html#cb170-2" aria-hidden="true" tabindex="-1"></a>mincer <span class="ot">&lt;-</span> master <span class="sc">%&gt;%</span></span>
-<span id="cb170-3"><a href="first-difference.html#cb170-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">satis =</span> plh0182,</span>
-<span id="cb170-4"><a href="first-difference.html#cb170-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">years_educ =</span> d11109,</span>
-<span id="cb170-5"><a href="first-difference.html#cb170-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">age =</span> d11101) <span class="sc">%&gt;%</span></span>
-<span id="cb170-6"><a href="first-difference.html#cb170-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pid) <span class="sc">%&gt;%</span></span>
-<span id="cb170-7"><a href="first-difference.html#cb170-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(e11101 <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb170-8"><a href="first-difference.html#cb170-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">inc_hourly =</span> ijob1<span class="sc">/</span>e11101) <span class="sc">%&gt;%</span></span>
-<span id="cb170-9"><a href="first-difference.html#cb170-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(inc_hourly <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb170-10"><a href="first-difference.html#cb170-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_inc_hourly =</span> <span class="fu">log</span>(inc_hourly)) <span class="sc">%&gt;%</span></span>
-<span id="cb170-11"><a href="first-difference.html#cb170-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years_obs =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb170-12"><a href="first-difference.html#cb170-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years_emp =</span> <span class="fu">sum</span>(e11102)) <span class="sc">%&gt;%</span></span>
-<span id="cb170-13"><a href="first-difference.html#cb170-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years_unemp =</span> <span class="fu">n</span>() <span class="sc">-</span> <span class="fu">sum</span>(e11102)) <span class="sc">%&gt;%</span></span>
-<span id="cb170-14"><a href="first-difference.html#cb170-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tenure =</span> age <span class="sc">-</span> years_educ <span class="sc">-</span> <span class="dv">6</span> <span class="sc">-</span> years_unemp) <span class="sc">%&gt;%</span></span>
-<span id="cb170-15"><a href="first-difference.html#cb170-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tenure <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb170-16"><a href="first-difference.html#cb170-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pid)</span>
-<span id="cb170-17"><a href="first-difference.html#cb170-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select(c(&quot;pid&quot;, &quot;syear&quot;, &quot;years_educ&quot;, &quot;tenure&quot;, &quot;inc_hourly&quot;, &quot;log_inc_hourly&quot;))</span></span></code></pre></div>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="first-difference.html#cb171-1" aria-hidden="true" tabindex="-1"></a>mincer <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mincer)</span>
-<span id="cb171-2"><a href="first-difference.html#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb171-3"><a href="first-difference.html#cb171-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mincer[,<span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>)], <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="first-difference.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
-<span id="cb172-2"><a href="first-difference.html#cb172-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb172-3"><a href="first-difference.html#cb172-3" aria-hidden="true" tabindex="-1"></a>mincer <span class="sc">%&gt;%</span></span>
-<span id="cb172-4"><a href="first-difference.html#cb172-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;years_educ&quot;</span>, <span class="st">&quot;tenure&quot;</span>, <span class="st">&quot;inc_hourly&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb172-5"><a href="first-difference.html#cb172-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb172-6"><a href="first-difference.html#cb172-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bold_labels</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb172-7"><a href="first-difference.html#cb172-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="first-difference.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data stuff</span></span>
+<span id="cb167-2"><a href="first-difference.html#cb167-2" aria-hidden="true" tabindex="-1"></a>mincer <span class="ot">&lt;-</span> master <span class="sc">%&gt;%</span></span>
+<span id="cb167-3"><a href="first-difference.html#cb167-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">satis =</span> plh0182,</span>
+<span id="cb167-4"><a href="first-difference.html#cb167-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">years_educ =</span> d11109,</span>
+<span id="cb167-5"><a href="first-difference.html#cb167-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">age =</span> d11101) <span class="sc">%&gt;%</span></span>
+<span id="cb167-6"><a href="first-difference.html#cb167-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pid) <span class="sc">%&gt;%</span></span>
+<span id="cb167-7"><a href="first-difference.html#cb167-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(e11101 <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb167-8"><a href="first-difference.html#cb167-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">inc_hourly =</span> ijob1<span class="sc">/</span>e11101) <span class="sc">%&gt;%</span></span>
+<span id="cb167-9"><a href="first-difference.html#cb167-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(inc_hourly <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb167-10"><a href="first-difference.html#cb167-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_inc_hourly =</span> <span class="fu">log</span>(inc_hourly)) <span class="sc">%&gt;%</span></span>
+<span id="cb167-11"><a href="first-difference.html#cb167-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years_obs =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb167-12"><a href="first-difference.html#cb167-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years_emp =</span> <span class="fu">sum</span>(e11102)) <span class="sc">%&gt;%</span></span>
+<span id="cb167-13"><a href="first-difference.html#cb167-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years_unemp =</span> <span class="fu">n</span>() <span class="sc">-</span> <span class="fu">sum</span>(e11102)) <span class="sc">%&gt;%</span></span>
+<span id="cb167-14"><a href="first-difference.html#cb167-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tenure =</span> age <span class="sc">-</span> years_educ <span class="sc">-</span> <span class="dv">6</span> <span class="sc">-</span> years_unemp) <span class="sc">%&gt;%</span></span>
+<span id="cb167-15"><a href="first-difference.html#cb167-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tenure <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb167-16"><a href="first-difference.html#cb167-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pid)</span>
+<span id="cb167-17"><a href="first-difference.html#cb167-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select(c(&quot;pid&quot;, &quot;syear&quot;, &quot;years_educ&quot;, &quot;tenure&quot;, &quot;inc_hourly&quot;, &quot;log_inc_hourly&quot;))</span></span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="first-difference.html#cb168-1" aria-hidden="true" tabindex="-1"></a>mincer <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mincer)</span>
+<span id="cb168-2"><a href="first-difference.html#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb168-3"><a href="first-difference.html#cb168-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(mincer[,<span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>)], <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="first-difference.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb169-2"><a href="first-difference.html#cb169-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb169-3"><a href="first-difference.html#cb169-3" aria-hidden="true" tabindex="-1"></a>mincer <span class="sc">%&gt;%</span></span>
+<span id="cb169-4"><a href="first-difference.html#cb169-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;years_educ&quot;</span>, <span class="st">&quot;tenure&quot;</span>, <span class="st">&quot;inc_hourly&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb169-5"><a href="first-difference.html#cb169-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb169-6"><a href="first-difference.html#cb169-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bold_labels</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb169-7"><a href="first-difference.html#cb169-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>()</span></code></pre></div>
 <div id="ogueufmkvt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -898,15 +898,6 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   font-size: 65%;
 }
 
-#ogueufmkvt .gt_two_val_uncert {
-  display: inline-block;
-  line-height: 1em;
-  text-align: right;
-  font-size: 60%;
-  vertical-align: -0.25em;
-  margin-left: 0.1em;
-}
-
 #ogueufmkvt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
@@ -919,31 +910,33 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
   vertical-align: 0;
 }
 
-#ogueufmkvt .gt_slash_mark {
-  font-size: 0.7em;
-  line-height: 0.7em;
-  vertical-align: 0.15em;
+#ogueufmkvt .gt_indent_1 {
+  text-indent: 5px;
 }
 
-#ogueufmkvt .gt_fraction_numerator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: 0.45em;
+#ogueufmkvt .gt_indent_2 {
+  text-indent: 10px;
 }
 
-#ogueufmkvt .gt_fraction_denominator {
-  font-size: 0.6em;
-  line-height: 0.6em;
-  vertical-align: -0.05em;
+#ogueufmkvt .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ogueufmkvt .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ogueufmkvt .gt_indent_5 {
+  text-indent: 25px;
 }
 </style>
 <table class="gt_table">
   
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>N</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>N = 189,514</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>N</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>N = 189,514</strong><sup class="gt_footnote_marks">1</sup></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
@@ -972,145 +965,145 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <div id="data-visualization-2-pt" class="section level2 hasAnchor" number="12.3">
 <h2><span class="header-section-number">12.3</span> Data Visualization (2 pt)<a href="first-difference.html#data-visualization-2-pt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The graph shows the hourly wage (not logged) in relation to the work experience for 5 random people that are observed for at least 5 years. You can use the <code>sample_n_groups()</code> function from previous exercises.</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="first-difference.html#cb173-1" aria-hidden="true" tabindex="-1"></a>sample_n_groups <span class="ot">=</span> <span class="cf">function</span>(grouped_df, size, <span class="at">replace =</span> <span class="cn">FALSE</span>, <span class="at">weight=</span><span class="cn">NULL</span>) {</span>
-<span id="cb173-2"><a href="first-difference.html#cb173-2" aria-hidden="true" tabindex="-1"></a>  grp_var <span class="ot">&lt;-</span> grouped_df <span class="sc">%&gt;%</span> </span>
-<span id="cb173-3"><a href="first-difference.html#cb173-3" aria-hidden="true" tabindex="-1"></a>    groups <span class="sc">%&gt;%</span></span>
-<span id="cb173-4"><a href="first-difference.html#cb173-4" aria-hidden="true" tabindex="-1"></a>    unlist <span class="sc">%&gt;%</span> </span>
-<span id="cb173-5"><a href="first-difference.html#cb173-5" aria-hidden="true" tabindex="-1"></a>    as.character</span>
-<span id="cb173-6"><a href="first-difference.html#cb173-6" aria-hidden="true" tabindex="-1"></a>  random_grp <span class="ot">&lt;-</span> grouped_df <span class="sc">%&gt;%</span> </span>
-<span id="cb173-7"><a href="first-difference.html#cb173-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb173-8"><a href="first-difference.html#cb173-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_n</span>(size, replace, weight) <span class="sc">%&gt;%</span> </span>
-<span id="cb173-9"><a href="first-difference.html#cb173-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">unique_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">NROW</span>(.))</span>
-<span id="cb173-10"><a href="first-difference.html#cb173-10" aria-hidden="true" tabindex="-1"></a>  grouped_df <span class="sc">%&gt;%</span> </span>
-<span id="cb173-11"><a href="first-difference.html#cb173-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">right_join</span>(random_grp, <span class="at">by=</span>grp_var) <span class="sc">%&gt;%</span> </span>
-<span id="cb173-12"><a href="first-difference.html#cb173-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by_</span>(grp_var) </span>
-<span id="cb173-13"><a href="first-difference.html#cb173-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="first-difference.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb174-2"><a href="first-difference.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
-<span id="cb174-3"><a href="first-difference.html#cb174-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb174-4"><a href="first-difference.html#cb174-4" aria-hidden="true" tabindex="-1"></a>mincer <span class="sc">%&gt;%</span> </span>
-<span id="cb174-5"><a href="first-difference.html#cb174-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pid) <span class="sc">%&gt;%</span></span>
-<span id="cb174-6"><a href="first-difference.html#cb174-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb174-7"><a href="first-difference.html#cb174-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(purrr<span class="sc">::</span><span class="fu">map_lgl</span>(data, <span class="sc">~</span> <span class="fu">nrow</span>(.x) <span class="sc">&gt;=</span> <span class="dv">5</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb174-8"><a href="first-difference.html#cb174-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb174-9"><a href="first-difference.html#cb174-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n_groups</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="co"># select 3 pid for all time</span></span>
-<span id="cb174-10"><a href="first-difference.html#cb174-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> tenure, <span class="at">y =</span> inc_hourly, <span class="at">col=</span><span class="fu">factor</span>(pid))) <span class="sc">+</span>  </span>
-<span id="cb174-11"><a href="first-difference.html#cb174-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb174-12"><a href="first-difference.html#cb174-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Income and Work Experience&quot;</span>, </span>
-<span id="cb174-13"><a href="first-difference.html#cb174-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">&quot;Selected Sample of 5 People&quot;</span>,</span>
-<span id="cb174-14"><a href="first-difference.html#cb174-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Work Experience (Years)&quot;</span>, <span class="at">y=</span><span class="st">&quot;Hourly Wage (Euro)&quot;</span>, </span>
-<span id="cb174-15"><a href="first-difference.html#cb174-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour=</span><span class="st">&quot;person&quot;</span>) <span class="sc">+</span> <span class="co"># give some illustrative labels</span></span>
-<span id="cb174-16"><a href="first-difference.html#cb174-16" aria-hidden="true" tabindex="-1"></a>       <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-239-1.png" width="576" /></p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="first-difference.html#cb170-1" aria-hidden="true" tabindex="-1"></a>sample_n_groups <span class="ot">=</span> <span class="cf">function</span>(grouped_df, size, <span class="at">replace =</span> <span class="cn">FALSE</span>, <span class="at">weight=</span><span class="cn">NULL</span>) {</span>
+<span id="cb170-2"><a href="first-difference.html#cb170-2" aria-hidden="true" tabindex="-1"></a>  grp_var <span class="ot">&lt;-</span> grouped_df <span class="sc">%&gt;%</span> </span>
+<span id="cb170-3"><a href="first-difference.html#cb170-3" aria-hidden="true" tabindex="-1"></a>    groups <span class="sc">%&gt;%</span></span>
+<span id="cb170-4"><a href="first-difference.html#cb170-4" aria-hidden="true" tabindex="-1"></a>    unlist <span class="sc">%&gt;%</span> </span>
+<span id="cb170-5"><a href="first-difference.html#cb170-5" aria-hidden="true" tabindex="-1"></a>    as.character</span>
+<span id="cb170-6"><a href="first-difference.html#cb170-6" aria-hidden="true" tabindex="-1"></a>  random_grp <span class="ot">&lt;-</span> grouped_df <span class="sc">%&gt;%</span> </span>
+<span id="cb170-7"><a href="first-difference.html#cb170-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb170-8"><a href="first-difference.html#cb170-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_n</span>(size, replace, weight) <span class="sc">%&gt;%</span> </span>
+<span id="cb170-9"><a href="first-difference.html#cb170-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">unique_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">NROW</span>(.))</span>
+<span id="cb170-10"><a href="first-difference.html#cb170-10" aria-hidden="true" tabindex="-1"></a>  grouped_df <span class="sc">%&gt;%</span> </span>
+<span id="cb170-11"><a href="first-difference.html#cb170-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">right_join</span>(random_grp, <span class="at">by=</span>grp_var) <span class="sc">%&gt;%</span> </span>
+<span id="cb170-12"><a href="first-difference.html#cb170-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by_</span>(grp_var) </span>
+<span id="cb170-13"><a href="first-difference.html#cb170-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="first-difference.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb171-2"><a href="first-difference.html#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">44</span>)</span>
+<span id="cb171-3"><a href="first-difference.html#cb171-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-4"><a href="first-difference.html#cb171-4" aria-hidden="true" tabindex="-1"></a>mincer <span class="sc">%&gt;%</span> </span>
+<span id="cb171-5"><a href="first-difference.html#cb171-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pid) <span class="sc">%&gt;%</span></span>
+<span id="cb171-6"><a href="first-difference.html#cb171-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb171-7"><a href="first-difference.html#cb171-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(purrr<span class="sc">::</span><span class="fu">map_lgl</span>(data, <span class="sc">~</span> <span class="fu">nrow</span>(.x) <span class="sc">&gt;=</span> <span class="dv">5</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb171-8"><a href="first-difference.html#cb171-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb171-9"><a href="first-difference.html#cb171-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n_groups</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="co"># select 3 pid for all time</span></span>
+<span id="cb171-10"><a href="first-difference.html#cb171-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> tenure, <span class="at">y =</span> inc_hourly, <span class="at">col=</span><span class="fu">factor</span>(pid))) <span class="sc">+</span>  </span>
+<span id="cb171-11"><a href="first-difference.html#cb171-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb171-12"><a href="first-difference.html#cb171-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Income and Work Experience&quot;</span>, </span>
+<span id="cb171-13"><a href="first-difference.html#cb171-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">&quot;Selected Sample of 5 People&quot;</span>,</span>
+<span id="cb171-14"><a href="first-difference.html#cb171-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Work Experience (Years)&quot;</span>, <span class="at">y=</span><span class="st">&quot;Hourly Wage (Euro)&quot;</span>, </span>
+<span id="cb171-15"><a href="first-difference.html#cb171-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour=</span><span class="st">&quot;person&quot;</span>) <span class="sc">+</span> <span class="co"># give some illustrative labels</span></span>
+<span id="cb171-16"><a href="first-difference.html#cb171-16" aria-hidden="true" tabindex="-1"></a>       <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-237-1.png" width="576" /></p>
 </div>
 <div id="data-modeling-2-pt" class="section level2 hasAnchor" number="12.4">
 <h2><span class="header-section-number">12.4</span> Data Modeling (2 pt)<a href="first-difference.html#data-modeling-2-pt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We select a subset of data for the years 2017 and 2018 (T=2). We calculate a pooling model, first difference and fixed effects. We use the <code>plm</code> package for all model setups. Estimate models without education and without the constant:</p>
 <p><span class="math display">\[\ln w_{it} = \beta_1 \text{tenure}_{it} + \beta_2 \text{tenure}^2_{it}  \]</span></p>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="first-difference.html#cb175-1" aria-hidden="true" tabindex="-1"></a>mincer1718 <span class="ot">&lt;-</span> mincer <span class="sc">%&gt;%</span></span>
-<span id="cb175-2"><a href="first-difference.html#cb175-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2017</span> <span class="sc">|</span> syear <span class="sc">==</span> <span class="dv">2018</span>)</span>
-<span id="cb175-3"><a href="first-difference.html#cb175-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb175-4"><a href="first-difference.html#cb175-4" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS </span></span>
-<span id="cb175-5"><a href="first-difference.html#cb175-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb175-6"><a href="first-difference.html#cb175-6" aria-hidden="true" tabindex="-1"></a>LM2 <span class="ot">&lt;-</span> <span class="fu">plm</span>(log_inc_hourly <span class="sc">~</span> tenure <span class="sc">+</span> <span class="fu">I</span>(tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>mincer1718, </span>
-<span id="cb175-7"><a href="first-difference.html#cb175-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;pooling&quot;</span>, </span>
-<span id="cb175-8"><a href="first-difference.html#cb175-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>,<span class="st">&quot;syear&quot;</span>))</span>
-<span id="cb175-9"><a href="first-difference.html#cb175-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb175-10"><a href="first-difference.html#cb175-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
-<span id="cb175-11"><a href="first-difference.html#cb175-11" aria-hidden="true" tabindex="-1"></a>FE2 <span class="ot">&lt;-</span> <span class="fu">plm</span>(log_inc_hourly <span class="sc">~</span> tenure <span class="sc">+</span> <span class="fu">I</span>(tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>mincer1718, </span>
-<span id="cb175-12"><a href="first-difference.html#cb175-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;within&quot;</span>, </span>
-<span id="cb175-13"><a href="first-difference.html#cb175-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>,<span class="st">&quot;syear&quot;</span>))</span>
-<span id="cb175-14"><a href="first-difference.html#cb175-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb175-15"><a href="first-difference.html#cb175-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
-<span id="cb175-16"><a href="first-difference.html#cb175-16" aria-hidden="true" tabindex="-1"></a>FD2 <span class="ot">&lt;-</span> <span class="fu">plm</span>(log_inc_hourly <span class="sc">~</span> tenure <span class="sc">+</span> <span class="fu">I</span>(tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>mincer1718, </span>
-<span id="cb175-17"><a href="first-difference.html#cb175-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;fd&quot;</span>, </span>
-<span id="cb175-18"><a href="first-difference.html#cb175-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>,<span class="st">&quot;syear&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="first-difference.html#cb172-1" aria-hidden="true" tabindex="-1"></a>mincer1718 <span class="ot">&lt;-</span> mincer <span class="sc">%&gt;%</span></span>
+<span id="cb172-2"><a href="first-difference.html#cb172-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2017</span> <span class="sc">|</span> syear <span class="sc">==</span> <span class="dv">2018</span>)</span>
+<span id="cb172-3"><a href="first-difference.html#cb172-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb172-4"><a href="first-difference.html#cb172-4" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS </span></span>
+<span id="cb172-5"><a href="first-difference.html#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb172-6"><a href="first-difference.html#cb172-6" aria-hidden="true" tabindex="-1"></a>LM2 <span class="ot">&lt;-</span> <span class="fu">plm</span>(log_inc_hourly <span class="sc">~</span> tenure <span class="sc">+</span> <span class="fu">I</span>(tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>mincer1718, </span>
+<span id="cb172-7"><a href="first-difference.html#cb172-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;pooling&quot;</span>, </span>
+<span id="cb172-8"><a href="first-difference.html#cb172-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>,<span class="st">&quot;syear&quot;</span>))</span>
+<span id="cb172-9"><a href="first-difference.html#cb172-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb172-10"><a href="first-difference.html#cb172-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
+<span id="cb172-11"><a href="first-difference.html#cb172-11" aria-hidden="true" tabindex="-1"></a>FE2 <span class="ot">&lt;-</span> <span class="fu">plm</span>(log_inc_hourly <span class="sc">~</span> tenure <span class="sc">+</span> <span class="fu">I</span>(tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>mincer1718, </span>
+<span id="cb172-12"><a href="first-difference.html#cb172-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;within&quot;</span>, </span>
+<span id="cb172-13"><a href="first-difference.html#cb172-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>,<span class="st">&quot;syear&quot;</span>))</span>
+<span id="cb172-14"><a href="first-difference.html#cb172-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb172-15"><a href="first-difference.html#cb172-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
+<span id="cb172-16"><a href="first-difference.html#cb172-16" aria-hidden="true" tabindex="-1"></a>FD2 <span class="ot">&lt;-</span> <span class="fu">plm</span>(log_inc_hourly <span class="sc">~</span> tenure <span class="sc">+</span> <span class="fu">I</span>(tenure<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>mincer1718, </span>
+<span id="cb172-17"><a href="first-difference.html#cb172-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;fd&quot;</span>, </span>
+<span id="cb172-18"><a href="first-difference.html#cb172-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;pid&quot;</span>,<span class="st">&quot;syear&quot;</span>))</span></code></pre></div>
 <p>Create a <strong>stargazer</strong> table for model comparison, such as:</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="first-difference.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stargazer Comparison</span></span>
-<span id="cb176-2"><a href="first-difference.html#cb176-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb176-3"><a href="first-difference.html#cb176-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(LM2, FD2, FE2, <span class="at">type=</span><span class="st">&quot;text&quot;</span>,</span>
-<span id="cb176-4"><a href="first-difference.html#cb176-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels=</span><span class="fu">c</span>(<span class="st">&quot;Pooling&quot;</span>, <span class="st">&quot;FD&quot;</span>, <span class="st">&quot;FE&quot;</span>),</span>
-<span id="cb176-5"><a href="first-difference.html#cb176-5" aria-hidden="true" tabindex="-1"></a>          <span class="co">#keep=c(&quot;inc&quot;),</span></span>
-<span id="cb176-6"><a href="first-difference.html#cb176-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels.include =</span> <span class="cn">FALSE</span>, <span class="at">model.numbers =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb176-7"><a href="first-difference.html#cb176-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat=</span><span class="st">&quot;f&quot;</span>)</span>
-<span id="cb176-8"><a href="first-difference.html#cb176-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb176-9"><a href="first-difference.html#cb176-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ==========================================</span></span>
-<span id="cb176-10"><a href="first-difference.html#cb176-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Dependent variable:     </span></span>
-<span id="cb176-11"><a href="first-difference.html#cb176-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              -----------------------------</span></span>
-<span id="cb176-12"><a href="first-difference.html#cb176-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Pooling     FD        FE    </span></span>
-<span id="cb176-13"><a href="first-difference.html#cb176-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------</span></span>
-<span id="cb176-14"><a href="first-difference.html#cb176-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tenure       0.203***  0.077***  0.077*** </span></span>
-<span id="cb176-15"><a href="first-difference.html#cb176-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               (0.001)   (0.012)   (0.012) </span></span>
-<span id="cb176-16"><a href="first-difference.html#cb176-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                           </span></span>
-<span id="cb176-17"><a href="first-difference.html#cb176-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(tenure2)   -0.003*** -0.001*** -0.001***</span></span>
-<span id="cb176-18"><a href="first-difference.html#cb176-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              (0.00002) (0.0002)  (0.0002) </span></span>
-<span id="cb176-19"><a href="first-difference.html#cb176-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                           </span></span>
-<span id="cb176-20"><a href="first-difference.html#cb176-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------</span></span>
-<span id="cb176-21"><a href="first-difference.html#cb176-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations  15,440     6,229    15,440  </span></span>
-<span id="cb176-22"><a href="first-difference.html#cb176-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2             0.106    0.0003     0.015  </span></span>
-<span id="cb176-23"><a href="first-difference.html#cb176-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2    0.106    0.0001    -1.443  </span></span>
-<span id="cb176-24"><a href="first-difference.html#cb176-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ==========================================</span></span>
-<span id="cb176-25"><a href="first-difference.html#cb176-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:          *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="first-difference.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stargazer Comparison</span></span>
+<span id="cb173-2"><a href="first-difference.html#cb173-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb173-3"><a href="first-difference.html#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(LM2, FD2, FE2, <span class="at">type=</span><span class="st">&quot;text&quot;</span>,</span>
+<span id="cb173-4"><a href="first-difference.html#cb173-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels=</span><span class="fu">c</span>(<span class="st">&quot;Pooling&quot;</span>, <span class="st">&quot;FD&quot;</span>, <span class="st">&quot;FE&quot;</span>),</span>
+<span id="cb173-5"><a href="first-difference.html#cb173-5" aria-hidden="true" tabindex="-1"></a>          <span class="co">#keep=c(&quot;inc&quot;),</span></span>
+<span id="cb173-6"><a href="first-difference.html#cb173-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels.include =</span> <span class="cn">FALSE</span>, <span class="at">model.numbers =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb173-7"><a href="first-difference.html#cb173-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">omit.stat=</span><span class="st">&quot;f&quot;</span>)</span>
+<span id="cb173-8"><a href="first-difference.html#cb173-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb173-9"><a href="first-difference.html#cb173-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ==========================================</span></span>
+<span id="cb173-10"><a href="first-difference.html#cb173-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Dependent variable:     </span></span>
+<span id="cb173-11"><a href="first-difference.html#cb173-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              -----------------------------</span></span>
+<span id="cb173-12"><a href="first-difference.html#cb173-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Pooling     FD        FE    </span></span>
+<span id="cb173-13"><a href="first-difference.html#cb173-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------</span></span>
+<span id="cb173-14"><a href="first-difference.html#cb173-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tenure       0.203***  0.077***  0.077*** </span></span>
+<span id="cb173-15"><a href="first-difference.html#cb173-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               (0.001)   (0.012)   (0.012) </span></span>
+<span id="cb173-16"><a href="first-difference.html#cb173-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                           </span></span>
+<span id="cb173-17"><a href="first-difference.html#cb173-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(tenure2)   -0.003*** -0.001*** -0.001***</span></span>
+<span id="cb173-18"><a href="first-difference.html#cb173-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              (0.00002) (0.0002)  (0.0002) </span></span>
+<span id="cb173-19"><a href="first-difference.html#cb173-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                           </span></span>
+<span id="cb173-20"><a href="first-difference.html#cb173-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------</span></span>
+<span id="cb173-21"><a href="first-difference.html#cb173-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations  15,440     6,229    15,440  </span></span>
+<span id="cb173-22"><a href="first-difference.html#cb173-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2             0.106    0.0003     0.015  </span></span>
+<span id="cb173-23"><a href="first-difference.html#cb173-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2    0.106    0.0001    -1.443  </span></span>
+<span id="cb173-24"><a href="first-difference.html#cb173-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ==========================================</span></span>
+<span id="cb173-25"><a href="first-difference.html#cb173-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:          *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
 </div>
 <div id="minimal-example-2" class="section level2 hasAnchor" number="12.5">
 <h2><span class="header-section-number">12.5</span> Minimal Example<a href="first-difference.html#minimal-example-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Please create a <strong>minimal working example</strong> to illustrate the differences between FD and FE. How minimal can it be?</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="first-difference.html#cb177-1" aria-hidden="true" tabindex="-1"></a>MWE <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
-<span id="cb177-2"><a href="first-difference.html#cb177-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">time =</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>, <span class="at">to=</span><span class="dv">7</span>, <span class="at">by=</span><span class="dv">1</span>),</span>
-<span id="cb177-3"><a href="first-difference.html#cb177-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">married =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb177-4"><a href="first-difference.html#cb177-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">happy =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">5</span>, <span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">6</span>))</span>
-<span id="cb177-5"><a href="first-difference.html#cb177-5" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#married = c(0,0,1,1,0,1,1, 1,1,0,0,0,1,0),</span></span>
-<span id="cb177-6"><a href="first-difference.html#cb177-6" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#happy = c(6,5,8,7,4,7,5, 7,7,3,3,5,5,6))</span></span>
-<span id="cb177-7"><a href="first-difference.html#cb177-7" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#married = round(runif(14, min = 0, max = 1),0),</span></span>
-<span id="cb177-8"><a href="first-difference.html#cb177-8" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#happy = round(runif(14, min = 4, max = 10),0))</span></span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="first-difference.html#cb174-1" aria-hidden="true" tabindex="-1"></a>MWE <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb174-2"><a href="first-difference.html#cb174-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">time =</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>, <span class="at">to=</span><span class="dv">7</span>, <span class="at">by=</span><span class="dv">1</span>),</span>
+<span id="cb174-3"><a href="first-difference.html#cb174-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">married =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb174-4"><a href="first-difference.html#cb174-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">happy =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">5</span>, <span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">6</span>))</span>
+<span id="cb174-5"><a href="first-difference.html#cb174-5" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#married = c(0,0,1,1,0,1,1, 1,1,0,0,0,1,0),</span></span>
+<span id="cb174-6"><a href="first-difference.html#cb174-6" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#happy = c(6,5,8,7,4,7,5, 7,7,3,3,5,5,6))</span></span>
+<span id="cb174-7"><a href="first-difference.html#cb174-7" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#married = round(runif(14, min = 0, max = 1),0),</span></span>
+<span id="cb174-8"><a href="first-difference.html#cb174-8" aria-hidden="true" tabindex="-1"></a>                  <span class="co">#happy = round(runif(14, min = 4, max = 10),0))</span></span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Create a dataset <code>MWE</code> for two people (<code>id</code> 1 and 2) with 7 observations (<code>time</code> periods from 1 to 7).</li>
 <li>Create two variables. A dummy called <code>married</code> (regressor) and a <code>happiness</code> outcome variable (natural numbers ranging from 0 to 10). You may create the values of <code>married</code> and <code>happy</code> manually.</li>
 <li>Create a line plot for happiness over time colored by each individual. (In total, you should have two lines of different color.)</li>
 <li>Mark the marriage status by any reasonable label (there are several options in <code>ggplot</code>).</li>
 </ol>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="first-difference.html#cb178-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb178-2"><a href="first-difference.html#cb178-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MWE, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> happy, <span class="at">col=</span><span class="fu">factor</span>(id))) <span class="sc">+</span>  </span>
-<span id="cb178-3"><a href="first-difference.html#cb178-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">w =</span> <span class="fl">0.2</span>, <span class="at">h =</span> <span class="fl">0.2</span>)) <span class="sc">+</span> </span>
-<span id="cb178-4"><a href="first-difference.html#cb178-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape=</span><span class="fu">factor</span>(married)), <span class="at">size=</span><span class="dv">4</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">w =</span> <span class="fl">0.2</span>, <span class="at">h =</span> <span class="fl">0.2</span>)) <span class="sc">+</span> </span>
-<span id="cb178-5"><a href="first-difference.html#cb178-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Marriage and Happiness&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Jitter added to confuse the reader.&quot;</span>,</span>
-<span id="cb178-6"><a href="first-difference.html#cb178-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Time (Years)&quot;</span>, <span class="at">y=</span><span class="st">&quot;Happiness&quot;</span>, </span>
-<span id="cb178-7"><a href="first-difference.html#cb178-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour=</span><span class="st">&quot;Person&quot;</span>, <span class="at">shape=</span><span class="st">&quot;Marriage&quot;</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-243-1.png" width="576" /></p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="first-difference.html#cb175-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb175-2"><a href="first-difference.html#cb175-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(MWE, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> happy, <span class="at">col=</span><span class="fu">factor</span>(id))) <span class="sc">+</span>  </span>
+<span id="cb175-3"><a href="first-difference.html#cb175-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">w =</span> <span class="fl">0.2</span>, <span class="at">h =</span> <span class="fl">0.2</span>)) <span class="sc">+</span> </span>
+<span id="cb175-4"><a href="first-difference.html#cb175-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape=</span><span class="fu">factor</span>(married)), <span class="at">size=</span><span class="dv">4</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">w =</span> <span class="fl">0.2</span>, <span class="at">h =</span> <span class="fl">0.2</span>)) <span class="sc">+</span> </span>
+<span id="cb175-5"><a href="first-difference.html#cb175-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Marriage and Happiness&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Jitter added to confuse the reader.&quot;</span>,</span>
+<span id="cb175-6"><a href="first-difference.html#cb175-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">&quot;Time (Years)&quot;</span>, <span class="at">y=</span><span class="st">&quot;Happiness&quot;</span>, </span>
+<span id="cb175-7"><a href="first-difference.html#cb175-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour=</span><span class="st">&quot;Person&quot;</span>, <span class="at">shape=</span><span class="st">&quot;Marriage&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-241-1.png" width="576" /></p>
 <p>Calculate a FE and FD estimator for how the marriage dummy affects happiness. Play around with different values and see how the FE and FD estimators changes. Select values such that FD is reasonable higher than FE. The two models look like this:</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="first-difference.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
-<span id="cb179-2"><a href="first-difference.html#cb179-2" aria-hidden="true" tabindex="-1"></a>FE_marry <span class="ot">&lt;-</span> <span class="fu">plm</span>(happy <span class="sc">~</span> married <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>MWE, </span>
-<span id="cb179-3"><a href="first-difference.html#cb179-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;within&quot;</span>, </span>
-<span id="cb179-4"><a href="first-difference.html#cb179-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>,<span class="st">&quot;time&quot;</span>))</span>
-<span id="cb179-5"><a href="first-difference.html#cb179-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-6"><a href="first-difference.html#cb179-6" aria-hidden="true" tabindex="-1"></a><span class="co">#FE_marry &lt;- lm(happy ~ married + as.factor(id), data=MWE)</span></span>
-<span id="cb179-7"><a href="first-difference.html#cb179-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-8"><a href="first-difference.html#cb179-8" aria-hidden="true" tabindex="-1"></a><span class="co"># First Difference</span></span>
-<span id="cb179-9"><a href="first-difference.html#cb179-9" aria-hidden="true" tabindex="-1"></a>FD_marry <span class="ot">&lt;-</span> <span class="fu">plm</span>(happy <span class="sc">~</span> married <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>MWE, </span>
-<span id="cb179-10"><a href="first-difference.html#cb179-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;fd&quot;</span>, </span>
-<span id="cb179-11"><a href="first-difference.html#cb179-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>,<span class="st">&quot;time&quot;</span>))</span>
-<span id="cb179-12"><a href="first-difference.html#cb179-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-13"><a href="first-difference.html#cb179-13" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(FE_marry, FD_marry, <span class="at">type=</span><span class="st">&quot;text&quot;</span>, </span>
-<span id="cb179-14"><a href="first-difference.html#cb179-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels=</span><span class="fu">c</span>(<span class="st">&quot;FE&quot;</span>, <span class="st">&quot;FD&quot;</span>),</span>
-<span id="cb179-15"><a href="first-difference.html#cb179-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">keep=</span><span class="fu">c</span>(<span class="st">&quot;married&quot;</span>),</span>
-<span id="cb179-16"><a href="first-difference.html#cb179-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels.include =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb179-17"><a href="first-difference.html#cb179-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">model.numbers =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb179-18"><a href="first-difference.html#cb179-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb179-19"><a href="first-difference.html#cb179-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =====================================================</span></span>
-<span id="cb179-20"><a href="first-difference.html#cb179-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              Dependent variable:     </span></span>
-<span id="cb179-21"><a href="first-difference.html#cb179-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          ----------------------------</span></span>
-<span id="cb179-22"><a href="first-difference.html#cb179-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                FE            FD      </span></span>
-<span id="cb179-23"><a href="first-difference.html#cb179-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------</span></span>
-<span id="cb179-24"><a href="first-difference.html#cb179-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; married                     1.750**       2.833***   </span></span>
-<span id="cb179-25"><a href="first-difference.html#cb179-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             (0.592)        (0.405)   </span></span>
-<span id="cb179-26"><a href="first-difference.html#cb179-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                      </span></span>
-<span id="cb179-27"><a href="first-difference.html#cb179-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------</span></span>
-<span id="cb179-28"><a href="first-difference.html#cb179-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations                   14            12      </span></span>
-<span id="cb179-29"><a href="first-difference.html#cb179-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2                           0.443          0.883    </span></span>
-<span id="cb179-30"><a href="first-difference.html#cb179-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                  0.341          0.883    </span></span>
-<span id="cb179-31"><a href="first-difference.html#cb179-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F Statistic (df = 1; 11)    8.741**       48.908***  </span></span>
-<span id="cb179-32"><a href="first-difference.html#cb179-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =====================================================</span></span>
-<span id="cb179-33"><a href="first-difference.html#cb179-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="first-difference.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed Effects</span></span>
+<span id="cb176-2"><a href="first-difference.html#cb176-2" aria-hidden="true" tabindex="-1"></a>FE_marry <span class="ot">&lt;-</span> <span class="fu">plm</span>(happy <span class="sc">~</span> married <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>MWE, </span>
+<span id="cb176-3"><a href="first-difference.html#cb176-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;within&quot;</span>, </span>
+<span id="cb176-4"><a href="first-difference.html#cb176-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>,<span class="st">&quot;time&quot;</span>))</span>
+<span id="cb176-5"><a href="first-difference.html#cb176-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb176-6"><a href="first-difference.html#cb176-6" aria-hidden="true" tabindex="-1"></a><span class="co">#FE_marry &lt;- lm(happy ~ married + as.factor(id), data=MWE)</span></span>
+<span id="cb176-7"><a href="first-difference.html#cb176-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb176-8"><a href="first-difference.html#cb176-8" aria-hidden="true" tabindex="-1"></a><span class="co"># First Difference</span></span>
+<span id="cb176-9"><a href="first-difference.html#cb176-9" aria-hidden="true" tabindex="-1"></a>FD_marry <span class="ot">&lt;-</span> <span class="fu">plm</span>(happy <span class="sc">~</span> married <span class="sc">-</span><span class="dv">1</span>, <span class="at">data=</span>MWE, </span>
+<span id="cb176-10"><a href="first-difference.html#cb176-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">model=</span><span class="st">&quot;fd&quot;</span>, </span>
+<span id="cb176-11"><a href="first-difference.html#cb176-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>,<span class="st">&quot;time&quot;</span>))</span>
+<span id="cb176-12"><a href="first-difference.html#cb176-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb176-13"><a href="first-difference.html#cb176-13" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(FE_marry, FD_marry, <span class="at">type=</span><span class="st">&quot;text&quot;</span>, </span>
+<span id="cb176-14"><a href="first-difference.html#cb176-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">column.labels=</span><span class="fu">c</span>(<span class="st">&quot;FE&quot;</span>, <span class="st">&quot;FD&quot;</span>),</span>
+<span id="cb176-15"><a href="first-difference.html#cb176-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">keep=</span><span class="fu">c</span>(<span class="st">&quot;married&quot;</span>),</span>
+<span id="cb176-16"><a href="first-difference.html#cb176-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">dep.var.labels.include =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb176-17"><a href="first-difference.html#cb176-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">model.numbers =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb176-18"><a href="first-difference.html#cb176-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb176-19"><a href="first-difference.html#cb176-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =====================================================</span></span>
+<span id="cb176-20"><a href="first-difference.html#cb176-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              Dependent variable:     </span></span>
+<span id="cb176-21"><a href="first-difference.html#cb176-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          ----------------------------</span></span>
+<span id="cb176-22"><a href="first-difference.html#cb176-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                FE            FD      </span></span>
+<span id="cb176-23"><a href="first-difference.html#cb176-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------</span></span>
+<span id="cb176-24"><a href="first-difference.html#cb176-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; married                     1.750**       2.833***   </span></span>
+<span id="cb176-25"><a href="first-difference.html#cb176-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             (0.592)        (0.405)   </span></span>
+<span id="cb176-26"><a href="first-difference.html#cb176-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                      </span></span>
+<span id="cb176-27"><a href="first-difference.html#cb176-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -----------------------------------------------------</span></span>
+<span id="cb176-28"><a href="first-difference.html#cb176-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations                   14            12      </span></span>
+<span id="cb176-29"><a href="first-difference.html#cb176-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2                           0.443          0.883    </span></span>
+<span id="cb176-30"><a href="first-difference.html#cb176-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                  0.341          0.883    </span></span>
+<span id="cb176-31"><a href="first-difference.html#cb176-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F Statistic (df = 1; 11)    8.741**       48.908***  </span></span>
+<span id="cb176-32"><a href="first-difference.html#cb176-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =====================================================</span></span>
+<span id="cb176-33"><a href="first-difference.html#cb176-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
 <p>From this table, it can be seen that the immediate impact getting married (2.83) is higher than the overall level difference of being married (1.75).</p>
 
 </div>
