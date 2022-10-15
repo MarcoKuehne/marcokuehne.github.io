@@ -67,7 +67,7 @@ library('tippy')
 
 # Dust and Dark {-}
 
-A dusty lecture hall. The light cut through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where **R** was introduced in my psychology undergraduate studies. – <u id='word'>The Times They Are A-Changin'</u>.
+A dusty lecture hall. The light cuts through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where **R** was introduced in my psychology undergraduate studies. – <u id='word'>The Times They Are A-Changin'</u>.
 
 ```{r, echo=FALSE}
 tippy::tippy_this(elementId = "word", tooltip = "is a song written by Bob Dylan and released as the title track of his 1964 album of the same name.")
@@ -79,21 +79,16 @@ tippy::tippy_this(elementId = "word", tooltip = "is a song written by Bob Dylan 
 <center> Are you `r fitb("r", ignore_case = TRUE)` eady to join the journey? </center>
 <br>
 
-::: columns
-::: {.column width="30%" data-latex="{0.20\textwidth}"}
+<center>
+
 ![Lecture Hall. Melanchthonianum. MLU University of Halle-Wittenberg](https://wiki.llz.uni-halle.de/images/thumb/b/bb/HS_XX_003.jpg/300px-HS_XX_003.jpg) 
 
-The animation on the right side is created with the `gganimate` package. It shows past course data.
-:::
+</center>
 
-::: {.column width="5%" data-latex="{0.05\textwidth}"}
-\ 
-<!-- an empty Div (with a white space), serving as
-a column separator -->
-:::
 
-::: {.column width="65%" data-latex="{0.75\textwidth}"}
-```{r, echo=F}
+The following animation is created with the `gganimate` package. It shows past course data. Which graphical feature is used to display 3 data dimensions in a two-dimensional graph: `r mcq(c("Color", answer = "Size", "Shape", "Opacity"))`?
+
+```{r, echo=F, out.width="80%", fig.align='center'}
 library(gganimate)
 library(ggthemes)
 
@@ -135,21 +130,45 @@ course %>%
   #transition_time(Date) +
   ease_aes('linear') 
 ``` 
-:::
-:::
+
+How many students participated in summer 2021? Answer: `r fitb(14)`.
 
 <!-- > Luminous beings are we, not this crude matter.</b> -->
 <!-- > -->
 <!-- > `r tufte::quote_footer('Master Yoda.')` -->
 
-<!-- ```{r, echo=FALSE, out.width="30%", fig.align="center", fig.cap="\\label{fig:figs}Scream and Shout"} -->
-<!-- knitr::include_graphics(path = "images/scream.jpg") -->
-<!-- ``` -->
-
-
 # (PART) Preface {-} 
 
-# Teach – Learn – Repeat {-}
+# About the author {-}
+
+:::::: {.columns}
+
+::: {.column width="20%" data-latex="{0.20\textwidth}"}
+```{r, echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics(path = "images/Marco-scaled.jpg")
+```
+:::
+
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+::: {.column width="75%" data-latex="{0.75\textwidth}"}
+Welcome! My name is **Marco Kühne**. The very first thing I want to do is to invite you to call me Marco. That is, if we meet on the street, you come talk to me during office hours, you ask some question; Marco’s the name that I respond to.
+
+- Web: <http://marco-kuehne.com/>
+- Twitter: <https://twitter.com/marco_kuhne>
+- GitHub: <https://github.com/MarcoKuehne>
+:::
+::::::
+
+I am a PhD candidate in Economics at the European University Viadrina (<https://www.wiwi.europa-uni.de/>). I am generally keen on teaching topics related to research design, quantitative methods, and statistical software. My main methodological interests in quantitative social science include panel data modelling, causal inference with observational data and R programming.
+
+I am also a gardening fanatic, a coffee enthusiast, a committed ballroom and Discofox dancer, a (vegetarian) food lover. I enjoy cutting down big trees and practicing new languages in its own sake. Feel free to contact me!
+
+## Teach – Learn – Repeat {-}
 
 <!-- Conceptional Background -->
 <!-- A Question You Care About -->
@@ -179,10 +198,11 @@ This project helped me to learn more about R, RStudio, R Markdown, R Bookdown, H
 
 *Learning by teaching* was originally defined by `r mcq(c("Jimmy Wales", "Linus Torvalds", answer = "Jean-Pol Martin", "Richard E. Pattis"))` in the 1980s. Did you know that some people who [have Wikipedia articles](https://en.wikipedia.org/wiki/Jean-Pol_Martin) also have [user accounts on Wikipedia](https://de.wikipedia.org/wiki/Benutzer:Jeanpol)? 
 
-# Aim of this books {-}
+# About the books {-}
 
 I welcome you to join us on our way to become fluent in data.
 
+## Aims of this book {-}
 You go from zero you hero in data analysis and data science and will become data fluent and learn major skills that you can use in your academic and business career. 
 
 <!-- We hope this book will be a useful introduction for anyone who wants to learn how to use R. It started out as a 100 page pdf manual used to support our teaching in numerous undergraduate and postgraduate biostatistics classes at the University of Aberdeen and has evolved over the last 10 years to the book you’re now reading. Consequently, this book is primarily written with the advanced undergraduate or postgraduate student in mind although the material should be useful for anyone with an interest in learning R regardless of background. Our book assumes that you have no previous experience of using either R or RStudio and no background in programming or using command-line driven software. We’ve also tried to make the content of this book operating system agnostic and have included information for Windows, Mac and Linux users where appropriate. -->
@@ -259,11 +279,9 @@ A <u id='wordcloud'>wordcloud</u> of 25 students answers (2020) on the question:
 tippy::tippy_this(elementId = "wordcloud", tooltip = "is a visual representation of text data that shows term freuency.")
 ```
 
-# Structure of this books {-}
+## Structure {-}
 
-## Content {-}
-
-Data is everywhere. *“Becoming Fluent in Data”* brings data and statistics to life. 
+Every chapters covers the content of a week. 
 
 The first half of the course (chapter 1 -- 7) introduces all the basics from scratch. We measure and collect data to make informed decisions. Most decisions are complex, costly and have long-term implications. It is therefore vital that such decisions are based on the best available evidence. 
 
@@ -318,37 +336,9 @@ The `tippy` package allows <u id='tippy'>underlined text</u> to display tooltips
 tippy::tippy_this(elementId = "tippy", tooltip = "underlined text indicated a tooltip.")
 ```
 
-The `webexercises` package allows interactive web pages that you can use in `r mcq(c("ballroom dancing", answer = "self-guided learning", "vegan cooking", "your stamp collection"))`.
-. What is the [Answer to the Ultimate Question of Life](https://lmgtfy.app/?q=Answer+to+the+Ultimate+Question+of+Life) `r fitb(42)`.
+The `webexercises` package allows interactive web pages that you can use in `r mcq(c("ballroom dancing", answer = "self-guided learning", "vegan cooking", "your stamp collection"))`. What is the [Answer to the Ultimate Question of Life](https://lmgtfy.app/?q=Answer+to+the+Ultimate+Question+of+Life) `r fitb(42)`.
 
-The most powerful interaction comes from the web annotation tool <https://web.hypothes.is/>. You may *annotate* or *highlight* all text by <mark>selecting it with the cursor</mark> and then click the on the pop-up menu. You can also see the annotations of others: click the in the upper right hand corner of the page. You need to create an account for this feature.  
+The most powerful interaction comes from the web annotation tool <https://web.hypothes.is/>. You may *annotate* or *highlight* all text by <mark>selecting it with the cursor</mark> and then click the on the pop-up menu. You can also see the annotations of others: click the in the upper right hand corner of the page. Create a free account for this feature.  
 
-# About the author {-}
 
-:::::: {.columns}
-
-::: {.column width="20%" data-latex="{0.20\textwidth}"}
-```{r, echo=FALSE, out.width="90%", fig.align="center"}
-knitr::include_graphics(path = "images/Marco-scaled.jpg")
-```
-:::
-
-::: {.column width="5%" data-latex="{0.05\textwidth}"}
-\ 
-<!-- an empty Div (with a white space), serving as
-a column separator -->
-:::
-
-::: {.column width="75%" data-latex="{0.75\textwidth}"}
-Welcome! My name is **Marco Kühne**. The very first thing I want to do is to invite you to call me Marco. That is, if we meet on the street, you come talk to me during office hours, you ask some question; Marco’s the name that I respond to.
-
-- Web: <http://marco-kuehne.com/>
-- Twitter: <https://twitter.com/marco_kuhne>
-- GitHub: <https://github.com/MarcoKuehne>
-:::
-::::::
-
-I am a PhD candidate in Economics at the European University Viadrina (<https://www.wiwi.europa-uni.de/>). I am generally keen on teaching topics related to research design, quantitative methods, and statistical software. My main methodological interests in quantitative social science include panel data modelling, causal inference with observational data and R programming.
-
-I am also a gardening fanatic, a coffee enthusiast, a committed ballroom and Discofox dancer, a (vegetarian) food lover. I enjoy cutting down big trees and practicing new languages in its own sake. Feel free to contact me!
 
