@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 Regression | Becoming Fluent in Data</title>
+  <title>Chapter 9 Regression | Untitled</title>
   <meta name="description" content="A guide to become fluent in data." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 Regression | Becoming Fluent in Data" />
+  <meta property="og:title" content="Chapter 9 Regression | Untitled" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="/images/icons8-trading-64.png" />
   <meta property="og:description" content="A guide to become fluent in data." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Regression | Becoming Fluent in Data" />
+  <meta name="twitter:title" content="Chapter 9 Regression | Untitled" />
   
   <meta name="twitter:description" content="A guide to become fluent in data." />
   <meta name="twitter:image" content="/images/icons8-trading-64.png" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-10-15" />
+<meta name="date" content="2022-10-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -429,9 +429,10 @@ div.csl-indent {
 <li class="chapter" data-level="12.4" data-path="first-difference.html"><a href="first-difference.html#data-modeling-2-pt"><i class="fa fa-check"></i><b>12.4</b> Data Modeling (2 pt)</a></li>
 <li class="chapter" data-level="12.5" data-path="first-difference.html"><a href="first-difference.html#minimal-example-2"><i class="fa fa-check"></i><b>12.5</b> Minimal Example</a></li>
 </ul></li>
+<li class="chapter" data-level="13" data-path="latex.html"><a href="latex.html"><i class="fa fa-check"></i><b>13</b> LaTeX</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
 <ul>
-<li class="chapter" data-level="12.6" data-path="references.html"><a href="references.html#resources"><i class="fa fa-check"></i><b>12.6</b> Resources</a></li>
+<li class="chapter" data-level="13.1" data-path="references.html"><a href="references.html#resources"><i class="fa fa-check"></i><b>13.1</b> Resources</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
@@ -444,7 +445,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Untitled</a>
           </h1>
         </div>
 
@@ -548,102 +549,100 @@ Definition
 <h3><span class="header-section-number">9.2.1</span> Data in a table<a href="regression.html#data-in-a-table" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- https://www.askart.com/Search_Artist_Auction_Records.aspx -->
 <!-- https://datatables.net/ -->
-<p>This is the data in <strong>datatable</strong> format (i.e. you can search and sort the data in the html document):</p>
-<div id="htmlwidget-7f6a45a956cd321bd8f9" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7f6a45a956cd321bd8f9">{"x":{"filter":"none","vertical":false,"data":[["Pablo Picasso","Claude Monet","Paul Cézanne","Hans Holbein","Edvard Munch","Thomas Eakins"],["Garçon à la pipe","Meules","Rideau, Cruchon et Compotier","Darmstadt Madonna","The Scream","The Gross Clinic"],[141,110.7,92.9,85,133.6,83.8],[24,50,65,29,30,31],[91,86,67,45,80,71],[1881,1840,1839,1497,1863,1844]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Artist<\/th>\n      <th>Painting<\/th>\n      <th>Price<\/th>\n      <th>Age.at.Painting<\/th>\n      <th>Age.at.Death<\/th>\n      <th>Birth.Year<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-<div class="infobox information">
-<details>
-<summary>
-<strong>Tabular data</strong> is...
-</summary>
-common in data analysis. You can create a table in Word or Excel.
-</details>
+<p>The table is created with the <code>DT</code> package in <em>datatable</em> format. This exploits the full potential of html documents, i.e. the data is searchable and sortable. The first rows are displayed, but in principle it can include the entire dataset.</p>
+<div id="htmlwidget-3146d0afaa11c6cc4886" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3146d0afaa11c6cc4886">{"x":{"filter":"none","vertical":false,"data":[["Pablo Picasso","Claude Monet","Paul Cézanne","Hans Holbein","Edvard Munch","Thomas Eakins"],["Garçon à la pipe","Meules","Rideau, Cruchon et Compotier","Darmstadt Madonna","The Scream","The Gross Clinic"],[141,110.7,92.9,85,133.6,83.8],[24,50,65,29,30,31],[91,86,67,45,80,71],[1881,1840,1839,1497,1863,1844]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Artist<\/th>\n      <th>Painting<\/th>\n      <th>Price<\/th>\n      <th>Age.at.Painting<\/th>\n      <th>Age.at.Death<\/th>\n      <th>Birth.Year<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Tabular data</strong> is common in data analysis. You can create a table in Word or Excel.</p>
 </div>
 </div>
 <div id="data-in-a-graph" class="section level3 hasAnchor" number="9.2.2">
 <h3><span class="header-section-number">9.2.2</span> Data in a graph<a href="regression.html#data-in-a-graph" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Two variables from our data table can be depicted in what is called a <strong>scatterplot</strong>.</p>
-<!-- The data from our The graph depicts the data from the table I decide to show the auction price of well-known paintings in relation to the age of the artist. It is called a **scatterplot**. -->
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-151-1.png" width="576" style="display: block; margin: auto;" /></p>
-<div class="infobox information">
-<details>
-<summary>
-<strong>The axes are called</strong> ...
-</summary>
-<strong>ordinate</strong> or <strong>y-axis</strong> (here: price) and <strong>abscissa</strong> or <strong>x-axis</strong> (here: age).
-</details>
+<p>Two continuous variables are plotted in a <strong>scatterplot</strong>. The <strong>x-axis</strong> is called <strong><u id='age'>abscissa </u></strong> and the <strong>y-axis</strong> is called <strong><u id='price'>ordinate</u></strong>.</p>
+<span id="htmlwidget-b55f6864888b4417b620" class="tippy html-widget" width="576" height="480"></span>
+<script type="application/json" data-for="htmlwidget-b55f6864888b4417b620">{"x":{"element":"price","opts":{"content":"here: price"}},"evals":[],"jsHooks":[]}</script>
+<span id="htmlwidget-b8867d80ff67ebacc9ab" class="tippy html-widget" width="576" height="480"></span>
+<script type="application/json" data-for="htmlwidget-b8867d80ff67ebacc9ab">{"x":{"element":"age","opts":{"content":"here: age"}},"evals":[],"jsHooks":[]}</script>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-153-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Note that the axis beginning is not zero. The decision where axes start was made by the <code>ggplot</code> package for this data. Remember, every unit on the y-axis represents a million US dollars. Do we need to show the age between 0 and 20? How many famous artists died before 20 and sold paintings for a hundred million US dollars?</p>
+<!-- https://stephanieevergreen.com/non-zero-axis-rules/ -->
+<!-- http://stephanieevergreen.com/y-axis/ -->
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+When It’s OK to NOT Start Your Axis at Zero.
+</h2>
+</div>
+<p>When the data really don’t fluctuate very much but a rise of small values like 1.4 or 1.4% is a big deal. With a graph that starts at zero, these changes can't be detected. The data scientist has to decide.</p>
 </div>
 </div>
 <div id="the-trend" class="section level3 hasAnchor" number="9.2.3">
 <h3><span class="header-section-number">9.2.3</span> The trend<a href="regression.html#the-trend" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="infobox question">
-<p>Can you spot a trend in the data?</p>
-</div>
-<p>The line plot suggests that the relationship between price and age exhibits a <strong>positive trend</strong>. There is an <strong>increase</strong> in price for older artists. The older the artist, the higher the auction prices.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-152-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>The graph suggests a <strong>positive trend</strong> between price and age. There is an <strong>increase</strong> in price for older artists. The older the artist, the higher the auction prices.</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-154-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="the-blackbox" class="section level3 hasAnchor" number="9.2.4">
 <h3><span class="header-section-number">9.2.4</span> The blackbox<a href="regression.html#the-blackbox" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The mission is to find a mathematical function that describes the trend. In other words, we are looking for the black box that transforms the input into the output:</p>
 <center>
-<div class="figure">
-<img src="images/function-fx-x2.svg" alt="" />
-<p class="caption">alt text here</p>
-</div>
+<img src="images/function-fx-x2.svg" />
 </center>
-<div class="infobox information">
-<details>
-<summary>
-A <strong>mathematical function</strong> is ...
-</summary>
-an expression, rule, or law that defines a relationship between one variable (the <strong>independent variable</strong>, on the x-axis) and another variable (the <strong>dependent variable</strong>, on the y-axis).
-</details>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>mathematical function</strong> is an expression, rule, or law that defines a relationship between one variable (the <strong>independent variable</strong>, on the x-axis) and another variable (the <strong>dependent variable</strong>, on the y-axis).</p>
 </div>
 <p>From looking at the graph, here are two suggestions:</p>
 <p><span class="math display">\[\begin{align}
 \text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
 \text{price} = 90 + 0.2 \cdot \text{age} \tag{Suggestion 2} \\
 \end{align}\]</span></p>
-<div class="infobox information">
-<details>
-<summary>
-A <strong>linear function</strong> is ...
-</summary>
-defined by two components, <strong>intercept</strong> (with the y-axis) and it's <strong>slope</strong>.
-</details>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
 </div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-153-1.png" width="576" style="display: block; margin: auto;" /></p>
-<div class="infobox question">
+<p>A <strong>linear function</strong> is defined by two components, <strong>intercept</strong> (with the y-axis) and <strong>slope</strong>.</p>
+</div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-155-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>How can we compare the two suggested lines? Which linear function represents the relationship best?</p>
-</div>
 </div>
 <div id="nobodys-perfect" class="section level3 hasAnchor" number="9.2.5">
 <h3><span class="header-section-number">9.2.5</span> Nobody's perfect<a href="regression.html#nobodys-perfect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- https://drsimonj.svbtle.com/visualising-residuals -->
 <p>We all make mistakes. So do the linear functions:</p>
 <p><span class="math display">\[ \begin{align}
-\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
-101 = 80 + 0.5 \cdot 42 \tag{Calculation for Hohlbein} \\
+\text{price} &amp;= 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+102.5 &amp;= 80 + 0.5 \cdot 45 \tag{Age for Holbein} \\
 \end{align}\]</span></p>
-<p>The equation tells (or predicts) that for any artist at the age of 42 it expects a auction price for a painting of 101 million US Dollar. Darmstadt Madonna was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line.</p>
-<div class="infobox information">
-<details>
-<summary>
-A <strong>residual</strong> (or error) is ...
-</summary>
-the vertical distance between the actual and the predicted value.
-</details>
+<p>The equation tells (or predicts) that for any artist at the age of 45 it expects a auction price for a painting of 102.5 million US Dollar. Darmstadt Madonna was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>residual</strong> (or error) is the vertical distance between the actual and the predicted value.</p>
 </div>
 <!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-154-1.png" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-156-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="vocab-wrap-up" class="section level3 hasAnchor" number="9.2.6">
 <h3><span class="header-section-number">9.2.6</span> Vocab Wrap-Up<a href="regression.html#vocab-wrap-up" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let's wrap up our regression vocab! We want to find an equation that describes the phenomenon of interest:</p>
+<p>Let's wrap up regression vocab! Find an equation that describes the phenomenon of interest. Equation I shows a generic statistical model; equation II a generic linear model.</p>
 <p><span class="math display">\[ \begin{align}
-\text{outcome} &amp;= f(\text{explanatory}) + \text{noise} \tag{Generic statistical model} \\
-\text{outcome} &amp;= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{Generic linear model} \\
-\end{align}\]</span></p>
+\text{outcome} &amp;= f(\text{explanatory}) + \text{noise} \tag{I} \\
+\text{outcome} &amp;= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{II} \\
+\end{align} \]</span></p>
 <p>A <strong>regression model</strong> is suggested by the researcher. A more concrete regression model looks like this:</p>
 <p><span class="math display">\[Y = \beta_1 + \beta_2 X + \epsilon\]</span></p>
 <p>A model can be easy or complicated. It definitely contains variables and parameters.</p>
@@ -651,56 +650,54 @@ the vertical distance between the actual and the predicted value.
 <li><strong>Variables</strong>: Things that we measure (or have data).</li>
 <li><strong>Parameters</strong>: Constant values we believe to represent some fundamental truth about the relationship between the variables.</li>
 </ul>
-<p>What we (i.e. the statistical software) actual do is an <strong>estimation</strong>. In textbooks the same equation can be found with hats:</p>
+<p>The calculation is called an <strong>estimation</strong>. In textbooks the same equation can be found with hats:</p>
 <p><span class="math display">\[   \widehat{Y}  = \widehat{\beta}_1 + \widehat{\beta}_2 \cdot X \]</span>
 <span class="math inline">\(\widehat{Y}\)</span> are called the <strong>fitted or predicted</strong> values. <span class="math inline">\(\widehat{\beta}\)</span> are <strong>regression coefficients</strong> (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals <span class="math inline">\(e = Y - \widehat{Y}\)</span>.</p>
+<p>The fitting procedure is called <strong>ordinary least squares</strong> (OLS).</p>
 </div>
 </div>
 <div id="for-the-truly-dedicated" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> For the truly dedicated<a href="regression.html#for-the-truly-dedicated" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- div { -->
+<!--   background-color: lightblue; -->
+<!-- } -->
 <!-- This is a cool graphic -->
 <!-- https://www.quora.com/Why-is-the-coefficient-of-determination-never-used-in-Machine-Learning -->
-<div class="infobox information">
-Now we have all the ingredients we need.
-<details>
-<summary>
-<em>Let's get this party started!</em>
-</summary>
-<div class="figure">
-<img src="https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860" alt="" />
-<p class="caption">Carlton Dance</p>
-</div>
-</details>
-</div>
-<!-- ::: {.infobox .question data-latex="warning"} -->
-<!-- The overall goal is to make as little as possible mistakes! What kind of mistake? -->
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- Now we have all the ingredients we need. <details> -->
+<!-- <summary>*Let's get this party started!*</summary> -->
+<!-- ![Carlton Dance](https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860) -->
+<!-- </details> -->
 <!-- ::: -->
 <p>The overall goal is to make as little as possible mistakes! What kind of mistake? The deviation from the observed values! What could come to your mind is to <strong>minimize the sum of all errors</strong>:</p>
 <p><span class="math display">\[\sum e \rightarrow \min\]</span>
 But wait, there is more. Is it fair to say that the sum should be small? Compare <strong>The Scream</strong> and <strong>Meules</strong>, their deviations are <span class="math inline">\(+17.5\)</span> and <span class="math inline">\(-13.6\)</span> (very similar). So taken these two together, there's almost not mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story:</p>
-<p><span class="math display">\[\sum e^2 \rightarrow \min\]</span></p>
-<div class="infobox information">
-<details>
-<summary>
-The fitting procedure is ...
-</summary>
-is called <strong>ordinary least squares</strong> (short OLS). The goal of OLS is to <strong>minimize the residual sum of squares</strong>.
-</details>
-</div>
+<p><span class="math display">\[\sum e^2 \rightarrow \min\]</span>
+The goal of OLS is to <strong>minimize the residual sum of squares</strong> or the <strong>sum of squared residuals</strong>.</p>
 <div id="algebra" class="section level3 hasAnchor" number="9.3.1">
 <h3><span class="header-section-number">9.3.1</span> Algebra<a href="regression.html#algebra" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="infobox information">
-<p>Algebra comes from Arabic, meaning "reunion of broken parts". We often work with matrices and vectors.</p>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
 </div>
-<p>Now let's put all the things together. By convention, the <em>normal</em> version of a vector is a vertical list of numbers in big parentheses (column vector). Transpose is when we change the rows and columns. In order to square a vector we need the following:</p>
-<p><span class="math display">\[\sum e^2 = e^T \cdot e \rightarrow \min\]</span>
-Let's introduce matrix notation (there are 6 observations and two parameters):</p>
+<p>Algebra comes from Arabic, meaning "reunion of broken parts".</p>
+</div>
+<!-- We often work with matrices and vectors.  -->
+<p>Let's introduce matrix notation. We began with <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> being <em>variables</em> in the equation:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X + \epsilon \]</span>
+<!-- Each data point is a combination of values. --></p>
+<p>We turn this into:</p>
+<p><span class="math display">\[y = X \beta + \epsilon \]</span>
+Capital letters like <span class="math inline">\(X\)</span> represent a matrix (a table with rows and column), and small letters like <span class="math inline">\(y\)</span> and <span class="math inline">\(e\)</span> represent vectors. Since there are 6 observations and two parameters in our model we get:</p>
 <p><span class="math display">\[ \begin{align}
-Y &amp;= \beta_0 + \beta_1 X + \epsilon \tag{X is a variable, Y is a variable} \\
 \begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &amp;= \begin{pmatrix} 1 &amp; X_{11} \\ 1 &amp; X_{12} \\ 1 &amp; X_{13} \\ 1 &amp; X_{14} \\ 1 &amp; X_{15} \\ 1 &amp; X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} \\
-y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
+y &amp;= X \beta + \epsilon
 \end{align}\]</span></p>
-<p>The residual is <span class="math inline">\(e = y - X \beta\)</span> which we can plug in our minimal sum of squares:</p>
+<p>Let's turn to the goal, minizing the residual sum of squares. By convention, the <em>normal</em> version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To <em>transpose</em> a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:</p>
+<p><span class="math display">\[\sum e^2 = e^T \cdot e \rightarrow \min\]</span>
+Notice that the sum operator is gone. <a href="https://en.wikipedia.org/wiki/Matrix_multiplication" target="_blank">Matrix multiplication</a> requires multiplying all elements pairwise with each other and summing them up. Plug in the residuals <span class="math inline">\(e = y - X \beta\)</span> in the equation:</p>
 <p><span class="math display">\[\begin{align}
     \sum e^2 &amp;= e^T \cdot e \tag{short RSS}\\
     &amp;= (y - X \beta )^T (y - X \beta) \tag{$(A+B)^T = A^T + B^T$}\\
@@ -715,9 +712,15 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 </div>
 <div id="analysis" class="section level3 hasAnchor" number="9.3.2">
 <h3><span class="header-section-number">9.3.2</span> Analysis<a href="regression.html#analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="infobox information">
-<p>In Analysis we often work with functions.</p>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
 </div>
+<p>From Medieval Latin, analysis means "resolution of anything complex into simple elements" (opposite of synthesis).</p>
+</div>
+<!-- *Functions* are key to analysis. -->
 <p>Next, we are ready to <strong>optimize</strong>. Optimization (in math and economics) is done by <strong>differentiation</strong>:</p>
 <!-- (setting the first derivative equal to zero). What are the betas? -->
 <p><span class="math display">\[\begin{align}
@@ -729,21 +732,15 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 </div>
 <div id="take-the-long-way-home" class="section level3 hasAnchor" number="9.3.3">
 <h3><span class="header-section-number">9.3.3</span> Take the Long Way Home<a href="regression.html#take-the-long-way-home" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="infobox information">
-<details>
-<summary>
-<em>The computer does the magic for us.</em>
-</summary>
-<center>
-<div class="figure">
-<img src="https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif" alt="" />
-<p class="caption">Magic Alice</p>
-</div>
-</center>
-</details>
-</div>
-<p>Those <span class="math inline">\(\beta\)</span> coefficients are one of the most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time:</p>
-<p>First, we retrieve matrix <code>X</code> from the data set:</p>
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- <details> -->
+<!-- <summary>*The computer does the magic for us.*</summary> -->
+<!-- <center> -->
+<!-- ![Magic Alice](https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif) -->
+<!-- </center> -->
+<!-- </details> -->
+<!-- ::: -->
+<p>Those <span class="math inline">\(\beta\)</span> coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time. First, retrieve matrix <span class="math inline">\(X\)</span> from the data set:</p>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="regression.html#cb98-1" aria-hidden="true" tabindex="-1"></a>X</span>
 <span id="cb98-2"><a href="regression.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2]</span></span>
 <span id="cb98-3"><a href="regression.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    1   91</span></span>
@@ -752,7 +749,7 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 <span id="cb98-6"><a href="regression.html#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]    1   45</span></span>
 <span id="cb98-7"><a href="regression.html#cb98-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,]    1   80</span></span>
 <span id="cb98-8"><a href="regression.html#cb98-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]    1   71</span></span></code></pre></div>
-<p>Second, the transpose of <code>X</code> has two rows and six columns:</p>
+<p>Second, the transpose of <span class="math inline">\(X\)</span> has two rows and six columns (use <code>t()</code>):</p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="regression.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(X)</span>
 <span id="cb99-2"><a href="regression.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
 <span id="cb99-3"><a href="regression.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    1    1    1    1</span></span>
@@ -762,12 +759,12 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 <span id="cb100-2"><a href="regression.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1]  [,2]</span></span>
 <span id="cb100-3"><a href="regression.html#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    6   440</span></span>
 <span id="cb100-4"><a href="regression.html#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]  440 33632</span></span></code></pre></div>
-<p>Then, the inverse of everything in parentheses (the above matrix product):</p>
+<p>The inverse of the matrix product can be calculated by <code>solve()</code>:</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="regression.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
 <span id="cb101-2"><a href="regression.html#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             [,1]          [,2]</span></span>
 <span id="cb101-3"><a href="regression.html#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]  4.10546875 -0.0537109375</span></span>
 <span id="cb101-4"><a href="regression.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] -0.05371094  0.0007324219</span></span></code></pre></div>
-<p>Next, the product of this inverse and the transpose:</p>
+<p>Next, multiply the inverse with the transpose from the right:</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="regression.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X) <span class="sc">%*%</span> <span class="fu">t</span>(X)</span>
 <span id="cb102-2"><a href="regression.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             [,1]         [,2]         [,3]        [,4]         [,5]</span></span>
 <span id="cb102-3"><a href="regression.html#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] -0.78222656 -0.513671875  0.506835938  1.68847656 -0.191406250</span></span>
@@ -775,21 +772,20 @@ y &amp;= X \beta + \epsilon \tag{X is a matrix, y is a vector}
 <span id="cb102-5"><a href="regression.html#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              [,6]</span></span>
 <span id="cb102-6"><a href="regression.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]  0.291992188</span></span>
 <span id="cb102-7"><a href="regression.html#cb102-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] -0.001708984</span></span></code></pre></div>
-<p>Finally, we multiply the vector <span class="math inline">\(y\)</span>:</p>
+<p>Finally, multiply the vector <span class="math inline">\(y\)</span>:</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="regression.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y</span>
 <span id="cb103-2"><a href="regression.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           [,1]</span></span>
 <span id="cb103-3"><a href="regression.html#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 22.345215</span></span>
 <span id="cb103-4"><a href="regression.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]  1.165747</span></span></code></pre></div>
-<p>There are two numbers. It's the <span class="math inline">\(\beta\)</span> vector! The first entry is the <strong>intercept</strong> and the second is the <strong>slope</strong> of the linear function:</p>
-<p><span class="math display">\[Price = 22.3452 + 1.1657 \cdot Age\]</span></p>
+<p>It's the <span class="math inline">\(\beta\)</span> vector! The first entry is the <strong>intercept</strong> and the second is the <strong>slope</strong> of the linear function.</p>
+<!-- There are two numbers. -->
 </div>
 </div>
 <div id="survival-of-the-fittest-line" class="section level2 hasAnchor" number="9.4">
 <h2><span class="header-section-number">9.4</span> Survival of the Fittest Line<a href="regression.html#survival-of-the-fittest-line" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="infobox information">
-<p>The above equation is the linear function that best describes the given data.</p>
-</div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-162-1.png" width="576" /></p>
+<p>The linear equation that best describes the data is this:</p>
+<p><span class="math display">\[Price = 22.3452 + 1.1657 \cdot Age\]</span></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-164-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="on-the-shoulders-of-giants" class="section level2 hasAnchor" number="9.5">
 <h2><span class="header-section-number">9.5</span> On the Shoulders of Giants<a href="regression.html#on-the-shoulders-of-giants" class="anchor-section" aria-label="Anchor link to header"></a></h2>
