@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-10-27" />
+<meta name="date" content="2022-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -63,10 +63,10 @@
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.26/datatables.js"></script>
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <script src="libs/plotly-binding-4.10.0/plotly.js"></script>
@@ -641,15 +641,15 @@ Here is the R code.
 <p><code>glimpse()</code> offers a view <em>in</em> the data, i.e. it shows particular measurements of variables for some units. A similar command is <code>head()</code> which better represents the tabular structure of the data, i.e. rows and columns. Since the data is labelled from Stata, <code>head()</code> also shows these labels.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="group-comparison.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soep)</span>
 <span id="cb21-2"><a href="group-comparison.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 9</span></span>
-<span id="cb21-3"><a href="group-comparison.html#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      id  year sex        education no_kids health_org    satis…¹ healt…² satis…³</span></span>
-<span id="cb21-4"><a href="group-comparison.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lbl&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl+lbl&gt;     &lt;dbl+l&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb21-5"><a href="group-comparison.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   312  2004 1 [female]        NA       1 4 [good]      7 [7 S…   0.567 -0.0909</span></span>
-<span id="cb21-6"><a href="group-comparison.html#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   399  2000 0 [male]          12       1 4 [good]      8 [8 S…   0.567  0.477 </span></span>
-<span id="cb21-7"><a href="group-comparison.html#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   399  2001 0 [male]          12       1 4 [good]      9 [9 S…   0.567  1.05  </span></span>
-<span id="cb21-8"><a href="group-comparison.html#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   457  2000 0 [male]          18       0 3 [satisfact… 8 [8 S…  -0.464  0.477 </span></span>
-<span id="cb21-9"><a href="group-comparison.html#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   457  2002 0 [male]          18       0 3 [satisfact… 7 [7 S…  -0.464 -0.0909</span></span>
-<span id="cb21-10"><a href="group-comparison.html#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   457  2004 0 [male]          18       0 2 [poor]      4 [4 S…  -1.49  -1.80  </span></span>
-<span id="cb21-11"><a href="group-comparison.html#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​satisf_org, ²​health_std, ³​satisf_std</span></span></code></pre></div>
+<span id="cb21-3"><a href="group-comparison.html#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      id  year        sex education no_kids      health_org satisf_org health_std</span></span>
+<span id="cb21-4"><a href="group-comparison.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl+lbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl+lbl&gt;  &lt;dbl+lbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb21-5"><a href="group-comparison.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   312  2004 1 [female]        NA       1 4 [good]        7 [7 Sati…      0.567</span></span>
+<span id="cb21-6"><a href="group-comparison.html#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   399  2000 0 [male]          12       1 4 [good]        8 [8 Sati…      0.567</span></span>
+<span id="cb21-7"><a href="group-comparison.html#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   399  2001 0 [male]          12       1 4 [good]        9 [9 Sati…      0.567</span></span>
+<span id="cb21-8"><a href="group-comparison.html#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   457  2000 0 [male]          18       0 3 [satisfactor… 8 [8 Sati…     -0.464</span></span>
+<span id="cb21-9"><a href="group-comparison.html#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   457  2002 0 [male]          18       0 3 [satisfactor… 7 [7 Sati…     -0.464</span></span>
+<span id="cb21-10"><a href="group-comparison.html#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   457  2004 0 [male]          18       0 2 [poor]        4 [4 Sati…     -1.49 </span></span>
+<span id="cb21-11"><a href="group-comparison.html#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 1 more variable: satisf_std &lt;dbl&gt;</span></span></code></pre></div>
 <p>Sine the coding is <code>1</code> for <code>female</code> and <code>0</code> for <code>male</code> it is a valid alternative to <code>rename()</code> the variable into a female binary dummy. The logic of the code is this: take <code>soep</code> data and do the following (e.g. <code>%&gt;%</code> pipe operator), rename old variable <code>sex</code> as <code>female</code>. Store the result again in <code>soep</code>, i.e. overwrite the old data.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="group-comparison.html#cb22-1" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
 <span id="cb22-2"><a href="group-comparison.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">female =</span> sex)</span></code></pre></div>
@@ -740,7 +740,7 @@ Max
 <tbody>
 <tr>
 <td style="text-align:left;">
-sex
+female
 </td>
 <td style="text-align:right;">
 2
@@ -875,7 +875,7 @@ no_kids
 </tr>
 <tr>
 <td style="text-align:left;">
-current health
+health_org
 </td>
 <td style="text-align:right;">
 6
@@ -920,7 +920,7 @@ current health
 </tr>
 <tr>
 <td style="text-align:left;">
-satisfaction with life as today
+satisf_org
 </td>
 <td style="text-align:right;">
 11
@@ -980,7 +980,7 @@ health_std
 1.0
 </td>
 <td style="text-align:right;">
--2.5
+−2.5
 </td>
 <td style="text-align:right;">
 0.6
@@ -1019,16 +1019,16 @@ satisf_std
 0
 </td>
 <td style="text-align:right;">
--0.0
+−0.0
 </td>
 <td style="text-align:right;">
 1.0
 </td>
 <td style="text-align:right;">
--4.1
+−4.1
 </td>
 <td style="text-align:right;">
--0.1
+−0.1
 </td>
 <td style="text-align:right;">
 1.6
@@ -1104,12 +1104,12 @@ Definition
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="group-comparison.html#cb30-1" aria-hidden="true" tabindex="-1"></a>soep_no_na <span class="sc">%&gt;%</span></span>
 <span id="cb30-2"><a href="group-comparison.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="dv">457</span>)</span>
 <span id="cb30-3"><a href="group-comparison.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 9</span></span>
-<span id="cb30-4"><a href="group-comparison.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      id  year female    education no_kids health_org     satis…¹ healt…² satis…³</span></span>
-<span id="cb30-5"><a href="group-comparison.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl+lbl&gt;      &lt;dbl+l&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb30-6"><a href="group-comparison.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   457  2000 0 [male]         18       0 3 [satisfacto… 8 [8 S…  -0.464  0.477 </span></span>
-<span id="cb30-7"><a href="group-comparison.html#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   457  2002 0 [male]         18       0 3 [satisfacto… 7 [7 S…  -0.464 -0.0909</span></span>
-<span id="cb30-8"><a href="group-comparison.html#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   457  2004 0 [male]         18       0 2 [poor]       4 [4 S…  -1.49  -1.80  </span></span>
-<span id="cb30-9"><a href="group-comparison.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​satisf_org, ²​health_std, ³​satisf_std</span></span></code></pre></div>
+<span id="cb30-4"><a href="group-comparison.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      id  year    female education no_kids       health_org satisf_org health_std</span></span>
+<span id="cb30-5"><a href="group-comparison.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl+lbl&gt;  &lt;dbl+lbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb30-6"><a href="group-comparison.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   457  2000  0 [male]        18       0 3 [satisfactory] 8 [8 Sati…     -0.464</span></span>
+<span id="cb30-7"><a href="group-comparison.html#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   457  2002  0 [male]        18       0 3 [satisfactory] 7 [7 Sati…     -0.464</span></span>
+<span id="cb30-8"><a href="group-comparison.html#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   457  2004  0 [male]        18       0 2 [poor]         4 [4 Sati…     -1.49 </span></span>
+<span id="cb30-9"><a href="group-comparison.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 1 more variable: satisf_std &lt;dbl&gt;</span></span></code></pre></div>
 <p><u id='personid'>Person 457</u> was not available in the year 2001 for some reason.</p>
 <span id="htmlwidget-bf6c3a6efb4d4859edb6" class="tippy html-widget" width="576" height="480"></span>
 <script type="application/json" data-for="htmlwidget-bf6c3a6efb4d4859edb6">{"x":{"element":"personid","opts":{"content":"In real data, never show personal ID."}},"evals":[],"jsHooks":[]}</script>
@@ -1117,26 +1117,25 @@ Definition
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="group-comparison.html#cb31-1" aria-hidden="true" tabindex="-1"></a>soep_no_na <span class="sc">%&gt;%</span></span>
 <span id="cb31-2"><a href="group-comparison.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(no_kids))</span>
 <span id="cb31-3"><a href="group-comparison.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,659 × 9</span></span>
-<span id="cb31-4"><a href="group-comparison.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       id  year female     education no_kids health_org   satis…¹ healt…² satis…³</span></span>
-<span id="cb31-5"><a href="group-comparison.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lbl&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl+lbl&gt;    &lt;dbl+l&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb31-6"><a href="group-comparison.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1  2878  2000 1 [female]       7         3 4 [good]     7 [7 S…   0.567 -0.0909</span></span>
-<span id="cb31-7"><a href="group-comparison.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2  5728  2003 1 [female]      11.5       3 3 [satisfac… 8 [8 S…  -0.464  0.477 </span></span>
-<span id="cb31-8"><a href="group-comparison.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3  5728  2004 1 [female]      11.5       3 3 [satisfac… 5 [5 S…  -0.464 -1.23  </span></span>
-<span id="cb31-9"><a href="group-comparison.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4  8741  2000 1 [female]      11         3 4 [good]     5 [5 S…   0.567 -1.23  </span></span>
-<span id="cb31-10"><a href="group-comparison.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5  8741  2002 1 [female]      10.5       3 2 [poor]     6 [6 S…  -1.49  -0.659 </span></span>
-<span id="cb31-11"><a href="group-comparison.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6  8741  2003 1 [female]      10.5       3 4 [good]     4 [4 S…   0.567 -1.80  </span></span>
-<span id="cb31-12"><a href="group-comparison.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7  8741  2004 1 [female]      10.5       3 3 [satisfac… 8 [8 S…  -0.464  0.477 </span></span>
-<span id="cb31-13"><a href="group-comparison.html#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 10566  2000 0 [male]        10.5       3 5 [very goo… 8 [8 S…   1.60   0.477 </span></span>
-<span id="cb31-14"><a href="group-comparison.html#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 10566  2001 0 [male]        10.5       3 5 [very goo… 8 [8 S…   1.60   0.477 </span></span>
-<span id="cb31-15"><a href="group-comparison.html#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 12599  2000 0 [male]         9         3 4 [good]     8 [8 S…   0.567  0.477 </span></span>
-<span id="cb31-16"><a href="group-comparison.html#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 10,649 more rows, and abbreviated variable names ¹​satisf_org,</span></span>
-<span id="cb31-17"><a href="group-comparison.html#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ²​health_std, ³​satisf_std</span></span></code></pre></div>
+<span id="cb31-4"><a href="group-comparison.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       id  year     female education no_kids     health_org satisf_org health_std</span></span>
+<span id="cb31-5"><a href="group-comparison.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl+lbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl+lbl&gt;  &lt;dbl+lbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb31-6"><a href="group-comparison.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1  2878  2000 1 [female]       7         3 4 [good]       7 [7 Sati…      0.567</span></span>
+<span id="cb31-7"><a href="group-comparison.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2  5728  2003 1 [female]      11.5       3 3 [satisfacto… 8 [8 Sati…     -0.464</span></span>
+<span id="cb31-8"><a href="group-comparison.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3  5728  2004 1 [female]      11.5       3 3 [satisfacto… 5 [5 Sati…     -0.464</span></span>
+<span id="cb31-9"><a href="group-comparison.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4  8741  2000 1 [female]      11         3 4 [good]       5 [5 Sati…      0.567</span></span>
+<span id="cb31-10"><a href="group-comparison.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5  8741  2002 1 [female]      10.5       3 2 [poor]       6 [6 Sati…     -1.49 </span></span>
+<span id="cb31-11"><a href="group-comparison.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6  8741  2003 1 [female]      10.5       3 4 [good]       4 [4 Sati…      0.567</span></span>
+<span id="cb31-12"><a href="group-comparison.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7  8741  2004 1 [female]      10.5       3 3 [satisfacto… 8 [8 Sati…     -0.464</span></span>
+<span id="cb31-13"><a href="group-comparison.html#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 10566  2000 0 [male]        10.5       3 5 [very good]  8 [8 Sati…      1.60 </span></span>
+<span id="cb31-14"><a href="group-comparison.html#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 10566  2001 0 [male]        10.5       3 5 [very good]  8 [8 Sati…      1.60 </span></span>
+<span id="cb31-15"><a href="group-comparison.html#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 12599  2000 0 [male]         9         3 4 [good]       8 [8 Sati…      0.567</span></span>
+<span id="cb31-16"><a href="group-comparison.html#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 10,649 more rows, and 1 more variable: satisf_std &lt;dbl&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="group-comparison.html#cb32-1" aria-hidden="true" tabindex="-1"></a>soep_no_na <span class="sc">%&gt;%</span></span>
 <span id="cb32-2"><a href="group-comparison.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(female) <span class="sc">%&gt;%</span> </span>
 <span id="cb32-3"><a href="group-comparison.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">median</span>(education))</span>
 <span id="cb32-4"><a href="group-comparison.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span id="cb32-5"><a href="group-comparison.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   female     `median(education)`</span></span>
-<span id="cb32-6"><a href="group-comparison.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl+lbl&gt;                &lt;dbl&gt;</span></span>
+<span id="cb32-5"><a href="group-comparison.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       female `median(education)`</span></span>
+<span id="cb32-6"><a href="group-comparison.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl+lbl&gt;               &lt;dbl&gt;</span></span>
 <span id="cb32-7"><a href="group-comparison.html#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0 [male]                  11.5</span></span>
 <span id="cb32-8"><a href="group-comparison.html#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1 [female]                11.5</span></span></code></pre></div>
 </div>
@@ -1191,7 +1190,7 @@ Max
 <tbody>
 <tr>
 <td style="text-align:left;">
-current health
+health_org
 </td>
 <td style="text-align:right;">
 5
@@ -1236,7 +1235,7 @@ current health
 </tr>
 <tr>
 <td style="text-align:left;">
-satisfaction with life as today
+satisf_org
 </td>
 <td style="text-align:right;">
 11
@@ -1286,10 +1285,9 @@ satisfaction with life as today
 <span id="cb33-2"><a href="group-comparison.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="dv">457</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2002</span>) <span class="sc">%&gt;%</span> <span class="co"># check out the logical operator </span></span>
 <span id="cb33-3"><a href="group-comparison.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(health_org, satisf_org, satisf_std, health_std)</span>
 <span id="cb33-4"><a href="group-comparison.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 4</span></span>
-<span id="cb33-5"><a href="group-comparison.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   health_org       satisf_org                                 satisf_std healt…¹</span></span>
-<span id="cb33-6"><a href="group-comparison.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl+lbl&gt;        &lt;dbl+lbl&gt;                                       &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb33-7"><a href="group-comparison.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 3 [satisfactory] 7 [7 Satisfied: On Scale 0-Low to 10-High]    -0.0909  -0.464</span></span>
-<span id="cb33-8"><a href="group-comparison.html#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​health_std</span></span></code></pre></div>
+<span id="cb33-5"><a href="group-comparison.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         health_org                              satisf_org satisf_std health_std</span></span>
+<span id="cb33-6"><a href="group-comparison.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          &lt;dbl+lbl&gt;                               &lt;dbl+lbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb33-7"><a href="group-comparison.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 3 [satisfactory] 7 [7 Satisfied: On Scale 0-Low to 10-H…    -0.0909     -0.464</span></span></code></pre></div>
 <p>Thus health is below average health of 3.4400976 and satisfaction is below average 7.1630547. The individual had a bad year. The individuals condition is a little bit unhealthy and a little bit happy. What is a more severe problem that the individual should focus on in the New Year's resolution?</p>
 <p><span class="math display">\[z_{health} = \frac{3 - 3.44}{1.0} = -0.44\]</span>
 <span class="math display">\[z_{satisfaction} = \frac{7 - 7.16}{1.8} = -0.08\]</span>
