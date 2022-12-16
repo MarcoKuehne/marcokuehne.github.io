@@ -148,15 +148,18 @@ It's basically testing whether the results are valid by figuring out the odds th
 ### Plot with Confidence 
 <!-- http://www.sthda.com/english/wiki/plot-group-means-and-confidence-intervals-r-base-graphs -->
 
-Time to plot. In addition to the group means we plot **confidence intervals** using the `gplots` package with the `plotmeans()` function. The result is this: 
+Time to plot. An **interval plot** shows the group means and the <u id='conf'>**confidence intervals**</u> around the means. It is similar to a box plot or dot plot. The plot is produced by the `plotmeans()` function (`gplots` package). It presents number of observations and factor levels by default. 
+
+Because there is substantial overlap of confidence intervals, we conclude that observed mean difference in health values between genders may not indicate a systematic problem. 
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "conf", tooltip = "Typically, a 95% confidence interval is used but any other confidence level can be specified as well.")
+```
 
 ```{r message=FALSE, warning=FALSE, echo = FALSE, eval=TRUE}
 library(gplots)
-## Plot the mean of teeth length by dose groups
-plotmeans(health_org ~ sex_factor, data = soep_2000, frame = FALSE)
+plotmeans(health_org ~ sex_factor, data = soep_2000, frame = FALSE, xlab="Gender", ylab="Health Status")
 ```
-
-`plotmeans()` nicely presents the number of observations and labels by default.
 
 :::: {.dedicated}
 ::: {.titeldedicated}
@@ -164,8 +167,6 @@ plotmeans(health_org ~ sex_factor, data = soep_2000, frame = FALSE)
 :::
 There is a statistically significant difference, **when confidence intervals not overlap**.
 ::::
-
-Conclusion: Don't worry about the health differential. 
 
 <!-- A t-test is indeed more about a **t-value**. Although, applied researcher and data scientists are more interested in the **p-value**.  -->
 

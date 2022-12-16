@@ -1,22 +1,5 @@
 # Panel Data
 
-<!-- **Learning Goals** -->
-
-<!-- ... -->
-
-<!-- ::: {.defox} -->
-<!-- -   Conceptual Skills:  -->
-<!--       + Understand panel data. Panel attrition.  -->
-<!--       + Distinguish between and within variation.  -->
-<!--       + Compare the paired and unpaired t-Test to panel data.  -->
-<!-- -   Data Skills: -->
-<!--       +   How `set.seed()` defeats randomness.   -->
-<!--       +   Find and use *functions* from other people.  -->
-<!--       +   Tidyverse e.g. `group_by()`, `sample_n()`, `summarize()`, `count()`, `arrange()`. -->
-<!--       +   Data Visualization: Panel plots (time series per group). -->
-<!-- ::: -->
-
-
 ```{r message=FALSE, warning=FALSE, echo=F, eval=T}
 library(tidyverse)
 
@@ -77,13 +60,40 @@ paneldata %>%
 
 Panel data are observations for the same subjects over time. Subjects can be people, households, firms or countries. Panel data are a subset of longitudinal data. Key components are the panel identifier: person (id) and time (year). Every row is a person-year combination (so called *long format*).
 
-<!-- ::: {.infobox2 .information data-latex="warning"} -->
-<!-- Compare these types of data: -->
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JNd4p6dRrPI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
 
-<!-- -   *Cross-section*: One time measurement. -->
-<!-- -   *Repeated cross-section*: Different people. -->
-<!-- -   *Panel*: Repeated observations of the same individuals. -->
-<!-- ::: -->
+## Types of Data 
+
+### Cross-section
+
+Cross-sectional data is a type of data collected by observing many subjects (such as individuals, firms, countries, or regions) at the one point or period of time. 
+
+* Questions about levels: "How many people are poor in 2016 in Germany?" 
+* Questions about differences: "How are men and women affected by poverty?"
+
+### Repeated cross-section
+
+Cross-sectional survey data are data for a single point in time. Repeated cross-sectional data are created where a survey is administered to a new sample of interviewees at successive time points. For an annual survey, this means that respondents in one year will be different people to those in a prior year. Such data can either be analysed cross-sectionally, by looking at one survey year, or combined for analysis over time.
+
+* Questions about trends: "Has poverty increased or decreased?"
+
+### Time series 
+
+Time series is data on a single subject at multiple points in time. Most commonly, data is collected at successive equally spaced points in time e.g. daily, annually. If data is collected annually, it's likely to be a survey study. If data is collected more frequently, e.g. daily, it's likely to be meteorology or finance. A time series is very frequently plotted via a run chart (which is a temporal line chart). An example of a temporal line chart is total number of students per year at Viadrina in the [next chapter][The long run trend].   
+
+* Questions about trends: "Is there a seasonal component in unemployment?"
+
+### Panel data
+
+With panel data we know the time-ordering of events. Panel data allow to identify causal effects under weaker assumptions (compared to cross-sectional data). Especially, panel data allows for certain statistical analyses, e.g. [fixed effects regression][Fixed effects]. 
+* Questions about change: "How many people went in and out of poverty?"
+
+<!-- Different types of data can answer different types of questions: -->
+<!-- -   Levels: How many people are poor in 2016 in Germany? -->
+<!-- -   Trends: Has poverty increased or decreased? -->
+<!-- -   Change: How many people went in and out of poverty? -->
 
 ```{r message=FALSE, warning=FALSE, echo=F}
 library(cowplot)
@@ -93,25 +103,6 @@ p112 <- ggdraw() + draw_image("Data/p12.png", scale = 0.9)
 p113 <- ggdraw() + draw_image("Data/p13.png", scale = 0.67)
 plot_grid(p111, p112, p113, nrow = 1)
 ```
-
-<!-- ```{r, echo=FALSE, out.width="70%", fig.cap="\\label{fig:wb}Table 1: Types of Data.", fig.align='center'} -->
-<!-- knitr::include_graphics("images/paneldata.png") -->
-<!-- ``` -->
-
-With panel data we know the time-ordering of events. Panel data allow to identify causal effects under weaker assumptions (compared to cross-sectional data). Especially, panel data allows for certain statistical analyses, e.g. [fixed effects regression][Fixed effects].  Different types of data can answer different types of questions:
-
--   Levels: How many people are poor in 2016 in Germany?
--   Trends: Has poverty increased or decreased?
--   Change: How many people went in and out of poverty?
-
-Famous household panel data studies include:
-
-- United States: Panel Study of Income Dynamics (PSID) since 1968 
-- Germany: Socio-Economic Panel (SOEP) since 1984
-- United Kingdom: British Household Panel Survey (BHPS) since 1991
-- Australia: Household, Income and Labour Dynamics in Australia Survey (HILDA) since 2001
-
-These scientific datasets can often be analyzed for research and student theses free of charge.  
 
 ## Unemployment 
 
@@ -146,12 +137,14 @@ unemploy %>%
 **[How Low Can Unemployment Really Go? Economists Have No Idea](https://www.nytimes.com/2018/02/28/upshot/how-low-can-unemployment-really-go-economists-have-no-idea.html)** "Here are two things most economists can agree upon: They want an economy where everyone who seeks a job can get one. Yet for the economy to be dynamic, some people will always be unemployed, at least temporarily as they move between jobs."
 ::::
 
+<center>
 <details>
 <summary>
-*Life after collage.*
+*Life after college.*
 </summary>
 ![](images/lifeaftercollege.png "Life After Collage"){width=350px}
 </details>
+</center>
 
 <!-- The unemployment rate in Germany is about 5 \% over the last few years (Source: [Annual average unemployment rate in Germany from 2005 to 2022 ](https://www.statista.com/statistics/227005/unemployment-rate-in-germany/)). How bad is 5 \%? -->
 
@@ -177,18 +170,18 @@ The **unemployment rate** represents the proportion of the **civilian labour for
 :::: {.reading}
 ::: {.titelreading}
 <h2> Reading </h2>
+:::
 In Australia, the Australian Bureau of Statistics (ABS) conducts a survey each month – called the Labour Force Survey – in which it asks around 50,000 people. As part of this survey, the ABS groups people aged 15 years and over (the working-age population) into three broad categories: 
 
 - **Employed** – includes people who are in a paid job for one hour or more in a week.
 - **Unemployed** – people who are not in a paid job, but who are actively looking for work.
 - **Not in the labour force** – people not in a paid job, and who are not looking for work.
-
-<!-- This can include people who are studying, caring for children or family members on a voluntary basis, retired, or who are permanently unable to work. -->
+::::
 
 Read More: [Unemployment: Its Measurement and Types](https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html){target="_blank"}
 
+<!-- This can include people who are studying, caring for children or family members on a voluntary basis, retired, or who are permanently unable to work. -->
 <!-- <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a> -->
-::::
 
 ## Application
 
@@ -208,7 +201,8 @@ library(DT)
 datatable(soep, width = "50%")
 ```
 
-This more comprehensive practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains `r ncol(soep)` variables and `r nrow(soep)` observations. 
+This practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains `r ncol(soep)` variables and `r nrow(soep)` observations. 
+
 ```{r message=FALSE, warning=FALSE, echo=F, eval=T}
 library(modelsummary)
 library(kableExtra)
@@ -229,7 +223,7 @@ Column names are German, but attribute labels are in English. `einkommenj1` cont
 attributes(soep$einkommenj1)$label
 ```
 
-The documentation (click the DOI <https://doi.org/10.5684/soep.practice.v36>) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (remember: panel data). Pipe `soep` into `count()` of personal `id`. This tibble output already contains the number of rows. To literally access the value, ask `nrow()`.
+The documentation (click the DOI <https://doi.org/10.5684/soep.practice.v36>) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (i.e. panel data). Pipe `soep` into `count()` of personal `id`. The tibble output already contains the number of rows. To literally access the value, ask `nrow()`.
 
 ```{r warning=FALSE, message=FALSE, echo=T, eval=T}
 # soep %>% count(id) # try this as well
@@ -338,7 +332,7 @@ soep %>%
 
 From this table, the unemployment rate for 2015 can be calculated manually:
 
-$$\frac{1268}{2013+1100} = 0.4073241 = 40.7 \%$$
+$$\frac{1268}{2013+1261+1268} = 0.279172 = 27.92 \%$$
  
 Having done this, step back to focus on years again and use different n-values per year to figure out the unemployment. Relate `unemployed` to those working either `fulltime` or `partime`. 
 
@@ -347,7 +341,7 @@ soep %>%
   group_by(syear, erwerb) %>%
   summarise(n = n()) %>% 
   group_by(syear) %>% 
-  mutate(unemployment_rate = n[3]/(n[1]+n[2]))
+  mutate(unemployment_rate = n[3]/(n[1]+n[2]+n[3]))
 ```
 
 <details>
@@ -359,7 +353,7 @@ soep %>%
   group_by(syear, erwerb) %>%
   summarise(n = n()) %>% 
   group_by(syear) %>% 
-  mutate(unemployment_rate = n[3]/(n[1]+n[2]))
+  mutate(unemployment_rate = n[3]/(n[1]+n[2]+n[3]))
 ```
 </details>
 
@@ -382,12 +376,12 @@ The unemployment rate in this data is unreasonably high.
 
 Pick up the calculation of the unemployment rate and pipe it into a `ggplot()` call. Define the axes elements within `aes()` (for aesthetics) and ask for points that are connected by a line. 
 
-```{r, fig.align='center'}
+```{r, fig.align='center', class.source = 'fold-hide'}
 soep %>% 
   group_by(syear, erwerb) %>%
   summarise(n = n()) %>% 
   group_by(syear) %>% 
-  mutate(unemployment_rate = n[3]/(n[1]+n[2])) %>% 
+  mutate(unemployment_rate = n[3]/(n[1]+n[2]+n[3])) %>% 
   ggplot(aes(x = syear, y = unemployment_rate)) + geom_point() + geom_line() +
   labs(x="Year", y="Unemployment Rate", 
        title = "Unemployment Rate in Germany between 2015 and 2019",
@@ -409,7 +403,16 @@ soep %>%
 
 
 
+## Panel Studies
 
+Famous household panel data studies include:
+
+- United States: Panel Study of Income Dynamics (PSID) since 1968 
+- Germany: Socio-Economic Panel (SOEP) since 1984
+- United Kingdom: British Household Panel Survey (BHPS) since 1991
+- Australia: Household, Income and Labour Dynamics in Australia Survey (HILDA) since 2001
+
+These scientific datasets can often be analyzed for research and student theses free of charge.  
 
 
 

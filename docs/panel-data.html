@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2022-11-03" />
+<meta name="date" content="2022-12-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -63,10 +63,10 @@
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.23/datatables.js"></script>
-<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <script src="libs/plotly-binding-4.10.0/plotly.js"></script>
@@ -534,12 +534,14 @@ Reading
 </div>
 <p><strong><a href="https://www.nytimes.com/2018/02/28/upshot/how-low-can-unemployment-really-go-economists-have-no-idea.html">How Low Can Unemployment Really Go? Economists Have No Idea</a></strong> "Here are two things most economists can agree upon: They want an economy where everyone who seeks a job can get one. Yet for the economy to be dynamic, some people will always be unemployed, at least temporarily as they move between jobs."</p>
 </div>
+<center>
 <details>
 <summary>
-<em>Life after collage.</em>
+<em>Life after college.</em>
 </summary>
 <img src="images/lifeaftercollege.png" title="Life After Collage" width="350" />
 </details>
+</center>
 <!-- The unemployment rate in Germany is about 5 \% over the last few years (Source: [Annual average unemployment rate in Germany from 2005 to 2022 ](https://www.statista.com/statistics/227005/unemployment-rate-in-germany/)). How bad is 5 \%? -->
 <!-- ::: {.defbox} -->
 <!-- Imagine a college graduate from Viadrina Frankfurt (Oder) enters the job market. It takes about 3 month to search for jobs, send applications and do the job interviews. Finally she finds a perfect match. After some years the college graduate falls in love with someone who lives in Buxtehude, so the graduate moves to this place, again looking for a job at a new employer.  -->
@@ -553,21 +555,22 @@ Reading
 <div id="measurement" class="section level3 hasAnchor" number="5.2.2">
 <h3><span class="header-section-number">5.2.2</span> Measurement<a href="panel-data.html#measurement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <strong>unemployment rate</strong> represents the proportion of the <strong>civilian labour force</strong> that is unemployed. Consequently, measuring the unemployment rate requires identifying who is in the labour force. The labour force consists of all employed and unemployed persons of working age. What exactly is defined as employment? Employment status can be defined via a threshold of working hours or income. Who is in the working age?</p>
-:::: {.reading}
-::: {.titelreading}
+<div class="reading">
+<div class="titelreading">
 <h2>
 Reading
 </h2>
+</div>
 <p>In Australia, the Australian Bureau of Statistics (ABS) conducts a survey each month – called the Labour Force Survey – in which it asks around 50,000 people. As part of this survey, the ABS groups people aged 15 years and over (the working-age population) into three broad categories:</p>
 <ul>
 <li><strong>Employed</strong> – includes people who are in a paid job for one hour or more in a week.</li>
 <li><strong>Unemployed</strong> – people who are not in a paid job, but who are actively looking for work.</li>
 <li><strong>Not in the labour force</strong> – people not in a paid job, and who are not looking for work.</li>
 </ul>
-<!-- This can include people who are studying, caring for children or family members on a voluntary basis, retired, or who are permanently unable to work. -->
+</div>
 <p>Read More: <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a></p>
+<!-- This can include people who are studying, caring for children or family members on a voluntary basis, retired, or who are permanently unable to work. -->
 <!-- <a href="https://www.rba.gov.au/education/resources/explainers/unemployment-its-measurement-and-types.html" target="_blank">Unemployment: Its Measurement and Types</a> -->
-<p>::::</p>
 </div>
 </div>
 <div id="application-2" class="section level2 hasAnchor" number="5.3">
@@ -578,7 +581,7 @@ Reading
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="panel-data.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
 <span id="cb46-2"><a href="panel-data.html#cb46-2" aria-hidden="true" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span></code></pre></div>
 <!-- Column names are German, but attribute labels are English.  -->
-This more comprehensive practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains 15 variables and 23522 observations.
+<p>This practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains 15 variables and 23522 observations.</p>
 <table class="table table" style="width: auto !important; margin-left: auto; margin-right: auto; font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1247,7 +1250,7 @@ einkommenm2
 <p>Column names are German, but attribute labels are in English. <code>einkommenj1</code> contains <em>Gross Income from Main Job/Year</em>.</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="panel-data.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(soep<span class="sc">$</span>einkommenj1)<span class="sc">$</span>label</span>
 <span id="cb47-2"><a href="panel-data.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Gross Income from Main Job/Year&quot;</span></span></code></pre></div>
-<p>The documentation (click the DOI <a href="https://doi.org/10.5684/soep.practice.v36" class="uri">https://doi.org/10.5684/soep.practice.v36</a>) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (remember: panel data). Pipe <code>soep</code> into <code>count()</code> of personal <code>id</code>. This tibble output already contains the number of rows. To literally access the value, ask <code>nrow()</code>.</p>
+<p>The documentation (click the DOI <a href="https://doi.org/10.5684/soep.practice.v36" class="uri">https://doi.org/10.5684/soep.practice.v36</a>) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (i.e. panel data). Pipe <code>soep</code> into <code>count()</code> of personal <code>id</code>. The tibble output already contains the number of rows. To literally access the value, ask <code>nrow()</code>.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="panel-data.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># soep %&gt;% count(id) # try this as well</span></span>
 <span id="cb48-2"><a href="panel-data.html#cb48-2" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
 <span id="cb48-3"><a href="panel-data.html#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 6355</span></span></code></pre></div>
@@ -1370,13 +1373,13 @@ Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. 
 #&gt; 15  2019 unemployed   722</code></pre>
 </details>
 <p>From this table, the unemployment rate for 2015 can be calculated manually:</p>
-<p><span class="math display">\[\frac{1268}{2013+1100} = 0.4073241 = 40.7 \%\]</span></p>
+<p><span class="math display">\[\frac{1268}{2013+1261+1268} = 0.279172 = 27.92 \%\]</span></p>
 <p>Having done this, step back to focus on years again and use different n-values per year to figure out the unemployment. Relate <code>unemployed</code> to those working either <code>fulltime</code> or <code>partime</code>.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="panel-data.html#cb60-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
 <span id="cb60-2"><a href="panel-data.html#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
 <span id="cb60-3"><a href="panel-data.html#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
 <span id="cb60-4"><a href="panel-data.html#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
-<span id="cb60-5"><a href="panel-data.html#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]))</span></code></pre></div>
+<span id="cb60-5"><a href="panel-data.html#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]<span class="sc">+</span>n[<span class="dv">3</span>]))</span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
@@ -1385,21 +1388,21 @@ Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. 
 #&gt; # Groups:   syear [5]
 #&gt;    syear erwerb         n unemployment_rate
 #&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;             &lt;dbl&gt;
-#&gt;  1  2015 fulltime    2013             0.387
-#&gt;  2  2015 partime     1261             0.387
-#&gt;  3  2015 unemployed  1268             0.387
-#&gt;  4  2016 fulltime    1808             0.371
-#&gt;  5  2016 partime     1123             0.371
-#&gt;  6  2016 unemployed  1087             0.371
-#&gt;  7  2017 fulltime    1750             0.361
-#&gt;  8  2017 partime     1036             0.361
-#&gt;  9  2017 unemployed  1007             0.361
-#&gt; 10  2018 fulltime    1620             0.336
-#&gt; 11  2018 partime      985             0.336
-#&gt; 12  2018 unemployed   874             0.336
-#&gt; 13  2019 fulltime    1467             0.305
-#&gt; 14  2019 partime      904             0.305
-#&gt; 15  2019 unemployed   722             0.305</code></pre>
+#&gt;  1  2015 fulltime    2013             0.279
+#&gt;  2  2015 partime     1261             0.279
+#&gt;  3  2015 unemployed  1268             0.279
+#&gt;  4  2016 fulltime    1808             0.271
+#&gt;  5  2016 partime     1123             0.271
+#&gt;  6  2016 unemployed  1087             0.271
+#&gt;  7  2017 fulltime    1750             0.265
+#&gt;  8  2017 partime     1036             0.265
+#&gt;  9  2017 unemployed  1007             0.265
+#&gt; 10  2018 fulltime    1620             0.251
+#&gt; 11  2018 partime      985             0.251
+#&gt; 12  2018 unemployed   874             0.251
+#&gt; 13  2019 fulltime    1467             0.233
+#&gt; 14  2019 partime      904             0.233
+#&gt; 15  2019 unemployed   722             0.233</code></pre>
 </details>
 <div class="defbox">
 <div class="titeldefbox">
@@ -1421,11 +1424,11 @@ Definition
 <div id="unemployment-status" class="section level4 hasAnchor" number="5.3.3.1">
 <h4><span class="header-section-number">5.3.3.1</span> Unemployment status<a href="panel-data.html#unemployment-status" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Pick up the calculation of the unemployment rate and pipe it into a <code>ggplot()</code> call. Define the axes elements within <code>aes()</code> (for aesthetics) and ask for points that are connected by a line.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="panel-data.html#cb62-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb62-1"><a href="panel-data.html#cb62-1" aria-hidden="true" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
 <span id="cb62-2"><a href="panel-data.html#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
 <span id="cb62-3"><a href="panel-data.html#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
 <span id="cb62-4"><a href="panel-data.html#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
-<span id="cb62-5"><a href="panel-data.html#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>])) <span class="sc">%&gt;%</span> </span>
+<span id="cb62-5"><a href="panel-data.html#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]<span class="sc">+</span>n[<span class="dv">3</span>])) <span class="sc">%&gt;%</span> </span>
 <span id="cb62-6"><a href="panel-data.html#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> syear, <span class="at">y =</span> unemployment_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb62-7"><a href="panel-data.html#cb62-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Unemployment Rate&quot;</span>, </span>
 <span id="cb62-8"><a href="panel-data.html#cb62-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Unemployment Rate in Germany between 2015 and 2019&quot;</span>,</span>

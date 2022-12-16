@@ -4,15 +4,11 @@
 <!-- Comments start with one or multiple hash tags.  -->
 <!-- http://seminars-in-applied-economics.de/wp-content/uploads/2020/08/SOEP_Practice_1.txt -->
 
-An .R file is a **text document**. Open (and edit) it with a any **text editor** (or RStudio) as well as a **browser**. Here is an example [intro to R script](https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/intro-r.R).
+An .R file is a **text document**. Open (and edit) it with any **text editor** (or RStudio) as well as a **browser**. Like to see an [R script in your browser](https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/intro-r.R){target="_blank"}?
 
+<!-- https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/intro-r.R -->
+<!-- https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/intro-r.R -->
 <!-- You can collapse sections in RStudio. -->
-<!-- You can navigate between sections in RStudio. -->
-<!-- Check out your four panels and what they contain. -->
-<!-- You can run/execute code in the console.  -->
-<!-- Type or copy commands in the console and hit enter.  -->
-<!-- Alternatively click 'run' in RStudio. -->
-<!-- Alternatively use shortcuts like STRG + ENTER (run 1 line) -->
 
 ## Watching paint dry {-}
 
@@ -21,27 +17,32 @@ An .R file is a **text document**. Open (and edit) it with a any **text editor**
 <!-- # tutorial::go_interactive(greedy=FALSE) -->
 <!-- # ``` -->
 
-R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the  **script.R** tab are executed by the **Run** bottom. It runs the entire script and prints out results in the **R Console**. This setting is simplified but reflects the procedure in a more complex integrated developer environment (IDE) like RStudio.
+R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the  **script.R** tab are executed by the **Run** bottom. It runs the entire script and prints out results in the **R Console**. This setting is simplified but reflects the procedure in a more complex integrated developer environment (IDE) like RStudio. <u id='intro_r'>Test it.</u> 
+
+<iframe src="DCL/playground1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "intro_r", tooltip = "Delete all code, type 1:20 and hit Run.")
+```
+
+R arithmetic operators are:
+
+- `+` Addition
+- `-` Substraction 
+- `*` Multiplication
+- `/` Division
+- `^` Exponent 
 
 <!-- https://cdn.datacamp.com/dcl-react-prod/index.html -->
 <!-- <script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script> -->
 <!-- <script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script> -->
-
 <!-- <iframe src="DCL/intro_1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe> -->
 
-<iframe src="DCL/playground1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
+## When paint becomes art {-}
 
 :::: {.challenge}
 ::: {.titelchallenge}
 <h2> Your Turn </h2>
 :::
-Delete all code, try `1:20` and hit Run. 
-
-<iframe src="DCL/playground1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
-::::
-
-## When paint becomes art {-}
-
 Copy paste the below code into **script.R** and hit **Run**. It opens a new tab **Plots**. 
 
 ```{r tut=FALSE, collapse=TRUE, eval=F} 
@@ -60,6 +61,7 @@ legend (x = 4.5, y = 7, legend = levels(iris$Species),
 ```
 
 <iframe src="DCL/playground2.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
+::::
 
 <!-- rdrr.io is working but does not look nice -->
 <!-- <iframe width='100%' height='500' src='https://rdrr.io/snippets/embed/' frameborder='1'></iframe> -->
@@ -106,10 +108,17 @@ other  <- "people"               # prefer "
 A factor is an ordered categorical variable. `c()` is a generic function which combines its arguments. 
 
 ```{r tut=FALSE}
-fruit  <- as.factor(c("banana", "apple")  ) # The default ordering is alphabetic
+fruit <- factor(c("banana", "apple")  ) # The default ordering is alphabetic
 fruit
 
-dose <- as.factor(c("low", "medium", "high")  ) # The default ordering is alphabetic
+dose <- factor(c("low", "medium", "high")  ) # The default ordering is alphabetic
+dose
+```
+
+Factor levels inform about the order of the components, i.e. `apple` comes before `banana` and `high` comes comes before `low`, than comes `medium`. Of course, the apple-banana order does not makes any sense, and the high-low-medium order is just wrong. Software cannot know whether an ordering makes sense, that's job of the data scientist. Use the `levels` option inside the `factor()` function to tell R the ordering.
+
+```{r tut=FALSE}
+dose <- factor(c("low", "medium", "high"), levels = c("low", "medium", "high") ) 
 dose
 ```
 

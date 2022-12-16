@@ -2,38 +2,45 @@
 
 Logistic regression is the appropriate regression analysis to conduct when the dependent variable is dichotomous (binary).
 
-## Minimal Example
-
-### Think inside of a box 
+## Think inside the box 
 
 <!-- https://www.javatpoint.com/linear-regression-vs-logistic-regression-in-machine-learning -->
 
-The following table contains data on the relationship between *hours of study* and the *outcome of an exam* (pass/fail) sorted ascending for study hours:
+The table contains data on the relationship between *hours of study* and the *outcome of an exam* (pass/fail) sorted ascending for study hours. The `pass` outcome is coded `1` for "Yeah, I passed the exam" and `0` for "I'll be back". 
 
 ```{r, eval=TRUE, echo=F, warning=FALSE, message=FALSE}
 library(tidyverse)
-
+library(DT)
 # mydata <- data.frame(pass = c(0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1),
 #                      hours = c(0.50,0.75,1.00,1.25,1.50,1.75,1.75,2.00,2.25,2.50,
 #                                2.75,3.00,3.25,3.50,4.00,4.25,4.50,4.75,5.00,5.50))
 
-mydata <- data.frame(pass = c(0,0,0,0,1,0,0,1,0,1,1,1),
-                     hours = c(0.75,1.00,1.50,1.75,1.75,2.00,2.50,
-                               2.75,3.00,3.25,4.25,5.00))
-
+mydata <- data.frame(hours = c(0.75,1.00,1.50,1.75,1.75,2.00,2.50,
+                               2.75,3.00,3.25,4.25,5.00),
+                     pass = c(0,0,0,0,1,0,0,1,0,1,1,1))
 mydata$pass <- as_factor(mydata$pass)
 
-library(knitr)
-library(kableExtra)
-as.data.frame(t(mydata)) %>% kable(col.names = NULL) %>% kable_styling(font_size = 8)
+datatable(t(mydata), 
+              options = list(lengthChange = FALSE,
+                             pageLength = 12,
+                             dom = 't', 
+                             rownames = FALSE,
+                             headerCallback = JS(
+              "function(thead, data, start, end, display){",
+              "  $(thead).remove();",
+              "}"))) %>% 
+  formatStyle(columns = colnames(.), fontSize = '50%')
+
+# library(knitr)
+# library(kableExtra)
+# as.data.frame(t(mydata)) %>% kable(col.names = NULL) %>% kable_styling(font_size = 8)
 ``` 
 
-Please do a side-by-side plot via `ggplot` and `gridExtra` package with `pass` on the y-axis and `hours` of study on the x-axis. Please fit a line though the left panel and a squiggle through the right panel. Use the layer `geom_smooth` with `method` option either `lm` (linear model) or `glm` (general linear model). 
+<!-- Please do a side-by-side plot via `ggplot` and `gridExtra` package with `pass` on the y-axis and `hours` of study on the x-axis. Please fit a line though the left panel and a squiggle through the right panel. Use the layer `geom_smooth` with `method` option either `lm` (linear model) or `glm` (general linear model).  -->
+
+Linear regression is agnostic to the structure of the data. `lm()` fits a linear model to the data. Logistic regression acknowledges the floor and ceiling of values between 0 and 1. It squeezes the line to a squiggle inside the box. Well, the x-axis don't necessarily have this restriction. 
 
 ```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
-# mydata <- data.frame(pass = c(0, 	0 ,	0 ,	0 ,	0 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1 ,	0 ,	1, 	1 ,	1 ,	1 ,	1 ,	1),
-#                      hours = c(0.50,0.75, 	1.00, 	1.25 ,	1.50 ,	1.75, 	1.75, 	2.00 ,	2.25, 	2.50 ,	2.75, 	3.00 ,	3.25 ,	3.50 ,	4.00, 	4.25 ,	4.50 , 	4.75 	,5.00 ,	5.50 )        )
-
 mydata <- data.frame(pass = c(0,0,0,0,1,0,0,1,0,1,1,1),
                      hours = c(0.75,1.00,1.50,1.75,1.75,2.00,2.50,
                                2.75,3.00,3.25,4.25,5.00))
@@ -47,56 +54,62 @@ plot2 <- ggplot(mydata, aes(x=hours, y=pass)) +
   geom_point(size=2) + 
   geom_smooth(method = "glm", method.args = list(family = "binomial"), se=FALSE) +
   ggtitle("Logistic Regression") + xlab("Hours of Study") +
-  geom_segment(aes(x = 0, y = -0.03, xend = 6, yend = -0.03),size = 1.5) +
-  geom_segment(aes(x = 0, y = 1.03, xend = 6, yend = 1.03),size = 1.5) + ylim(-0.1,1.05)
+  geom_segment(aes(x = 0, y = -0.03, xend = 6, yend = -0.03),size = 1.5) + # under
+  geom_segment(aes(x = -0.03, xend = -0.03, y = 0, yend = 1),size = 1.5) + # left
+  geom_segment(aes(x = 0, y = 1.03, xend = 6, yend = 1.03),size = 1.5) + # upper 
+  geom_segment(aes(x = 6.03, xend = 6.03, y = 0, yend = 1),size = 1.5) + # right
+  ylim(-0.1,1.05)
+
 grid.arrange(plot1, plot2, ncol=2)
 ```
 
-<!-- The first step is to find the functional form that better describes the data then a linear function.  -->
+<!-- Why do we take all the trouble doing the transformation from probability to log odds?  One reason is that  -->
+
+It is usually difficult to model a variable which has restricted range, such as probability. Get around the restricted range problem with a transformation. 
 
 ### From probability to odds 
 <!-- https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-how-do-i-interpret-odds-ratios-in-logistic-regression/ -->
 <!-- https://www.statisticshowto.com/log-odds/ -->
-
-Please do the following:
-
-- Create a data.frame called `data`.
-- Within `data`, create a sequence of values ranging from 0 to 1 in 0.01 steps and store it as `p` (probability).
-- Within `data`, calculate the corresponding odds, store as `odds`. 
-- Create a simple plot showing the relation between odds and probability using the `plotly` package. 
-
 <!-- Odds and Log Odds: https://www.youtube.com/watch?v=ARfXDSkQf1Y -->
 
-```{r eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+Everybody has a good sense for probability. Not so for odds. 
+
+- Let’s say that the probability to pass the exam is $0.8 = 80\%$.
+- Then the probability of failure is $1 – 0.8 = 0.2 = 20\%$. 
+
+The odds of passing the exam are defined as the ratio of the probabilities: $\text{odds} = \frac{0.8}{0.2} = 4$. That is to say that the odds of passing are 4 to 1. Odds provide a measure of the likelihood of a particular outcome. 
+
+<!-- Please do the following: -->
+<!-- - Create a data.frame called `data`. -->
+<!-- - Within `data`, create a sequence of values ranging from 0 to 1 in 0.01 steps and store it as `p` (probability). -->
+<!-- - Within `data`, calculate the corresponding odds, store as `odds`.  -->
+<!-- - Create a simple plot showing the relation between odds and probability using the `plotly` package.  -->
+
+Probability is naturally restricted between 0 and 1, what about odds? 
+
+Odds range from 0 to positive infinity.
+
+```{r eval=TRUE, echo=F, message=FALSE, warning=FALSE}
 p <- seq(from=0, to=1, by=0.01)
 odds <- p/(1-p)
 data <- data.frame(p, odds)
 
-## par(mfrow=c(1,2))
-## plot(p, odds)
-## plot(p, odds, xlim=c(0,0.25), ylim = c(0,0.25))
-## mtext("My 'Title' in a strange place", side = 3, line = -21, outer = TRUE)
-```
-
-```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
-head(data)
-```
-
-```{r eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 library(plotly)
 plot_ly(data = data, x = ~p, y = ~odds)
-``` 
+```
+
+The transformation from probability to odds is a monotonic transformation, meaning the odds increase as the probability increases or vice versa. 
 
 ### From odds to log of odds 
 
-Please calculate the log of odds, store it as `logodds` (can be another object). Create a side-by-side graph showing the relation between probability and odds and probability and logodds with the `plotly` package. 
+<!-- Please calculate the log of odds, store it as `logodds` (can be another object). Create a side-by-side graph showing the relation between probability and odds and probability and logodds with the `plotly` package.  -->
 
-```{r, eval=TRUE, echo=TRUE}
+The `log()` of values between 0 and 1 is negative, above 1 positive. 
+
+Logodds range between negative and positive infinity. Range problem solved. 
+
+```{r, eval=TRUE, echo=F}
 logodds <- log(odds)
-
-## par(mfrow=c(1,2))
-## plot(p, odds)
-## plot(p, logodds)
 
 library(plotly)
 fig1 <- plot_ly(data = data, x = ~p, y = ~odds)
@@ -117,28 +130,31 @@ Imagine you flip the axes, doesn't this look like the initial S curve we were lo
 
 ## Application: Titanic Survival 
 
-#### Data Management (2 pt)
+```{r, out.width="50%", fig.cap="\\label{fig:titanic}RMS Titanic.", fig.align='center', eval=F, echo=F}
+knitr::include_graphics("images/titanic.png")
+```
 
-Please register at Kaggle. Go to <https://www.kaggle.com/c/titanic/data> and download the datasets (`train.csv`, `test.csv`, `gender_submission.csv`). Put them in your working directory. The following merge commands should work. 
+<div style="background-image:url("images/titanic.png"); opacity:0.5;">
 
-<!-- Let's merge the datasets and create a dataframe called `titanic`.  -->
+> The sinking of the Titanic is one of the most infamous shipwrecks in history.
+>
+> On April 15, 1912, during her maiden voyage, the widely considered “unsinkable” RMS Titanic sank after colliding with an iceberg. Unfortunately, there weren’t enough lifeboats for everyone onboard, resulting in the death of 1502 out of 2224 passengers and crew.
+>
+> While there was some element of luck involved in surviving, it seems some groups of people were more likely to survive than others.
+> `r tufte::quote_footer('--- [Kaggle Competition](https://www.kaggle.com/competitions/titanic/overview)')`
+
+</div>
+
+#### The Data 
+
+<!-- Please register at Kaggle. Go to <https://www.kaggle.com/c/titanic/data> and download the datasets (`train.csv`, `test.csv`, `gender_submission.csv`). Put them in your working directory. The following merge commands should work.  -->
+
+Load a real comprehensive dataset on Titanic. 
 
 ```{r, eval=TRUE, echo=TRUE}
-library(tidyverse)
-
-## load individual datasets
-titanic.train = read.csv('data/train.csv',  header = T, na.strings = c(''))
-titanic.test = read.csv('data/test.csv', header = T, na.strings = c(""))
-test.label = read.csv('data/gender_submission.csv', header = T, na.string=c(""))
-## merge labels with test
-titanic.test = merge(titanic.test, test.label, by = "PassengerId")
-## bind test and train (here we don't make the distinction)
-titanic = rbind(titanic.test, titanic.train)
-## convert Pclass to factor (from numeric)
-titanic$Pclass = as.factor(titanic$Pclass)
-## convert all character variables to factor
-titanic <- as.data.frame(titanic, stringsAsFactors=TRUE)
-titanic <- titanic %>% mutate_if(is.character,as.factor)
+titanic <- read.csv("https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/titanic.csv")
+#titanic <- read.csv("./data/titanic.csv")
+titanic <- titanic[,-1]
 ```
 
 Let's check the number of missing values per variable: 
@@ -339,7 +355,7 @@ tab <- contingency_table(list("Sex"='Sex'),
                          crosstab_funcs=list(freq()),
                          data=titanic_fct)
    
-neat_table(tab, format = c("html"))
+#neat_table(tab, format = c("html"))
 ```
 
 The $\chi^2$ test is an alternative to test the relationship between two categorical variables. 
@@ -412,7 +428,7 @@ tab_temp[1,1] + tab_temp[1,2] + tab_temp[2,1] + tab_temp[2,2]
 
 Let's extend the group analysis to multiple categories using the `Pclass` variable. The passenger class represents the socio-economic status of people. We hypothesize that people with more money used their influence to get into one of the lifeboats. First, the contingency table of the situation: 
 
-```{r, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, eval=F, echo=TRUE, warning=FALSE, message=FALSE}
 tab <- contingency_table(list("Passenger Class"='Pclass'),
                          outcomes=list('Survival'='Survived_fct'), ## need to be factors
                          crosstab_funcs=list(freq()),
@@ -552,9 +568,7 @@ library(margins)
 summary(margins(logistic4))
 ```
 
-```{r , echo=TRUE, out.width="50%", fig.cap="\\label{fig:titanic}Figure 4: RMS Titanic.", fig.align='center'}
-knitr::include_graphics("images/titanic.png")
-```
+
 
 
 

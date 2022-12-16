@@ -1,7 +1,5 @@
 # Text Mining 
 
-<!-- ## Learning Goals  -->
-
 <!-- ::: {.infobox .information data-latex="warning"} -->
 <!-- -   Conceptual Skills:  -->
 <!--       + What text data is and where to get text data from. -->
@@ -17,72 +15,29 @@
 
 **Text data** usually consists of documents which can represent words, sentences or even paragraphs of free flowing text. The inherent **unstructured** (no neatly formatted data columns!) and **noisy nature** of textual data makes it harder for data analysts to directly work on raw text data.
 
-<!-- This material also introduces new features for R markdown reports:  -->
-<!-- - *Code Folding* <https://bookdown.org/yihui/rmarkdown-cookbook/fold-show.html> -->
-<!-- - *Tab Sets* <https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html> -->
-<!-- In your YAML header you can set an option under `html_document:` like `code_folding: hide`. Be aware of the necessary spacing in the html options. You can add the `{.tabset}` option to a headline and starting tab setting here. You end tab setting by an empty headline like `#### {-}`. In between you need to specify sub-headlines (at least one more hash-tag). -->
+<!-- ## Text datasets -->
+<!-- There are various built-in datasets for text (e.g. `janeaustenr` package). -->
+<!-- ### Jane Austin books -->
+<!-- This table gives a list of all the Jane Austin books included and their row numbers. -->
+<!-- ```{r warning=FALSE, message=FALSE, echo=T, eval=T} -->
+<!-- library(janeaustenr) -->
+<!-- table(austen_books()$book) -->
+<!-- ``` -->
+<!-- #### Select a specific book -->
+<!-- You can read entire books in R. -->
+<!-- ![Hugh Thompson: Emma und Mr. Knightley, 1896](https://upload.wikimedia.org/wikipedia/commons/2/2d/Emma-ch49_%28III-13%29.jpg) -->
+<!-- ```{r warning=FALSE, message=FALSE, echo=T, eval=T} -->
+<!-- library(tidyverse) -->
+<!-- austen_books() %>% -->
+<!--   filter(book == "Emma") %>% -->
+<!--   filter(row_number() > 10, row_number() < 20) -->
+<!-- ``` -->
 
-#### Text datasets {.tabset}
-There are various built-in datasets for text (e.g. `janeaustenr` package).
-###### Jane Austin books
-This table gives a list of all the Jane Austin books included and their rownumbers.
-```{r warning=FALSE, message=FALSE, echo=T, eval=T}
-library(janeaustenr)
-table(austen_books()$book)
-```
-###### Select a specific book.
-You can read entire books in R.
-```{r warning=FALSE, message=FALSE, echo=T, eval=T}
-library(tidyverse)
-austen_books() %>%
-  filter(book == "Emma") %>%
-  filter(row_number() > 10, row_number() < 20)
-```
+## Wikipedia 
 
-## Field Trip to Berlin 
+Access the intro information on `R` from English Wikipedia using the `wikifacts` package:
 
-On Thursday, 02 June 2022, the class went on a field trip to Humboldt Forum, Berlin to visit the exhibition *Berlin Global* ([get the virtual tour](https://berlin-global-ausstellung.de/360-grad-weltdenken/?startTour){target="_blank"}).
-
-Berlin Global feels very modern. It combines historical information and stories with modern art and  design as well as interactive features. The interaction comes from decisions you can make yourself and interactive elements like a wheel that needs about 5 people to start a video sequence. It triggers interactions between visitors and people who are normally strangers who would not have interacted otherwise. It is educational and fun. Although it covers some of the darkest parts of (German) history. 
-
-<!-- {#id .class width=70% height=70%} -->
-![](images/group2.jpeg)
-
-Students wrote down their impressions as in a diary entry or personal report and post them on [tripadvisor](https://www.tripadvisor.de/Attraction_Review-g187323-d23632357-Reviews-Berlin_Global-Berlin.html){target="_blank"}. All reviews should address the following questions:
-
--	How is *globality* represented in "Berlin Global"?
--	How is the colonial past depicted in Room 1 "Weltdenken"?
-
-At the time, the exhibition did not have any review on tripadvisor. Thus almost all reviews on tripadvisor stem from students of the class of 2022. We use this review data on tripadivsor to learn about the student experience. 
-
-```{r, eval=TRUE, echo=FALSE}
-tripadvisor <- read.csv("data/tripadvisor_berlin_global.csv")
-```
-
-```{r, message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE}
-library(DT)
-library(tidyverse)
-
-tripadvisor %>% 
-  select(Author, Title, Text) %>% 
-  mutate(Text = substr(Text, 1, 50)) %>% 
-  datatable(options = list(
-  columnDefs = list(list(className = 'dt-center', targets = 5)),
-  pageLength = 5,
-  lengthMenu = c(5, 10, 15, 20)
-))
-
-#flextable::flextable(tripadvisor, cwidth = c(0.5,0.5,5))
-```
-
-
-
-
-
-
-## Text Analysis 
-
-For this analysis we focus on the intro information on R from English Wikipedia. 
+* <https://en.wikipedia.org/wiki/R_(programming_language)>
 
 ```{r warning=FALSE, message=FALSE, echo=T, eval=T, class.source = 'fold-show'}
 library(wikifacts)
@@ -90,11 +45,14 @@ R_EN <- wiki_define('R (programming language)')
 R_EN
 ```
 
-#### Cleaning 
+### Cleaning 
 
-Load the `tidytext` package. We summarize individual tasks like removing digits, punctuation, whitespaces and seting everything to lower case in the `clean_text()` function. There is a newline operator `\n` left. You can replace it with uncommenting the last command. 
+Load the `tidytext` and `stringr` package. We summarize individual tasks like removing digits, punctuation, whitespaces and seting everything to lower case in the `clean_text()` **function**. 
+
+<!-- There is a newline operator `\n` left. You can replace it with uncommenting the last command.  -->
 
 ```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+library(tidyverse)
 library(tidytext)
 library(stringr)
 
@@ -108,26 +66,28 @@ clean_text <- function(x) {
     ## Make everything lowercase
     str_to_lower() %>%
     ## Remove any trailing whitespace around the text
-    str_trim("both") ##%>%
-    ##str_replace_all("[\r\n]" , " ")
+    str_trim("both") %>%
+    ## Remove newline character
+    str_replace_all("[\r\n]" , " ")
 }
 ```
 
-```{r warning=FALSE, message=FALSE, echo=F, eval=T}
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
 R_EN_clean <- clean_text(R_EN)
 R_EN_clean
 ```
 
-#### Tidytext Format 
+### Tidytext Format 
 
 Tidy data has a specific structure: 
 
 - Each variable is a column
 - Each observation is a row
 
-We thus define the tidy text format as being a table with one-token-per-row. A token is a meaningful unit of text, such as a word, that we are interested in using for analysis, and tokenization is the process of splitting text into tokens.
+We thus define the tidy text format as being a table with one-token-per-row. A token is a meaningful unit of text, such as a word, that we are interested in using for analysis, and **tokenization** is the process of splitting text into tokens.
 
 ```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+library(tidyverse)
 tidytext <- R_EN_clean %>%
   as_tibble() %>%
   unnest_tokens(word, value) %>%
@@ -135,7 +95,9 @@ tidytext <- R_EN_clean %>%
 head(tidytext)
 ```
 
-#### Stopwords 
+Notice that `r head(tidytext$word)` do not contain a lot of valuable insights. 
+
+### Stopwords 
 
 Stop words are a set of commonly used words in a language. Examples of stop words in English are “a”, “the”, “is”, “are” and etc. Stop words are commonly used in Text Mining and Natural Language Processing (NLP) to eliminate words that are so commonly used that they carry very little useful information.
 
@@ -147,23 +109,23 @@ tidytext <- tidytext %>%
 head(tidytext)
 ```
 
-#### Term Frequency
+### Term Frequency
 
 Word clouds (also known as text clouds or tag clouds) work in a simple way: the more a specific word appears in a source of textual data (such as a speech, blog post, or database), the bigger and bolder it appears in the word cloud.
 
-```{r warning=FALSE, message=FALSE, echo=F, eval=T}
-## tidytext %>%
-##   ggplot(aes(y=n, x=word)) +
-##   geom_histogram() 
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
 library(wordcloud)
 
 wordcloud(words = tidytext$word, freq = tidytext$n, min.freq = 2, max.words=200, 
           random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
 ```
 
-## Little bit of Scraping
+### Little bit of Scraping
+
+Text mining often goes hand in hand with data scraping. Use `rvest` package and `read_html()` to get the entire text of the R Wikipedia article.  
 
 ```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+library(tidyverse)
 library(rvest)
 
 read_html("https://en.wikipedia.org/wiki/R_(programming_language)") %>%
@@ -189,80 +151,88 @@ read_html("https://en.wikipedia.org/wiki/R_(programming_language)") %>%
   ggtitle("Term Frequency of top 20 clean words in Wikipedia aRticle")
 ```
 
+R seems to be top-notch if you like to become fluent in `data`.
 
+## Field Trip to Berlin 
 
-# Text Preparation
+On Thursday, 02 June 2022, the class went on a field trip to Humboldt Forum, Berlin to visit the exhibition *Berlin Global* ([get the virtual tour](https://berlin-global-ausstellung.de/360-grad-weltdenken/?startTour){target="_blank"}).
 
-```{r, message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE}
+Berlin Global feels very modern. It combines historical information and stories with modern art and  design as well as interactive features. The interaction comes from decisions you can make yourself and interactive elements like a wheel that needs about 5 people to start a video sequence. It triggers interactions between visitors and people who are normally strangers who would not have interacted otherwise. It is educational and fun. Although it covers some of the darkest parts of (German) history. 
+
+<!-- {#id .class width=70% height=70%} -->
+![](images/group2.jpeg)
+
+Students wrote down their impressions as in a diary entry or personal report and post them on [tripadvisor](https://www.tripadvisor.de/Attraction_Review-g187323-d23632357-Reviews-Berlin_Global-Berlin.html){target="_blank"}. All reviews should address the following questions:
+
+-	How is *globality* represented in "Berlin Global"?
+-	How is the colonial past depicted in Room 1 "Weltdenken"?
+
+At the time, the exhibition did not have any review on tripadvisor. Thus almost all reviews on tripadvisor stem from students of the class of 2022. We use this review data on tripadivsor to learn about the student experience. 
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+library(DT)
 library(tidyverse)
-library(tidytext)
-library(stringr)
 
-# text cleaning
-clean_text <- function(x) {
-  x %>%
-    # Remove digits
-    str_remove_all("[:digit:]") %>%
-    # Remove punctuation
-    str_remove_all("[[:punct:]]") %>%
-    # Make everything lowercase
-    str_to_lower() %>%
-    # Remove any trailing whitespace around the text
-    str_trim("both")
-}
+tripadvisor <- read.csv("data/tripadvisor_berlin_global.csv")
 
+tripadvisor %>% 
+  mutate(Text_Beginning = substr(Text, 1, 50)) %>% 
+  select(Author, Title, Text_Beginning) %>% 
+  datatable(options = list(pageLength = 5))
+```
+
+### Text Preparation
+
+Again, make use of the `clean_text()` function.
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
+# use clean_text() 
 tripadvisor$Text_Clean <- clean_text(tripadvisor$Text)
-datatable(tripadvisor)
 
 # tidy text format for all text
-tidytext <- tripadvisor %>%
+tidy_trip <- tripadvisor %>%
   unnest_tokens(word, Text_Clean) %>%
   count(word, sort=TRUE)
-#head(tidytext)
 
 # tidy text per use
 tidy_reviews <- tripadvisor %>%
   group_by(Author) %>%
   unnest_tokens(word, Text_Clean)
 
-# stopwords
-data(stop_words)
-
-tidytext <- tidytext %>%
+tidy_trip <- tidy_trip %>%
   anti_join(stop_words)
-#head(tidytext)
-# 
-# # Sentiment with Tidy Text
-# nrc_joy <- get_sentiments("nrc") %>% 
-#   filter(sentiment == "joy")
-# 
-# tidytext %>%
-#   #filter(book == "Emma") %>%
-#   inner_join(nrc_joy) %>%
-#   count(word, sort = TRUE)
 ```
 
-# Sentiment Analysis 
+### Sentiment Analysis 
 
 The `sentimentr` package offers several options to analyse sentiments at the sentence or aggregate level. A description can be found on GitHub <https://github.com/trinker/sentimentr>. 
 
-## Aggregate Level (1 pt)
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Sentiment analysis** is the process of computationally identifying and categorizing text, especially in order to determine whether the writer's attitude is positive, negative, or neutral.
+::::
+
+#### Aggregate Level
 
 The aggregate level summarizes all text information by author into one text block. The `sentiment()` function displays the total word count and an overall sentiment score (the higher the more positive). 
 
-```{r, message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE}
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
 library(sentimentr)
 library(magrittr)
 library(dplyr)
 
-head(sentiment(tripadvisor$Text_Clean), n=15)
+head(sentiment(tripadvisor$Text_Clean), n=10)
 ```
 
-## Sentence Level (2 pt)
+`element_id` represents the `r mcq(c("text", answer = "author", "title", "images"))`. `word_count` is the total number of words per review `r torf(TRUE)`. The value of `sentiment` can be negative `r torf(TRUE)`.
 
-Create a table from all reviews such that each sentence per person is a row. Use `get_sentences()` from the `sentimentr` package. It returns a list object. Find a way to unlist and collect the information in a dataframe. 
+#### Sentence Level
 
-```{r, message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE}
+Create a table from all reviews such that each sentence per person is a row. Use `get_sentences()` from the `sentimentr` package. It returns a list object. Find a way to unlist and collect the information in a dataframe. The sentence level analysis is based on original `Text`.
+
+```{r warning=FALSE, message=FALSE, echo=T, eval=T}
 sentences <- get_sentences(tripadvisor$Text)
 
 sentence_level <- data.frame(id = character(),
@@ -276,9 +246,11 @@ for (i in 1:nrow(tripadvisor)) {
   # Row bind each iteration
   sentence_level <- rbind(sentence_level, tmp)
 }
+```
 
-datatable(sentence_level)
+We can get a sentiment per sentence highlighted by red or green. This allows humans to skim through the reviews to discover insights. 
 
+```{r warning=FALSE, message=FALSE, echo=T, eval=F}
 # Yeah
 sentence_level %>%
     mutate(review = get_sentences(sentence)) %$%
@@ -286,14 +258,20 @@ sentence_level %>%
     highlight()
 ```
 
-<!-- ![](polarity.png) -->
+<style>
+  .container {
+    overflow: scroll !important;
+    white-space: nowrap;
+    max-height: 300px;
+  }
+  img {
+    max-width: 1000%;
+  }
+</style>
 
-
-
-
-
-
-
+<div class="container">
+  <img src="./images/Polarity.png"/>
+</div>
 
 
 

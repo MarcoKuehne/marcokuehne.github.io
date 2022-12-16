@@ -1,13 +1,4 @@
-<!-- # --- -->
-<!-- # title: Test -->
-<!-- # author: Marco -->
-<!-- # output: html_document -->
-<!-- # --- -->
-
 # Regression 
-
-<!-- The Workhorse -->
-<!-- The most important statistical technique ever -->
 
 ```{r, echo=FALSE}
 htmltools::img(src = knitr::image_uri("images/workhorse.jpg"), 
@@ -22,13 +13,9 @@ This chapter introduces the workhorse of empirical research in the social scienc
 
 `r tufte::quote_footer('-- Amanda West (2020) -- [A Beginner’s Guide to Instrumental Variables](https://towardsdatascience.com/a-beginners-guide-to-using-instrumental-variables-635fd5a1b35f)')`
 
-> "We are gonna talk about what has been, what is and what always will be the **most important statistical technique ever: Regression.** Almost every analysis you will read or see uses regression in some way of another."
+<!-- > "We are gonna talk about what has been, what is and what always will be the **most important statistical technique ever: Regression.** Almost every analysis you will read or see uses regression in some way of another." -->
 
-`r tufte::quote_footer('-- Prof. Matt Masten (2015) -- [Introduction to Regression Analysis: Causal Inference Bootcamp](https://www.youtube.com/watch?v=ROLeLaR-17U&list=PL1M5TsfDV6Vu-GcB4Eb1P1KQ3wVxMI9Mn)')`
-
-
-
-
+<!-- `r tufte::quote_footer('-- Prof. Matt Masten (2015) -- [Introduction to Regression Analysis: Causal Inference Bootcamp](https://www.youtube.com/watch?v=ROLeLaR-17U&list=PL1M5TsfDV6Vu-GcB4Eb1P1KQ3wVxMI9Mn)')` -->
 
 <!-- ```{r echo=FALSE, warning=FALSE} -->
 <!-- library("vembedr") -->
@@ -37,47 +24,55 @@ This chapter introduces the workhorse of empirical research in the social scienc
 <!--   use_align("center") -->
 <!-- ``` -->
 
-<!-- <p style="margin-bottom:1cm;"></p> -->
-
-<!-- "From First Semester To First Degree" -->
-
-
 ## From Artists and Economists
 <!-- Your favorite topic -->
-
 <!-- > “Every artist was first an amateur.” -->
-
 <!-- `r tufte::quote_footer('-- Ralph Waldo Emerson (1803--1882), US-American essayist, lecturer, philosopher, abolitionist and poet.')` -->
-
 <!-- This I speculate that the quote from Mr. Emerson is also true for social scientists.  -->
 
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_emSBt_4uWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+Every analysis starts with a question. Did you ever wonder:
+
+<center>
+**Are older artists are better than younger artists?**
+</center>
+
+Do artists improve their skills and performance over an entire lifetime step-by-step such that older artists are better than younger artists since they had more time to practice? Is there an optimum age for performance as compared to athletic performances which reaches a peak in youth? Perhaps no one can tell if and when you are kissed by a muse, so exceptional art happens randomly? Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
+
 > "Paul Cezanne died in October 1906 at the age of 67. In time he would be generally regarded as the most influential painter who had worked in the nineteenth century (e.g., Clive Bell, 1982; Clement Greenberg, 1993). Art historians and critics would also agree that his greatest achievement was the work he did late in his life."
+>
+> `r tufte::quote_footer('-- Galenson, D. W., & Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.')`
 
-`r tufte::quote_footer('-- Galenson, D. W., & Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.[^1]')`
+<!-- <p style="margin-bottom:1cm;"></p> -->
 
-<!-- <sup>AER is a famous and reliable economic journal.</sup> -->
+There seems to be something to the story. What does *better* mean? An alternative formulation is: 
 
-<p style="margin-bottom:1cm;"></p>
-
-This analysis investigates famous painter. We wonder if there is a relationship between the age of an artist and his productivity? Do artists improve their skills and performance over an entire lifetime step-by-step such that older artists are better than younger artists since they had more "time to practice"? Or is there an optimum age for performance as compared to athletic performances which reaches a peak in youth? Perhaps no one can tell if and when you are kissed by a muse, so exceptional art happens randomly? Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? We raise the question:
-
-&nbsp;
+```{r, echo=FALSE, eval=FALSE}
+tippy::tippy_this(elementId = "AER", tooltip = "AER is a famous and reliable economic journal.")
+```
 
 <center>
 **What is the relationship between the age of an artist and his productivity?**
 </center>
 
-&nbsp;
+<!-- &nbsp; -->
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>A **research question** is ...</summary>
+This comes closer to a research question. 
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+A **research question** is 
+
 - focused on a single issue, 
 - specific enough to answer thoroughly 
 - and feasible to answer within the given time frame or practical constraints 
 - not to mention relevant to your field of study.   
-</details>
-:::
+::::
 
 <!-- There are high-quality journal paper analyzing this question.  -->
 
@@ -89,14 +84,20 @@ This analysis investigates famous painter. We wonder if there is a relationship 
 
 But what exactly is productivity and how can we measure it? To keep things simple we follow the literature and measure *productivity* via auction prices for paintings. That's a very *economic perspective* on art. 
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>**Operationalization** is ...</summary>
-the process of defining the measurement of a phenomenon that is not directly measurable 
-</details>
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+**Operationalization** is the process of defining the measurement of a phenomenon that is not directly measurable.
+::::
 
-<p style="color:#808080">What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ). Perhaps something else.</p>
+This is what we gonna explore:
+
+<center>
+**What is the relationship between the age of artists and auction price for their paintings?**
+</center>
+
+<!-- <p style="color:#808080">What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ). Perhaps something else.</p> -->
 
 <!-- <sup>What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ),<sup>  -->
 
@@ -127,34 +128,34 @@ names(artists)[1] <- "Artist"
 #names(artists)[6] <- "Birth Year"
 ```
 
-This is the data in **datatable** format (i.e. you can search and sort the data in the html document): 
+The table is created with the `DT` package in *datatable* format. This exploits the full potential of html documents, i.e. the data is searchable and sortable. The first rows are displayed, but in principle it can include the entire dataset. 
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE}
 DT::datatable(artists, rownames = FALSE)
 ```
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>**Tabular data** is...</summary>
-common in data analysis. You can create a table in Word or Excel. 
-</details>
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+**Tabular data** is common in data analysis. You can create a table in Word or Excel. 
+::::
 
 ### Data in a graph
 
-Two variables from our data table can be depicted in what is called a **scatterplot**.
+Two continuous variables are plotted in a **scatterplot**. The **x-axis** is called **<u id='age'>abscissa </u>** and the **y-axis** is called **<u id='price'>ordinate</u>**.
 
-<!-- The data from our The graph depicts the data from the table I decide to show the auction price of well-known paintings in relation to the age of the artist. It is called a **scatterplot**. -->
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "price", tooltip = "here: price")
+tippy::tippy_this(elementId = "age", tooltip = "here: age")
+```
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
-#artists
-
 images <- c("https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg/95px-Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg",  # CLINIC 
             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Darmstadtmadonna.jpg/95px-Darmstadtmadonna.jpg", # Darmstadt Madonna
             "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg/95px-Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg", # Rideau 
             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Claude_Monet_-_Meules_%28W_1273%29.jpg/95px-Claude_Monet_-_Meules_%28W_1273%29.jpg" # Meules
          )
-               
 ```
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
@@ -169,21 +170,21 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   theme_minimal()
 ```
 
+Note that the axis beginning is not zero. The decision where axes start was made by the `ggplot` package for this data. Remember, every unit on the y-axis represents a million US dollars. Do we need to show the age between 0 and 20? How many famous artists died before 20 and sold paintings for a hundred million US dollars? 
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>**The axes are called** ...</summary>
-**ordinate** or **y-axis** (here: price) and **abscissa** or **x-axis** (here: age). 
-</details>
+<!-- https://stephanieevergreen.com/non-zero-axis-rules/ -->
+<!-- http://stephanieevergreen.com/y-axis/ -->
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> When It’s OK to NOT Start Your Axis at Zero. </h2>
 :::
+When the data really don’t fluctuate very much but a rise of small values like 1.4 or 1.4% is a big deal. With a graph that starts at zero, these changes can't be detected. The data scientist has to decide. 
+::::
 
 ### The trend
 
-::: {.infobox .question data-latex="warning"}
-Can you spot a trend in the data? 
-:::
-
-The line plot suggests that the relationship between price and age exhibits a **positive trend**. There is an **increase** in price for older artists. The older the artist, the higher the auction prices.
+The graph suggests a **positive trend** between price and age. There is an **increase** in price for older artists. The older the artist, the higher the auction prices.
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
 library(ggplot2)
@@ -205,15 +206,15 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
 The mission is to find a mathematical function that describes the trend. In other words, we are looking for the black box that transforms the input into the output:
 
 <center>
-![alt text here](images/function-fx-x2.svg)
+![](images/function-fx-x2.svg)
 </center>
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>A **mathematical function** is ...</summary>
- an expression, rule, or law that defines a relationship between one variable (the **independent variable**, on the x-axis) and another variable (the **dependent variable**, on the y-axis).
-</details>
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+A **mathematical function** is an expression, rule, or law that defines a relationship between one variable (the **independent variable**, on the x-axis) and another variable (the **dependent variable**, on the y-axis).
+::::
 
 From looking at the graph, here are two suggestions: 
 
@@ -222,12 +223,12 @@ $$\begin{align}
 \text{price} = 90 + 0.2 \cdot \text{age} \tag{Suggestion 2} \\
 \end{align}$$
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>A **linear function** is ...</summary>
- defined by two components, **intercept** (with the y-axis) and it's **slope**.
-</details>
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
+A **linear function** is defined by two components, **intercept** (with the y-axis) and **slope**.
+::::
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
 library(ggplot2)
@@ -243,35 +244,30 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   theme_minimal()
 ```
 
-::: {.infobox .question data-latex="warning"}
 How can we compare the two suggested lines? Which linear function represents the relationship best?
-:::
 
 ### Nobody's perfect
-
 <!-- https://drsimonj.svbtle.com/visualising-residuals -->
 
 We all make mistakes. So do the linear functions:
 
 $$ \begin{align}
-\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
-101 = 80 + 0.5 \cdot 42 \tag{Calculation for Hohlbein} \\
+\text{price} &= 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+102.5 &= 80 + 0.5 \cdot 45 \tag{Age for Holbein} \\
 \end{align}$$
 
-The equation tells (or predicts) that for any artist at the age of 42 it expects a auction price for a painting of 101 million US Dollar. Darmstadt Madonna	was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line. 
+The equation tells (or predicts) that for any artist at the age of 45 it expects a auction price for a painting of 102.5 million US Dollar. Darmstadt Madonna was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line. 
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>A **residual** (or error) is ...</summary>
-the vertical distance between the actual and the predicted value.
-</details>
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
 :::
-
+A **residual** (or error) is the vertical distance between the actual and the predicted value.
+::::
 
 <!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
 
-
-```{r warning=FALSE, message=FALSE, echo=FALSE}
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
 fit <- lm(Price ~ Age.at.Death, data = artists)
 artists$predicted <- predict(fit)   # Save the predicted values
 artists$residuals <- residuals(fit) # Save the residual values
@@ -300,12 +296,12 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
 
 ### Vocab Wrap-Up
 
-Let's wrap up our regression vocab! We want to find an equation that describes the phenomenon of interest:
+Let's wrap up regression vocab! Find an equation that describes the phenomenon of interest. Equation I shows a generic statistical model; equation II a generic linear model. 
 
 $$ \begin{align}
-\text{outcome} &= f(\text{explanatory}) + \text{noise} \tag{Generic statistical model} \\
-\text{outcome} &= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{Generic linear model} \\
-\end{align}$$
+\text{outcome} &= f(\text{explanatory}) + \text{noise} \tag{I} \\
+\text{outcome} &= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{II} \\
+\end{align} $$
 
 A **regression model** is suggested by the researcher. A more concrete regression model looks like this:
 
@@ -316,25 +312,28 @@ A model can be easy or complicated. It definitely contains variables and paramet
 - **Variables**: Things that we measure (or have data).
 - **Parameters**: Constant values we believe to represent some fundamental truth about the relationship between the variables. 
 
-What we (i.e. the statistical software) actual do is an **estimation**. In textbooks the same equation can be found with hats:
+The calculation is called an **estimation**. In textbooks the same equation can be found with hats:
 
 $$	 \widehat{Y}  = \widehat{\beta}_1 + \widehat{\beta}_2 \cdot X $$
 $\widehat{Y}$ are called the **fitted or predicted** values. $\widehat{\beta}$ are **regression coefficients** (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals $e = Y - \widehat{Y}$.
 
+The fitting procedure is called **ordinary least squares** (OLS). 
+
+
 ## For the truly dedicated 
+
+<!-- div { -->
+<!--   background-color: lightblue; -->
+<!-- } -->
 
 <!-- This is a cool graphic -->
 <!-- https://www.quora.com/Why-is-the-coefficient-of-determination-never-used-in-Machine-Learning -->
 
-::: {.infobox .information data-latex="warning"}
-Now we have all the ingredients we need. <details>
-<summary>*Let's get this party started!*</summary>
-![Carlton Dance](https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860)
-</details>
-:::
-
-<!-- ::: {.infobox .question data-latex="warning"} -->
-<!-- The overall goal is to make as little as possible mistakes! What kind of mistake? -->
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- Now we have all the ingredients we need. <details> -->
+<!-- <summary>*Let's get this party started!*</summary> -->
+<!-- ![Carlton Dance](https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860) -->
+<!-- </details> -->
 <!-- ::: -->
 
 The overall goal is to make as little as possible mistakes! What kind of mistake? The deviation from the observed values! What could come to your mind is to **minimize the sum of all errors**: 
@@ -343,33 +342,38 @@ $$\sum e \rightarrow \min$$
 But wait, there is more. Is it fair to say that the sum should be small? Compare **The Scream** and **Meules**, their deviations are $+17.5$ and $-13.6$ (very similar). So taken these two together, there's almost not mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story: 
 
 $$\sum e^2 \rightarrow \min$$
-
-
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>The fitting procedure is ...</summary>
-is called **ordinary least squares** (short OLS). The goal of OLS is to **minimize the residual sum of squares**.
-</details>
-:::
+The goal of OLS is to **minimize the residual sum of squares** or the **sum of squared residuals**.
 
 ### Algebra 
 
-::: {.infobox .information data-latex="warning"}
-Algebra comes from Arabic, meaning "reunion of broken parts". We often work with matrices and vectors. 
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Amazing Fact </h2>
 :::
+Algebra comes from Arabic, meaning "reunion of broken parts".
+::::
 
-Now let's put all the things together. By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (column vector). Transpose is when we change the rows and columns. In order to square a vector we need the following:
+<!-- We often work with matrices and vectors.  -->
 
-$$\sum e^2 = e^T \cdot e \rightarrow \min$$
-Let's introduce matrix notation (there are 6 observations and two parameters):
+Let's introduce matrix notation. We began with $X$ and $Y$ being *variables* in the equation:
+
+$$Y = \beta_0 + \beta_1 X + \epsilon $$
+<!-- Each data point is a combination of values. -->
+
+We turn this into: 
+
+$$y = X \beta + \epsilon $$
+Capital letters like $X$ represent a matrix (a table with rows and column), and small letters like $y$ and $e$ represent vectors. Since there are 6 observations and two parameters in our model we get:
 
 $$ \begin{align}
-Y &= \beta_0 + \beta_1 X + \epsilon \tag{X is a variable, Y is a variable} \\
 \begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{11} \\ 1 & X_{12} \\ 1 & X_{13} \\ 1 & X_{14} \\ 1 & X_{15} \\ 1 & X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} \\
-y &= X \beta + \epsilon \tag{X is a matrix, y is a vector}
+y &= X \beta + \epsilon 
 \end{align}$$
 
-The residual is $e = y - X \beta$ which we can plug in our minimal sum of squares: 
+Let's turn to the goal, minizing the residual sum of squares. By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To *transpose* a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:
+
+$$\sum e^2 = e^T \cdot e \rightarrow \min$$
+Notice that the sum operator is gone. [Matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication){target="_blank"} requires multiplying all elements pairwise with each other and summing them up. Plug in the residuals $e = y - X \beta$ in the equation:
 
 $$\begin{align}
 	\sum e^2 &= e^T \cdot e \tag{short RSS}\\
@@ -387,9 +391,14 @@ $$\begin{align}
 
 ### Analysis 
 
-::: {.infobox .information data-latex="warning"}
-In Analysis we often work with functions.
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Amazing Fact </h2>
 :::
+From Medieval Latin, analysis means "resolution of anything complex into simple elements" (opposite of synthesis).
+::::
+
+<!-- *Functions* are key to analysis. -->
 
 Next, we are ready to **optimize**. Optimization (in math and economics) is done by **differentiation**:
 
@@ -404,32 +413,27 @@ $$\begin{align}
 
 ### Take the Long Way Home 
 
-::: {.infobox .information data-latex="warning"}
-<details>
-<summary>*The computer does the magic for us.*</summary>
-<center>
-![Magic Alice](https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif)
-</center>
-</details>
-:::
-
-Those $\beta$ coefficients are one of the most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time: 
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- <details> -->
+<!-- <summary>*The computer does the magic for us.*</summary> -->
+<!-- <center> -->
+<!-- ![Magic Alice](https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif) -->
+<!-- </center> -->
+<!-- </details> -->
+<!-- ::: -->
 
 ```{r echo=FALSE, warning=FALSE}
-#library(gt)
-#gt(artists[,c(3,5)]) 
-
 y <- as.vector(artists$Price)
 X <- as.matrix(cbind(rep(1, nrow(artists)), artists$Age.at.Death))
 ```
 
-First, we retrieve matrix `X` from the data set:
+Those $\beta$ coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time. First, retrieve matrix $X$ from the data set:
 
 ```{r echo=TRUE, warning=FALSE}
 X
 ```
 
-Second, the transpose of `X` has two rows and six columns:
+Second, the transpose of $X$ has two rows and six columns (use `t()`):
 
 ```{r echo=TRUE, warning=FALSE}
 t(X)
@@ -441,35 +445,35 @@ Next, calculate the square of the matrix (transpose times original):
 t(X)%*%X
 ```
 
-Then, the inverse of everything in parentheses (the above matrix product):
+The inverse of the matrix product can be calculated by `solve()`:
 
 ```{r echo=TRUE, warning=FALSE}
 solve(t(X)%*%X)
 ```
 
-Next, the product of this inverse and the transpose:
+Next, multiply the inverse with the transpose from the right:
 
 ```{r echo=TRUE, warning=FALSE}
 solve(t(X)%*%X) %*% t(X)
 ```
 
-Finally, we multiply the vector $y$:
+Finally, multiply the vector $y$:
 
 ```{r echo=TRUE, warning=FALSE}
 solve(t(X)%*%X) %*% t(X) %*% y
 ```
 
-There are two numbers. It's the $\beta$ vector! The first entry is the **intercept** and the second is the **slope** of the linear function:
+It's the $\beta$ vector! The first entry is the **intercept** and the second is the **slope** of the linear function.
 
-$$Price = 22.3452 + 1.1657 \cdot Age$$
+<!-- There are two numbers. -->
 
 ## Survival of the Fittest Line 
 
-::: {.infobox .information data-latex="warning"}
-The above equation is the linear function that best describes the given data.
-:::
+The linear equation that best describes the data is this: 
 
-```{r warning=FALSE, message=FALSE, echo=FALSE}
+$$Price = 22.3452 + 1.1657 \cdot Age$$
+
+```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
 fit <- lm(Price ~ Age.at.Death, data = artists)
 artists$predicted <- predict(fit)   # Save the predicted values
 artists$residuals <- residuals(fit) # Save the residual values
@@ -505,4 +509,3 @@ lm(Price ~ Age.at.Death, data = artists)
 knitr::include_graphics("images/workhorse.jpg")
 ```
 
-[^1]: AER is a famous and reliable economic journal.
