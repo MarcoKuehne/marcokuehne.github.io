@@ -30,14 +30,57 @@ Two true stories.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9yliRKjEBq8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
-
-
 ### Women are having far fewer children. 
 <!-- Byrne, D. (2002). Interpreting quantitative data. Sage. -->
 
-```{r, fig.cap = "Average number of babies per woman from 1800 to today. Source: [Gapminder](<https://www.gapminder.org/topics/babies-per-woman/>)", out.width="80%", echo=FALSE, fig.align='center'}
-knitr::include_graphics("https://s3.eu-west-1.amazonaws.com/static.gapminder.org/GapminderMedia/wp-uploads/20180313124853/babies-per-woman-1024x645.png")
+```{r, warning=F, message=F, echo=F, fig.align='center', out.width = "80%"}
+# load
+fertility <- readxl::read_xlsx("./data/Gapminder/tfr-by-gapminder-v12-20171212.xlsx", sheet = 4)
+
+# manipulate
+library(tidyverse)
+fertility <- fertility %>% 
+  select(!c(geo.name, geo, indicator)) %>% 
+  rownames_to_column %>% 
+  gather(var, value, -rowname) %>% 
+  spread(rowname, value) %>% 
+  rename(year = var, fert = `1`) %>% 
+  slice_head(n = 301) 
+
+fertility[,1:2] <- sapply(fertility[,1:2],FUN=as.numeric)
+
+fertility1 <- fertility[1:217,]
+fertility2 <- fertility[218:301,]
+
+# visualize 
+library(ggforce)
+ggplot(data = fertility, aes(x=year, y=fert)) + 
+  geom_point(aes(x=year[1], y=fert[1]), size = 4) + 
+  geom_text(aes(x=year[1], y=fert[1], label = year[1]), vjust = 2.5) +
+  geom_point(aes(x=year[165], y=fert[165]), size = 4) + 
+  geom_text(aes(x=year[165], y=fert[165], label = year[165]), vjust = -3, hjust = -0.5) +
+  geom_text(aes(x=year[165], y=fert[165], label = "5 births"), vjust = -1.5, hjust = -0.2) +
+  #geom_point(aes(x=year[217], y=fert[217]), size = 4) + 
+  geom_text(aes(x=year[217], y=fert[217], label = year[217]), vjust = -3) +
+  geom_text(aes(x=year[217], y=fert[217], label = "2.5 births"), vjust = -1.5) +
+  geom_line(data = fertility1, size=1.3, arrow=arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
+  geom_line(data = fertility2, size=1.3,linetype="dashed") +
+  labs(title = "Average Number Of Babies Per Woman From 1800 to Today",
+       caption = "Source: Gapminder based on UN-Pop", y="", x="") +
+  theme_minimal() +
+  theme( # remove the vertical grid lines
+           panel.grid.major.x = element_blank() ,
+           panel.grid.minor.x = element_blank()
+           # explicitly set the horizontal lines (or they will disappear too)
+           #panel.grid.major.y = element_line( size=.1, color="black" ) 
+    )
 ```
+
+
+<!-- ```{r, fig.cap = "Average number of babies per woman from 1800 to today. Source: [Gapminder](<https://www.gapminder.org/topics/babies-per-woman/>)", out.width="80%", echo=FALSE, fig.align='center'} -->
+<!-- knitr::include_graphics("https://s3.eu-west-1.amazonaws.com/static.gapminder.org/GapminderMedia/wp-uploads/20180313124853/babies-per-woman-1024x645.png") -->
+<!-- ``` -->
+
 
 <!-- ![](https://s3.eu-west-1.amazonaws.com/static.gapminder.org/GapminderMedia/wp-uploads/20180313124853/babies-per-woman-1024x645.png) -->
 <!-- <iframe src="//www.gapminder.org/tools/?embedded=true#$chart-type=bubbles&url=v1" style="width: 100%; height: 500px; margin: 0 0 0 0; border: 1px solid grey;" allowfullscreen></iframe> -->
