@@ -35,45 +35,52 @@ Two true stories.
 
 ```{r, warning=F, message=F, echo=F, fig.align='center', out.width = "80%"}
 # load
-fertility <- readxl::read_xlsx("./data/Gapminder/tfr-by-gapminder-v12-20171212.xlsx", sheet = 4)
+# fertility <- readxl::read_xlsx("./data/Gapminder/tfr-by-gapminder-v12-20171212.xlsx", sheet = 4)
+fertility <- read.csv("https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/Gapminder/tfr-by-gapminder-v12-20171212.csv", sep = ";")
 
 # manipulate
 library(tidyverse)
-fertility <- fertility %>% 
-  select(!c(geo.name, geo, indicator)) %>% 
-  rownames_to_column %>% 
-  gather(var, value, -rowname) %>% 
-  spread(rowname, value) %>% 
-  rename(year = var, fert = `1`) %>% 
-  slice_head(n = 301) 
+# fertility <- fertility %>% 
+#   select(!c(geo.name, geo, indicator)) %>% 
+#   rownames_to_column %>% 
+#   gather(var, value, -rowname) %>% 
+#   spread(rowname, value) %>% 
+#   rename(year = var, fert = `1`) %>% 
+#   slice_head(n = 301) 
+fertility <- fertility %>%
+  select(!c(geo.name, geo, indicator)) %>%
+  mutate(
+    across(-indicator.name, as.character),
+    across(-indicator.name, ~ readr::parse_number(.x, locale = locale(decimal_mark = ",")))
+  ) %>%
+  pivot_longer(-indicator.name, names_to = "year", values_to = "fert", names_prefix = "X") %>%
+  mutate(year = as.numeric(year)) |>
+  mutate(fert_smooth = predict(loess(fert ~ year, span = .05)))
 
-fertility[,1:2] <- sapply(fertility[,1:2],FUN=as.numeric)
+#fertility[,1:2] <- sapply(fertility[,1:2],FUN=as.numeric)
 
 fertility1 <- fertility[1:217,]
 fertility2 <- fertility[218:301,]
 
 # visualize 
-library(ggforce)
-ggplot(data = fertility, aes(x=year, y=fert)) + 
-  geom_point(aes(x=year[1], y=fert[1]), size = 4) + 
-  geom_text(aes(x=year[1], y=fert[1], label = year[1]), vjust = 2.5) +
-  geom_point(aes(x=year[165], y=fert[165]), size = 4) + 
-  geom_text(aes(x=year[165], y=fert[165], label = year[165]), vjust = -3, hjust = -0.5) +
-  geom_text(aes(x=year[165], y=fert[165], label = "5 births"), vjust = -1.5, hjust = -0.2) +
-  #geom_point(aes(x=year[217], y=fert[217]), size = 4) + 
-  geom_text(aes(x=year[217], y=fert[217], label = year[217]), vjust = -3) +
-  geom_text(aes(x=year[217], y=fert[217], label = "2.5 births"), vjust = -1.5) +
+library(gggap)
+
+ggplot(data = fertility, aes(x=year, y=fert_smooth)) + 
+  geom_point(aes(x=year[1], y=fert_smooth[1]), size = 5) + 
+  geom_text(aes(x=year[1], y=fert_smooth[1], label = year[1]), vjust = 2.5) +
+  geom_point(aes(x=year[165], y=fert_smooth[165]), size = 5) + 
+  geom_text(aes(x=year[165], y=fert_smooth[165], label = year[165]), vjust = -3, hjust = -0.5) +
+  geom_text(aes(x=year[165], y=fert_smooth[165], label = "5 births"), vjust = -1.5, hjust = -0.2) +
+  #geom_point(aes(x=year[217], y=fert_smooth[217]), size = 4) + 
+  geom_text(aes(x=year[217], y=fert_smooth[217], label = year[217]), vjust = -4) +
+  geom_text(aes(x=year[217], y=fert_smooth[217], label = "2.5 births"), vjust = -2) +
   geom_line(data = fertility1, size=1.3, arrow=arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
   geom_line(data = fertility2, size=1.3,linetype="dashed") +
   labs(title = "Average Number Of Babies Per Woman From 1800 to Today",
        caption = "Source: Gapminder based on UN-Pop", y="", x="") +
   theme_minimal() +
-  theme( # remove the vertical grid lines
-           panel.grid.major.x = element_blank() ,
-           panel.grid.minor.x = element_blank()
-           # explicitly set the horizontal lines (or they will disappear too)
-           #panel.grid.major.y = element_line( size=.1, color="black" ) 
-    )
+  theme(panel.grid.major.x = element_blank(),
+       panel.grid.minor.x = element_blank())
 ```
 
 
