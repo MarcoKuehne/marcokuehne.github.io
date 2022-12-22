@@ -1,15 +1,6 @@
 # Group Comparison
-
-<!-- **Learning Goals** -->
-
-<!-- -   Conceptual Skills: What makes a good comparison. Never use pie charts.  -->
-<!-- -   Data Skills: -->
-<!--     +   R Basics: Install and load a package. Load Stata files into R. -->
-<!--     +   Data Manipulation: `tidyverse` language (`glimpse()`, `count()`, `filter()`, `summarise()`). -->
-<!--     +   Data Visualization: Pie chart and bar plot. -->
-
-
 <!-- https://bookdown.org/daniel_dauber_io/r4np_book/comparing-groups.html -->
+
 Social sciences is about the study of human beings and their interactions. As such, we frequently want to compare two or more groups of human beings, organizations, teams, countries, etc., with each other to see whether they are similar or different from each other. Sometimes we also want to track individuals over time and see how they may have changed in some way or other. In short, comparing groups is an essential technique to make inferences and helps us better understand the diversity surrounding us.
 
 > One big goal of group comparisons is to answer the question: Did it work? 
@@ -39,52 +30,12 @@ embed_url("https://www.youtube.com/watch?v=Wb6ww9gbL9E")
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yMgsDW4Tckw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
-## Story Telling
-<!-- https://clauswilke.com/dataviz/telling-a-story.html -->
-
 Groups can be compared via **numeric figures** or **graphical instruments** or a combination of both. Numeric summaries can be the mean (the average), median (the middle value) or mode (the most likely value). But it can be as simple as an absolute frequency or a percentage or proportion. 
 
 > In summer 2022 5.131 students were enrolled at Viadrina European University. 
 > 71 % had a German citizenship and 29 % were international students. 
 
 A graphical representation can be a boxplot, histogram or density curve. There are more artistic way as well. Note that certain calculations and visualizations only make sense for continuous variables (cf. [levels of measurements](https://en.wikipedia.org/wiki/Level_of_measurement)).
-
-Most data visualization is done for the purpose of communication. We have an insight about a dataset, and we have a potential audience, and we would like to convey our insight to our audience. To communicate our insight successfully, we will have to present the audience with a clear and exciting story. 
-
-## Less is more
-
-Figure \@(fig:parttime) illustrates a possible gender difference in working parttime. The iconic figures are simple. The coloring is decent. The gender icons are filled by color up to the percentage numbers. 
-
-```{r intro, echo=FALSE, out.width="70%", fig.cap="\\label{fig:parttime}Possible gender difference in working parttime.", fig.align='center'}
-knitr::include_graphics("images/parttime.png")
-```
-
-It conveys the information:
-
-> 41 % of women work part-time, whereas only 12 % of men do. 
-
-:::: {.defbox}
-::: {.titeldefbox}
-<h2> Definition </h2>
-:::
-The **data-ink ratio** is the proportion of Ink that is used to present actual data compared to the total amount of ink (or pixels) used in the entire display. Good graphics should include only data-Ink. Non-Data-Ink is to be deleted everywhere where possible. 
-::::
-
-<!-- Read more: <http://socialmediaguerilla.com/content-marketing/less-is-more-improving-the-data-ink-ratio/> -->
-
-Here is an example of **less is more**:
-
-<object data=
-"https://files.speakerdeck.com/presentations/87bb9f00ec1e01308020727faa1f9e72/data-ink.pdf" 
-                width="100%" 
-                height="500"> 
-</object>
-
-According to the principles of **remove to improve**, decide on these design elements:
-
-* Remove backgrounds. `r torf(TRUE)`
-* Remove 3D effects. `r torf(TRUE)`
-* Remove bolding. `r torf(TRUE)`
 
 ## Comparability
 <!-- https://bookdown.org/daniel_dauber_io/r4np_book/comparing-groups.html -->
@@ -122,63 +73,6 @@ Exogenous variables: Is the distribution of characteristics we are not intereste
 </details>
 
 Don't be satisfied with the information that is presented to you. Search for context information. 
-
-## Never use pie charts
-
-*Pie charts are evil*. Why? Check the *note* of the documentation of `pie()`:
-
-```{r, eval=F}
-?pie()
-```
-
-*Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.*
-
-*Cleveland (1985), page 264: “Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements.” This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.*
-
-```{r message=FALSE, warning=FALSE, echo=F, eval=T}
-# Create data for the graph.
-x <- c(14, 62, 17, 53)
-labels <- c("London", "New York", "Singapore", "Mumbai")
-```
-
-**Can you tell whether Singapore or London have the higher share?**
-
-```{r message=FALSE, warning=FALSE, echo=F}
-# Plot the chart.
-pie(x,labels)
-```
-
-<details>
-<summary>
-**Can you tell now?**
-</summary>
-
-```{r message=FALSE, warning=FALSE}
-# Plot the chart.
-barplot(x, names.arg = labels)
-```
-
-</details>
-
-
-<details>
-<summary>
-Here is the R code. 
-</summary>
-
-```{r message=FALSE, warning=FALSE, echo=T, eval=F}
-# Create data for the graph.
-x <- c(14, 62, 17, 53)
-labels <- c("London", "New York", "Singapore", "Mumbai")
-
-# Plot the chart.
-pie(x,labels)
-
-# Plot the chart.
-barplot(x, names.arg = labels)
-```
-
-</details>
 
 ## Application
 

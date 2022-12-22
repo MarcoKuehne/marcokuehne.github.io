@@ -1,0 +1,114 @@
+# Stories are everywhere
+
+## Telling a story
+
+<!-- https://clauswilke.com/dataviz/telling-a-story.html -->
+<!-- https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/ -->
+
+Most data visualization is done for the purpose of communication. We have an insight about a dataset, and we have a potential audience, and we would like to convey our insight to our audience. To communicate our insight successfully, we will have to present the audience with a clear and exciting story.
+
+```{r dogs, echo=FALSE, out.width="100%", fig.cap="The Ultimate Dog Data by [informationisbeautiful](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/).", fig.align='center'}
+knitr::include_graphics("https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png")
+```
+
+Humans love dogs. Dogs were domesticated by humans over 15,000 years ago. They can be perfect companions for singles, for couples for families. They differ in behavior, longevity and appetite. Figure \@ref(fig:dogs) combines 6 dog characteristics in a *dog score* and compares this with the popularity of different breads. From this scatterplot the authors define four categories of dog breads, e.g. the hot dogs and overlooked treasures (similar to a [BCG matrix](https://en.wikipedia.org/wiki/Growth%E2%80%93share_matrix)). 
+
+## Visualization
+
+```{r parttime, echo=FALSE, out.width="70%", fig.cap="\\label{fig:parttime}Possible gender difference in working parttime.", fig.align='center'}
+knitr::include_graphics("images/parttime.png")
+```
+
+Figure \@ref(fig:parttime) illustrates a possible gender difference in working parttime. The iconic figures are simple. The coloring is decent. The gender icons are filled by color up to the percentage numbers. It conveys the information:
+
+> 41 % of women work part-time, whereas only 12 % of men do.
+
+Why not just tell the numbers? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible. Data visualization reveals the data.
+
+## Less is more
+
+We started off with figure \@ref(fig:dogs) a complex scatterplot demanding a lot of attention. Usually: less is more. 
+
+::: defbox
+::: titeldefbox
+<h2>Definition</h2>
+:::
+
+The **data-ink ratio** is the proportion of Ink that is used to present actual data compared to the total amount of ink (or pixels) used in the entire display. Good graphics should include only data-Ink. Non-Data-Ink is to be deleted everywhere where possible.
+:::
+
+<!-- Read more: <http://socialmediaguerilla.com/content-marketing/less-is-more-improving-the-data-ink-ratio/> -->
+
+Here is an example of **less is more**:
+
+<object data="https://files.speakerdeck.com/presentations/87bb9f00ec1e01308020727faa1f9e72/data-ink.pdf" width="100%" height="500">
+
+</object>
+
+According to the principles of **remove to improve**, decide on these design elements:
+
+-   Remove backgrounds. `r torf(TRUE)`
+-   Remove 3D effects. `r torf(TRUE)`
+-   Remove bolding. `r torf(TRUE)`
+
+## Never use pie charts
+
+*Pie charts are evil*. Why? Check the *note* of the documentation of `pie()`:
+
+```{r, eval=F}
+?pie()
+```
+
+*Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.*
+
+*Cleveland (1985), page 264: "Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements." This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.*
+
+```{r message=FALSE, warning=FALSE, echo=F, eval=T}
+# Create data for the graph.
+x <- c(14, 62, 17, 53)
+labels <- c("London", "New York", "Singapore", "Mumbai")
+```
+
+**Can you tell whether Singapore or London have the higher share?**
+
+```{r message=FALSE, warning=FALSE, echo=F}
+# Plot the chart.
+pie(x,labels)
+```
+
+<details>
+
+<summary>**Can you tell now?**</summary>
+
+```{r message=FALSE, warning=FALSE}
+# Plot the chart.
+barplot(x, names.arg = labels)
+```
+
+</details>
+
+<details>
+
+<summary>Here is the R code.</summary>
+
+```{r message=FALSE, warning=FALSE, echo=T, eval=F}
+# Create data for the graph.
+x <- c(14, 62, 17, 53)
+labels <- c("London", "New York", "Singapore", "Mumbai")
+
+# Plot the chart.
+pie(x,labels)
+
+# Plot the chart.
+barplot(x, names.arg = labels)
+```
+
+</details>
+
+## Grammar of Graphics
+
+`ggplot2` is a system for declaratively creating graphics, based on **The Grammar of Graphics**. You provide the data, tell `ggplot2` how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details. `ggplot2` is now over 10 years old and is used by hundreds of thousands of people to make millions of plots.
+
+<iframe seamless width="100%" height="400" frameborder="0" src="https://pmassicotte.github.io/ivado_ggplot2_workshop_2022/#1">
+
+</iframe>
