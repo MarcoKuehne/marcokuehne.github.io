@@ -1,8 +1,8 @@
 --- 
 title: "Becoming Fluent in Data"
+cover-image: "images/cover.png"
 subtitle: "A Personal Journey – Every Time."
 description: "A guide to become fluent in data."
-cover-image: "images/icons8-trading-64.png"
 author: "Marco Kühne"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -66,80 +66,47 @@ library('tidyverse')
 library('tippy')
 ```
 
-<!-- Code-Folding in Bookdown https://statnmap.com/2017-11-13-enable-code-folding-in-bookdown-and-blogdown/ -->
+# Preface {-}
 
-```{r code-folding, echo=F, eval=F}
-codejs <- readr::read_lines("./js/codefolding.js")
-collapsejs <- readr::read_lines("./js/collapse.js")
-transitionjs <- readr::read_lines("./js/transition.js")
-dropdownjs <- readr::read_lines("./js/dropdown.js")
+<center><img src='images/cover1.png' style = 'width:60%;'></center>
 
-htmlhead <- c(
-  paste('
-<script>',
-paste(transitionjs, collapse = "\n"),
-'</script>
-<script>',
-paste(collapsejs, collapse = "\n"),
-'</script>
-<script>',
-paste(codejs, collapse = "\n"),
-'</script>
-<script>',
-paste(dropdownjs, collapse = "\n"),
-'</script>
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-.row { display: flex; }
-.collapse { display: none; }
-.in { display:block }
-.pull-right > .dropdown-menu {
-    right: 0;
-    left: auto;
-}
-.open > .dropdown-menu {
-    display: block;
-}
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    font-size: 14px;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
-}
-</style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
-', sep = "\n"),
-  paste0('
-<script>
-document.write(\'<div class="btn-group pull-right" style="position: absolute; top: 20%; right: 2%; z-index: 200"><button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-_extension-text-contrast=""><span>Code</span> <span class="caret"></span></button><ul class="dropdown-menu" style="min-width: 50px;"><li><a id="rmd-show-all-code" href="#">Show All Code</a></li><li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li></ul></div>\')
-</script>
-')
-)
+# (PART) Preface {-} 
 
-readr::write_lines(htmlhead, path = "header.html")
+# About the author {-}
+
+:::::: {.columns}
+
+::: {.column width="20%" data-latex="{0.20\textwidth}"}
+```{r, echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics(path = "images/Marco-scaled.jpg")
+```
+:::
+
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+::: {.column width="75%" data-latex="{0.75\textwidth}"}
+Welcome! My name is **Marco Kühne**. The very first thing I want to do is to invite you to call me Marco. That is, if we meet on the street, you come talk to me during office hours, you ask some question; Marco’s the name that I respond to. 
+
+- Web: <http://marco-kuehne.com/>
+- Twitter: <https://twitter.com/marco_kuhne>
+- GitHub: <https://github.com/MarcoKuehne>
+:::
+::::::
+
+I am a PhD candidate in Economics at the [European University Viadrina](https://www.europa-uni.de/de/index.html){target="_blank"}. I am generally keen on teaching topics related to research design, quantitative methods, and statistical software. My main methodological interests in quantitative social science include panel data modelling, causal inference with observational data and R programming.
+
+I am also a gardening fanatic, a coffee enthusiast, a committed ballroom and <u id='discofox'>Discofox</u> dancer, a (vegetarian) food lover. I enjoy cutting down <u id='trees'>big trees</u> and practicing new languages in its own sake. Feel free to contact me!
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "trees", tooltip = "by big I mean really big: 1.3m diameter")
+tippy::tippy_this(elementId = "discofox", tooltip = "5th in World Championship 2022 in Warsaw")
 ```
 
-# Dust and Dark {-}
+## Dust and Dark {-}
 
 A dusty lecture hall. The light cuts through the darkness from the left side of the room. A dozen of seats in each bench, only few occupied by small groups of students who were trying to make sure that they sit far from each other and as far as possible from the lecturer. The bearish but competent assistant professor explained how to analyze and evaluate the results of various memory and cognition experiments through boxplots, t-test and the like in that software. My creaky, slow but loyal laptop in front of me. That's where **R** was introduced in my psychology undergraduate studies. – <u id='word'>The Times They Are A-Changin'</u>. This eBook is done in R.  
 
@@ -210,42 +177,6 @@ How many students participated in summer 2021? Answer: `r fitb(14)`.
 <!-- > Luminous beings are we, not this crude matter.</b> -->
 <!-- > -->
 <!-- > `r tufte::quote_footer('Master Yoda.')` -->
-
-# (PART) Preface {-} 
-
-# About the author {-}
-
-:::::: {.columns}
-
-::: {.column width="20%" data-latex="{0.20\textwidth}"}
-```{r, echo=FALSE, out.width="90%", fig.align="center"}
-knitr::include_graphics(path = "images/Marco-scaled.jpg")
-```
-:::
-
-::: {.column width="5%" data-latex="{0.05\textwidth}"}
-\ 
-<!-- an empty Div (with a white space), serving as
-a column separator -->
-:::
-
-::: {.column width="75%" data-latex="{0.75\textwidth}"}
-Welcome! My name is **Marco Kühne**. The very first thing I want to do is to invite you to call me Marco. That is, if we meet on the street, you come talk to me during office hours, you ask some question; Marco’s the name that I respond to. 
-
-- Web: <http://marco-kuehne.com/>
-- Twitter: <https://twitter.com/marco_kuhne>
-- GitHub: <https://github.com/MarcoKuehne>
-:::
-::::::
-
-I am a PhD candidate in Economics at the [European University Viadrina](https://www.europa-uni.de/de/index.html){target="_blank"}. I am generally keen on teaching topics related to research design, quantitative methods, and statistical software. My main methodological interests in quantitative social science include panel data modelling, causal inference with observational data and R programming.
-
-I am also a gardening fanatic, a coffee enthusiast, a committed ballroom and <u id='discofox'>Discofox</u> dancer, a (vegetarian) food lover. I enjoy cutting down <u id='trees'>big trees</u> and practicing new languages in its own sake. Feel free to contact me!
-
-```{r, echo=FALSE}
-tippy::tippy_this(elementId = "trees", tooltip = "by big I mean really big: 1.3m diameter")
-tippy::tippy_this(elementId = "discofox", tooltip = "5th in World Championship 2022 in Warsaw")
-```
 
 ## Teach – Learn – Repeat {-}
 
