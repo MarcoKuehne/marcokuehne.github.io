@@ -278,24 +278,20 @@ One might apply the *Wechsler Adult Intelligence Scale* (version IV, released 20
 <!-- How many volumes does Encyclopaedia of Statistical Sciences have? -->
 <!-- What does it cost? -->
 
-# Apply your knowledge  
+## Apply your knowledge  
 
 :::: {.challenge}
 ::: {.titelchallenge}
 <h2> Socio-Economic Panel (SOEP) </h2>
 :::
+The Socio-Economic Panel (SOEP) is a longitudinal survey of households in Germany that has been conducted annually. The survey collects data on a wide range of socio-economic topics, including income, education, health, employment, and social and political attitudes.
 
-The Socio-Economic Panel (SOEP) is a longitudinal survey of households in Germany that has been conducted annually since `r fitb(1984)`. The survey collects data on a wide range of socio-economic topics, including income, education, health, employment, and social and political attitudes.
-
-The SOEP is one of the largest and longest-running household panel surveys in the world. Every year, approximately 30,000 people in 15,000 households are interviewed for the SOEP study.
-
-The survey follows all members of a household. In addition to the annual survey, the SOEP also includes additional data collection on specific topics, such as health, education, and migration. 
-
-<!-- The data collected by the SOEP has been used in a wide range of academic and policy research, both within Germany and internationally. The survey is particularly useful for studying long-term social and economic trends, as well as for examining the impacts of social and economic policies on households. -->
-
+The SOEP is one of the largest and longest-running household surveys in the world. Every year, approximately 30,000 people in 15,000 households are interviewed for the SOEP study.
 ::::
 
-## Topics in SOEP 
+SOEP started in `r fitb(1984)` and an example of `r mcq(c("cross-sectional", answer="panel"))` data.
+
+<!-- ### Topics in SOEP  -->
 
 <!-- - Since:  yearly new waves -->
 <!-- - File Formats: Stata, R, SPSS, ASCII -->
@@ -304,24 +300,41 @@ The survey follows all members of a household. In addition to the annual survey,
 <!-- - Link: <https://www.diw.de/en/soep> -->
 <!-- - Notes: Comprehensive online companion <http://companion.soep.de/> -->
 
-Let's hear from people working with SOEP data.
+Would you like to learn more about the topics of SOEP? Let's hear from people working with SOEP data.
 
 <!-- Stutzer, A., & Frey, B. S. (2008). Stress that doesn't pay: The commuting paradox. Scandinavian Journal of Economics, 110(2), 339-366. -->
-
 <!-- Meier, S., & Stutzer, A. (2008). Is volunteering rewarding in itself?. Economica, 75(297), 39-59. -->
-
-<!-- Stutzer, A., & Frey, B. S. (2006). Does marriage make people happy, or do happy people get married. The Journal of Socio-Economics, 35(2), 326-347 -->
-
-## Variables in SOEP 
-
-<!-- Pfeiler, T. M., & Egloff, B. (2020). Do vegetarians feel bad? Examining the association between eating vegetarian and subjective well-being in two representative samples. Food Quality and Preference, 86, 104018. -->
-
-<!-- Headey, B., & Grabka, M. M. (2007). Pets and human health in Germany and Australia - National longitudinal results. Social Indicators Research, 80(2), 297-311. -->
-
 <!-- Guber, R. (2019). Making it right? Social norms, handwriting and human capital. Labour Economics, 56, 44-57. -->
+<!-- <details> -->
+<!-- <summary>Does your pet makes you live healthy?</summary> -->
+<!-- <center> -->
+<!-- Headey, B., & Grabka, M. M. (2007). Pets and human health in Germany and Australia - National longitudinal results. Social Indicators Research, 80(2), 297-311. -->
+<!-- </center> -->
+<!-- </details> -->
 
+<details>
+<summary>Does marriage make people happy, or do happy people get married?</summary>
+Marriage is one of the most important institutions affecting people’s life and well-being. @stutzer2006does find evidence that happier singles opt more likely for marriage and that there are large differences in the benefits from marriage between couples. Potential, as well as actual, division of labor seems to contribute to spouses’ well-being, especially for women and when there is a young family to raise.
+</details>
 
-Variables of a dataset are often accompanied by a detailed explanation of called a **codebook**. 
+<details>
+<summary>Does the stork deliver happiness?</summary>
+@baetschmann2016does examine the relationship between parenthood and life satisfaction on women. They found that initially mothers and non-mothers do not differ in terms of their satisfaction trajectories.
+However, trajectories start diverging as much as five years prior to a prospective mother’s first birth. Substantial positive effects on life satisfaction decrease after birth, but remain positive and for as much as twelve years after the first birth. -- You need panel data to test this. 
+</details>
+
+<details>
+<summary>Do vegetarians feel bad?</summary>
+Vegetarianism—the rejection of eating meat—has become increasingly popular in the past few decades, spurring an increasing amount of research on the antecedents, correlates, and consequences of vegetarianism. @pfeiler2020vegetarians do not find a relationship between vegetarians and meat-eaters with respect to health or life satisfaction. 
+</details>
+
+The SOEP team knows that starting to use any new dataset is difficult, and this is especially true of panel data given their complexity. Thus, they created the [SOEPcompanion](http://companion.soep.de/index.html) that describes the current version of the SOEP-Core data (v37) and introduces users to the different SOEP-Core data structures.
+
+Information on pets is available in different years. In what year does SOEP not contain anything on pets: `r mcq(c(answer = "2001", "2006", "2011", "2016"))`. There is a pattern in the data. It's likely that SOEP asks pet questions every five years. 
+
+<!-- ### Variables in SOEP  -->
+
+What kind of pet questions do they ask? Find the variable name which tells whether a person has a horse. It is  `r mcq(c(answer = "hlf0196", "hlf0255", "hlf0256", "hlf0257"))`. Variables of a dataset are often accompanied by a detailed explanation of called a **codebook**. 
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -330,14 +343,9 @@ Variables of a dataset are often accompanied by a detailed explanation of called
 A **codebook** describes the contents, structure, and layout of a data collection. 
 ::::
 
+SOEP comes in about 50 separate data files. Check the [codebook of *pequiv*](https://www.diw.de/documents/publikationen/73/diw_01.c.704530.de/diw_ssp0772.pdf) dataset: 
 
-
-
-**Socio-Economic Panel (SOEP)** is a household panel study and a department at DIW Berlin. Look up the codebook of *pequiv* dataset 
-
-<https://www.diw.de/documents/publikationen/73/diw_01.c.704530.de/diw_ssp0772.pdf>
-
-* What is the variable `P11101`? `r fitb(c("satisfaction", "Life satisfaction", ignore_case = TRUE))`  (Hint, use a single word) 
+* What is the variable `P11101`? `r fitb(c("satisfaction", "Life satisfaction", "Overall life satisfaction", "life satisfaction", ignore_case = TRUE))`.
 * What is the variable `M11122`? `r fitb(c("Height", "height", ignore_case = TRUE))`  (Hint, use a single word) 
 * What is the minimum age for `E11101` (Annual Work Hours of Individual) to be reported?  `r fitb(16)` (Hint, use a single number)
 
@@ -384,7 +392,7 @@ A **codebook** describes the contents, structure, and layout of a data collectio
 <!-- - Access: Free for everyone  -->
 <!-- - Data structure: Depends on what you download  -->
 <!-- - Link: <https://www.slavevoyages.org/> -->
-<!-- <!-- https://emilynordmann.github.io/slavevoyagedata/data-visualisation.html --> -->
+<!-- <!-- https://emilynordmann.github.io/slavevoyagedata/data-visualisation.html --> 
 
 <!-- **Twitter** -->
 
@@ -406,7 +414,7 @@ A **codebook** describes the contents, structure, and layout of a data collectio
 <!-- - Link: <https://www.whatsapp.com/> -->
 
 <!-- ## Dataset collections  -->
-<!-- <!-- - https://careerfoundry.com/en/blog/data-analytics/where-to-find-free-datasets/  --> -->
+<!-- <!-- - https://careerfoundry.com/en/blog/data-analytics/where-to-find-free-datasets/  --> 
 
 
 <!-- **Google Dataset Search** -->
