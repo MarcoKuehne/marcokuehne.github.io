@@ -4,14 +4,44 @@
 >
 > `r tufte::quote_footer('Bernard Marr (2018) *How Much Data Do We Create Every Day? The Mind-Blowing Stats Everyone Should Read* [Forbes.](https://www.forbes.com/sites/bernardmarr/2018/05/21/how-much-data-do-we-create-every-day-the-mind-blowing-stats-everyone-should-read/#4472289660ba){target="_blank"}')`
 
-**Data scraping** is a technique where a computer program extracts data from human-readable output coming from another program. Data scraping often takes place in **web scraping** (also known as crawling or spidering). In this process, an application is used to extract valuable information from a website. **PDF scraping** or more general **report mining** is the extraction of data from human-readable computer reports.
+**Data scraping** is a technique where a computer program extracts data from human-readable output coming from another program. Data scraping often takes place in **web scraping** (also known as crawling or spidering). In this process, an application is used to extract valuable information from a website. **PDF scraping** or more general **report mining** is the extraction of data from human-readable computer reports. It is worth considering alternatives before start scraping data.^[(1) Look for a download button. (2)  Search same or similar data somewhere else. (3) Check if there is an API. (4) Ask the website owner for the data.]
 
-Consider alternatives before start scraping data:
+## Most expensive paintings
 
-- Look for a download button.
-- Search same or similar data somewhere else. 
-- Check if there is an API.
-- Ask the website owner for the data.
+What do The Card Players and Marshall Islands have in common? 
+
+:::::: {.columns}
+
+::: {.column width="45%" data-latex="{0.45\textwidth}"}
+
+```{r , echo=FALSE, out.width="100%", fig.cap="\\label{fig:Player} The Card Players.", fig.align='center', warning=F, message=F}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg/800px-Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg")
+```
+
+<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg/800px-Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg" height="250"> -->
+
+:::
+
+::: {.column width="10%" data-latex="{0.1\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+```{r , echo=FALSE, out.width="100%", fig.cap="\\label{fig:Masrshall} Flag of Marshall Islands.", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/180px-Flag_of_the_Marshall_Islands.svg.png")
+```
+
+<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/180px-Flag_of_the_Marshall_Islands.svg.png" height="250"> -->
+
+:::
+
+Well, the first was sold for about 250.000.000 million USD in an auction in 2011 and the laters nominal gross domestic product is of similar size 220.000.000 million USD in 2019. About 60.000 people live in Marshall Islands. The most expensive paintings score similar to the gross domestic product of insular states. 
+
+```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
+library(webshot)
+knitr::include_url("https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid")
+```
 
 ## Student numbers at Viadrina 
 
@@ -36,15 +66,48 @@ Information is presented in two ways, as **tables in PDF**, e.g. the time series
                 height="500"> 
 </object>
 
-And as **tables in HTML**. For each semester there is summary information on the webpage (and more comprehensive data in PDF), like for summer term 2022:
+And as **tables in HTML**. For each semester there is summary information on the webpage (and more comprehensive data in PDF), like for winter term 2022/2023:
 
 ```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
-knitr::include_url("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-Sommersemester/index.html")
+knitr::include_url("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-wintersemester/index.html")
 ```
+
+Most web browser allow to inspect the html source:
+
+<view-source:https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-wintersemester/index.html>
+
+When you search for a characteristic value like `4.797` it shows:
+
+```{html}
+<div class="zeile"><div class="dreispaltig">
+<div class="text">
+<table>
+<tbody>
+<tr>
+<td style="width: 400px;">Studierende gesamt</td>
+<td>4.797</td>
+</tr>
+<tr>
+<td>weiblich</td>
+<td>2.785</td>
+</tr>
+<tr>
+<td>m&auml;nnlich</td>
+<td>2.012</td>
+</tr>
+<tr>
+<td>Deutsche</td>
+<td>3.201</td>
+</tr>
+<tr>
+<td>Ausl&auml;nder/innen</td>
+<td>1.596</td>
+```
+
 
 Let's investigate the student numbers. 
 
-## PDF scraping 
+### PDF scraping 
 
 <!-- https://www.dataquest.io/blog/web-scraping-in-r-rvest/ -->
 <!-- https://www.r-bloggers.com/2019/09/pdf-scraping-in-r-with-tabulizer/ -->
@@ -138,7 +201,7 @@ library(DT)
 datatable(viadrina_1992_2020)
 ```
 
-## Share of female students
+### Share of female students
 
 The share of female students over time in a line plot. 
 
@@ -151,7 +214,7 @@ viadrina_1992_2020 %>%
        subtitle = "Share of female students")
 ```
 
-## Share of foreign students
+### Share of foreign students
 
 The share of foreign students over time in a stacked barplot. 
 
@@ -165,7 +228,7 @@ viadrina_1992_2020 %>%
        subtitle = "Share of foreign students")
 ```
 
-## Web scraping 
+### Web scraping 
 
 To get more recent numbers, we rely on the webpage information. How can we access all semester data? Investigate the pattern of the URLs. 
 
@@ -273,7 +336,7 @@ viadrina_2013_2022$semester <- paste0(viadrina_2013_2022$year, rep(c("-02", "-01
 rownames(viadrina_2013_2022) <- 1:nrow(viadrina_2013_2022) 
 ```
 
-## Most recent student numbers 
+### Most recent student numbers 
 
 There is a structural difference between summer and winter term. Most new enrollments are in winter. 
 
@@ -288,7 +351,7 @@ viadrina_2013_2022 %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
-## The long run trend 
+### The long run trend 
 
 Combine old and new data.
 
