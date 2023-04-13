@@ -1,4 +1,51 @@
-# Stories are everywhere
+# Stories and Visuals
+
+Stories make data and numbers memorable. Stories are everywhere. When you think about the context of the data, stories evolve naturally. How does the data connect to you, your friends and family, the work environment or society as a whole. 
+
+## Facts 
+
+A good story is based on facts and reliable sources. When evaluating facts, it's important to consider the source of the information and the evidence supporting it. According to OECD data on part-time employment rate (2021):^[Search OECD database <https://stats.oecd.org/index.aspx?queryid=54746#>]
+
+> 36 % of women worked part-time in Germany whereas only 10 % of men did.
+
+<!-- <iframe src="https://data.oecd.org/chart/72QZ" width="860" height="645" style="border: 0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true"><a href="https://data.oecd.org/chart/72QZ" target="_blank">OECD Chart: Part-time employment rate, Total, % of employment, Annual, 2021</a></iframe> -->
+<!-- https://www.oecd.org/gender/data/part-time-employment-by-sex.htm -->
+<!-- > In 2021, the OECD total average part-time employment rate was 16.4 %. -->
+
+## Visualization
+
+Good data visualization helps to convey complex information in a way that is easily understandable and accessible to a wide range of people. By presenting data in a visually appealing and intuitive way, it can help people to identify patterns, trends, and relationships that might not be immediately apparent from a simple data table or text-based analysis. 
+
+```{r, eval=T, echo=F, warning=FALSE, message=FALSE}
+library(readxl)
+parttime <- readxl::read_xlsx("./data/OECD/parttime_gender_easy.xlsx")
+
+library(showtext)
+
+female = intToUtf8(9792)
+male = intToUtf8(9794)
+
+library(tidyverse)
+parttime %>% 
+  filter(Year == 2021) %>% 
+  #mutate(Sex = forcats::fct_infreq(Sex)) %>% 
+  ggplot(aes(x = Sex, y = Percent, fill = Sex)) + 
+  geom_col(width = 0.5) + 
+  labs(title = "Share of employed in part-time employment, by sex (Germany)") + 
+  theme_minimal() +
+  ggplot2::annotate("text", x = 1, y = 5, label = male, size = 20) +
+  ggplot2::annotate("text", x = 2, y = 25, label = female, size = 20) 
+```
+
+Why not just tell the numbers as is? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible. 
+
+Data visualization reveals the data.
+
+<!-- ```{r parttime, echo=FALSE, out.width="70%", fig.cap="\\label{fig:parttime}Possible gender difference in working parttime.", fig.align='center'} -->
+<!-- knitr::include_graphics("images/parttime.png") -->
+<!-- ``` -->
+
+<!-- Figure \@ref(fig:parttime) illustrates a possible gender difference in working parttime. The iconic figures are simple. The coloring is decent. The gender icons are filled by color up to the percentage numbers.  -->
 
 ## Telling a story
 
@@ -9,25 +56,13 @@ Data storytelling is the practice of using data and visuals to communicate a nar
 
 Data storytelling is necessary and good because it helps people make sense of complex data and information. By presenting data in a clear and visually appealing way, data storytelling can help people understand the meaning behind the numbers, identify patterns and trends, and gain insights into important issues and problems.
 
-## Visualization
-
-Good data visualization helps to convey complex information in a way that is easily understandable and accessible to a wide range of people. By presenting data in a visually appealing and intuitive way, it can help people to identify patterns, trends, and relationships that might not be immediately apparent from a simple data table or text-based analysis. 
-
-```{r parttime, echo=FALSE, out.width="70%", fig.cap="\\label{fig:parttime}Possible gender difference in working parttime.", fig.align='center'}
-knitr::include_graphics("images/parttime.png")
-```
-
-Figure \@ref(fig:parttime) illustrates a possible gender difference in working parttime. The iconic figures are simple. The coloring is decent. The gender icons are filled by color up to the percentage numbers. It conveys the information:
-
-> 41 % of women work part-time, whereas only 12 % of men do.
-
-Why not just tell the numbers? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible. Data visualization reveals the data.
-
 By weaving a compelling narrative around the data, we can help our audience to understand the insights that we have discovered and why they matter. A data story can also help to make the data more memorable and emotionally resonant, which can help to further engage our audience and increase their interest in the subject matter.
 
-## Once upon a time
-
-Once upon a time, in a land not too far away, there were two siblings named Alex and Jamie. Alex and Jamie were very close in age and grew up in the same household with the same parents, but they had very different personalities and interests.
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Once upon a time ... </h2>
+:::
+in a land not too far away, there were two siblings named Alex and Jamie. Alex and Jamie were very close in age and grew up in the same household with the same parents, but they had very different personalities and interests.
 
 As they reached adulthood, Alex decided to pursue a career in finance and secured a full-time job at a large investment bank. Jamie, on the other hand, decided to focus on their passion for art and took on a part-time job as a freelance graphic designer while also working on personal creative projects.
 
@@ -38,6 +73,7 @@ Alex was also more likely to receive promotions and higher salaries, while Jamie
 It became clear to Alex and Jamie that there was a gendered expectation for men to pursue full-time, high-paying careers while women were expected to prioritize caregiving or creative pursuits over financial stability.
 
 Despite these societal expectations, Alex and Jamie continued to pursue their individual paths and support each other's choices. They hoped that someday, society would recognize the value and importance of all types of work and careers, regardless of gender or perceived societal norms.
+::::
 
 ## Man's best friend
 
@@ -47,7 +83,7 @@ Humans love dogs. Dogs were domesticated by humans over 15,000 years ago. They c
 knitr::include_graphics("https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png")
 ```
 
-
+On the one hand, this is an awesome chart that transforms a huge data table in one graph, a scatter plot on two dimensions lightened by the individual dog icons for each data point. On the other hand, this graph is so complex and does not offer a major takeaway. Looking more closely to the graph, raises more questions then the graph answers, i.e. how was *grooming* and *appetite* measured? How are the 6 factors combined in the *data score*? When you look even more closely, you notice the easter egg.^[The frightened cat among all dogs.]
 
 ## Less is more
 
@@ -55,7 +91,7 @@ Figure \@ref(fig:dogs) is an awesome data aggregate. Still, "less is more" in da
 
 <!-- Read more: <http://socialmediaguerilla.com/content-marketing/less-is-more-improving-the-data-ink-ratio/> -->
 
-Here is an example of **less is more**:
+Follow the slide presentation:
 
 <object data="https://files.speakerdeck.com/presentations/87bb9f00ec1e01308020727faa1f9e72/data-ink.pdf" width="100%" height="500">
 
@@ -79,61 +115,61 @@ The reason why we should care about data-ink ratio is that it directly affects t
 The **data-ink ratio** is the proportion of Ink that is used to present actual data compared to the total amount of ink (or pixels) used in the entire display. Good graphics should include only data-Ink. Non-Data-Ink is to be deleted everywhere where possible.
 :::
 
-## Never use pie charts
+<!-- ## Never use pie charts -->
 
-One of the main criticisms of pie charts is that they can be difficult to read and interpret accurately, especially when there are multiple slices or small differences between the sizes of the slices. It can be hard for the audience to accurately compare the sizes of the different slices, and this can lead to misinterpretation or misunderstanding of the data.
+<!-- One of the main criticisms of pie charts is that they can be difficult to read and interpret accurately, especially when there are multiple slices or small differences between the sizes of the slices. It can be hard for the audience to accurately compare the sizes of the different slices, and this can lead to misinterpretation or misunderstanding of the data. -->
 
-From the *note* of the documentation of `pie()` function in R it says:
+<!-- From the *note* of the documentation of `pie()` function in R it says: -->
 
-```{r, eval=F}
-?pie()
-```
+<!-- ```{r, eval=F} -->
+<!-- ?pie() -->
+<!-- ``` -->
 
-*Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.*
+<!-- *Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.* -->
 
-*Cleveland (1985), page 264: "Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements." This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.*
+<!-- *Cleveland (1985), page 264: "Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements." This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.* -->
 
-```{r message=FALSE, warning=FALSE, echo=F, eval=T}
-# Create data for the graph.
-x <- c(14, 62, 17, 53)
-labels <- c("London", "New York", "Singapore", "Mumbai")
-```
+<!-- ```{r message=FALSE, warning=FALSE, echo=F, eval=T} -->
+<!-- # Create data for the graph. -->
+<!-- x <- c(14, 62, 17, 53) -->
+<!-- labels <- c("London", "New York", "Singapore", "Mumbai") -->
+<!-- ``` -->
 
-**Can you tell whether Singapore or London have the higher share?**
+<!-- **Can you tell whether Singapore or London have the higher share?** -->
 
-```{r message=FALSE, warning=FALSE, echo=F}
-# Plot the chart.
-pie(x,labels)
-```
+<!-- ```{r message=FALSE, warning=FALSE, echo=F} -->
+<!-- # Plot the chart. -->
+<!-- pie(x,labels) -->
+<!-- ``` -->
 
-<details>
+<!-- <details> -->
 
-<summary>**Can you tell now?**</summary>
+<!-- <summary>**Can you tell now?**</summary> -->
 
-```{r message=FALSE, warning=FALSE}
-# Plot the chart.
-barplot(x, names.arg = labels)
-```
+<!-- ```{r message=FALSE, warning=FALSE} -->
+<!-- # Plot the chart. -->
+<!-- barplot(x, names.arg = labels) -->
+<!-- ``` -->
 
-</details>
+<!-- </details> -->
 
-<details>
+<!-- <details> -->
 
-<summary>Here is the R code.</summary>
+<!-- <summary>Here is the R code.</summary> -->
 
-```{r message=FALSE, warning=FALSE, echo=T, eval=F}
-# Create data for the graph.
-x <- c(14, 62, 17, 53)
-labels <- c("London", "New York", "Singapore", "Mumbai")
+<!-- ```{r message=FALSE, warning=FALSE, echo=T, eval=F} -->
+<!-- # Create data for the graph. -->
+<!-- x <- c(14, 62, 17, 53) -->
+<!-- labels <- c("London", "New York", "Singapore", "Mumbai") -->
 
-# Plot the chart.
-pie(x,labels)
+<!-- # Plot the chart. -->
+<!-- pie(x,labels) -->
 
-# Plot the chart.
-barplot(x, names.arg = labels)
-```
+<!-- # Plot the chart. -->
+<!-- barplot(x, names.arg = labels) -->
+<!-- ``` -->
 
-</details>
+<!-- </details> -->
 
 ## Grammar of Graphics
 
