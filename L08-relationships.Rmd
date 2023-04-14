@@ -1,17 +1,14 @@
-
-<!-- --- -->
-<!-- title: Test -->
-<!-- author: Marco -->
-<!-- output: html_document -->
-<!-- --- -->
+# (PART) Models {-}
 
 # Relationships
 
-> “[M]y ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us, binds us. Luminous beings are we, not this crude matter. You must feel the Force flow around you. Here, between you, me, the tree, the rock, yes, even *between* the land and the ship.”</b>
+> “[M]y ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us, binds us. Luminous beings are we, not this crude matter. You must feel the Force flow around you. Here, between you, me, the tree, the rock, yes, even between the land and the ship.”</b>
 >
 > `r tufte::quote_footer('Yoda. -- Episode V: The Empire Strikes Back')`
 
-The most interesting research questions in social science are about relationships. What is a relationship? The way in which two or more things are connected. Things are variables. Everything that can be measured. How can the relation between the tree and the land be made palpable? Relationships are quantified via *covariance* or *correlation*. The relation between two (continuous) variables may be illustrated in a scatter plot. 
+The most interesting research questions in social science are about relationships. What is the relationship between the land and the ship? Is is the force? How can the relation between the tree and the land be made palpable?
+
+A relationship is the way in which two or more variables are connected. We pose that everything that can be measured. Relationships between two (continuous) variables are quantified via *covariance* or *correlation* and may be illustrated in a scatter plot. 
 
 <!-- Recall that there is a statistical relationship between two variables when the average score on one differs systematically across the levels of the other. In this section, we revisit the two basic forms of statistical relationship introduced earlier in the book—differences between groups or conditions and relationships between quantitative variables—and we consider how to describe them in more detail. -->
 
@@ -19,7 +16,8 @@ The most interesting research questions in social science are about relationship
 
 <!-- go together flow together -->
 
-## Minimal Example
+
+## Variance
 
 This is <s>Sparta</s> data. 
 
@@ -27,8 +25,6 @@ This is <s>Sparta</s> data.
 x=c(4,13,19,25,29)
 y=c(10,12,28,32,38)
 ```
-
-### Variance
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -38,6 +34,7 @@ The **variance** is defined as the **average quadratic deviation from the mean**
 ::::
 
 $$var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2$$
+
 The <u id='variance'>variance</u> of `x` is `r var(x)` and can be calculated via `var()` in R. 
 
 ```{r, echo=FALSE}
@@ -67,7 +64,6 @@ The standard deviation is derived from variance and tells, on average, how far e
 When you have collected data from every member of the population that you’re interested in, you can get an exact value for population variance. When you collect data from a sample, the sample variance is used to make estimates or inferences about the population variance.
 ::::
 
-### Variation ARound the Mean 
 <!-- http://stla.overblog.com/schematizing-the-variance-as-a-moment-of-inertia -->
 <!-- https://stats.stackexchange.com/questions/72208/visualising-the-variance -->
 
@@ -85,6 +81,7 @@ ggplot(aes(x=x, y=c(0)), data=data) +
   geom_point(size=3) +
   labs(title="Distribution of variable x around the mean") +
   geom_vline(xintercept=mean(data$x), size=1.5, color="red") + 
+  theme_minimal() +
   theme(axis.line=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks=element_blank(),
@@ -116,8 +113,6 @@ ggplot(aes(x=x, y=c(0)), data=data) +
 In statistics, the empirical rule states that 99.7% of data occurs within three standard deviations of the mean within a normal distribution. To this end, 68% of the observed data will occur within the first standard deviation, 95% will take place in the second deviation, and 97.5% within the third standard deviation.
 ::::
 
-### Scatterplot
-
 The *scatterplot* is a two-dimensional instrument. It shows the original information from `x` and `y` and their respective means as bold red lines. 
 
 ```{r, echo=F, eval=TRUE, out.width = '80%', fig.align="center"}
@@ -125,14 +120,23 @@ The *scatterplot* is a two-dimensional instrument. It shows the original informa
 ggplot(aes(x=x, y=y), data=data) + 
   geom_point(size=3) +
   labs(title="Distribution of x and y around their means") +
-  theme_bw() +
   geom_vline(xintercept=mean(x), size=1.5, color="red") + 
-  geom_hline(yintercept=mean(y), size=1.5, color="red")
+  geom_hline(yintercept=mean(y), size=1.5, color="red") +
+  theme_minimal()
 ```
 
-### Covariance  
+## Covariance  
 
 Covariance is a measure of the joint variability of two variables. The main idea of covariance is to classify three types of relationships: positive, negative or no relationship. For each data point, we multiply the differences with the respective mean. When both values are smaller or greater than the mean, the result will be positive.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+The **covariance** between two variables is the **product of the deviations of x and y from their respective means**. 
+::::
+
+$$cov(x,y) = \frac{1}{n-1} \sum\limits (x_i - \bar{x})(y_i - \bar{y})$$ 
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
 # Built-in command
@@ -146,7 +150,6 @@ cov(x,y)
 <!-- (sum((x-mean(x))*(y-mean(y)))) / (length(x)-1) -->
 <!-- ``` -->
 
-### Covariance Visualization 
 <!-- https://evangelinereynolds.netlify.app/post/geometric-covariance/ -->
 <!-- https://stats.stackexchange.com/questions/18058/how-would-you-explain-covariance-to-someone-who-understands-only-the-mean -->
 
@@ -183,12 +186,14 @@ ggplot(aes(x=x, y=y), data=data) +
 ::: {.titelchallenge}
 <h2> Your Turn </h2>
 :::
-From the graph, validate the covariance result from `cov(x,y)` by mental calculation? 
+Validate the covariance result from `cov(x,y)` by mental calculation.
 ::::
 
-### Correlation 
+## Correlation 
 
-Covariance quantifies a relationship and is similar to correlation but when the covariance is calculated, the data are not standardized. Therefore, the covariance is expressed in units that vary with the data and is not converted to a standardized scale of 1 to +1. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117 can be very low for one relationship and 0.23 very high for another relationship). To assess the strength of a relationship between two variables use a correlation coefficient.
+Covariance quantifies a relationship and is similar to correlation. Covariance is expressed in units that vary with the data. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117.5 can be very low for one relationship and 0.23 very high for another relationship).
+
+To assess the strength of a relationship between two variables a correlation coefficient is commonly used. It brings variation to a standardized scale of 1 to +1.
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -196,6 +201,12 @@ Covariance quantifies a relationship and is similar to correlation but when the 
 :::
 The **correlation coefficient** is a statistical measure of the strength and direction of the relationship between two variables.
 ::::
+
+$$r(x,y) = \frac{\sum\limits (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum\limits (x_i - \bar{x})^2 \sum\limits (y_i - \bar{y})^2}}$$
+
+Does the numerator and denominator remind you of something? The formula is made of the components variance and covariance. Thus, the correlation coefficient formula is often expressed in short as:
+
+$$r(x,y,) = \frac{Cov(x,y)}{\sqrt{Var(x) Var(y)}}$$
 
 `cor()` is a basic function to calculate the correlation coefficient. 
 
@@ -236,176 +247,64 @@ The correlation test is based on a t-value (t = `r cor.test(x,y)$statistic`) and
 <!-- p -->
 <!-- ``` -->
 
-## Application 
-
-Now, the time has come to apply your knowledge to real questionnaire data -- your data. Answers are anonymous, names and matriculation number have been removed. The data is provided on github.  
-
-```{r warning=FALSE, message=FALSE}
-library(readr)
-GF <- read_csv("https://raw.githubusercontent.com/MarcoKuehne/seminars_in_applied_economics/main/Data/GF_2022_57.csv")
-
-library(DT)
-datatable(GF[,-8], options = list(pageLength = 5))
-```
-
-### One Variable Graphics
-
-<!-- Please create the histogram (in base R or ggplot).  -->
-
-The histogram shows the distribution of total semester (in base R). 
-
-```{r, echo=TRUE, eval=TRUE, echo=F}
-hist(GF$Total.Semesters, main="Histogram of Semester", 
-     xlab="Semester", ylab="Frequency", breaks=12)
-```
-
-### Two Variable Graphics 
-
-The scatter plot shows the relation between age and semester (in base R). Add trend line is added to illustrate the general tendency. 
-
-<!-- Replicate the following graph. It is a scatterplot of age versus semester (either base R or ggplot). Add a regression line to the plot to illustrate the general tendency of the relationship.  -->
-
-<!-- Hint: Use `lm()` to build a linear model. Inside goes a formula of `y ~ x` and a dataset with the `data` option. Use `abline()` in base R. -->
-
-<!-- Hint: model relationship in lm(y~x) whereas plot(x,y)  -->
-
-```{r, echo=TRUE, eval=TRUE, echo=F}
-linear_model <- lm(Total.Semesters~Age, data=GF)
-
-plot(GF$Age, GF$Total.Semesters, main="Relationship between Age and Semester", xlab="Age", ylab="Semester", cex=1.5, col="red", pch=7)
-linear_model <- lm(Total.Semesters~Age, data=GF)
-abline(linear_model)
-```
-
-<!-- There seems to be an **outlier** (perhaps a typo?). Remove unreasonable high ages by filter for values less than 99 (I can program such a *plausibility check* in the questionnaire to prevent this happening). Call this data `GF_less_99` Please create a scatterplot of age versus semester (without outlier). Please add a linear regression line to the scatterplot (the plot can be base R or ggplot). Add nice labels. You may play around with design. -->
-
-<!-- ```{r, echo=FALSE, eval=TRUE} -->
-<!-- library(tidyverse) -->
-<!-- GF_less_99 <- GF %>% -->
-<!--   filter(Age < 99)  -->
-
-<!-- plot(GF_less_99$Age, GF_less_99$Total.Semesters, main="Relationship between Age and Semester", xlab="Age", ylab="Semester", cex=1.5, col="red", pch=7) -->
-<!-- linear_model <- lm(Total.Semesters~Age, data=GF_less_99) -->
-<!-- abline(linear_model) -->
-<!-- ``` -->
-
-<!-- The graph suggests a positive relationship (as expected). -->
-
-<!-- ::: {.infobox2 .information data-latex="warning"} -->
-<!-- There is another high value for age. **How can you tell which high numbers are outliers**? -->
-<!-- ::: -->
-
-### Correlation and Regression
 
 <!-- https://stats.stackexchange.com/questions/32464/how-does-the-correlation-coefficient-differ-from-regression-slope -->
 
-:::: {.dedicated}
-::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
-:::
-What's the difference between correlation coefficient and simple regression coefficients? 
-::::
-
-```{r, echo=TRUE}
-linear_model <- lm(Total.Semesters~Age, data=GF)
-linear_model$coefficients
-```
-
-The regression coefficient of age is `r linear_model$coefficients[2]`. 
-
-What is the Pearson correlation coefficient (between -1 and 1)?
-
-```{r, echo=TRUE}
-GF_cor <- cor(GF$Age, GF$Total.Semesters, method="pearson")
-GF_cor
-```
-
-The correlation coefficient is `r GF_cor`.
+There is an awesome connection from correlation coefficient to the simple regression coefficient.
 
 :::: {.amazing}
 ::: {.titelamazing}
 <h2> Amazing Fact </h2>
 :::
-The correlation coefficient and regression coefficient are related and only coincide when the two variables are on the same scale. The most common way of achieving this is through standardization.  
+The correlation coefficient and the simple regression coefficient coincide when the two variables are on the same scale. The most common way of achieving this is through standardization.  
 
 $$\beta = cor(Y,X) \cdot \frac{SD(Y)}{SD(X)} $$
-::::
 
-Please code the above formula for the given GF data and show the equivalence of the beta coefficient and the adjusted correlation coefficient. Access the regression coefficient of `age` from the linear model and store it as `reg_coef_age`. Store the adjusted correlation coefficient as `adj_cor_coef`. 
+:::
 
-Print out the logical comparison of `reg_coef_age` and `adj_cor_coef`. 
+Here is the replication:
 
-If it returns `FALSE`, compare versions of `reg_coef_age` and `adj_cor_coef` that are rounded to 6 digits. Use `round()`.
+```{r, echo=TRUE}
+# The data
+df = data.frame(x=c(4,13,19,25,29), y=c(10,12,28,32,38))
 
-<!-- `GF_beta` and the correlation coefficient `GF_cor` after standardization with standard deviations. Please conduct a *logical comparison* such that `GF_beta == GF_cor` returns `TRUE`. Hint: Extract `GF_beta` from the object `linear_model`. You can find more information on `linear_model` in the right upper panel by clicking on it. Multiply `GF_cor` with standard deviations. If this returns `FALSE`, think about why (inspect the returns) and find a solution.  -->
-
-```{r, echo=F, messages=FALSE, eval=F}
-## Print the regression coefficient (beta) from model1
-## Save as beta
-beta_a <- linear_model$coefficients[2]
-
-## nice alternative
-beta_a <- summary(linear_model)$coefficients[2,1]
-
-## Compare with the formula: cor(Y,X) * SD(Y)/SD(X)
-beta_b <- cor(GF$Age, GF$Total.Semesters) * sd(GF$Total.Semesters) / sd(GF$Age)
-
-## Are those betas perfectly equal?
-## Please compare those two betas insofar that the console returns a logical value
-beta_a == beta_b
-
-## Round the betas to 4 digits and check again. 
-round(beta_a, 6) == round(beta_b,6)
+# The correlation coefficient 
+cor_coef <- cor(df$x, df$y, method="pearson")
+cor_coef
 ```
 
-<!-- https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y/22721##22721 -->
-<!-- A correlation is symmetrical; x is as correlated with y as y is with x. The Pearson product-moment correlation can be understood within a regression context, however. The correlation coefficient, r, is the slope of the regression line when both variables have been standardized first. That is, you first subtracted off the mean from each observation, and then divided the differences by the standard deviation. The cloud of data points will now be centered on the origin, and the slope would be the same whether you regressed y onto x, or x onto y (but note the comment by @DilipSarwate below).  -->
+The correlation coefficient is `r cor.test(x,y)$statistic`.
+
+```{r, echo=TRUE}
+# The regression coefficient 
+linear_model <- lm(y~x, data=df)
+reg_coef <- linear_model$coefficients[2]
+reg_coef
+```
+
+The regression coefficient of `x` is `r linear_model$coefficients[2]`. Here is the connection:
+
+```{r, echo=TRUE}
+# The connection
+cor_coef * sd(y) / sd(x)
+```
+
+Alternatively standardize the data first, then calculate correlation and regression: 
+
+```{r, echo=TRUE}
+# The connection
+df_scaled <- as.data.frame(scale(df, center = TRUE, scale = TRUE))
+
+# The correlation on standardized variables
+cor(df_scaled$x, df_scaled$y, method="pearson")
+```
+
+```{r, echo=TRUE}
+# The regression on standardized variables
+lm(y~x, data=df_scaled)$coefficients[2]
+```
 
 
-<!-- #### Centering and Standardization -->
-
-<!-- <!-- ## Some useful literature:  --> 
-<!-- <!-- ## https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y/22721##22721 --> 
-<!-- <!-- ## https://stats.stackexchange.com/questions/29781/when-conducting-multiple-regression-when-should-you-center-your-predictor-varia --> 
-<!-- <!-- ## https://statmodeling.stat.columbia.edu/2009/07/11/when_to_standar -->
-<!-- <!-- ## http://rstudio-pubs-static.s3.amazonaws.com/318113_6581029a53064b988b700fc3eee55864.html --> 
-
-<!-- In regression, it is sometimes/often recommended to center the variables so that the predictors have mean 0. This makes it easier to interpret the intercept term as the expected value of $Y$ when the predictor values are set to their means. Otherwise, the intercept is interpreted as the expected value of $Y$ when the predictors are set to 0, which may not be a realistic or interpretable situation (e.g. what if the predictors were height and weight?). Note:In many models, you’re not really interested in the intercept.  -->
-
-<!-- ```{r, echo=TRUE} -->
-<!-- GF_scaled <- GF -->
-<!-- GF_scaled$Age <- scale(GF_scaled$Age, center = TRUE, scale = TRUE)  -->
-<!-- GF_scaled$Total.Semesters <- scale(GF_scaled$Total.Semesters, center = TRUE, scale = TRUE)  -->
-
-<!-- linear_model_scaled <- lm(Total.Semesters ~ Age, data=GF_scaled) -->
-<!-- ``` -->
-
-<!-- :::: {.infobox2 .information  data-latex="warning"} -->
-<!-- **Centering** describes subtracting the mean (or another constant) from a variable. What it does is redefine the 0 point for that predictor to be whatever value you subtracted. **Standardization** goes one step further by dividing by the standard deviation. The results will be data with mean = 0 and sd = 1. -->
-<!-- :::: -->
-
-<!-- ```{r, echo=FALSE} -->
-<!-- par(mfrow=c(1,2)) -->
-<!-- plot(GF$Age, GF$Total.Semesters, xlab ="Age", ylab="Semester") -->
-<!-- abline(linear_model) -->
-<!-- title(main="Original") -->
-<!-- plot(GF_scaled$Age, GF_scaled$Total.Semesters, xlab ="Age", ylab="Semester") -->
-<!-- abline(linear_model_scaled) -->
-<!-- title(main="Standardized") -->
-<!-- ``` -->
-
-<!-- Standardization changes the axes. The data cloud and regression line are identical. The correlation coefficient for these data sets are identical. If you compare the correlation coefficient and regression coefficient of the scaled data and scaled model, they are identical by design (without any further modification).  -->
-
-<!-- ```{r, echo=TRUE} -->
-<!-- ## Correlation is identical -->
-<!-- round(cor(GF$Age, GF$Total.Semesters),10) == round(cor(GF_scaled$Age, GF_scaled$Total.Semesters),10) -->
-<!-- ````  -->
-
-<!-- <!-- ## ```{r, echo=TRUE} --> 
-<!-- <!-- ## ## Model2 age coef is equivalent to cor coef  --> 
-<!-- <!-- ## summary(linear_model)$coefficients -->
-<!-- <!-- ## summary(linear_model_scaled)$coefficients  --> 
-<!-- <!-- ## ``` --> 
 
 
 
