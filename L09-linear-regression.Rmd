@@ -24,23 +24,20 @@ This chapter introduces the workhorse of empirical research in the social scienc
 <!--   use_align("center") -->
 <!-- ``` -->
 
-## From Artists and Economists
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_emSBt_4uWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+## Old but Gold
+
 <!-- Your favorite topic -->
 <!-- > “Every artist was first an amateur.” -->
 <!-- `r tufte::quote_footer('-- Ralph Waldo Emerson (1803--1882), US-American essayist, lecturer, philosopher, abolitionist and poet.')` -->
 <!-- This I speculate that the quote from Mr. Emerson is also true for social scientists.  -->
 
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_emSBt_4uWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</center>
+Are older artists are better than younger artists? While experience and maturity can certainly contribute to an artist's skill and creativity, there are many factors that can influence the quality of an artist's work, such as natural talent, dedication, training, and access to resources. Is there an optimum age for artistic performance as compared to athletic performances which reaches a peak in youth? Do artists improve their skills and performance over an entire lifetime step-by-step such that the longer you live, the more you have time to practice? Does exceptional art happens randomly?  Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
 
-Every analysis starts with a question. Did you ever wonder:
-
-<center>
-**Are older artists are better than younger artists?**
-</center>
-
-Do artists improve their skills and performance over an entire lifetime step-by-step such that older artists are better than younger artists since they had more time to practice? Is there an optimum age for performance as compared to athletic performances which reaches a peak in youth? Perhaps no one can tell if and when you are kissed by a muse, so exceptional art happens randomly? Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
+There seems to be something to the story.
 
 > "Paul Cezanne died in October 1906 at the age of 67. In time he would be generally regarded as the most influential painter who had worked in the nineteenth century (e.g., Clive Bell, 1982; Clement Greenberg, 1993). Art historians and critics would also agree that his greatest achievement was the work he did late in his life."
 >
@@ -48,7 +45,7 @@ Do artists improve their skills and performance over an entire lifetime step-by-
 
 <!-- <p style="margin-bottom:1cm;"></p> -->
 
-There seems to be something to the story. What does *better* mean? An alternative formulation is: 
+What does *better* mean? In this chapter the research question is:
 
 ```{r, echo=FALSE, eval=FALSE}
 tippy::tippy_this(elementId = "AER", tooltip = "AER is a famous and reliable economic journal.")
@@ -59,8 +56,6 @@ tippy::tippy_this(elementId = "AER", tooltip = "AER is a famous and reliable eco
 </center>
 
 <!-- &nbsp; -->
-
-This comes closer to a research question. 
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -366,17 +361,16 @@ $$y = X \beta + \epsilon $$
 Capital letters like $X$ represent a matrix (a table with rows and column), and small letters like $y$ and $e$ represent vectors. Since there are 6 observations and two parameters in our model we get:
 
 $$ \begin{align}
-\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{11} \\ 1 & X_{12} \\ 1 & X_{13} \\ 1 & X_{14} \\ 1 & X_{15} \\ 1 & X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} \\
-y &= X \beta + \epsilon 
+\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{11} \\ 1 & X_{12} \\ 1 & X_{13} \\ 1 & X_{14} \\ 1 & X_{15} \\ 1 & X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} 
 \end{align}$$
 
-Let's turn to the goal, minizing the residual sum of squares. By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To *transpose* a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:
+Let's turn to the goal, minizing the residual sum of squares (RSS). By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To *transpose* a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:
 
 $$\sum e^2 = e^T \cdot e \rightarrow \min$$
 Notice that the sum operator is gone. [Matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication){target="_blank"} requires multiplying all elements pairwise with each other and summing them up. Plug in the residuals $e = y - X \beta$ in the equation:
 
 $$\begin{align}
-	\sum e^2 &= e^T \cdot e \tag{short RSS}\\
+	\sum e^2 &= e^T \cdot e \\
 	&= (y - X \beta )^T (y - X \beta) \tag{$(A+B)^T = A^T + B^T$}\\
 	&= (y^T - X^T \beta^T) (y - X \beta) \\
 	&= y^T y - y^T X \beta - X^T \beta^T y + X^T \beta^T X \beta \\
@@ -405,11 +399,13 @@ Next, we are ready to **optimize**. Optimization (in math and economics) is done
 <!-- (setting the first derivative equal to zero). What are the betas? -->
 
 $$\begin{align}
-	\frac{\partial RSS}{\partial \beta} &= -2 X^T y + 2 \beta X^T X = 0 \tag{first derivative equal to zero} \\
+	\frac{\partial RSS}{\partial \beta} &= -2 X^T y + 2 \beta X^T X = 0 \tag{first derivative = zero} \\
 	2 \beta X^T X &= 2 X^T y \tag{rearrange terms}\\
 	\beta X^T X &= X^T y \tag{the "normal equation"} \\
 	\beta &= (X^T X)^{-1} X^T y \tag{Bam}\\
 \end{align}$$
+
+Those $\beta$ coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time.
 
 ### Take the Long Way Home 
 
@@ -427,7 +423,7 @@ y <- as.vector(artists$Price)
 X <- as.matrix(cbind(rep(1, nrow(artists)), artists$Age.at.Death))
 ```
 
-Those $\beta$ coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time. First, retrieve matrix $X$ from the data set:
+First, retrieve matrix $X$ from the data set:
 
 ```{r echo=TRUE, warning=FALSE}
 X
@@ -463,7 +459,7 @@ Finally, multiply the vector $y$:
 solve(t(X)%*%X) %*% t(X) %*% y
 ```
 
-It's the $\beta$ vector! The first entry is the **intercept** and the second is the **slope** of the linear function.
+It's the $\beta$ vector! The first entry is the **intercept** and the second is the **slope** of the linear function. The following graph shows the line created from intercept and slope in a scatter plot. 
 
 <!-- There are two numbers. -->
 
@@ -499,13 +495,15 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
 
 ## On the Shoulders of Giants 
 
-Fortunately, we are [standing on the shoulders of giants](https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants). Clever people implemented the linear regression and all kinds of regressions and statistical tests in R. 
+Fortunately, we are [standing on the shoulders of giants](https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants). Clever people implemented the linear regression (command `lm()`) and all kinds of regressions and statistical tests in R. 
 
 ```{r echo=TRUE, warning=FALSE}
 lm(Price ~ Age.at.Death, data = artists)
 ```
 
-```{r echo=F, warning=FALSE}
+The workhorse packs up work. 
+
+```{r echo=F, warning=FALSE, fig.align='center'}
 knitr::include_graphics("images/workhorse.jpg")
 ```
 

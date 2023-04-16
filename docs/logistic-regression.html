@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 Logistic Regression | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 Logistic Regression | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2023-04-14" />
+<meta name="date" content="2023-04-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,7 +53,7 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.0/htmlwidgets.js"></script>
 <link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
 <link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
 <link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
@@ -63,16 +63,12 @@
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.27/datatables.js"></script>
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <script type="application/json" class="js-hypothesis-config">
 {
 "showHighlights": false
@@ -349,7 +345,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="9" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>9</b> Regression</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="regression.html"><a href="regression.html#from-artists-and-economists"><i class="fa fa-check"></i><b>9.1</b> From Artists and Economists</a></li>
+<li class="chapter" data-level="9.1" data-path="regression.html"><a href="regression.html#old-but-gold"><i class="fa fa-check"></i><b>9.1</b> Old but Gold</a></li>
 <li class="chapter" data-level="9.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>9.2</b> Data is everywhere</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>9.2.1</b> Data in a table</a></li>
@@ -370,13 +366,19 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="10" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>10</b> Logistic Regression</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="logistic-regression.html"><a href="logistic-regression.html#think-inside-the-box"><i class="fa fa-check"></i><b>10.1</b> Think inside the box</a>
+<li class="chapter" data-level="10.1" data-path="logistic-regression.html"><a href="logistic-regression.html#think-inside-the-box"><i class="fa fa-check"></i><b>10.1</b> Think inside the box</a></li>
+<li class="chapter" data-level="10.2" data-path="logistic-regression.html"><a href="logistic-regression.html#from-probability-to-odds"><i class="fa fa-check"></i><b>10.2</b> From probability to odds</a></li>
+<li class="chapter" data-level="10.3" data-path="logistic-regression.html"><a href="logistic-regression.html#from-odds-to-log-of-odds"><i class="fa fa-check"></i><b>10.3</b> From odds to log of odds</a></li>
+<li class="chapter" data-level="10.4" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-survival"><i class="fa fa-check"></i><b>10.4</b> Titanic Survival</a>
 <ul>
-<li class="chapter" data-level="10.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#from-probability-to-odds"><i class="fa fa-check"></i><b>10.1.1</b> From probability to odds</a></li>
-<li class="chapter" data-level="10.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#from-odds-to-log-of-odds"><i class="fa fa-check"></i><b>10.1.2</b> From odds to log of odds</a></li>
+<li class="chapter" data-level="10.4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#the-data"><i class="fa fa-check"></i><b>10.4.1</b> The Data</a></li>
+<li class="chapter" data-level="10.4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#no-predictor-variables"><i class="fa fa-check"></i><b>10.4.2</b> No Predictor Variables</a></li>
+<li class="chapter" data-level="10.4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#single-dichotomous-predictor"><i class="fa fa-check"></i><b>10.4.3</b> Single Dichotomous Predictor</a></li>
+<li class="chapter" data-level="10.4.4" data-path="logistic-regression.html"><a href="logistic-regression.html#effect-plot"><i class="fa fa-check"></i><b>10.4.4</b> Effect plot</a></li>
+<li class="chapter" data-level="10.4.5" data-path="logistic-regression.html"><a href="logistic-regression.html#chi-square"><i class="fa fa-check"></i><b>10.4.5</b> Chi Square</a></li>
+<li class="chapter" data-level="10.4.6" data-path="logistic-regression.html"><a href="logistic-regression.html#some-are-more-equal-than-others"><i class="fa fa-check"></i><b>10.4.6</b> Some Are More Equal Than Others</a></li>
+<li class="chapter" data-level="10.4.7" data-path="logistic-regression.html"><a href="logistic-regression.html#the-cheaper-the-deader"><i class="fa fa-check"></i><b>10.4.7</b> The Cheaper The Deader?</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="logistic-regression.html"><a href="logistic-regression.html#application-titanic-survival"><i class="fa fa-check"></i><b>10.2</b> Application: Titanic Survival</a></li>
-<li class="chapter" data-level="10.3" data-path="logistic-regression.html"><a href="logistic-regression.html#addons"><i class="fa fa-check"></i><b>10.3</b> Addons</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="interaction-models.html"><a href="interaction-models.html"><i class="fa fa-check"></i><b>11</b> Interaction Models</a>
 <ul>
@@ -478,15 +480,16 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <h2><span class="header-section-number">10.1</span> Think inside the box<a href="logistic-regression.html#think-inside-the-box" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <!-- https://www.javatpoint.com/linear-regression-vs-logistic-regression-in-machine-learning -->
 <p>The table contains data on the relationship between <em>hours of study</em> and the <em>outcome of an exam</em> (pass/fail) sorted ascending for study hours. The <code>pass</code> outcome is coded <code>1</code> for "Yeah, I passed the exam" and <code>0</code> for "I'll be back".</p>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6bcfe96e1c7e6fad5d72" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-6bcfe96e1c7e6fad5d72">{"x":{"filter":"none","vertical":false,"data":[["hours","pass"],["0.75","0"],["1.00","0"],["1.50","0"],["1.75","0"],["1.75","1"],["2.00","0"],["2.50","0"],["2.75","1"],["3.00","0"],["3.25","1"],["4.25","1"],["5.00","1"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>V1<\/th>\n      <th>V2<\/th>\n      <th>V3<\/th>\n      <th>V4<\/th>\n      <th>V5<\/th>\n      <th>V6<\/th>\n      <th>V7<\/th>\n      <th>V8<\/th>\n      <th>V9<\/th>\n      <th>V10<\/th>\n      <th>V11<\/th>\n      <th>V12<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"lengthChange":false,"pageLength":12,"dom":"t","rownames":false,"headerCallback":"function(thead, data, start, end, display){\n  $(thead).remove();\n}","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\n}"}},"evals":["options.headerCallback","options.rowCallback"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-95c9925cfd8f8301e95d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-95c9925cfd8f8301e95d">{"x":{"filter":"none","vertical":false,"data":[["hours","pass"],["0.75","0"],["1.00","0"],["1.50","0"],["1.75","0"],["1.75","1"],["2.00","0"],["2.50","0"],["2.75","1"],["3.00","0"],["3.25","1"],["4.25","1"],["5.00","1"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>V1<\/th>\n      <th>V2<\/th>\n      <th>V3<\/th>\n      <th>V4<\/th>\n      <th>V5<\/th>\n      <th>V6<\/th>\n      <th>V7<\/th>\n      <th>V8<\/th>\n      <th>V9<\/th>\n      <th>V10<\/th>\n      <th>V11<\/th>\n      <th>V12<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"lengthChange":false,"pageLength":12,"dom":"t","rownames":false,"headerCallback":"function(thead, data, start, end, display){\n  $(thead).remove();\n}","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\n}"}},"evals":["options.headerCallback","options.rowCallback"],"jsHooks":[]}</script>
 <!-- Please do a side-by-side plot via `ggplot` and `gridExtra` package with `pass` on the y-axis and `hours` of study on the x-axis. Please fit a line though the left panel and a squiggle through the right panel. Use the layer `geom_smooth` with `method` option either `lm` (linear model) or `glm` (general linear model).  -->
 <p>Linear regression is agnostic to the structure of the data. <code>lm()</code> fits a linear model to the data. Logistic regression acknowledges the floor and ceiling of values between 0 and 1. It squeezes the line to a squiggle inside the box. Well, the x-axis don't necessarily have this restriction.</p>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-159-1.png" width="576" style="display: block; margin: auto;" /></p>
 <!-- Why do we take all the trouble doing the transformation from probability to log odds?  One reason is that  -->
 <p>It is usually difficult to model a variable which has restricted range, such as probability. Get around the restricted range problem with a transformation.</p>
-<div id="from-probability-to-odds" class="section level3 hasAnchor" number="10.1.1">
-<h3><span class="header-section-number">10.1.1</span> From probability to odds<a href="logistic-regression.html#from-probability-to-odds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="from-probability-to-odds" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> From probability to odds<a href="logistic-regression.html#from-probability-to-odds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <!-- https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-how-do-i-interpret-odds-ratios-in-logistic-regression/ -->
 <!-- https://www.statisticshowto.com/log-odds/ -->
 <!-- Odds and Log Odds: https://www.youtube.com/watch?v=ARfXDSkQf1Y -->
@@ -501,204 +504,369 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <!-- - Within `data`, create a sequence of values ranging from 0 to 1 in 0.01 steps and store it as `p` (probability). -->
 <!-- - Within `data`, calculate the corresponding odds, store as `odds`.  -->
 <!-- - Create a simple plot showing the relation between odds and probability using the `plotly` package.  -->
-<p>Probability is naturally restricted between 0 and 1, what about odds?</p>
-<p>Odds range from 0 to positive infinity.</p>
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fae27f7a81e4db4a9de1" style="width:576px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-fae27f7a81e4db4a9de1">{"x":{"visdat":{"a0c61c336ee":["function () ","plotlyVisDat"]},"cur_data":"a0c61c336ee","attrs":{"a0c61c336ee":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"p"},"yaxis":{"domain":[0,1],"automargin":true,"title":"odds"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5,0.51,0.52,0.53,0.54,0.55,0.56,0.57,0.58,0.59,0.6,0.61,0.62,0.63,0.64,0.65,0.66,0.67,0.68,0.69,0.7,0.71,0.72,0.73,0.74,0.75,0.76,0.77,0.78,0.79,0.8,0.81,0.82,0.83,0.84,0.85,0.86,0.87,0.88,0.89,0.9,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1],"y":[0,0.0101010101010101,0.0204081632653061,0.0309278350515464,0.0416666666666667,0.0526315789473684,0.0638297872340425,0.0752688172043011,0.0869565217391304,0.0989010989010989,0.111111111111111,0.123595505617978,0.136363636363636,0.149425287356322,0.162790697674419,0.176470588235294,0.19047619047619,0.204819277108434,0.219512195121951,0.234567901234568,0.25,0.265822784810127,0.282051282051282,0.298701298701299,0.315789473684211,0.333333333333333,0.351351351351351,0.36986301369863,0.388888888888889,0.408450704225352,0.428571428571429,0.449275362318841,0.470588235294118,0.492537313432836,0.515151515151515,0.538461538461539,0.5625,0.587301587301587,0.612903225806452,0.639344262295082,0.666666666666667,0.694915254237288,0.724137931034483,0.754385964912281,0.785714285714286,0.818181818181818,0.851851851851852,0.886792452830189,0.923076923076923,0.96078431372549,1,1.04081632653061,1.08333333333333,1.12765957446809,1.17391304347826,1.22222222222222,1.27272727272727,1.32558139534884,1.38095238095238,1.4390243902439,1.5,1.56410256410256,1.63157894736842,1.7027027027027,1.77777777777778,1.85714285714286,1.94117647058824,2.03030303030303,2.125,2.2258064516129,2.33333333333333,2.44827586206897,2.57142857142857,2.7037037037037,2.84615384615385,3,3.16666666666667,3.34782608695652,3.54545454545455,3.76190476190476,4,4.26315789473684,4.55555555555556,4.88235294117647,5.25,5.66666666666667,6.14285714285714,6.69230769230769,7.33333333333333,8.09090909090909,9,10.1111111111111,11.5,13.2857142857143,15.6666666666667,19,24,32.3333333333333,49,98.9999999999999,null],"type":"scatter","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Probability is naturally restricted between 0 and 1, what about odds? Odds range from 0 to positive infinity.</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-160-1.png" width="576" /></p>
 <p>The transformation from probability to odds is a monotonic transformation, meaning the odds increase as the probability increases or vice versa.</p>
 </div>
-<div id="from-odds-to-log-of-odds" class="section level3 hasAnchor" number="10.1.2">
-<h3><span class="header-section-number">10.1.2</span> From odds to log of odds<a href="logistic-regression.html#from-odds-to-log-of-odds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="from-odds-to-log-of-odds" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> From odds to log of odds<a href="logistic-regression.html#from-odds-to-log-of-odds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <!-- Please calculate the log of odds, store it as `logodds` (can be another object). Create a side-by-side graph showing the relation between probability and odds and probability and logodds with the `plotly` package.  -->
-<p>The <code>log()</code> of values between 0 and 1 is negative, above 1 positive.</p>
-<p>Logodds range between negative and positive infinity. Range problem solved.</p>
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3f135471f58b13533da9" style="width:576px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-3f135471f58b13533da9">{"x":{"data":[{"x":[0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5,0.51,0.52,0.53,0.54,0.55,0.56,0.57,0.58,0.59,0.6,0.61,0.62,0.63,0.64,0.65,0.66,0.67,0.68,0.69,0.7,0.71,0.72,0.73,0.74,0.75,0.76,0.77,0.78,0.79,0.8,0.81,0.82,0.83,0.84,0.85,0.86,0.87,0.88,0.89,0.9,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1],"y":[0,0.0101010101010101,0.0204081632653061,0.0309278350515464,0.0416666666666667,0.0526315789473684,0.0638297872340425,0.0752688172043011,0.0869565217391304,0.0989010989010989,0.111111111111111,0.123595505617978,0.136363636363636,0.149425287356322,0.162790697674419,0.176470588235294,0.19047619047619,0.204819277108434,0.219512195121951,0.234567901234568,0.25,0.265822784810127,0.282051282051282,0.298701298701299,0.315789473684211,0.333333333333333,0.351351351351351,0.36986301369863,0.388888888888889,0.408450704225352,0.428571428571429,0.449275362318841,0.470588235294118,0.492537313432836,0.515151515151515,0.538461538461539,0.5625,0.587301587301587,0.612903225806452,0.639344262295082,0.666666666666667,0.694915254237288,0.724137931034483,0.754385964912281,0.785714285714286,0.818181818181818,0.851851851851852,0.886792452830189,0.923076923076923,0.96078431372549,1,1.04081632653061,1.08333333333333,1.12765957446809,1.17391304347826,1.22222222222222,1.27272727272727,1.32558139534884,1.38095238095238,1.4390243902439,1.5,1.56410256410256,1.63157894736842,1.7027027027027,1.77777777777778,1.85714285714286,1.94117647058824,2.03030303030303,2.125,2.2258064516129,2.33333333333333,2.44827586206897,2.57142857142857,2.7037037037037,2.84615384615385,3,3.16666666666667,3.34782608695652,3.54545454545455,3.76190476190476,4,4.26315789473684,4.55555555555556,4.88235294117647,5.25,5.66666666666667,6.14285714285714,6.69230769230769,7.33333333333333,8.09090909090909,9,10.1111111111111,11.5,13.2857142857143,15.6666666666667,19,24,32.3333333333333,49,98.9999999999999,null],"type":"scatter","mode":"lines","name":"odds","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5,0.51,0.52,0.53,0.54,0.55,0.56,0.57,0.58,0.59,0.6,0.61,0.62,0.63,0.64,0.65,0.66,0.67,0.68,0.69,0.7,0.71,0.72,0.73,0.74,0.75,0.76,0.77,0.78,0.79,0.8,0.81,0.82,0.83,0.84,0.85,0.86,0.87,0.88,0.89,0.9,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1],"y":[null,-4.59511985013459,-3.89182029811063,-3.47609868983527,-3.17805383034795,-2.94443897916644,-2.75153531304195,-2.58668934409794,-2.4423470353692,-2.31363492918063,-2.19722457733622,-2.09074109693377,-1.99243016469021,-1.90095876119305,-1.81528996663825,-1.73460105538811,-1.65822807660353,-1.58562726374038,-1.51634748936809,-1.450010175506,-1.38629436111989,-1.3249254147436,-1.26566637333128,-1.20831120592453,-1.15267950993839,-1.09861228866811,-1.04596855518269,-0.994622575144062,-0.944461608840851,-0.895384047054841,-0.847297860387204,-0.800119300112113,-0.75377180237638,-0.708185057924486,-0.663294217410264,-0.619039208406223,-0.575364144903562,-0.532216813747308,-0.489548225318706,-0.447312218043665,-0.405465108108164,-0.363965377201412,-0.322773392263051,-0.281851152140988,-0.241162056816888,-0.200670695462151,-0.160342650075179,-0.120144311842063,-0.0800427076735365,-0.0400053346136992,0,0.0400053346136992,0.0800427076735366,0.120144311842063,0.160342650075179,0.200670695462151,0.241162056816888,0.281851152140988,0.322773392263051,0.363965377201411,0.405465108108164,0.447312218043665,0.489548225318706,0.532216813747308,0.575364144903562,0.619039208406224,0.663294217410264,0.708185057924486,0.75377180237638,0.800119300112113,0.847297860387204,0.895384047054841,0.944461608840851,0.994622575144062,1.04596855518269,1.09861228866811,1.15267950993839,1.20831120592453,1.26566637333128,1.3249254147436,1.38629436111989,1.450010175506,1.51634748936809,1.58562726374038,1.65822807660353,1.73460105538811,1.81528996663825,1.90095876119305,1.99243016469021,2.09074109693377,2.19722457733622,2.31363492918063,2.44234703536921,2.58668934409794,2.75153531304195,2.94443897916644,3.17805383034794,3.47609868983527,3.89182029811063,4.59511985013459,null],"type":"scatter","mode":"lines","name":"logodds","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"xaxis":"x2","yaxis":"y2","frame":null}],"layout":{"xaxis":{"domain":[0,0.48],"automargin":true,"anchor":"y"},"xaxis2":{"domain":[0.52,1],"automargin":true,"anchor":"y2"},"yaxis2":{"domain":[0,1],"automargin":true,"anchor":"x2"},"yaxis":{"domain":[0,1],"automargin":true,"anchor":"x"},"annotations":[],"shapes":[],"images":[],"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true},"attrs":{"a0c345568c":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines","name":{},"inherit":true},"a0c27ba642a":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines","name":{},"inherit":true}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p>Imagine you flip the axes, doesn't this look like the initial S curve we were looking for?
+<p>The <code>log()</code> of values between 0 and 1 is negative, above 1 positive. Logodds range between negative and positive infinity. Range problem solved.</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-161-1.png" width="576" /></p>
+<p>Imagine you flip the axes, doesn't this look like the initial S curve we were looking for?</p>
 <!-- https://www.graphpad.com/guides/prism/latest/curve-fitting/reg_simple_logistic_logodds.htm -->
 <!-- https://www.graphpad.com/guides/prism/latest/curve-fitting/reg_log_or_ln.htm -->
 <!-- https://www.graphpad.com/guides/prism/latest/curve-fitting/reg_simple_logistic_coefficients.htm -->
 <!-- http://faculty.cas.usf.edu/mbrannick/regression/Logistic.html -->
-<!-- Logistic regression estimation is based on the concept of Maximum Likelihood estimation.  --></p>
+<!-- Logistic regression estimation is based on the concept of Maximum Likelihood estimation.  -->
 </div>
+<div id="titanic-survival" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Titanic Survival<a href="logistic-regression.html#titanic-survival" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- https://www.freevectors.net/titanic-vector-image-37720 -->
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-162"></span>
+<img src="images/titanic.png" alt="\label{fig:titanic}RMS Titanic." width="50%" />
+<p class="caption">
+Figure 10.1: RMS Titanic.
+</p>
 </div>
-<div id="application-titanic-survival" class="section level2 hasAnchor" number="10.2">
-<h2><span class="header-section-number">10.2</span> Application: Titanic Survival<a href="logistic-regression.html#application-titanic-survival" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div style="background-image:url("images/titanic.png"); opacity:0.5;">
-
-> The sinking of the Titanic is one of the most infamous shipwrecks in history.
->
-> On April 15, 1912, during her maiden voyage, the widely considered “unsinkable” RMS Titanic sank after colliding with an iceberg. Unfortunately, there weren’t enough lifeboats for everyone onboard, resulting in the death of 1502 out of 2224 passengers and crew.
->
-> While there was some element of luck involved in surviving, it seems some groups of people were more likely to survive than others.
-> <footer>--- [Kaggle Competition](https://www.kaggle.com/competitions/titanic/overview)</footer>
-
-</div>
-<div id="the-data" class="section level4 hasAnchor" number="10.2.0.1">
-<h4><span class="header-section-number">10.2.0.1</span> The Data<a href="logistic-regression.html#the-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- <div style="background-image:url("images/titanic.png"); opacity:0.5;"> -->
+<!-- </div> -->
+<blockquote>
+<p>The sinking of the Titanic is one of the most infamous shipwrecks in history.
+On April 15, 1912, during her maiden voyage, the widely considered “unsinkable” RMS Titanic sank after colliding with an iceberg. Unfortunately, there weren’t enough lifeboats for everyone onboard, resulting in the death of 1502 out of 2224 passengers and crew.
+While there was some element of luck involved in surviving, it seems some groups of people were more likely to survive than others.</p>
+<footer>
+--- <a href="https://www.kaggle.com/competitions/titanic/overview">Kaggle Competition</a>
+</footer>
+</blockquote>
+<div id="the-data" class="section level3 hasAnchor" number="10.4.1">
+<h3><span class="header-section-number">10.4.1</span> The Data<a href="logistic-regression.html#the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- Please register at Kaggle. Go to <https://www.kaggle.com/c/titanic/data> and download the datasets (`train.csv`, `test.csv`, `gender_submission.csv`). Put them in your working directory. The following merge commands should work.  -->
-<p>Load a real comprehensive dataset on Titanic.</p>
+<p>Load a comprehensive dataset on Titanic.</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="logistic-regression.html#cb101-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/titanic.csv&quot;</span>)</span>
-<span id="cb101-2"><a href="logistic-regression.html#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="co">#titanic &lt;- read.csv(&quot;./data/titanic.csv&quot;)</span></span>
-<span id="cb101-3"><a href="logistic-regression.html#cb101-3" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic[,<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
+<span id="cb101-2"><a href="logistic-regression.html#cb101-2" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic[,<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
 <p>Let's check the number of missing values per variable:</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="logistic-regression.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="do">## missings per variable n = 1309</span></span>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="logistic-regression.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="do">## missings per variable </span></span>
 <span id="cb102-2"><a href="logistic-regression.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="at">X =</span> titanic, <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span>
 <span id="cb102-3"><a href="logistic-regression.html#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PassengerId      Pclass        Name         Sex         Age       SibSp </span></span>
 <span id="cb102-4"><a href="logistic-regression.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           0           0           0           0         263           0 </span></span>
 <span id="cb102-5"><a href="logistic-regression.html#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Parch      Ticket        Fare       Cabin    Embarked    Survived </span></span>
 <span id="cb102-6"><a href="logistic-regression.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           0           0           1        1014           2           0</span></span></code></pre></div>
-<p>There are 2 missing values in <code>Embarked</code> and 263 in <code>Age</code>. The most missings fall upon <code>Cabin</code> though. Cabin information is not a very useful predictor for survival, thus we can remove this information for our analysis.</p>
-<!-- Remove columns `PassengerId`, `Name` and `Ticket`. -->
-<p>Conduct a <em>complete case analysis</em>. The dataset should look like this (n = 1043):</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="logistic-regression.html#cb103-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span>Cabin)</span>
-<span id="cb103-2"><a href="logistic-regression.html#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-3"><a href="logistic-regression.html#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ## n = 1043</span></span>
-<span id="cb103-4"><a href="logistic-regression.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="do">## titanic &lt;- titanic %&gt;%</span></span>
-<span id="cb103-5"><a href="logistic-regression.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   filter(Age &gt; 0)</span></span>
-<span id="cb103-6"><a href="logistic-regression.html#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-7"><a href="logistic-regression.html#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="do">## complete cases n = 1043</span></span>
-<span id="cb103-8"><a href="logistic-regression.html#cb103-8" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic[<span class="fu">complete.cases</span>(titanic), ]</span>
-<span id="cb103-9"><a href="logistic-regression.html#cb103-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(titanic)</span>
-<span id="cb103-10"><a href="logistic-regression.html#cb103-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 1,043</span></span>
-<span id="cb103-11"><a href="logistic-regression.html#cb103-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 11</span></span>
-<span id="cb103-12"><a href="logistic-regression.html#cb103-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ PassengerId &lt;int&gt; 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 903, 904…</span></span>
-<span id="cb103-13"><a href="logistic-regression.html#cb103-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Pclass      &lt;int&gt; 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 1, 1, 2, 1, 2, 2, 3, 3, 3, 1…</span></span>
-<span id="cb103-14"><a href="logistic-regression.html#cb103-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Name        &lt;chr&gt; &quot;Kelly, Mr. James&quot;, &quot;Wilkes, Mrs. James (Ellen Needs)&quot;, &quot;M…</span></span>
-<span id="cb103-15"><a href="logistic-regression.html#cb103-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Sex         &lt;chr&gt; &quot;male&quot;, &quot;female&quot;, &quot;male&quot;, &quot;male&quot;, &quot;female&quot;, &quot;male&quot;, &quot;femal…</span></span>
-<span id="cb103-16"><a href="logistic-regression.html#cb103-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Age         &lt;dbl&gt; 34.5, 47.0, 62.0, 27.0, 22.0, 14.0, 30.0, 26.0, 18.0, 21.0…</span></span>
-<span id="cb103-17"><a href="logistic-regression.html#cb103-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ SibSp       &lt;int&gt; 0, 1, 0, 0, 1, 0, 0, 1, 0, 2, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1…</span></span>
-<span id="cb103-18"><a href="logistic-regression.html#cb103-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Parch       &lt;int&gt; 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…</span></span>
-<span id="cb103-19"><a href="logistic-regression.html#cb103-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Ticket      &lt;chr&gt; &quot;330911&quot;, &quot;363272&quot;, &quot;240276&quot;, &quot;315154&quot;, &quot;3101298&quot;, &quot;7538&quot;,…</span></span>
-<span id="cb103-20"><a href="logistic-regression.html#cb103-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Fare        &lt;dbl&gt; 7.8292, 7.0000, 9.6875, 8.6625, 12.2875, 9.2250, 7.6292, 2…</span></span>
-<span id="cb103-21"><a href="logistic-regression.html#cb103-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Embarked    &lt;chr&gt; &quot;Q&quot;, &quot;S&quot;, &quot;Q&quot;, &quot;S&quot;, &quot;S&quot;, &quot;S&quot;, &quot;Q&quot;, &quot;S&quot;, &quot;C&quot;, &quot;S&quot;, &quot;S&quot;, &quot;S&quot;…</span></span>
-<span id="cb103-22"><a href="logistic-regression.html#cb103-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ Survived    &lt;int&gt; 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0…</span></span></code></pre></div>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="logistic-regression.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="do">## estimation</span></span>
-<span id="cb104-2"><a href="logistic-regression.html#cb104-2" aria-hidden="true" tabindex="-1"></a>titanic_estimation <span class="ot">&lt;-</span> titanic <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(PassengerId, Name, Ticket))</span></code></pre></div>
+<p>There are 2 missing values in <code>Embarked</code> and 263 in <code>Age</code>. The most missings fall upon <code>Cabin</code> though. Cabin information is not a very useful predictor for survival, thus we can remove this information for our analysis. We conduct a <em>complete case analysis</em>. The dataset should look like this (n = 1043):</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="logistic-regression.html#cb103-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic <span class="sc">%&gt;%</span> </span>
+<span id="cb103-2"><a href="logistic-regression.html#cb103-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(Cabin, PassengerId, Name, Ticket)) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-3"><a href="logistic-regression.html#cb103-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span>
+<span id="cb103-4"><a href="logistic-regression.html#cb103-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-5"><a href="logistic-regression.html#cb103-5" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(titanic, <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-322124e7720a5b09c908" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-322124e7720a5b09c908">{"x":{"filter":"none","vertical":false,"data":[[3,3,2,3,3,3,3,2,3,3,1,1,2,1,2,2,3,3,3,1,3,1,1,3,1,3,1,2,2,3,1,3,3,3,3,3,2,1,3,1,1,3,1,2,2,1,3,3,3,1,3,2,3,3,1,3,1,1,1,3,3,3,1,1,1,1,2,3,3,1,1,3,3,2,3,1,1,3,1,3,3,3,1,2,3,3,3,3,2,2,1,3,1,3,3,1,2,2,1,3,3,3,2,3,3,1,3,3,3,2,3,3,3,1,1,2,1,3,3,2,1,3,3,3,1,3,1,3,3,2,2,3,1,3,3,3,3,3,2,2,1,2,1,2,1,1,1,2,2,3,2,2,3,2,2,3,1,3,2,3,1,2,2,3,2,1,3,3,2,2,3,1,1,1,2,3,2,3,1,3,3,2,2,1,3,1,3,1,3,2,1,1,2,1,1,2,2,2,2,3,1,3,3,3,2,3,3,3,2,3,2,3,1,1,2,2,2,2,2,3,3,3,3,3,1,3,1,3,3,2,1,3,3,2,3,1,1,3,1,3,3,3,3,1,3,1,2,3,2,3,3,2,1,1,3,2,1,2,2,2,1,3,3,1,2,3,2,2,3,1,3,2,3,2,2,1,2,2,2,3,1,1,3,3,2,2,3,1,3,1,2,2,1,1,2,1,1,3,2,1,3,3,3,2,3,2,3,3,1,1,3,2,3,1,3,1,3,3,1,2,1,1,1,2,2,1,3,1,3,1,3,3,1,3,1,3,1,3,3,2,3,1,3,3,3,2,3,3,2,2,3,1,3,3,1,1,2,1,1,3,3,3,3,2,2,3,3,3,3,1,2,1,2,3,2,3,3,1,3,2,3,3,3,2,3,2,3,3,3,2,3,3,3,1,2,3,3,1,3,3,3,1,3,3,1,1,2,2,3,1,3,3,3,3,3,1,3,3,3,3,3,3,2,1,3,2,2,2,1,3,3,3,3,3,3,2,2,2,1,1,3,1,3,3,3,2,2,3,3,2,2,2,1,3,3,1,3,3,3,2,3,3,3,3,3,3,1,3,3,3,1,3,1,2,3,3,2,3,1,3,3,2,2,3,2,1,1,3,2,3,3,3,3,3,3,3,3,1,3,2,3,2,1,3,2,1,2,3,2,3,1,3,2,3,2,1,3,2,3,2,2,2,2,2,2,3,3,1,3,2,1,2,3,1,3,3,3,1,1,2,3,1,1,2,3,3,1,1,3,2,1,1,3,3,3,3,3,3,3,3,3,3,2,3,1,1,2,3,3,3,1,1,3,1,1,2,1,1,1,2,3,2,3,2,2,1,1,3,3,2,2,1,3,2,3,1,1,1,3,1,1,3,1,2,1,2,2,2,2,2,3,3,3,3,3,3,1,2,3,2,3,3,3,1,1,1,3,3,1,3,3,1,3,3,1,3,3,1,2,3,2,2,1,3,3,1,3,3,3,2,2,2,3,3,3,3,3,2,3,2,3,1,3,2,2,2,3,3,3,3,3,2,2,3,1,2,3,1,1,3,2,1,2,2,3,3,2,1,2,1,3,1,2,1,1,3,1,2,1,3,1,2,3,1,3,3,2,2,3,2,3,3,3,3,3,3,1,1,1,3,3,3,1,1,3,1,1,3,3,3,3,1,1,2,3,3,3,1,1,3,1,2,2,3,1,3,1,3,2,3,2,2,3,3,2,1,1,1,1,3,3,2,1,1,2,3,2,1,2,3,3,1,1,1,3,3,2,3,3,3,3,2,1,1,3,3,2,1,3,2,1,2,1,1,2,1,3,3,1,3,2,3,3,1,2,3,1,3,3,1,2,1,3,3,2,3,3,2,2,3,1,3,3,3,1,2,1,3,1,3,1,3,2,3,2,3,3,1,3,3,1,3,1,3,2,3,3,2,3,2,1,1,3,1,3,3,2,2,3,2,1,2,2,3,3,3,3,1,1,3,3,2,2,3,3,3,1,1,3,3,1,2,3,1,3,1,1,3,3,3,2,2,1,1,1,1,3,2,3,1,2,3,2,3,2,2,1,3,2,2,3,1,3,2,2,3,3,1,1,1,3,3,1,3,2,1,3,2,3,3,3,2,2,3,2,3,1,3,3,1,3,1,3,3,3,3,2,2,3,3,1,3,1,1,3,3,3,3,3,1,2,3,2,1,3,3,3,2,2,1,3,3,3,1,3,2,1,3,3,2,3,3,3,2,3,3,1,3,1,3,3,2,3,2,3,3,1,3,3,3,2,1,3,3,3,3,2,3,3,3,1,2,3,1,1,3,3,2,1,2,2,2,1,3,3,1,1,3,2,3,3,3,1,2,3,3,2,3,3,2,1,1,3],["male","female","male","male","female","male","female","male","female","male","male","female","male","female","female","male","male","female","female","male","male","male","female","male","female","male","male","male","male","female","male","male","female","male","male","male","female","female","male","male","female","female","male","male","female","female","male","male","male","female","male","male","male","female","male","female","male","male","female","female","male","female","male","female","male","female","male","female","male","male","male","female","female","male","female","female","male","male","female","male","female","male","female","male","male","female","male","male","male","male","female","female","female","male","female","male","female","female","female","male","female","male","male","male","male","male","male","male","male","male","female","male","female","female","male","male","male","male","male","male","female","female","male","male","female","female","male","female","male","female","male","female","male","male","female","male","male","male","female","female","male","female","female","male","male","female","female","male","female","male","male","male","male","male","male","male","male","female","male","male","male","female","male","female","male","female","male","male","male","female","female","male","male","female","female","male","female","male","female","male","male","male","male","female","male","male","male","male","male","female","female","female","female","male","male","female","male","female","female","male","male","male","male","male","female","male","male","male","female","female","male","male","male","female","female","male","male","male","male","female","male","female","female","male","male","female","male","male","male","female","male","male","male","male","male","female","male","male","male","female","male","male","female","female","female","male","male","male","male","male","male","male","male","female","male","female","male","male","male","female","male","female","male","male","male","male","male","male","male","female","female","male","female","male","female","female","male","male","male","female","male","female","female","male","female","female","male","female","female","female","male","male","female","male","male","female","female","female","male","male","male","male","female","female","male","male","male","male","male","female","male","male","male","female","male","female","male","male","female","male","female","male","male","male","male","male","female","female","female","female","male","male","female","female","female","male","male","male","female","female","female","female","male","male","female","female","male","female","male","male","female","male","female","female","male","male","male","male","male","male","female","female","female","female","female","female","female","male","male","female","female","male","female","male","female","male","male","male","male","female","male","female","male","male","female","male","male","male","male","male","female","male","male","male","female","female","male","female","male","male","male","male","male","male","male","male","female","male","female","male","male","male","male","female","male","male","female","male","female","female","male","male","male","male","female","male","male","female","male","male","male","male","male","male","female","female","male","male","female","male","male","male","female","female","male","male","male","male","female","male","male","male","female","male","male","male","female","male","male","female","male","male","male","male","female","male","male","male","female","male","male","male","female","male","male","male","male","female","male","male","male","female","male","female","male","female","female","male","female","male","male","male","male","female","male","male","female","male","male","female","male","male","female","female","male","female","male","male","male","male","male","male","male","male","male","female","male","male","female","male","male","female","male","male","male","male","male","male","female","female","male","male","female","male","male","female","female","female","female","female","male","male","male","male","male","male","female","female","male","female","male","female","female","male","female","male","male","male","male","male","male","male","male","female","female","female","male","female","male","male","female","female","male","male","female","male","female","female","female","female","male","male","female","female","male","female","female","male","male","female","female","female","male","female","female","female","male","male","male","male","female","male","male","male","female","male","male","male","female","female","male","male","male","male","male","male","female","female","male","male","female","male","male","female","female","male","male","male","male","female","female","male","male","male","female","female","male","female","male","male","female","female","male","male","male","female","female","male","female","male","male","female","male","male","female","male","female","male","male","male","male","female","male","female","female","male","female","male","male","female","male","female","female","male","male","female","male","male","female","female","female","male","male","female","male","male","female","male","female","male","female","male","male","male","male","male","male","female","male","male","male","male","male","male","female","male","female","female","female","male","male","male","female","male","male","female","male","female","male","male","male","male","male","male","male","female","female","male","male","female","female","female","male","female","male","male","male","male","female","male","male","female","female","male","female","male","female","male","female","male","male","female","male","female","female","male","female","female","female","female","female","male","male","male","female","male","male","male","male","male","female","male","female","female","female","male","male","male","male","female","male","male","female","male","male","male","female","female","male","female","female","male","male","female","male","male","male","male","female","male","male","male","male","male","female","male","male","male","male","male","female","female","female","male","female","male","female","female","male","male","male","male","male","male","male","male","female","male","male","male","male","female","female","male","male","female","male","female","female","female","male","male","male","female","female","male","female","male","female","male","male","male","male","male","male","male","male","male","male","female","male","male","male","male","male","female","female","male","male","male","male","male","male","male","male","male","female","male","female","male","male","male","male","male","male","female","male","female","male","male","male","female","male","female","female","male","male","male","male","female","female","male","female","male","male","male","male","male","female","male","female","female","male","male","male","male","female","male","male","female","male","male","male","male","female","male","male","female","male","male","male","female","male","male","male","male","female","male","male","female","male","female","female","male","male","male","female","female","male","female","female","female","female","male","male","male","female","male","male","male","male","male","male","female","female","male","female","male","female","male","male","male","male","male","female","male","female","male","male","male","female","male","female","male","male","male","female","male","male","female","male","male","female","male","male","male","female","male","male","male","male","female","male","male","male","male","male","male","male","female","female","female","female","female","male","female","male","male","female","male","female","female","male","male","male","female","male","male","female","female","male","male","female","female","male","female","male","male","female","male","female","male","male"],[34.5,47,62,27,22,14,30,26,18,21,46,23,63,47,24,35,21,27,45,55,9,21,48,50,22,22.5,41,50,24,33,30,18.5,21,25,39,41,30,45,25,45,60,36,24,27,20,28,10,35,25,36,17,32,18,22,13,18,47,31,60,24,21,29,28.5,35,32.5,55,30,24,6,67,49,27,18,2,22,27,25,25,76,29,20,33,43,27,26,16,28,21,18.5,41,36,18.5,63,18,1,36,29,12,35,28,17,22,42,24,32,53,43,24,26.5,26,23,40,10,33,61,28,42,31,22,30,23,36,13,24,29,23,42,26,7,26,41,26,48,18,22,27,23,40,15,20,54,36,64,30,37,18,27,40,21,17,40,34,11.5,61,8,33,6,18,23,0.33,47,8,25,35,24,33,25,32,17,60,38,42,57,50,30,21,22,21,53,23,40.5,36,14,21,21,39,20,64,20,18,48,55,45,45,41,22,42,29,0.92,20,27,24,32.5,28,19,21,36.5,21,29,1,30,17,46,26,20,28,40,30,22,23,0.75,9,2,36,24,30,53,36,26,1,30,29,32,43,24,64,30,0.83,55,45,18,22,37,55,17,57,19,27,22,26,25,26,33,39,23,12,46,29,21,48,39,19,27,30,32,39,25,18,32,58,16,26,38,24,31,45,25,18,49,0.17,50,59,30,14.5,24,31,27,25,22,45,29,21,31,49,44,54,45,22,21,55,5,26,19,24,24,57,21,6,23,51,13,47,29,18,24,48,22,31,30,38,22,17,43,20,23,50,3,37,28,39,38.5,22,38,26,35,35,54,2,27,14,4,58,20,39,14,55,2,31,35,34,15,28,8,38,19,40,66,28,42,21,18,14,40,27,3,19,18,7,21,49,29,65,21,28.5,5,11,22,45,4,29,19,17,26,32,16,21,26,32,25,0.83,30,22,29,28,17,33,16,23,24,29,20,46,26,59,71,23,34,34,28,21,33,37,28,21,38,47,14.5,22,20,17,21,70.5,29,24,2,21,32.5,32.5,54,12,24,45,33,20,47,29,25,23,19,37,16,24,22,24,19,18,19,27,9,36.5,42,51,22,55.5,40.5,51,16,30,44,40,26,17,1,9,45,28,61,4,1,21,56,18,50,30,36,9,1,4,45,40,36,32,19,19,3,44,58,42,24,28,34,45.5,18,2,32,26,16,40,24,35,22,30,31,27,42,32,30,16,27,51,38,22,19,20.5,18,35,29,59,5,24,44,8,19,33,29,22,30,44,25,24,37,54,29,62,30,41,29,30,35,50,3,52,40,36,16,25,58,35,25,41,37,63,45,7,35,65,28,16,19,33,30,22,42,22,26,19,36,24,24,23.5,2,50,19,0.92,17,30,30,24,18,26,28,43,26,24,54,31,40,22,27,30,22,36,61,36,31,16,45.5,38,16,29,41,45,45,2,24,28,25,36,24,40,3,42,23,15,25,28,22,38,40,29,45,35,30,60,24,25,18,19,22,3,22,27,20,19,42,1,32,35,18,1,36,17,36,21,28,23,24,22,31,46,23,28,39,26,21,28,20,34,51,3,21,33,44,34,18,30,10,21,29,28,18,28,19,32,28,42,17,50,14,21,24,64,31,45,20,25,28,4,13,34,5,52,36,30,49,29,65,50,48,34,47,48,38,56,0.75,38,33,23,22,34,29,22,2,9,50,63,25,35,58,30,9,21,55,71,21,54,25,24,17,21,37,16,18,33,28,26,29,36,54,24,47,34,36,32,30,22,44,40.5,50,39,23,2,17,30,7,45,30,22,36,9,11,32,50,64,19,33,8,17,27,22,22,62,48,39,36,40,28,24,19,29,32,62,53,36,16,19,34,39,32,25,39,54,36,18,47,60,22,35,52,47,37,36,49,49,24,44,35,36,30,27,22,40,39,35,24,34,26,4,26,27,42,20,21,21,61,57,21,26,80,51,32,9,28,32,31,41,20,24,2,0.75,48,19,56,23,18,21,18,24,32,23,58,50,40,47,36,20,32,25,43,40,31,70,31,18,24.5,18,43,36,27,20,14,60,25,14,19,18,15,31,4,25,60,52,44,49,42,18,35,18,25,26,39,45,42,22,24,48,29,52,19,38,27,33,6,17,34,50,27,20,30,25,25,29,11,23,23,28.5,48,35,36,21,24,31,70,16,30,19,31,4,6,33,23,48,0.67,28,18,34,33,41,20,36,16,51,30.5,32,24,48,57,54,18,5,43,13,17,29,25,25,18,8,1,46,16,25,39,49,31,30,30,34,31,11,0.42,27,31,39,18,39,33,26,39,35,6,30.5,23,31,43,10,52,27,38,27,2,1,15,0.83,23,18,39,21,32,20,16,30,34.5,17,42,35,28,4,74,9,16,44,18,45,51,24,41,21,48,24,42,27,31,4,26,47,33,47,28,15,20,19,56,25,33,22,28,25,39,27,19,26,32],[0,1,0,0,1,0,0,1,0,2,0,1,1,1,1,0,0,1,0,1,0,0,1,1,0,0,0,1,2,1,1,0,0,0,0,0,0,1,0,0,0,0,1,0,2,3,4,0,0,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0,2,0,0,1,1,0,0,0,1,1,1,0,0,1,0,0,0,1,1,0,1,0,0,0,0,0,0,1,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,5,0,1,0,0,3,0,1,0,0,4,0,0,0,0,0,1,0,0,1,0,2,0,0,1,1,0,0,1,0,0,0,1,1,1,0,0,2,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,4,0,1,1,1,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,1,0,0,1,1,0,1,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,1,1,0,1,1,0,0,1,1,1,0,1,0,1,0,0,1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,1,0,0,2,0,0,0,0,0,0,2,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,2,1,8,1,0,0,1,0,0,0,1,0,0,0,1,0,2,0,0,4,0,1,1,0,0,0,3,0,0,0,0,3,1,0,1,0,0,0,1,0,0,1,0,1,1,1,1,0,0,0,1,1,0,1,0,0,3,0,1,1,0,0,1,0,0,4,1,0,0,0,0,3,1,3,0,0,1,1,0,2,1,1,1,1,0,1,4,0,1,1,0,0,0,1,5,0,1,3,0,0,4,2,0,5,0,1,0,0,0,0,0,0,0,0,3,1,3,0,0,0,1,1,0,0,0,0,1,0,0,0,2,0,0,0,0,1,0,1,0,0,0,1,0,4,2,1,0,0,1,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,1,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,4,0,1,0,0,4,1,0,0,1,0,0,0,4,2,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,4,0,1,0,0,0,0,0,0,2,0,0,1,1,1,0,1,0,0,0,0,0,4,1,0,0,4,1,0,0,0,0,0,1,0,4,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,1,1,0,0,2,1,0,1,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,2,1,0,0,0,1,3,0,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,0,1,0,1,1,0,0,3,0,0,0,0,0,0,0,1,0,5,0,0,1,0,2,1,0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,1,0,1,0,0,0,0,0,1,1,1,0,0,0,1,0,1,1,2,2,1,0,1,0,1,0,0,0,0,2,0,1,0,1,0,0,0,0,0,0,0,0,0,2,0,1,0,0,1,1,0,0,5,0,0,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,2,1,1,0,0,0,0,0,0,4,4,1,1,0,1,1,1,0,0,0,0,0,1,1,1,0,0,2,0,0,0,0,2,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,1,0,1,1,0,1,2,0,0,1,0,0,1,0,1,0,1,1,1,2,0,1,1,1,0,0,0,0,0,0,0,0,0,3,0,0,1,0,0,0,3,2,1,0,0,0,0,0,0,2,1,0,0,2,0,0,0,1,2,0,0,1,1,0,0,0,0,0,1,0,0,0,5,1,1,4,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,3,1,1,0,0,0,0,0,1,0,1,2,1,0,1,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,4,1,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,0,0,0,4,0,0,1,0,3,1,0,0,0,4,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,4,0,1,0,1,0,1,0,0,2,1,0,0,0,1,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,0,1,0,0,0,0,2,0,0,0,0,1,0,0,0,0,0,0,2,0,0,1,2,1,0,0,0,0,0,0,0,2,0,0,0,4,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,2,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,6,2,0,3,0,0,0,0,1,1,2,2,0,0,0,0,2,1,0,0,1,0,2,0,0,0,5,2,0,0,3,2,0,1,0,1,0,1,0,0,0,1,0,2,0,2,0,0,2,0,1,0,0,0,0,0,0,0,0,2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,2,1,0,0,1,0,2,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,2,0,0,0,1,0,1,2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,0,1,0,0,0,2,0,0,0,1,0,0,0,0,0,1,0,0,2,2,0,0,0,2,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,2,0,0,2,0,0,0,1,0,1,2,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,2,0,1,0,0,5,0,0,1,0,0,0,0,0,1,5,2,0,0,0,0,0,0,0,0,0,2,0,0,1,0,0,0,1,0,0,2,2,0,0,2,0,0,2,0,0,2,0,0,0,0,2,0,0,0,0,0,0,3,2,0,0,0,0,2,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,1,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,1,0,2,2,0,0,0,0,2,1,0,0,1,0,0,0,1,2,4,0,0,1,1,0,0,1,0,0,0,2,1,2,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,2,0,0,0,0,0,0,0,2,1,0,1,0,0,2,2,0,0,1,2,1,0,0,1,0,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,2,0,0,0,0,2,1,0,1,0,0,0,2,1,0,0,0,1,0,0,0,1,1,0,1,0,0,0,0,0,1,2,0,0,0,0,0,1,0,0,1,0,0,1,0,4,0,1,0,0,0,0,0,0,0,0,1,0,2,0,0,0,2,0,0,0,2,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,2,0,2,0,0,1,1,0,0,0,0,0,0,0,2,2,3,4,0,1,0,0,0,2,1,0,1,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,2,0,0,0,0,0,1,2,0,0,0,0,0,0,1,0,0,0,0,0,2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,0,2,0,0,2,2,2,2,0,0,0,0,1,1,2,0,0,0,0,0,1,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,1,1,0,0,2,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,2,0,5,0,2,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,2,0,0,1,5,0,0,2,1,0,0,0,0,1,0,0,0,1,0,2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,6,1,0,0,2,1,2,1,0,0,1,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,2,0,0,1,1,0,0,0,1,1,0,0,2,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,1,0,1,2,1,0,0,0,0,0,0,0,0,0,2,0,0,1,0,2,1,0,0,1,1,2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,2,0,1,1,0,1,1,0,3,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0],[7.8292,7,9.6875,8.6625,12.2875,9.225,7.6292,29,7.2292,24.15,26,82.2667,26,61.175,27.7208,12.35,7.225,7.925,7.225,59.4,3.1708,61.3792,262.375,14.5,61.9792,7.225,30.5,26,31.5,20.575,57.75,7.2292,8.6625,9.5,13.4167,7.85,13,52.5542,7.925,29.7,76.2917,15.9,60,15.0333,23,263,29.125,7.8958,7.65,262.375,7.8958,13.5,7.75,7.725,262.375,7.8792,42.4,28.5375,263,7.75,7.8958,7.925,27.7208,211.5,211.5,25.7,13,7.75,15.2458,221.7792,26,7.8792,8.05,23,13.9,52,26,7.7958,78.85,7.925,7.8542,8.05,55.4417,26,7.775,8.5167,22.525,7.8208,13,15.0458,31.6792,7.2833,221.7792,14.4542,16.7,75.2417,26,15.75,57.75,7.25,16.1,7.7958,13,8.05,8.05,28.5,7.8958,7.8542,7.225,13,8.05,46.9,46.9,151.55,262.375,26,26.55,18,8.05,26,83.1583,12.1833,31.3875,7.55,221.7792,7.8542,26.55,13.775,15.2458,13.5,13,22.025,50.4958,34.375,8.9625,7.225,13.9,31.3875,39,36.75,55.4417,39,83.1583,13,83.1583,53.1,247.5208,16,21,8.05,13,26,14.5,12.35,32.5,7.8542,134.5,7.775,10.5,14.4,227.525,26,10.5,7.75,10.5,27.7208,7.8958,22.525,73.5,26,7.775,42.5,164.8667,211.5,13.8583,8.05,10.5,7.7958,27.4458,7.7958,15.1,13,65,26.55,6.4958,71.2833,7.8542,75.25,7.225,13,106.425,27.7208,30,134.5,51.8625,21,32.5,26,27.75,7.925,136.7792,9.325,9.5,8.05,13,7.775,17.4,7.8542,23,12.1833,12.7375,8.6625,75.2417,136.7792,26,10.5,26,21,10.5,8.6625,13.775,15.2458,20.2125,7.25,82.2667,6.95,81.8583,9.5,7.8958,41.5792,45.5,7.8542,7.775,21,8.6625,26.55,151.55,9.35,93.5,14.1083,8.6625,7.225,7.75,135.6333,7.7333,146.5208,10.5,7.8542,31.5,7.775,7.2292,13,26.55,211.3375,7.05,39,79.2,26,13,36.75,29.7,15.7417,7.8958,26,13,7.2292,31.5,10.5,7.5792,512.3292,7.65,13,7.2292,13.5,21,63.3583,10.5,73.5,65,20.575,26,51.4792,15.55,69.55,37.0042,21,8.6625,55.4417,39.6875,59.4,13.8583,11.5,134.5,0,13,81.8583,262.375,8.6625,11.5,50,31.3875,7.8792,16.1,65,7.775,13,7.75,21.075,93.5,39.4,20.25,10.5,22.025,60,7.25,79.2,7.775,7.7333,164.8667,21,59.4,47.1,27.7208,13.8625,10.5,211.5,13.775,90,7.775,108.9,7.25,7.25,71.2833,7.925,53.1,8.05,51.8625,21.075,11.1333,30.0708,16.7,26.55,8.05,31.275,7.8542,16,29.125,18,26,13,8.0292,35.5,21.075,31.3875,263,27.7208,10.5,82.1708,52,8.05,18,11.2417,9.475,21,41.5792,7.8792,17.8,39.6875,7.8,76.7292,26,61.9792,10.5,7.2292,27.75,46.9,7.2292,83.475,27.9,10.5,8.1583,7.925,8.6625,10.5,46.9,73.5,14.4542,56.4958,7.65,29,12.475,9,9.5,47.1,10.5,15.85,34.375,263,8.05,8.05,7.8542,61.175,20.575,7.25,34.6542,63.3583,23,26,7.8958,77.2875,8.6542,7.925,7.8958,7.65,7.8958,52,14.4542,8.05,9.825,14.4583,7.925,7.75,21,247.5208,31.275,73.5,30.0708,13,77.2875,11.2417,7.1417,6.975,7.8958,7.05,14.5,26,13,15.0458,26.2833,53.1,9.2167,79.2,7.75,15.85,6.75,11.5,36.75,7.7958,34.375,26,13,12.525,66.6,8.05,14.5,61.3792,7.7333,8.05,16.1,15.75,7.775,8.6625,39.6875,20.525,27.9,56.4958,33.5,29.125,11.1333,7.925,30.6958,7.8542,28.7125,13,0,31.3875,39,22.025,26.55,15.5,7.8958,13,13,7.8542,26,27.7208,146.5208,8.4042,13,9.5,6.4958,7.225,8.05,10.4625,15.85,18.7875,7.75,31,7.05,21,7.25,13,113.275,7.925,27,76.2917,10.5,8.05,13,8.05,90,9.35,10.5,7.25,13,83.475,7.775,13.5,31.3875,10.5,26,26.25,10.5,12.275,10.5,7.125,7.225,90,7.775,14.5,52.5542,26,10.4625,26.55,16.1,20.2125,15.2458,86.5,512.3292,26,31.3875,79.65,0,10.5,39.6875,7.775,153.4625,135.6333,0,19.5,29.7,77.9583,7.75,29.125,20.25,7.75,7.8542,9.5,8.05,8.6625,9.5,7.8958,13,7.75,78.85,91.0792,12.875,8.85,7.8958,7.2292,151.55,247.5208,0,151.55,108.9,24,56.9292,83.1583,262.375,26,7.8958,26.25,7.8542,26,14,164.8667,134.5,7.25,7.8958,12.35,29,135.6333,6.2375,13,20.525,57.9792,28.5,153.4625,18,66.6,134.5,8.05,35.5,26,263,13,13,13,13,13,15.9,8.6625,9.225,7.2292,17.8,9.5,55,13,27.9,27.7208,14.4542,7.05,7.25,75.25,69.3,55.4417,6.4958,8.05,135.6333,21.075,7.25,211.5,4.0125,7.775,227.525,15.7417,7.925,52,73.5,46.9,13,12,120,7.7958,7.925,113.275,16.7,7.7958,7.8542,26,10.5,12.65,7.925,8.05,9.825,15.85,8.6625,21,7.75,18.75,7.775,90,7.925,32.5,13,13,24.15,7.7333,7.875,14.4,20.2125,26,26,8.05,26.55,26,7.125,55.9,120,34.375,18.75,263,10.5,26.25,9.5,7.775,13,81.8583,19.5,26.55,19.2583,30.5,27.75,27.75,89.1042,7.8958,26.55,10.5,26.55,8.05,38.5,13,7.05,26.55,19.2583,8.6625,27.75,13.7917,9.8375,21,7.0458,7.5208,12.2875,46.9,8.05,9.5875,91.0792,90,29.7,8.05,15.9,7.25,30.5,49.5042,8.05,78.2667,151.55,7.7958,8.6625,7.75,9.5875,86.5,108.9,26,22.525,56.4958,7.75,26.2875,59.4,7.4958,34.0208,10.5,26,7.8958,93.5,7.8958,57.9792,7.75,10.5,7.925,11.5,26,7.2292,8.6625,26.25,26.55,106.425,49.5,71,31.275,31.275,26,106.425,26,26,20.525,36.75,110.8833,26,7.225,7.775,26.55,39.6,79.65,17.4,7.8958,13.5,24.15,7.8958,21.075,7.8542,10.5,51.4792,26.3875,8.05,14.5,13,55.9,7.925,30,110.8833,26,40.125,79.65,15,79.2,8.05,7.125,78.2667,7.25,26,24.15,0,56.9292,27,8.05,26.55,15.55,7.8958,30.5,41.5792,153.4625,31.275,8.05,65,14.4,16.1,39,10.5,14.4542,52.5542,15.7417,7.8542,16.1,32.3208,12.35,77.9583,7.8958,30,7.0542,30.5,27.9,13,7.925,26.25,39.6875,7.8542,69.3,27.9,19.2583,76.7292,7.8958,35.5,7.55,23,8.4333,6.75,73.5,15.5,13,113.275,133.65,7.225,25.5875,7.4958,7.925,73.5,13,8.05,39,52,10.5,13,7.775,8.05,9.8417,46.9,512.3292,76.7292,9.225,46.9,39,41.5792,39.6875,10.1708,7.7958,211.3375,57,13.4167,7.225,26.55,13.5,8.05,110.8833,7.65,227.525,26.2875,14.4542,7.7417,7.8542,26,13.5,26.2875,151.55,49.5042,52,9.4833,13,7.65,227.525,10.5,7.775,33,7.0542,13,13,53.1,8.6625,21,26,7.925,211.3375,18.7875,13,13,16.1,34.375,512.3292,78.85,262.375,16.1,7.925,71,20.25,13,53.1,7.75,23,12.475,9.5,7.8958,65,14.5,7.7958,11.5,8.05,86.5,7.125,7.2292,120,7.775,77.9583,7.75,8.3625,9.5,7.8542,10.5,23,7.75,12.475,211.3375,7.2292,57,30,7.05,7.25,7.4958,29.125,20.575,79.2,26,7.8958,13,25.9292,8.6833,7.2292,24.15,13,26.25,120,8.5167,6.975,7.775,0,7.775,13,53.1,7.8875,24.15,10.5,31.275,8.05,7.925,37.0042,6.45,27.9,93.5,8.6625,0,12.475,39.6875,37.0042,14.4542,18.75,7.8542,8.3,83.1583,8.6625,56.4958,7.925,10.5,31,6.4375,8.6625,7.55,7.8958,33,31.275,7.775,15.2458,39.4,26,9.35,164.8667,26.55,19.2583,14.1083,11.5,25.9292,13,13,13.8583,50.4958,11.1333,7.8958,52.5542,5,9,24,7.225,9.8458,7.8958,83.1583,26,7.8958,10.5167,10.5,7.05,29.125,13,30,30,7.75],["Q","S","Q","S","S","S","Q","S","C","S","S","S","S","S","C","Q","C","S","C","C","S","C","C","S","C","C","S","S","S","S","C","C","S","S","C","S","S","S","S","C","C","S","S","C","S","S","Q","S","S","C","S","S","S","Q","C","Q","S","C","S","Q","S","S","C","C","C","S","S","Q","C","S","S","Q","S","S","S","S","C","S","S","S","S","S","C","S","S","C","S","Q","S","C","C","Q","S","C","S","C","S","S","C","S","S","S","S","S","S","C","S","S","C","S","S","S","S","S","C","S","S","S","S","S","C","S","S","S","S","S","S","S","C","S","S","S","C","S","S","C","S","S","S","S","C","S","C","S","C","S","C","S","S","S","S","S","S","Q","S","S","C","S","S","S","C","S","S","Q","S","C","S","S","S","S","S","S","S","C","C","S","S","S","C","S","S","S","S","S","S","C","S","C","C","S","C","C","S","C","S","S","S","S","S","S","C","S","S","S","S","S","S","S","S","S","C","S","C","C","S","S","S","S","S","S","S","C","S","S","S","Q","S","S","S","C","S","S","S","S","S","S","S","S","S","S","S","C","Q","C","Q","C","S","S","S","S","C","S","S","S","S","S","C","S","S","S","C","C","S","S","S","C","S","S","S","C","S","S","C","S","S","C","S","S","S","S","S","S","S","S","C","S","S","C","S","C","C","S","C","S","S","S","C","S","S","S","S","Q","S","S","S","S","Q","S","S","S","S","S","S","S","Q","C","S","Q","S","S","C","S","C","C","S","C","S","Q","S","C","S","S","C","S","S","S","S","S","S","C","S","S","S","S","S","S","Q","S","S","S","Q","S","S","S","S","C","S","C","S","S","S","C","S","S","C","Q","S","S","S","C","S","C","S","C","S","S","C","S","S","S","S","S","S","S","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","C","C","S","S","S","S","S","S","S","S","S","S","C","S","S","C","S","Q","S","C","S","S","C","S","S","C","S","S","C","S","S","S","S","C","S","S","S","C","S","S","Q","S","S","S","S","S","S","S","S","S","S","C","Q","S","S","S","S","S","S","S","S","S","S","Q","S","S","C","S","C","S","S","S","S","S","S","Q","S","S","S","S","S","C","C","S","S","S","S","C","S","S","S","C","Q","C","S","S","S","S","C","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","C","Q","S","S","S","S","S","S","S","S","C","S","C","S","S","S","S","S","S","S","S","S","S","S","C","S","S","Q","S","Q","S","S","S","C","S","S","S","Q","S","C","C","S","S","C","S","C","S","S","C","C","C","C","C","S","S","S","S","S","S","S","C","S","S","Q","S","C","S","S","S","C","S","S","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","C","S","S","S","S","S","C","C","S","S","C","C","C","S","S","C","S","S","C","C","S","C","C","S","S","S","S","S","C","S","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","Q","S","S","S","S","S","Q","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","C","S","S","C","C","C","S","S","S","S","S","S","S","S","C","S","S","C","S","S","S","S","S","S","S","S","C","S","C","S","S","S","S","C","S","C","S","S","S","Q","S","S","C","S","S","S","Q","S","C","S","S","S","S","S","S","S","C","Q","S","S","S","S","C","S","S","S","C","C","S","S","S","S","C","S","S","S","S","C","S","C","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","S","C","S","C","S","S","C","S","S","C","S","S","S","S","C","S","S","C","S","S","S","C","S","S","S","S","S","S","S","S","C","S","C","S","S","S","Q","S","S","S","S","C","S","S","S","S","S","S","C","S","C","C","S","C","S","S","S","Q","S","Q","S","C","S","C","S","S","S","S","S","S","S","S","S","S","S","S","S","S","C","C","S","S","S","C","S","S","S","S","S","C","C","S","S","S","C","S","C","S","C","Q","S","S","S","S","S","C","S","S","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","C","S","S","S","S","C","S","C","S","S","S","S","S","S","Q","S","S","S","S","S","S","S","S","S","S","S","C","S","S","S","Q","S","S","S","S","S","S","S","S","C","S","S","S","S","S","Q","S","C","S","S","S","S","S","C","S","S","S","S","C","S","S","S","S","S","S","S","S","S","S","S","S","C","S","S","S","S","S","S","S","C","C","S","S","S","C","S","S","S","S","C","C","S","S","C","S","S","S","C","S","S","S","S","S","C","S","S","S","S","S","C","S","S","S","S","S","S","C","C","S","S","C","S","S","S","S","S","Q","S","S","C","Q"],[0,1,0,0,1,0,1,0,1,0,0,1,0,1,1,0,0,1,1,0,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,0,0,0,1,0,1,0,0,1,1,0,1,0,1,0,1,0,1,0,0,0,1,1,0,1,1,0,0,1,0,1,0,1,0,0,1,0,0,0,0,1,1,1,0,1,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,1,0,0,1,1,0,1,0,1,0,1,0,0,1,0,0,0,1,1,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,1,1,0,0,1,1,0,1,0,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,0,0,0,0,1,1,0,1,0,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,1,0,0,1,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1,0,0,0,1,1,1,1,0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,1,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,0,1,1,0,1,0,1,1,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,1,0,0,0,0,0,1,0,0,1,1,1,0,1,0,0,1,1,0,1,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,1,1,1,1,0,1,0,0,1,0,0,0,1,0,1,0,1,1,1,1,0,0,0,0,0,1,0,1,1,0,1,1,1,0,0,0,1,1,0,1,1,0,0,1,1,1,0,1,1,1,0,0,0,0,1,1,0,1,1,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,1,0,0,0,1,1,0,1,0,0,1,1,1,1,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,0,1,1,1,1,1,1,0,0,1,1,0,1,1,0,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,1,0,1,1,1,1,0,0,1,1,0,1,0,1,0,1,0,0,1,0,0,1,0,1,1,1,0,0,1,0,0,1,0,1,1,0,1,1,0,1,1,1,0,0,0,0,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,0,0,0,1,1,0,1,0,0,1,1,1,0,0,1,0,0,1,0,0,1,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,0,1,0,1,1,0,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,1,0,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,0,0,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,0,0,1,0,1,0,1,0,0,1,0,0,1,1,0,0,1,1,0,0,0,1,0,1,1,0,1,0,0,0,0,0,1,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,1,0,1,1,1,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,0,1,0,1,1,0,1,0,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,1,1,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Pclass<\/th>\n      <th>Sex<\/th>\n      <th>Age<\/th>\n      <th>SibSp<\/th>\n      <th>Parch<\/th>\n      <th>Fare<\/th>\n      <th>Embarked<\/th>\n      <th>Survived<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,2,3,4,5,7]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="no-predictor-variables-1-pt" class="section level4 hasAnchor" number="10.2.0.2">
-<h4><span class="header-section-number">10.2.0.2</span> No Predictor Variables (1 pt)<a href="logistic-regression.html#no-predictor-variables-1-pt" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>There is no predictor, only the intercept (empty model):</p>
+<div id="no-predictor-variables" class="section level3 hasAnchor" number="10.4.2">
+<h3><span class="header-section-number">10.4.2</span> No Predictor Variables<a href="logistic-regression.html#no-predictor-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In an empty model, there is only the intercept and no predictor:</p>
 <p><span class="math display">\[logit (p) = \beta_0\]</span></p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="logistic-regression.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb105-2"><a href="logistic-regression.html#cb105-2" aria-hidden="true" tabindex="-1"></a>logistic0 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
-<span id="cb105-3"><a href="logistic-regression.html#cb105-3" aria-hidden="true" tabindex="-1"></a>logistic0</span>
-<span id="cb105-4"><a href="logistic-regression.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb105-5"><a href="logistic-regression.html#cb105-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ 1, family = binomial(link = &quot;logit&quot;), </span></span>
-<span id="cb105-6"><a href="logistic-regression.html#cb105-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic)</span></span>
-<span id="cb105-7"><a href="logistic-regression.html#cb105-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb105-8"><a href="logistic-regression.html#cb105-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb105-9"><a href="logistic-regression.html#cb105-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  </span></span>
-<span id="cb105-10"><a href="logistic-regression.html#cb105-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     -0.4143  </span></span>
-<span id="cb105-11"><a href="logistic-regression.html#cb105-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb105-12"><a href="logistic-regression.html#cb105-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1042 Residual</span></span>
-<span id="cb105-13"><a href="logistic-regression.html#cb105-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
-<span id="cb105-14"><a href="logistic-regression.html#cb105-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 1402  AIC: 1404</span></span></code></pre></div>
-<!-- In all logistic regression models regression coefficients are reported in log odds.  -->
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="logistic-regression.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb104-2"><a href="logistic-regression.html#cb104-2" aria-hidden="true" tabindex="-1"></a>logistic0 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
+<span id="cb104-3"><a href="logistic-regression.html#cb104-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-4"><a href="logistic-regression.html#cb104-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb104-5"><a href="logistic-regression.html#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">&quot;Survival&quot;</span> <span class="ot">=</span> logistic0), </span>
+<span id="cb104-6"><a href="logistic-regression.html#cb104-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">title =</span> <span class="st">&#39;Empty Model.&#39;</span>,</span>
+<span id="cb104-7"><a href="logistic-regression.html#cb104-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-166">Table 10.1: </span>Empty Model.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+−0.414
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.063)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+<p>What does <span class="math inline">\(-0.414\)</span> represent?</p>
+<p><span class="math display">\[logit (p) = \log \frac{p}{1-p} = \beta_0 = -0.414 \]</span></p>
+<p>What is <em>p</em> here? The overall probability of survival (<code>Survived</code> = 1). Let’s take a look at the frequency table for survival.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="logistic-regression.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived)</span>
+<span id="cb105-2"><a href="logistic-regression.html#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb105-3"><a href="logistic-regression.html#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0   1 </span></span>
+<span id="cb105-4"><a href="logistic-regression.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 628 415</span></span></code></pre></div>
+<ul>
+<li><span class="math inline">\(p = 415/1043 = 0.3978907\)</span> is the share of survivors.</li>
+<li><span class="math inline">\(0.3978907 / (1-0.3978907) = 0.660828\)</span> is the odds of surviving.</li>
+<li><span class="math inline">\(log(0.660828) = -0.4142617\)</span> is the logodds of surviving.</li>
+</ul>
+<p>In logistic regression models regression coefficients are reported in log odds.</p>
 <!-- This means \( log (1/(1-p)) = \) -0.41.  -->
-<p>Please recalculate the intercept from model <code>logistic0</code>, i.e. the value -0.4142616.</p>
-<p>Use the probability of survival from <code>titanic</code> data (check the count of <code>titanic$Survived</code>). Store and show the probability of survival in a vector named <code>survive_p</code>. Store and show the odds of survival as <code>survive_odds</code>. Calculate and store the logodds of survival as <code>survive_logodds</code> (this should be equivalent to the empty model intercept).</p>
+<!-- Please recalculate the intercept from model `logistic0`, i.e. the value -0.4142616. -->
+<!-- Use the probability of survival from `titanic` data (check the count of `titanic$Survived`). Store and show the probability of survival in a vector named `survive_p`. Store and show the odds of survival as `survive_odds`. Calculate and store the logodds of survival as `survive_logodds` (this should be equivalent to the empty model intercept).  -->
 <!-- From probability, calculate odds and logodds (this should be equivalent to the empty model intercept).  -->
 <!-- Let's take a look at the frequency table for survival and derive this value step by step: -->
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="logistic-regression.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="do">##table(titanic$Survived)</span></span>
-<span id="cb106-2"><a href="logistic-regression.html#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="do">##table(titanic$Survived)[1]</span></span>
-<span id="cb106-3"><a href="logistic-regression.html#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="do">##table(titanic$Survived)[2]</span></span>
-<span id="cb106-4"><a href="logistic-regression.html#cb106-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-5"><a href="logistic-regression.html#cb106-5" aria-hidden="true" tabindex="-1"></a>survive_p <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived)[<span class="dv">2</span>]<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived)[<span class="dv">2</span>]<span class="sc">+</span><span class="fu">table</span>(titanic<span class="sc">$</span>Survived)[<span class="dv">1</span>]) </span>
-<span id="cb106-6"><a href="logistic-regression.html#cb106-6" aria-hidden="true" tabindex="-1"></a>survive_odds <span class="ot">&lt;-</span> survive_p<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>survive_p)</span>
-<span id="cb106-7"><a href="logistic-regression.html#cb106-7" aria-hidden="true" tabindex="-1"></a>survive_logodds <span class="ot">&lt;-</span> <span class="fu">log</span>(survive_odds)</span>
-<span id="cb106-8"><a href="logistic-regression.html#cb106-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-9"><a href="logistic-regression.html#cb106-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ## 38.9% survived</span></span>
-<span id="cb106-10"><a href="logistic-regression.html#cb106-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 398/(398+623)</span></span>
-<span id="cb106-11"><a href="logistic-regression.html#cb106-11" aria-hidden="true" tabindex="-1"></a><span class="do">## ## The odds are</span></span>
-<span id="cb106-12"><a href="logistic-regression.html#cb106-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 0.3898139/ (1-0.3898139)</span></span>
-<span id="cb106-13"><a href="logistic-regression.html#cb106-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ## 0.6229509 and the log of the odds (logit) is</span></span>
-<span id="cb106-14"><a href="logistic-regression.html#cb106-14" aria-hidden="true" tabindex="-1"></a><span class="do">## log(0.6388443)</span></span>
-<span id="cb106-15"><a href="logistic-regression.html#cb106-15" aria-hidden="true" tabindex="-1"></a><span class="do">## ## -0.4480945, exactly what the regression intercept is</span></span></code></pre></div>
 </div>
-<div id="single-dichotomous-predictor-1-pt" class="section level4 hasAnchor" number="10.2.0.3">
-<h4><span class="header-section-number">10.2.0.3</span> Single Dichotomous Predictor (1 pt)<a href="logistic-regression.html#single-dichotomous-predictor-1-pt" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Now include gender as an explanatory variable. We expect being male reduces the probability of surviving.</p>
+<div id="single-dichotomous-predictor" class="section level3 hasAnchor" number="10.4.3">
+<h3><span class="header-section-number">10.4.3</span> Single Dichotomous Predictor<a href="logistic-regression.html#single-dichotomous-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We include gender as an explanatory variable and expect being male reduces the probability of surviving (<u id='birkenhead'>Women and children first</u>).<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a></p>
+<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-906d795e093817fbf911" width="576"></span>
+<script type="application/json" data-for="htmlwidget-906d795e093817fbf911">{"x":{"element":"birkenhead","opts":{"content":"known to a lesser extent as the Birkenhead drill"}},"evals":[],"jsHooks":[]}</script>
+<blockquote>
+<p>“Passengers’ chances of surviving the sinking of the S.S. Titanic were related to their sex and their social class: females were more likely to survive than males, and the chances of survival declined with social class as measured by the class in which the passenger travelled.”</b></p>
+<footer>
+<span class="citation">Hall (<a href="references.html#ref-hall1986social" role="doc-biblioref">1986</a>)</span>
+</footer>
+</blockquote>
 <p><span class="math display">\[logit (p) = \beta_0 + \beta_1 \cdot sex\]</span></p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="logistic-regression.html#cb107-1" aria-hidden="true" tabindex="-1"></a>logistic1 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Sex, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
-<span id="cb107-2"><a href="logistic-regression.html#cb107-2" aria-hidden="true" tabindex="-1"></a>logistic1</span>
-<span id="cb107-3"><a href="logistic-regression.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb107-4"><a href="logistic-regression.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ Sex, family = binomial(link = &quot;logit&quot;), </span></span>
-<span id="cb107-5"><a href="logistic-regression.html#cb107-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic)</span></span>
-<span id="cb107-6"><a href="logistic-regression.html#cb107-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb107-7"><a href="logistic-regression.html#cb107-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb107-8"><a href="logistic-regression.html#cb107-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)      Sexmale  </span></span>
-<span id="cb107-9"><a href="logistic-regression.html#cb107-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1.616       -3.418  </span></span>
-<span id="cb107-10"><a href="logistic-regression.html#cb107-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb107-11"><a href="logistic-regression.html#cb107-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1041 Residual</span></span>
-<span id="cb107-12"><a href="logistic-regression.html#cb107-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
-<span id="cb107-13"><a href="logistic-regression.html#cb107-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 882.6     AIC: 886.6</span></span></code></pre></div>
-<p>The dummy variable behaves as in the linear model:</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="logistic-regression.html#cb106-1" aria-hidden="true" tabindex="-1"></a>logistic1 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Sex, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
+<span id="cb106-2"><a href="logistic-regression.html#cb106-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-3"><a href="logistic-regression.html#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">&quot;Empty model&quot;</span> <span class="ot">=</span> logistic1), <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Empty model
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+1.616
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.137)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sexmale
+</td>
+<td style="text-align:center;">
+−3.418
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.177)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+<p>The dummy variable behaves as in the linear model in the sense that it either adds to the intercept when it is 1 or does not add anything when it is 0.</p>
 <ul>
-<li>The logodds of survival for men are: -1.8024548</li>
 <li>The logodds of survival for women are: 1.6156685</li>
+<li>The logodds of survival for men are: -1.8024548</li>
 </ul>
-<p>Please calculate the logodds for men based on the frequencies of male and female survival:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="logistic-regression.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
-<span id="cb108-2"><a href="logistic-regression.html#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    </span></span>
-<span id="cb108-3"><a href="logistic-regression.html#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     female male</span></span>
-<span id="cb108-4"><a href="logistic-regression.html#cb108-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0     64  564</span></span>
-<span id="cb108-5"><a href="logistic-regression.html#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1    322   93</span></span></code></pre></div>
-<p>Please use a programmatic approach in R to access those values. All calculations and results need to be shown.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="logistic-regression.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="do">## odds ratio: odds for female to the odds for male: 2.876543/0.2329059 = 12.35067 == (233*468)/(81*109)</span></span>
-<span id="cb109-2"><a href="logistic-regression.html#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="do">## the odds for females are about 1235% higher than the odds for males</span></span>
-<span id="cb109-3"><a href="logistic-regression.html#cb109-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-4"><a href="logistic-regression.html#cb109-4" aria-hidden="true" tabindex="-1"></a><span class="do">## odds ratio: odds for male to the odds for female: 0.2329059/2.876543 = 0.08096729</span></span>
-<span id="cb109-5"><a href="logistic-regression.html#cb109-5" aria-hidden="true" tabindex="-1"></a><span class="do">## the odds for male are about 8% of the odds for females</span></span>
-<span id="cb109-6"><a href="logistic-regression.html#cb109-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-7"><a href="logistic-regression.html#cb109-7" aria-hidden="true" tabindex="-1"></a><span class="do">## The coefficient for female is the log of odds ratio between the female group and male group: log(12.35067) = 2.51371</span></span>
-<span id="cb109-8"><a href="logistic-regression.html#cb109-8" aria-hidden="true" tabindex="-1"></a><span class="do">## The coefficient for male is the log of odds ratio between the male group and female group: log(0.08096729) = -2.51371</span></span>
-<span id="cb109-9"><a href="logistic-regression.html#cb109-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-10"><a href="logistic-regression.html#cb109-10" aria-hidden="true" tabindex="-1"></a><span class="do">###### titanic full data</span></span>
-<span id="cb109-11"><a href="logistic-regression.html#cb109-11" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
-<span id="cb109-12"><a href="logistic-regression.html#cb109-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-13"><a href="logistic-regression.html#cb109-13" aria-hidden="true" tabindex="-1"></a><span class="do">## male survival: (~ 14%)</span></span>
-<span id="cb109-14"><a href="logistic-regression.html#cb109-14" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">+</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>])</span>
-<span id="cb109-15"><a href="logistic-regression.html#cb109-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-16"><a href="logistic-regression.html#cb109-16" aria-hidden="true" tabindex="-1"></a><span class="do">## ## female survival: (~ 83%)</span></span>
-<span id="cb109-17"><a href="logistic-regression.html#cb109-17" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>]<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb109-18"><a href="logistic-regression.html#cb109-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-19"><a href="logistic-regression.html#cb109-19" aria-hidden="true" tabindex="-1"></a><span class="do">## male odds:</span></span>
-<span id="cb109-20"><a href="logistic-regression.html#cb109-20" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>]</span>
-<span id="cb109-21"><a href="logistic-regression.html#cb109-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-22"><a href="logistic-regression.html#cb109-22" aria-hidden="true" tabindex="-1"></a><span class="do">## female odds:</span></span>
-<span id="cb109-23"><a href="logistic-regression.html#cb109-23" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>]</span>
-<span id="cb109-24"><a href="logistic-regression.html#cb109-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-25"><a href="logistic-regression.html#cb109-25" aria-hidden="true" tabindex="-1"></a><span class="do">## logodds male</span></span>
-<span id="cb109-26"><a href="logistic-regression.html#cb109-26" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>])</span>
-<span id="cb109-27"><a href="logistic-regression.html#cb109-27" aria-hidden="true" tabindex="-1"></a><span class="do">## logodds female</span></span>
-<span id="cb109-28"><a href="logistic-regression.html#cb109-28" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb109-29"><a href="logistic-regression.html#cb109-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-30"><a href="logistic-regression.html#cb109-30" aria-hidden="true" tabindex="-1"></a><span class="do">## odds ratio: odds for male to the odds for female: 0.03277389</span></span>
-<span id="cb109-31"><a href="logistic-regression.html#cb109-31" aria-hidden="true" tabindex="-1"></a>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>])<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>])</span>
-<span id="cb109-32"><a href="logistic-regression.html#cb109-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-33"><a href="logistic-regression.html#cb109-33" aria-hidden="true" tabindex="-1"></a><span class="do">## odds ratio: odds for female to the odds for male: 30.5121</span></span>
-<span id="cb109-34"><a href="logistic-regression.html#cb109-34" aria-hidden="true" tabindex="-1"></a>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>])<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>])</span></code></pre></div>
+<p>We calculate the logodds for men based on the frequencies of male and female survival:</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="logistic-regression.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
+<span id="cb107-2"><a href="logistic-regression.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    </span></span>
+<span id="cb107-3"><a href="logistic-regression.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     female male</span></span>
+<span id="cb107-4"><a href="logistic-regression.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0     64  564</span></span>
+<span id="cb107-5"><a href="logistic-regression.html#cb107-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1    322   93</span></span></code></pre></div>
+<p>In our dataset, what are the odds of a male being in the survival class and what are the odds of a female being in the survival class?</p>
+<ul>
+<li>The odds for males are 93 to 564 is 0.1648936.</li>
+<li>The odds for females are 322 to 64 5.03125.</li>
+</ul>
+<p>The odds female are about 30 times higher than the odds for males. The <em>ratio of the odds</em> for female to the odds for male is</p>
+<p><span class="math display">\[odds ratio^{female} = \frac{odds^{female}}{odds^{male}} = \frac{\frac{322}{64}}{\frac{93}{564}} = \frac{322}{64} \frac{564}{93} = \frac{7567}{248} = 30.5121.\]</span>
+Where the odds ratio for males to survive is:</p>
+<p><span class="math display">\[odds ratio^{male} = \frac{odds^{male}}{odds^{female}} = \frac{\frac{93}{564}}{\frac{322}{64}} = \frac{1}{30.5121} = 0.03277388.\]</span></p>
+<p>We can get this figure more easily by exponentiating the regression coefficient, since:</p>
+<p><span class="math display">\[e^{-3.418} = 0.03277793\]</span></p>
+<div style="display:flex; flex-wrap: wrap;">
+<div style="flex-basis: 50%;">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-172">Table 10.2: </span>Default Coefficients.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+1.616
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.137)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sexmale
+</td>
+<td style="text-align:center;">
+−3.418
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.177)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex-basis: 50%;">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-172">Table 10.2: </span>Odds ratio coefficients.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+5.031
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.689)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sexmale
+</td>
+<td style="text-align:center;">
+0.033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.006)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Odds ratio</strong> (OR) is a statistical measure used to describe the strength of the association between two events, such as the presence of a risk factor (being male) and the occurrence of the outcome (i.e. survival).</p>
+</div>
+<p>We interpret OR as follows. An odds ratio greater than 1 indicates that the event is more likely to occur in the exposed group than in the non-exposed group, while an odds ratio less than 1 indicates that the event is less likely to occur in the exposed group than in the non-exposed group.</p>
 <!-- The coefficient for male is the log of odds ratio between the male group and female group: -3.465955 -->
 <!--  log(0.03124315) -->
 <!-- https://data.library.virginia.edu/visualizing-the-effects-of-logistic-regression/ -->
 </div>
-<div id="effect-plot-1-pt" class="section level4 hasAnchor" number="10.2.0.4">
-<h4><span class="header-section-number">10.2.0.4</span> Effect plot (1 pt)<a href="logistic-regression.html#effect-plot-1-pt" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Use a nested version of <code>plot()</code> on <code>allEffects()</code> on the <code>logistic1</code> model (<code>effects</code> package).</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="logistic-regression.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
-<span id="cb110-2"><a href="logistic-regression.html#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">allEffects</span>(logistic1))</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-172-1.png" width="576" /></p>
-<p>What kind of effect does this plot show? And how did the effects package make those estimates? Inverse the logit function on the logodds estimates. Define the function <code>invLogit()</code>:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="logistic-regression.html#cb111-1" aria-hidden="true" tabindex="-1"></a>invLogit <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(x)<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(x))</span></code></pre></div>
-<p>Apply <code>invLogit()</code> on the logodds for males. Show that the results are equivalent to the numbers from the effect plot.</p>
-<!-- the results of the allEffects() function to an object and investigating. When we do it for this model we get a list object with two elements, one for each graph. Within each list element are several values used to create the effect plots. The model.matrix element for the first list element contains the independent variables used in generating the predictions for each sex. -->
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="logistic-regression.html#cb112-1" aria-hidden="true" tabindex="-1"></a>invLogit <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(x)<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(x))</span>
-<span id="cb112-2"><a href="logistic-regression.html#cb112-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-3"><a href="logistic-regression.html#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="do">## logodds male</span></span>
-<span id="cb112-4"><a href="logistic-regression.html#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="fu">invLogit</span>(<span class="fu">log</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>]))</span>
-<span id="cb112-5"><a href="logistic-regression.html#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="do">## logodds female</span></span>
-<span id="cb112-6"><a href="logistic-regression.html#cb112-6" aria-hidden="true" tabindex="-1"></a><span class="fu">invLogit</span>(<span class="fu">log</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">/</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>]))</span></code></pre></div>
+<div id="effect-plot" class="section level3 hasAnchor" number="10.4.4">
+<h3><span class="header-section-number">10.4.4</span> Effect plot<a href="logistic-regression.html#effect-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We use a nested version of <code>plot()</code> on <code>allEffects()</code> on the <code>logistic1</code> model (<code>effects</code> package) to visualize the effect of gender:</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="logistic-regression.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
+<span id="cb108-2"><a href="logistic-regression.html#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">allEffects</span>(logistic1))</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-174-1.png" width="576" /></p>
+<p>What kind of effect does this plot show? And how did the effects package make those estimates? Instead of odds ratio or odds the effect plot shows the plain male and female survival rates.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="logistic-regression.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="do">## male survival: (~ 14%)</span></span>
+<span id="cb109-2"><a href="logistic-regression.html#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">+</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb109-3"><a href="logistic-regression.html#cb109-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.1415525</span></span>
+<span id="cb109-4"><a href="logistic-regression.html#cb109-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-5"><a href="logistic-regression.html#cb109-5" aria-hidden="true" tabindex="-1"></a><span class="do">## ## female survival: (~ 83%)</span></span>
+<span id="cb109-6"><a href="logistic-regression.html#cb109-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>]<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb109-7"><a href="logistic-regression.html#cb109-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8341969</span></span></code></pre></div>
+<p>Recap:</p>
+<ul>
+<li>The odds for males are 93 to 564 is 0.1648936.</li>
+<li>The male survival is 93 to (564+93) = 0.1415525.</li>
+<li>The odds for females are 322 to 64 5.03125.</li>
+<li>The female survival is 322 to (322+64) = 0.8341969.</li>
+</ul>
+<!-- Apply `invLogit()` on the logodds for males. Show that the results are equivalent to the numbers from the effect plot.  -->
 <!-- ##https://stats.stackexchange.com/questions/181996/logistic-regression-interpretation -->
 <!-- ## First off, you need to understand that, because the "regression function" is S-shaped, -->
 <!-- ## the first derivative is not constant. You therefore need to calculate the marginal effect at a certain point. -->
@@ -713,146 +881,603 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <!-- ## concept of odds ratios is of sociological rather than logical importance (i.e., using -->
 <!-- ## odds ratios is not particularly useful except when communicating with people that require them). -->
 </div>
-<div id="chi-square-test-for-independence-1-pt" class="section level4 hasAnchor" number="10.2.0.5">
-<h4><span class="header-section-number">10.2.0.5</span> Chi Square Test For Independence (1 pt)<a href="logistic-regression.html#chi-square-test-for-independence-1-pt" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>The <code>epitab</code> package can improve the contingency tables of survival by gender. From looking at this table, a lot men died (n = 564) and a lot women survived (n = 322). Those who survied have been about 77% female, those who deceased are about 90% male.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="logistic-regression.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epitab)</span>
-<span id="cb113-2"><a href="logistic-regression.html#cb113-2" aria-hidden="true" tabindex="-1"></a>titanic_fct <span class="ot">&lt;-</span> titanic <span class="sc">%&gt;%</span></span>
-<span id="cb113-3"><a href="logistic-regression.html#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Survived_fct =</span> <span class="fu">factor</span>(Survived))</span>
-<span id="cb113-4"><a href="logistic-regression.html#cb113-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-5"><a href="logistic-regression.html#cb113-5" aria-hidden="true" tabindex="-1"></a><span class="do">## levels = c(&quot;Deceased&quot;, &quot;Survived&quot;)</span></span>
-<span id="cb113-6"><a href="logistic-regression.html#cb113-6" aria-hidden="true" tabindex="-1"></a><span class="do">## levels(titanic_fct$Survived_fct) </span></span>
-<span id="cb113-7"><a href="logistic-regression.html#cb113-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-8"><a href="logistic-regression.html#cb113-8" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">contingency_table</span>(<span class="fu">list</span>(<span class="st">&quot;Sex&quot;</span><span class="ot">=</span><span class="st">&#39;Sex&#39;</span>),</span>
-<span id="cb113-9"><a href="logistic-regression.html#cb113-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">outcomes=</span><span class="fu">list</span>(<span class="st">&#39;Survival&#39;</span><span class="ot">=</span><span class="st">&#39;Survived_fct&#39;</span>), <span class="do">## need to be factors</span></span>
-<span id="cb113-10"><a href="logistic-regression.html#cb113-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">crosstab_funcs=</span><span class="fu">list</span>(<span class="fu">freq</span>()),</span>
-<span id="cb113-11"><a href="logistic-regression.html#cb113-11" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data=</span>titanic_fct)</span>
-<span id="cb113-12"><a href="logistic-regression.html#cb113-12" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb113-13"><a href="logistic-regression.html#cb113-13" aria-hidden="true" tabindex="-1"></a><span class="co">#neat_table(tab, format = c(&quot;html&quot;))</span></span></code></pre></div>
-<p>The <span class="math inline">\(\chi^2\)</span> test is an alternative to test the relationship between two categorical variables.</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="logistic-regression.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
-<span id="cb114-2"><a href="logistic-regression.html#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb114-3"><a href="logistic-regression.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction</span></span>
-<span id="cb114-4"><a href="logistic-regression.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb114-5"><a href="logistic-regression.html#cb114-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  titanic$Survived and titanic$Sex</span></span>
-<span id="cb114-6"><a href="logistic-regression.html#cb114-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; X-squared = 484.02, df = 1, p-value &lt; 2.2e-16</span></span></code></pre></div>
-<p>Please recalculate the test statistic, i.e. the value:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="logistic-regression.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)<span class="sc">$</span>statistic</span>
-<span id="cb115-2"><a href="logistic-regression.html#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; X-squared </span></span>
-<span id="cb115-3"><a href="logistic-regression.html#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  484.0245</span></span></code></pre></div>
-<p>from the observed values. The formula for <span class="math inline">\(X^2\)</span> is:
-<!-- , calculate row and column sums and from here the expected absolute frequency per cell. --></p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="logistic-regression.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex))</span></code></pre></div>
-<p><span class="math inline">\(X^2 = \sum_i \frac{(O_i-E_i)^2}{E_i}\)</span>,</p>
-<p>where <span class="math inline">\(O_i\)</span> is the observed frequency and <span class="math inline">\(E_i\)</span> is the expected frequency. The following steps are suggested.</p>
-<!-- Luckily, there is a package and a function to simplify this step.  -->
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="logistic-regression.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 1: Store the observed values in a table</span></span>
-<span id="cb117-2"><a href="logistic-regression.html#cb117-2" aria-hidden="true" tabindex="-1"></a>tab_obs <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
-<span id="cb117-3"><a href="logistic-regression.html#cb117-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-4"><a href="logistic-regression.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 2: Calculate expected absolute frequency</span></span>
-<span id="cb117-5"><a href="logistic-regression.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;DescTools&quot;</span>)</span>
-<span id="cb117-6"><a href="logistic-regression.html#cb117-6" aria-hidden="true" tabindex="-1"></a>tab_exp <span class="ot">&lt;-</span> <span class="fu">ExpFreq</span>(XYZ, <span class="at">freq =</span><span class="st">&quot;abs&quot;</span>)</span>
-<span id="cb117-7"><a href="logistic-regression.html#cb117-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-8"><a href="logistic-regression.html#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 3: Subtract the expected value from the observed value (and square differences)</span></span>
-<span id="cb117-9"><a href="logistic-regression.html#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ...</span></span>
-<span id="cb117-10"><a href="logistic-regression.html#cb117-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-11"><a href="logistic-regression.html#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 4: Divide by expected values</span></span>
-<span id="cb117-12"><a href="logistic-regression.html#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="do">## ... </span></span>
-<span id="cb117-13"><a href="logistic-regression.html#cb117-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb117-14"><a href="logistic-regression.html#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 5: Sum up all</span></span>
-<span id="cb117-15"><a href="logistic-regression.html#cb117-15" aria-hidden="true" tabindex="-1"></a><span class="do">## ... </span></span></code></pre></div>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="logistic-regression.html#cb118-1" aria-hidden="true" tabindex="-1"></a>tab_margins <span class="ot">&lt;-</span> <span class="fu">addmargins</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex))</span>
-<span id="cb118-2"><a href="logistic-regression.html#cb118-2" aria-hidden="true" tabindex="-1"></a>tab_obs <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
-<span id="cb118-3"><a href="logistic-regression.html#cb118-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-4"><a href="logistic-regression.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 1: Expected absolute frequency</span></span>
-<span id="cb118-5"><a href="logistic-regression.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;DescTools&quot;</span>)</span>
-<span id="cb118-6"><a href="logistic-regression.html#cb118-6" aria-hidden="true" tabindex="-1"></a>tab_exp <span class="ot">&lt;-</span> <span class="fu">ExpFreq</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex), <span class="at">freq =</span><span class="st">&quot;abs&quot;</span>)</span>
-<span id="cb118-7"><a href="logistic-regression.html#cb118-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-8"><a href="logistic-regression.html#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 2: Subtract the expected value from the observed value (and square differences)</span></span>
-<span id="cb118-9"><a href="logistic-regression.html#cb118-9" aria-hidden="true" tabindex="-1"></a>(tab_obs<span class="sc">-</span>tab_exp)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb118-10"><a href="logistic-regression.html#cb118-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-11"><a href="logistic-regression.html#cb118-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 3: Divide by expected values</span></span>
-<span id="cb118-12"><a href="logistic-regression.html#cb118-12" aria-hidden="true" tabindex="-1"></a>(tab_obs<span class="sc">-</span>tab_exp)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>tab_exp</span>
-<span id="cb118-13"><a href="logistic-regression.html#cb118-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-14"><a href="logistic-regression.html#cb118-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 4: Sum up all</span></span>
-<span id="cb118-15"><a href="logistic-regression.html#cb118-15" aria-hidden="true" tabindex="-1"></a>tab_temp <span class="ot">&lt;-</span> (tab_obs<span class="sc">-</span>tab_exp)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>tab_exp</span>
-<span id="cb118-16"><a href="logistic-regression.html#cb118-16" aria-hidden="true" tabindex="-1"></a>tab_temp[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">+</span> tab_temp[<span class="dv">1</span>,<span class="dv">2</span>] <span class="sc">+</span> tab_temp[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">+</span> tab_temp[<span class="dv">2</span>,<span class="dv">2</span>]</span></code></pre></div>
+<div id="chi-square" class="section level3 hasAnchor" number="10.4.5">
+<h3><span class="header-section-number">10.4.5</span> Chi Square<a href="logistic-regression.html#chi-square" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://stats.stackexchange.com/questions/177816/logistic-regression-vs-chi-square-in-a-2x2-and-ix2-single-factor-binary-respo -->
+<p>Logistic regression checked the relationship between survival (binary) and gender (binary). So can <span class="math inline">\(\chi^2\)</span>.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
 </div>
+<p>The <strong>Chi Square Test for Independence</strong> is a statistical test used to determine whether there is a significant association between two categorical variables.</p>
 </div>
-<div id="addons" class="section level2 hasAnchor" number="10.3">
-<h2><span class="header-section-number">10.3</span> Addons<a href="logistic-regression.html#addons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="some-are-more-equal-than-others" class="section level4 hasAnchor" number="10.3.0.1">
-<h4><span class="header-section-number">10.3.0.1</span> Some Are More Equal Than Others<a href="logistic-regression.html#some-are-more-equal-than-others" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[X^2 = \sum_i \frac{(O_i-E_i)^2}{E_i}\]</span></p>
+<p>Where <span class="math inline">\(O_i\)</span> is the observed frequency and <span class="math inline">\(E_i\)</span> is the expected frequency. It turns out that the 2 X 2 contingency analysis with chi-square is really just a special case of logistic regression, and this is analogous to the relationship between ANOVA and regression.</p>
+<!-- With chi-square contingency analysis, the independent variable is dichotomous and the dependent variable is dichotomous. We can also conduct an equivalent logistic regression analysis with a dichotomous independent variable predicting a dichotomous dependent variable. Logistic regression is a more general analysis, however, because the independent variable (i.e., the predictor) is not restricted to a dichotomous variable. Nor is logistic regression limited to a single predictor. -->
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="logistic-regression.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
+<span id="cb110-2"><a href="logistic-regression.html#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb110-3"><a href="logistic-regression.html#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction</span></span>
+<span id="cb110-4"><a href="logistic-regression.html#cb110-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb110-5"><a href="logistic-regression.html#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  titanic$Survived and titanic$Sex</span></span>
+<span id="cb110-6"><a href="logistic-regression.html#cb110-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; X-squared = 484.02, df = 1, p-value &lt; 2.2e-16</span></span></code></pre></div>
+<p>In the standard output of the test we usually conclude from the p-value (being less than 0.05) that there's is a relationship between the two variables (survival on Titanic is related to gender.)</p>
+<p>We derive the test statistic. Everything starts from the contingency table of survival by gender. The design is improved by the <code>epitab</code> package.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
+</th>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Survival
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+All
+</th>
+<th style="text-align:left;">
+Deceased
+</th>
+<th style="text-align:left;">
+Survived
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+1043
+</td>
+<td style="text-align:left;">
+628 (100)
+</td>
+<td style="text-align:left;">
+415 (100)
+</td>
+</tr>
+<tr grouplength="2">
+<td colspan="4" style="border-bottom: 1px solid;">
+<strong>Sex</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Female
+</td>
+<td style="text-align:left;">
+386 (37)
+</td>
+<td style="text-align:left;">
+64 (10.2)
+</td>
+<td style="text-align:left;">
+322 (77.6)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+Male
+</td>
+<td style="text-align:left;">
+657 (63)
+</td>
+<td style="text-align:left;">
+564 (89.8)
+</td>
+<td style="text-align:left;">
+93 (22.4)
+</td>
+</tr>
+</tbody>
+</table>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Chi Square Test Statistic
+</h2>
+</div>
+<p>We derive the test statistic of Chi.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="logistic-regression.html#cb111-1" aria-hidden="true" tabindex="-1"></a>tab_margins <span class="ot">&lt;-</span> <span class="fu">addmargins</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex))</span>
+<span id="cb111-2"><a href="logistic-regression.html#cb111-2" aria-hidden="true" tabindex="-1"></a>tab_obs <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)</span>
+<span id="cb111-3"><a href="logistic-regression.html#cb111-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-4"><a href="logistic-regression.html#cb111-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 1: Expected absolute frequency</span></span>
+<span id="cb111-5"><a href="logistic-regression.html#cb111-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;DescTools&quot;</span>)</span>
+<span id="cb111-6"><a href="logistic-regression.html#cb111-6" aria-hidden="true" tabindex="-1"></a>tab_exp <span class="ot">&lt;-</span> <span class="fu">ExpFreq</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex), <span class="at">freq =</span><span class="st">&quot;abs&quot;</span>)</span>
+<span id="cb111-7"><a href="logistic-regression.html#cb111-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-8"><a href="logistic-regression.html#cb111-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 2: Subtract the expected value from the observed value (and square differences)</span></span>
+<span id="cb111-9"><a href="logistic-regression.html#cb111-9" aria-hidden="true" tabindex="-1"></a>(tab_obs<span class="sc">-</span>tab_exp)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb111-10"><a href="logistic-regression.html#cb111-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    </span></span>
+<span id="cb111-11"><a href="logistic-regression.html#cb111-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       female     male</span></span>
+<span id="cb111-12"><a href="logistic-regression.html#cb111-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0 28363.34 28363.34</span></span>
+<span id="cb111-13"><a href="logistic-regression.html#cb111-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1 28363.34 28363.34</span></span>
+<span id="cb111-14"><a href="logistic-regression.html#cb111-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-15"><a href="logistic-regression.html#cb111-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 3: Divide by expected values</span></span>
+<span id="cb111-16"><a href="logistic-regression.html#cb111-16" aria-hidden="true" tabindex="-1"></a>(tab_obs<span class="sc">-</span>tab_exp)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>tab_exp</span>
+<span id="cb111-17"><a href="logistic-regression.html#cb111-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    </span></span>
+<span id="cb111-18"><a href="logistic-regression.html#cb111-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        female      male</span></span>
+<span id="cb111-19"><a href="logistic-regression.html#cb111-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0 122.03790  71.69959</span></span>
+<span id="cb111-20"><a href="logistic-regression.html#cb111-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1 184.67422 108.49962</span></span>
+<span id="cb111-21"><a href="logistic-regression.html#cb111-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-22"><a href="logistic-regression.html#cb111-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Step 4: Sum up all</span></span>
+<span id="cb111-23"><a href="logistic-regression.html#cb111-23" aria-hidden="true" tabindex="-1"></a>tab_temp <span class="ot">&lt;-</span> (tab_obs<span class="sc">-</span>tab_exp)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>tab_exp</span>
+<span id="cb111-24"><a href="logistic-regression.html#cb111-24" aria-hidden="true" tabindex="-1"></a>tab_temp[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">+</span> tab_temp[<span class="dv">1</span>,<span class="dv">2</span>] <span class="sc">+</span> tab_temp[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">+</span> tab_temp[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb111-25"><a href="logistic-regression.html#cb111-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 486.9113</span></span></code></pre></div>
+</div>
+<!-- https://web.pdx.edu/~newsomj/pa551/lectur21.htm -->
+<!-- https://www.theanalysisfactor.com/chi-square-test-vs-logistic-regression-is-a-fancier-test-better/ -->
+<!-- https://stats.stackexchange.com/questions/570544/chi-square-test-vs-logistic-regression-result -->
+</div>
+<div id="some-are-more-equal-than-others" class="section level3 hasAnchor" number="10.4.6">
+<h3><span class="header-section-number">10.4.6</span> Some Are More Equal Than Others<a href="logistic-regression.html#some-are-more-equal-than-others" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let's extend the group analysis to multiple categories using the <code>Pclass</code> variable. The passenger class represents the socio-economic status of people. We hypothesize that people with more money used their influence to get into one of the lifeboats. First, the contingency table of the situation:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="logistic-regression.html#cb119-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">contingency_table</span>(<span class="fu">list</span>(<span class="st">&quot;Passenger Class&quot;</span><span class="ot">=</span><span class="st">&#39;Pclass&#39;</span>),</span>
-<span id="cb119-2"><a href="logistic-regression.html#cb119-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">outcomes=</span><span class="fu">list</span>(<span class="st">&#39;Survival&#39;</span><span class="ot">=</span><span class="st">&#39;Survived_fct&#39;</span>), <span class="do">## need to be factors</span></span>
-<span id="cb119-3"><a href="logistic-regression.html#cb119-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">crosstab_funcs=</span><span class="fu">list</span>(<span class="fu">freq</span>()),</span>
-<span id="cb119-4"><a href="logistic-regression.html#cb119-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data=</span>titanic_fct)</span>
-<span id="cb119-5"><a href="logistic-regression.html#cb119-5" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb119-6"><a href="logistic-regression.html#cb119-6" aria-hidden="true" tabindex="-1"></a><span class="fu">neat_table</span>(tab, <span class="at">format =</span> <span class="fu">c</span>(<span class="st">&quot;html&quot;</span>))</span></code></pre></div>
-<p>In first class, more people survived (n=168) than died (n=114) whereas this not true for the third class (365 died and 135 survived). All men may be created equal, but some are more equal than others. The logistic regression with one categorical variable is straightforward:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="logistic-regression.html#cb120-1" aria-hidden="true" tabindex="-1"></a>logistic2 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Pclass, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
-<span id="cb120-2"><a href="logistic-regression.html#cb120-2" aria-hidden="true" tabindex="-1"></a>logistic2</span>
-<span id="cb120-3"><a href="logistic-regression.html#cb120-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb120-4"><a href="logistic-regression.html#cb120-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ Pclass, family = binomial(link = &quot;logit&quot;), </span></span>
-<span id="cb120-5"><a href="logistic-regression.html#cb120-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic)</span></span>
-<span id="cb120-6"><a href="logistic-regression.html#cb120-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb120-7"><a href="logistic-regression.html#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb120-8"><a href="logistic-regression.html#cb120-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)       Pclass  </span></span>
-<span id="cb120-9"><a href="logistic-regression.html#cb120-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      1.0860      -0.6921  </span></span>
-<span id="cb120-10"><a href="logistic-regression.html#cb120-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb120-11"><a href="logistic-regression.html#cb120-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1041 Residual</span></span>
-<span id="cb120-12"><a href="logistic-regression.html#cb120-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
-<span id="cb120-13"><a href="logistic-regression.html#cb120-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 1320  AIC: 1324</span></span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="logistic-regression.html#cb112-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic <span class="sc">%&gt;%</span></span>
+<span id="cb112-2"><a href="logistic-regression.html#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Pclass_fct =</span> <span class="fu">factor</span>(Pclass))</span>
+<span id="cb112-3"><a href="logistic-regression.html#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a href="logistic-regression.html#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="fu">contingency_table</span>(<span class="at">independents=</span><span class="fu">list</span>(<span class="st">&quot;Passenger Class&quot;</span><span class="ot">=</span><span class="st">&#39;Pclass_fct&#39;</span>),</span>
+<span id="cb112-5"><a href="logistic-regression.html#cb112-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">outcomes=</span><span class="fu">list</span>(<span class="st">&#39;Survival&#39;</span><span class="ot">=</span><span class="st">&#39;Survived_fct&#39;</span>), <span class="do">## need to be factors  </span></span>
+<span id="cb112-6"><a href="logistic-regression.html#cb112-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">crosstab_funcs=</span><span class="fu">list</span>(<span class="fu">freq</span>()),</span>
+<span id="cb112-7"><a href="logistic-regression.html#cb112-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>titanic) <span class="sc">%&gt;%</span> </span>
+<span id="cb112-8"><a href="logistic-regression.html#cb112-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">neat_table</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
+</th>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Survival
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+All
+</th>
+<th style="text-align:left;">
+Deceased
+</th>
+<th style="text-align:left;">
+Survived
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+1043
+</td>
+<td style="text-align:left;">
+628 (100)
+</td>
+<td style="text-align:left;">
+415 (100)
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="4" style="border-bottom: 1px solid;">
+<strong>Passenger Class</strong>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+1
+</td>
+<td style="text-align:left;">
+282 (27)
+</td>
+<td style="text-align:left;">
+114 (18.2)
+</td>
+<td style="text-align:left;">
+168 (40.5)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+2
+</td>
+<td style="text-align:left;">
+261 (25)
+</td>
+<td style="text-align:left;">
+149 (23.7)
+</td>
+<td style="text-align:left;">
+112 (27)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;" indentlevel="1">
+3
+</td>
+<td style="text-align:left;">
+500 (47.9)
+</td>
+<td style="text-align:left;">
+365 (58.1)
+</td>
+<td style="text-align:left;">
+135 (32.5)
+</td>
+</tr>
+</tbody>
+</table>
+<p>In first class, more people survived (n=168) than died (n=114) whereas this is not true for the third class (365 died and 135 survived). <a href="https://en.wikipedia.org/wiki/All_men_are_created_equal">All men may be created equal</a>, but some are more equal than others. The logistic regression with one categorical variable is straightforward. Note that we tell R to handle <code>Pclass</code> like a factor (group variable):</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="logistic-regression.html#cb113-1" aria-hidden="true" tabindex="-1"></a>logistic2 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="fu">factor</span>(Pclass), </span>
+<span id="cb113-2"><a href="logistic-regression.html#cb113-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), </span>
+<span id="cb113-3"><a href="logistic-regression.html#cb113-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> titanic)</span></code></pre></div>
+<div style="display:flex; flex-wrap: wrap;">
+<div style="flex-basis: 50%;">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Constant
+</td>
+<td style="text-align:center;">
+0.388
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.121)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Class 2
+</td>
+<td style="text-align:center;">
+−0.673
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.174)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Class 3
+</td>
+<td style="text-align:center;">
+−1.382
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.158)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex-basis: 50%;">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival (OR)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Constant
+</td>
+<td style="text-align:center;">
+1.474
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.179)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Class 2
+</td>
+<td style="text-align:center;">
+0.510
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.089)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Class 3
+</td>
+<td style="text-align:center;">
+0.251
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.040)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The lower your socio-economic status, the less survival can you expect.</p>
 </div>
-<div id="the-cheaper-the-deader" class="section level4 hasAnchor" number="10.3.0.2">
-<h4><span class="header-section-number">10.3.0.2</span> The Cheaper The Deader?<a href="logistic-regression.html#the-cheaper-the-deader" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>We have another option to investigate the effect of socio-economic class, the <code>Fare</code> variable (ticket price). The prices of tickets on the Titanic in 1912 ranged from £870 or $4,350 for a first-class parlor suite to a maximum of £8 or $40 for a third-class passage, according to The Washington Times. A century later, in 2012, those ticket prices equaled a range of $50,000 to $460.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="logistic-regression.html#cb121-1" aria-hidden="true" tabindex="-1"></a>logistic3 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Fare, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
-<span id="cb121-2"><a href="logistic-regression.html#cb121-2" aria-hidden="true" tabindex="-1"></a>logistic3</span>
-<span id="cb121-3"><a href="logistic-regression.html#cb121-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb121-4"><a href="logistic-regression.html#cb121-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ Fare, family = binomial(link = &quot;logit&quot;), </span></span>
-<span id="cb121-5"><a href="logistic-regression.html#cb121-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic)</span></span>
-<span id="cb121-6"><a href="logistic-regression.html#cb121-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb121-7"><a href="logistic-regression.html#cb121-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb121-8"><a href="logistic-regression.html#cb121-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)         Fare  </span></span>
-<span id="cb121-9"><a href="logistic-regression.html#cb121-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    -0.80666      0.01109  </span></span>
-<span id="cb121-10"><a href="logistic-regression.html#cb121-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb121-11"><a href="logistic-regression.html#cb121-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1041 Residual</span></span>
-<span id="cb121-12"><a href="logistic-regression.html#cb121-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
-<span id="cb121-13"><a href="logistic-regression.html#cb121-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 1337  AIC: 1341</span></span></code></pre></div>
+<div id="the-cheaper-the-deader" class="section level3 hasAnchor" number="10.4.7">
+<h3><span class="header-section-number">10.4.7</span> The Cheaper The Deader?<a href="logistic-regression.html#the-cheaper-the-deader" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have more information on the effect of socio-economic class, the <code>Fare</code> variable (ticket price). In the data the <code>Fare</code> variable is like this:</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="logistic-regression.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datasummary_skim</span>(titanic<span class="sc">$</span>Fare)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Unique (#)
+</th>
+<th style="text-align:right;">
+Missing (%)
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+Min
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+Max
+</th>
+<th style="text-align:right;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+data
+</td>
+<td style="text-align:right;">
+255
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36.6
+</td>
+<td style="text-align:right;">
+55.8
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+15.8
+</td>
+<td style="text-align:right;">
+512.3
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewBox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="4.34" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.12" y="10.32" width="4.34" height="1.34" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.45" y="11.36" width="4.34" height="0.30" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="14.79" y="11.53" width="4.34" height="0.13" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.13" y="11.47" width="4.34" height="0.19" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="23.47" y="11.53" width="4.34" height="0.13" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="27.80" y="11.66" width="4.34" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.14" y="11.66" width="4.34" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="36.48" y="11.66" width="4.34" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="40.82" y="11.66" width="4.34" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="45.15" y="11.62" width="4.34" height="0.041" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+</tbody>
+</table>
+<p><u id='currency'>The prices of tickets on the Titanic in 1912</u> ranged from £870 or $4,350 for a first-class parlor suite to a maximum of £8 or $40 for a third-class passage.</p>
+<!-- A century later, in 2012, those ticket prices equaled a range of \$50,000 to \$460. -->
+<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-3829240a8babd2881fd5" width="576"></span>
+<script type="application/json" data-for="htmlwidget-3829240a8babd2881fd5">{"x":{"element":"currency","opts":{"content":"Before Britain’s currency was in terms of pounds and pence, it was in terms of pounds, shillings and pennies e.g. £18 15s 9d.  There were: 12 pennies per shilling and 20 shillings per pound."}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="logistic-regression.html#cb115-1" aria-hidden="true" tabindex="-1"></a>logistic3 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Fare, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span></code></pre></div>
+<div style="display:flex; flex-wrap: wrap;">
+<div style="flex-basis: 50%;">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+−0.807
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.084)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fare
+</td>
+<td style="text-align:center;">
+0.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex-basis: 50%;">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival (OR)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+0.446
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.037)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fare
+</td>
+<td style="text-align:center;">
+1.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The coefficient and intercept estimates give us the following equation:</p>
 <p><span class="math display">\[ \text{logit}(p) = -0.80666  + 0.01109 \cdot \text{fare} \]</span></p>
 <p>In this case, the estimated coefficient for the <strong>intercept</strong> is the log odds of a passenger with a fare of zero surviving the accident. Of course, there is nothing like a free lunch. So the intercept in this model corresponds to the log odds of survival when fare is at the hypothetical value of zero.</p>
 <p>How do we interpret the <strong>slope</strong> coefficient for <code>Fare</code>? Let's fix <code>Fare</code> at some value, e.g. the mean which roughly equals 37 (rounded to 0 decimals). Then the conditional logit of surviving when the fare is equal to the mean is:</p>
-<!-- -0.3964565 -->
-<!-- ## ```{r, eval=TRUE, echo=TRUE} -->
-<!-- ## logistic3$coefficients[1] + logistic3$coefficients[2] * mean(titanic$Fare) -->
-<!-- ## ``` -->
-<!-- When the fare is held at 36, the conditional logit of surviving is: -0.3897711 -->
 <p><span class="math display">\[\begin{aligned}
-\text{logit}(p | \text{fare}=36) &amp;= -0.3964565  \\
-\text{logit}(p | \text{fare}=37) &amp;= -0.38537  \\
+\text{logit}(p | \text{fare}=37) &amp;= -0.3964565  \\
+\text{logit}(p | \text{fare}=38) &amp;= -0.38537  \\
 \end{aligned}\]</span></p>
 <p>We can examine the effect of a <strong>one-unit increase</strong> in fare by taking the difference of the two equations:</p>
-<p><span class="math display">\[\text{logit}(p | \text{fare}=37) - \text{logit}(p | \text{fare}=36) = 0.0110866  \]</span></p>
+<p><span class="math display">\[\text{logit}(p | \text{fare}=37) - \text{logit}(p | \text{fare}=38) = 0.0110866  \]</span></p>
 <p>In other words, for a one-unit increase in the fare price, the expected change in log odds is 0.0110866. Can we translate this change in log odds to the change in odds? Indeed, we can. Recall that logarithm converts multiplication and division to addition and subtraction. Its inverse, the exponentiation converts addition and subtraction back to multiplication and division. If we exponentiate both sides of our last equation, we have the following:</p>
-<p><span class="math display">\[ e^{\text{logit}(p | \text{fare}=37) - \text{logit}(p | \text{fare}=36)} = e^{0.0110866} =  1.011148  \]</span></p>
+<p><span class="math display">\[ e^{\text{logit}(p | \text{fare}=38) - \text{logit}(p | \text{fare}=37)} = e^{0.0110866} =  1.011148  \]</span></p>
 <p>So we can say for a one-unit increase in fare price, we expect to see about 1.1% increase in the odds of surviving. This 1.1% of increase does not depend on the value that fare is held at.</p>
-<details>
-<summary>
-Information about Britain’s currency at that time.
-</summary>
-Before Britain’s currency was in terms of pounds and pence, it was in terms of pounds, shillings and pennies e.g. £18 15s 9d. There were: 12 pennies per shilling and 20 shillings per pound.
-</details>
-<p><br></p>
 <p>Can we get this information more directly? Yes, we can.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="logistic-regression.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span>
-<span id="cb122-2"><a href="logistic-regression.html#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="fu">coef</span>(logistic3), <span class="fu">confint</span>(logistic3)))  </span>
-<span id="cb122-3"><a href="logistic-regression.html#cb122-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           2.5 %    97.5 %</span></span>
-<span id="cb122-4"><a href="logistic-regression.html#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.4463467 0.3780949 0.5250284</span></span>
-<span id="cb122-5"><a href="logistic-regression.html#cb122-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare        1.0111482 1.0080791 1.0145089</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="logistic-regression.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span>
+<span id="cb116-2"><a href="logistic-regression.html#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="fu">coef</span>(logistic3), <span class="fu">confint</span>(logistic3)))  </span>
+<span id="cb116-3"><a href="logistic-regression.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           2.5 %    97.5 %</span></span>
+<span id="cb116-4"><a href="logistic-regression.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.4463467 0.3780949 0.5250284</span></span>
+<span id="cb116-5"><a href="logistic-regression.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare        1.0111482 1.0080791 1.0145089</span></span></code></pre></div>
 <!-- ## We can say now that the coefficient for fare is the difference in the log odds. -->
 <!-- ## In other words, for a one-unit increase in the fare, the expected change in log odds is 0.011493. -->
 <!-- ## exp[log(p/(1-p))(fare=34)-log(p/(1-p))(fare=33)] = -->
@@ -863,46 +1488,55 @@ Before Britain’s currency was in terms of pounds and pence, it was in terms of
 <!-- ## we expect to see about 2% increase in the odds of surviving. -->
 <!-- ## This 2% of increase does not depend on the value that fare is held at. -->
 <!-- ## (model is linear in parameters) -->
-</div>
-<div id="the-bigger-picture" class="section level4 hasAnchor" number="10.3.0.3">
-<h4><span class="header-section-number">10.3.0.3</span> The Bigger Picture<a href="logistic-regression.html#the-bigger-picture" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="the-bigger-picture" class="section level4 hasAnchor" number="10.4.7.1">
+<h4><span class="header-section-number">10.4.7.1</span> The Bigger Picture<a href="logistic-regression.html#the-bigger-picture" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>First, we take another subset, since <code>PassengerId</code>, <code>Name</code> and <code>Ticket</code> are not good predictors.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="logistic-regression.html#cb123-1" aria-hidden="true" tabindex="-1"></a>logistic4 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> ., <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">8</span>)]) </span>
-<span id="cb123-2"><a href="logistic-regression.html#cb123-2" aria-hidden="true" tabindex="-1"></a>logistic4</span>
-<span id="cb123-3"><a href="logistic-regression.html#cb123-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb123-4"><a href="logistic-regression.html#cb123-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ ., family = binomial(link = &quot;logit&quot;), </span></span>
-<span id="cb123-5"><a href="logistic-regression.html#cb123-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic[, -c(1, 3, 8)])</span></span>
-<span id="cb123-6"><a href="logistic-regression.html#cb123-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb123-7"><a href="logistic-regression.html#cb123-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb123-8"><a href="logistic-regression.html#cb123-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)       Pclass      Sexmale          Age        SibSp        Parch  </span></span>
-<span id="cb123-9"><a href="logistic-regression.html#cb123-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    5.352939    -1.024737    -3.685172    -0.035433    -0.314696    -0.117345  </span></span>
-<span id="cb123-10"><a href="logistic-regression.html#cb123-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        Fare    EmbarkedQ    EmbarkedS  </span></span>
-<span id="cb123-11"><a href="logistic-regression.html#cb123-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0.001863    -0.283354    -0.201081  </span></span>
-<span id="cb123-12"><a href="logistic-regression.html#cb123-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb123-13"><a href="logistic-regression.html#cb123-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1034 Residual</span></span>
-<span id="cb123-14"><a href="logistic-regression.html#cb123-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
-<span id="cb123-15"><a href="logistic-regression.html#cb123-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 784.2     AIC: 802.2</span></span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="logistic-regression.html#cb117-1" aria-hidden="true" tabindex="-1"></a>logistic4 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> ., <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic) </span>
+<span id="cb117-2"><a href="logistic-regression.html#cb117-2" aria-hidden="true" tabindex="-1"></a>logistic4</span>
+<span id="cb117-3"><a href="logistic-regression.html#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-4"><a href="logistic-regression.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ ., family = binomial(link = &quot;logit&quot;), </span></span>
+<span id="cb117-5"><a href="logistic-regression.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic)</span></span>
+<span id="cb117-6"><a href="logistic-regression.html#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-7"><a href="logistic-regression.html#cb117-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb117-8"><a href="logistic-regression.html#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          (Intercept)                Pclass               Sexmale  </span></span>
+<span id="cb117-9"><a href="logistic-regression.html#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           -2.657e+01            -7.331e-11            -8.559e-10  </span></span>
+<span id="cb117-10"><a href="logistic-regression.html#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Age                 SibSp                 Parch  </span></span>
+<span id="cb117-11"><a href="logistic-regression.html#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            1.296e-11             1.192e-10            -2.692e-10  </span></span>
+<span id="cb117-12"><a href="logistic-regression.html#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Fare             EmbarkedQ             EmbarkedS  </span></span>
+<span id="cb117-13"><a href="logistic-regression.html#cb117-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           -5.997e-13            -1.218e-10            -1.493e-10  </span></span>
+<span id="cb117-14"><a href="logistic-regression.html#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Survived_fctSurvived           Sex_fctMale           Pclass_fct2  </span></span>
+<span id="cb117-15"><a href="logistic-regression.html#cb117-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            5.313e+01                    NA            -4.052e-11  </span></span>
+<span id="cb117-16"><a href="logistic-regression.html#cb117-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Pclass_fct3  </span></span>
+<span id="cb117-17"><a href="logistic-regression.html#cb117-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   NA  </span></span>
+<span id="cb117-18"><a href="logistic-regression.html#cb117-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb117-19"><a href="logistic-regression.html#cb117-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1032 Residual</span></span>
+<span id="cb117-20"><a href="logistic-regression.html#cb117-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
+<span id="cb117-21"><a href="logistic-regression.html#cb117-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 6.051e-09     AIC: 22</span></span></code></pre></div>
 <p>For example, increase one unit in age will decrease the log odd of survival by 0.0257; being a male will decrease the log odd of survival by 3.78 compared to female; and being in class2 will decrease the log odd of survival by 1.17, being in class3 will decrease the log odd of survival by 1.97.</p>
 <p>Moreover, exponentiate the model coefficients can look at the result and interpret its meaning at a different angle. Below are table of the “odd ratio” value for each predictor coefficient relative to the survival and their respective 95% confident interval odd ratio value.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="logistic-regression.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="at">OR =</span> <span class="fu">coef</span>(logistic4)))  </span>
-<span id="cb124-2"><a href="logistic-regression.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       OR</span></span>
-<span id="cb124-3"><a href="logistic-regression.html#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 211.22820034</span></span>
-<span id="cb124-4"><a href="logistic-regression.html#cb124-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass        0.35889085</span></span>
-<span id="cb124-5"><a href="logistic-regression.html#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sexmale       0.02509285</span></span>
-<span id="cb124-6"><a href="logistic-regression.html#cb124-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Age           0.96518770</span></span>
-<span id="cb124-7"><a href="logistic-regression.html#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SibSp         0.73001047</span></span>
-<span id="cb124-8"><a href="logistic-regression.html#cb124-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parch         0.88927819</span></span>
-<span id="cb124-9"><a href="logistic-regression.html#cb124-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare          1.00186428</span></span>
-<span id="cb124-10"><a href="logistic-regression.html#cb124-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; EmbarkedQ     0.75325288</span></span>
-<span id="cb124-11"><a href="logistic-regression.html#cb124-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; EmbarkedS     0.81784593</span></span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="logistic-regression.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="at">OR =</span> <span class="fu">coef</span>(logistic4)))  </span>
+<span id="cb118-2"><a href="logistic-regression.html#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                OR</span></span>
+<span id="cb118-3"><a href="logistic-regression.html#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)          2.900701e-12</span></span>
+<span id="cb118-4"><a href="logistic-regression.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass               1.000000e+00</span></span>
+<span id="cb118-5"><a href="logistic-regression.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sexmale              1.000000e+00</span></span>
+<span id="cb118-6"><a href="logistic-regression.html#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Age                  1.000000e+00</span></span>
+<span id="cb118-7"><a href="logistic-regression.html#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SibSp                1.000000e+00</span></span>
+<span id="cb118-8"><a href="logistic-regression.html#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parch                1.000000e+00</span></span>
+<span id="cb118-9"><a href="logistic-regression.html#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare                 1.000000e+00</span></span>
+<span id="cb118-10"><a href="logistic-regression.html#cb118-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; EmbarkedQ            1.000000e+00</span></span>
+<span id="cb118-11"><a href="logistic-regression.html#cb118-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; EmbarkedS            1.000000e+00</span></span>
+<span id="cb118-12"><a href="logistic-regression.html#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Survived_fctSurvived 1.188481e+23</span></span>
+<span id="cb118-13"><a href="logistic-regression.html#cb118-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sex_fctMale                    NA</span></span>
+<span id="cb118-14"><a href="logistic-regression.html#cb118-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass_fct2          1.000000e+00</span></span>
+<span id="cb118-15"><a href="logistic-regression.html#cb118-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass_fct3                    NA</span></span></code></pre></div>
 <p>Now, the result can be interpreted as: for a unit increase in age, the odds of surviving from the incident decrease by a factor of 0.96; and being a third class (class3), the odds of surviving decrease by a factor of 0.12, etc.</p>
 <!-- The overall survival rate for men was 20%. For women, it was 74%, and for children, 52% -->
 <div class="infobox2 information">
 <p>The logit model coefficients can be presented as <strong>odds ratios</strong>. But odds-ratios are often misinterpreted as if they were relative risks/probabilities. Nonetheless presenting odds-ratios is standard practice in the medical literature.</p>
 </div>
 </div>
-<div id="marginal-effects" class="section level4 hasAnchor" number="10.3.0.4">
-<h4><span class="header-section-number">10.3.0.4</span> Marginal Effects<a href="logistic-regression.html#marginal-effects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="marginal-effects" class="section level4 hasAnchor" number="10.4.7.2">
+<h4><span class="header-section-number">10.4.7.2</span> Marginal Effects<a href="logistic-regression.html#marginal-effects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <!-- https://stats.stackexchange.com/questions/147612/interpretation-of-marginal-effects-in-logit-model-with-log-timesindependent-va -->
 <!-- https://www.youtube.com/watch?v=lJMO5kqWwIo -->
 <p>Marginal effects is a way of presenting results as differences in probabilities, which is more informative than odds-ratios and relative risk. For continuous variables this represents the instantaneous change given that the ‘unit’ may be very small. For binary variables, the change is from 0 to 1, so one ‘unit’ as it is usually thought.</p>
@@ -917,17 +1551,21 @@ Before Britain’s currency was in terms of pounds and pence, it was in terms of
 <!-- on a scale from 0 to 1. -->
 <!-- We could also infer that a 10% price increase increases survival probability -->
 <!-- by about 0.025 --></p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="logistic-regression.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(margins)</span>
-<span id="cb125-2"><a href="logistic-regression.html#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">margins</span>(logistic4))</span>
-<span id="cb125-3"><a href="logistic-regression.html#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     factor     AME     SE        z      p   lower   upper</span></span>
-<span id="cb125-4"><a href="logistic-regression.html#cb125-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        Age -0.0041 0.0008  -4.9223 0.0000 -0.0057 -0.0024</span></span>
-<span id="cb125-5"><a href="logistic-regression.html#cb125-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  EmbarkedQ -0.0326 0.0561  -0.5816 0.5608 -0.1425  0.0773</span></span>
-<span id="cb125-6"><a href="logistic-regression.html#cb125-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  EmbarkedS -0.0233 0.0283  -0.8233 0.4103 -0.0787  0.0321</span></span>
-<span id="cb125-7"><a href="logistic-regression.html#cb125-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       Fare  0.0002 0.0002   0.8831 0.3772 -0.0003  0.0007</span></span>
-<span id="cb125-8"><a href="logistic-regression.html#cb125-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      Parch -0.0134 0.0130  -1.0356 0.3004 -0.0389  0.0120</span></span>
-<span id="cb125-9"><a href="logistic-regression.html#cb125-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Pclass -0.1173 0.0167  -7.0181 0.0000 -0.1501 -0.0846</span></span>
-<span id="cb125-10"><a href="logistic-regression.html#cb125-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Sexmale -0.6601 0.0253 -26.0454 0.0000 -0.7098 -0.6105</span></span>
-<span id="cb125-11"><a href="logistic-regression.html#cb125-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      SibSp -0.0360 0.0134  -2.6865 0.0072 -0.0623 -0.0097</span></span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="logistic-regression.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(margins)</span>
+<span id="cb119-2"><a href="logistic-regression.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">margins</span>(logistic4))</span>
+<span id="cb119-3"><a href="logistic-regression.html#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                factor     AME SE  z  p lower upper</span></span>
+<span id="cb119-4"><a href="logistic-regression.html#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Age  0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-5"><a href="logistic-regression.html#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             EmbarkedQ -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-6"><a href="logistic-regression.html#cb119-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             EmbarkedS -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-7"><a href="logistic-regression.html#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Fare -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-8"><a href="logistic-regression.html#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Parch -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-9"><a href="logistic-regression.html#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Pclass -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-10"><a href="logistic-regression.html#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Pclass_fct2 -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-11"><a href="logistic-regression.html#cb119-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Pclass_fct3  0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-12"><a href="logistic-regression.html#cb119-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Sex_fctMale  0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-13"><a href="logistic-regression.html#cb119-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Sexmale -0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-14"><a href="logistic-regression.html#cb119-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 SibSp  0.0000 NA NA NA    NA    NA</span></span>
+<span id="cb119-15"><a href="logistic-regression.html#cb119-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Survived_fctSurvived  1.0000 NA NA NA    NA    NA</span></span></code></pre></div>
 <!-- #### Odds Ratio -->
 <!-- ::: {.infobox2 .information data-latex="warning"} -->
 <!-- The **Odds Ratio** (OR) is a measure of association between an exposure and an outcome. -->
@@ -943,6 +1581,13 @@ Before Britain’s currency was in terms of pounds and pence, it was in terms of
 
 </div>
 </div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="14">
+<li id="fn14"><p><a href="https://en.wikipedia.org/wiki/Women_and_children_first" class="uri">https://en.wikipedia.org/wiki/Women_and_children_first</a><a href="logistic-regression.html#fnref14" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 <script>
 
