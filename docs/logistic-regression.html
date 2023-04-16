@@ -378,6 +378,7 @@ div.csl-indent {
 <li class="chapter" data-level="10.4.5" data-path="logistic-regression.html"><a href="logistic-regression.html#chi-square"><i class="fa fa-check"></i><b>10.4.5</b> Chi Square</a></li>
 <li class="chapter" data-level="10.4.6" data-path="logistic-regression.html"><a href="logistic-regression.html#some-are-more-equal-than-others"><i class="fa fa-check"></i><b>10.4.6</b> Some Are More Equal Than Others</a></li>
 <li class="chapter" data-level="10.4.7" data-path="logistic-regression.html"><a href="logistic-regression.html#the-cheaper-the-deader"><i class="fa fa-check"></i><b>10.4.7</b> The Cheaper The Deader?</a></li>
+<li class="chapter" data-level="10.4.8" data-path="logistic-regression.html"><a href="logistic-regression.html#the-bigger-picture"><i class="fa fa-check"></i><b>10.4.8</b> The Bigger Picture</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="interaction-models.html"><a href="interaction-models.html"><i class="fa fa-check"></i><b>11</b> Interaction Models</a>
@@ -400,7 +401,7 @@ div.csl-indent {
 <li class="chapter" data-level="11.6.5" data-path="interaction-models.html"><a href="interaction-models.html#interaction-continuous-continuous"><i class="fa fa-check"></i><b>11.6.5</b> Interaction (continuous * continuous)</a></li>
 <li class="chapter" data-level="11.6.6" data-path="interaction-models.html"><a href="interaction-models.html#visualization-non-parallel-slopes-1"><i class="fa fa-check"></i><b>11.6.6</b> Visualization (non-parallel slopes)</a></li>
 </ul></li>
-<li class="chapter" data-level="11.7" data-path="interaction-models.html"><a href="interaction-models.html#marginal-effects-1"><i class="fa fa-check"></i><b>11.7</b> Marginal Effects</a>
+<li class="chapter" data-level="11.7" data-path="interaction-models.html"><a href="interaction-models.html#marginal-effects"><i class="fa fa-check"></i><b>11.7</b> Marginal Effects</a>
 <ul>
 <li class="chapter" data-level="11.7.1" data-path="interaction-models.html"><a href="interaction-models.html#marginal-effects-at-representatives-task"><i class="fa fa-check"></i><b>11.7.1</b> Marginal effects at representatives (TASK)</a></li>
 <li class="chapter" data-level="11.7.2" data-path="interaction-models.html"><a href="interaction-models.html#marginal-effects-at-the-mean-task"><i class="fa fa-check"></i><b>11.7.2</b> Marginal effects at the mean (TASK)</a></li>
@@ -569,12 +570,13 @@ While there was some element of luck involved in surviving, it seems some groups
 <span id="cb104-2"><a href="logistic-regression.html#cb104-2" aria-hidden="true" tabindex="-1"></a>logistic0 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
 <span id="cb104-3"><a href="logistic-regression.html#cb104-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb104-4"><a href="logistic-regression.html#cb104-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb104-5"><a href="logistic-regression.html#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">&quot;Survival&quot;</span> <span class="ot">=</span> logistic0), </span>
-<span id="cb104-6"><a href="logistic-regression.html#cb104-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">title =</span> <span class="st">&#39;Empty Model.&#39;</span>,</span>
-<span id="cb104-7"><a href="logistic-regression.html#cb104-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>)</span></code></pre></div>
+<span id="cb104-5"><a href="logistic-regression.html#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Empty Model.&#39;</span>,</span>
+<span id="cb104-6"><a href="logistic-regression.html#cb104-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Survival&quot;</span> <span class="ot">=</span> logistic0), </span>
+<span id="cb104-7"><a href="logistic-regression.html#cb104-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
+<span id="cb104-8"><a href="logistic-regression.html#cb104-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">coef_map =</span> cm)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-166">Table 10.1: </span>Empty Model.
+<span id="tab:unnamed-chunk-167">Table 10.1: </span>Empty Model.
 </caption>
 <thead>
 <tr>
@@ -588,7 +590,7 @@ Survival
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Constant
 </td>
 <td style="text-align:center;">
 −0.414
@@ -644,21 +646,27 @@ Num.Obs.
 <p><span class="math display">\[logit (p) = \beta_0 + \beta_1 \cdot sex\]</span></p>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="logistic-regression.html#cb106-1" aria-hidden="true" tabindex="-1"></a>logistic1 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Sex, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span>
 <span id="cb106-2"><a href="logistic-regression.html#cb106-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-3"><a href="logistic-regression.html#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">&quot;Empty model&quot;</span> <span class="ot">=</span> logistic1), <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<span id="cb106-3"><a href="logistic-regression.html#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&quot;Single Predictor.&quot;</span>,</span>
+<span id="cb106-4"><a href="logistic-regression.html#cb106-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Survival&quot;</span> <span class="ot">=</span> logistic1), </span>
+<span id="cb106-5"><a href="logistic-regression.html#cb106-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>,</span>
+<span id="cb106-6"><a href="logistic-regression.html#cb106-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">coef_map =</span> cm)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-171">Table 10.2: </span>Single Predictor.
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
 </th>
 <th style="text-align:center;">
-Empty model
+Survival
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Constant
 </td>
 <td style="text-align:center;">
 1.616
@@ -673,7 +681,7 @@ Empty model
 </tr>
 <tr>
 <td style="text-align:left;">
-Sexmale
+Male
 </td>
 <td style="text-align:center;">
 −3.418
@@ -718,11 +726,9 @@ Where the odds ratio for males to survive is:</p>
 <p><span class="math display">\[odds ratio^{male} = \frac{odds^{male}}{odds^{female}} = \frac{\frac{93}{564}}{\frac{322}{64}} = \frac{1}{30.5121} = 0.03277388.\]</span></p>
 <p>We can get this figure more easily by exponentiating the regression coefficient, since:</p>
 <p><span class="math display">\[e^{-3.418} = 0.03277793\]</span></p>
-<div style="display:flex; flex-wrap: wrap;">
-<div style="flex-basis: 50%;">
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-172">Table 10.2: </span>Default Coefficients.
+<span id="tab:unnamed-chunk-173">Table 10.3: </span>Logistic regression in default coefficients and odds ratio.
 </caption>
 <thead>
 <tr>
@@ -731,68 +737,18 @@ Where the odds ratio for males to survive is:</p>
 <th style="text-align:center;">
 Survival
 </th>
+<th style="text-align:center;">
+Survival (Odds Ratio)
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Constant
 </td>
 <td style="text-align:center;">
 1.616
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-(0.137)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sexmale
-</td>
-<td style="text-align:center;">
-−3.418
-</td>
-</tr>
-<tr>
-<td style="text-align:left;box-shadow: 0px 1px">
-</td>
-<td style="text-align:center;box-shadow: 0px 1px">
-(0.177)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Num.Obs.
-</td>
-<td style="text-align:center;">
-1043
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div style="flex-basis: 50%;">
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-172">Table 10.2: </span>Odds ratio coefficients.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:center;">
-Survival
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-(Intercept)
 </td>
 <td style="text-align:center;">
 5.031
@@ -802,12 +758,18 @@ Survival
 <td style="text-align:left;">
 </td>
 <td style="text-align:center;">
+(0.137)
+</td>
+<td style="text-align:center;">
 (0.689)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sexmale
+Male
+</td>
+<td style="text-align:center;">
+−3.418
 </td>
 <td style="text-align:center;">
 0.033
@@ -815,6 +777,9 @@ Sexmale
 </tr>
 <tr>
 <td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.177)
 </td>
 <td style="text-align:center;box-shadow: 0px 1px">
 (0.006)
@@ -827,11 +792,12 @@ Num.Obs.
 <td style="text-align:center;">
 1043
 </td>
+<td style="text-align:center;">
+1043
+</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <div class="defbox">
 <div class="titeldefbox">
 <h2>
@@ -841,6 +807,7 @@ Definition
 <p><strong>Odds ratio</strong> (OR) is a statistical measure used to describe the strength of the association between two events, such as the presence of a risk factor (being male) and the occurrence of the outcome (i.e. survival).</p>
 </div>
 <p>We interpret OR as follows. An odds ratio greater than 1 indicates that the event is more likely to occur in the exposed group than in the non-exposed group, while an odds ratio less than 1 indicates that the event is less likely to occur in the exposed group than in the non-exposed group.</p>
+<p>Odds-ratios are sometimes misinterpreted as if they were relative risks/probabilities. Nonetheless presenting odds-ratios is standard practice in the medical literature.</p>
 <!-- The coefficient for male is the log of odds ratio between the male group and female group: -3.465955 -->
 <!--  log(0.03124315) -->
 <!-- https://data.library.virginia.edu/visualizing-the-effects-of-logistic-regression/ -->
@@ -850,7 +817,7 @@ Definition
 <p>We use a nested version of <code>plot()</code> on <code>allEffects()</code> on the <code>logistic1</code> model (<code>effects</code> package) to visualize the effect of gender:</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="logistic-regression.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
 <span id="cb108-2"><a href="logistic-regression.html#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">allEffects</span>(logistic1))</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-174-1.png" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-175-1.png" width="576" /></p>
 <p>What kind of effect does this plot show? And how did the effects package make those estimates? Instead of odds ratio or odds the effect plot shows the plain male and female survival rates.</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="logistic-regression.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="do">## male survival: (~ 14%)</span></span>
 <span id="cb109-2"><a href="logistic-regression.html#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">+</span> <span class="fu">table</span>(titanic<span class="sc">$</span>Survived, titanic<span class="sc">$</span>Sex)[<span class="dv">1</span>,<span class="dv">2</span>])</span>
@@ -1021,14 +988,6 @@ Chi Square Test Statistic
 <div id="some-are-more-equal-than-others" class="section level3 hasAnchor" number="10.4.6">
 <h3><span class="header-section-number">10.4.6</span> Some Are More Equal Than Others<a href="logistic-regression.html#some-are-more-equal-than-others" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let's extend the group analysis to multiple categories using the <code>Pclass</code> variable. The passenger class represents the socio-economic status of people. We hypothesize that people with more money used their influence to get into one of the lifeboats. First, the contingency table of the situation:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="logistic-regression.html#cb112-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> titanic <span class="sc">%&gt;%</span></span>
-<span id="cb112-2"><a href="logistic-regression.html#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Pclass_fct =</span> <span class="fu">factor</span>(Pclass))</span>
-<span id="cb112-3"><a href="logistic-regression.html#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-4"><a href="logistic-regression.html#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="fu">contingency_table</span>(<span class="at">independents=</span><span class="fu">list</span>(<span class="st">&quot;Passenger Class&quot;</span><span class="ot">=</span><span class="st">&#39;Pclass_fct&#39;</span>),</span>
-<span id="cb112-5"><a href="logistic-regression.html#cb112-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">outcomes=</span><span class="fu">list</span>(<span class="st">&#39;Survival&#39;</span><span class="ot">=</span><span class="st">&#39;Survived_fct&#39;</span>), <span class="do">## need to be factors  </span></span>
-<span id="cb112-6"><a href="logistic-regression.html#cb112-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">crosstab_funcs=</span><span class="fu">list</span>(<span class="fu">freq</span>()),</span>
-<span id="cb112-7"><a href="logistic-regression.html#cb112-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>titanic) <span class="sc">%&gt;%</span> </span>
-<span id="cb112-8"><a href="logistic-regression.html#cb112-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">neat_table</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1121,18 +1080,22 @@ Total
 </tbody>
 </table>
 <p>In first class, more people survived (n=168) than died (n=114) whereas this is not true for the third class (365 died and 135 survived). <a href="https://en.wikipedia.org/wiki/All_men_are_created_equal">All men may be created equal</a>, but some are more equal than others. The logistic regression with one categorical variable is straightforward. Note that we tell R to handle <code>Pclass</code> like a factor (group variable):</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="logistic-regression.html#cb113-1" aria-hidden="true" tabindex="-1"></a>logistic2 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="fu">factor</span>(Pclass), </span>
-<span id="cb113-2"><a href="logistic-regression.html#cb113-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), </span>
-<span id="cb113-3"><a href="logistic-regression.html#cb113-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> titanic)</span></code></pre></div>
-<div style="display:flex; flex-wrap: wrap;">
-<div style="flex-basis: 50%;">
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="logistic-regression.html#cb112-1" aria-hidden="true" tabindex="-1"></a>logistic2 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="fu">factor</span>(Pclass), </span>
+<span id="cb112-2"><a href="logistic-regression.html#cb112-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), </span>
+<span id="cb112-3"><a href="logistic-regression.html#cb112-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> titanic)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-183">Table 10.4: </span>Logistic regression in default coefficients and odds ratio.
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
 </th>
 <th style="text-align:center;">
 Survival
+</th>
+<th style="text-align:center;">
+Survival (Odds Ratio)
 </th>
 </tr>
 </thead>
@@ -1144,77 +1107,15 @@ Constant
 <td style="text-align:center;">
 0.388
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-(0.121)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Class 2
-</td>
-<td style="text-align:center;">
-−0.673
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-(0.174)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Class 3
-</td>
-<td style="text-align:center;">
-−1.382
-</td>
-</tr>
-<tr>
-<td style="text-align:left;box-shadow: 0px 1px">
-</td>
-<td style="text-align:center;box-shadow: 0px 1px">
-(0.158)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Num.Obs.
-</td>
-<td style="text-align:center;">
-1043
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div style="flex-basis: 50%;">
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:center;">
-Survival (OR)
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Constant
-</td>
 <td style="text-align:center;">
 1.474
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.121)
 </td>
 <td style="text-align:center;">
 (0.179)
@@ -1225,11 +1126,17 @@ Constant
 Class 2
 </td>
 <td style="text-align:center;">
+−0.673
+</td>
+<td style="text-align:center;">
 0.510
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.174)
 </td>
 <td style="text-align:center;">
 (0.089)
@@ -1240,11 +1147,17 @@ Class 2
 Class 3
 </td>
 <td style="text-align:center;">
+−1.382
+</td>
+<td style="text-align:center;">
 0.251
 </td>
 </tr>
 <tr>
 <td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.158)
 </td>
 <td style="text-align:center;box-shadow: 0px 1px">
 (0.040)
@@ -1257,17 +1170,18 @@ Num.Obs.
 <td style="text-align:center;">
 1043
 </td>
+<td style="text-align:center;">
+1043
+</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <p>The lower your socio-economic status, the less survival can you expect.</p>
 </div>
 <div id="the-cheaper-the-deader" class="section level3 hasAnchor" number="10.4.7">
 <h3><span class="header-section-number">10.4.7</span> The Cheaper The Deader?<a href="logistic-regression.html#the-cheaper-the-deader" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We have more information on the effect of socio-economic class, the <code>Fare</code> variable (ticket price). In the data the <code>Fare</code> variable is like this:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="logistic-regression.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datasummary_skim</span>(titanic<span class="sc">$</span>Fare)</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="logistic-regression.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datasummary_skim</span>(titanic<span class="sc">$</span>Fare)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1350,10 +1264,11 @@ data
 <!-- A century later, in 2012, those ticket prices equaled a range of \$50,000 to \$460. -->
 <span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-3829240a8babd2881fd5" width="576"></span>
 <script type="application/json" data-for="htmlwidget-3829240a8babd2881fd5">{"x":{"element":"currency","opts":{"content":"Before Britain’s currency was in terms of pounds and pence, it was in terms of pounds, shillings and pennies e.g. £18 15s 9d.  There were: 12 pennies per shilling and 20 shillings per pound."}},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="logistic-regression.html#cb115-1" aria-hidden="true" tabindex="-1"></a>logistic3 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Fare, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span></code></pre></div>
-<div style="display:flex; flex-wrap: wrap;">
-<div style="flex-basis: 50%;">
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="logistic-regression.html#cb114-1" aria-hidden="true" tabindex="-1"></a>logistic3 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Fare, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-187">Table 10.5: </span>Logistic regression in default coefficients and odds ratio.
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1361,65 +1276,18 @@ data
 <th style="text-align:center;">
 Survival
 </th>
+<th style="text-align:center;">
+Survival (Odds Ratio)
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Constant
 </td>
 <td style="text-align:center;">
 −0.807
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-(0.084)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Fare
-</td>
-<td style="text-align:center;">
-0.011
-</td>
-</tr>
-<tr>
-<td style="text-align:left;box-shadow: 0px 1px">
-</td>
-<td style="text-align:center;box-shadow: 0px 1px">
-(0.002)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Num.Obs.
-</td>
-<td style="text-align:center;">
-1043
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div style="flex-basis: 50%;">
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:center;">
-Survival (OR)
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-(Intercept)
 </td>
 <td style="text-align:center;">
 0.446
@@ -1429,12 +1297,18 @@ Survival (OR)
 <td style="text-align:left;">
 </td>
 <td style="text-align:center;">
+(0.084)
+</td>
+<td style="text-align:center;">
 (0.037)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Fare
+</td>
+<td style="text-align:center;">
+0.011
 </td>
 <td style="text-align:center;">
 1.011
@@ -1446,6 +1320,9 @@ Fare
 <td style="text-align:center;box-shadow: 0px 1px">
 (0.002)
 </td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.002)
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1454,11 +1331,12 @@ Num.Obs.
 <td style="text-align:center;">
 1043
 </td>
+<td style="text-align:center;">
+1043
+</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <p>The coefficient and intercept estimates give us the following equation:</p>
 <p><span class="math display">\[ \text{logit}(p) = -0.80666  + 0.01109 \cdot \text{fare} \]</span></p>
 <p>In this case, the estimated coefficient for the <strong>intercept</strong> is the log odds of a passenger with a fare of zero surviving the accident. Of course, there is nothing like a free lunch. So the intercept in this model corresponds to the log odds of survival when fare is at the hypothetical value of zero.</p>
@@ -1473,11 +1351,11 @@ Num.Obs.
 <p><span class="math display">\[ e^{\text{logit}(p | \text{fare}=38) - \text{logit}(p | \text{fare}=37)} = e^{0.0110866} =  1.011148  \]</span></p>
 <p>So we can say for a one-unit increase in fare price, we expect to see about 1.1% increase in the odds of surviving. This 1.1% of increase does not depend on the value that fare is held at.</p>
 <p>Can we get this information more directly? Yes, we can.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="logistic-regression.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span>
-<span id="cb116-2"><a href="logistic-regression.html#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="fu">coef</span>(logistic3), <span class="fu">confint</span>(logistic3)))  </span>
-<span id="cb116-3"><a href="logistic-regression.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           2.5 %    97.5 %</span></span>
-<span id="cb116-4"><a href="logistic-regression.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.4463467 0.3780949 0.5250284</span></span>
-<span id="cb116-5"><a href="logistic-regression.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare        1.0111482 1.0080791 1.0145089</span></span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="logistic-regression.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MASS)</span>
+<span id="cb115-2"><a href="logistic-regression.html#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="fu">coef</span>(logistic3), <span class="fu">confint</span>(logistic3)))  </span>
+<span id="cb115-3"><a href="logistic-regression.html#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           2.5 %    97.5 %</span></span>
+<span id="cb115-4"><a href="logistic-regression.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.4463467 0.3780949 0.5250284</span></span>
+<span id="cb115-5"><a href="logistic-regression.html#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare        1.0111482 1.0080791 1.0145089</span></span></code></pre></div>
 <!-- ## We can say now that the coefficient for fare is the difference in the log odds. -->
 <!-- ## In other words, for a one-unit increase in the fare, the expected change in log odds is 0.011493. -->
 <!-- ## exp[log(p/(1-p))(fare=34)-log(p/(1-p))(fare=33)] = -->
@@ -1488,62 +1366,385 @@ Num.Obs.
 <!-- ## we expect to see about 2% increase in the odds of surviving. -->
 <!-- ## This 2% of increase does not depend on the value that fare is held at. -->
 <!-- ## (model is linear in parameters) -->
-<div id="the-bigger-picture" class="section level4 hasAnchor" number="10.4.7.1">
-<h4><span class="header-section-number">10.4.7.1</span> The Bigger Picture<a href="logistic-regression.html#the-bigger-picture" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>First, we take another subset, since <code>PassengerId</code>, <code>Name</code> and <code>Ticket</code> are not good predictors.</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="logistic-regression.html#cb117-1" aria-hidden="true" tabindex="-1"></a>logistic4 <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> ., <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic) </span>
-<span id="cb117-2"><a href="logistic-regression.html#cb117-2" aria-hidden="true" tabindex="-1"></a>logistic4</span>
-<span id="cb117-3"><a href="logistic-regression.html#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb117-4"><a href="logistic-regression.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = Survived ~ ., family = binomial(link = &quot;logit&quot;), </span></span>
-<span id="cb117-5"><a href="logistic-regression.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     data = titanic)</span></span>
-<span id="cb117-6"><a href="logistic-regression.html#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb117-7"><a href="logistic-regression.html#cb117-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb117-8"><a href="logistic-regression.html#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          (Intercept)                Pclass               Sexmale  </span></span>
-<span id="cb117-9"><a href="logistic-regression.html#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           -2.657e+01            -7.331e-11            -8.559e-10  </span></span>
-<span id="cb117-10"><a href="logistic-regression.html#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Age                 SibSp                 Parch  </span></span>
-<span id="cb117-11"><a href="logistic-regression.html#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            1.296e-11             1.192e-10            -2.692e-10  </span></span>
-<span id="cb117-12"><a href="logistic-regression.html#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Fare             EmbarkedQ             EmbarkedS  </span></span>
-<span id="cb117-13"><a href="logistic-regression.html#cb117-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           -5.997e-13            -1.218e-10            -1.493e-10  </span></span>
-<span id="cb117-14"><a href="logistic-regression.html#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Survived_fctSurvived           Sex_fctMale           Pclass_fct2  </span></span>
-<span id="cb117-15"><a href="logistic-regression.html#cb117-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            5.313e+01                    NA            -4.052e-11  </span></span>
-<span id="cb117-16"><a href="logistic-regression.html#cb117-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Pclass_fct3  </span></span>
-<span id="cb117-17"><a href="logistic-regression.html#cb117-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   NA  </span></span>
-<span id="cb117-18"><a href="logistic-regression.html#cb117-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb117-19"><a href="logistic-regression.html#cb117-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 1042 Total (i.e. Null);  1032 Residual</span></span>
-<span id="cb117-20"><a href="logistic-regression.html#cb117-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       1402 </span></span>
-<span id="cb117-21"><a href="logistic-regression.html#cb117-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 6.051e-09     AIC: 22</span></span></code></pre></div>
-<p>For example, increase one unit in age will decrease the log odd of survival by 0.0257; being a male will decrease the log odd of survival by 3.78 compared to female; and being in class2 will decrease the log odd of survival by 1.17, being in class3 will decrease the log odd of survival by 1.97.</p>
-<p>Moreover, exponentiate the model coefficients can look at the result and interpret its meaning at a different angle. Below are table of the “odd ratio” value for each predictor coefficient relative to the survival and their respective 95% confident interval odd ratio value.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="logistic-regression.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="at">OR =</span> <span class="fu">coef</span>(logistic4)))  </span>
-<span id="cb118-2"><a href="logistic-regression.html#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                OR</span></span>
-<span id="cb118-3"><a href="logistic-regression.html#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)          2.900701e-12</span></span>
-<span id="cb118-4"><a href="logistic-regression.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass               1.000000e+00</span></span>
-<span id="cb118-5"><a href="logistic-regression.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sexmale              1.000000e+00</span></span>
-<span id="cb118-6"><a href="logistic-regression.html#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Age                  1.000000e+00</span></span>
-<span id="cb118-7"><a href="logistic-regression.html#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SibSp                1.000000e+00</span></span>
-<span id="cb118-8"><a href="logistic-regression.html#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parch                1.000000e+00</span></span>
-<span id="cb118-9"><a href="logistic-regression.html#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fare                 1.000000e+00</span></span>
-<span id="cb118-10"><a href="logistic-regression.html#cb118-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; EmbarkedQ            1.000000e+00</span></span>
-<span id="cb118-11"><a href="logistic-regression.html#cb118-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; EmbarkedS            1.000000e+00</span></span>
-<span id="cb118-12"><a href="logistic-regression.html#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Survived_fctSurvived 1.188481e+23</span></span>
-<span id="cb118-13"><a href="logistic-regression.html#cb118-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sex_fctMale                    NA</span></span>
-<span id="cb118-14"><a href="logistic-regression.html#cb118-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass_fct2          1.000000e+00</span></span>
-<span id="cb118-15"><a href="logistic-regression.html#cb118-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Pclass_fct3                    NA</span></span></code></pre></div>
-<p>Now, the result can be interpreted as: for a unit increase in age, the odds of surviving from the incident decrease by a factor of 0.96; and being a third class (class3), the odds of surviving decrease by a factor of 0.12, etc.</p>
+</div>
+<div id="the-bigger-picture" class="section level3 hasAnchor" number="10.4.8">
+<h3><span class="header-section-number">10.4.8</span> The Bigger Picture<a href="logistic-regression.html#the-bigger-picture" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First, we include all variables that we covered so far, i.e. <code>Sex</code>, <code>Class</code> and <code>Fare</code> in a model. In a second version we add <code>Age</code>, <code>SibSp</code>, <code>Parch</code> and <code>Embarked</code>. How do two models compare?</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="logistic-regression.html#cb116-1" aria-hidden="true" tabindex="-1"></a>logistic4_small <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Sex <span class="sc">+</span> <span class="fu">factor</span>(Pclass) <span class="sc">+</span> Fare, </span>
+<span id="cb116-2"><a href="logistic-regression.html#cb116-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic) </span>
+<span id="cb116-3"><a href="logistic-regression.html#cb116-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-4"><a href="logistic-regression.html#cb116-4" aria-hidden="true" tabindex="-1"></a>logistic4_big <span class="ot">=</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> Sex <span class="sc">+</span> <span class="fu">factor</span>(Pclass) <span class="sc">+</span> Fare <span class="sc">+</span> Age <span class="sc">+</span> SibSp <span class="sc">+</span> Parch <span class="sc">+</span> Embarked, </span>
+<span id="cb116-5"><a href="logistic-regression.html#cb116-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&#39;logit&#39;</span>), <span class="at">data =</span> titanic) </span>
+<span id="cb116-6"><a href="logistic-regression.html#cb116-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-7"><a href="logistic-regression.html#cb116-7" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Logistic regression comparison with model statistics.&#39;</span>,</span>
+<span id="cb116-8"><a href="logistic-regression.html#cb116-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Survival&quot;</span> <span class="ot">=</span> logistic4_small,</span>
+<span id="cb116-9"><a href="logistic-regression.html#cb116-9" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;Survival (Odds Ratio)&quot;</span> <span class="ot">=</span> logistic4_small,</span>
+<span id="cb116-10"><a href="logistic-regression.html#cb116-10" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;Survival&quot;</span> <span class="ot">=</span> logistic4_big,</span>
+<span id="cb116-11"><a href="logistic-regression.html#cb116-11" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;Survival (Odds Ratio)&quot;</span> <span class="ot">=</span> logistic4_big), </span>
+<span id="cb116-12"><a href="logistic-regression.html#cb116-12" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb116-13"><a href="logistic-regression.html#cb116-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|RMSE|Log.Lik.|F&#39;</span>,</span>
+<span id="cb116-14"><a href="logistic-regression.html#cb116-14" aria-hidden="true" tabindex="-1"></a>             <span class="co">#metrics = &quot;all&quot;,</span></span>
+<span id="cb116-15"><a href="logistic-regression.html#cb116-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">coef_map =</span> cm,</span>
+<span id="cb116-16"><a href="logistic-regression.html#cb116-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">exponentiate =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>))</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-189">Table 10.6: </span>Logistic regression comparison with model statistics.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+<th style="text-align:center;">
+Survival (Odds Ratio)
+</th>
+<th style="text-align:center;">
+Survival
+</th>
+<th style="text-align:center;">
+Survival (Odds Ratio)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Constant
+</td>
+<td style="text-align:center;">
+2.605
+</td>
+<td style="text-align:center;">
+13.526
+</td>
+<td style="text-align:center;">
+4.387
+</td>
+<td style="text-align:center;">
+80.396
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.284)
+</td>
+<td style="text-align:center;">
+(3.843)
+</td>
+<td style="text-align:center;">
+(0.472)
+</td>
+<td style="text-align:center;">
+(37.966)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Class 2
+</td>
+<td style="text-align:center;">
+−0.822
+</td>
+<td style="text-align:center;">
+0.440
+</td>
+<td style="text-align:center;">
+−1.149
+</td>
+<td style="text-align:center;">
+0.317
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.270)
+</td>
+<td style="text-align:center;">
+(0.119)
+</td>
+<td style="text-align:center;">
+(0.300)
+</td>
+<td style="text-align:center;">
+(0.095)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Class 3
+</td>
+<td style="text-align:center;">
+−1.644
+</td>
+<td style="text-align:center;">
+0.193
+</td>
+<td style="text-align:center;">
+−2.086
+</td>
+<td style="text-align:center;">
+0.124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.264)
+</td>
+<td style="text-align:center;">
+(0.051)
+</td>
+<td style="text-align:center;">
+(0.310)
+</td>
+<td style="text-align:center;">
+(0.039)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:center;">
+−3.554
+</td>
+<td style="text-align:center;">
+0.029
+</td>
+<td style="text-align:center;">
+−3.690
+</td>
+<td style="text-align:center;">
+0.025
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.194)
+</td>
+<td style="text-align:center;">
+(0.006)
+</td>
+<td style="text-align:center;">
+(0.211)
+</td>
+<td style="text-align:center;">
+(0.005)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fare
+</td>
+<td style="text-align:center;">
+0.001
+</td>
+<td style="text-align:center;">
+1.001
+</td>
+<td style="text-align:center;">
+0.002
+</td>
+<td style="text-align:center;">
+1.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.002)
+</td>
+<td style="text-align:center;">
+(0.002)
+</td>
+<td style="text-align:center;">
+(0.002)
+</td>
+<td style="text-align:center;">
+(0.002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Age
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+−0.036
+</td>
+<td style="text-align:center;">
+0.965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.007)
+</td>
+<td style="text-align:center;">
+(0.007)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SibSp
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+−0.319
+</td>
+<td style="text-align:center;">
+0.727
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(0.118)
+</td>
+<td style="text-align:center;">
+(0.086)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Parch
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+−0.116
+</td>
+<td style="text-align:center;">
+0.890
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.113)
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(0.101)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1043
+</td>
+<td style="text-align:center;">
+1043
+</td>
+<td style="text-align:center;">
+1043
+</td>
+<td style="text-align:center;">
+1043
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AIC
+</td>
+<td style="text-align:center;">
+825.9
+</td>
+<td style="text-align:center;">
+825.9
+</td>
+<td style="text-align:center;">
+804.0
+</td>
+<td style="text-align:center;">
+804.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIC
+</td>
+<td style="text-align:center;">
+850.6
+</td>
+<td style="text-align:center;">
+850.6
+</td>
+<td style="text-align:center;">
+853.5
+</td>
+<td style="text-align:center;">
+853.5
+</td>
+</tr>
+</tbody>
+</table>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Akaike Information Criterion (AIC)</strong> is a measure of the quality of a model that takes into account the complexity of the model. Lower AIC values indicate a better model fit. To compare two models, calculate the AIC for each model and select the model with the lower AIC value. <strong>Bayesian Information Criterion (BIC)</strong> is similar to AIC but places a stronger penalty on the number of parameters in the model. Like AIC, lower BIC values indicate a better model fit.</p>
+</div>
+<p>AIC is lower in the comprehensive model whereas BIC is lower in the base model. Another possibility for comparison of model performance is the ROC curve.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Receiver Operating Characteristic (ROC)</strong> curve is a plot of sensitivity against 1-specificity. A better model will have an ROC curve that is closer to the upper left corner, which represents perfect classification.</p>
+</div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-190-1.png" width="576" /></p>
+<p>From the ROC curve there seems to be a slight outperformance of the bigger model.</p>
+<!-- For example, increase one unit in age will decrease the log odd of survival by 0.0257; being a male will decrease the log odd of survival by 3.78 compared to female; and being in class2 will decrease the log odd of survival by 1.17, being in class3 will decrease the log odd of survival by 1.97. -->
+<!-- Moreover, exponentiate the model coefficients can look at the result and interpret its meaning at a different angle. Below are table of the “odd ratio” value for each predictor coefficient relative to the survival and their respective 95% confident interval odd ratio value. -->
+<!-- Now, the result can be interpreted as: for a unit increase in age, the odds of surviving from the incident decrease by a factor of 0.96; and being a third class (class3), the odds of surviving decrease by a factor of 0.12, etc. -->
 <!-- The overall survival rate for men was 20%. For women, it was 74%, and for children, 52% -->
-<div class="infobox2 information">
-<p>The logit model coefficients can be presented as <strong>odds ratios</strong>. But odds-ratios are often misinterpreted as if they were relative risks/probabilities. Nonetheless presenting odds-ratios is standard practice in the medical literature.</p>
-</div>
-</div>
-<div id="marginal-effects" class="section level4 hasAnchor" number="10.4.7.2">
-<h4><span class="header-section-number">10.4.7.2</span> Marginal Effects<a href="logistic-regression.html#marginal-effects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- Marginal Effects -->
 <!-- https://stats.stackexchange.com/questions/147612/interpretation-of-marginal-effects-in-logit-model-with-log-timesindependent-va -->
 <!-- https://www.youtube.com/watch?v=lJMO5kqWwIo -->
-<p>Marginal effects is a way of presenting results as differences in probabilities, which is more informative than odds-ratios and relative risk. For continuous variables this represents the instantaneous change given that the ‘unit’ may be very small. For binary variables, the change is from 0 to 1, so one ‘unit’ as it is usually thought.</p>
-<p>In order to express the more intuitive change in the predicted probability that the outcome equals 1 requires conditioning on all other included variables (i.e., selecting a set of values for all righthand-side variables) and running that set of values through the link function to convert log-odds to probabilities, thus making the marginal effect (in probability terms) of one variable a function of all other variables included in the model.</p>
-<div class="infobox2 information">
-<p><strong>Marginal effects</strong> show the change in probability when the predictor or independent variable increases by one unit.</p>
-</div>
+<!-- Marginal effects is a way of presenting results as differences in probabilities, which is more informative than odds-ratios and relative risk. For continuous variables this represents the instantaneous change given that the ‘unit’ may be very small. For binary variables, the change is from 0 to 1, so one ‘unit’ as it is usually thought.  -->
+<!-- In order to express the more intuitive change in the predicted probability that the outcome equals 1 requires conditioning on all other included variables (i.e., selecting a set of values for all righthand-side variables) and running that set of values through the link function to convert log-odds to probabilities, thus making the marginal effect (in probability terms) of one variable a function of all other variables included in the model.  -->
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- **Marginal effects** show the change in probability when the predictor or independent variable increases by one unit. -->
+<!-- ::: -->
 <p><!-- This is the definition of semi-elasticity, and can be interpreted as the -->
 <!-- change in probability for a 1% change in x. --></p>
 <p><!-- So we can say for a one-percent increase in fare, -->
@@ -1551,21 +1752,10 @@ Num.Obs.
 <!-- on a scale from 0 to 1. -->
 <!-- We could also infer that a 10% price increase increases survival probability -->
 <!-- by about 0.025 --></p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="logistic-regression.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(margins)</span>
-<span id="cb119-2"><a href="logistic-regression.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">margins</span>(logistic4))</span>
-<span id="cb119-3"><a href="logistic-regression.html#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                factor     AME SE  z  p lower upper</span></span>
-<span id="cb119-4"><a href="logistic-regression.html#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Age  0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-5"><a href="logistic-regression.html#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             EmbarkedQ -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-6"><a href="logistic-regression.html#cb119-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             EmbarkedS -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-7"><a href="logistic-regression.html#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Fare -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-8"><a href="logistic-regression.html#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Parch -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-9"><a href="logistic-regression.html#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Pclass -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-10"><a href="logistic-regression.html#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Pclass_fct2 -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-11"><a href="logistic-regression.html#cb119-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Pclass_fct3  0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-12"><a href="logistic-regression.html#cb119-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Sex_fctMale  0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-13"><a href="logistic-regression.html#cb119-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Sexmale -0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-14"><a href="logistic-regression.html#cb119-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 SibSp  0.0000 NA NA NA    NA    NA</span></span>
-<span id="cb119-15"><a href="logistic-regression.html#cb119-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Survived_fctSurvived  1.0000 NA NA NA    NA    NA</span></span></code></pre></div>
+<!-- # ```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE} -->
+<!-- # library(margins) -->
+<!-- # summary(margins(logistic4_big)) -->
+<!-- # ``` -->
 <!-- #### Odds Ratio -->
 <!-- ::: {.infobox2 .information data-latex="warning"} -->
 <!-- The **Odds Ratio** (OR) is a measure of association between an exposure and an outcome. -->
@@ -1579,7 +1769,6 @@ Num.Obs.
 <!-- exp(coef(logistic1)) -->
 <!-- ``` -->
 
-</div>
 </div>
 </div>
 </div>

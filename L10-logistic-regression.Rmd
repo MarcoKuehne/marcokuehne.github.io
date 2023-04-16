@@ -183,14 +183,28 @@ In an empty model, there is only the intercept and no predictor:
 
 $$logit (p) = \beta_0$$ 
 
+```{r, eval=TRUE, echo=F}
+cm <- c('(Intercept)' = 'Constant',
+        'factor(Pclass)2'    = 'Class 2',
+        'factor(Pclass)3'    = 'Class 3',
+        'Sexmale' = 'Male',
+        'Fare' = 'Fare',
+        'Age' = 'Age',
+        'SibSp' = 'SibSp',
+        'Parch' = 'Parch',
+        'Embarked' = 'Embarked'
+        )
+```
+
 ```{r, eval=TRUE, echo=TRUE}
 library(tidyverse)
 logistic0 = glm(Survived ~ 1, family = binomial(link = 'logit'), data = titanic)
 
 library(modelsummary)
-modelsummary(list("Survival" = logistic0), 
-             title = 'Empty Model.',
-             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.')
+modelsummary(title = 'Empty Model.',
+             list("Survival" = logistic0), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             coef_map = cm)
 ```
 What does $-0.414$ represent? 
 
@@ -252,7 +266,10 @@ $$logit (p) = \beta_0 + \beta_1 \cdot sex$$
 ```{r, eval=TRUE, echo=TRUE}
 logistic1 = glm(Survived ~ Sex, family = binomial(link = 'logit'), data = titanic)
 
-modelsummary(list("Empty model" = logistic1), gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F')
+modelsummary(title = "Single Predictor.",
+             list("Survival" = logistic1), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
+             coef_map = cm)
 ```
 
 The dummy variable behaves as in the linear model in the sense that it either adds to the intercept when it is 1 or does not add anything when it is 0. 
@@ -284,25 +301,12 @@ We can get this figure more easily by exponentiating the regression coefficient,
 $$e^{-3.418} = 0.03277793$$
 
 ```{r, eval=TRUE, echo=FALSE}
-structure(
-  paste(
-    "<div style='display:flex; flex-wrap: wrap;'>",
-    "<div style='flex-basis: 50%;'>",
-    modelsummary(list("Survival" = logistic1), 
-             title = 'Default Coefficients.',
+modelsummary(title = 'Logistic regression in default coefficients and odds ratio.',
+             list("Survival" = logistic1,
+                  "Survival (Odds Ratio)" = logistic1), 
              gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
-             exponentiate = FALSE),
-    "</div>",
-    "<div style='flex-basis: 50%;'>",
-    modelsummary(list("Survival" = logistic1), 
-             title = 'Odds ratio coefficients.',
-             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
-             exponentiate = TRUE),
-    "</div>",
-    "</div>"
-  ),
-  class = "kableExtra"
-)
+             coef_map = cm,
+             exponentiate = c(FALSE,TRUE))
 ```
 
 
@@ -316,7 +320,7 @@ structure(
 
 We interpret OR as follows. An odds ratio greater than 1 indicates that the event is more likely to occur in the exposed group than in the non-exposed group, while an odds ratio less than 1 indicates that the event is less likely to occur in the exposed group than in the non-exposed group.
 
-
+Odds-ratios are sometimes misinterpreted as if they were relative risks/probabilities. Nonetheless presenting odds-ratios is standard practice in the medical literature.
 
 ```{r, eval=F, echo=F}
 ## odds ratio: odds for female to the odds for male: 2.876543/0.2329059 = 12.35067 == (233*468)/(81*109)
@@ -489,7 +493,7 @@ tab_temp[1,1] + tab_temp[1,2] + tab_temp[2,1] + tab_temp[2,2]
 
 Let's extend the group analysis to multiple categories using the `Pclass` variable. The passenger class represents the socio-economic status of people. We hypothesize that people with more money used their influence to get into one of the lifeboats. First, the contingency table of the situation: 
 
-```{r, eval=T, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, eval=T, echo=F, warning=FALSE, message=FALSE}
 titanic <- titanic %>%
   mutate(Pclass_fct = factor(Pclass))
 
@@ -509,27 +513,13 @@ logistic2 = glm(Survived ~ factor(Pclass),
 ```
 
 ```{r, eval=TRUE, echo=F}
-cm <- c('(Intercept)' = 'Constant',
-        'factor(Pclass)2'    = 'Class 2',
-        'factor(Pclass)3'    = 'Class 3')
-
-structure(
-  paste(
-    "<div style='display:flex; flex-wrap: wrap;'>",
-    "<div style='flex-basis: 50%;'>",
-    modelsummary(list("Survival" = logistic2), 
-                 gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
-                 coef_map = cm),
-    "</div>",
-    "<div style='flex-basis: 50%;'>",
-    modelsummary(list("Survival (OR)" = logistic2), 
-                 gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
-                 coef_map = cm, exponentiate = TRUE),
-    "</div>",
-    "</div>"
-  ),
-  class = "kableExtra"
-)
+modelsummary(title = 'Logistic regression in default coefficients and odds ratio.',
+             list("Survival" = logistic2,
+                  "Survival (Odds Ratio)" = logistic2), 
+             
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
+             coef_map = cm,
+             exponentiate = c(FALSE,TRUE))
 ```
 
 The lower your socio-economic status, the less survival can you expect.  
@@ -550,33 +540,18 @@ datasummary_skim(titanic$Fare)
 tippy::tippy_this(elementId = "currency", tooltip = "Before Britain’s currency was in terms of pounds and pence, it was in terms of pounds, shillings and pennies e.g. £18 15s 9d.  There were: 12 pennies per shilling and 20 shillings per pound.")
 ```
 
-
-
-
-
-
-
 ```{r, eval=TRUE, echo=TRUE}
 logistic3 = glm(Survived ~ Fare, family = binomial(link = 'logit'), data = titanic)
 ```
 
 ```{r, eval=TRUE, echo=F}
-structure(
-  paste(
-    "<div style='display:flex; flex-wrap: wrap;'>",
-    "<div style='flex-basis: 50%;'>",
-    modelsummary(list("Survival" = logistic3), 
-                 gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F'),
-    "</div>",
-    "<div style='flex-basis: 50%;'>",
-    modelsummary(list("Survival (OR)" = logistic3), 
-                 gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
-                 exponentiate = TRUE),
-    "</div>",
-    "</div>"
-  ),
-  class = "kableExtra"
-)
+modelsummary(title = 'Logistic regression in default coefficients and odds ratio.',
+             list("Survival" = logistic3,
+                  "Survival (Odds Ratio)" = logistic3), 
+             
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F',
+             coef_map = cm,
+             exponentiate = c(FALSE,TRUE))
 ```
 
 The coefficient and intercept estimates give us the following equation:
@@ -609,7 +584,6 @@ require(MASS)
 exp(cbind(coef(logistic3), confint(logistic3)))  
 ```
 
-
 <!-- ## We can say now that the coefficient for fare is the difference in the log odds. -->
 <!-- ## In other words, for a one-unit increase in the fare, the expected change in log odds is 0.011493. -->
 
@@ -623,43 +597,97 @@ exp(cbind(coef(logistic3), confint(logistic3)))
 <!-- ## This 2% of increase does not depend on the value that fare is held at. -->
 <!-- ## (model is linear in parameters) -->
 
-#### The Bigger Picture 
+### The Bigger Picture 
 
-First, we take another subset, since `PassengerId`, `Name` and `Ticket` are not good predictors. 
-
-```{r, eval=TRUE, echo=TRUE}
-logistic4 = glm(Survived ~ ., family = binomial(link = 'logit'), data = titanic) 
-logistic4
-```
-
-For example, increase one unit in age will decrease the log odd of survival by 0.0257; being a male will decrease the log odd of survival by 3.78 compared to female; and being in class2 will decrease the log odd of survival by 1.17, being in class3 will decrease the log odd of survival by 1.97.
-
-Moreover, exponentiate the model coefficients can look at the result and interpret its meaning at a different angle. Below are table of the “odd ratio” value for each predictor coefficient relative to the survival and their respective 95% confident interval odd ratio value.
+First, we include all variables that we covered so far, i.e. `Sex`, `Class` and `Fare` in a model. In a second version we add `Age`, `SibSp`, `Parch` and `Embarked`. How do two models compare? 
 
 ```{r, eval=TRUE, echo=TRUE}
-exp(cbind(OR = coef(logistic4)))  
+logistic4_small = glm(Survived ~ Sex + factor(Pclass) + Fare, 
+                      family = binomial(link = 'logit'), data = titanic) 
+
+logistic4_big = glm(Survived ~ Sex + factor(Pclass) + Fare + Age + SibSp + Parch + Embarked, 
+                    family = binomial(link = 'logit'), data = titanic) 
+
+modelsummary(title = 'Logistic regression comparison with model statistics.',
+             list("Survival" = logistic4_small,
+                  "Survival (Odds Ratio)" = logistic4_small,
+                  "Survival" = logistic4_big,
+                  "Survival (Odds Ratio)" = logistic4_big), 
+             
+             gof_omit = 'R2|RMSE|Log.Lik.|F',
+             #metrics = "all",
+             coef_map = cm,
+             exponentiate = c(FALSE,TRUE,FALSE,TRUE))
 ```
 
-Now, the result can be interpreted as: for a unit increase in age, the odds of surviving from the incident decrease by a factor of 0.96; and being a third class (class3), the odds of surviving decrease by a factor of 0.12, etc.
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Akaike Information Criterion (AIC)** is a measure of the quality of a model that takes into account the complexity of the model. Lower AIC values indicate a better model fit. To compare two models, calculate the AIC for each model and select the model with the lower AIC value. **Bayesian Information Criterion (BIC)** is similar to AIC but places a stronger penalty on the number of parameters in the model. Like AIC, lower BIC values indicate a better model fit.
+::::
+
+AIC is lower in the comprehensive model whereas BIC is lower in the base model. Another possibility for comparison of model performance is the ROC curve.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Receiver Operating Characteristic (ROC)** curve is a plot of sensitivity against 1-specificity. A better model will have an ROC curve that is closer to the upper left corner, which represents perfect classification.
+::::
+
+```{r, eval=TRUE, echo=F, warning=FALSE, message=FALSE}
+# Compute the predicted probabilities for each model
+pred1 <- predict(logistic4_small, type = "response")
+pred2 <- predict(logistic4_big, type = "response")
+
+# Compute the ROC curve and AUC for each model
+library(pROC)
+roc1 <- roc(titanic$Survived, pred1)
+roc2 <- roc(titanic$Survived, pred2)
+
+rocobj1 <-plot.roc(titanic$Survived, pred1,
+                    main="Statistical comparison",
+                    percent=TRUE,
+                    col="#1c61b6")
+rocobj2 <- lines.roc(titanic$Survived, pred2, 
+                     percent=TRUE, 
+                     col="#008600")
+testobj <- roc.test(rocobj1, rocobj2)
+text(50, 50, labels=paste("p-value =", 
+                          format.pval(testobj$p.value)), adj=c(0, .5))
+legend("bottomright", legend=c("Small Model", "Big Model"), 
+       col=c("#1c61b6", "#008600"), lwd=2)
+
+# auc(roc1)
+# auc(roc2)
+# plot(roc1, col = "red")
+# plot(roc2, col = "blue", add = TRUE)
+```
+
+
+From the ROC curve there seems to be a slight outperformance of the bigger model. 
+
+<!-- For example, increase one unit in age will decrease the log odd of survival by 0.0257; being a male will decrease the log odd of survival by 3.78 compared to female; and being in class2 will decrease the log odd of survival by 1.17, being in class3 will decrease the log odd of survival by 1.97. -->
+
+<!-- Moreover, exponentiate the model coefficients can look at the result and interpret its meaning at a different angle. Below are table of the “odd ratio” value for each predictor coefficient relative to the survival and their respective 95% confident interval odd ratio value. -->
+
+<!-- Now, the result can be interpreted as: for a unit increase in age, the odds of surviving from the incident decrease by a factor of 0.96; and being a third class (class3), the odds of surviving decrease by a factor of 0.12, etc. -->
 
 <!-- The overall survival rate for men was 20%. For women, it was 74%, and for children, 52% -->
 
-::: {.infobox2 .information data-latex="warning"}
-The logit model coefficients can be presented as **odds ratios**. But odds-ratios are often misinterpreted as if they were relative risks/probabilities. Nonetheless presenting odds-ratios is standard practice in the medical literature.
-:::
-
-#### Marginal Effects
+<!-- Marginal Effects -->
 
 <!-- https://stats.stackexchange.com/questions/147612/interpretation-of-marginal-effects-in-logit-model-with-log-timesindependent-va -->
 <!-- https://www.youtube.com/watch?v=lJMO5kqWwIo -->
 
-Marginal effects is a way of presenting results as differences in probabilities, which is more informative than odds-ratios and relative risk. For continuous variables this represents the instantaneous change given that the ‘unit’ may be very small. For binary variables, the change is from 0 to 1, so one ‘unit’ as it is usually thought. 
+<!-- Marginal effects is a way of presenting results as differences in probabilities, which is more informative than odds-ratios and relative risk. For continuous variables this represents the instantaneous change given that the ‘unit’ may be very small. For binary variables, the change is from 0 to 1, so one ‘unit’ as it is usually thought.  -->
 
-In order to express the more intuitive change in the predicted probability that the outcome equals 1 requires conditioning on all other included variables (i.e., selecting a set of values for all righthand-side variables) and running that set of values through the link function to convert log-odds to probabilities, thus making the marginal effect (in probability terms) of one variable a function of all other variables included in the model. 
+<!-- In order to express the more intuitive change in the predicted probability that the outcome equals 1 requires conditioning on all other included variables (i.e., selecting a set of values for all righthand-side variables) and running that set of values through the link function to convert log-odds to probabilities, thus making the marginal effect (in probability terms) of one variable a function of all other variables included in the model.  -->
 
-::: {.infobox2 .information data-latex="warning"}
-**Marginal effects** show the change in probability when the predictor or independent variable increases by one unit.
-:::
+<!-- ::: {.infobox2 .information data-latex="warning"} -->
+<!-- **Marginal effects** show the change in probability when the predictor or independent variable increases by one unit. -->
+<!-- ::: -->
 
  <!-- This is the definition of semi-elasticity, and can be interpreted as the -->
  <!-- change in probability for a 1% change in x. -->
@@ -670,14 +698,10 @@ In order to express the more intuitive change in the predicted probability that 
  <!-- We could also infer that a 10% price increase increases survival probability -->
  <!-- by about 0.025 -->
 
-```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
-library(margins)
-summary(margins(logistic4))
-```
-
-
-
-
+<!-- # ```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE} -->
+<!-- # library(margins) -->
+<!-- # summary(margins(logistic4_big)) -->
+<!-- # ``` -->
 
 <!-- #### Odds Ratio -->
 
