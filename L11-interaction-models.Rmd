@@ -34,8 +34,10 @@ library(haven)
 
 pequiv <- read_dta("./SOEPteaching/pequiv.dta", col_select = c("pid", "syear", "d11101", "d11102ll", "l11102", "d11104")) 
 health <- read_dta("./SOEPteaching/health.dta", col_select = c("pid", "syear", "height", "weight"))
+pgen <- read_dta("./SOEPteaching/pgen.dta", col_select = c("pid", "syear", "pgnace",  "pgnace2"))
 
 master <- merge(pequiv, health, by = c("pid", "syear"))
+master <- merge(master, pgen, by = c("pid", "syear"))
 ```
 
 ```{r, eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
