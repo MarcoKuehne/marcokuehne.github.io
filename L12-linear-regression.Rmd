@@ -10,7 +10,7 @@ The [Mincer Equation](https://en.wikipedia.org/wiki/Mincer_earnings_function) is
 
 ## Data & Sample
 
-We use SOEP practice data to analyse yearly income. The analysis is restricted to people who are fulltime employed (`erwerb == 1`) in the working age (`alter <= 65`) who report an annual income from main job of more than one Euro (`einkommenj1 > 1`). We analyse the most recent cross-section of the data (`syear == 2019`). We drop a few cases with missing information, thus conduct a complete case analysis. 
+We use SOEP practice data to analyse yearly income. The analysis is restricted to people who are fulltime employed (`Emp == 1`) in the working age (`Age <= 65`) who report an annual income from main job of more than one Euro (`Income > 1`). We analyse the most recent cross-section of the data (`syear == 2019`). We drop a few cases with missing information, thus conduct a complete case analysis. 
 
 ```{r warning=FALSE, message=FALSE}
 library(haven)
@@ -20,28 +20,40 @@ master <- read_dta("https://github.com/MarcoKuehne/marcokuehne.github.io/blob/ma
 library(sjlabelled)
 soep <- remove_all_labels(master)
 
-# Explicitly define the gender variable as a factor
+# Rename German to English variable names
 library(tidyverse)
 soep <- soep %>% 
-  mutate(sex = factor(sex))
+  rename("Age" = "alter",
+         "Income" = "einkommenj1",
+         "NACE2" = "branche",
+         "Persons in HH" = "anz_pers", 
+         "Kids" = "anz_kind",
+         "Education" = "bildung",
+         "Health" = "gesund_org", 
+         "Satisfaction" = "lebensz_org",
+         "Emp" = "erwerb")
+
+# Explicitly define the gender variable as a factor
+soep <- soep %>% mutate(Female = factor(sex))
+
+# Round annual income to two digits
+soep <- soep %>% mutate(Income = round(Income, 2))
 
 # Build the estimation sample based on the topic
 soep <- soep %>% 
-  filter(erwerb == 1) %>% 
-  filter(alter <= 65) %>% 
-  filter(einkommenj1 > 1) %>% 
+  filter(Emp == 1) %>% 
+  filter(Age <= 65) %>% 
+  filter(Income > 1) %>% 
   filter(syear == 2019)
 
 # Conduct a complete case analysis
 soep <- soep %>% filter(complete.cases(.))
-
-# Rename German to English variable names
 ```
 
 The estimation sample looks like this:
 
 ```{r warning=FALSE, message=FALSE}
-DT::datatable(soep[,-c(1,2,8,13:15)], rownames = FALSE)
+DT::datatable(soep[,-c(1:3,8,13:15)], rownames = FALSE)
 ```
 
 The descriptive statistics of the sample look like this: 
@@ -51,7 +63,7 @@ library(modelsummary)
 datasummary_skim(soep[,-c(1,2,8,13:15)])
 ```
 
-The data is clean and read for analysis. There are no missings. The working age ranges from 18 to 65 years. People have between 0 and 8 children. There are NACE codes for the job industry ranging from 1 to 97 in the data (theoretically from 1 to 99). But not all jobs are represented in the data (77 unique values). Health status is measured on a scale from 1 to 5 whereas life satisfaction is measured on a scale between 0 and 10. The minimum annual income is about 915 Euro. We could have restricted the income variable to the minimum wage in Germany. Assume it is 12€/h and people in full-time work 8h/day. Starting from 365 days a year, there are 104 weekends, assume there are 11 public holidays and 30 days of vacation. 220 working days remain earning a minimum yearly income of about `220*8*12 = 21120` Euro. In the data, `r table(soep$einkommenj1 < 21120)[2]` people report earning less than that.  
+The data is clean and read for analysis. There are no missings. The working age ranges from 18 to 65 years. People have between 0 and 8 children. There are NACE codes for the job industry ranging from 1 to 97 in the data (theoretically from 1 to 99). But not all jobs are represented in the data (77 unique values). Health status is measured on a scale from 1 to 5 whereas life satisfaction is measured on a scale between 0 and 10. The minimum annual income is about 915 Euro. We could have restricted the income variable to the minimum wage in Germany. Assume it is 12€/h and people in full-time work 8h/day. Starting from 365 days a year, there are 104 weekends, assume there are 11 public holidays and 30 days of vacation. 220 working days remain earning a minimum yearly income of about `220*8*12 = 21120` Euro. In the data, `r table(soep$Income < 21120)[2]` people report earning less than that.  
 
 ## Data Visualization
 
@@ -60,9 +72,9 @@ We create a scatterplot of income (on the y-axis) versus age (on the x-axis). Da
 ```{r, echo=FALSE, eval=TRUE, out.width = '80%', fig.align="center", message=FALSE, warning=F}
 options(scipen=10000)
 library(tidyverse)
-ggplot(soep, aes(x=alter, y=einkommenj1, color=sex)) +
+ggplot(soep, aes(x=Age, y=Income, color=Female)) +
   geom_point() +
-  geom_smooth(aes(group=sex), method="lm", size=2, se=FALSE) +
+  geom_smooth(aes(group=Female), method="lm", size=2, se=FALSE) +
   labs(title = "The relationship between Income and Age.", x = "Age", y = "Income") + 
   theme_minimal()
 ```
@@ -70,8 +82,8 @@ ggplot(soep, aes(x=alter, y=einkommenj1, color=sex)) +
 ## Simplest Regression 
 
 ```{r, eval=T, echo=F}
-cm <- c('alter'    = 'Age',
-        'sex1'    = 'Female',
+cm <- c('Age'    = 'Age',
+        'Female1'    = 'Female',
         'industry'    = 'Industry',
         'industryBanking'    = 'Banking',
         'industryConstruction'    = 'Construction',
@@ -90,7 +102,7 @@ cm <- c('alter'    = 'Age',
 The simplest regression or empty model does not contain any explanatory variable.
 
 ```{r, include=TRUE, message=FALSE}
-simplest <- lm(einkommenj1 ~ 1, data=soep)
+simplest <- lm(Income ~ 1, data=soep)
 
 library(modelsummary)
 modelsummary(title = 'Empty Model.',
@@ -111,20 +123,20 @@ options(scipen=10000)
 
 # Plot overall intercept
 plot1 <- ggplot() +
-  geom_point(data=soep, aes(x=1:nrow(soep), y=einkommenj1)) +
-  geom_hline(yintercept = mean(soep$einkommenj1), color="red", size=2) +
+  geom_point(data=soep, aes(x=1:nrow(soep), y=Income)) +
+  geom_hline(yintercept = mean(soep$Income), color="red", size=2) +
   labs(title="Intercept model of Income", 
        subtitle = "Grand mean",
        x = "", y = "Income") +
   theme_minimal()
 
 # Plot intercept by group
-means_by_gender <- soep %>% group_by(sex) %>% summarise(mean_einkommenj1 = mean(einkommenj1))
+means_by_gender <- soep %>% group_by(Female) %>% summarise(mean_Income = mean(Income))
 
-plot2 <- ggplot(data=soep, aes(x=1:nrow(soep), y=einkommenj1, color=sex)) +
+plot2 <- ggplot(data=soep, aes(x=1:nrow(soep), y=Income, color=Female)) +
   geom_point() +
   geom_hline(data = means_by_gender, 
-             aes(yintercept = mean_einkommenj1, col = sex), size=2) +
+             aes(yintercept = mean_Income, col = Female), size=2) +
   labs(title="Intercept model of Income", 
        subtitle = "Group means",
        x = "", y = "Income") +
@@ -144,7 +156,7 @@ Income and age are continuous in principle, i.e. they can be any real number in 
 In practice, a scale from 0 to 10 is often treated as continuous. Although technically speaking a categorical or ordinal approach would match the nature of the measure better. 
 
 ```{r, include=TRUE, message=FALSE}
-simple1 <- lm(einkommenj1 ~ alter, data=soep)
+simple1 <- lm(Income ~ Age, data=soep)
 
 modelsummary(title = 'Continuous Predictor.',
              list("Income" = simple1), 
@@ -158,7 +170,7 @@ modelsummary(title = 'Continuous Predictor.',
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 # Scatterplot (2 numeric/continuous variables)
-ggplot(soep, aes(x=alter, y=einkommenj1)) +
+ggplot(soep, aes(x=Age, y=Income)) +
   geom_point() +
   geom_smooth(method="lm") +
   labs(title="Simple Regression of Weight vs. Height",
@@ -184,10 +196,10 @@ ggplot(soep, aes(x=alter, y=einkommenj1)) +
 
 A dummy or binary variable describes two groups. 
 
-In the SOEP case the gender variable is named `sex` and coded 0 for male and 1 for female. In practice, it is likely to ease interpretation by renaming the variable to `female`, where 1 stands for having the feature and 0 for not having it. Dummies also come with different values like 1 and 2. Such a variable could be recoded to 0 and 1. Last but not least, note that SOEP and other studies still have a binary perspective on gender. We can imagine more gender groups, making it a categorical variable. There might be something like a continuous gender scale as well.^[The same consideration is so handedness. Normally, people are classified a left-hander or right-hander. But you can make a case for ambidextrous people using both hands equally good as well as a mixture of hand usage, making handedness a continuous concept.]
+In the SOEP case the gender variable is named `Female` and coded 0 for male and 1 for female. In practice, it is likely to ease interpretation by renaming the variable to `female`, where 1 stands for having the feature and 0 for not having it. Dummies also come with different values like 1 and 2. Such a variable could be recoded to 0 and 1. Last but not least, note that SOEP and other studies still have a binary perspective on gender. We can imagine more gender groups, making it a categorical variable. There might be something like a continuous gender scale as well.^[The same consideration is so handedness. Normally, people are classified a left-hander or right-hander. But you can make a case for ambidextrous people using both hands equally good as well as a mixture of hand usage, making handedness a continuous concept.]
 
 ```{r, include=TRUE, message=FALSE}
-simple2 <- lm(einkommenj1 ~ sex, data=soep)
+simple2 <- lm(Income ~ Female, data=soep)
 
 modelsummary(title = 'Dummy Predictor.',
              list("Income" = simple2), 
@@ -221,15 +233,15 @@ In level 2 of NACE there are 88 divisions identified by two-digit numerical code
 
 ```{r, warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE}
 soep <- soep %>% 
-  mutate(industry = case_when(branche %in% c(1,2,3) ~ "Agriculture",
-                              branche %in% c(5:9) ~ "Mining",
-                              branche %in% c(10:32) ~ "Manufacturing",
-                              branche %in% c(35:38) ~ "Energy",
-                              branche %in% c(41:43) ~ "Construction",
-                              branche %in% c(50,51,52,55) ~ "Trade",
-                                     branche %in% c(60,61,62,63,64) ~ "Transport",
-                                     branche %in% c(65,66,67) ~ "Banking",
-                                     branche %in% c(70,71,72,73,74,75,80,85,90,91,92,93,95,98,99) ~ "Services",
+  mutate(industry = case_when(NACE2 %in% c(1,2,3) ~ "Agriculture",
+                              NACE2 %in% c(5:9) ~ "Mining",
+                              NACE2 %in% c(10:32) ~ "Manufacturing",
+                              NACE2 %in% c(35:38) ~ "Energy",
+                              NACE2 %in% c(41:43) ~ "Construction",
+                              NACE2 %in% c(50,51,52,55) ~ "Trade",
+                              NACE2 %in% c(60,61,62,63,64) ~ "Transport",
+                              NACE2 %in% c(65,66,67) ~ "Banking",
+                              NACE2 %in% c(70,71,72,73,74,75,80,85,90,91,92,93,95,98,99) ~ "Services",
                                      TRUE ~ "Other"))
 
 table(soep$industry)
@@ -241,7 +253,7 @@ table(soep$industry)
 <!-- Convert `state` to factor. Use `mutate` and `as_factor` on the `state` variable. Set the levels of this factor variable to official state abbreviations, i.e. `"BE", "BB", "MV", "SN", "ST", "TH"` by setting  `levels(east$state)` equal to the list of abbreviations. -->
 
 ```{r, warning=FALSE, message=FALSE}
-simple3 <- lm(einkommenj1 ~ industry, data=soep)
+simple3 <- lm(Income ~ industry, data=soep)
 
 modelsummary(title = 'Categorical Predictor.',
              list("Income" = simple3), 
@@ -338,7 +350,7 @@ In contrast to the first Figure, we know consider all data at once and recognize
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE}
 library(moderndive)
-ggplot(soep, aes(x=alter, y=einkommenj1, color=sex)) +
+ggplot(soep, aes(x=Age, y=Income, color=Female)) +
   geom_point() +
   geom_parallel_slopes(se=FALSE, size=2) +
   labs(title="Income versus age with parallel slopes.",
@@ -346,7 +358,7 @@ ggplot(soep, aes(x=alter, y=einkommenj1, color=sex)) +
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-parallel1 <- lm(einkommenj1 ~ alter + sex, data=soep)
+parallel1 <- lm(Income ~ Age + Female, data=soep)
 
 modelsummary(title = 'Categorical Predictor.',
              list("Income" = parallel1), 
@@ -362,7 +374,7 @@ modelsummary(title = 'Categorical Predictor.',
 ## Model Comparison
 
 ```{r, warning=FALSE, message=FALSE}
-simple4 <- lm(einkommenj1 ~ alter + sex + industry, data=soep)
+simple4 <- lm(Income ~ Age + Female + industry, data=soep)
 
 modelsummary(title = 'Linear regression models compared.',
              list("Income" = simplest,
@@ -403,7 +415,7 @@ $$R2 = 1 - \frac{SSR}{SST} = 1 - \frac{\text{sum of squares residuals}}{\text{to
 $$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k} \right] \tag{with intercept}$$
 $$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k - 1} \right] \tag{no intercept}$$
 
-# Future
+## Future
 
 
 
