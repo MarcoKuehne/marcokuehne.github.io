@@ -83,6 +83,7 @@ ggplot(soep, aes(x=Age, y=Income, color=Female)) +
 
 ```{r, eval=T, echo=F}
 cm <- c('Age'    = 'Age',
+        'log(Age)'    = 'Log (Age)',
         'Female1'    = 'Female',
         'industry'    = 'Industry',
         'industryBanking'    = 'Banking',
@@ -94,7 +95,6 @@ cm <- c('Age'    = 'Age',
         'industryTrade'    = 'Trade',
         'industryServices'    = 'Services',
         'industryOther'    = 'Other',
-        
         '(Intercept)' = 'Constant'
         )
 ```
@@ -374,7 +374,7 @@ modelsummary(title = 'Categorical Predictor.',
 ## Model Comparison
 
 ```{r, warning=FALSE, message=FALSE}
-simple4 <- lm(Income ~ Age + Female + industry, data=soep)
+multiple <- lm(Income ~ Age + Female + industry, data=soep)
 
 modelsummary(title = 'Linear regression models compared.',
              list("Income" = simplest,
@@ -382,7 +382,7 @@ modelsummary(title = 'Linear regression models compared.',
                   "Income" = simple2,
                   "Income" = simple3,
                   "Income" = parallel1,
-                  "Income" = simple4), 
+                  "Income" = multiple), 
              
              gof_omit = 'RMSE|Log.Lik.|F|AIC|BIC',
              metrics = "all",
@@ -415,7 +415,98 @@ $$R2 = 1 - \frac{SSR}{SST} = 1 - \frac{\text{sum of squares residuals}}{\text{to
 $$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k} \right] \tag{with intercept}$$
 $$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k - 1} \right] \tag{no intercept}$$
 
-## Future
+<!-- ## Future -->
+
+<!-- https://camilo-mora.github.io/GEO380/predict-interpolation-extrapolation.html -->
+
+## Transform to Perform 
+<!-- https://www.programmingr.com/tutorial/log-in-r/ -->
+<!-- The purpose of log transformations... -->
+
+While a lot of statistics and econometrics deals with linear relationships, we live in a very non-linear world. By taking the logarithm of your data, you can reduce the range of values and make it easier to see patterns and relationships. Log transformation is a common technique to deal with *skewed or highly variable data*, such as income. Income data often have a long right tail, meaning there are few individuals with very high incomes, but many with lower incomes (left panel). When modeling income in a regression, this can cause issues because the distribution violates the normality assumption that underpins many regression techniques.
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+hist1 <- ggplot(soep, aes(x = Income)) +
+  geom_histogram() +
+  labs(title="Histogram of Income", x = "Income", y = "Frequency") +
+  theme_minimal()
+
+hist2 <- ggplot(data=soep, aes(x=log(Income))) +
+  geom_histogram() +
+  labs(title="Histogram of Log Income", x = "Log Income", y = "Frequency") +
+  theme_minimal()
+
+grid.arrange(hist1, hist2, ncol=2)
+```
+
+Remember some key points of `log`: 
+
+* The log can only be calculated for numbers > 0.
+* The log of values between 0 and 1 is negative. 
+* The log of values above 1 is positive. 
+* The log of 1 is 0. 
+
+How to do logs in R?  
+
+```{r, warning=FALSE, message=FALSE}
+# Logs in R
+x <- c(0.1,0.5,1,2,5)
+x_log <- log(x)
+
+data.frame(x, x_log)
+```
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> It's natural.</h2>
+:::
+The default of `log()` is the natural logarithm. There are other logs as well, e.g. with base 10 `log(x, base = exp(10))`.
+::::
+
+The above specification of income versus age as two non-transformed variables is also known as a linear-linear model or level-level model. You can have a log transformation on the left, the right or both sides. All log-transformations change the interpretation of the regression coefficient. We explore these options in the following. 
+
+The log-linear or log-level model.
+
+```{r, warning=FALSE, message=FALSE}
+log_linear <- lm(log(Income) ~ Age + Female + industry, data=soep)
+log_log <- lm(log(Income) ~ log(Age) + Female + industry, data=soep)
+linear_log <- lm(Income ~ log(Age) + Female + industry, data=soep)
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+cm_2 <- c('Age'    = 'Age',
+        'log(Age)'    = 'Log (Age)')
+
+modelsummary(title = 'Linear regression with log transformations.',
+             list("Income" = multiple,
+                  "Log (Income)" = log_linear,
+                  "Log (Income)" = log_log,
+                  "Income" = linear_log), 
+             gof_omit = 'RMSE|Log.Lik.|F|AIC|BIC',
+             metrics = "all",
+             coef_map = cm_2)
+```
+
+<!-- https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/ -->
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Regression coefficients interpretation.</h2>
+:::
+Here are the interpretations:
+
+* Linear-Linear: For each additional year of age, we expect `r round(multiple$coefficients[2], 0)` € more annual income on average. Easy peasy.
+* Log-Linear (*semi-elasticity*): For each additional year of age, we expect annual income to increase by $(e^{0.014} - 1) * 100 = 1.4$ % on average. Starting from the average annual income of `r round(mean(soep$Income),0)` € one more year in age increases income by `r round(mean(soep$Income)*0.014, 0)` €.
+* Log-Log (*elasticity*): For each additional 1% increase in age, we expect the annual income to increase by `r round(log_log$coefficients[2], 2)` % €. For a 30-year-old earning average annual income, a 1% increase in age means 0.3 years or 3.6 months, increasing annual income by `r round(round(mean(soep$Income),0)*round(log_log$coefficients[2], 2)/100,0)` €.
+* Linear-Log: For each additional 1% increase in age, we expect the annual income to increase by `r round(linear_log$coefficients[2]/100, 0)` € For a 30-year-old, additional 1% or 3.6 month are expected to increase annual income by `r round(linear_log$coefficients[2]/100, 0)`  €. 
+::::
+
+Of course other mathematical transformations are possible and some are common, for example the square root or polynomial transformation (the power of two or three). @stutzer2008stress study the effect of commuting time (and commuting time squared) on life satisfaction (Tables 1 to 4). 
+
+<!-- square root of time -->
+<!-- https://www.tandfonline.com/doi/abs/10.1080/09644008.2016.1266481 -->
+
+<!-- https://www.diw.de/documents/dokumentenarchiv/17/56543/diw_sp0005.pdf -->
 
 
 
