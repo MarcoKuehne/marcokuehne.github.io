@@ -2,11 +2,9 @@
 
 ## What You Deserve Is What You Get
 
-The statement "what you deserve is what you get" is a controversial one. It can be interpreted such that individuals are entirely responsible for their own outcomes and that they receive exactly what they deserve based on their efforts, abilities, and choices. This view assumes a meritocratic system where everyone has an equal opportunity to succeed based on their merit, and rewards are distributed accordingly.
+Do you believe that people get what they deserve? The statement "what you deserve is what you get" is a controversial one. It can be interpreted such that individuals are entirely responsible for their own outcomes and that they receive exactly what they deserve based on their efforts, abilities, and choices. This view assumes a meritocratic (performance-oriented) system where everyone has an equal opportunity to succeed based on their merit, and rewards are distributed accordingly.
 
-In the following analysis we investigate the income and how it is determined. 
-
-The [Mincer Equation](https://en.wikipedia.org/wiki/Mincer_earnings_function) is single-equation model that explains wage income as a function of schooling and experience. The equation suggests that higher levels of education and experience are positively associated with earnings, and the coefficients can be estimated using statistical methods to quantify the magnitude of these relationships.
+We investigate annual income and how it is determined. The famous [Mincer Equation](https://en.wikipedia.org/wiki/Mincer_earnings_function) is single-equation model that explains wage income as a function of schooling and experience. The equation suggests that higher levels of education and experience are positively associated with earnings, and the coefficients can be estimated using statistical methods to quantify the magnitude of these relationships. When everybody has access to schooling and the equal opportunities on the labor market, better school outcomes and work experience may be determined by people efforts, abilities, and choices. 
 
 ## Data & Sample
 
@@ -63,7 +61,7 @@ library(modelsummary)
 datasummary_skim(soep[,-c(1,2,8,13:15)])
 ```
 
-The data is clean and read for analysis. There are no missings. The working age ranges from 18 to 65 years. People have between 0 and 8 children. There are NACE codes for the job industry ranging from 1 to 97 in the data (theoretically from 1 to 99). But not all jobs are represented in the data (77 unique values). Health status is measured on a scale from 1 to 5 whereas life satisfaction is measured on a scale between 0 and 10. The minimum annual income is about 915 Euro. We could have restricted the income variable to the minimum wage in Germany. Assume it is 12€/h and people in full-time work 8h/day. Starting from 365 days a year, there are 104 weekends, assume there are 11 public holidays and 30 days of vacation. 220 working days remain earning a minimum yearly income of about `220*8*12 = 21120` Euro. In the data, `r table(soep$Income < 21120)[2]` people report earning less than that.  
+The data is clean and ready for analysis. There are no missings. The working age ranges from 18 to 65 years. People have between 0 and 8 children. There are NACE codes for the job industry ranging from 1 to 97 in the data (theoretically from 1 to 99). But not all jobs are represented in the data (77 unique values). Health status is measured on a scale from 1 to 5 whereas life satisfaction is measured on a scale between 0 and 10. The minimum annual income is about 915 Euro. We could have restricted the income variable to the minimum wage in Germany. Assume it is 12€/h and people in full-time work 8h/day. Starting from 365 days a year, there are 104 weekends, assume there are 11 public holidays and 30 days of vacation. 220 working days remain earning a minimum yearly income of about `220*8*12 = 21120` Euro. In the data, `r table(soep$Income < 21120)[2]` people report earning less than that.  
 
 ## Data Visualization
 
