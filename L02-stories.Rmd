@@ -20,6 +20,7 @@ Good data visualization helps to convey complex information in a way that is eas
 library(readxl)
 parttime <- readxl::read_xlsx("./data/OECD/parttime_gender_easy.xlsx")
 
+# Version 1
 library(showtext)
 
 female = intToUtf8(9792)
@@ -35,6 +36,19 @@ parttime %>%
   theme_minimal() +
   ggplot2::annotate("text", x = 1, y = 5, label = male, size = 20) +
   ggplot2::annotate("text", x = 2, y = 25, label = female, size = 20) 
+
+# Version 2 
+# library("ggimage")
+# 
+# parttime %>% 
+#   filter(Year == 2021) %>% 
+#   mutate(image = c("https://raw.githubusercontent.com/ionic-team/ionicons/main/src/svg/male-outline.svg",
+#               "https://raw.githubusercontent.com/ionic-team/ionicons/main/src/svg/female-outline.svg")) %>% 
+#   ggplot(aes(x = Sex, y = Percent, fill = Sex)) + 
+#   geom_col(width = 0.5) + 
+#   geom_image(aes(image=image), size=.2, nudge_y = -4) + 
+#   labs(title = "Share of employed in part-time employment, by sex (Germany)") + 
+#   theme_minimal() 
 ```
 
 Why not just tell the numbers as is? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible. 

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Stories and Visuals | Becoming Fluent in Data</title>
+  <title>Chapter 14 Marginal Effects | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to become fluent in data." />
   <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Stories and Visuals | Becoming Fluent in Data" />
+  <meta property="og:title" content="Chapter 14 Marginal Effects | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="/images/Cover.png" />
   <meta property="og:description" content="A guide to become fluent in data." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Stories and Visuals | Becoming Fluent in Data" />
+  <meta name="twitter:title" content="Chapter 14 Marginal Effects | Becoming Fluent in Data" />
   
   <meta name="twitter:description" content="A guide to become fluent in data." />
   <meta name="twitter:image" content="/images/Cover.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
-<link rel="prev" href="data-is-everywhere.html"/>
-<link rel="next" href="comparisons.html"/>
+<link rel="prev" href="logistic-regression.html"/>
+<link rel="next" href="fixed-effects.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -492,135 +492,201 @@ div.csl-indent {
 <div class = infobox>
 This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
 </div>
-<div id="stories-and-visuals" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Stories and Visuals<a href="stories-and-visuals.html#stories-and-visuals" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Stories make data and numbers memorable. Stories are everywhere. When you think about the context of the data, stories evolve naturally. How does the data connect to you, your friends and family, the work environment or society as a whole.</p>
-<div id="facts" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Facts<a href="stories-and-visuals.html#facts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A good story is based on facts and reliable sources. When evaluating facts, it's important to consider the source of the information and the evidence supporting it. According to OECD data on part-time employment rate (2021):<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
-<blockquote>
-<p>36 % of women worked part-time in Germany whereas only 10 % of men did.</p>
-</blockquote>
-<!-- <iframe src="https://data.oecd.org/chart/72QZ" width="860" height="645" style="border: 0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true"><a href="https://data.oecd.org/chart/72QZ" target="_blank">OECD Chart: Part-time employment rate, Total, % of employment, Annual, 2021</a></iframe> -->
-<!-- https://www.oecd.org/gender/data/part-time-employment-by-sex.htm -->
-<!-- > In 2021, the OECD total average part-time employment rate was 16.4 %. -->
+<div id="marginal-effects" class="section level1 hasAnchor" number="14">
+<h1><span class="header-section-number">Chapter 14</span> Marginal Effects<a href="marginal-effects.html#marginal-effects" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Now we better understand that the effect of our main explanatory variable might be increased or decreased by another variable. Still, a question is open to answer: What exactly is the effect of our main explanatory variable in the interaction model?</p>
+<div class="infobox2 information">
+<p>In OLS framework <strong>regression coefficients</strong> have direct interpretation as <strong>unconditional marginal effects</strong>: predicted change in y due to a unit change in x. Interactions or higher-order terms (e.g. age square) make interpretation difficult or impossible. For interpretation of the effect and the statistical significance, we have to investigate all interacted variables at the same time. Marginal effects are <strong>partial derivatives</strong> of the regression equation with respect to a variable from the model.</p>
 </div>
-<div id="visualization" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> Visualization<a href="stories-and-visuals.html#visualization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Good data visualization helps to convey complex information in a way that is easily understandable and accessible to a wide range of people. By presenting data in a visually appealing and intuitive way, it can help people to identify patterns, trends, and relationships that might not be immediately apparent from a simple data table or text-based analysis.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-24-1.png" width="576" /></p>
-<p>Why not just tell the numbers as is? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible.</p>
-<p>Data visualization reveals the data.</p>
-<!-- ```{r parttime, echo=FALSE, out.width="70%", fig.cap="\\label{fig:parttime}Possible gender difference in working parttime.", fig.align='center'} -->
-<!-- knitr::include_graphics("images/parttime.png") -->
-<!-- ``` -->
-<!-- Figure \@ref(fig:parttime) illustrates a possible gender difference in working parttime. The iconic figures are simple. The coloring is decent. The gender icons are filled by color up to the percentage numbers.  -->
+<p><span class="math display">\[
+\begin{align}
+weight &amp;= \beta_0 + \beta_1 \cdot height \tag{simple regression} \\
+\frac{\partial weight}{\partial height} &amp;= \beta_1 \tag{unconditional effect}  \\
+weight &amp;= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \cdot height \cdot female \tag{moderated regression} \\
+\frac{\partial weight}{\partial height} &amp;= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
+\end{align}
+\]</span></p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="marginal-effects.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb163-2"><a href="marginal-effects.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(simple, interact1, <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span>
+<span id="cb163-3"><a href="marginal-effects.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb163-4"><a href="marginal-effects.html#cb163-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =====================================================================</span></span>
+<span id="cb163-5"><a href="marginal-effects.html#cb163-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                    Dependent variable:               </span></span>
+<span id="cb163-6"><a href="marginal-effects.html#cb163-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     -------------------------------------------------</span></span>
+<span id="cb163-7"><a href="marginal-effects.html#cb163-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                          Income                      </span></span>
+<span id="cb163-8"><a href="marginal-effects.html#cb163-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               (1)                      (2)           </span></span>
+<span id="cb163-9"><a href="marginal-effects.html#cb163-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---------------------------------------------------------------------</span></span>
+<span id="cb163-10"><a href="marginal-effects.html#cb163-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Age                        524.554***                                </span></span>
+<span id="cb163-11"><a href="marginal-effects.html#cb163-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             (58.487)                                 </span></span>
+<span id="cb163-12"><a href="marginal-effects.html#cb163-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb163-13"><a href="marginal-effects.html#cb163-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Kids1                                              4,329.056***      </span></span>
+<span id="cb163-14"><a href="marginal-effects.html#cb163-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                    (1,650.629)       </span></span>
+<span id="cb163-15"><a href="marginal-effects.html#cb163-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb163-16"><a href="marginal-effects.html#cb163-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Female1                                           -6,131.395***      </span></span>
+<span id="cb163-17"><a href="marginal-effects.html#cb163-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                    (1,727.116)       </span></span>
+<span id="cb163-18"><a href="marginal-effects.html#cb163-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb163-19"><a href="marginal-effects.html#cb163-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Kids1:Female1                                     -8,708.424***      </span></span>
+<span id="cb163-20"><a href="marginal-effects.html#cb163-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                    (2,954.627)       </span></span>
+<span id="cb163-21"><a href="marginal-effects.html#cb163-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb163-22"><a href="marginal-effects.html#cb163-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Constant                 18,341.030***            43,476.060***      </span></span>
+<span id="cb163-23"><a href="marginal-effects.html#cb163-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           (2,733.469)              (1,128.318)       </span></span>
+<span id="cb163-24"><a href="marginal-effects.html#cb163-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb163-25"><a href="marginal-effects.html#cb163-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---------------------------------------------------------------------</span></span>
+<span id="cb163-26"><a href="marginal-effects.html#cb163-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations                 1,211                    1,211          </span></span>
+<span id="cb163-27"><a href="marginal-effects.html#cb163-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2                           0.062                    0.045          </span></span>
+<span id="cb163-28"><a href="marginal-effects.html#cb163-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                  0.062                    0.042          </span></span>
+<span id="cb163-29"><a href="marginal-effects.html#cb163-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error  22,753.730 (df = 1209)   22,985.580 (df = 1207) </span></span>
+<span id="cb163-30"><a href="marginal-effects.html#cb163-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F Statistic         80.439*** (df = 1; 1209) 18.853*** (df = 3; 1207)</span></span>
+<span id="cb163-31"><a href="marginal-effects.html#cb163-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =====================================================================</span></span>
+<span id="cb163-32"><a href="marginal-effects.html#cb163-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<p>For the simple regression, the coefficient is identical (unconditional).</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="marginal-effects.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(margins)</span>
+<span id="cb164-2"><a href="marginal-effects.html#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="fu">margins</span>(simple)</span>
+<span id="cb164-3"><a href="marginal-effects.html#cb164-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Age</span></span>
+<span id="cb164-4"><a href="marginal-effects.html#cb164-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  524.6</span></span></code></pre></div>
+<div id="marginal-effects-at-representatives" class="section level3 hasAnchor" number="14.0.1">
+<h3><span class="header-section-number">14.0.1</span> Marginal effects at representatives<a href="marginal-effects.html#marginal-effects-at-representatives" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can use representative values which we literally plug in the equation. These are the effects for each group (what we have seen before in the interaction plot):</p>
+<p><span class="math display">\[
+\begin{align}
+weight &amp;= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \cdot height \cdot female \tag{interact1} \\
+\frac{\partial weight}{\partial height} &amp;= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
+\end{align}
+\]</span></p>
+<!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 1 = 0.845 \tag{effect for males}  \\ -->
+<!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 2 = 0.621 \tag{effect for females}  \\ -->
+<p>Here is the R code:</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="marginal-effects.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">margins</span>(interact1, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">Female =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>)))</span>
+<span id="cb165-2"><a href="marginal-effects.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  at(Female) Kids1 Female1</span></span>
+<span id="cb165-3"><a href="marginal-effects.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           0  4329   -9633</span></span>
+<span id="cb165-4"><a href="marginal-effects.html#cb165-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           1 -4379   -9633</span></span></code></pre></div>
+<p>Please calculate the MER of height in <code>interact1</code> for the two gender programmtic in R.</p>
 </div>
-<div id="telling-a-story" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Telling a story<a href="stories-and-visuals.html#telling-a-story" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<!-- https://clauswilke.com/dataviz/telling-a-story.html -->
-<!-- https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/ -->
-<p>Data storytelling is the practice of using data and visuals to communicate a narrative or message to an audience. It involves combining data, analysis, and storytelling techniques to create a compelling and engaging narrative that can inform, persuade, and inspire action.</p>
-<p>Data storytelling is necessary and good because it helps people make sense of complex data and information. By presenting data in a clear and visually appealing way, data storytelling can help people understand the meaning behind the numbers, identify patterns and trends, and gain insights into important issues and problems.</p>
-<p>By weaving a compelling narrative around the data, we can help our audience to understand the insights that we have discovered and why they matter. A data story can also help to make the data more memorable and emotionally resonant, which can help to further engage our audience and increase their interest in the subject matter.</p>
-<div class="amazing">
-<div class="titelamazing">
-<h2>
-Once upon a time ...
-</h2>
+<div id="marginal-effects-at-the-mean" class="section level3 hasAnchor" number="14.0.2">
+<h3><span class="header-section-number">14.0.2</span> Marginal effects at the mean<a href="marginal-effects.html#marginal-effects-at-the-mean" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Plugging in values is not always as easy as it seems to be. What should we use for age? Values as 0, 1 or 2 does not makes sense for age. Okay, we could use some representative age, e.g. 30 and 40. But what is our theoretical justification to report the effect for age 30 and not age 31? Another strategy is to use mean values of the variables.</p>
+<pre><code>#&gt; [1] 45.37985</code></pre>
+<!-- \frac{\partial weight}{\partial height} &= 0.9318 + 0.0009254 \cdot 48.57654 = 0.97675 \tag{ME at means}  \\ -->
+<p><span class="math display">\[
+\begin{align}
+weight &amp;= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot age + \beta_3 \cdot height \cdot age \tag{interact2} \\
+\frac{\partial weight}{\partial height} &amp;= \beta_1 + \beta_3 \cdot age \tag{conditional effect}  \\
+\end{align}
+\]</span></p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="marginal-effects.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;stargazer&quot;</span>)</span>
+<span id="cb167-2"><a href="marginal-effects.html#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(simple, interact2, <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span>
+<span id="cb167-3"><a href="marginal-effects.html#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb167-4"><a href="marginal-effects.html#cb167-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ================================================================================</span></span>
+<span id="cb167-5"><a href="marginal-effects.html#cb167-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                              Dependent variable:                </span></span>
+<span id="cb167-6"><a href="marginal-effects.html#cb167-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               --------------------------------------------------</span></span>
+<span id="cb167-7"><a href="marginal-effects.html#cb167-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                     Income                      </span></span>
+<span id="cb167-8"><a href="marginal-effects.html#cb167-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                         (1)                       (2)           </span></span>
+<span id="cb167-9"><a href="marginal-effects.html#cb167-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
+<span id="cb167-10"><a href="marginal-effects.html#cb167-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Age                                  524.554***                                 </span></span>
+<span id="cb167-11"><a href="marginal-effects.html#cb167-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                       (58.487)                                  </span></span>
+<span id="cb167-12"><a href="marginal-effects.html#cb167-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-13"><a href="marginal-effects.html#cb167-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryBanking                                              46,946.530***      </span></span>
+<span id="cb167-14"><a href="marginal-effects.html#cb167-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (10,448.620)       </span></span>
+<span id="cb167-15"><a href="marginal-effects.html#cb167-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-16"><a href="marginal-effects.html#cb167-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryConstruction                                           8,443.728        </span></span>
+<span id="cb167-17"><a href="marginal-effects.html#cb167-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (6,850.222)       </span></span>
+<span id="cb167-18"><a href="marginal-effects.html#cb167-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-19"><a href="marginal-effects.html#cb167-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryEnergy                                               21,340.940***      </span></span>
+<span id="cb167-20"><a href="marginal-effects.html#cb167-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (7,884.232)       </span></span>
+<span id="cb167-21"><a href="marginal-effects.html#cb167-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-22"><a href="marginal-effects.html#cb167-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryManufacturing                                        24,884.760***      </span></span>
+<span id="cb167-23"><a href="marginal-effects.html#cb167-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (6,508.270)       </span></span>
+<span id="cb167-24"><a href="marginal-effects.html#cb167-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-25"><a href="marginal-effects.html#cb167-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryMining                                                31,740.910*       </span></span>
+<span id="cb167-26"><a href="marginal-effects.html#cb167-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (16,779.550)       </span></span>
+<span id="cb167-27"><a href="marginal-effects.html#cb167-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-28"><a href="marginal-effects.html#cb167-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryOther                                                18,604.880***      </span></span>
+<span id="cb167-29"><a href="marginal-effects.html#cb167-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (6,469.352)       </span></span>
+<span id="cb167-30"><a href="marginal-effects.html#cb167-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-31"><a href="marginal-effects.html#cb167-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryServices                                             31,579.780***      </span></span>
+<span id="cb167-32"><a href="marginal-effects.html#cb167-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (6,878.945)       </span></span>
+<span id="cb167-33"><a href="marginal-effects.html#cb167-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-34"><a href="marginal-effects.html#cb167-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryTrade                                                 14,766.440*       </span></span>
+<span id="cb167-35"><a href="marginal-effects.html#cb167-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (7,823.505)       </span></span>
+<span id="cb167-36"><a href="marginal-effects.html#cb167-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-37"><a href="marginal-effects.html#cb167-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryTransport                                            39,986.220***      </span></span>
+<span id="cb167-38"><a href="marginal-effects.html#cb167-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                               (7,048.821)       </span></span>
+<span id="cb167-39"><a href="marginal-effects.html#cb167-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-40"><a href="marginal-effects.html#cb167-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Female1                                                        -549.878         </span></span>
+<span id="cb167-41"><a href="marginal-effects.html#cb167-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (16,779.550)       </span></span>
+<span id="cb167-42"><a href="marginal-effects.html#cb167-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-43"><a href="marginal-effects.html#cb167-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryBanking:Female1                                       -3,508.290        </span></span>
+<span id="cb167-44"><a href="marginal-effects.html#cb167-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (24,327.690)       </span></span>
+<span id="cb167-45"><a href="marginal-effects.html#cb167-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-46"><a href="marginal-effects.html#cb167-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryConstruction:Female1                                  -4,093.737        </span></span>
+<span id="cb167-47"><a href="marginal-effects.html#cb167-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (18,670.560)       </span></span>
+<span id="cb167-48"><a href="marginal-effects.html#cb167-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-49"><a href="marginal-effects.html#cb167-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryEnergy:Female1                                         9,357.981        </span></span>
+<span id="cb167-50"><a href="marginal-effects.html#cb167-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (20,595.100)       </span></span>
+<span id="cb167-51"><a href="marginal-effects.html#cb167-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-52"><a href="marginal-effects.html#cb167-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryManufacturing:Female1                                 -11,453.940       </span></span>
+<span id="cb167-53"><a href="marginal-effects.html#cb167-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (17,038.220)       </span></span>
+<span id="cb167-54"><a href="marginal-effects.html#cb167-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-55"><a href="marginal-effects.html#cb167-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryMining:Female1                                         -130.297         </span></span>
+<span id="cb167-56"><a href="marginal-effects.html#cb167-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (31,710.370)       </span></span>
+<span id="cb167-57"><a href="marginal-effects.html#cb167-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-58"><a href="marginal-effects.html#cb167-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryOther:Female1                                         -8,681.747        </span></span>
+<span id="cb167-59"><a href="marginal-effects.html#cb167-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (16,886.980)       </span></span>
+<span id="cb167-60"><a href="marginal-effects.html#cb167-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-61"><a href="marginal-effects.html#cb167-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryServices:Female1                                      -11,550.570       </span></span>
+<span id="cb167-62"><a href="marginal-effects.html#cb167-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (17,203.610)       </span></span>
+<span id="cb167-63"><a href="marginal-effects.html#cb167-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-64"><a href="marginal-effects.html#cb167-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryTrade:Female1                                         -8,405.721        </span></span>
+<span id="cb167-65"><a href="marginal-effects.html#cb167-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (18,612.280)       </span></span>
+<span id="cb167-66"><a href="marginal-effects.html#cb167-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-67"><a href="marginal-effects.html#cb167-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; IndustryTransport:Female1                                     -12,060.660       </span></span>
+<span id="cb167-68"><a href="marginal-effects.html#cb167-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                              (17,690.580)       </span></span>
+<span id="cb167-69"><a href="marginal-effects.html#cb167-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-70"><a href="marginal-effects.html#cb167-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Constant                           18,341.030***             23,513.110***      </span></span>
+<span id="cb167-71"><a href="marginal-effects.html#cb167-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                     (2,733.469)               (6,342.074)       </span></span>
+<span id="cb167-72"><a href="marginal-effects.html#cb167-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb167-73"><a href="marginal-effects.html#cb167-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
+<span id="cb167-74"><a href="marginal-effects.html#cb167-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Observations                           1,211                     1,211          </span></span>
+<span id="cb167-75"><a href="marginal-effects.html#cb167-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R2                                     0.062                     0.139          </span></span>
+<span id="cb167-76"><a href="marginal-effects.html#cb167-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                            0.062                     0.125          </span></span>
+<span id="cb167-77"><a href="marginal-effects.html#cb167-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error            22,753.730 (df = 1209)   21,969.590 (df = 1191)  </span></span>
+<span id="cb167-78"><a href="marginal-effects.html#cb167-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F Statistic                   80.439*** (df = 1; 1209) 10.112*** (df = 19; 1191)</span></span>
+<span id="cb167-79"><a href="marginal-effects.html#cb167-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ================================================================================</span></span>
+<span id="cb167-80"><a href="marginal-effects.html#cb167-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Note:                                                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<p>Here is the R code with margins:</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="marginal-effects.html#cb168-1" aria-hidden="true" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb168-2"><a href="marginal-effects.html#cb168-2" aria-hidden="true" tabindex="-1"></a>interact2</span>
+<span id="cb168-3"><a href="marginal-effects.html#cb168-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb168-4"><a href="marginal-effects.html#cb168-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb168-5"><a href="marginal-effects.html#cb168-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
+<span id="cb168-6"><a href="marginal-effects.html#cb168-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb168-7"><a href="marginal-effects.html#cb168-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb168-8"><a href="marginal-effects.html#cb168-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
+<span id="cb168-9"><a href="marginal-effects.html#cb168-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span>
+<span id="cb168-10"><a href="marginal-effects.html#cb168-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb168-11"><a href="marginal-effects.html#cb168-11" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(margins(interact2))</span></span>
+<span id="cb168-12"><a href="marginal-effects.html#cb168-12" aria-hidden="true" tabindex="-1"></a><span class="fu">margins</span>(interact2, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">Age =</span> mean_age))</span>
+<span id="cb168-13"><a href="marginal-effects.html#cb168-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  at(Age)   Age Satisfaction</span></span>
+<span id="cb168-14"><a href="marginal-effects.html#cb168-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    45.38 531.3         2439</span></span></code></pre></div>
+<p>Please calculate the MEM of height in <code>interact2</code> programmtic in R.</p>
 </div>
-<p>in a land not too far away, there were two siblings named Alex and Jamie. Alex and Jamie were very close in age and grew up in the same household with the same parents, but they had very different personalities and interests.</p>
-<p>As they reached adulthood, Alex decided to pursue a career in finance and secured a full-time job at a large investment bank. Jamie, on the other hand, decided to focus on their passion for art and took on a part-time job as a freelance graphic designer while also working on personal creative projects.</p>
-<p>Over time, Alex and Jamie noticed a stark difference in the way their work and career choices were perceived by society. Alex was praised for their ambition and dedication to their career, while Jamie was often questioned or criticized for not having a full-time job with benefits and stability.</p>
-<p>Alex was also more likely to receive promotions and higher salaries, while Jamie struggled to make ends meet and was sometimes overlooked for opportunities because of their part-time status.</p>
-<p>It became clear to Alex and Jamie that there was a gendered expectation for men to pursue full-time, high-paying careers while women were expected to prioritize caregiving or creative pursuits over financial stability.</p>
-<p>Despite these societal expectations, Alex and Jamie continued to pursue their individual paths and support each other's choices. They hoped that someday, society would recognize the value and importance of all types of work and careers, regardless of gender or perceived societal norms.</p>
-</div>
-</div>
-<div id="mans-best-friend" class="section level2 hasAnchor" number="2.4">
-<h2><span class="header-section-number">2.4</span> Man's best friend<a href="stories-and-visuals.html#mans-best-friend" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Humans love dogs. Dogs were domesticated by humans over 15,000 years ago. They can be perfect companions for singles, for couples for families. They differ in behavior, longevity and appetite. Figure <a href="stories-and-visuals.html#fig:dogs">2.1</a> combines 6 dog characteristics in a <em>dog score</em> and compares this with the popularity of different breads. From this scatterplot the authors define four categories of dog breads, e.g. the hot dogs and overlooked treasures (similar to a <a href="https://en.wikipedia.org/wiki/Growth%E2%80%93share_matrix">BCG matrix</a>).</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dogs"></span>
-<img src="https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png" alt="The Ultimate Dog Data by [informationisbeautiful](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/)." width="100%" />
-<p class="caption">
-Figure 2.1: The Ultimate Dog Data by <a href="https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/">informationisbeautiful</a>.
-</p>
-</div>
-<p>On the one hand, this is an awesome chart that transforms a huge data table in one graph, a scatter plot on two dimensions lightened by the individual dog icons for each data point. On the other hand, this graph is so complex and does not offer a major takeaway. Looking more closely to the graph, raises more questions then the graph answers, i.e. how was <em>grooming</em> and <em>appetite</em> measured? How are the 6 factors combined in the <em>data score</em>? When you look even more closely, you notice the easter egg.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
-</div>
-<div id="less-is-more" class="section level2 hasAnchor" number="2.5">
-<h2><span class="header-section-number">2.5</span> Less is more<a href="stories-and-visuals.html#less-is-more" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Figure <a href="stories-and-visuals.html#fig:dogs">2.1</a> is an awesome data aggregate. Still, "less is more" in data visualization because too much information or visual clutter can overwhelm and confuse the audience, making it harder for them to understand the key insights and trends in the data. The complex scatterplot demands a lot of attention.</p>
-<!-- Read more: <http://socialmediaguerilla.com/content-marketing/less-is-more-improving-the-data-ink-ratio/> -->
-<p>Follow the slide presentation:</p>
-<object data="https://files.speakerdeck.com/presentations/87bb9f00ec1e01308020727faa1f9e72/data-ink.pdf" width="100%" height="500">
-</object>
-<!-- According to the principles of **remove to improve**, decide on these design elements: -->
-<!-- -   Remove backgrounds. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> -->
-<!-- -   Remove 3D effects. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> -->
-<!-- -   Remove bolding. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> -->
-<p>The concept of data-ink ratio was introduced by data visualization expert Edward Tufte. It refers to the proportion of ink or pixels used to represent actual data in a visualization, as opposed to non-data elements like gridlines, borders, or labels.</p>
-<p>The reason why we should care about data-ink ratio is that it directly affects the clarity and effectiveness of the visualization. The more ink or pixels we use to represent non-data elements, the less space we have to represent actual data, which can make it harder for the audience to discern the insights and trends in the data.</p>
-<div class="defbox">
-<div class="titeldefbox">
-<h2>
-Definition
-</h2>
-</div>
-<p>The <strong>data-ink ratio</strong> is the proportion of Ink that is used to present actual data compared to the total amount of ink (or pixels) used in the entire display. Good graphics should include only data-Ink. Non-Data-Ink is to be deleted everywhere where possible.</p>
-</div>
-<!-- ## Never use pie charts -->
-<!-- One of the main criticisms of pie charts is that they can be difficult to read and interpret accurately, especially when there are multiple slices or small differences between the sizes of the slices. It can be hard for the audience to accurately compare the sizes of the different slices, and this can lead to misinterpretation or misunderstanding of the data. -->
-<!-- From the *note* of the documentation of `pie()` function in R it says: -->
-<!-- ```{r, eval=F} -->
-<!-- ?pie() -->
-<!-- ``` -->
-<!-- *Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.* -->
-<!-- *Cleveland (1985), page 264: "Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements." This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.* -->
-<!-- ```{r message=FALSE, warning=FALSE, echo=F, eval=T} -->
-<!-- # Create data for the graph. -->
-<!-- x <- c(14, 62, 17, 53) -->
-<!-- labels <- c("London", "New York", "Singapore", "Mumbai") -->
-<!-- ``` -->
-<!-- **Can you tell whether Singapore or London have the higher share?** -->
-<!-- ```{r message=FALSE, warning=FALSE, echo=F} -->
-<!-- # Plot the chart. -->
-<!-- pie(x,labels) -->
-<!-- ``` -->
-<!-- <details> -->
-<!-- <summary>**Can you tell now?**</summary> -->
-<!-- ```{r message=FALSE, warning=FALSE} -->
-<!-- # Plot the chart. -->
-<!-- barplot(x, names.arg = labels) -->
-<!-- ``` -->
-<!-- </details> -->
-<!-- <details> -->
-<!-- <summary>Here is the R code.</summary> -->
-<!-- ```{r message=FALSE, warning=FALSE, echo=T, eval=F} -->
-<!-- # Create data for the graph. -->
-<!-- x <- c(14, 62, 17, 53) -->
-<!-- labels <- c("London", "New York", "Singapore", "Mumbai") -->
-<!-- # Plot the chart. -->
-<!-- pie(x,labels) -->
-<!-- # Plot the chart. -->
-<!-- barplot(x, names.arg = labels) -->
-<!-- ``` -->
-<!-- </details> -->
-</div>
-<div id="grammar-of-graphics" class="section level2 hasAnchor" number="2.6">
-<h2><span class="header-section-number">2.6</span> Grammar of Graphics<a href="stories-and-visuals.html#grammar-of-graphics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><code>ggplot2</code> is a system for declaratively creating graphics, based on <strong>The Grammar of Graphics</strong>. You provide the data, tell <code>ggplot2</code> how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details. <code>ggplot2</code> is now over 10 years old and is used by hundreds of thousands of people to make millions of plots.</p>
-<iframe seamless width="100%" height="400" frameborder="0" src="https://pmassicotte.github.io/ivado_ggplot2_workshop_2022/#1">
-</iframe>
+<div id="average-marginal-effects" class="section level3 hasAnchor" number="14.0.3">
+<h3><span class="header-section-number">14.0.3</span> Average marginal effects<a href="marginal-effects.html#average-marginal-effects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The default <em>margins</em> commands shows you something else than MER and MEM, namely <strong>average marginal effects</strong>. AMEs calculate marginal effects at every observed value of X and average across the resulting effect estimates. AMEs are particularly useful because -- unlike MEMs -- produce a single quantity summary that reflects the full distribution of X rather than an arbitrary prediction.</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="marginal-effects.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">margins</span>(interact1)</span>
+<span id="cb169-2"><a href="marginal-effects.html#cb169-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Kids1 Female1</span></span>
+<span id="cb169-3"><a href="marginal-effects.html#cb169-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1222   -9633</span></span></code></pre></div>
+<p>A summary provides you with information that cannot easily be calculated by hand, e.g. standard error, p-value, confidence interval:</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="marginal-effects.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">margins</span>(interact1))</span>
+<span id="cb170-2"><a href="marginal-effects.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   factor        AME        SE       z      p       lower      upper</span></span>
+<span id="cb170-3"><a href="marginal-effects.html#cb170-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Female1 -9633.4620 1412.6657 -6.8193 0.0000 -12402.2359 -6864.6880</span></span>
+<span id="cb170-4"><a href="marginal-effects.html#cb170-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Kids1  1222.4998 1375.2808  0.8889 0.3741  -1473.0009  3918.0006</span></span></code></pre></div>
+<script>
+  $(".toggle").click(function() {
+    $(this).toggleClass("open");
+  });
+</script>
 
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="5">
-<li id="fn5"><p>Search OECD database <a href="https://stats.oecd.org/index.aspx?queryid=54746#" class="uri">https://stats.oecd.org/index.aspx?queryid=54746#</a><a href="stories-and-visuals.html#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>The frightened cat among all dogs.<a href="stories-and-visuals.html#fnref6" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
 <script>
 
@@ -798,8 +864,8 @@ window.onload = function() {
           </div>
         </div>
       </div>
-<a href="data-is-everywhere.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="comparisons.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="logistic-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fixed-effects.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -123,6 +123,8 @@ Conclusion from Parallel Slopes: The *fundamental truth* is that the effect of a
 ## Regression with Moderators
 <!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
 
+In the following we consider all possible kinds of two-way interactions (between two variables). Higher-order interaction might be useful under special conditions, e.g. in a study where the effect of a new drug depends on the patient's age and gender. 
+
 An interaction can be coded implicitly or explicitly in R.
 
 <div class="toggle"><button>Show me the coding.</button>
@@ -135,7 +137,6 @@ lm2 <- lm(mpg ~ vs + am + vs:am, data=mtcars)
 # only use the interaction term?
 lm3 <- lm(mpg ~ vs:am, data=mtcars)
 
-library(modelsummary)
 modelsummary(title = 'Coding Interaction in R.',
              list("Version 1" = lm1, 
                   "Version 2" = lm2,
@@ -279,108 +280,29 @@ This shows you that interaction between two continuous variables works basically
 
 You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.
 
-## Marginal Effects
+## Model Comparison 
 
-Now we better understand that the effect of our main explanatory variable might be increased or decreased by another variable. Still, a question is open to answer: What exactly is the effect of our main explanatory variable in the interaction model?
+How to decide if the model with interaction is better than the model without interaction?
 
-::: {.infobox2 .information data-latex="warning"}
-In OLS framework **regression coefficients** have direct interpretation as **unconditional marginal effects**: predicted change in y due to a unit change in x. Interactions or higher-order terms (e.g. age square) make interpretation difficult or impossible. For interpretation of the effect and the statistical significance, we have to investigate all interacted variables at the same time. Marginal effects are **partial derivatives** of the regression equation with respect to a variable from the model.
-:::
+```{r}
+library(gt)
 
-$$
-\begin{align}
-weight &= \beta_0 + \beta_1 \cdot height \tag{simple regression} \\
-\frac{\partial weight}{\partial height} &= \beta_1 \tag{unconditional effect}  \\
-weight &= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \cdot height \cdot female \tag{moderated regression} \\
-\frac{\partial weight}{\partial height} &= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
-\end{align}
-$$
+multiple3 <- lm(Income ~ Age + Female, data=soep)
+multiple4 <- lm(Income ~ Age + Satisfaction, data=soep)
 
-```{r warning=FALSE, message=FALSE}
-library(stargazer)
-stargazer(simple, interact1, type="text")
-```
-
-For the simple regression, the coefficient is identical (unconditional).
-
-```{r warning=FALSE, message=FALSE}
-library(margins)
-margins(simple)
-```
-
-### Marginal effects at representatives 
-
-We can use representative values which we literally plug in the equation. These are the effects for each group (what we have seen before in the interaction plot):
-
-$$
-\begin{align}
-weight &= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \cdot height \cdot female \tag{interact1} \\
-\frac{\partial weight}{\partial height} &= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
-\end{align}
-$$ 
-
-<!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 1 = 0.845 \tag{effect for males}  \\ -->
-<!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 2 = 0.621 \tag{effect for females}  \\ -->
-
-Here is the R code:
-
-```{r warning=FALSE, message=FALSE}
-margins(interact1, at = list(Female = c("0", "1")))
-```
-
-Please calculate the MER of height in `interact1` for the two gender programmtic in R. 
-
-### Marginal effects at the mean 
-
-Plugging in values is not always as easy as it seems to be. What should we use for age? Values as 0, 1 or 2 does not makes sense for age. Okay, we could use some representative age, e.g. 30 and 40. But what is our theoretical justification to report the effect for age 30 and not age 31? Another strategy is to use mean values of the variables.
-
-```{r warning=FALSE, message=FALSE, echo=FALSE}
-mean_age <- mean(soep$Age)
-mean_age
-```
-
-<!-- \frac{\partial weight}{\partial height} &= 0.9318 + 0.0009254 \cdot 48.57654 = 0.97675 \tag{ME at means}  \\ -->
-
-$$
-\begin{align}
-weight &= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot age + \beta_3 \cdot height \cdot age \tag{interact2} \\
-\frac{\partial weight}{\partial height} &= \beta_1 + \beta_3 \cdot age \tag{conditional effect}  \\
-\end{align}
-$$ 
-
-```{r warning=FALSE, message=FALSE}
-library("stargazer")
-stargazer(simple, interact2, type="text")
-```
-
-Here is the R code with margins:
-
-```{r warning=FALSE, message=FALSE}
-interact2 <- lm(Income ~ Age*Satisfaction, data=soep)
-interact2
-
-#summary(margins(interact2))
-margins(interact2, at = list(Age = mean_age))
-```
-
-Please calculate the MEM of height in `interact2` programmtic in R. 
-
-### Average marginal effects
-
-The default *margins* commands shows you something else than MER and MEM, namely **average marginal effects**. AMEs calculate marginal effects at every observed value of X and average across the resulting effect estimates. AMEs are particularly useful because -- unlike MEMs -- produce a single quantity summary that reflects the full distribution of X rather than an arbitrary prediction.
-
-```{r warning=FALSE, message=FALSE}
-margins(interact1)
-```
-
-A summary provides you with information that cannot easily be calculated by hand, e.g. standard error, p-value, confidence interval:
-
-```{r warning=FALSE, message=FALSE}
-summary(margins(interact1))
-```
-
-
-
+modelsummary(title = 'Comparison',
+             list("Income" = multiple3,
+                  "Income" = interact3,
+                  "Income" = multiple4,
+                  "Income" = interact4), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             output = "gt") %>% 
+  # column labels
+  tab_spanner(label = 'Interaction', columns = c(3,5)) 
+```   
+        
+        
+             
 <script>
   $(".toggle").click(function() {
     $(this).toggleClass("open");

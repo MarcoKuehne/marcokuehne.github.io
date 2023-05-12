@@ -220,28 +220,27 @@ The statistical office in Germany provides [open data](https://www.destatis.de/D
 
 Most Wikipedia texsts are licensed under *Creative Commons Attribution-ShareAlike 3.0*. The Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) license is a type of open license that allows others to share and adapt a work, as long as they give credit to the original creator and distribute any derivative works under the same or a similar license.
 
-## Variables inside the data
+## Can we measure everything?
 
-The *Encyclopaedia of Statistical Sciences* (1999) describes **variables** as **manifest** or **observed** when they are directly measurable or **hidden** or **latent** as "idealized constructs at best only indirectly measurable". Remember Figure \@ref(fig:global-temperature) that shows a global surface temperature reconstruction using **proxy data** from tree rings, corals, and ice cores in blue and **directly observed data** in red. 
+<!-- In order to conduct an empirical analysis, all concepts need to be variables (columns in rectangular data).  -->
 
-Some concepts are easy to grasp and there is a broad consensus on how to measure them. 
+In order to conduct meaningful measurement we need to make sure that we have a good understanding about the concept in question and its units of measurement. Some concepts are easy to grasp and there is a broad consensus on how to measure them. 
 
-- Age is indisputable measured in years. 
-- Number of Twitter follower at a given time. 
-- Temperature can be measured in Celsius or Fahrenheit ([SI units](https://en.wikipedia.org/wiki/International_System_of_Units)). There is an accepted translation between the Celsius and Fahrenheit, i.e. 0°C correspond to 32°F and 0°F correspond to -17.8°C.
+Remember Figure \@ref(fig:global-temperature) that shows a global surface temperature. Temperature can be measured in Celsius or Fahrenheit ([SI units](https://en.wikipedia.org/wiki/International_System_of_Units)). There is an accepted translation between the Celsius and Fahrenheit, i.e. 0°C correspond to 32°F and 0°F correspond to -17.8°C. We have a good understanding of what 10°C means and even know how 10°C "feels". Still, sometimes (or most of the time?) we just don't have the data we like to have. Thus the graph shows a temperature reconstruction using **indirect proxy data** from tree rings, corals, and ice cores as well as **directly observed data** (when available). 
 
-Some concepts are harder to grasp and require a specific argument.
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Variables** are **manifest** or **observed** when they are directly measurable or **hidden** or **latent** when they are "idealized constructs at best only indirectly measurable". 
 
-- Intelligence. What is it and how can we measure it?
-- Populism. What is it and how can we measure it?
-- Happiness. What is it and how can we measure it?
+`r tufte::quote_footer('-- *Encyclopaedia of Statistical Sciences* (1999) ')`
 
-We may ask the questions: 
+::::
 
-- What is the effect of age on Twitter usage? 
-- What is the effect of intelligence on happiness? 
+The number of Twitter follower at a given time is technically determined and can be counted. It is a natural number. Age is indisputable measured in years but it could also be measured in month or days. For most analytically purposes years will be fine. Exact birth dates may not be available due to data protection aspects.  
 
-In order to conduct an empirical analysis, all concepts need to be variables (columns in rectangular data). It's likely that there will be a variable *age* and *follower* as well as *intelligence* and *happiness*. There are common or popular believes on what happiness is. But there is no universal accepted measure. 
+Some concepts are harder to grasp and require a specific argument. Think about intelligence, populism, happiness or humor. What exactly are they and how can they be measured? 
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -250,7 +249,26 @@ In order to conduct an empirical analysis, all concepts need to be variables (co
 **Operationalization** means turning abstract concepts into measurable observations. It involves clearly defining your variables and indicators.^[Read more: <https://www.scribbr.com/methodology/operationalization/>] 
 ::::
 
-One might apply the *Wechsler Adult Intelligence Scale* (version IV, released 2008) to measure intelligence. Scores from intelligence tests are estimates of intelligence. Unlike, for example, distance and mass, a concrete measure of intelligence cannot be achieved given the abstract nature of the concept of "intelligence". 
+See this joke: 
+
+Q: “What’s the difference between England and a tea bag? “
+
+A: “The tea bag stays in the cup longer.”
+
+What would be the best way of measuring how funny the joke is? We could measure physiological responses to jokes, such as heart rate, respiration rate, or facial expressions. Researchers may use brain imaging techniques, such as functional magnetic resonance imaging (fMRI), to measure brain activity in response to jokes. Many times, for many analytically purposes this will be an overkill. It will be expensive in terms of money and time. Thus most of the time, we ask people how funny they rate this joke on a scale from 1 to 10 where 1 refers to "not at all funny" and 10 refers to "extremely funny"? 
+
+It is tempting to measure all social phenomena on a scale from 1 to 10.
+
+<!-- It's likely to find data and analyses on variables like *age* and *follower* as well as *intelligence* and *happiness*. There are common or popular believes on what happiness is. But there is no universal accepted measure.  -->
+
+<!-- likert scale versus more comprehensive scales ..... -->
+
+*Wechsler Adult Intelligence Scale* (version IV, released 2008) measures  intelligence. Scores from intelligence tests are estimates of intelligence. Unlike, for example, distance and mass, a concrete measure of intelligence cannot be achieved given the abstract nature of the concept of "intelligence". 
+
+Once measured, concepts can be related to each other:
+
+- What is the relation between age and Twitter usage? (See chapter [Relationships])
+- What is the effect of intelligence on happiness? (See chapter [Regression])
 
 <!-- <iframe src="https://marco-kuehne.com/wp-admin/admin-ajax.php?action=h5p_embed&id=2" width="1678" height="207" frameborder="0" allowfullscreen="allowfullscreen" title="SOEP General"></iframe><script src="https://marco-kuehne.com/wp-content/plugins/h5p/h5p-php-library/js/h5p-resizer.js" charset="UTF-8"></script> -->
 
@@ -270,169 +288,7 @@ Sometimes, statisticians may become so focused on the data and the patterns they
 <!-- How many volumes does Encyclopaedia of Statistical Sciences have? -->
 <!-- What does it cost? -->
 
-## Apply your knowledge  
 
-:::: {.challenge}
-::: {.titelchallenge}
-<h2> Socio-Economic Panel (SOEP) </h2>
-:::
-The Socio-Economic Panel (SOEP) is a longitudinal survey of households in Germany that has been conducted annually. The survey collects data on a wide range of socio-economic topics, including income, education, health, employment, and social and political attitudes.
-
-The SOEP is one of the largest and longest-running household surveys in the world. Every year, approximately 30,000 people in 15,000 households are interviewed for the SOEP study.
-::::
-
-SOEP started in `r fitb(1984)` and an example of `r mcq(c("cross-sectional", answer="panel"))` data.
-
-<!-- ### Topics in SOEP  -->
-
-<!-- - Since:  yearly new waves -->
-<!-- - File Formats: Stata, R, SPSS, ASCII -->
-<!-- - Access: Senior researcher as contractor -->
-<!-- - Data structure: Panel Data -->
-<!-- - Link: <https://www.diw.de/en/soep> -->
-<!-- - Notes: Comprehensive online companion <http://companion.soep.de/> -->
-
-Would you like to learn more about the topics of SOEP? Let's hear from people working with SOEP data.
-
-<!-- Stutzer, A., & Frey, B. S. (2008). Stress that doesn't pay: The commuting paradox. Scandinavian Journal of Economics, 110(2), 339-366. -->
-<!-- Meier, S., & Stutzer, A. (2008). Is volunteering rewarding in itself?. Economica, 75(297), 39-59. -->
-<!-- Guber, R. (2019). Making it right? Social norms, handwriting and human capital. Labour Economics, 56, 44-57. -->
-<!-- <details> -->
-<!-- <summary>Does your pet makes you live healthy?</summary> -->
-<!-- <center> -->
-<!-- Headey, B., & Grabka, M. M. (2007). Pets and human health in Germany and Australia - National longitudinal results. Social Indicators Research, 80(2), 297-311. -->
-<!-- </center> -->
-<!-- </details> -->
-
-<details>
-<summary>Does marriage make people happy, or do happy people get married?</summary>
-Marriage is one of the most important institutions affecting people’s life and well-being. @stutzer2006does find evidence that happier singles opt more likely for marriage and that there are large differences in the benefits from marriage between couples. Potential, as well as actual, division of labor seems to contribute to spouses’ well-being, especially for women and when there is a young family to raise.
-</details>
-
-<details>
-<summary>Does the stork deliver happiness?</summary>
-@baetschmann2016does examine the relationship between parenthood and life satisfaction on women. They found that initially mothers and non-mothers do not differ in terms of their satisfaction trajectories.
-However, trajectories start diverging as much as five years prior to a prospective mother’s first birth. Substantial positive effects on life satisfaction decrease after birth, but remain positive and for as much as twelve years after the first birth. -- You need panel data to test this. 
-</details>
-
-<details>
-<summary>Do vegetarians feel bad?</summary>
-Vegetarianism—the rejection of eating meat—has become increasingly popular in the past few decades, spurring an increasing amount of research on the antecedents, correlates, and consequences of vegetarianism. @pfeiler2020vegetarians do not find a relationship between vegetarians and meat-eaters with respect to health or life satisfaction. 
-</details>
-
-The SOEP team knows that starting to use any new dataset is difficult, and this is especially true of panel data given their complexity. Thus, they created the [SOEPcompanion](http://companion.soep.de/index.html) that describes the current version of the SOEP-Core data (v37) and introduces users to the different SOEP-Core data structures.
-
-Information on pets is available in different years. In what year does SOEP not contain anything on pets: `r mcq(c(answer = "2001", "2006", "2011", "2016"))`. There is a pattern in the data. It's likely that SOEP asks pet questions every five years. 
-
-<!-- ### Variables in SOEP  -->
-
-What kind of pet questions do they ask? Find the variable name which tells whether a person has a horse. It is  `r mcq(c(answer = "hlf0196", "hlf0255", "hlf0256", "hlf0257"))`. Variables of a dataset are often accompanied by a detailed explanation of called a **codebook**. 
-
-:::: {.defbox}
-::: {.titeldefbox}
-<h2> Definition </h2>
-:::
-A **codebook** describes the contents, structure, and layout of a data collection. 
-::::
-
-SOEP comes in about 50 separate data files. Check the [codebook of *pequiv*](https://www.diw.de/documents/publikationen/73/diw_01.c.704530.de/diw_ssp0772.pdf) dataset: 
-
-* What is the variable `P11101`? `r fitb(c("satisfaction", "Life satisfaction", "Overall life satisfaction", "life satisfaction", ignore_case = TRUE))`.
-* What is the variable `M11122`? `r fitb(c("Height", "height", ignore_case = TRUE))`  (Hint, use a single word) 
-* What is the minimum age for `E11101` (Annual Work Hours of Individual) to be reported?  `r fitb(16)` (Hint, use a single number)
-
-<!-- <iframe src="https://h5p.org/h5p/embed/1295995" width="1090" height="245" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *" title="SOEP Intrpduction"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script> -->
-
-<!-- **German General Social Survey**  -->
-
-<!-- Its mission is to collect and disseminate high quality statistical surveys on attitudes, behavior, and social structure in Germany.  -->
-
-<!-- - Since: 1980 (new waves every `r fitb(2)` years) -->
-<!-- - File Formats: Stata, SPSS  -->
-<!-- - Access: Register Academic Track -->
-<!-- - Data structure: cross-sectional  -->
-<!-- - Link: <https://www.gesis.org/allbus/allbus> -->
-
-<!-- **Gravity Data by CEPII** -->
-
-<!-- Data to estimate gravity equations: trade, GDP, population, trade agreements, etc. For all country pairs, 1948-2020.  -->
-
-<!-- - Since: Irregularly, 2015 (full/light), 2020, 2021 -->
-<!-- - File Formats: Stata, R, CSV -->
-<!-- - Access: Free for everyone   -->
-<!-- - Data structure: Panel Data -->
-<!-- - Link: <http://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=8> -->
-
-<!-- **Gapminder** -->
-
-<!-- Gapminder's stated mission is "Fighting devastating ignorance with fact-based worldviews everyone can understand." -->
-
-<!-- - Since: 2005 (dates back hundreds of years) -->
-<!-- - File formats: CSV or XLSX -->
-<!-- - Access: Free for everyone  -->
-<!-- - Data structure: Depends on what you download -->
-<!-- - Link: <https://www.gapminder.org/data/> -->
-<!-- - Note: Challenge your world view <https://upgrader.gapminder.org/> -->
-<!-- - License: `r mcq(c("WTFPL", "GNU General Public License", "MIT License", answer="CC-BY LICENSE"))` -->
-
-<!-- **SlaveVoyages** -->
-
-<!-- The SlaveVoyages website is a collaborative digital initiative that compiles and makes publicly accessible records of the largest slave trades in history. -->
-
-<!-- - Since: 2008  -->
-<!-- - File formats: SPSS, Excel, CSV  -->
-<!-- - Access: Free for everyone  -->
-<!-- - Data structure: Depends on what you download  -->
-<!-- - Link: <https://www.slavevoyages.org/> -->
-<!-- <!-- https://emilynordmann.github.io/slavevoyagedata/data-visualisation.html --> 
-
-<!-- **Twitter** -->
-
-<!-- Twitter is what's happening and what people are talking about right now. · We serve the public conversation. · Life's not about a job, it's about purpose. -->
-
-<!-- - Since: 2006  -->
-<!-- - File formats: JSON  -->
-<!-- - Access: Register developer account (research track), API  -->
-<!-- - Data structure: Like a list that can contain arbitrary data.  -->
-<!-- - Link: <https://developer.twitter.com/> -->
-
-<!-- **WhatsApp** -->
-
-<!-- Instant messenger -->
-
-<!-- - Since: 2009  -->
-<!-- - File Format: txt (export chat history) -->
-<!-- - Access: You are in control of your chat history.  -->
-<!-- - Link: <https://www.whatsapp.com/> -->
-
-<!-- ## Dataset collections  -->
-<!-- <!-- - https://careerfoundry.com/en/blog/data-analytics/where-to-find-free-datasets/  --> 
-
-
-<!-- **Google Dataset Search** -->
-
-<!-- - Link: <https://datasetsearch.research.google.com/> -->
-<!-- - Datasets: 25.000.000 -->
-<!-- - Established: 2020 -->
-
-<!-- **Kaggle** -->
-
-<!-- - Link: <https://www.kaggle.com/datasets> -->
-<!-- - Datasets: About 50.000  -->
-<!-- - Established: 2010  -->
-
-<!-- **Datahub** -->
-
-<!-- - Link: <https://datahub.io/collections>  -->
-<!-- - Established: 2011 -->
-
-<!-- **R Datasets** -->
-
-<!-- - Link: <https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html>  -->
-
-<!-- **Havard Dataverse** -->
-
-<!-- - Link: <https://dataverse.harvard.edu/> -->
 
 
 
