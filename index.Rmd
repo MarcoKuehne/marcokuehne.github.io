@@ -72,6 +72,187 @@ library('tippy')
 
 <center><img src="images/Cover.png" width="80%"></center>
 
+# About the book {-}
+
+I welcome you to join us on our way to become fluent in data.
+
+## Aims of this book {-}
+
+This project is for everyone. 
+
+### For students {-}
+
+You go from zero you hero in data analysis and data science and will become data fluent and learn major skills that you can use in your academic and business career. 
+
+<!-- We hope this book will be a useful introduction for anyone who wants to learn how to use R. It started out as a 100 page pdf manual used to support our teaching in numerous undergraduate and postgraduate biostatistics classes at the University of Aberdeen and has evolved over the last 10 years to the book you’re now reading. Consequently, this book is primarily written with the advanced undergraduate or postgraduate student in mind although the material should be useful for anyone with an interest in learning R regardless of background. Our book assumes that you have no previous experience of using either R or RStudio and no background in programming or using command-line driven software. We’ve also tried to make the content of this book operating system agnostic and have included information for Windows, Mac and Linux users where appropriate. -->
+
+> The ability to take data — to be able to understand it, to process it, to extract value from it, to visualize it, to communicate it — that’s going to be a hugely important skill in the next decades...</b>
+>
+> `r tufte::quote_footer('Hal Varian, 2009. Googles chief economist. In: [McKinsey Quarterly 2009](<https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/hal-varian-on-how-the-web-challenges-managers>)')`
+
+<!-- https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/hal-varian-on-how-the-web-challenges-managers -->
+
+In addition and independent of a specific career, I would like to foster people's **data literacy**.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Data literacy** is the ability to read, understand, create, and communicate data as information.
+::::
+
+I would like to enable and empower all people to understand the data work of others. Don't take numbers for granted. It's a long journey to get them. Don't be satisfied with a summary or conclusion from someone else. It's worthwhile checking data sources and data work. Either to replicate and validate the data work of others or to form your own opinion.
+
+Not to mention, coding is fun. 
+
+<!-- https://nebula.tv/what-is-code -->
+You might be under the impression, to code, your favorite thing must be computers. Or I've heard *I'm bad a math, I can't code*. None of this is true. Think about it, what is your passion.
+
+<!-- Hiking, Travel, Social Justice, Music ... -->
+
+Learn to code, is something that you can do. And something that may just expand the way you approach and think about the passions in your life. Be their personal or professional. 
+
+<!-- Find your motivation -->
+
+<!-- - Dance -->
+<!-- - Music -->
+<!-- - Gardening -->
+<!-- - .... -->
+
+<!-- https://www.dataquest.io/blog/learn-r-for-data-science/ -->
+<!-- pak::pkg_install("romainfrancois/dance") -->
+<!-- https://cran.r-project.org/web/packages/music/index.html -->
+
+:::::: {.columns}
+
+::: {.column width="70%" data-latex="{0.70\textwidth}"}
+```{r, animation.hook="gifski", echo=F, fig.align='center'}
+library("wordcloud")
+library("RColorBrewer")
+library("SnowballC")
+
+GF <- read.csv("data/Course/GF_2020.csv", stringsAsFactors = FALSE)
+txt <- GF %>% select(starts_with("Expectations"))
+write.table(txt, file = "data/Course/gf.txt", row.names = F, sep = " ")
+source('http://www.sthda.com/upload/rquery_wordcloud.r')
+filePath <- "data/Course/gf.txt"
+
+for (i in c(6,4,2)) {
+  res<-rquery.wordcloud(filePath, type ="file", lang = "english",
+                      min.freq = i, max.words = 150, colorPalette = "Paired")
+}
+```
+:::
+
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+::: {.column width="25%" data-latex="{0.25\textwidth}"}
+<br> <br>
+A <u id='wordcloud'>wordcloud</u> of 25 students answers (2020) on the question: *What do you expect to learn in this seminar?* <br> The animation is created by the `gifski` package. 
+:::
+::::::
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "wordcloud", tooltip = "is a visual representation of text data that shows term freuency.")
+```
+
+### For instructors {-}
+
+*Becoming Fluent In Data* is planned to become an open educational resource (OER) and provide freely accessible educational content related to data analysis. It offers resources, tutorials, and information aimed at helping individuals become proficient in working with data. As an OER, the website allows users to access and utilize its materials without any cost, enabling widespread dissemination and promoting equitable access to knowledge and learning opportunities.
+
+The licensing is yet to be finalized.
+
+Parts of the OER can be used flexibly, as they are modular and can be used independently of each other. This enables users to select and use those parts that are relevant to their specific needs. They can extract individual chapters, modules or exercises from the OER resource and integrate them into their own learning environments.
+
+The site is hosted on GitHub, the entire **source code is available**. 
+
+The project is accompanied by a **data repository** that can be used for a variety of teaching and learning scenarios (available as .txt, .csv or .xlsx).
+
+The **educational videos** created for the OER can be used as a standalone introduction to central concepts. 
+
+## Structure {-}
+
+Every chapter covers the content of a week. 
+
+The first half of the course introduces all the data basics from scratch. What is data? Why do we measure? How do we measure? How do we make comparisons?
+
+Most decisions are complex, costly and have long-term implications. It is therefore vital that such decisions are based on the best available evidence. 
+
+The second half of the course focuses on the analysis of relationships. The most interesting research questions in social science are about relationships. What is the relationship between beauty and employment chances? What is the connection between money and happiness? How does remote work change ones productivity? Is social support related to longevity of marriages? 
+
+The workhorse procedure is regression, a statistical technique that relates variables to each other. 
+
+### Color {-} 
+
+Colored paragraphs give you a visual overview of things to watch out:
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+A **definition** is a statement of the meaning of a term.
+::::
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Amazing Fact </h2>
+:::
+**Bazinga** highlights a memorable fact.
+::::
+
+:::: {.reading}
+::: {.titelreading}
+<h2> Reading </h2>
+:::
+A precious **resource**. 
+::::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+It's **your turn**.
+::::
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
+:::
+**Heavy stuff** to think about. 
+::::
+
+### Components {-} 
+
+The `tippy` package allows <u id='tippy'>underlined text</u> to display tooltips. 
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "tippy", tooltip = "underlined text indicated a tooltip.")
+```
+
+The `webexercises` package allows interactive web pages that you can use in `r mcq(c("ballroom dancing", answer = "self-guided learning", "vegan cooking", "your stamp collection"))`. What is the [Answer to the Ultimate Question of Life](https://lmgtfy.app/?q=Answer+to+the+Ultimate+Question+of+Life) `r fitb(42)`.
+
+The most powerful interaction comes from the web annotation tool <https://web.hypothes.is/>. You may *annotate* or *highlight* all text by <mark>selecting it with the cursor</mark> and then click the on the pop-up menu. You can also see the annotations of others: click the in the upper right hand corner of the page. Create a free account for this feature.  
+
+## Why R? {-}
+
+This book uses `R`. All concepts could have been implemented in `Python` as well and there is a future plan to translate some examples to Python. Both a versatile programming languages with an active community and a lot of free online resources. 
+
+My main recommendation is to use a programming language instead of a WYSIWYG statistical software (e.g. SPSS) and to use open-source software instead of proprietary software.
+
+## Why Tidyverse? {-}
+
+The debate regarding how to teach R centers around whether to introduce the base R programming language or the tidyverse ecosystem. Proponents of base R argue that it provides a solid foundation for understanding R's core principles and functions. It emphasizes learning the fundamentals of R programming, which can be beneficial for more complex data manipulation tasks and working with large datasets.
+
+On the other hand, advocates for the tidyverse approach argue that it offers a more user-friendly and intuitive way to work with data. The tidyverse packages, such as dplyr and ggplot2, provide a consistent and streamlined syntax for data manipulation and visualization, making it easier for beginners to grasp and apply data analysis techniques.
+
+This book uses `tidyverse` predominantly. 
+
+
+
 # About the author {-}
 
 :::::: {.columns}
@@ -207,151 +388,5 @@ This project helped me to learn more about R, RStudio, R Markdown, R Bookdown, H
 ![Teaching in 2014.](images/teaching.jpg)
 
 *Learning by teaching* was originally defined by `r mcq(c("Jimmy Wales", "Linus Torvalds", answer = "Jean-Pol Martin", "Richard E. Pattis"))` in the 1980s. Did you know that some people who [have Wikipedia articles](https://en.wikipedia.org/wiki/Jean-Pol_Martin) also have [user accounts on Wikipedia](https://de.wikipedia.org/wiki/Benutzer:Jeanpol)? 
-
-# About the book {-}
-
-I welcome you to join us on our way to become fluent in data.
-
-## Aims of this book {-}
-
-You go from zero you hero in data analysis and data science and will become data fluent and learn major skills that you can use in your academic and business career. 
-
-<!-- We hope this book will be a useful introduction for anyone who wants to learn how to use R. It started out as a 100 page pdf manual used to support our teaching in numerous undergraduate and postgraduate biostatistics classes at the University of Aberdeen and has evolved over the last 10 years to the book you’re now reading. Consequently, this book is primarily written with the advanced undergraduate or postgraduate student in mind although the material should be useful for anyone with an interest in learning R regardless of background. Our book assumes that you have no previous experience of using either R or RStudio and no background in programming or using command-line driven software. We’ve also tried to make the content of this book operating system agnostic and have included information for Windows, Mac and Linux users where appropriate. -->
-
-> The ability to take data — to be able to understand it, to process it, to extract value from it, to visualize it, to communicate it — that’s going to be a hugely important skill in the next decades...</b>
->
-> `r tufte::quote_footer('Hal Varian, 2009. Googles chief economist. In: [McKinsey Quarterly 2009](<https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/hal-varian-on-how-the-web-challenges-managers>)')`
-
-<!-- https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/hal-varian-on-how-the-web-challenges-managers -->
-
-In addition and independent of a specific career, I would like to foster people's **data literacy**.
-
-:::: {.defbox}
-::: {.titeldefbox}
-<h2> Definition </h2>
-:::
-**Data literacy** is the ability to read, understand, create, and communicate data as information.
-::::
-
-I would like to enable and empower all people to understand the data work of others. Don't take numbers for granted. It's a long journey to get them. Don't be satisfied with a summary or conclusion from someone else. It's worthwhile checking data sources and data work. Either to replicate and validate the data work of others or to form your own opinion.
-
-Not to mention, coding is fun. 
-
-<!-- https://nebula.tv/what-is-code -->
-You might be under the impression, to code, your favorite thing must be computers. Or I've heard *I'm bad a math, I can't code*. None of this is true. Think about it, what is your passion.
-
-<!-- Hiking, Travel, Social Justice, Music ... -->
-
-Learn to code, is something that you can do. And something that may just expand the way you approach and think about the passions in your life. Be their personal or professional. 
-
-<!-- Find your motivation -->
-
-<!-- - Dance -->
-<!-- - Music -->
-<!-- - Gardening -->
-<!-- - .... -->
-
-<!-- https://www.dataquest.io/blog/learn-r-for-data-science/ -->
-<!-- pak::pkg_install("romainfrancois/dance") -->
-<!-- https://cran.r-project.org/web/packages/music/index.html -->
-
-:::::: {.columns}
-
-::: {.column width="70%" data-latex="{0.70\textwidth}"}
-```{r, animation.hook="gifski", echo=F, fig.align='center'}
-library("wordcloud")
-library("RColorBrewer")
-library("SnowballC")
-
-GF <- read.csv("data/Course/GF_2020.csv", stringsAsFactors = FALSE)
-txt <- GF %>% select(starts_with("Expectations"))
-write.table(txt, file = "data/Course/gf.txt", row.names = F, sep = " ")
-source('http://www.sthda.com/upload/rquery_wordcloud.r')
-filePath <- "data/Course/gf.txt"
-
-for (i in c(6,4,2)) {
-  res<-rquery.wordcloud(filePath, type ="file", lang = "english",
-                      min.freq = i, max.words = 150, colorPalette = "Paired")
-}
-```
-:::
-
-::: {.column width="5%" data-latex="{0.05\textwidth}"}
-\ 
-<!-- an empty Div (with a white space), serving as
-a column separator -->
-:::
-
-::: {.column width="25%" data-latex="{0.25\textwidth}"}
-<br> <br>
-A <u id='wordcloud'>wordcloud</u> of 25 students answers (2020) on the question: *What do you expect to learn in this seminar?* <br> The animation is created by the `gifski` package. 
-:::
-::::::
-
-```{r, echo=FALSE}
-tippy::tippy_this(elementId = "wordcloud", tooltip = "is a visual representation of text data that shows term freuency.")
-```
-
-## Structure {-}
-
-Every chapter covers the content of a week. 
-
-The first half of the course (chapter 1 -- 7) introduces all the basics from scratch. We measure and collect data to make informed decisions. Most decisions are complex, costly and have long-term implications. It is therefore vital that such decisions are based on the best available evidence. 
-
-The second half of the course (chapter 8 -- 13) focuses on the analysis of relationships. It opens the realm of research questions and projects. We try to answer apparently simple but intriguing questions from daily life. For example: Can money buy happiness? Does watching TV make us happy? What are the economic consequences of being left-handed? How does beauty affect your income? 
-
-The workhorse procedure is regression, a statistical technique that relates a outcome variable to one or more explanatory variables.
-
-## Color {-} 
-
-Colored paragraphs give you a visual overview of things to watch out:
-
-:::: {.defbox}
-::: {.titeldefbox}
-<h2> Definition </h2>
-:::
-A **definition** is a statement of the meaning of a term.
-::::
-
-:::: {.amazing}
-::: {.titelamazing}
-<h2> Amazing Fact </h2>
-:::
-**Bazinga** highlights a memorable fact.
-::::
-
-:::: {.reading}
-::: {.titelreading}
-<h2> Reading </h2>
-:::
-A precious **resource**. 
-::::
-
-:::: {.challenge}
-::: {.titelchallenge}
-<h2> Your Turn </h2>
-:::
-It's **your turn**.
-::::
-
-:::: {.dedicated}
-::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
-:::
-**Heavy stuff** to think about. 
-::::
-
-## Components {-} 
-
-The `tippy` package allows <u id='tippy'>underlined text</u> to display tooltips. 
-
-```{r, echo=FALSE}
-tippy::tippy_this(elementId = "tippy", tooltip = "underlined text indicated a tooltip.")
-```
-
-The `webexercises` package allows interactive web pages that you can use in `r mcq(c("ballroom dancing", answer = "self-guided learning", "vegan cooking", "your stamp collection"))`. What is the [Answer to the Ultimate Question of Life](https://lmgtfy.app/?q=Answer+to+the+Ultimate+Question+of+Life) `r fitb(42)`.
-
-The most powerful interaction comes from the web annotation tool <https://web.hypothes.is/>. You may *annotate* or *highlight* all text by <mark>selecting it with the cursor</mark> and then click the on the pop-up menu. You can also see the annotations of others: click the in the upper right hand corner of the page. Create a free account for this feature.  
-
 
 
