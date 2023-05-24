@@ -1,0 +1,213 @@
+
+# Intro to Tidyverse {-}
+
+The `tidyverse` is a collection of R packages for data science that share a common philosophy and grammar.^[See <https://www.tidyverse.org/>.] Once the package `tidyverse` is installed on your system via the command `install.packages(tidyverse)`, it is loaded via `library(tidyverse)` in a session. Then you have access to all components like `readr` (for reading data), `dplyr` (for manipulating data), `ggplot2` (for data visualization) and many more. 
+
+## Data with readr {-}
+
+The `readr` package reads data into what is called a *tibble*. 
+
+A tibble is similar to a dataframe. When you print a tibble, it only shows the first ten rows and all the columns that fit on one screen. It also prints an abbreviated description of the column type, and uses font styles and color for highlighting. So to say, the default behavior is excellent.
+
+```{r} 
+# load the entire tidyverse
+library(tidyverse)
+
+# read_csv is a tidyverse (readr) function
+coursedata <- read_csv("https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/Course/GF_2022_57.csv")
+
+# print a tibble
+coursedata
+```
+
+When you use the base R `read.csv()` instead, it reads data into a *dataframe*. When you print the dataframe, it displays all data at once (output not shown in the book). In order to show first entries, another command like `head()` is necessary.
+
+```{r, eval=F}
+# use base R utilities 
+coursedata <- read.csv("https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/Course/GF_2022_57.csv")
+
+# print a dataframe (all data)
+coursedata
+
+# print first 6 observations of the data
+head(coursedata)
+```
+
+:::: {.reading}
+::: {.titelreading}
+<h2> Reading </h2>
+:::
+There are three key differences between tibbles and data frames: printing, subsetting, and recycling rules. Read more about those difference in the [vignette of tibble](https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html).
+::::
+
+## Verbs of dplyr {-}
+
+The first verbs you learn for data inspection are `glimpse()`, `select()`, `arrange()` and `filter()`. Those are classic operators that you also find in Microsoft Excel (via clicking the correct menu options). 
+
+### Glimpse {-}
+
+`glimpse()` tells the number of rows and columns, the first variable names, the class of the variables, i.e. `chr` for character (like text) or `int` for integer (like whole numbers). Another kind of variables are `dbl`, double, short for double-precision floating-point format.
+
+This data set contains 57 rows (observations) and 9 columns (variables).  `glimpse()` also shows the first observations for each variable. 
+
+```{r} 
+glimpse(coursedata)
+```
+
+### Select {-}
+
+Columns are selected by name or column index. Thus, the outcome of `select(coursedata, Gender, Age)` and `select(coursedata, 2, 3)` is identical.
+
+```{r} 
+select(coursedata, Gender, Age) 
+```
+
+We can use a minus `-` to get rid of a column and leave the rest of the columns:
+
+```{r, eval=F} 
+select(coursedata, -Total.Semesters, -Background.in.Statistics,
+       -Background.in.R, -Background.in.Academic.Writing) 
+```
+  
+### Arrange {-}
+
+Often we are interested in the maximum or minimum age, thus `arrange()` a numerical value. 
+
+```{r} 
+arrange(coursedata, Age) # from low to high Age
+```
+
+The default is from low to high values, the `desc()` options reverses the order.
+
+```{r, eval = F} 
+arrange(coursedata, desc(Age)) # reverse 
+```
+
+### Rename {-}
+
+Sometimes default variables names are too long or too complicated, thus we like to `rename()` them. 
+
+```{r} 
+coursedata %>% 
+  rename(Degree = Academic.level,
+         Semesters = Total.Semesters)
+```
+This change is only temporarily and shown in the console output. In order to keep the new name of a variable, we can overwrite the old R object or create a new one. 
+
+```{r, eval = F} 
+# overwrite the old dataframe 
+coursedata <- coursedata %>% 
+  rename(Degree = Academic.level,
+         Semesters = Total.Semesters)
+```
+
+### The pipe operator {-}
+
+As in base R, we often like to combine commands, e.g. select the `Age` variable and sort its values. `dplyr` verbs can be nested as in base R. 
+
+```{r, eval=F} 
+arrange(select(coursedata, Age), Age) 
+```
+
+But there is something else that is used in tidyverse logic, the so called **pipe operator** ` %>%` (percentage sign, relation larger than, another percentage sign). You can read this as "then, please do the following". 
+
+```{r} 
+coursedata %>%        # start with this data
+  select(Age) %>%     # then select only the Age variable
+  arrange(Age)        # then arrange the values
+```
+
+### Filter {-}
+
+It is reasonable to `filter()` specific values of variables. All filters use conditional expression based on relational operators.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+Use **relational operators** to build your filter: 
+
+- `==` equal to
+- `!=` not equal to
+- `>` more or `<` less then 
+::::
+
+Here are some examples: 
+
+```{r, eval = F} 
+# filter students who have more than 10 semesters in total
+coursedata %>% filter(Total.Semesters > 10) 
+
+# filter female students
+coursedata %>% filter(Gender == "Female") 
+```
+
+Combinations of filters are possible via logical operators `&` (and) and `|` (or). We are looking for females who study in a master program.
+
+```{r} 
+coursedata %>%      
+  filter(Gender == "Female" & Academic.level == "Master") 
+```
+
+We are looking for females or anybody who reports more than 10 semesters. 
+```{r} 
+coursedata %>%      
+  filter(Gender == "Female" | Total.Semesters > 10) 
+```
+
+### Mutate {-}
+
+`mutate()` is the most frequent used command you will come across. It changes the data. We create a new variable `Background_Knowledge` by taking the average of the three background variables. All background variables have the same range from 1 to 5. 
+
+```{r} 
+coursedata %>%      
+  mutate(Background_Knowledge = (Background.in.Statistics +
+                                 Background.in.R + 
+                                 Background.in.Academic.Writing)/3) %>% 
+  select(Academic.level, Gender, Age, Background_Knowledge)
+```
+
+### Summarize {-}
+
+Would you like to know the average age of course participants? It is `r mean(coursedata$Age)` There are two ways in order to achieve this. 
+
+```{r, echo=T, eval=F} 
+# calculate mean age with mutate()
+coursedata %>%      
+  mutate(mean_age = mean(Age)) 
+
+# calculate mean age with summarize() 
+coursedata %>%      
+  summarize(mean_age = mean(Age)) 
+```
+
+What is the difference between them? `mutate()` creates a new variable `mean_age` in the data set for all 57 observations. But there is only 1 mean value. Thus, `mutate()` repeats this mean value 57 times. The result is a 57x9 tibble. `summarize()` collapses the tibble to a single value. The result is a 1x1 tibble.
+
+The question is, what do you plan to do next with your results. After `summarize()` all other information is gone. We will see this in the next graph. 
+
+## Graphs with ggplot2 {-}
+
+`ggplot()` follows the <u id='gg'>Grammar of Graphics</u>. The first argument is the data, the second is `aes()` aesthetics (that define the x- and y-variable). In order to add more to the graph, use the `+` operator (instead a pipe). Add layers, so called geoms, like `geom_point()` to create points in a coordinate system, a.k.a the scatter plot. `theme_minimal()` is a particular set of options that controls non-data display. 
+
+```{r, echo=FALSE}
+tippy::tippy_this(elementId = "gg", tooltip = "By Leland Wilkinson.")
+```
+
+```{r} 
+ggplot(coursedata, aes(x = Age, y = Total.Semesters)) + 
+  geom_point() + 
+  theme_minimal()
+```
+
+Alternatively, data can be piped into a `ggplot()`. In the second version of the graph, we added axis labels inside the `labs()` command and another layer `geom_smooth()` for a trend line of the relationship. Inside we define the `method` to be a linear model and the standard errors to be deactivated. Play around with those options, what other methods are available? What happens when we turn standard errors on? 
+
+```{r} 
+coursedata %>% 
+  ggplot(aes(x = Age, y = Total.Semesters)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  theme_minimal() +
+  labs(title = "Relationship between Age and Semester of course participants.", x = "Age", y = "Semesters")
+```
+
+

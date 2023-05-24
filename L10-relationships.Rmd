@@ -2,20 +2,128 @@
 
 # Relationships
 
-> “[M]y ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us, binds us. Luminous beings are we, not this crude matter. You must feel the Force flow around you. Here, between you, me, the tree, the rock, yes, even between the land and the ship.”</b>
->
-> `r tufte::quote_footer('Yoda. -- Episode V: The Empire Strikes Back')`
+<!-- > “[M]y ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us, binds us. Luminous beings are we, not this crude matter. You must feel the Force flow around you. Here, between you, me, the tree, the rock, yes, even between the land and the ship.”</b> -->
+<!-- > -->
+<!-- > `r tufte::quote_footer('Yoda. -- Episode V: The Empire Strikes Back')` -->
 
-The most interesting research questions in social science are about relationships. What is the relationship between the land and the ship? Is is the force? How can the relation between the tree and the land be made palpable?
+The most interesting research questions in social science are about relationships. 
+
+What is the relationship between beauty and employment chances? What is the connection between money and happiness? How does remote work change ones productivity? Is social support related to longevity of marriages? 
+
+<!-- What factors contribute to the success and longevity of marriages across different cultures? What are the long-term effects of childhood attachment styles on adult romantic relationships? Does owning a pet makes you live longer? -->
 
 A relationship is the way in which two or more variables are connected. We pose that everything that can be measured. Relationships between two (continuous) variables are quantified via *covariance* or *correlation* and may be illustrated in a scatter plot. 
 
 <!-- Recall that there is a statistical relationship between two variables when the average score on one differs systematically across the levels of the other. In this section, we revisit the two basic forms of statistical relationship introduced earlier in the book—differences between groups or conditions and relationships between quantitative variables—and we consider how to describe them in more detail. -->
 
 <!-- https://plato.stanford.edu/entries/relations/ -->
-
 <!-- go together flow together -->
 
+Did you know that the number of Stork pairs and babies born in Europe is related? 
+
+```{r dogs, echo=FALSE, out.width="100%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
+knitr::include_graphics("https://en.wikipedia.org/wiki/White_stork#/media/File:Haikara_(White_stork)_(1)_Koski_Tl._9.7.2015.jpg")
+```
+
+## The Data 
+
+<!-- https://www.nabu.de/imperia/md/content/bergenhusen/130618-nabu-weissstorchenzensus.pdf -->
+<!-- https://www.nabu.de/news/2005/zensus.html -->
+<!-- https://en.wikipedia.org/wiki/White_stork#/media/File:Europe_stork.png -->
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(readxl)
+library(tidyverse)
+library(countrycode)
+
+# Stork Basis Data
+storks <- readxl::read_xlsx("./data/Storks/Storks.xlsx", sheet = 2)
+
+# Wide to Long
+storks <- storks %>% 
+  pivot_longer(
+    cols = 2:3, 
+    names_to = "Year",
+    values_to = "Storks"
+)
+
+storks$code <- countrycode(storks$Country, 
+                           origin = 'country.name', 
+                           destination = 'iso3c') 
+
+storks$Year <- as.numeric(storks$Year)
+
+# Area
+country_area <- read.csv("https://raw.githubusercontent.com/bnokoro/Data-Science/master/countries%20of%20the%20world.csv")
+
+country_area <- country_area %>% 
+  select(Country, Area..sq..mi..) %>% 
+  rename(Area = Area..sq..mi..) %>% 
+  mutate(code = countrycode(country_area$Country, 
+                                 origin = 'country.name', 
+                                 destination = 'iso3c')) %>% 
+  select(code, Area)
+
+storks <-left_join(storks, country_area, by = "code")
+
+# Population
+# https://www.kaggle.com/datasets/themlphdstudent/countries-population-from-1955-to-2020?resource=download
+#https://www.kaggle.com/code/themlphdstudent/country-wise-population-from-1955-to-2020
+
+country_pop <- read.csv("./data/Storks/Countries Population from 1995 to 2020.csv")
+
+country_pop$code <- countrycode(country_pop$Country, 
+                                origin = 'country.name', 
+                                destination = 'iso3c') 
+
+country_pop <- country_pop %>% filter(Year %in% c(1995, 2005)) %>% 
+  select(code, Year, Population, Fertility.Rate,Urban.Population)
+
+storks <-left_join(storks, country_pop, by = c("code", "Year"))
+
+glimpse(storks)
+
+options(scipen=10000)
+storks %>% 
+  filter(Year == 2005) %>% 
+  ggplot(aes(x = Storks, y = Population)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se=FALSE) + 
+  theme_minimal()
+
+
+library("maps")
+# Retrieve the map data for Participant Countries 
+stork_map <- map_data("world", region = storks$code)
+
+ggplot(stork_map) +
+  geom_map(aes(map_id = region), 
+           map = stork_map) +
+  geom_polygon(data = stork_map, aes(x = long, y = lat, group = group), 
+               colour = 'black', fill = NA) +
+  expand_limits(x = world_map$long, y = world_map$lat) +
+  scale_fill_brewer(name = "Counts", palette = "Reds") +
+  theme_void() +
+  coord_fixed()
+
+library(geosphere)
+
+centroids <- stork_map %>% 
+  group_by(region) %>% 
+  group_modify(~ data.frame(centroid(cbind(.x$long, .x$lat))))
+
+ggplot(stork_map) +
+  geom_map(aes(map_id = region), 
+           map = stork_map) +
+  geom_polygon(data = stork_map, aes(x = long, y = lat, group = group), 
+               fill = NA) +
+  expand_limits(x = world_map$long, y = world_map$lat) +
+  scale_fill_brewer(name = "Counts", palette = "Reds") +
+  theme_void() +
+  coord_fixed() +
+  geom_point(data = centroids, aes(lon, lat), col = "red")
+
+```
 
 ## Variance
 
