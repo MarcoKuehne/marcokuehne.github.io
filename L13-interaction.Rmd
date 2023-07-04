@@ -84,8 +84,8 @@ The `datasummary()` function from `modelsummary` package provides a good overvie
 
 ```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 library(modelsummary)
-soep %>% 
-  select(Income, Age, Kids, Female, Satisfaction) %>% 
+soep %>%
+  dplyr::select(Income, Age, Kids, Female, Satisfaction) %>%
   datasummary_skim()
 ```
 
@@ -192,13 +192,13 @@ library(knitr)
 parts = 2 ## multi-column parts to display alongside
 
 tidy(interact2) |>
-  select(term, coefficient = estimate) |>
+  dplyr::select(term, coefficient = estimate) |>
   mutate(part = rep(1:parts, each = ceiling(n()/parts), length.out = n()),
          row_index = rep(1:ceiling(n()/parts), length.out = n())
          ) |>
   split(~ part) |>
   Reduce(f = \(x, y) x |> select(-part) |> left_join(y, by = 'row_index')) |>
-  select(-c(row_index, part)) |>
+  dplyr::select(-c(row_index, part)) |>
   kable()
 ```
 

@@ -38,10 +38,58 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/2/
 
 Well, the first was sold for about 250.000.000 million USD in an auction in 2011 and the laters nominal gross domestic product is of similar size 220.000.000 million USD in 2019. About 60.000 people live in Marshall Islands. The most expensive paintings score similar to the gross domestic product of insular states. 
 
+This is the English Wikipedia article [list of highest prices ever paid for paintings](https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid).
+
 ```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
 library(webshot)
 knitr::include_url("https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid")
 ```
+
+In a web browser use the keyboard shortcut `CTRL + U` (in Google Chrome, Firefox, Microsoft Edge, Opera) to view the source code of a webpage. Alternatively, right click and choose "show source code". 
+
+```{r, echo=T, eval=F}
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<body>
+
+<h2>A basic HTML table</h2>
+
+<table style="width:100%">
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table>
+
+<p>To understand the example better, we have added borders to the table.</p>
+
+</body>
+</html>
+```
+
+
+One approach is this. Use `read_html()` from `rvest` package to download the webpage. Extract the node `table.wikitable` with the `html_nodes()` command. Convert this node into a table with `html_table()` setting `header=TRUE`. Use this data in a pipe ` %>% ` with `bind_rows()` and `as_tibble()`.
+
+You can use any other scraping approach.
+
+Store the final table of expensive paintings in `paintings`. The following `DT` table should yield identical results. 
+
 
 ## Student numbers at Viadrina 
 
@@ -254,8 +302,8 @@ Now, we would like to do this for every subpage (semester) and combine the data 
 
 ```{r}
 # the manual way
-winters <- seq(from=2013, to=2021)
-summers <- seq(from=2014, to=2022)
+winters <- seq(from=2013, to=2022)
+summers <- seq(from=2014, to=2023)
 winters <- paste0(winters, "-wintersemester")
 summers <- paste0(summers, "-Sommersemester")
 
@@ -297,14 +345,14 @@ df <- do.call("cbind", tables)
 More and more cleaning. 
 
 ```{r}
-df[,c(seq(from=3, to=35 , by=2))] <- NULL
+df[,c(seq(from=3, to=40 , by=2))] <- NULL
 colnames(df) <- c("Variable", all_terms)
 # transpose dataframe
-viadrina_2013_2022 <- as.data.frame(t(df))
+viadrina_2013_2023 <- as.data.frame(t(df))
 # replace header names by first row
-names(viadrina_2013_2022) <- viadrina_2013_2022[1,]
+names(viadrina_2013_2023) <- viadrina_2013_2023[1,]
 # drop first row
-viadrina_2013_2022 <- viadrina_2013_2022[-1,] 
+viadrina_2013_2023 <- viadrina_2013_2023[-1,] 
 ```
 
 Once more, there are slightly different formats for numbers in winter term 2019, 2020 and 2021. In these terms they use a `.` for digit grouping, e.g. `3.607` instead of `3607`.
@@ -313,10 +361,10 @@ Once more, there are slightly different formats for numbers in winter term 2019,
 # all chr to numeric
 # viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,parse_number)
 #viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,as_numeric)
-viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,as.numeric)
+viadrina_2013_2023 <- viadrina_2013_2023 %>% mutate_if(is.character,as.numeric)
 
 # row 13, 15, 17, columns 1 to 6, multiply by 1000
-viadrina_2013_2022[c(13,15,17), c(1:6)] <- viadrina_2013_2022[c(13,15,17), c(1:6)] * 1000
+viadrina_2013_2023[c(13,15,17,19), c(1:6)] <- viadrina_2013_2023[c(13,15,17,19), c(1:6)] * 1000
 
 # round all numbers
 # viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.numeric, round)
@@ -329,11 +377,11 @@ viadrina_2013_2022[c(13,15,17), c(1:6)] <- viadrina_2013_2022[c(13,15,17), c(1:6
 # viadrina_2013_2022[c(13,15,17),7] <- viadrina_2013_2022[c(13,15,17),7]/1000
 
 # create a semester variable
-viadrina_2013_2022$year <- substr(all_terms, start = 1, stop = 4)
-viadrina_2013_2022$term <- rep(c("winter", "summer"), 9)
-viadrina_2013_2022$semester <- paste0(viadrina_2013_2022$year, rep(c("-02", "-01"), 9))
+viadrina_2013_2023$year <- substr(all_terms, start = 1, stop = 4)
+viadrina_2013_2023$term <- rep(c("winter", "summer"), 10)
+viadrina_2013_2023$semester <- paste0(viadrina_2013_2023$year, rep(c("-02", "-01"), 10))
 # row names
-rownames(viadrina_2013_2022) <- 1:nrow(viadrina_2013_2022) 
+rownames(viadrina_2013_2023) <- 1:nrow(viadrina_2013_2023) 
 ```
 
 ### Most recent student numbers 
@@ -341,7 +389,7 @@ rownames(viadrina_2013_2022) <- 1:nrow(viadrina_2013_2022)
 There is a structural difference between summer and winter term. Most new enrollments are in winter. 
 
 ```{r}
-viadrina_2013_2022 %>% 
+viadrina_2013_2023 %>% 
   ggplot(aes(x=semester, y = `Studierende gesamt`)) +
   geom_point(aes(col=term), size=2) + 
   #geom_point(aes(y = `Studierende gesamt`, fill = "Total")) + 
@@ -360,7 +408,7 @@ via_1992_2020 <- viadrina_1992_2020 %>%
   select(Year, Total) %>% 
   mutate(Term = "winter")
 
-via_2013_2022 <- viadrina_2013_2022 %>% 
+via_2013_2022 <- viadrina_2013_2023 %>% 
   rename(Year = year, Term = term, Total = `Studierende gesamt`) %>% 
   select(Year, Total, Term)
 
