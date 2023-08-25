@@ -1,0 +1,262 @@
+# Geo Data
+
+**Geospatial data**, also known as geographic or spatial data, refers to information that contains explicit geographical locations or spatial attributes. Analyzing and visualizing geospatial data is essential in various fields, including geography, environmental sciences, urban planning, epidemiology, and transportation not to mention social science.
+
+## Where Are You?
+
+Sites like <https://gps-coordinates.org/where-am-i.php> can tell where on Earth you are at the moment. They return a map view on your current surroundings and geo-coordinates.
+
+Ask Google Maps for `Viadrina European University` returns two numbers `52.342977500409994`, *latitude* and `14.555877070488613` *latitude*.
+
+```{r, echo=F}
+# Conventional data frame
+FFO.df <- data.frame(name = c("Viadrina Main Building", "Best Coffee In Town"),
+                     address = c("Große Scharrnstr.", "Große Scharrnstr."),
+                     lat = c(52.34227495250781, 52.34211581397726), 
+                     lon = c(14.553864999354412, 14.554587283303757))
+
+library(sf)
+# Combine to spatial data frame
+FFO.spdf <- st_as_sf(FFO.df, 
+                          coords = c("lon", "lat"), # Order is important
+                          crs = 4326) # EPSG number of CRS
+
+# Map
+library(mapview)
+library(leaflet)
+
+map <- leaflet(options = leafletOptions(minZoom = 18, maxZoom = 18)) %>%
+  addTiles()
+
+mapview(FFO.spdf, zcol = "name", layer.name = "University", map = map)
+```
+
+## Geo-coordinates
+
+<!-- https://support.google.com/maps/answer/18539?hl=en&co=GENIE.Platform%3DDesktop -->
+
+Latitude and longitude are geographic coordinates used to specify locations on the Earth's surface. They are used to precisely determine a point's position in terms of its north-south and east-west positions.
+
+```{r lon_lat, echo=FALSE, fig.cap="Longitude lines are perpendicular to and latitude lines are parallel to the Equator.", out.width = '80%', fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/FedStats_Lat_long.svg/1280px-FedStats_Lat_long.svg.png")
+```
+
+**Latitude** measures the north-south position of a point on the Earth. The equator is defined as 0 degrees latitude, and it divides the Earth into the Northern Hemisphere (positive latitudes) and the Southern Hemisphere (negative latitudes). The range of latitude extends from -90 degrees (South Pole) to +90 degrees (North Pole).
+
+**Longitude** measures the east-west position of a point on the Earth. It is also measured in degrees, with the Prime Meridian serving as the reference point. The Prime Meridian, located at Greenwich, London, is defined as 0 degrees longitude. Longitude lines extend from the Prime Meridian to the International Date Line, which is roughly 180 degrees longitude. The range of longitude extends from -180 degrees to +180 degrees.
+
+### It's convention
+
+Who invented latitude and longitude? Why is latitude positive in the north? What is the north anyway? And who decided on the Prime Meridian in England?
+
+::: reading
+::: titelreading
+<h2>History</h2>
+:::
+
+The decision to have latitude positive in the north and negative in the south is essentially arbitrary. The convention was established to provide a consistent and universally accepted reference frame for geographic coordinates. It was likely influenced by the fact that most early civilizations and cartographers were based in the northern hemisphere.
+
+Regarding the choice of the prime meridian (0 degrees longitude) passing through Greenwich, England, it was largely due to historical reasons and the influence of the British Empire. The concept of establishing a prime meridian dates back to the 19th century when international cooperation in navigation and mapping was increasing. In 1884, at the International Meridian Conference held in Washington, D.C., representatives from various countries agreed to adopt the Greenwich Meridian as the Prime Meridian, mainly because the British Royal Observatory in Greenwich was already internationally recognized for its contributions to astronomy and navigation.
+:::
+
+### Different precision
+
+In general, coordinates with six decimal places (0.000001 degrees) can provide location accuracy to approximately within a few centimeters. Each additional decimal place adds further precision, narrowing down the location to smaller units of measurement.
+
+The entrance of Viadrina main building and the best coffee in town are about 40m away. Latitude is different in the 4th and longitude differs in the 3rd decimal.
+
+```{r, echo=F}
+# Google spot of Viadrina 
+# 52.34227811954683, 14.553820468413068
+
+FFO.df <- data.frame(name = c("Viadrina Main Building", "Best Coffee In Town"),
+                     lat = c(52.34227495250781, 52.34211581397726), 
+                     lon = c(14.553864999354412, 14.554587283303757))
+FFO.df
+```
+
+### Different units
+
+Look again at \@ref(fig:lon_lat). The intuition is that latitude and longitude are angles. Angular measurements are commonly expressed in units of *degrees, minutes, and seconds (DMS)*. 1 degree equals 60 minutes, and one minute equals 60 seconds.
+
+```         
+Decimal degrees (DD): 41.40338, 2.17403
+Degrees, minutes, and seconds (DMS): 41°24'12.2"N 2°10'26.5"E
+Degrees and decimal minutes (DMM): 41 24.2028, 2 10.4418
+```
+
+<https://r-spatial.org/book/08-Plotting.html>
+
+Figure 8.2: Germany in equirectangular projection: with axis units degrees (left) and metres in the equidistant cylindrical projection (right)
+
+```{r}
+library(sf)
+library(rnaturalearth)
+
+DE <- st_geometry(ne_countries(country = "germany",
+                              returnclass = "sf"))
+DE |> st_transform("+proj=eqc +lat_ts=51.14 +lon_0=90w") ->
+    DE.eqc
+
+par(mfrow = c(1, 2), mar = c(2.2, 2.2, 0.3, 0.5))
+plot(DE, axes = TRUE)
+plot(DE.eqc, axes = TRUE)
+```
+
+### Different perspectives
+
+```{r}
+# Now, lets transform Germany into a CRS optimized for Iceland
+ger_rep.spdf <- st_transform(DE.eqc, crs = 5325)
+
+par(mfrow = c(1, 2), mar = c(2.2, 2.2, 0.3, 0.5))
+plot(DE.eqc, axes = TRUE)
+plot(ger_rep.spdf, axes = TRUE)
+```
+
+Test this yourself. Go to Google Maps and navigate to the middle of Iceland. Now, look how the shape of Germany changes.
+
+### Different distance between two coordinates
+
+```{r}
+# Install and load the 'geosphere' package
+#install.packages("geosphere")
+library(geosphere)
+
+# Define the coordinates of two points
+coord1 <- c(40.7128, -74.0060)  # New York City
+coord2 <- c(51.5074, -0.1278)   # London
+
+# Calculate the distance using the 'distGeo' function in meters
+dist_great_circle <- distGeo(coord1, coord2)
+
+# Calculate the beeline distance using the 'distMeeus' function
+dist_bee <- distMeeus(coord1, coord2)
+
+dist_great_circle
+dist_bee
+```
+
+The distGeo function from the geosphere package calculates the **great circle distance** between two points on the Earth's surface. The result is stored in the distance variable.
+
+Haversine.
+
+## From Points And Polygons
+
+Minimal polygon.
+
+```{r}
+# Define the coordinates of the polygon vertices
+x <- c(1, 2, 3, 2)  # X-coordinates of vertices
+y <- c(1, 2, 1, 0)  # Y-coordinates of vertices
+
+# Create a plotting window
+plot.new()
+plot.window(xlim = c(0, 4), ylim = c(-1, 3))
+
+# Plot the polygon
+polygon(x, y)
+
+# Add labels for the vertices (optional)
+text(x, y, labels = 1:length(x), pos = 3)
+```
+
+Polygon for a country.
+
+```{r}
+# library(raster)
+# Ethiopia <- getData("GADM", country = "Ethiopia", level = 2)
+# plot(Ethiopia)
+# points(coordinates(Ethiopia[which(Ethiopia$NAME_2 == "Addis Abeba"),]),
+#        pch = 16, col = 2, cex = 2)
+
+library(geodata)
+Ethiopia2 <- gadm(country = "Ethiopia", path = tempdir(), level=1, version="latest", resolution=1)
+plot(Ethiopia2)
+
+```
+
+### Shapefiles
+
+In R, shapefiles are commonly used to represent geographic data. Shapefiles are a popular geospatial vector data format that stores both geometric and attribute information about geographic features. They are widely used in geographic information system (GIS) applications and can be easily imported and manipulated in R using various packages such as `sf`, `rgdal`, or `maptools`.
+
+.dbf File: This file is the attribute table file associated with the shapefile. It stores the attribute data for each geographic feature in a tabular format. The attributes can include information such as names, IDs, population, or any other relevant data associated with the features. The .dbf file follows the dBase file format and can be accessed using functions like read.dbf() or read.dbf()\$data in R.
+
+.prj File: This file contains the coordinate reference system (CRS) information for the shapefile. It specifies the spatial reference system and projection details, such as the coordinate units, projection method, and datum used. The CRS information is crucial for correctly interpreting and aligning the spatial data in the shapefile. In R, the CRS information can be accessed or set using functions provided by the sf package, such as st_crs() or st_set_crs().
+
+.shp File: This file stores the actual geometric data of the shapefile. It contains information about the shape, size, and location of each geographic feature, such as points, lines, or polygons. Each feature is represented by a set of vertices or coordinates.
+
+.shx File: This file is the shapefile index file. It provides a quick lookup or index of the geometric features in the shapefile. It helps in efficiently accessing specific features without reading the entire shapefile.
+
+## Spatial scale
+
+Zoom in, zoom out, what is the best zoom level for an analysis?
+
+Inadequate spatial scales refer to situations where the chosen scale of analysis in spatial research is not suitable for capturing the underlying spatial processes or phenomena. It occurs when the spatial resolution or extent of analysis is either too coarse or too fine to effectively capture the patterns and relationships of interest. Here's more information on inadequate spatial scales, examples, and how to find an appropriate scale:
+
+Choosing an appropriate spatial scale is crucial to ensure that the analysis captures the relevant spatial patterns, relationships, and processes. It requires careful consideration of the research question, data characteristics, and prior knowledge of the phenomena under investigation.
+
+# Switzerland
+
+It is not clear how the structure of the data looks like or what kind of file ending there is. Often there are several data files that make up geographic information.
+
+```{r echo=F, eval=F}
+library(maptools)
+library(spdep)
+library(spatialreg)
+
+CH_housing <- read.table("./data/Geo/CH_Housing_Data.txt", header = TRUE)
+
+# udl undevelopable land 
+# hp house price
+
+CH_shape <- readShapePoly("./data/Geo/MS_Gebiete")
+
+plot(CH_shape)
+
+plot(CH_housing)
+cont <- tri2nb(coordinates(CH_housing))
+plot(cont, coordinates(CH_housing), col = 4, add=TRUE)
+
+nearest.six <- knearneigh(coordinates(CH), k = 6)
+
+class(cont)
+class(nearest.six)
+
+nearest.six.2 <- knn2nb(nearest.six)
+
+plot(CH)
+plot(nearest.six.2, coordinates(CH), col = 2, add=TRUE)
+
+color <- rev(heat.colors(106))
+color2 <- color[rank(dat1$hp)]
+
+plot(CH, col = color2)
+text(coordinates(CH), labels = dat1$hp/1000)
+
+plot(CH, col = color2)
+text(coordinates(CH), labels = dat1$hp/1000, cex =0.6)
+
+library(rgdal)
+library(leaflet)
+library(leaflet.extras)
+library(mapview)
+
+CH_map <- readOGR(dsn = ".", "MS_Gebiete")
+CH_map <- spTransform(CH_map, CRS("+proj=longlat +datum=WGS84"))
+
+library(shinyjs)
+library(tmaptools)
+
+tmaptools::palette_explorer()
+
+pal <- colorNumeric("inferno", domain = NULL, rev= TRUE)
+
+m <- leaflet(data = CH_map)
+m <- addProviderTiles(m, providers$OpenTopoMap)
+m <- addPolygons(m, fillColor = ~pal(log(dat1$hp)), stroke=TRUE, weight=1, 
+                 fillOpacity = 0.7, color="black", 
+                 label= ~paste0(dat1$MS.name, ":", dat1$hp),
+                 highlightOptions = highlightOptions(color = "white", weight=4, bringToFront = TRUE))
+m <- addLegend(m, pal = pal, values = dat1$hp, opacity = 1, title = "House Prices in [CHF]")
+```
