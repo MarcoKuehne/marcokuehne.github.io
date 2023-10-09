@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2023-08-27" />
+<meta name="date" content="2023-10-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -377,6 +377,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.5" data-path="relationships.html"><a href="relationships.html#standard-deviation"><i class="fa fa-check"></i><b>8.5</b> Standard Deviation</a></li>
 <li class="chapter" data-level="8.6" data-path="relationships.html"><a href="relationships.html#covariance"><i class="fa fa-check"></i><b>8.6</b> Covariance</a></li>
 <li class="chapter" data-level="8.7" data-path="relationships.html"><a href="relationships.html#correlation"><i class="fa fa-check"></i><b>8.7</b> Correlation</a></li>
+<li class="chapter" data-level="8.8" data-path="relationships.html"><a href="relationships.html#digression-from-correlation-to-regression"><i class="fa fa-check"></i><b>8.8</b> Digression: From Correlation to Regression</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>9</b> Regression</a>
 <ul>
@@ -527,60 +528,60 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <button>
 Show me all the data wrangling.
 </button>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="interaction-models.html#cb117-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb117-2"><a href="interaction-models.html#cb117-2" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span>
-<span id="cb117-3"><a href="interaction-models.html#cb117-3" tabindex="-1"></a></span>
-<span id="cb117-4"><a href="interaction-models.html#cb117-4" tabindex="-1"></a><span class="co"># The data comes with Stata labels that do not work with all tidyverse commands</span></span>
-<span id="cb117-5"><a href="interaction-models.html#cb117-5" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
-<span id="cb117-6"><a href="interaction-models.html#cb117-6" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span>
-<span id="cb117-7"><a href="interaction-models.html#cb117-7" tabindex="-1"></a></span>
-<span id="cb117-8"><a href="interaction-models.html#cb117-8" tabindex="-1"></a><span class="co"># Rename German to English variable names</span></span>
-<span id="cb117-9"><a href="interaction-models.html#cb117-9" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb117-10"><a href="interaction-models.html#cb117-10" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb117-11"><a href="interaction-models.html#cb117-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="st">&quot;alter&quot;</span>,</span>
-<span id="cb117-12"><a href="interaction-models.html#cb117-12" tabindex="-1"></a>         <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> <span class="st">&quot;einkommenj1&quot;</span>,</span>
-<span id="cb117-13"><a href="interaction-models.html#cb117-13" tabindex="-1"></a>         <span class="st">&quot;NACE2&quot;</span> <span class="ot">=</span> <span class="st">&quot;branche&quot;</span>,</span>
-<span id="cb117-14"><a href="interaction-models.html#cb117-14" tabindex="-1"></a>         <span class="st">&quot;Persons in HH&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_pers&quot;</span>, </span>
-<span id="cb117-15"><a href="interaction-models.html#cb117-15" tabindex="-1"></a>         <span class="st">&quot;Num_Kids&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_kind&quot;</span>,</span>
-<span id="cb117-16"><a href="interaction-models.html#cb117-16" tabindex="-1"></a>         <span class="st">&quot;Education&quot;</span> <span class="ot">=</span> <span class="st">&quot;bildung&quot;</span>,</span>
-<span id="cb117-17"><a href="interaction-models.html#cb117-17" tabindex="-1"></a>         <span class="st">&quot;Health&quot;</span> <span class="ot">=</span> <span class="st">&quot;gesund_org&quot;</span>, </span>
-<span id="cb117-18"><a href="interaction-models.html#cb117-18" tabindex="-1"></a>         <span class="st">&quot;Satisfaction&quot;</span> <span class="ot">=</span> <span class="st">&quot;lebensz_org&quot;</span>,</span>
-<span id="cb117-19"><a href="interaction-models.html#cb117-19" tabindex="-1"></a>         <span class="st">&quot;Emp&quot;</span> <span class="ot">=</span> <span class="st">&quot;erwerb&quot;</span>) </span>
-<span id="cb117-20"><a href="interaction-models.html#cb117-20" tabindex="-1"></a></span>
-<span id="cb117-21"><a href="interaction-models.html#cb117-21" tabindex="-1"></a><span class="co"># Modify some variables</span></span>
-<span id="cb117-22"><a href="interaction-models.html#cb117-22" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb117-23"><a href="interaction-models.html#cb117-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Single =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Persons in HH</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb117-24"><a href="interaction-models.html#cb117-24" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">ifelse</span>(Num_Kids <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb117-25"><a href="interaction-models.html#cb117-25" tabindex="-1"></a>         <span class="at">Female =</span> sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb117-26"><a href="interaction-models.html#cb117-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Industry =</span> <span class="fu">case_when</span>(NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="sc">~</span> <span class="st">&quot;Agriculture&quot;</span>,</span>
-<span id="cb117-27"><a href="interaction-models.html#cb117-27" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">~</span> <span class="st">&quot;Mining&quot;</span>,</span>
-<span id="cb117-28"><a href="interaction-models.html#cb117-28" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">32</span>) <span class="sc">~</span> <span class="st">&quot;Manufacturing&quot;</span>,</span>
-<span id="cb117-29"><a href="interaction-models.html#cb117-29" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35</span><span class="sc">:</span><span class="dv">38</span>) <span class="sc">~</span> <span class="st">&quot;Energy&quot;</span>,</span>
-<span id="cb117-30"><a href="interaction-models.html#cb117-30" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">~</span> <span class="st">&quot;Construction&quot;</span>,</span>
-<span id="cb117-31"><a href="interaction-models.html#cb117-31" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">55</span>) <span class="sc">~</span> <span class="st">&quot;Trade&quot;</span>,</span>
-<span id="cb117-32"><a href="interaction-models.html#cb117-32" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>) <span class="sc">~</span> <span class="st">&quot;Transport&quot;</span>,</span>
-<span id="cb117-33"><a href="interaction-models.html#cb117-33" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>) <span class="sc">~</span> <span class="st">&quot;Banking&quot;</span>,</span>
-<span id="cb117-34"><a href="interaction-models.html#cb117-34" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span>  <span class="fu">c</span>(<span class="dv">70</span>,<span class="dv">71</span>,<span class="dv">72</span>,<span class="dv">73</span>,<span class="dv">74</span>,<span class="dv">75</span>,<span class="dv">80</span>,<span class="dv">85</span>,<span class="dv">90</span>,<span class="dv">91</span>,<span class="dv">92</span>,<span class="dv">93</span>,<span class="dv">95</span>,<span class="dv">98</span>,<span class="dv">99</span>) <span class="sc">~</span> <span class="st">&quot;Services&quot;</span>,</span>
-<span id="cb117-35"><a href="interaction-models.html#cb117-35" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Other&quot;</span>))</span>
-<span id="cb117-36"><a href="interaction-models.html#cb117-36" tabindex="-1"></a></span>
-<span id="cb117-37"><a href="interaction-models.html#cb117-37" tabindex="-1"></a><span class="co"># Round annual income to two digits</span></span>
-<span id="cb117-38"><a href="interaction-models.html#cb117-38" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Income =</span> <span class="fu">round</span>(Income, <span class="dv">2</span>))</span>
-<span id="cb117-39"><a href="interaction-models.html#cb117-39" tabindex="-1"></a></span>
-<span id="cb117-40"><a href="interaction-models.html#cb117-40" tabindex="-1"></a><span class="co"># Build the estimation sample based on the topic</span></span>
-<span id="cb117-41"><a href="interaction-models.html#cb117-41" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb117-42"><a href="interaction-models.html#cb117-42" tabindex="-1"></a>  <span class="fu">filter</span>(Emp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb117-43"><a href="interaction-models.html#cb117-43" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">65</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb117-44"><a href="interaction-models.html#cb117-44" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb117-45"><a href="interaction-models.html#cb117-45" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2019</span>)</span>
-<span id="cb117-46"><a href="interaction-models.html#cb117-46" tabindex="-1"></a></span>
-<span id="cb117-47"><a href="interaction-models.html#cb117-47" tabindex="-1"></a><span class="co"># Conduct a complete case analysis</span></span>
-<span id="cb117-48"><a href="interaction-models.html#cb117-48" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="interaction-models.html#cb116-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb116-2"><a href="interaction-models.html#cb116-2" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span>
+<span id="cb116-3"><a href="interaction-models.html#cb116-3" tabindex="-1"></a></span>
+<span id="cb116-4"><a href="interaction-models.html#cb116-4" tabindex="-1"></a><span class="co"># The data comes with Stata labels that do not work with all tidyverse commands</span></span>
+<span id="cb116-5"><a href="interaction-models.html#cb116-5" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
+<span id="cb116-6"><a href="interaction-models.html#cb116-6" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span>
+<span id="cb116-7"><a href="interaction-models.html#cb116-7" tabindex="-1"></a></span>
+<span id="cb116-8"><a href="interaction-models.html#cb116-8" tabindex="-1"></a><span class="co"># Rename German to English variable names</span></span>
+<span id="cb116-9"><a href="interaction-models.html#cb116-9" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb116-10"><a href="interaction-models.html#cb116-10" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb116-11"><a href="interaction-models.html#cb116-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="st">&quot;alter&quot;</span>,</span>
+<span id="cb116-12"><a href="interaction-models.html#cb116-12" tabindex="-1"></a>         <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> <span class="st">&quot;einkommenj1&quot;</span>,</span>
+<span id="cb116-13"><a href="interaction-models.html#cb116-13" tabindex="-1"></a>         <span class="st">&quot;NACE2&quot;</span> <span class="ot">=</span> <span class="st">&quot;branche&quot;</span>,</span>
+<span id="cb116-14"><a href="interaction-models.html#cb116-14" tabindex="-1"></a>         <span class="st">&quot;Persons in HH&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_pers&quot;</span>, </span>
+<span id="cb116-15"><a href="interaction-models.html#cb116-15" tabindex="-1"></a>         <span class="st">&quot;Num_Kids&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_kind&quot;</span>,</span>
+<span id="cb116-16"><a href="interaction-models.html#cb116-16" tabindex="-1"></a>         <span class="st">&quot;Education&quot;</span> <span class="ot">=</span> <span class="st">&quot;bildung&quot;</span>,</span>
+<span id="cb116-17"><a href="interaction-models.html#cb116-17" tabindex="-1"></a>         <span class="st">&quot;Health&quot;</span> <span class="ot">=</span> <span class="st">&quot;gesund_org&quot;</span>, </span>
+<span id="cb116-18"><a href="interaction-models.html#cb116-18" tabindex="-1"></a>         <span class="st">&quot;Satisfaction&quot;</span> <span class="ot">=</span> <span class="st">&quot;lebensz_org&quot;</span>,</span>
+<span id="cb116-19"><a href="interaction-models.html#cb116-19" tabindex="-1"></a>         <span class="st">&quot;Emp&quot;</span> <span class="ot">=</span> <span class="st">&quot;erwerb&quot;</span>) </span>
+<span id="cb116-20"><a href="interaction-models.html#cb116-20" tabindex="-1"></a></span>
+<span id="cb116-21"><a href="interaction-models.html#cb116-21" tabindex="-1"></a><span class="co"># Modify some variables</span></span>
+<span id="cb116-22"><a href="interaction-models.html#cb116-22" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb116-23"><a href="interaction-models.html#cb116-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Single =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Persons in HH</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb116-24"><a href="interaction-models.html#cb116-24" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">ifelse</span>(Num_Kids <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb116-25"><a href="interaction-models.html#cb116-25" tabindex="-1"></a>         <span class="at">Female =</span> sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-26"><a href="interaction-models.html#cb116-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Industry =</span> <span class="fu">case_when</span>(NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="sc">~</span> <span class="st">&quot;Agriculture&quot;</span>,</span>
+<span id="cb116-27"><a href="interaction-models.html#cb116-27" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">~</span> <span class="st">&quot;Mining&quot;</span>,</span>
+<span id="cb116-28"><a href="interaction-models.html#cb116-28" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">32</span>) <span class="sc">~</span> <span class="st">&quot;Manufacturing&quot;</span>,</span>
+<span id="cb116-29"><a href="interaction-models.html#cb116-29" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35</span><span class="sc">:</span><span class="dv">38</span>) <span class="sc">~</span> <span class="st">&quot;Energy&quot;</span>,</span>
+<span id="cb116-30"><a href="interaction-models.html#cb116-30" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">~</span> <span class="st">&quot;Construction&quot;</span>,</span>
+<span id="cb116-31"><a href="interaction-models.html#cb116-31" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">55</span>) <span class="sc">~</span> <span class="st">&quot;Trade&quot;</span>,</span>
+<span id="cb116-32"><a href="interaction-models.html#cb116-32" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>) <span class="sc">~</span> <span class="st">&quot;Transport&quot;</span>,</span>
+<span id="cb116-33"><a href="interaction-models.html#cb116-33" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>) <span class="sc">~</span> <span class="st">&quot;Banking&quot;</span>,</span>
+<span id="cb116-34"><a href="interaction-models.html#cb116-34" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span>  <span class="fu">c</span>(<span class="dv">70</span>,<span class="dv">71</span>,<span class="dv">72</span>,<span class="dv">73</span>,<span class="dv">74</span>,<span class="dv">75</span>,<span class="dv">80</span>,<span class="dv">85</span>,<span class="dv">90</span>,<span class="dv">91</span>,<span class="dv">92</span>,<span class="dv">93</span>,<span class="dv">95</span>,<span class="dv">98</span>,<span class="dv">99</span>) <span class="sc">~</span> <span class="st">&quot;Services&quot;</span>,</span>
+<span id="cb116-35"><a href="interaction-models.html#cb116-35" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Other&quot;</span>))</span>
+<span id="cb116-36"><a href="interaction-models.html#cb116-36" tabindex="-1"></a></span>
+<span id="cb116-37"><a href="interaction-models.html#cb116-37" tabindex="-1"></a><span class="co"># Round annual income to two digits</span></span>
+<span id="cb116-38"><a href="interaction-models.html#cb116-38" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Income =</span> <span class="fu">round</span>(Income, <span class="dv">2</span>))</span>
+<span id="cb116-39"><a href="interaction-models.html#cb116-39" tabindex="-1"></a></span>
+<span id="cb116-40"><a href="interaction-models.html#cb116-40" tabindex="-1"></a><span class="co"># Build the estimation sample based on the topic</span></span>
+<span id="cb116-41"><a href="interaction-models.html#cb116-41" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb116-42"><a href="interaction-models.html#cb116-42" tabindex="-1"></a>  <span class="fu">filter</span>(Emp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-43"><a href="interaction-models.html#cb116-43" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">65</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-44"><a href="interaction-models.html#cb116-44" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb116-45"><a href="interaction-models.html#cb116-45" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2019</span>)</span>
+<span id="cb116-46"><a href="interaction-models.html#cb116-46" tabindex="-1"></a></span>
+<span id="cb116-47"><a href="interaction-models.html#cb116-47" tabindex="-1"></a><span class="co"># Conduct a complete case analysis</span></span>
+<span id="cb116-48"><a href="interaction-models.html#cb116-48" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
 </div>
 <p>The <code>datasummary()</code> function from <code>modelsummary</code> package provides a good overview for clean, selected variables.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="interaction-models.html#cb118-1" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb118-2"><a href="interaction-models.html#cb118-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
-<span id="cb118-3"><a href="interaction-models.html#cb118-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Income, Age, Kids, Female, Satisfaction) <span class="sc">%&gt;%</span></span>
-<span id="cb118-4"><a href="interaction-models.html#cb118-4" tabindex="-1"></a>  <span class="fu">datasummary_skim</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="interaction-models.html#cb117-1" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb117-2"><a href="interaction-models.html#cb117-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
+<span id="cb117-3"><a href="interaction-models.html#cb117-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Income, Age, Kids, Female, Satisfaction) <span class="sc">%&gt;%</span></span>
+<span id="cb117-4"><a href="interaction-models.html#cb117-4" tabindex="-1"></a>  <span class="fu">datasummary_skim</span>()</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -840,15 +841,15 @@ Satisfaction
 </tbody>
 </table>
 <p>The average annual income in this sample is 42145. Notice that the income is left skewed whereas life satisfaction is skewed to the right. As expected, most people earn a low or average income and there are several extreme high incomes at the right. On the other hand, most people are on average pretty satisfied with their lifes in general. The mean of a dummy variables is the share of people with the characteristic coded with 1, i.e. about 40 % of the people have kids. In the following, binary dummy variables are coded as factors.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="interaction-models.html#cb119-1" tabindex="-1"></a><span class="co"># Explicitly code factor variables</span></span>
-<span id="cb119-2"><a href="interaction-models.html#cb119-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb119-3"><a href="interaction-models.html#cb119-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Female =</span> <span class="fu">factor</span>(Female),</span>
-<span id="cb119-4"><a href="interaction-models.html#cb119-4" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">factor</span>(Kids))</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="interaction-models.html#cb118-1" tabindex="-1"></a><span class="co"># Explicitly code factor variables</span></span>
+<span id="cb118-2"><a href="interaction-models.html#cb118-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb118-3"><a href="interaction-models.html#cb118-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Female =</span> <span class="fu">factor</span>(Female),</span>
+<span id="cb118-4"><a href="interaction-models.html#cb118-4" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">factor</span>(Kids))</span></code></pre></div>
 </div>
 <div id="throwback-parallel-slopes" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> Throwback Parallel Slopes<a href="interaction-models.html#throwback-parallel-slopes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Simple regression is very similar to the correlation between two variables. A multiple regression with one continuous and one dummy variable is called a <em>parallel slopes</em> model. The data looks like this:</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-185-1.png" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-184-1.png" width="576" /></p>
 <p>Conclusion from Parallel Slopes: The <em>fundamental truth</em> is that the effect of age on income is identical across gender (i.e. for males and females). Males and female are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?</p>
 </div>
 <div id="regression-with-moderators" class="section level2 hasAnchor" number="11.4">
@@ -860,21 +861,21 @@ Satisfaction
 <button>
 Show me the coding.
 </button>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="interaction-models.html#cb120-1" tabindex="-1"></a><span class="co"># implicit coding, that automatically extends</span></span>
-<span id="cb120-2"><a href="interaction-models.html#cb120-2" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">*</span>am, <span class="at">data=</span>mtcars)</span>
-<span id="cb120-3"><a href="interaction-models.html#cb120-3" tabindex="-1"></a><span class="co"># explicit coding, each single term and their interaction</span></span>
-<span id="cb120-4"><a href="interaction-models.html#cb120-4" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> am <span class="sc">+</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
-<span id="cb120-5"><a href="interaction-models.html#cb120-5" tabindex="-1"></a><span class="co"># only use the interaction term?</span></span>
-<span id="cb120-6"><a href="interaction-models.html#cb120-6" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
-<span id="cb120-7"><a href="interaction-models.html#cb120-7" tabindex="-1"></a></span>
-<span id="cb120-8"><a href="interaction-models.html#cb120-8" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Coding Interaction in R.&#39;</span>,</span>
-<span id="cb120-9"><a href="interaction-models.html#cb120-9" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Version 1&quot;</span> <span class="ot">=</span> lm1, </span>
-<span id="cb120-10"><a href="interaction-models.html#cb120-10" tabindex="-1"></a>                  <span class="st">&quot;Version 2&quot;</span> <span class="ot">=</span> lm2,</span>
-<span id="cb120-11"><a href="interaction-models.html#cb120-11" tabindex="-1"></a>                  <span class="st">&quot;Version 3&quot;</span> <span class="ot">=</span> lm3), </span>
-<span id="cb120-12"><a href="interaction-models.html#cb120-12" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="interaction-models.html#cb119-1" tabindex="-1"></a><span class="co"># implicit coding, that automatically extends</span></span>
+<span id="cb119-2"><a href="interaction-models.html#cb119-2" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">*</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb119-3"><a href="interaction-models.html#cb119-3" tabindex="-1"></a><span class="co"># explicit coding, each single term and their interaction</span></span>
+<span id="cb119-4"><a href="interaction-models.html#cb119-4" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> am <span class="sc">+</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb119-5"><a href="interaction-models.html#cb119-5" tabindex="-1"></a><span class="co"># only use the interaction term?</span></span>
+<span id="cb119-6"><a href="interaction-models.html#cb119-6" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb119-7"><a href="interaction-models.html#cb119-7" tabindex="-1"></a></span>
+<span id="cb119-8"><a href="interaction-models.html#cb119-8" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Coding Interaction in R.&#39;</span>,</span>
+<span id="cb119-9"><a href="interaction-models.html#cb119-9" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Version 1&quot;</span> <span class="ot">=</span> lm1, </span>
+<span id="cb119-10"><a href="interaction-models.html#cb119-10" tabindex="-1"></a>                  <span class="st">&quot;Version 2&quot;</span> <span class="ot">=</span> lm2,</span>
+<span id="cb119-11"><a href="interaction-models.html#cb119-11" tabindex="-1"></a>                  <span class="st">&quot;Version 3&quot;</span> <span class="ot">=</span> lm3), </span>
+<span id="cb119-12"><a href="interaction-models.html#cb119-12" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-187">Table 11.1: </span>Coding Interaction in R.
+<span id="tab:unnamed-chunk-186">Table 11.1: </span>Coding Interaction in R.
 </caption>
 <thead>
 <tr>
@@ -1020,13 +1021,13 @@ Num.Obs.
 <!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
 <!-- Categorical by categorical interactions: All the tools described here require at least one variable to be continuous. A separate vignette describes cat_plot, which handles the plotting of interactions in which all the focal predictors are categorical variables. -->
 <p>We estimate how income depends on having kids and being female.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="interaction-models.html#cb121-1" tabindex="-1"></a>interact1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Kids<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb121-2"><a href="interaction-models.html#cb121-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 1.&#39;</span>,</span>
-<span id="cb121-3"><a href="interaction-models.html#cb121-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact1), </span>
-<span id="cb121-4"><a href="interaction-models.html#cb121-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="interaction-models.html#cb120-1" tabindex="-1"></a>interact1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Kids<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb120-2"><a href="interaction-models.html#cb120-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 1.&#39;</span>,</span>
+<span id="cb120-3"><a href="interaction-models.html#cb120-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact1), </span>
+<span id="cb120-4"><a href="interaction-models.html#cb120-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-188">Table 11.2: </span>Interaction Model 1.
+<span id="tab:unnamed-chunk-187">Table 11.2: </span>Interaction Model 1.
 </caption>
 <thead>
 <tr>
@@ -1109,39 +1110,39 @@ Num.Obs.
 </tbody>
 </table>
 <p>We plot the interaction with via <code>cat_plot()</code> from the <code>interactions</code> package. This interaction dedicated package makes visualization easy.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="interaction-models.html#cb122-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
-<span id="cb122-2"><a href="interaction-models.html#cb122-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-189-1.png" width="576" /></p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="interaction-models.html#cb121-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb121-2"><a href="interaction-models.html#cb121-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-188-1.png" width="576" /></p>
 <p>This graph suggests that men earn more than women. Men with kids earn more than men without kids. The kids-effect is reversed for women, which report higher incomes when they do not have kids.</p>
 </div>
 <div id="categorical-dummy" class="section level3 hasAnchor" number="11.4.2">
 <h3><span class="header-section-number">11.4.2</span> Categorical * Dummy<a href="interaction-models.html#categorical-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We estimate how income depends on working in different industries and being female.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="interaction-models.html#cb123-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Industry<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb123-2"><a href="interaction-models.html#cb123-2" tabindex="-1"></a></span>
-<span id="cb123-3"><a href="interaction-models.html#cb123-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb123-4"><a href="interaction-models.html#cb123-4" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb123-5"><a href="interaction-models.html#cb123-5" tabindex="-1"></a></span>
-<span id="cb123-6"><a href="interaction-models.html#cb123-6" tabindex="-1"></a><span class="co"># tidy(interact2) %&gt;% </span></span>
-<span id="cb123-7"><a href="interaction-models.html#cb123-7" tabindex="-1"></a><span class="co">#   select(term, estimate, std.error) %&gt;% </span></span>
-<span id="cb123-8"><a href="interaction-models.html#cb123-8" tabindex="-1"></a><span class="co">#   #filter(! is.na(estimate)) %&gt;% </span></span>
-<span id="cb123-9"><a href="interaction-models.html#cb123-9" tabindex="-1"></a><span class="co">#   kable(digits=3)</span></span>
-<span id="cb123-10"><a href="interaction-models.html#cb123-10" tabindex="-1"></a></span>
-<span id="cb123-11"><a href="interaction-models.html#cb123-11" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
-<span id="cb123-12"><a href="interaction-models.html#cb123-12" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact2), </span></span>
-<span id="cb123-13"><a href="interaction-models.html#cb123-13" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span>
-<span id="cb123-14"><a href="interaction-models.html#cb123-14" tabindex="-1"></a></span>
-<span id="cb123-15"><a href="interaction-models.html#cb123-15" tabindex="-1"></a>parts <span class="ot">=</span> <span class="dv">2</span> <span class="do">## multi-column parts to display alongside</span></span>
-<span id="cb123-16"><a href="interaction-models.html#cb123-16" tabindex="-1"></a></span>
-<span id="cb123-17"><a href="interaction-models.html#cb123-17" tabindex="-1"></a><span class="fu">tidy</span>(interact2) <span class="sc">|&gt;</span></span>
-<span id="cb123-18"><a href="interaction-models.html#cb123-18" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(term, <span class="at">coefficient =</span> estimate) <span class="sc">|&gt;</span></span>
-<span id="cb123-19"><a href="interaction-models.html#cb123-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">part =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>parts, <span class="at">each =</span> <span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>()),</span>
-<span id="cb123-20"><a href="interaction-models.html#cb123-20" tabindex="-1"></a>         <span class="at">row_index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>())</span>
-<span id="cb123-21"><a href="interaction-models.html#cb123-21" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
-<span id="cb123-22"><a href="interaction-models.html#cb123-22" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span> part) <span class="sc">|&gt;</span></span>
-<span id="cb123-23"><a href="interaction-models.html#cb123-23" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="at">f =</span> \(x, y) x <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>part) <span class="sc">|&gt;</span> <span class="fu">left_join</span>(y, <span class="at">by =</span> <span class="st">&#39;row_index&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb123-24"><a href="interaction-models.html#cb123-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(row_index, part)) <span class="sc">|&gt;</span></span>
-<span id="cb123-25"><a href="interaction-models.html#cb123-25" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="interaction-models.html#cb122-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Industry<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb122-2"><a href="interaction-models.html#cb122-2" tabindex="-1"></a></span>
+<span id="cb122-3"><a href="interaction-models.html#cb122-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb122-4"><a href="interaction-models.html#cb122-4" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb122-5"><a href="interaction-models.html#cb122-5" tabindex="-1"></a></span>
+<span id="cb122-6"><a href="interaction-models.html#cb122-6" tabindex="-1"></a><span class="co"># tidy(interact2) %&gt;% </span></span>
+<span id="cb122-7"><a href="interaction-models.html#cb122-7" tabindex="-1"></a><span class="co">#   select(term, estimate, std.error) %&gt;% </span></span>
+<span id="cb122-8"><a href="interaction-models.html#cb122-8" tabindex="-1"></a><span class="co">#   #filter(! is.na(estimate)) %&gt;% </span></span>
+<span id="cb122-9"><a href="interaction-models.html#cb122-9" tabindex="-1"></a><span class="co">#   kable(digits=3)</span></span>
+<span id="cb122-10"><a href="interaction-models.html#cb122-10" tabindex="-1"></a></span>
+<span id="cb122-11"><a href="interaction-models.html#cb122-11" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb122-12"><a href="interaction-models.html#cb122-12" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact2), </span></span>
+<span id="cb122-13"><a href="interaction-models.html#cb122-13" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span>
+<span id="cb122-14"><a href="interaction-models.html#cb122-14" tabindex="-1"></a></span>
+<span id="cb122-15"><a href="interaction-models.html#cb122-15" tabindex="-1"></a>parts <span class="ot">=</span> <span class="dv">2</span> <span class="do">## multi-column parts to display alongside</span></span>
+<span id="cb122-16"><a href="interaction-models.html#cb122-16" tabindex="-1"></a></span>
+<span id="cb122-17"><a href="interaction-models.html#cb122-17" tabindex="-1"></a><span class="fu">tidy</span>(interact2) <span class="sc">|&gt;</span></span>
+<span id="cb122-18"><a href="interaction-models.html#cb122-18" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(term, <span class="at">coefficient =</span> estimate) <span class="sc">|&gt;</span></span>
+<span id="cb122-19"><a href="interaction-models.html#cb122-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">part =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>parts, <span class="at">each =</span> <span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>()),</span>
+<span id="cb122-20"><a href="interaction-models.html#cb122-20" tabindex="-1"></a>         <span class="at">row_index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>())</span>
+<span id="cb122-21"><a href="interaction-models.html#cb122-21" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
+<span id="cb122-22"><a href="interaction-models.html#cb122-22" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span> part) <span class="sc">|&gt;</span></span>
+<span id="cb122-23"><a href="interaction-models.html#cb122-23" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="at">f =</span> \(x, y) x <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>part) <span class="sc">|&gt;</span> <span class="fu">left_join</span>(y, <span class="at">by =</span> <span class="st">&#39;row_index&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb122-24"><a href="interaction-models.html#cb122-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(row_index, part)) <span class="sc">|&gt;</span></span>
+<span id="cb122-25"><a href="interaction-models.html#cb122-25" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1302,10 +1303,10 @@ IndustryTransport:Female1
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="interaction-models.html#cb124-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
-<span id="cb124-2"><a href="interaction-models.html#cb124-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
-<span id="cb124-3"><a href="interaction-models.html#cb124-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-191-1.png" width="576" /></p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="interaction-models.html#cb123-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
+<span id="cb123-2"><a href="interaction-models.html#cb123-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb123-3"><a href="interaction-models.html#cb123-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-190-1.png" width="576" /></p>
 </div>
 <div id="continuous-dummy" class="section level3 hasAnchor" number="11.4.3">
 <h3><span class="header-section-number">11.4.3</span> Continuous * Dummy<a href="interaction-models.html#continuous-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1317,13 +1318,13 @@ IndustryTransport:Female1
 <p>Thus <span class="math display">\[ height * female \]</span></p>
 <p>translates to</p>
 <p><span class="math display">\[ height + female + height*female \]</span></p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="interaction-models.html#cb125-1" tabindex="-1"></a>interact3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb125-2"><a href="interaction-models.html#cb125-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 2.&#39;</span>,</span>
-<span id="cb125-3"><a href="interaction-models.html#cb125-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3), </span>
-<span id="cb125-4"><a href="interaction-models.html#cb125-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="interaction-models.html#cb124-1" tabindex="-1"></a>interact3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb124-2"><a href="interaction-models.html#cb124-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 2.&#39;</span>,</span>
+<span id="cb124-3"><a href="interaction-models.html#cb124-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3), </span>
+<span id="cb124-4"><a href="interaction-models.html#cb124-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-192">Table 11.3: </span>Interaction Model 2.
+<span id="tab:unnamed-chunk-191">Table 11.3: </span>Interaction Model 2.
 </caption>
 <thead>
 <tr>
@@ -1407,9 +1408,9 @@ Num.Obs.
 </table>
 <!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
 <p>The visualization for non-parallel slopes looks like this:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="interaction-models.html#cb126-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
-<span id="cb126-2"><a href="interaction-models.html#cb126-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-193-1.png" width="576" /></p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="interaction-models.html#cb125-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
+<span id="cb125-2"><a href="interaction-models.html#cb125-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-192-1.png" width="576" /></p>
 <div class="challenge">
 <div class="titelchallenge">
 <h2>
@@ -1419,35 +1420,35 @@ Conclusion
 <p>The <strong>fundamental truth</strong> is that the effect of age on income is positive but not identical between males and females. Men and women at the exact same age earn different annual incomes and the gap widens over time. There is <strong>effect heterogeneity</strong>.</p>
 </div>
 <p>There are two more rather uncommon combination in which one of the main effects is dropped. Graphically, the result is two lines with same intercept and different slopes.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="interaction-models.html#cb127-1" tabindex="-1"></a>interact3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Age<span class="sc">:</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb127-2"><a href="interaction-models.html#cb127-2" tabindex="-1"></a></span>
-<span id="cb127-3"><a href="interaction-models.html#cb127-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
-<span id="cb127-4"><a href="interaction-models.html#cb127-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
-<span id="cb127-5"><a href="interaction-models.html#cb127-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-194-1.png" width="576" /></p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="interaction-models.html#cb128-1" tabindex="-1"></a></span>
-<span id="cb128-2"><a href="interaction-models.html#cb128-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
-<span id="cb128-3"><a href="interaction-models.html#cb128-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
-<span id="cb128-4"><a href="interaction-models.html#cb128-4" tabindex="-1"></a><span class="co">#                   &quot;Income&quot; = interact3c), </span></span>
-<span id="cb128-5"><a href="interaction-models.html#cb128-5" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="interaction-models.html#cb126-1" tabindex="-1"></a>interact3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Age<span class="sc">:</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb126-2"><a href="interaction-models.html#cb126-2" tabindex="-1"></a></span>
+<span id="cb126-3"><a href="interaction-models.html#cb126-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb126-4"><a href="interaction-models.html#cb126-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb126-5"><a href="interaction-models.html#cb126-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-193-1.png" width="576" /></p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="interaction-models.html#cb127-1" tabindex="-1"></a></span>
+<span id="cb127-2"><a href="interaction-models.html#cb127-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb127-3"><a href="interaction-models.html#cb127-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
+<span id="cb127-4"><a href="interaction-models.html#cb127-4" tabindex="-1"></a><span class="co">#                   &quot;Income&quot; = interact3c), </span></span>
+<span id="cb127-5"><a href="interaction-models.html#cb127-5" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span></code></pre></div>
 <!-- Now it is no longer a parallel slopes model. A different slope is equivalent to a different effect of height on weight for the two genders.  -->
 </div>
 <div id="continuous-continuous" class="section level3 hasAnchor" number="11.4.4">
 <h3><span class="header-section-number">11.4.4</span> Continuous * Continuous<a href="interaction-models.html#continuous-continuous" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
 <!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="interaction-models.html#cb129-1" tabindex="-1"></a>interact4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
-<span id="cb129-2"><a href="interaction-models.html#cb129-2" tabindex="-1"></a>interact4</span>
-<span id="cb129-3"><a href="interaction-models.html#cb129-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb129-4"><a href="interaction-models.html#cb129-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb129-5"><a href="interaction-models.html#cb129-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
-<span id="cb129-6"><a href="interaction-models.html#cb129-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb129-7"><a href="interaction-models.html#cb129-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb129-8"><a href="interaction-models.html#cb129-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
-<span id="cb129-9"><a href="interaction-models.html#cb129-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="interaction-models.html#cb128-1" tabindex="-1"></a>interact4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb128-2"><a href="interaction-models.html#cb128-2" tabindex="-1"></a>interact4</span>
+<span id="cb128-3"><a href="interaction-models.html#cb128-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb128-4"><a href="interaction-models.html#cb128-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb128-5"><a href="interaction-models.html#cb128-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
+<span id="cb128-6"><a href="interaction-models.html#cb128-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb128-7"><a href="interaction-models.html#cb128-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb128-8"><a href="interaction-models.html#cb128-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
+<span id="cb128-9"><a href="interaction-models.html#cb128-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
 <p>The interaction of two continuous variables is harder to interpret. There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="interaction-models.html#cb130-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-196-1.png" width="576" /></p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="interaction-models.html#cb129-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-195-1.png" width="576" /></p>
 <p>This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.</p>
 <p>You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.</p>
 </div>
@@ -1455,20 +1456,20 @@ Conclusion
 <div id="model-comparison-1" class="section level2 hasAnchor" number="11.5">
 <h2><span class="header-section-number">11.5</span> Model Comparison<a href="interaction-models.html#model-comparison-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>How to decide if the model with interaction is better than the model without interaction?</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="interaction-models.html#cb131-1" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb131-2"><a href="interaction-models.html#cb131-2" tabindex="-1"></a></span>
-<span id="cb131-3"><a href="interaction-models.html#cb131-3" tabindex="-1"></a>multiple3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Female, <span class="at">data=</span>soep)</span>
-<span id="cb131-4"><a href="interaction-models.html#cb131-4" tabindex="-1"></a>multiple4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Satisfaction, <span class="at">data=</span>soep)</span>
-<span id="cb131-5"><a href="interaction-models.html#cb131-5" tabindex="-1"></a></span>
-<span id="cb131-6"><a href="interaction-models.html#cb131-6" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Comparison&#39;</span>,</span>
-<span id="cb131-7"><a href="interaction-models.html#cb131-7" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple3,</span>
-<span id="cb131-8"><a href="interaction-models.html#cb131-8" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3,</span>
-<span id="cb131-9"><a href="interaction-models.html#cb131-9" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple4,</span>
-<span id="cb131-10"><a href="interaction-models.html#cb131-10" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact4), </span>
-<span id="cb131-11"><a href="interaction-models.html#cb131-11" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
-<span id="cb131-12"><a href="interaction-models.html#cb131-12" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;gt&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb131-13"><a href="interaction-models.html#cb131-13" tabindex="-1"></a>  <span class="co"># column labels</span></span>
-<span id="cb131-14"><a href="interaction-models.html#cb131-14" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&#39;Interaction&#39;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="interaction-models.html#cb130-1" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb130-2"><a href="interaction-models.html#cb130-2" tabindex="-1"></a></span>
+<span id="cb130-3"><a href="interaction-models.html#cb130-3" tabindex="-1"></a>multiple3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Female, <span class="at">data=</span>soep)</span>
+<span id="cb130-4"><a href="interaction-models.html#cb130-4" tabindex="-1"></a>multiple4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb130-5"><a href="interaction-models.html#cb130-5" tabindex="-1"></a></span>
+<span id="cb130-6"><a href="interaction-models.html#cb130-6" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Comparison&#39;</span>,</span>
+<span id="cb130-7"><a href="interaction-models.html#cb130-7" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple3,</span>
+<span id="cb130-8"><a href="interaction-models.html#cb130-8" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3,</span>
+<span id="cb130-9"><a href="interaction-models.html#cb130-9" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple4,</span>
+<span id="cb130-10"><a href="interaction-models.html#cb130-10" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact4), </span>
+<span id="cb130-11"><a href="interaction-models.html#cb130-11" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
+<span id="cb130-12"><a href="interaction-models.html#cb130-12" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;gt&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb130-13"><a href="interaction-models.html#cb130-13" tabindex="-1"></a>  <span class="co"># column labels</span></span>
+<span id="cb130-14"><a href="interaction-models.html#cb130-14" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&#39;Interaction&#39;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>)) </span></code></pre></div>
 <div id="mbjdrtjbqd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mbjdrtjbqd table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1910,7 +1911,7 @@ Conclusion
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <caption><span id="tab:unnamed-chunk-197">Table 11.4: </span>Comparison</caption>
+  <caption><span id="tab:unnamed-chunk-196">Table 11.4: </span>Comparison</caption>
   <thead>
     
     <tr class="gt_col_headings gt_spanner_row">
@@ -1992,6 +1993,11 @@ Conclusion
 <td headers="Income" class="gt_row gt_center">1211</td>
 <td headers="Income" class="gt_row gt_center">1211</td>
 <td headers="Income" class="gt_row gt_center">1211</td></tr>
+    <tr><td headers="" class="gt_row gt_left">F</td>
+<td headers="Income" class="gt_row gt_center">62.338</td>
+<td headers="Income" class="gt_row gt_center">43.812</td>
+<td headers="Income" class="gt_row gt_center">37.987</td>
+<td headers="Income" class="gt_row gt_center">55.606</td></tr>
   </tbody>
   
   

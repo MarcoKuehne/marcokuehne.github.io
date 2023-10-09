@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Intro to Tidyverse | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to become fluent in data." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Intro to Tidyverse | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/Cover.png" />
+  <meta property="og:description" content="A guide to become fluent in data." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Intro to Tidyverse | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to become fluent in data." />
+  <meta name="twitter:image" content="/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2023-08-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="intro-to-r.html"/>
+<link rel="next" href="data-is-everywhere.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.28/datatables.js"></script>
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/box_def.css" type="text/css" />
+<link rel="stylesheet" href="css/box_amazing.css" type="text/css" />
+<link rel="stylesheet" href="css/box_challenge.css" type="text/css" />
+<link rel="stylesheet" href="css/box_dedicated.css" type="text/css" />
+<link rel="stylesheet" href="css/box_reading.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://marcokuehne.github.io/">Becoming Fluent in Data</a></li> <li><p class="aligncenter"> <img src="images/Logo.png" width="60%" height="60%"> </p></li>
+<li class="divider"></li>
+<li class="part"><span><b>I Intro</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html"><i class="fa fa-check"></i>About the book</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#aims-of-this-book"><i class="fa fa-check"></i>Aims of this book</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#for-students"><i class="fa fa-check"></i>For students</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#for-instructors"><i class="fa fa-check"></i>For instructors</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#structure"><i class="fa fa-check"></i>Structure</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#components"><i class="fa fa-check"></i>Components</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#why-r"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#why-tidyverse"><i class="fa fa-check"></i>Why Tidyverse?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html#dust-and-dark"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html#teach-learn-repeat"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-a-calculator"><i class="fa fa-check"></i>R is a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-more-than-a-calculator"><i class="fa fa-check"></i>R is more than a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#define-objects"><i class="fa fa-check"></i>Define objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#numeric-variables"><i class="fa fa-check"></i>Numeric Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#logical-variables"><i class="fa fa-check"></i>Logical Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#string-variables"><i class="fa fa-check"></i>String Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#factor-variables"><i class="fa fa-check"></i>Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#combine-objects"><i class="fa fa-check"></i>Combine objects</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#data-frame"><i class="fa fa-check"></i>Data frame</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#plots"><i class="fa fa-check"></i>Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#data-with-readr"><i class="fa fa-check"></i>Data with readr</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#verbs-of-dplyr"><i class="fa fa-check"></i>Verbs of dplyr</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#glimpse"><i class="fa fa-check"></i>Glimpse</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#select"><i class="fa fa-check"></i>Select</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#arrange"><i class="fa fa-check"></i>Arrange</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#rename"><i class="fa fa-check"></i>Rename</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#the-pipe-operator"><i class="fa fa-check"></i>The pipe operator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#filter"><i class="fa fa-check"></i>Filter</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#mutate"><i class="fa fa-check"></i>Mutate</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#summarize"><i class="fa fa-check"></i>Summarize</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#graphs-with-ggplot2"><i class="fa fa-check"></i>Graphs with ggplot2</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#why-we-measure"><i class="fa fa-check"></i><b>1.1</b> Why we measure</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#women-are-having-far-fewer-children."><i class="fa fa-check"></i><b>1.1.1</b> Women are having far fewer children.</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#global-surface-temperature-is-rising."><i class="fa fa-check"></i><b>1.1.2</b> Global surface temperature is rising.</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#means-of-measuring"><i class="fa fa-check"></i><b>1.2</b> Means of measuring</a></li>
+<li class="chapter" data-level="1.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#types-of-data"><i class="fa fa-check"></i><b>1.3</b> Types of data</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#origin-of-data"><i class="fa fa-check"></i><b>1.3.1</b> Origin of data</a></li>
+<li class="chapter" data-level="1.3.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#analysis-of-data"><i class="fa fa-check"></i><b>1.3.2</b> Analysis of data</a></li>
+<li class="chapter" data-level="1.3.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#structure-of-data"><i class="fa fa-check"></i><b>1.3.3</b> Structure of data</a></li>
+<li class="chapter" data-level="1.3.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-level-of-access"><i class="fa fa-check"></i><b>1.3.4</b> The level of access</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#can-we-measure-everything"><i class="fa fa-check"></i><b>1.4</b> Can we measure everything?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-reality-behind-the-data"><i class="fa fa-check"></i><b>1.5</b> The reality behind the data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>2</b> Stories and Visuals</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#facts"><i class="fa fa-check"></i><b>2.1</b> Facts</a></li>
+<li class="chapter" data-level="2.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#visualization"><i class="fa fa-check"></i><b>2.2</b> Visualization</a></li>
+<li class="chapter" data-level="2.3" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#telling-a-story"><i class="fa fa-check"></i><b>2.3</b> Telling a story</a></li>
+<li class="chapter" data-level="2.4" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#mans-best-friend"><i class="fa fa-check"></i><b>2.4</b> Man's best friend</a></li>
+<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a></li>
+<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#grammar-of-graphics"><i class="fa fa-check"></i><b>2.6</b> Grammar of Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>3</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="panel-data.html"><a href="panel-data.html#types-of-data-1"><i class="fa fa-check"></i><b>3.1</b> Types of Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="panel-data.html"><a href="panel-data.html#cross-section"><i class="fa fa-check"></i><b>3.1.1</b> Cross-section</a></li>
+<li class="chapter" data-level="3.1.2" data-path="panel-data.html"><a href="panel-data.html#repeated-cross-section"><i class="fa fa-check"></i><b>3.1.2</b> Repeated cross-section</a></li>
+<li class="chapter" data-level="3.1.3" data-path="panel-data.html"><a href="panel-data.html#time-series"><i class="fa fa-check"></i><b>3.1.3</b> Time series</a></li>
+<li class="chapter" data-level="3.1.4" data-path="panel-data.html"><a href="panel-data.html#panel-data-1"><i class="fa fa-check"></i><b>3.1.4</b> Panel data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="panel-data.html"><a href="panel-data.html#unemployment"><i class="fa fa-check"></i><b>3.2</b> Unemployment</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="panel-data.html"><a href="panel-data.html#on-decline-in-germany"><i class="fa fa-check"></i><b>3.2.1</b> On decline in Germany</a></li>
+<li class="chapter" data-level="3.2.2" data-path="panel-data.html"><a href="panel-data.html#measurement"><i class="fa fa-check"></i><b>3.2.2</b> Measurement</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="panel-data.html"><a href="panel-data.html#application"><i class="fa fa-check"></i><b>3.3</b> Application</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="panel-data.html"><a href="panel-data.html#data-inspection"><i class="fa fa-check"></i><b>3.3.1</b> Data Inspection</a></li>
+<li class="chapter" data-level="3.3.2" data-path="panel-data.html"><a href="panel-data.html#data-preparation"><i class="fa fa-check"></i><b>3.3.2</b> Data Preparation</a></li>
+<li class="chapter" data-level="3.3.3" data-path="panel-data.html"><a href="panel-data.html#data-visualization"><i class="fa fa-check"></i><b>3.3.3</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="panel-data.html"><a href="panel-data.html#panel-studies"><i class="fa fa-check"></i><b>3.4</b> Panel Studies</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>4</b> Web Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="web-data.html"><a href="web-data.html#most-expensive-paintings"><i class="fa fa-check"></i><b>4.1</b> Most expensive paintings</a></li>
+<li class="chapter" data-level="4.2" data-path="web-data.html"><a href="web-data.html#student-numbers-at-viadrina"><i class="fa fa-check"></i><b>4.2</b> Student numbers at Viadrina</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="web-data.html"><a href="web-data.html#pdf-scraping"><i class="fa fa-check"></i><b>4.2.1</b> PDF scraping</a></li>
+<li class="chapter" data-level="4.2.2" data-path="web-data.html"><a href="web-data.html#share-of-female-students"><i class="fa fa-check"></i><b>4.2.2</b> Share of female students</a></li>
+<li class="chapter" data-level="4.2.3" data-path="web-data.html"><a href="web-data.html#share-of-foreign-students"><i class="fa fa-check"></i><b>4.2.3</b> Share of foreign students</a></li>
+<li class="chapter" data-level="4.2.4" data-path="web-data.html"><a href="web-data.html#web-scraping"><i class="fa fa-check"></i><b>4.2.4</b> Web scraping</a></li>
+<li class="chapter" data-level="4.2.5" data-path="web-data.html"><a href="web-data.html#most-recent-student-numbers"><i class="fa fa-check"></i><b>4.2.5</b> Most recent student numbers</a></li>
+<li class="chapter" data-level="4.2.6" data-path="web-data.html"><a href="web-data.html#the-long-run-trend"><i class="fa fa-check"></i><b>4.2.6</b> The long run trend</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>5</b> Text Data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="text-data.html"><a href="text-data.html#wikipedia"><i class="fa fa-check"></i><b>5.1</b> Wikipedia</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="text-data.html"><a href="text-data.html#cleaning"><i class="fa fa-check"></i><b>5.1.1</b> Cleaning</a></li>
+<li class="chapter" data-level="5.1.2" data-path="text-data.html"><a href="text-data.html#tidytext-format"><i class="fa fa-check"></i><b>5.1.2</b> Tidytext Format</a></li>
+<li class="chapter" data-level="5.1.3" data-path="text-data.html"><a href="text-data.html#stopwords"><i class="fa fa-check"></i><b>5.1.3</b> Stopwords</a></li>
+<li class="chapter" data-level="5.1.4" data-path="text-data.html"><a href="text-data.html#term-frequency"><i class="fa fa-check"></i><b>5.1.4</b> Term Frequency</a></li>
+<li class="chapter" data-level="5.1.5" data-path="text-data.html"><a href="text-data.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>5.1.5</b> Little bit of Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="text-data.html"><a href="text-data.html#field-trip-to-berlin"><i class="fa fa-check"></i><b>5.2</b> Field Trip to Berlin</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="text-data.html"><a href="text-data.html#text-preparation"><i class="fa fa-check"></i><b>5.2.1</b> Text Preparation</a></li>
+<li class="chapter" data-level="5.2.2" data-path="text-data.html"><a href="text-data.html#sentiment-analysis"><i class="fa fa-check"></i><b>5.2.2</b> Sentiment Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>6</b> Geo Data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="geo-data.html"><a href="geo-data.html#where-are-you"><i class="fa fa-check"></i><b>6.1</b> Where Are You?</a></li>
+<li class="chapter" data-level="6.2" data-path="geo-data.html"><a href="geo-data.html#geo-coordinates"><i class="fa fa-check"></i><b>6.2</b> Geo-coordinates</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="geo-data.html"><a href="geo-data.html#its-convention"><i class="fa fa-check"></i><b>6.2.1</b> It's convention</a></li>
+<li class="chapter" data-level="6.2.2" data-path="geo-data.html"><a href="geo-data.html#different-precision"><i class="fa fa-check"></i><b>6.2.2</b> Different precision</a></li>
+<li class="chapter" data-level="6.2.3" data-path="geo-data.html"><a href="geo-data.html#different-units"><i class="fa fa-check"></i><b>6.2.3</b> Different units</a></li>
+<li class="chapter" data-level="6.2.4" data-path="geo-data.html"><a href="geo-data.html#different-perspectives"><i class="fa fa-check"></i><b>6.2.4</b> Different perspectives</a></li>
+<li class="chapter" data-level="6.2.5" data-path="geo-data.html"><a href="geo-data.html#different-distance-between-two-coordinates"><i class="fa fa-check"></i><b>6.2.5</b> Different distance between two coordinates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="geo-data.html"><a href="geo-data.html#from-points-and-polygons"><i class="fa fa-check"></i><b>6.3</b> From Points And Polygons</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>6.3.1</b> Shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="geo-data.html"><a href="geo-data.html#spatial-scale"><i class="fa fa-check"></i><b>6.4</b> Spatial scale</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="switzerland.html"><a href="switzerland.html"><i class="fa fa-check"></i><b>7</b> Switzerland</a></li>
+<li class="chapter" data-level="8" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>8</b> Time data</a></li>
+<li class="part"><span><b>III Models</b></span></li>
+<li class="chapter" data-level="9" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>9</b> Relationships</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="relationships.html"><a href="relationships.html#storks-deliver-babies"><i class="fa fa-check"></i><b>9.1</b> Storks Deliver Babies</a></li>
+<li class="chapter" data-level="9.2" data-path="relationships.html"><a href="relationships.html#scatterplot"><i class="fa fa-check"></i><b>9.2</b> Scatterplot</a></li>
+<li class="chapter" data-level="9.3" data-path="relationships.html"><a href="relationships.html#map"><i class="fa fa-check"></i><b>9.3</b> Map</a></li>
+<li class="chapter" data-level="9.4" data-path="relationships.html"><a href="relationships.html#variance"><i class="fa fa-check"></i><b>9.4</b> Variance</a></li>
+<li class="chapter" data-level="9.5" data-path="relationships.html"><a href="relationships.html#standard-deviation"><i class="fa fa-check"></i><b>9.5</b> Standard Deviation</a></li>
+<li class="chapter" data-level="9.6" data-path="relationships.html"><a href="relationships.html#covariance"><i class="fa fa-check"></i><b>9.6</b> Covariance</a></li>
+<li class="chapter" data-level="9.7" data-path="relationships.html"><a href="relationships.html#correlation"><i class="fa fa-check"></i><b>9.7</b> Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>10</b> Regression</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="regression.html"><a href="regression.html#old-but-gold"><i class="fa fa-check"></i><b>10.1</b> Old but Gold</a></li>
+<li class="chapter" data-level="10.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>10.2</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>10.2.1</b> Data in a table</a></li>
+<li class="chapter" data-level="10.2.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>10.2.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="10.2.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>10.2.3</b> The trend</a></li>
+<li class="chapter" data-level="10.2.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>10.2.4</b> The blackbox</a></li>
+<li class="chapter" data-level="10.2.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>10.2.5</b> Nobody's perfect</a></li>
+<li class="chapter" data-level="10.2.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>10.2.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>10.3</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>10.3.1</b> Algebra</a></li>
+<li class="chapter" data-level="10.3.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>10.3.2</b> Analysis</a></li>
+<li class="chapter" data-level="10.3.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>10.3.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>10.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="10.5" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>10.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>11</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="linear-regression.html"><a href="linear-regression.html#what-you-deserve-is-what-you-get"><i class="fa fa-check"></i><b>11.1</b> What You Deserve Is What You Get</a></li>
+<li class="chapter" data-level="11.2" data-path="linear-regression.html"><a href="linear-regression.html#data-sample"><i class="fa fa-check"></i><b>11.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="11.3" data-path="linear-regression.html"><a href="linear-regression.html#data-visualization-1"><i class="fa fa-check"></i><b>11.3</b> Data Visualization</a></li>
+<li class="chapter" data-level="11.4" data-path="linear-regression.html"><a href="linear-regression.html#simplest-regression"><i class="fa fa-check"></i><b>11.4</b> Simplest Regression</a></li>
+<li class="chapter" data-level="11.5" data-path="linear-regression.html"><a href="linear-regression.html#simple-regression"><i class="fa fa-check"></i><b>11.5</b> Simple Regression</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="linear-regression.html"><a href="linear-regression.html#x-is-continuous"><i class="fa fa-check"></i><b>11.5.1</b> X is continuous</a></li>
+<li class="chapter" data-level="11.5.2" data-path="linear-regression.html"><a href="linear-regression.html#x-is-a-dummy"><i class="fa fa-check"></i><b>11.5.2</b> X is a dummy</a></li>
+<li class="chapter" data-level="11.5.3" data-path="linear-regression.html"><a href="linear-regression.html#x-is-categorical"><i class="fa fa-check"></i><b>11.5.3</b> X is categorical</a></li>
+<li class="chapter" data-level="11.5.4" data-path="linear-regression.html"><a href="linear-regression.html#x-is-categorical-is-it"><i class="fa fa-check"></i><b>11.5.4</b> X is categorical, is it?</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="linear-regression.html"><a href="linear-regression.html#parallel-slopes"><i class="fa fa-check"></i><b>11.6</b> Parallel Slopes</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="linear-regression.html"><a href="linear-regression.html#x-is-continuous-dummy"><i class="fa fa-check"></i><b>11.6.1</b> X is continuous + dummy</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="linear-regression.html"><a href="linear-regression.html#model-comparison"><i class="fa fa-check"></i><b>11.7</b> Model Comparison</a></li>
+<li class="chapter" data-level="11.8" data-path="linear-regression.html"><a href="linear-regression.html#transform-to-perform"><i class="fa fa-check"></i><b>11.8</b> Transform to Perform</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="interaction-models.html"><a href="interaction-models.html"><i class="fa fa-check"></i><b>12</b> Interaction Models</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="interaction-models.html"><a href="interaction-models.html#motivation"><i class="fa fa-check"></i><b>12.1</b> Motivation</a></li>
+<li class="chapter" data-level="12.2" data-path="interaction-models.html"><a href="interaction-models.html#data-sample-1"><i class="fa fa-check"></i><b>12.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="12.3" data-path="interaction-models.html"><a href="interaction-models.html#throwback-parallel-slopes"><i class="fa fa-check"></i><b>12.3</b> Throwback Parallel Slopes</a></li>
+<li class="chapter" data-level="12.4" data-path="interaction-models.html"><a href="interaction-models.html#regression-with-moderators"><i class="fa fa-check"></i><b>12.4</b> Regression with Moderators</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="interaction-models.html"><a href="interaction-models.html#dummy-dummy"><i class="fa fa-check"></i><b>12.4.1</b> Dummy * Dummy</a></li>
+<li class="chapter" data-level="12.4.2" data-path="interaction-models.html"><a href="interaction-models.html#categorical-dummy"><i class="fa fa-check"></i><b>12.4.2</b> Categorical * Dummy</a></li>
+<li class="chapter" data-level="12.4.3" data-path="interaction-models.html"><a href="interaction-models.html#continuous-dummy"><i class="fa fa-check"></i><b>12.4.3</b> Continuous * Dummy</a></li>
+<li class="chapter" data-level="12.4.4" data-path="interaction-models.html"><a href="interaction-models.html#continuous-continuous"><i class="fa fa-check"></i><b>12.4.4</b> Continuous * Continuous</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="interaction-models.html"><a href="interaction-models.html#model-comparison-1"><i class="fa fa-check"></i><b>12.5</b> Model Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>13</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="logistic-regression.html"><a href="logistic-regression.html#think-inside-the-box"><i class="fa fa-check"></i><b>13.1</b> Think inside the box</a></li>
+<li class="chapter" data-level="13.2" data-path="logistic-regression.html"><a href="logistic-regression.html#from-probability-to-odds"><i class="fa fa-check"></i><b>13.2</b> From probability to odds</a></li>
+<li class="chapter" data-level="13.3" data-path="logistic-regression.html"><a href="logistic-regression.html#from-odds-to-log-of-odds"><i class="fa fa-check"></i><b>13.3</b> From odds to log of odds</a></li>
+<li class="chapter" data-level="13.4" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-survival"><i class="fa fa-check"></i><b>13.4</b> Titanic Survival</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#the-data"><i class="fa fa-check"></i><b>13.4.1</b> The Data</a></li>
+<li class="chapter" data-level="13.4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#no-predictor-variables"><i class="fa fa-check"></i><b>13.4.2</b> No Predictor Variables</a></li>
+<li class="chapter" data-level="13.4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#single-dichotomous-predictor"><i class="fa fa-check"></i><b>13.4.3</b> Single Dichotomous Predictor</a></li>
+<li class="chapter" data-level="13.4.4" data-path="logistic-regression.html"><a href="logistic-regression.html#effect-plot"><i class="fa fa-check"></i><b>13.4.4</b> Effect plot</a></li>
+<li class="chapter" data-level="13.4.5" data-path="logistic-regression.html"><a href="logistic-regression.html#chi-square"><i class="fa fa-check"></i><b>13.4.5</b> Chi Square</a></li>
+<li class="chapter" data-level="13.4.6" data-path="logistic-regression.html"><a href="logistic-regression.html#some-are-more-equal-than-others"><i class="fa fa-check"></i><b>13.4.6</b> Some Are More Equal Than Others</a></li>
+<li class="chapter" data-level="13.4.7" data-path="logistic-regression.html"><a href="logistic-regression.html#the-cheaper-the-deader"><i class="fa fa-check"></i><b>13.4.7</b> The Cheaper The Deader?</a></li>
+<li class="chapter" data-level="13.4.8" data-path="logistic-regression.html"><a href="logistic-regression.html#the-bigger-picture"><i class="fa fa-check"></i><b>13.4.8</b> The Bigger Picture</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>14</b> Marginal Effects</a>
+<ul>
+<li class="chapter" data-level="14.0.1" data-path="marginal-effects.html"><a href="marginal-effects.html#marginal-effects-at-representatives"><i class="fa fa-check"></i><b>14.0.1</b> Marginal effects at representatives</a></li>
+<li class="chapter" data-level="14.0.2" data-path="marginal-effects.html"><a href="marginal-effects.html#marginal-effects-at-the-mean"><i class="fa fa-check"></i><b>14.0.2</b> Marginal effects at the mean</a></li>
+<li class="chapter" data-level="14.0.3" data-path="marginal-effects.html"><a href="marginal-effects.html#average-marginal-effects"><i class="fa fa-check"></i><b>14.0.3</b> Average marginal effects</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html"><i class="fa fa-check"></i><b>15</b> Software is everywhere</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#software"><i class="fa fa-check"></i><b>15.1</b> Software</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#command-line-interface-cli"><i class="fa fa-check"></i><b>15.1.1</b> Command line interface (CLI)</a></li>
+<li class="chapter" data-level="15.1.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#graphical-user-interface-gui"><i class="fa fa-check"></i><b>15.1.2</b> Graphical user interface (GUI)</a></li>
+<li class="chapter" data-level="15.1.3" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#integrated-development-environment-ide"><i class="fa fa-check"></i><b>15.1.3</b> Integrated development environment (IDE)</a></li>
+<li class="chapter" data-level="15.1.4" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#online-compiler"><i class="fa fa-check"></i><b>15.1.4</b> Online Compiler</a></li>
+<li class="chapter" data-level="15.1.5" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#cloud-solutions"><i class="fa fa-check"></i><b>15.1.5</b> Cloud solutions</a></li>
+<li class="chapter" data-level="15.1.6" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#dashboards"><i class="fa fa-check"></i><b>15.1.6</b> Dashboards</a></li>
+<li class="chapter" data-level="15.1.7" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#shiny-apps"><i class="fa fa-check"></i><b>15.1.7</b> Shiny Apps</a></li>
+</ul></li>
+<li class="chapter" data-level="15.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#file-formats"><i class="fa fa-check"></i><b>15.2</b> File formats</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#text-files"><i class="fa fa-check"></i><b>15.2.1</b> Text files</a></li>
+<li class="chapter" data-level="15.2.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#text-with-structure"><i class="fa fa-check"></i><b>15.2.2</b> Text with structure</a></li>
+<li class="chapter" data-level="15.2.3" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#file-formats-1"><i class="fa fa-check"></i><b>15.2.3</b> File formats</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="15.3" data-path="references.html"><a href="references.html#resources"><i class="fa fa-check"></i><b>15.3</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="intro-to-tidyverse" class="section level1 unnumbered hasAnchor">
+<h1>Intro to Tidyverse<a href="intro-to-tidyverse.html#intro-to-tidyverse" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The <code>tidyverse</code> is a collection of R packages for data science that share a common philosophy and grammar.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Once the package <code>tidyverse</code> is installed on your system via the command <code>install.packages(tidyverse)</code>, it is loaded via <code>library(tidyverse)</code> in a session. Then you have access to all components like <code>readr</code> (for reading data), <code>dplyr</code> (for manipulating data), <code>ggplot2</code> (for data visualization) and many more.</p>
+<div id="data-with-readr" class="section level2 unnumbered hasAnchor">
+<h2>Data with readr<a href="intro-to-tidyverse.html#data-with-readr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>readr</code> package reads data into what is called a <em>tibble</em>.</p>
+<p>A tibble is similar to a dataframe. When you print a tibble, it only shows the first ten rows and all the columns that fit on one screen. It also prints an abbreviated description of the column type, and uses font styles and color for highlighting. So to say, the default behavior is excellent.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="intro-to-tidyverse.html#cb11-1" tabindex="-1"></a><span class="co"># load the entire tidyverse</span></span>
+<span id="cb11-2"><a href="intro-to-tidyverse.html#cb11-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-3"><a href="intro-to-tidyverse.html#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="intro-to-tidyverse.html#cb11-4" tabindex="-1"></a><span class="co"># read_csv is a tidyverse (readr) function</span></span>
+<span id="cb11-5"><a href="intro-to-tidyverse.html#cb11-5" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/Course/GF_2022_57.csv&quot;</span>)</span>
+<span id="cb11-6"><a href="intro-to-tidyverse.html#cb11-6" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="intro-to-tidyverse.html#cb11-7" tabindex="-1"></a><span class="co"># print a tibble</span></span>
+<span id="cb11-8"><a href="intro-to-tidyverse.html#cb11-8" tabindex="-1"></a>coursedata</span>
+<span id="cb11-9"><a href="intro-to-tidyverse.html#cb11-9" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 8</span></span>
+<span id="cb11-10"><a href="intro-to-tidyverse.html#cb11-10" tabindex="-1"></a><span class="co">#&gt;    Academic.level Gender   Age Total.Semesters Background.in.Statistics</span></span>
+<span id="cb11-11"><a href="intro-to-tidyverse.html#cb11-11" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb11-12"><a href="intro-to-tidyverse.html#cb11-12" tabindex="-1"></a><span class="co">#&gt;  1 Bachelor       Female    23               8                        2</span></span>
+<span id="cb11-13"><a href="intro-to-tidyverse.html#cb11-13" tabindex="-1"></a><span class="co">#&gt;  2 Bachelor       Female    22              10                        4</span></span>
+<span id="cb11-14"><a href="intro-to-tidyverse.html#cb11-14" tabindex="-1"></a><span class="co">#&gt;  3 Master         Male      23               9                        4</span></span>
+<span id="cb11-15"><a href="intro-to-tidyverse.html#cb11-15" tabindex="-1"></a><span class="co">#&gt;  4 Master         Male      24               2                        3</span></span>
+<span id="cb11-16"><a href="intro-to-tidyverse.html#cb11-16" tabindex="-1"></a><span class="co">#&gt;  5 Master         Male      27              10                        2</span></span>
+<span id="cb11-17"><a href="intro-to-tidyverse.html#cb11-17" tabindex="-1"></a><span class="co">#&gt;  6 Master         Male      23               7                        3</span></span>
+<span id="cb11-18"><a href="intro-to-tidyverse.html#cb11-18" tabindex="-1"></a><span class="co">#&gt;  7 Bachelor       Female    20               5                        2</span></span>
+<span id="cb11-19"><a href="intro-to-tidyverse.html#cb11-19" tabindex="-1"></a><span class="co">#&gt;  8 Bachelor       Female    22               8                        2</span></span>
+<span id="cb11-20"><a href="intro-to-tidyverse.html#cb11-20" tabindex="-1"></a><span class="co">#&gt;  9 Master         Male      27              13                        4</span></span>
+<span id="cb11-21"><a href="intro-to-tidyverse.html#cb11-21" tabindex="-1"></a><span class="co">#&gt; 10 Master         Female    22              10                        4</span></span>
+<span id="cb11-22"><a href="intro-to-tidyverse.html#cb11-22" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span>
+<span id="cb11-23"><a href="intro-to-tidyverse.html#cb11-23" tabindex="-1"></a><span class="co">#&gt; # ℹ 3 more variables: Background.in.R &lt;dbl&gt;,</span></span>
+<span id="cb11-24"><a href="intro-to-tidyverse.html#cb11-24" tabindex="-1"></a><span class="co">#&gt; #   Background.in.Academic.Writing &lt;dbl&gt;, Expectations &lt;chr&gt;</span></span></code></pre></div>
+<p>When you use the base R <code>read.csv()</code> instead, it reads data into a <em>dataframe</em>. When you print the dataframe, it displays all data at once (output not shown in the book). In order to show first entries, another command like <code>head()</code> is necessary.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="intro-to-tidyverse.html#cb12-1" tabindex="-1"></a><span class="co"># use base R utilities </span></span>
+<span id="cb12-2"><a href="intro-to-tidyverse.html#cb12-2" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/marcokuehne.github.io/main/data/Course/GF_2022_57.csv&quot;</span>)</span>
+<span id="cb12-3"><a href="intro-to-tidyverse.html#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="intro-to-tidyverse.html#cb12-4" tabindex="-1"></a><span class="co"># print a dataframe (all data)</span></span>
+<span id="cb12-5"><a href="intro-to-tidyverse.html#cb12-5" tabindex="-1"></a>coursedata</span>
+<span id="cb12-6"><a href="intro-to-tidyverse.html#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="intro-to-tidyverse.html#cb12-7" tabindex="-1"></a><span class="co"># print first 6 observations of the data</span></span>
+<span id="cb12-8"><a href="intro-to-tidyverse.html#cb12-8" tabindex="-1"></a><span class="fu">head</span>(coursedata)</span></code></pre></div>
+<div class="reading">
+<div class="titelreading">
+<h2>
+Reading
+</h2>
+</div>
+<p>There are three key differences between tibbles and data frames: printing, subsetting, and recycling rules. Read more about those difference in the <a href="https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html">vignette of tibble</a>.</p>
+</div>
+</div>
+<div id="verbs-of-dplyr" class="section level2 unnumbered hasAnchor">
+<h2>Verbs of dplyr<a href="intro-to-tidyverse.html#verbs-of-dplyr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The first verbs you learn for data inspection are <code>glimpse()</code>, <code>select()</code>, <code>arrange()</code> and <code>filter()</code>. Those are classic operators that you also find in Microsoft Excel (via clicking the correct menu options).</p>
+<div id="glimpse" class="section level3 unnumbered hasAnchor">
+<h3>Glimpse<a href="intro-to-tidyverse.html#glimpse" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>glimpse()</code> tells the number of rows and columns, the first variable names, the class of the variables, i.e. <code>chr</code> for character (like text) or <code>int</code> for integer (like whole numbers). Another kind of variables are <code>dbl</code>, double, short for double-precision floating-point format.</p>
+<p>This data set contains 57 rows (observations) and 9 columns (variables). <code>glimpse()</code> also shows the first observations for each variable.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro-to-tidyverse.html#cb13-1" tabindex="-1"></a><span class="fu">glimpse</span>(coursedata)</span>
+<span id="cb13-2"><a href="intro-to-tidyverse.html#cb13-2" tabindex="-1"></a><span class="co">#&gt; Rows: 57</span></span>
+<span id="cb13-3"><a href="intro-to-tidyverse.html#cb13-3" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
+<span id="cb13-4"><a href="intro-to-tidyverse.html#cb13-4" tabindex="-1"></a><span class="co">#&gt; $ Academic.level                 &lt;chr&gt; &quot;Bachelor&quot;, &quot;Bachelor&quot;, &quot;Master&quot;, &quot;Mast…</span></span>
+<span id="cb13-5"><a href="intro-to-tidyverse.html#cb13-5" tabindex="-1"></a><span class="co">#&gt; $ Gender                         &lt;chr&gt; &quot;Female&quot;, &quot;Female&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Ma…</span></span>
+<span id="cb13-6"><a href="intro-to-tidyverse.html#cb13-6" tabindex="-1"></a><span class="co">#&gt; $ Age                            &lt;dbl&gt; 23, 22, 23, 24, 27, 23, 20, 22, 27, 22,…</span></span>
+<span id="cb13-7"><a href="intro-to-tidyverse.html#cb13-7" tabindex="-1"></a><span class="co">#&gt; $ Total.Semesters                &lt;dbl&gt; 8, 10, 9, 2, 10, 7, 5, 8, 13, 10, 8, 8,…</span></span>
+<span id="cb13-8"><a href="intro-to-tidyverse.html#cb13-8" tabindex="-1"></a><span class="co">#&gt; $ Background.in.Statistics       &lt;dbl&gt; 2, 4, 4, 3, 2, 3, 2, 2, 4, 4, 2, 2, 2, …</span></span>
+<span id="cb13-9"><a href="intro-to-tidyverse.html#cb13-9" tabindex="-1"></a><span class="co">#&gt; $ Background.in.R                &lt;dbl&gt; 2, 3, 2, 1, 1, 1, 3, 1, 4, 4, 1, 2, 2, …</span></span>
+<span id="cb13-10"><a href="intro-to-tidyverse.html#cb13-10" tabindex="-1"></a><span class="co">#&gt; $ Background.in.Academic.Writing &lt;dbl&gt; 2, 2, 4, 3, 4, 2, 3, 2, 4, 3, 1, 2, 3, …</span></span>
+<span id="cb13-11"><a href="intro-to-tidyverse.html#cb13-11" tabindex="-1"></a><span class="co">#&gt; $ Expectations                   &lt;chr&gt; &quot;I want to be efficient in my knowledge…</span></span></code></pre></div>
+</div>
+<div id="select" class="section level3 unnumbered hasAnchor">
+<h3>Select<a href="intro-to-tidyverse.html#select" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Columns are selected by name or column index. Thus, the outcome of <code>select(coursedata, Gender, Age)</code> and <code>select(coursedata, 2, 3)</code> is identical.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="intro-to-tidyverse.html#cb14-1" tabindex="-1"></a><span class="fu">select</span>(coursedata, Gender, Age) </span>
+<span id="cb14-2"><a href="intro-to-tidyverse.html#cb14-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 2</span></span>
+<span id="cb14-3"><a href="intro-to-tidyverse.html#cb14-3" tabindex="-1"></a><span class="co">#&gt;    Gender   Age</span></span>
+<span id="cb14-4"><a href="intro-to-tidyverse.html#cb14-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;</span></span>
+<span id="cb14-5"><a href="intro-to-tidyverse.html#cb14-5" tabindex="-1"></a><span class="co">#&gt;  1 Female    23</span></span>
+<span id="cb14-6"><a href="intro-to-tidyverse.html#cb14-6" tabindex="-1"></a><span class="co">#&gt;  2 Female    22</span></span>
+<span id="cb14-7"><a href="intro-to-tidyverse.html#cb14-7" tabindex="-1"></a><span class="co">#&gt;  3 Male      23</span></span>
+<span id="cb14-8"><a href="intro-to-tidyverse.html#cb14-8" tabindex="-1"></a><span class="co">#&gt;  4 Male      24</span></span>
+<span id="cb14-9"><a href="intro-to-tidyverse.html#cb14-9" tabindex="-1"></a><span class="co">#&gt;  5 Male      27</span></span>
+<span id="cb14-10"><a href="intro-to-tidyverse.html#cb14-10" tabindex="-1"></a><span class="co">#&gt;  6 Male      23</span></span>
+<span id="cb14-11"><a href="intro-to-tidyverse.html#cb14-11" tabindex="-1"></a><span class="co">#&gt;  7 Female    20</span></span>
+<span id="cb14-12"><a href="intro-to-tidyverse.html#cb14-12" tabindex="-1"></a><span class="co">#&gt;  8 Female    22</span></span>
+<span id="cb14-13"><a href="intro-to-tidyverse.html#cb14-13" tabindex="-1"></a><span class="co">#&gt;  9 Male      27</span></span>
+<span id="cb14-14"><a href="intro-to-tidyverse.html#cb14-14" tabindex="-1"></a><span class="co">#&gt; 10 Female    22</span></span>
+<span id="cb14-15"><a href="intro-to-tidyverse.html#cb14-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span></code></pre></div>
+<p>We can use a minus <code>-</code> to get rid of a column and leave the rest of the columns:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro-to-tidyverse.html#cb15-1" tabindex="-1"></a><span class="fu">select</span>(coursedata, <span class="sc">-</span>Total.Semesters, <span class="sc">-</span>Background.in.Statistics,</span>
+<span id="cb15-2"><a href="intro-to-tidyverse.html#cb15-2" tabindex="-1"></a>       <span class="sc">-</span>Background.in.R, <span class="sc">-</span>Background.in.Academic.Writing) </span></code></pre></div>
+</div>
+<div id="arrange" class="section level3 unnumbered hasAnchor">
+<h3>Arrange<a href="intro-to-tidyverse.html#arrange" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Often we are interested in the maximum or minimum age, thus <code>arrange()</code> a numerical value.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="intro-to-tidyverse.html#cb16-1" tabindex="-1"></a><span class="fu">arrange</span>(coursedata, Age) <span class="co"># from low to high Age</span></span>
+<span id="cb16-2"><a href="intro-to-tidyverse.html#cb16-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 8</span></span>
+<span id="cb16-3"><a href="intro-to-tidyverse.html#cb16-3" tabindex="-1"></a><span class="co">#&gt;    Academic.level Gender   Age Total.Semesters Background.in.Statistics</span></span>
+<span id="cb16-4"><a href="intro-to-tidyverse.html#cb16-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb16-5"><a href="intro-to-tidyverse.html#cb16-5" tabindex="-1"></a><span class="co">#&gt;  1 Bachelor       Female    20               5                        2</span></span>
+<span id="cb16-6"><a href="intro-to-tidyverse.html#cb16-6" tabindex="-1"></a><span class="co">#&gt;  2 Master         Female    21               7                        2</span></span>
+<span id="cb16-7"><a href="intro-to-tidyverse.html#cb16-7" tabindex="-1"></a><span class="co">#&gt;  3 Bachelor       Male      21               2                        3</span></span>
+<span id="cb16-8"><a href="intro-to-tidyverse.html#cb16-8" tabindex="-1"></a><span class="co">#&gt;  4 Bachelor       Female    21               4                        2</span></span>
+<span id="cb16-9"><a href="intro-to-tidyverse.html#cb16-9" tabindex="-1"></a><span class="co">#&gt;  5 Bachelor       Female    21               3                        2</span></span>
+<span id="cb16-10"><a href="intro-to-tidyverse.html#cb16-10" tabindex="-1"></a><span class="co">#&gt;  6 Bachelor       Male      21               1                        2</span></span>
+<span id="cb16-11"><a href="intro-to-tidyverse.html#cb16-11" tabindex="-1"></a><span class="co">#&gt;  7 Bachelor       Female    21               1                        3</span></span>
+<span id="cb16-12"><a href="intro-to-tidyverse.html#cb16-12" tabindex="-1"></a><span class="co">#&gt;  8 Bachelor       Female    22              10                        4</span></span>
+<span id="cb16-13"><a href="intro-to-tidyverse.html#cb16-13" tabindex="-1"></a><span class="co">#&gt;  9 Bachelor       Female    22               8                        2</span></span>
+<span id="cb16-14"><a href="intro-to-tidyverse.html#cb16-14" tabindex="-1"></a><span class="co">#&gt; 10 Master         Female    22              10                        4</span></span>
+<span id="cb16-15"><a href="intro-to-tidyverse.html#cb16-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span>
+<span id="cb16-16"><a href="intro-to-tidyverse.html#cb16-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 3 more variables: Background.in.R &lt;dbl&gt;,</span></span>
+<span id="cb16-17"><a href="intro-to-tidyverse.html#cb16-17" tabindex="-1"></a><span class="co">#&gt; #   Background.in.Academic.Writing &lt;dbl&gt;, Expectations &lt;chr&gt;</span></span></code></pre></div>
+<p>The default is from low to high values, the <code>desc()</code> options reverses the order.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro-to-tidyverse.html#cb17-1" tabindex="-1"></a><span class="fu">arrange</span>(coursedata, <span class="fu">desc</span>(Age)) <span class="co"># reverse </span></span></code></pre></div>
+</div>
+<div id="rename" class="section level3 unnumbered hasAnchor">
+<h3>Rename<a href="intro-to-tidyverse.html#rename" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sometimes default variables names are too long or too complicated, thus we like to <code>rename()</code> them.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="intro-to-tidyverse.html#cb18-1" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="intro-to-tidyverse.html#cb18-2" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Degree =</span> Academic.level,</span>
+<span id="cb18-3"><a href="intro-to-tidyverse.html#cb18-3" tabindex="-1"></a>         <span class="at">Semesters =</span> Total.Semesters)</span>
+<span id="cb18-4"><a href="intro-to-tidyverse.html#cb18-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 8</span></span>
+<span id="cb18-5"><a href="intro-to-tidyverse.html#cb18-5" tabindex="-1"></a><span class="co">#&gt;    Degree   Gender   Age Semesters Background.in.Statistics Background.in.R</span></span>
+<span id="cb18-6"><a href="intro-to-tidyverse.html#cb18-6" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;                    &lt;dbl&gt;           &lt;dbl&gt;</span></span>
+<span id="cb18-7"><a href="intro-to-tidyverse.html#cb18-7" tabindex="-1"></a><span class="co">#&gt;  1 Bachelor Female    23         8                        2               2</span></span>
+<span id="cb18-8"><a href="intro-to-tidyverse.html#cb18-8" tabindex="-1"></a><span class="co">#&gt;  2 Bachelor Female    22        10                        4               3</span></span>
+<span id="cb18-9"><a href="intro-to-tidyverse.html#cb18-9" tabindex="-1"></a><span class="co">#&gt;  3 Master   Male      23         9                        4               2</span></span>
+<span id="cb18-10"><a href="intro-to-tidyverse.html#cb18-10" tabindex="-1"></a><span class="co">#&gt;  4 Master   Male      24         2                        3               1</span></span>
+<span id="cb18-11"><a href="intro-to-tidyverse.html#cb18-11" tabindex="-1"></a><span class="co">#&gt;  5 Master   Male      27        10                        2               1</span></span>
+<span id="cb18-12"><a href="intro-to-tidyverse.html#cb18-12" tabindex="-1"></a><span class="co">#&gt;  6 Master   Male      23         7                        3               1</span></span>
+<span id="cb18-13"><a href="intro-to-tidyverse.html#cb18-13" tabindex="-1"></a><span class="co">#&gt;  7 Bachelor Female    20         5                        2               3</span></span>
+<span id="cb18-14"><a href="intro-to-tidyverse.html#cb18-14" tabindex="-1"></a><span class="co">#&gt;  8 Bachelor Female    22         8                        2               1</span></span>
+<span id="cb18-15"><a href="intro-to-tidyverse.html#cb18-15" tabindex="-1"></a><span class="co">#&gt;  9 Master   Male      27        13                        4               4</span></span>
+<span id="cb18-16"><a href="intro-to-tidyverse.html#cb18-16" tabindex="-1"></a><span class="co">#&gt; 10 Master   Female    22        10                        4               4</span></span>
+<span id="cb18-17"><a href="intro-to-tidyverse.html#cb18-17" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span>
+<span id="cb18-18"><a href="intro-to-tidyverse.html#cb18-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: Background.in.Academic.Writing &lt;dbl&gt;, Expectations &lt;chr&gt;</span></span></code></pre></div>
+<p>This change is only temporarily and shown in the console output. In order to keep the new name of a variable, we can overwrite the old R object or create a new one.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro-to-tidyverse.html#cb19-1" tabindex="-1"></a><span class="co"># overwrite the old dataframe </span></span>
+<span id="cb19-2"><a href="intro-to-tidyverse.html#cb19-2" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="intro-to-tidyverse.html#cb19-3" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Degree =</span> Academic.level,</span>
+<span id="cb19-4"><a href="intro-to-tidyverse.html#cb19-4" tabindex="-1"></a>         <span class="at">Semesters =</span> Total.Semesters)</span></code></pre></div>
+</div>
+<div id="the-pipe-operator" class="section level3 unnumbered hasAnchor">
+<h3>The pipe operator<a href="intro-to-tidyverse.html#the-pipe-operator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As in base R, we often like to combine commands, e.g. select the <code>Age</code> variable and sort its values. <code>dplyr</code> verbs can be nested as in base R.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="intro-to-tidyverse.html#cb20-1" tabindex="-1"></a><span class="fu">arrange</span>(<span class="fu">select</span>(coursedata, Age), Age) </span></code></pre></div>
+<p>But there is something else that is used in tidyverse logic, the so called <strong>pipe operator</strong> <code>%&gt;%</code> (percentage sign, relation larger than, another percentage sign). You can read this as "then, please do the following".</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro-to-tidyverse.html#cb21-1" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>        <span class="co"># start with this data</span></span>
+<span id="cb21-2"><a href="intro-to-tidyverse.html#cb21-2" tabindex="-1"></a>  <span class="fu">select</span>(Age) <span class="sc">%&gt;%</span>     <span class="co"># then select only the Age variable</span></span>
+<span id="cb21-3"><a href="intro-to-tidyverse.html#cb21-3" tabindex="-1"></a>  <span class="fu">arrange</span>(Age)        <span class="co"># then arrange the values</span></span>
+<span id="cb21-4"><a href="intro-to-tidyverse.html#cb21-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 1</span></span>
+<span id="cb21-5"><a href="intro-to-tidyverse.html#cb21-5" tabindex="-1"></a><span class="co">#&gt;      Age</span></span>
+<span id="cb21-6"><a href="intro-to-tidyverse.html#cb21-6" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;</span></span>
+<span id="cb21-7"><a href="intro-to-tidyverse.html#cb21-7" tabindex="-1"></a><span class="co">#&gt;  1    20</span></span>
+<span id="cb21-8"><a href="intro-to-tidyverse.html#cb21-8" tabindex="-1"></a><span class="co">#&gt;  2    21</span></span>
+<span id="cb21-9"><a href="intro-to-tidyverse.html#cb21-9" tabindex="-1"></a><span class="co">#&gt;  3    21</span></span>
+<span id="cb21-10"><a href="intro-to-tidyverse.html#cb21-10" tabindex="-1"></a><span class="co">#&gt;  4    21</span></span>
+<span id="cb21-11"><a href="intro-to-tidyverse.html#cb21-11" tabindex="-1"></a><span class="co">#&gt;  5    21</span></span>
+<span id="cb21-12"><a href="intro-to-tidyverse.html#cb21-12" tabindex="-1"></a><span class="co">#&gt;  6    21</span></span>
+<span id="cb21-13"><a href="intro-to-tidyverse.html#cb21-13" tabindex="-1"></a><span class="co">#&gt;  7    21</span></span>
+<span id="cb21-14"><a href="intro-to-tidyverse.html#cb21-14" tabindex="-1"></a><span class="co">#&gt;  8    22</span></span>
+<span id="cb21-15"><a href="intro-to-tidyverse.html#cb21-15" tabindex="-1"></a><span class="co">#&gt;  9    22</span></span>
+<span id="cb21-16"><a href="intro-to-tidyverse.html#cb21-16" tabindex="-1"></a><span class="co">#&gt; 10    22</span></span>
+<span id="cb21-17"><a href="intro-to-tidyverse.html#cb21-17" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span></code></pre></div>
+</div>
+<div id="filter" class="section level3 unnumbered hasAnchor">
+<h3>Filter<a href="intro-to-tidyverse.html#filter" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It is reasonable to <code>filter()</code> specific values of variables. All filters use conditional expression based on relational operators.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>Use <strong>relational operators</strong> to build your filter:</p>
+<ul>
+<li><code>==</code> equal to</li>
+<li><code>!=</code> not equal to</li>
+<li><code>&gt;</code> more or <code>&lt;</code> less then</li>
+</ul>
+</div>
+<p>Here are some examples:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="intro-to-tidyverse.html#cb22-1" tabindex="-1"></a><span class="co"># filter students who have more than 10 semesters in total</span></span>
+<span id="cb22-2"><a href="intro-to-tidyverse.html#cb22-2" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Total.Semesters <span class="sc">&gt;</span> <span class="dv">10</span>) </span>
+<span id="cb22-3"><a href="intro-to-tidyverse.html#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="intro-to-tidyverse.html#cb22-4" tabindex="-1"></a><span class="co"># filter female students</span></span>
+<span id="cb22-5"><a href="intro-to-tidyverse.html#cb22-5" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;Female&quot;</span>) </span></code></pre></div>
+<p>Combinations of filters are possible via logical operators <code>&amp;</code> (and) and <code>|</code> (or). We are looking for females who study in a master program.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro-to-tidyverse.html#cb23-1" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
+<span id="cb23-2"><a href="intro-to-tidyverse.html#cb23-2" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;Female&quot;</span> <span class="sc">&amp;</span> Academic.level <span class="sc">==</span> <span class="st">&quot;Master&quot;</span>) </span>
+<span id="cb23-3"><a href="intro-to-tidyverse.html#cb23-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 8</span></span>
+<span id="cb23-4"><a href="intro-to-tidyverse.html#cb23-4" tabindex="-1"></a><span class="co">#&gt;    Academic.level Gender   Age Total.Semesters Background.in.Statistics</span></span>
+<span id="cb23-5"><a href="intro-to-tidyverse.html#cb23-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb23-6"><a href="intro-to-tidyverse.html#cb23-6" tabindex="-1"></a><span class="co">#&gt;  1 Master         Female    22              10                        4</span></span>
+<span id="cb23-7"><a href="intro-to-tidyverse.html#cb23-7" tabindex="-1"></a><span class="co">#&gt;  2 Master         Female    21               7                        2</span></span>
+<span id="cb23-8"><a href="intro-to-tidyverse.html#cb23-8" tabindex="-1"></a><span class="co">#&gt;  3 Master         Female    29               9                        3</span></span>
+<span id="cb23-9"><a href="intro-to-tidyverse.html#cb23-9" tabindex="-1"></a><span class="co">#&gt;  4 Master         Female    23               8                        4</span></span>
+<span id="cb23-10"><a href="intro-to-tidyverse.html#cb23-10" tabindex="-1"></a><span class="co">#&gt;  5 Master         Female    26               8                        2</span></span>
+<span id="cb23-11"><a href="intro-to-tidyverse.html#cb23-11" tabindex="-1"></a><span class="co">#&gt;  6 Master         Female    25              10                        2</span></span>
+<span id="cb23-12"><a href="intro-to-tidyverse.html#cb23-12" tabindex="-1"></a><span class="co">#&gt;  7 Master         Female    24              11                        1</span></span>
+<span id="cb23-13"><a href="intro-to-tidyverse.html#cb23-13" tabindex="-1"></a><span class="co">#&gt;  8 Master         Female    25              10                        3</span></span>
+<span id="cb23-14"><a href="intro-to-tidyverse.html#cb23-14" tabindex="-1"></a><span class="co">#&gt;  9 Master         Female    33               3                        1</span></span>
+<span id="cb23-15"><a href="intro-to-tidyverse.html#cb23-15" tabindex="-1"></a><span class="co">#&gt; 10 Master         Female    25              14                        4</span></span>
+<span id="cb23-16"><a href="intro-to-tidyverse.html#cb23-16" tabindex="-1"></a><span class="co">#&gt; 11 Master         Female    25              11                        3</span></span>
+<span id="cb23-17"><a href="intro-to-tidyverse.html#cb23-17" tabindex="-1"></a><span class="co">#&gt; 12 Master         Female    26               4                        2</span></span>
+<span id="cb23-18"><a href="intro-to-tidyverse.html#cb23-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 3 more variables: Background.in.R &lt;dbl&gt;,</span></span>
+<span id="cb23-19"><a href="intro-to-tidyverse.html#cb23-19" tabindex="-1"></a><span class="co">#&gt; #   Background.in.Academic.Writing &lt;dbl&gt;, Expectations &lt;chr&gt;</span></span></code></pre></div>
+<p>We are looking for females or anybody who reports more than 10 semesters.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="intro-to-tidyverse.html#cb24-1" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
+<span id="cb24-2"><a href="intro-to-tidyverse.html#cb24-2" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;Female&quot;</span> <span class="sc">|</span> Total.Semesters <span class="sc">&gt;</span> <span class="dv">10</span>) </span>
+<span id="cb24-3"><a href="intro-to-tidyverse.html#cb24-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 33 × 8</span></span>
+<span id="cb24-4"><a href="intro-to-tidyverse.html#cb24-4" tabindex="-1"></a><span class="co">#&gt;    Academic.level Gender   Age Total.Semesters Background.in.Statistics</span></span>
+<span id="cb24-5"><a href="intro-to-tidyverse.html#cb24-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb24-6"><a href="intro-to-tidyverse.html#cb24-6" tabindex="-1"></a><span class="co">#&gt;  1 Bachelor       Female    23               8                        2</span></span>
+<span id="cb24-7"><a href="intro-to-tidyverse.html#cb24-7" tabindex="-1"></a><span class="co">#&gt;  2 Bachelor       Female    22              10                        4</span></span>
+<span id="cb24-8"><a href="intro-to-tidyverse.html#cb24-8" tabindex="-1"></a><span class="co">#&gt;  3 Bachelor       Female    20               5                        2</span></span>
+<span id="cb24-9"><a href="intro-to-tidyverse.html#cb24-9" tabindex="-1"></a><span class="co">#&gt;  4 Bachelor       Female    22               8                        2</span></span>
+<span id="cb24-10"><a href="intro-to-tidyverse.html#cb24-10" tabindex="-1"></a><span class="co">#&gt;  5 Master         Male      27              13                        4</span></span>
+<span id="cb24-11"><a href="intro-to-tidyverse.html#cb24-11" tabindex="-1"></a><span class="co">#&gt;  6 Master         Female    22              10                        4</span></span>
+<span id="cb24-12"><a href="intro-to-tidyverse.html#cb24-12" tabindex="-1"></a><span class="co">#&gt;  7 Bachelor       Female    22               8                        2</span></span>
+<span id="cb24-13"><a href="intro-to-tidyverse.html#cb24-13" tabindex="-1"></a><span class="co">#&gt;  8 Master         Female    21               7                        2</span></span>
+<span id="cb24-14"><a href="intro-to-tidyverse.html#cb24-14" tabindex="-1"></a><span class="co">#&gt;  9 Master         Male      27              15                        3</span></span>
+<span id="cb24-15"><a href="intro-to-tidyverse.html#cb24-15" tabindex="-1"></a><span class="co">#&gt; 10 Master         Female    29               9                        3</span></span>
+<span id="cb24-16"><a href="intro-to-tidyverse.html#cb24-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 23 more rows</span></span>
+<span id="cb24-17"><a href="intro-to-tidyverse.html#cb24-17" tabindex="-1"></a><span class="co">#&gt; # ℹ 3 more variables: Background.in.R &lt;dbl&gt;,</span></span>
+<span id="cb24-18"><a href="intro-to-tidyverse.html#cb24-18" tabindex="-1"></a><span class="co">#&gt; #   Background.in.Academic.Writing &lt;dbl&gt;, Expectations &lt;chr&gt;</span></span></code></pre></div>
+</div>
+<div id="mutate" class="section level3 unnumbered hasAnchor">
+<h3>Mutate<a href="intro-to-tidyverse.html#mutate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>mutate()</code> is the most frequent used command you will come across. It changes the data. We create a new variable <code>Background_Knowledge</code> by taking the average of the three background variables. All background variables have the same range from 1 to 5.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro-to-tidyverse.html#cb25-1" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
+<span id="cb25-2"><a href="intro-to-tidyverse.html#cb25-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Background_Knowledge =</span> (Background.in.Statistics <span class="sc">+</span></span>
+<span id="cb25-3"><a href="intro-to-tidyverse.html#cb25-3" tabindex="-1"></a>                                 Background.in.R <span class="sc">+</span> </span>
+<span id="cb25-4"><a href="intro-to-tidyverse.html#cb25-4" tabindex="-1"></a>                                 Background.in.Academic.Writing)<span class="sc">/</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-5"><a href="intro-to-tidyverse.html#cb25-5" tabindex="-1"></a>  <span class="fu">select</span>(Academic.level, Gender, Age, Background_Knowledge)</span>
+<span id="cb25-6"><a href="intro-to-tidyverse.html#cb25-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 57 × 4</span></span>
+<span id="cb25-7"><a href="intro-to-tidyverse.html#cb25-7" tabindex="-1"></a><span class="co">#&gt;    Academic.level Gender   Age Background_Knowledge</span></span>
+<span id="cb25-8"><a href="intro-to-tidyverse.html#cb25-8" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;                &lt;dbl&gt;</span></span>
+<span id="cb25-9"><a href="intro-to-tidyverse.html#cb25-9" tabindex="-1"></a><span class="co">#&gt;  1 Bachelor       Female    23                 2   </span></span>
+<span id="cb25-10"><a href="intro-to-tidyverse.html#cb25-10" tabindex="-1"></a><span class="co">#&gt;  2 Bachelor       Female    22                 3   </span></span>
+<span id="cb25-11"><a href="intro-to-tidyverse.html#cb25-11" tabindex="-1"></a><span class="co">#&gt;  3 Master         Male      23                 3.33</span></span>
+<span id="cb25-12"><a href="intro-to-tidyverse.html#cb25-12" tabindex="-1"></a><span class="co">#&gt;  4 Master         Male      24                 2.33</span></span>
+<span id="cb25-13"><a href="intro-to-tidyverse.html#cb25-13" tabindex="-1"></a><span class="co">#&gt;  5 Master         Male      27                 2.33</span></span>
+<span id="cb25-14"><a href="intro-to-tidyverse.html#cb25-14" tabindex="-1"></a><span class="co">#&gt;  6 Master         Male      23                 2   </span></span>
+<span id="cb25-15"><a href="intro-to-tidyverse.html#cb25-15" tabindex="-1"></a><span class="co">#&gt;  7 Bachelor       Female    20                 2.67</span></span>
+<span id="cb25-16"><a href="intro-to-tidyverse.html#cb25-16" tabindex="-1"></a><span class="co">#&gt;  8 Bachelor       Female    22                 1.67</span></span>
+<span id="cb25-17"><a href="intro-to-tidyverse.html#cb25-17" tabindex="-1"></a><span class="co">#&gt;  9 Master         Male      27                 4   </span></span>
+<span id="cb25-18"><a href="intro-to-tidyverse.html#cb25-18" tabindex="-1"></a><span class="co">#&gt; 10 Master         Female    22                 3.67</span></span>
+<span id="cb25-19"><a href="intro-to-tidyverse.html#cb25-19" tabindex="-1"></a><span class="co">#&gt; # ℹ 47 more rows</span></span></code></pre></div>
+</div>
+<div id="summarize" class="section level3 unnumbered hasAnchor">
+<h3>Summarize<a href="intro-to-tidyverse.html#summarize" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Would you like to know the average age of course participants? It is 24.7192982 There are two ways in order to achieve this.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro-to-tidyverse.html#cb26-1" tabindex="-1"></a><span class="co"># calculate mean age with mutate()</span></span>
+<span id="cb26-2"><a href="intro-to-tidyverse.html#cb26-2" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
+<span id="cb26-3"><a href="intro-to-tidyverse.html#cb26-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(Age)) </span>
+<span id="cb26-4"><a href="intro-to-tidyverse.html#cb26-4" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="intro-to-tidyverse.html#cb26-5" tabindex="-1"></a><span class="co"># calculate mean age with summarize() </span></span>
+<span id="cb26-6"><a href="intro-to-tidyverse.html#cb26-6" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
+<span id="cb26-7"><a href="intro-to-tidyverse.html#cb26-7" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(Age)) </span></code></pre></div>
+<p>What is the difference between them? <code>mutate()</code> creates a new variable <code>mean_age</code> in the data set for all 57 observations. But there is only 1 mean value. Thus, <code>mutate()</code> repeats this mean value 57 times. The result is a 57x9 tibble. <code>summarize()</code> collapses the tibble to a single value. The result is a 1x1 tibble.</p>
+<p>The question is, what do you plan to do next with your results. After <code>summarize()</code> all other information is gone. We will see this in the next graph.</p>
+</div>
+</div>
+<div id="graphs-with-ggplot2" class="section level2 unnumbered hasAnchor">
+<h2>Graphs with ggplot2<a href="intro-to-tidyverse.html#graphs-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>ggplot()</code> follows the <u id='gg'>Grammar of Graphics</u>. The first argument is the data, the second is <code>aes()</code> aesthetics (that define the x- and y-variable). In order to add more to the graph, use the <code>+</code> operator (instead a pipe). Add layers, so called geoms, like <code>geom_point()</code> to create points in a coordinate system, a.k.a the scatter plot. <code>theme_minimal()</code> is a particular set of options that controls non-data display.</p>
+<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-7113698110c3558957d2" width="576"></span>
+<script type="application/json" data-for="htmlwidget-7113698110c3558957d2">{"x":{"element":"gg","opts":{"content":"By Leland Wilkinson."}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro-to-tidyverse.html#cb27-1" tabindex="-1"></a><span class="fu">ggplot</span>(coursedata, <span class="fu">aes</span>(<span class="at">x =</span> Age, <span class="at">y =</span> Total.Semesters)) <span class="sc">+</span> </span>
+<span id="cb27-2"><a href="intro-to-tidyverse.html#cb27-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb27-3"><a href="intro-to-tidyverse.html#cb27-3" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-40-1.png" width="576" /></p>
+<p>Alternatively, data can be piped into a <code>ggplot()</code>. In the second version of the graph, we added axis labels inside the <code>labs()</code> command and another layer <code>geom_smooth()</code> for a trend line of the relationship. Inside we define the <code>method</code> to be a linear model and the standard errors to be deactivated. Play around with those options, what other methods are available? What happens when we turn standard errors on?</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro-to-tidyverse.html#cb28-1" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="intro-to-tidyverse.html#cb28-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Age, <span class="at">y =</span> Total.Semesters)) <span class="sc">+</span> </span>
+<span id="cb28-3"><a href="intro-to-tidyverse.html#cb28-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb28-4"><a href="intro-to-tidyverse.html#cb28-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb28-5"><a href="intro-to-tidyverse.html#cb28-5" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb28-6"><a href="intro-to-tidyverse.html#cb28-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Relationship between Age and Semester of course participants.&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Semesters&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-41-1.png" width="576" /></p>
+
+</div>
+</div>
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>See <a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a>.<a href="intro-to-tidyverse.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro-to-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-is-everywhere.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Becoming Fluent In Data.pdf", "Becoming Fluent In Data.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": false
+},
+"toc_depth": 1,
+"toc-title": "Table of Contents",
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

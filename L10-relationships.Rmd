@@ -6,9 +6,9 @@
 <!-- > -->
 <!-- > `r tufte::quote_footer('Yoda. -- Episode V: The Empire Strikes Back')` -->
 
-The most interesting research questions in social science are about relationships. A relationship is the way in which two or more variables or concepts are connected.^[Everything that can be measured (see  chapter [Can we measure everything?]).] The analysis of relationships is a fundamental approach used to understand the interplay and patterns of interactions within a social system.
+The most interesting research questions in social science are about relationships. A relationship is the way in which two or more variables or concepts are connected. The analysis of relationships is a fundamental approach used to understand the interplay and patterns of interactions within a social system.
 
-This chapter introduces the concepts of *variance*, *covariance*, and *correlation*, and how they can help us understand the connections between two variables. The specific statistical form of the analysis depends on the levels of measurement of these variables. In this example we quantify a relationship between two continuous variables that may be illustrated in a *scatter plot*. 
+This chapter introduces the concepts of *variance*, *covariance*, and *correlation*, and how they can help us understand the connections between two variables (see section [Can we measure everything?]). The specific statistical form of the analysis depends on the *levels of measurement* of these variables. In this example we quantify a relationship between two continuous variables that may be illustrated in a *scatter plot*. 
 
 A correlation estimate may not represent the relationship best. Beware of spurious relationships, for they can lead us astray in our quest for understanding. Correlation can be the beginning of a more thorough research inquiry. 
 
@@ -27,7 +27,9 @@ A correlation estimate may not represent the relationship best. Beware of spurio
 <!-- https://www.nabu.de/news/2005/zensus.html -->
 <!-- https://en.wikipedia.org/wiki/White_stork#/media/File:Europe_stork.png -->
 
-The "stork-baby-relationship" is a classic example used to illustrate the concept that correlation does not imply causation. People noticed a correlation between the number of storks (birds) in an area and the number of human babies born. Stork populations and birth rates seem to increase together.
+The "stork-baby-relationship" is a classic example used to illustrate the concept that correlation does not imply causation. It is based on the familiar folk tale that babies are delivered by storks.  
+
+People noticed a correlation between the number of storks (birds) in an area and the number of human babies born. Stork populations and human populations seem to increase together.
 
 ```{r, echo=FALSE, out.width="80%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg") 
@@ -36,7 +38,7 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/
 <!-- The following story is based on  -->
 <!--     Matthews, R. (2000). Storks deliver babies (p= 0.008). Teaching Statistics, 22(2), 36-38. -->
 
-We have data for 28 countries in 2005. 
+We have data on stork and human population for 28 countries in 2005. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
@@ -49,7 +51,7 @@ storks <- storks %>% filter(Year == 2005)
 
 # Tabular Data
 library(DT)
-datatable(storks)
+datatable(storks, options = list(iDisplayLength = 5))
 ```
 
 `Storks` is the number of pairs of storks in that country. The `Area` is in square kilometers. `Population` is the total population in million whereas `UrbanPop` is the population living in urban areas. `Fertility` refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime. 
@@ -64,14 +66,15 @@ library(ggpmisc)
 ggplot(storks, aes(x = Storks, y = Population)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = F) +
-  theme_minimal()
+  theme_minimal() + 
+  labs(x = "Storks (Pairs)", y = "Population (in million)")
 ```
 
-The data doesn't cluster in a nice dot cloud. Some countries have almost no storks, whereas there are thousands in other places. Countries seem to be very different in the number of storks. Let's explore this in more detail.
+The data doesn't cluster in a nice dot cloud but is spread out in both directions. While some countries only have a hand full of storks, others have tens of thousands. Let's explore this in more detail.
 
 ## Map
 
-The map show the number of stork pairs for the selected countries. 
+The map shows the number of stork pairs for the selected countries. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Retrieve the map data for Participant Countries 
@@ -128,38 +131,33 @@ mapCountryData(spdf,
                colourPalette = "white2Black")
 ```
 
-There seem to be some extreme values in the number of storks. In other words, the range goes from 3 pairs in Albania to 52500 in Poland. There is high variability in the number of storks. The variance is a measure for variability of data. 
+The range goes from 3 pairs in Albania to 52500 pairs of storks in Poland. There is high variability in the number of storks. The *variance* is a measure for variability of data. 
 
 ## Variance
-
-To calculate the variance, we subtract each data point from the mean. Then square those deviations and add them up. Finally there is a scaling factor, we divide by the inverse number of observations minus 1. 
 
 :::: {.defbox}
 ::: {.titeldefbox}
 <h2> Definition </h2>
 :::
-The **variance** is defined as the **average quadratic deviation from the mean**.
+The **<u id='variance'>variance</u>** is defined as the **average quadratic deviation from the mean**.
 ::::
 
 $$var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2$$
 
-The <u id='variance'>variance</u> of `Storks` and can be calculated via `var()` in R. 
+To calculate the variance, we subtract each data point $x_i$ from the mean $\overline{x}$. Then square those deviations and add them up. Finally, there is a scaling factor, we divide by the inverse number of observations minus 1. 
+
+The variance of `Storks` and can be calculated via `var()` in R. It is `r format(round(var(storks$Storks),0), scientific=FALSE)`. 150 million of what? The variance is in squared unit, i.e. *square storks* and thus hard to interpret.
 
 ```{r, echo=FALSE}
 tippy::tippy_this(elementId = "variance", tooltip = "The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*.")
-```
-
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
-var(storks$Storks)
 ```
 
 :::: {.dedicated}
 ::: {.titeldedicated}
 <h2> Truly Dedicated </h2>
 :::
-When you have collected data from every member of the population that you’re interested in, you can get an exact value for *population variance*. When you collect data from a sample, the *sample variance* is used to make estimates or inferences about the population variance. Sample variance is divided by $n-1$. Population variance is divided by $n$. 
+When you collect data from every member of the population that you’re interested in, you can get an exact value for *population variance*. When you collect data from a sample, the *sample variance* is used to make estimates or inferences about the population variance. Sample variance is divided by $n-1$. Population variance is divided by $n$. 
 ::::
-
 
 <!-- The variance of `x` can be calculated from its components in R as a combination of `sum()`, `mean()` and `length()`. -->
 
@@ -170,17 +168,14 @@ When you have collected data from every member of the population that you’re i
 
 ## Standard Deviation 
 
-The variance is in squared unit and thus hard to interpret. The standard deviation is derived from variance and tells, on average, how far each value lies from the mean. It’s the square root of variance and calculated via `sd()`. Variance and standard deviation both measure the variability of a variable.
-
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
-sd(storks$Storks)
-```
-
 <!-- https://www.scribbr.com/statistics/variance/ -->
 <!-- http://stla.overblog.com/schematizing-the-variance-as-a-moment-of-inertia -->
 <!-- https://stats.stackexchange.com/questions/72208/visualising-the-variance -->
 
-The one-dimensional variable `Storks` is visualized as points on a line. The mean number of storks is `r mean(storks$Storks)` (red bold line). The standard variation is `r sd(storks$Storks)` and surrounds the mean. 
+The standard deviation is derived from variance and tells, on average, how far each value lies from the mean. Variance and standard deviation both measure the variability of a variable. The standard deviation is the square root of variance.
+
+$$sd(x) = \sqrt{var(x)} = \sqrt{ \frac{\sum (x_i - \overline{x} )^2}{n-1} } $$
+In R, the standard deviation is calculated by `sd()` like `sd(storks$Storks)` which yields `r format(round(sd(storks$Storks),0), scientific=FALSE)`. The mean of storks `mean(storks$Storks)` is approximately `r round(mean(storks$Storks),0)`. The one-dimensional variable `Storks` is visualized as points on the line.  
 
 ```{r, echo=F, eval=T, message=FALSE, warning=FALSE, out.width = '80%', fig.align="center"}
 library(ggplot2)
@@ -198,7 +193,8 @@ y <- data$y
 
 ggplot(aes(x=x, y=c(0)), data=data) + 
   geom_point(size=3) +
-  labs(title="Distribution of the number of storks around the mean") +
+  labs(title="Distribution of the number of storks around the mean",
+       x = "Storks") +
   geom_vline(xintercept=mean(data$x), size=1.5, color="red") + 
   theme_minimal() +
   theme(axis.line=element_blank(),
@@ -243,7 +239,8 @@ The following scatterplot shows the number of storks and the population with the
 ```{r, echo=F, eval=TRUE, out.width = '80%', fig.align="center"}
 ggplot(aes(x=x, y=y), data=data) + 
   geom_point(size=3) +
-  labs(title="Distribution of storks and population around their means") +
+  labs(title="Distribution of storks and population around their means.",
+       x = "Storks (pairs)", y = "Population (in million)") +
   geom_vline(xintercept=mean(data$x), size=1.5, color="red") + 
   geom_hline(yintercept=mean(data$y), size=1.5, color="red") +
   theme_minimal()
@@ -252,6 +249,12 @@ ggplot(aes(x=x, y=y), data=data) +
 Now, that we know how to describe the variation of each of the two variables, we look for a measure that reflects the co-variation of both variables, i.e. how they change in relation to each other. The new grid of means is a good starting point. When most data points fall into lower left and upper right quadrant, we call this a positive relationship. 
 
 ## Covariance  
+<!-- https://evangelinereynolds.netlify.app/post/geometric-covariance/ -->
+<!-- https://stats.stackexchange.com/questions/18058/how-would-you-explain-covariance-to-someone-who-understands-only-the-mean -->
+
+<!-- The covariance of `x` can be calculated from its components in R as a combination of `sum()`, `mean()` and `length()`. -->
+<!-- # Covariance by hand -->
+<!-- (sum((x-mean(x))*(y-mean(y)))) / (length(x)-1) -->
 
 Covariance is a measure of the joint variability of two variables. The main idea of covariance is to classify three types of relationships: positive, negative or no relationship. 
 
@@ -264,32 +267,17 @@ The **covariance** between two variables is the **product of the deviations of x
 
 $$cov(x,y) = \frac{1}{n-1} \sum\limits (x_i - \bar{x})(y_i - \bar{y})$$ 
 
-For each data point, we multiply the differences with the respective mean. This results in several rectangular areas starting at the intersection of means as a new origin. The covariance sums up all these areas. Finally, the covariance is adjusted by the number of observations. When both values are smaller or greater than the mean, the result will be positive. 
+For each data point, we multiply the differences with the respective mean. Geometrically, this results in several rectangular areas starting at the intersection of means as a new origin. The covariance sums up all these areas. Finally, the covariance is adjusted by the number of observations. When both values are smaller or greater than the mean, the result will be positive. 
 
-In R, the covariance is calculated by `cov()`:
-
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
-cov(x,y)
-```
-
-<!-- The covariance of `x` can be calculated from its components in R as a combination of `sum()`, `mean()` and `length()`. -->
-
-<!-- ```{r, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE} -->
-<!-- # Covariance by hand -->
-<!-- (sum((x-mean(x))*(y-mean(y)))) / (length(x)-1) -->
-<!-- ``` -->
-
-<!-- https://evangelinereynolds.netlify.app/post/geometric-covariance/ -->
-<!-- https://stats.stackexchange.com/questions/18058/how-would-you-explain-covariance-to-someone-who-understands-only-the-mean -->
-
-The covariance confirms what we saw in the first scatterplot, the relationship between storks and population is positive. Let's try to visualize the calculation procedure of the covariance. 
+In R, the covariance is calculated by `cov(storks$Storks, storks$Population)` and yields `r format(round(cov(storks$Storks, storks$Population),0), scientific=FALSE)`. The positive covariance confirms what we saw in the first scatterplot, the positive association between storks and population. Let's try to visualize the calculation procedure of the covariance. 
 
 ```{r, echo=F, eval=TRUE, message=FALSE, warning=FALSE, out.width = '80%', fig.align="center"}
 simple.arrow <- arrow(length = unit(0.2, "cm"))
 
 ggplot(aes(x=x, y=y), data=data) + 
   geom_point(size=1) +
-  labs(title="Distribution of x and y around their means") +
+  labs(title="Distribution of storks and population around their means.",
+       x = "Storks (pairs)", y = "Population (in million)") +
   theme_bw() +
   geom_vline(xintercept=mean(data$x), size=1.5, color="red") + 
   geom_hline(yintercept=mean(data$y), size=1.5, color="red") +
@@ -305,7 +293,7 @@ ggplot(aes(x=x, y=y), data=data) +
   alpha = 0.1) +
   geom_point() +
   theme_minimal() + 
-  geom_label(aes(x=11000, y=35, label = "Sum of all squares: 2409346")) +
+  geom_label(aes(x=21000, y=55, label = "Sum of all squares: 2409346")) +
   theme(legend.position="none")
 ```
 
@@ -316,7 +304,9 @@ ggplot(aes(x=x, y=y), data=data) +
 Can you validate the covariance result from `cov(x,y)` from the sum of squares from the figure?
 ::::
 
-Covariance qualifies a relationship as positive or negative, i.e. the direction of the relationship. Covariance is expressed in units that vary with the data. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117.5 can be very low for one relationship and 0.23 very high for another relationship). Therefore, we need one more measure that is similar and related to the covariance, the correlation coefficient. 
+Covariance qualifies a relationship as positive or negative, i.e. the direction of the relationship. Covariance is expressed in units that vary with the data. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117.5 can be very low for one relationship and 0.23 very high for another relationship). 
+
+We need a measure independent of units in a fixed range, the correlation coefficient. 
 
 ## Correlation 
 
@@ -386,6 +376,8 @@ Small p-values below 0.05 are usually considered to be statistically significant
 <!-- ``` -->
 
 <!-- https://stats.stackexchange.com/questions/32464/how-does-the-correlation-coefficient-differ-from-regression-slope -->
+
+## Digression: From Correlation to Regression
 
 There is an awesome connection from correlation coefficient to the simple regression coefficient.
 

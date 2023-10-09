@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Regression | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to become fluent in data." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Regression | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/Cover.png" />
+  <meta property="og:description" content="A guide to become fluent in data." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Regression | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to become fluent in data." />
+  <meta name="twitter:image" content="/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2023-08-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="relationships.html"/>
+<link rel="next" href="linear-regression.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.28/datatables.js"></script>
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/box_def.css" type="text/css" />
+<link rel="stylesheet" href="css/box_amazing.css" type="text/css" />
+<link rel="stylesheet" href="css/box_challenge.css" type="text/css" />
+<link rel="stylesheet" href="css/box_dedicated.css" type="text/css" />
+<link rel="stylesheet" href="css/box_reading.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://marcokuehne.github.io/">Becoming Fluent in Data</a></li> <li><p class="aligncenter"> <img src="images/Logo.png" width="60%" height="60%"> </p></li>
+<li class="divider"></li>
+<li class="part"><span><b>I Intro</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html"><i class="fa fa-check"></i>About the book</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#aims-of-this-book"><i class="fa fa-check"></i>Aims of this book</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#for-students"><i class="fa fa-check"></i>For students</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#for-instructors"><i class="fa fa-check"></i>For instructors</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#structure"><i class="fa fa-check"></i>Structure</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#components"><i class="fa fa-check"></i>Components</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#why-r"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#why-tidyverse"><i class="fa fa-check"></i>Why Tidyverse?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html#dust-and-dark"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html#teach-learn-repeat"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-a-calculator"><i class="fa fa-check"></i>R is a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-more-than-a-calculator"><i class="fa fa-check"></i>R is more than a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#define-objects"><i class="fa fa-check"></i>Define objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#numeric-variables"><i class="fa fa-check"></i>Numeric Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#logical-variables"><i class="fa fa-check"></i>Logical Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#string-variables"><i class="fa fa-check"></i>String Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#factor-variables"><i class="fa fa-check"></i>Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#combine-objects"><i class="fa fa-check"></i>Combine objects</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#data-frame"><i class="fa fa-check"></i>Data frame</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#plots"><i class="fa fa-check"></i>Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#data-with-readr"><i class="fa fa-check"></i>Data with readr</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#verbs-of-dplyr"><i class="fa fa-check"></i>Verbs of dplyr</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#glimpse"><i class="fa fa-check"></i>Glimpse</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#select"><i class="fa fa-check"></i>Select</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#arrange"><i class="fa fa-check"></i>Arrange</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#rename"><i class="fa fa-check"></i>Rename</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#the-pipe-operator"><i class="fa fa-check"></i>The pipe operator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#filter"><i class="fa fa-check"></i>Filter</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#mutate"><i class="fa fa-check"></i>Mutate</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#summarize"><i class="fa fa-check"></i>Summarize</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#graphs-with-ggplot2"><i class="fa fa-check"></i>Graphs with ggplot2</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#why-we-measure"><i class="fa fa-check"></i><b>1.1</b> Why we measure</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#women-are-having-far-fewer-children."><i class="fa fa-check"></i><b>1.1.1</b> Women are having far fewer children.</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#global-surface-temperature-is-rising."><i class="fa fa-check"></i><b>1.1.2</b> Global surface temperature is rising.</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#means-of-measuring"><i class="fa fa-check"></i><b>1.2</b> Means of measuring</a></li>
+<li class="chapter" data-level="1.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#types-of-data"><i class="fa fa-check"></i><b>1.3</b> Types of data</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#origin-of-data"><i class="fa fa-check"></i><b>1.3.1</b> Origin of data</a></li>
+<li class="chapter" data-level="1.3.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#analysis-of-data"><i class="fa fa-check"></i><b>1.3.2</b> Analysis of data</a></li>
+<li class="chapter" data-level="1.3.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#structure-of-data"><i class="fa fa-check"></i><b>1.3.3</b> Structure of data</a></li>
+<li class="chapter" data-level="1.3.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-level-of-access"><i class="fa fa-check"></i><b>1.3.4</b> The level of access</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#can-we-measure-everything"><i class="fa fa-check"></i><b>1.4</b> Can we measure everything?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-reality-behind-the-data"><i class="fa fa-check"></i><b>1.5</b> The reality behind the data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>2</b> Stories and Visuals</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#facts"><i class="fa fa-check"></i><b>2.1</b> Facts</a></li>
+<li class="chapter" data-level="2.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#visualization"><i class="fa fa-check"></i><b>2.2</b> Visualization</a></li>
+<li class="chapter" data-level="2.3" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#telling-a-story"><i class="fa fa-check"></i><b>2.3</b> Telling a story</a></li>
+<li class="chapter" data-level="2.4" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#mans-best-friend"><i class="fa fa-check"></i><b>2.4</b> Man's best friend</a></li>
+<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a></li>
+<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#grammar-of-graphics"><i class="fa fa-check"></i><b>2.6</b> Grammar of Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="panel-data.html"><a href="panel-data.html"><i class="fa fa-check"></i><b>3</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="panel-data.html"><a href="panel-data.html#types-of-data-1"><i class="fa fa-check"></i><b>3.1</b> Types of Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="panel-data.html"><a href="panel-data.html#cross-section"><i class="fa fa-check"></i><b>3.1.1</b> Cross-section</a></li>
+<li class="chapter" data-level="3.1.2" data-path="panel-data.html"><a href="panel-data.html#repeated-cross-section"><i class="fa fa-check"></i><b>3.1.2</b> Repeated cross-section</a></li>
+<li class="chapter" data-level="3.1.3" data-path="panel-data.html"><a href="panel-data.html#time-series"><i class="fa fa-check"></i><b>3.1.3</b> Time series</a></li>
+<li class="chapter" data-level="3.1.4" data-path="panel-data.html"><a href="panel-data.html#panel-data-1"><i class="fa fa-check"></i><b>3.1.4</b> Panel data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="panel-data.html"><a href="panel-data.html#unemployment"><i class="fa fa-check"></i><b>3.2</b> Unemployment</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="panel-data.html"><a href="panel-data.html#on-decline-in-germany"><i class="fa fa-check"></i><b>3.2.1</b> On decline in Germany</a></li>
+<li class="chapter" data-level="3.2.2" data-path="panel-data.html"><a href="panel-data.html#measurement"><i class="fa fa-check"></i><b>3.2.2</b> Measurement</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="panel-data.html"><a href="panel-data.html#application"><i class="fa fa-check"></i><b>3.3</b> Application</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="panel-data.html"><a href="panel-data.html#data-inspection"><i class="fa fa-check"></i><b>3.3.1</b> Data Inspection</a></li>
+<li class="chapter" data-level="3.3.2" data-path="panel-data.html"><a href="panel-data.html#data-preparation"><i class="fa fa-check"></i><b>3.3.2</b> Data Preparation</a></li>
+<li class="chapter" data-level="3.3.3" data-path="panel-data.html"><a href="panel-data.html#data-visualization"><i class="fa fa-check"></i><b>3.3.3</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="panel-data.html"><a href="panel-data.html#panel-studies"><i class="fa fa-check"></i><b>3.4</b> Panel Studies</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>4</b> Web Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="web-data.html"><a href="web-data.html#most-expensive-paintings"><i class="fa fa-check"></i><b>4.1</b> Most expensive paintings</a></li>
+<li class="chapter" data-level="4.2" data-path="web-data.html"><a href="web-data.html#student-numbers-at-viadrina"><i class="fa fa-check"></i><b>4.2</b> Student numbers at Viadrina</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="web-data.html"><a href="web-data.html#pdf-scraping"><i class="fa fa-check"></i><b>4.2.1</b> PDF scraping</a></li>
+<li class="chapter" data-level="4.2.2" data-path="web-data.html"><a href="web-data.html#share-of-female-students"><i class="fa fa-check"></i><b>4.2.2</b> Share of female students</a></li>
+<li class="chapter" data-level="4.2.3" data-path="web-data.html"><a href="web-data.html#share-of-foreign-students"><i class="fa fa-check"></i><b>4.2.3</b> Share of foreign students</a></li>
+<li class="chapter" data-level="4.2.4" data-path="web-data.html"><a href="web-data.html#web-scraping"><i class="fa fa-check"></i><b>4.2.4</b> Web scraping</a></li>
+<li class="chapter" data-level="4.2.5" data-path="web-data.html"><a href="web-data.html#most-recent-student-numbers"><i class="fa fa-check"></i><b>4.2.5</b> Most recent student numbers</a></li>
+<li class="chapter" data-level="4.2.6" data-path="web-data.html"><a href="web-data.html#the-long-run-trend"><i class="fa fa-check"></i><b>4.2.6</b> The long run trend</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>5</b> Text Data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="text-data.html"><a href="text-data.html#wikipedia"><i class="fa fa-check"></i><b>5.1</b> Wikipedia</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="text-data.html"><a href="text-data.html#cleaning"><i class="fa fa-check"></i><b>5.1.1</b> Cleaning</a></li>
+<li class="chapter" data-level="5.1.2" data-path="text-data.html"><a href="text-data.html#tidytext-format"><i class="fa fa-check"></i><b>5.1.2</b> Tidytext Format</a></li>
+<li class="chapter" data-level="5.1.3" data-path="text-data.html"><a href="text-data.html#stopwords"><i class="fa fa-check"></i><b>5.1.3</b> Stopwords</a></li>
+<li class="chapter" data-level="5.1.4" data-path="text-data.html"><a href="text-data.html#term-frequency"><i class="fa fa-check"></i><b>5.1.4</b> Term Frequency</a></li>
+<li class="chapter" data-level="5.1.5" data-path="text-data.html"><a href="text-data.html#little-bit-of-scraping"><i class="fa fa-check"></i><b>5.1.5</b> Little bit of Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="text-data.html"><a href="text-data.html#field-trip-to-berlin"><i class="fa fa-check"></i><b>5.2</b> Field Trip to Berlin</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="text-data.html"><a href="text-data.html#text-preparation"><i class="fa fa-check"></i><b>5.2.1</b> Text Preparation</a></li>
+<li class="chapter" data-level="5.2.2" data-path="text-data.html"><a href="text-data.html#sentiment-analysis"><i class="fa fa-check"></i><b>5.2.2</b> Sentiment Analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>6</b> Geo Data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="geo-data.html"><a href="geo-data.html#where-are-you"><i class="fa fa-check"></i><b>6.1</b> Where Are You?</a></li>
+<li class="chapter" data-level="6.2" data-path="geo-data.html"><a href="geo-data.html#geo-coordinates"><i class="fa fa-check"></i><b>6.2</b> Geo-coordinates</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="geo-data.html"><a href="geo-data.html#its-convention"><i class="fa fa-check"></i><b>6.2.1</b> It's convention</a></li>
+<li class="chapter" data-level="6.2.2" data-path="geo-data.html"><a href="geo-data.html#different-precision"><i class="fa fa-check"></i><b>6.2.2</b> Different precision</a></li>
+<li class="chapter" data-level="6.2.3" data-path="geo-data.html"><a href="geo-data.html#different-units"><i class="fa fa-check"></i><b>6.2.3</b> Different units</a></li>
+<li class="chapter" data-level="6.2.4" data-path="geo-data.html"><a href="geo-data.html#different-perspectives"><i class="fa fa-check"></i><b>6.2.4</b> Different perspectives</a></li>
+<li class="chapter" data-level="6.2.5" data-path="geo-data.html"><a href="geo-data.html#different-distance-between-two-coordinates"><i class="fa fa-check"></i><b>6.2.5</b> Different distance between two coordinates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="geo-data.html"><a href="geo-data.html#from-points-and-polygons"><i class="fa fa-check"></i><b>6.3</b> From Points And Polygons</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>6.3.1</b> Shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="geo-data.html"><a href="geo-data.html#spatial-scale"><i class="fa fa-check"></i><b>6.4</b> Spatial scale</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="switzerland.html"><a href="switzerland.html"><i class="fa fa-check"></i><b>7</b> Switzerland</a></li>
+<li class="chapter" data-level="8" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>8</b> Time data</a></li>
+<li class="part"><span><b>III Models</b></span></li>
+<li class="chapter" data-level="9" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>9</b> Relationships</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="relationships.html"><a href="relationships.html#storks-deliver-babies"><i class="fa fa-check"></i><b>9.1</b> Storks Deliver Babies</a></li>
+<li class="chapter" data-level="9.2" data-path="relationships.html"><a href="relationships.html#scatterplot"><i class="fa fa-check"></i><b>9.2</b> Scatterplot</a></li>
+<li class="chapter" data-level="9.3" data-path="relationships.html"><a href="relationships.html#map"><i class="fa fa-check"></i><b>9.3</b> Map</a></li>
+<li class="chapter" data-level="9.4" data-path="relationships.html"><a href="relationships.html#variance"><i class="fa fa-check"></i><b>9.4</b> Variance</a></li>
+<li class="chapter" data-level="9.5" data-path="relationships.html"><a href="relationships.html#standard-deviation"><i class="fa fa-check"></i><b>9.5</b> Standard Deviation</a></li>
+<li class="chapter" data-level="9.6" data-path="relationships.html"><a href="relationships.html#covariance"><i class="fa fa-check"></i><b>9.6</b> Covariance</a></li>
+<li class="chapter" data-level="9.7" data-path="relationships.html"><a href="relationships.html#correlation"><i class="fa fa-check"></i><b>9.7</b> Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>10</b> Regression</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="regression.html"><a href="regression.html#old-but-gold"><i class="fa fa-check"></i><b>10.1</b> Old but Gold</a></li>
+<li class="chapter" data-level="10.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>10.2</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>10.2.1</b> Data in a table</a></li>
+<li class="chapter" data-level="10.2.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>10.2.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="10.2.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>10.2.3</b> The trend</a></li>
+<li class="chapter" data-level="10.2.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>10.2.4</b> The blackbox</a></li>
+<li class="chapter" data-level="10.2.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>10.2.5</b> Nobody's perfect</a></li>
+<li class="chapter" data-level="10.2.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>10.2.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>10.3</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>10.3.1</b> Algebra</a></li>
+<li class="chapter" data-level="10.3.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>10.3.2</b> Analysis</a></li>
+<li class="chapter" data-level="10.3.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>10.3.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>10.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="10.5" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>10.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>11</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="linear-regression.html"><a href="linear-regression.html#what-you-deserve-is-what-you-get"><i class="fa fa-check"></i><b>11.1</b> What You Deserve Is What You Get</a></li>
+<li class="chapter" data-level="11.2" data-path="linear-regression.html"><a href="linear-regression.html#data-sample"><i class="fa fa-check"></i><b>11.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="11.3" data-path="linear-regression.html"><a href="linear-regression.html#data-visualization-1"><i class="fa fa-check"></i><b>11.3</b> Data Visualization</a></li>
+<li class="chapter" data-level="11.4" data-path="linear-regression.html"><a href="linear-regression.html#simplest-regression"><i class="fa fa-check"></i><b>11.4</b> Simplest Regression</a></li>
+<li class="chapter" data-level="11.5" data-path="linear-regression.html"><a href="linear-regression.html#simple-regression"><i class="fa fa-check"></i><b>11.5</b> Simple Regression</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="linear-regression.html"><a href="linear-regression.html#x-is-continuous"><i class="fa fa-check"></i><b>11.5.1</b> X is continuous</a></li>
+<li class="chapter" data-level="11.5.2" data-path="linear-regression.html"><a href="linear-regression.html#x-is-a-dummy"><i class="fa fa-check"></i><b>11.5.2</b> X is a dummy</a></li>
+<li class="chapter" data-level="11.5.3" data-path="linear-regression.html"><a href="linear-regression.html#x-is-categorical"><i class="fa fa-check"></i><b>11.5.3</b> X is categorical</a></li>
+<li class="chapter" data-level="11.5.4" data-path="linear-regression.html"><a href="linear-regression.html#x-is-categorical-is-it"><i class="fa fa-check"></i><b>11.5.4</b> X is categorical, is it?</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="linear-regression.html"><a href="linear-regression.html#parallel-slopes"><i class="fa fa-check"></i><b>11.6</b> Parallel Slopes</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="linear-regression.html"><a href="linear-regression.html#x-is-continuous-dummy"><i class="fa fa-check"></i><b>11.6.1</b> X is continuous + dummy</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="linear-regression.html"><a href="linear-regression.html#model-comparison"><i class="fa fa-check"></i><b>11.7</b> Model Comparison</a></li>
+<li class="chapter" data-level="11.8" data-path="linear-regression.html"><a href="linear-regression.html#transform-to-perform"><i class="fa fa-check"></i><b>11.8</b> Transform to Perform</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="interaction-models.html"><a href="interaction-models.html"><i class="fa fa-check"></i><b>12</b> Interaction Models</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="interaction-models.html"><a href="interaction-models.html#motivation"><i class="fa fa-check"></i><b>12.1</b> Motivation</a></li>
+<li class="chapter" data-level="12.2" data-path="interaction-models.html"><a href="interaction-models.html#data-sample-1"><i class="fa fa-check"></i><b>12.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="12.3" data-path="interaction-models.html"><a href="interaction-models.html#throwback-parallel-slopes"><i class="fa fa-check"></i><b>12.3</b> Throwback Parallel Slopes</a></li>
+<li class="chapter" data-level="12.4" data-path="interaction-models.html"><a href="interaction-models.html#regression-with-moderators"><i class="fa fa-check"></i><b>12.4</b> Regression with Moderators</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="interaction-models.html"><a href="interaction-models.html#dummy-dummy"><i class="fa fa-check"></i><b>12.4.1</b> Dummy * Dummy</a></li>
+<li class="chapter" data-level="12.4.2" data-path="interaction-models.html"><a href="interaction-models.html#categorical-dummy"><i class="fa fa-check"></i><b>12.4.2</b> Categorical * Dummy</a></li>
+<li class="chapter" data-level="12.4.3" data-path="interaction-models.html"><a href="interaction-models.html#continuous-dummy"><i class="fa fa-check"></i><b>12.4.3</b> Continuous * Dummy</a></li>
+<li class="chapter" data-level="12.4.4" data-path="interaction-models.html"><a href="interaction-models.html#continuous-continuous"><i class="fa fa-check"></i><b>12.4.4</b> Continuous * Continuous</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="interaction-models.html"><a href="interaction-models.html#model-comparison-1"><i class="fa fa-check"></i><b>12.5</b> Model Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>13</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="logistic-regression.html"><a href="logistic-regression.html#think-inside-the-box"><i class="fa fa-check"></i><b>13.1</b> Think inside the box</a></li>
+<li class="chapter" data-level="13.2" data-path="logistic-regression.html"><a href="logistic-regression.html#from-probability-to-odds"><i class="fa fa-check"></i><b>13.2</b> From probability to odds</a></li>
+<li class="chapter" data-level="13.3" data-path="logistic-regression.html"><a href="logistic-regression.html#from-odds-to-log-of-odds"><i class="fa fa-check"></i><b>13.3</b> From odds to log of odds</a></li>
+<li class="chapter" data-level="13.4" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-survival"><i class="fa fa-check"></i><b>13.4</b> Titanic Survival</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#the-data"><i class="fa fa-check"></i><b>13.4.1</b> The Data</a></li>
+<li class="chapter" data-level="13.4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#no-predictor-variables"><i class="fa fa-check"></i><b>13.4.2</b> No Predictor Variables</a></li>
+<li class="chapter" data-level="13.4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#single-dichotomous-predictor"><i class="fa fa-check"></i><b>13.4.3</b> Single Dichotomous Predictor</a></li>
+<li class="chapter" data-level="13.4.4" data-path="logistic-regression.html"><a href="logistic-regression.html#effect-plot"><i class="fa fa-check"></i><b>13.4.4</b> Effect plot</a></li>
+<li class="chapter" data-level="13.4.5" data-path="logistic-regression.html"><a href="logistic-regression.html#chi-square"><i class="fa fa-check"></i><b>13.4.5</b> Chi Square</a></li>
+<li class="chapter" data-level="13.4.6" data-path="logistic-regression.html"><a href="logistic-regression.html#some-are-more-equal-than-others"><i class="fa fa-check"></i><b>13.4.6</b> Some Are More Equal Than Others</a></li>
+<li class="chapter" data-level="13.4.7" data-path="logistic-regression.html"><a href="logistic-regression.html#the-cheaper-the-deader"><i class="fa fa-check"></i><b>13.4.7</b> The Cheaper The Deader?</a></li>
+<li class="chapter" data-level="13.4.8" data-path="logistic-regression.html"><a href="logistic-regression.html#the-bigger-picture"><i class="fa fa-check"></i><b>13.4.8</b> The Bigger Picture</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>14</b> Marginal Effects</a>
+<ul>
+<li class="chapter" data-level="14.0.1" data-path="marginal-effects.html"><a href="marginal-effects.html#marginal-effects-at-representatives"><i class="fa fa-check"></i><b>14.0.1</b> Marginal effects at representatives</a></li>
+<li class="chapter" data-level="14.0.2" data-path="marginal-effects.html"><a href="marginal-effects.html#marginal-effects-at-the-mean"><i class="fa fa-check"></i><b>14.0.2</b> Marginal effects at the mean</a></li>
+<li class="chapter" data-level="14.0.3" data-path="marginal-effects.html"><a href="marginal-effects.html#average-marginal-effects"><i class="fa fa-check"></i><b>14.0.3</b> Average marginal effects</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html"><i class="fa fa-check"></i><b>15</b> Software is everywhere</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#software"><i class="fa fa-check"></i><b>15.1</b> Software</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#command-line-interface-cli"><i class="fa fa-check"></i><b>15.1.1</b> Command line interface (CLI)</a></li>
+<li class="chapter" data-level="15.1.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#graphical-user-interface-gui"><i class="fa fa-check"></i><b>15.1.2</b> Graphical user interface (GUI)</a></li>
+<li class="chapter" data-level="15.1.3" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#integrated-development-environment-ide"><i class="fa fa-check"></i><b>15.1.3</b> Integrated development environment (IDE)</a></li>
+<li class="chapter" data-level="15.1.4" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#online-compiler"><i class="fa fa-check"></i><b>15.1.4</b> Online Compiler</a></li>
+<li class="chapter" data-level="15.1.5" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#cloud-solutions"><i class="fa fa-check"></i><b>15.1.5</b> Cloud solutions</a></li>
+<li class="chapter" data-level="15.1.6" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#dashboards"><i class="fa fa-check"></i><b>15.1.6</b> Dashboards</a></li>
+<li class="chapter" data-level="15.1.7" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#shiny-apps"><i class="fa fa-check"></i><b>15.1.7</b> Shiny Apps</a></li>
+</ul></li>
+<li class="chapter" data-level="15.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#file-formats"><i class="fa fa-check"></i><b>15.2</b> File formats</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#text-files"><i class="fa fa-check"></i><b>15.2.1</b> Text files</a></li>
+<li class="chapter" data-level="15.2.2" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#text-with-structure"><i class="fa fa-check"></i><b>15.2.2</b> Text with structure</a></li>
+<li class="chapter" data-level="15.2.3" data-path="software-is-everywhere.html"><a href="software-is-everywhere.html#file-formats-1"><i class="fa fa-check"></i><b>15.2.3</b> File formats</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="15.3" data-path="references.html"><a href="references.html#resources"><i class="fa fa-check"></i><b>15.3</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="regression" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Regression<a href="regression.html#regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/4QCBRXhpZgAASUkqAAgAAAABAA4BAgBfAAAAGgAAAAAAAABTaGlyZSBIb3JzZSAvIERyYWZ0IEhvcnNlIC8gSGVhdnkgSG9yc2UsIHZlY3RvciBsb2dvIGlsbHVzdHJhdGlvbiwgZnVsbHkgYWRqdXN0YWJsZSAmIHNjYWxhYmxlLv/hBYZodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iPgoJPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KCQk8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczpwaG90b3Nob3A9Imh0dHA6Ly9ucy5hZG9iZS5jb20vcGhvdG9zaG9wLzEuMC8iIHhtbG5zOklwdGM0eG1wQ29yZT0iaHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcENvcmUvMS4wL3htbG5zLyIgICB4bWxuczpHZXR0eUltYWdlc0dJRlQ9Imh0dHA6Ly94bXAuZ2V0dHlpbWFnZXMuY29tL2dpZnQvMS4wLyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczpwbHVzPSJodHRwOi8vbnMudXNlcGx1cy5vcmcvbGRmL3htcC8xLjAvIiAgeG1sbnM6aXB0Y0V4dD0iaHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcEV4dC8yMDA4LTAyLTI5LyIgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIgcGhvdG9zaG9wOkNyZWRpdD0iR2V0dHkgSW1hZ2VzL2lTdG9ja3Bob3RvIiBHZXR0eUltYWdlc0dJRlQ6QXNzZXRJRD0iMTE0MDIzMDIyMyIgeG1wUmlnaHRzOldlYlN0YXRlbWVudD0iaHR0cHM6Ly93d3cuaXN0b2NrcGhvdG8uY29tL2xlZ2FsL2xpY2Vuc2UtYWdyZWVtZW50P3V0bV9tZWRpdW09b3JnYW5pYyZhbXA7dXRtX3NvdXJjZT1nb29nbGUmYW1wO3V0bV9jYW1wYWlnbj1pcHRjdXJsIiA+CjxkYzpjcmVhdG9yPjxyZGY6U2VxPjxyZGY6bGk+Zm9vZG9ud2hpdGU8L3JkZjpsaT48L3JkZjpTZXE+PC9kYzpjcmVhdG9yPjxkYzpkZXNjcmlwdGlvbj48cmRmOkFsdD48cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiPlNoaXJlIEhvcnNlIC8gRHJhZnQgSG9yc2UgLyBIZWF2eSBIb3JzZSwgdmVjdG9yIGxvZ28gaWxsdXN0cmF0aW9uLCBmdWxseSBhZGp1c3RhYmxlICZhbXA7IHNjYWxhYmxlLjwvcmRmOmxpPjwvcmRmOkFsdD48L2RjOmRlc2NyaXB0aW9uPgo8cGx1czpMaWNlbnNvcj48cmRmOlNlcT48cmRmOmxpIHJkZjpwYXJzZVR5cGU9J1Jlc291cmNlJz48cGx1czpMaWNlbnNvclVSTD5odHRwczovL3d3dy5pc3RvY2twaG90by5jb20vcGhvdG8vbGljZW5zZS1nbTExNDAyMzAyMjMtP3V0bV9tZWRpdW09b3JnYW5pYyZhbXA7dXRtX3NvdXJjZT1nb29nbGUmYW1wO3V0bV9jYW1wYWlnbj1pcHRjdXJsPC9wbHVzOkxpY2Vuc29yVVJMPjwvcmRmOmxpPjwvcmRmOlNlcT48L3BsdXM6TGljZW5zb3I+CgkJPC9yZGY6RGVzY3JpcHRpb24+Cgk8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJ3Ij8+Cv/tAK5QaG90b3Nob3AgMy4wADhCSU0EBAAAAAAAkRwCUAALZm9vZG9ud2hpdGUcAngAX1NoaXJlIEhvcnNlIC8gRHJhZnQgSG9yc2UgLyBIZWF2eSBIb3JzZSwgdmVjdG9yIGxvZ28gaWxsdXN0cmF0aW9uLCBmdWxseSBhZGp1c3RhYmxlICYgc2NhbGFibGUuHAJuABhHZXR0eSBJbWFnZXMvaVN0b2NrcGhvdG8A/9sAQwAKBwcIBwYKCAgICwoKCw4YEA4NDQ4dFRYRGCMfJSQiHyIhJis3LyYpNCkhIjBBMTQ5Oz4+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AAAG2wAWA2gAAW22222222222y2yWwAAm2AAAAAAAA22ACQCyAAG2222222222222220AAAEgAAAAAAAC2ygmwGyEE222222222222222ygAAAAAAAAAAAAW2EE2g22Q2222222222222222AAAAAAAAAAAAAC2wAEwm2222222222222y2222QAAAAAAAAAAAAA22QAiA22yEk22222222Um222UAAAAAAAAAAAAAC22AAUm22g2gEy22222yG222UEAAAAAAAAAAAAEW2QACC22w222UkGW222QW22QWQAAAAAAAAAAAEm2yAAQ220G22ygAEAkAWm22CW22kAAAAAAAAAAS22wAmW22g222gAAAAAGE22i22220AAAAAAAAACW2EAA222AE220AAAAAEw2yAi2W22gAAAAAAAAAA2wAA222wAm22gAAAAAG22gAAAm20AAAAAAAAAEW2gA222UAAm20AAAAAAW2gAAAEW2gAAAAAAAES22gEW22UAAE22gAAAAA22wAAAAgWUAAAAAAAAA22UE2y2UAAAm2ygAAAAm20AAEEiC0AAAAAAAAAESkAi0i0AAAA22ygAAAi20AAEyUgyAAAAAAAAAAAAAGgEygAAAEW22gAAA22AAAyAAmAAAAAAAAAAAAAEgA2gAAAAEAiyAAEi2gAACwEWQAAAAAAAAAAAAAQAG0AAAAACgCwACgWwAAAyAG2AAAAAAAAAAAAAEAE2AAAAAAiAiUkUC0AAAmgW2gAAAAAAAAAAAAmAAmwAAAAAE0AG2wA2gAAC02yUAAAAAAAAAAAAEwAEWAAAAAAEgE2wAWwAAE2W2kAAAAAAAAAAAAAmAAGyAAAAAAAAmyAE2gAAG2WUAAAAAAAAAAAAAAwAAmUAAAAAEwAWgEiygAE2kEAAAAAAAAAAAAAAGAAA2QAAAAAmAAwAAWQAACgAAAAAAAAAAAAAAAEUAA22AAAAAEwAm0AEWQAAAAAAAAAAAAAAAAAAAmEgkW2AAAAAmgC2EEg2wAAAAAAAAAAAAAAAAAAAG22y2wAAAAEW22W2WW2gAAAAAAAAAAAAAAAAAAEAgEEAgAAAAEggAAAkkkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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" alt="horse" style="position:absolute; top:0; right:0; padding:10px;" width="100"/>
+<p>This chapter introduces the workhorse of empirical research in the social science: Regression.</p>
+<blockquote>
+<p>“As an undergraduate <strong>I studied economics, which meant I studied a lot of regressions</strong>. It was basically 90% of the curriculum (when we’re not discussing supply and demand curves, of course). The <a href="https://www.aeaweb.org/articles?id=10.1257/000282802762024665">effect of corruption on sumo wrestling</a>? Regression. <a href="https://www.nber.org/system/files/working_papers/w4509/w4509.pdf">Effect of minimum wage changes on a Wendy’s in NJ</a>? Regression. Or maybe <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2550498">The Zombie Lawyer Apocalypse</a> is more your speed (O.K., not a regression, but the title was cool).”</b></p>
+</blockquote>
+<footer>
+-- Amanda West (2020) -- <a href="https://towardsdatascience.com/a-beginners-guide-to-using-instrumental-variables-635fd5a1b35f">A Beginner’s Guide to Instrumental Variables</a>
+</footer>
+<!-- > "We are gonna talk about what has been, what is and what always will be the **most important statistical technique ever: Regression.** Almost every analysis you will read or see uses regression in some way of another." -->
+<!-- <footer>-- Prof. Matt Masten (2015) -- [Introduction to Regression Analysis: Causal Inference Bootcamp](https://www.youtube.com/watch?v=ROLeLaR-17U&list=PL1M5TsfDV6Vu-GcB4Eb1P1KQ3wVxMI9Mn)</footer> -->
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- library("vembedr") -->
+<!-- embed_url("https://www.youtube.com/watch?v=ROLeLaR-17U") %>% -->
+<!--   use_start_time("0m3") %>% -->
+<!--   use_align("center") -->
+<!-- ``` -->
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_emSBt_4uWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</center>
+<!-- :::: {.amazing} -->
+<!-- ::: {.titelamazing} -->
+<!-- <h2> Amazing Fact </h2> -->
+<!-- ::: -->
+<!-- Linear regression was first introduced by **Sir Francis Galton** in the late 19th century, and he used it to study the relationship between the height of parents and their children.  -->
+<!-- :::: -->
+<div id="old-but-gold" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Old but Gold<a href="regression.html#old-but-gold" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- Your favorite topic -->
+<!-- > “Every artist was first an amateur.” -->
+<!-- <footer>-- Ralph Waldo Emerson (1803--1882), US-American essayist, lecturer, philosopher, abolitionist and poet.</footer> -->
+<!-- This I speculate that the quote from Mr. Emerson is also true for social scientists.  -->
+<p>Are older artists are better than younger artists? While experience and maturity can certainly contribute to an artist's skill and creativity, there are many factors that can influence the quality of an artist's work, such as natural talent, dedication, training, and access to resources. Is there an optimum age for artistic performance as compared to athletic performances which reaches a peak in youth? Do artists improve their skills and performance over an entire lifetime step-by-step such that the longer you live, the more you have time to practice? Does exceptional art happens randomly? Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art?</p>
+<p>There seems to be something to the story.</p>
+<blockquote>
+<p>"Paul Cezanne died in October 1906 at the age of 67. In time he would be generally regarded as the most influential painter who had worked in the nineteenth century (e.g., Clive Bell, 1982; Clement Greenberg, 1993). Art historians and critics would also agree that his greatest achievement was the work he did late in his life."</p>
+<footer>
+-- Galenson, D. W., &amp; Weinberg, B. A. (2001). Creating modern art: The changing careers of painters in France from impressionism to cubism. American Economic Review, 91(4), 1063-1071.
+</footer>
+</blockquote>
+<!-- <p style="margin-bottom:1cm;"></p> -->
+<p>What does <em>better</em> mean? In this chapter the research question is:</p>
+<center>
+<strong>What is the relationship between the age of an artist and his productivity?</strong>
+</center>
+<!-- &nbsp; -->
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>research question</strong> is</p>
+<ul>
+<li>focused on a single issue,</li>
+<li>specific enough to answer thoroughly</li>
+<li>and feasible to answer within the given time frame or practical constraints</li>
+<li>not to mention relevant to your field of study.<br />
+</li>
+</ul>
+</div>
+<!-- There are high-quality journal paper analyzing this question.  -->
+<!-- Ekelund Jr, R. B., Jackson, J. D., & Tollison, R. D. (2015). Age and productivity: An empirical study of early American artists. Southern Economic Journal, 81(4), 1096-1116. -->
+<!-- ::: {.infobox .question data-latex="warning"} -->
+<!-- What exactly is productivity and how can we measure it?  -->
+<!-- ::: -->
+<p>But what exactly is productivity and how can we measure it? To keep things simple we follow the literature and measure <em>productivity</em> via auction prices for paintings. That's a very <em>economic perspective</em> on art.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Operationalization</strong> is the process of defining the measurement of a phenomenon that is not directly measurable.</p>
+</div>
+<p>This is what we gonna explore:</p>
+<center>
+<strong>What is the relationship between the age of artists and auction price for their paintings?</strong>
+</center>
+<!-- <p style="color:#808080">What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ). Perhaps something else.</p> -->
+<!-- <sup>What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ),<sup>  -->
+</div>
+<div id="data-is-everywhere-1" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Data is everywhere<a href="regression.html#data-is-everywhere-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- library("vembedr") -->
+<!-- embed_url("https://vimeo.com/303322440") %>% -->
+<!--   #use_start_time("1m32") %>% -->
+<!--   use_align("center") -->
+<!-- ``` -->
+<!-- Thus, the higher paintings were selling in an auction (in million US dollar, inflation adjusted), the higher is the artist's productivity. That's not ideal, but the best approach that we have at this time. I select some of the top selling paintings from a Wikipedia list: -->
+<p>Researchers use auction price data for which they have to pay. We use free information from a Wikipedia <a href="https://en.wikipedia.org/wiki/List_of_most_expensive_paintings">List of most expensive paintings</a> of all time. The auction prices are inflation-adjusted by consumer price index in millions of United States dollars in 2019. That's another interesting economic procedure, that we take for given at this analysis.</p>
+<div id="data-in-a-table" class="section level3 hasAnchor" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Data in a table<a href="regression.html#data-in-a-table" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://www.askart.com/Search_Artist_Auction_Records.aspx -->
+<!-- https://datatables.net/ -->
+<p>The table is created with the <code>DT</code> package in <em>datatable</em> format. This exploits the full potential of html documents, i.e. the data is searchable and sortable. The first rows are displayed, but in principle it can include the entire dataset.</p>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9a34a58cca3c353347ef" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9a34a58cca3c353347ef">{"x":{"filter":"none","vertical":false,"data":[["Pablo Picasso","Claude Monet","Paul Cézanne","Hans Holbein","Edvard Munch","Thomas Eakins"],["Garçon à la pipe","Meules","Rideau, Cruchon et Compotier","Darmstadt Madonna","The Scream","The Gross Clinic"],[141,110.7,92.90000000000001,85,133.6,83.8],[24,50,65,29,30,31],[91,86,67,45,80,71],[1881,1840,1839,1497,1863,1844]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Artist<\/th>\n      <th>Painting<\/th>\n      <th>Price<\/th>\n      <th>Age.at.Painting<\/th>\n      <th>Age.at.Death<\/th>\n      <th>Birth.Year<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Tabular data</strong> is common in data analysis. You can create a table in Word or Excel.</p>
+</div>
+</div>
+<div id="data-in-a-graph" class="section level3 hasAnchor" number="10.2.2">
+<h3><span class="header-section-number">10.2.2</span> Data in a graph<a href="regression.html#data-in-a-graph" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Two continuous variables are plotted in a <strong>scatterplot</strong>. The <strong>x-axis</strong> is called <strong><u id='age'>abscissa </u></strong> and the <strong>y-axis</strong> is called <strong><u id='price'>ordinate</u></strong>.</p>
+<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-b2710f4b56df4ee7a30c" width="576"></span>
+<script type="application/json" data-for="htmlwidget-b2710f4b56df4ee7a30c">{"x":{"element":"price","opts":{"content":"here: price"}},"evals":[],"jsHooks":[]}</script>
+<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-7cff0d28923f2003974d" width="576"></span>
+<script type="application/json" data-for="htmlwidget-7cff0d28923f2003974d">{"x":{"element":"age","opts":{"content":"here: age"}},"evals":[],"jsHooks":[]}</script>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-143-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Note that the axis beginning is not zero. The decision where axes start was made by the <code>ggplot</code> package for this data. Remember, every unit on the y-axis represents a million US dollars. Do we need to show the age between 0 and 20? How many famous artists died before 20 and sold paintings for a hundred million US dollars?</p>
+<!-- https://stephanieevergreen.com/non-zero-axis-rules/ -->
+<!-- http://stephanieevergreen.com/y-axis/ -->
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+When It’s OK to NOT Start Your Axis at Zero.
+</h2>
+</div>
+<p>When the data really don’t fluctuate very much but a rise of small values like 1.4 or 1.4% is a big deal. With a graph that starts at zero, these changes can't be detected. The data scientist has to decide.</p>
+</div>
+</div>
+<div id="the-trend" class="section level3 hasAnchor" number="10.2.3">
+<h3><span class="header-section-number">10.2.3</span> The trend<a href="regression.html#the-trend" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The graph suggests a <strong>positive trend</strong> between price and age. There is an <strong>increase</strong> in price for older artists. The older the artist, the higher the auction prices.</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-144-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="the-blackbox" class="section level3 hasAnchor" number="10.2.4">
+<h3><span class="header-section-number">10.2.4</span> The blackbox<a href="regression.html#the-blackbox" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The mission is to find a mathematical function that describes the trend. In other words, we are looking for the black box that transforms the input into the output:</p>
+<center>
+<img src="images/function-fx-x2.svg" />
+</center>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>mathematical function</strong> is an expression, rule, or law that defines a relationship between one variable (the <strong>independent variable</strong>, on the x-axis) and another variable (the <strong>dependent variable</strong>, on the y-axis).</p>
+</div>
+<p>From looking at the graph, here are two suggestions:</p>
+<p><span class="math display">\[\begin{align}
+\text{price} = 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+\text{price} = 90 + 0.2 \cdot \text{age} \tag{Suggestion 2} \\
+\end{align}\]</span></p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>linear function</strong> is defined by two components, <strong>intercept</strong> (with the y-axis) and <strong>slope</strong>.</p>
+</div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-145-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>How can we compare the two suggested lines? Which linear function represents the relationship best?</p>
+</div>
+<div id="nobodys-perfect" class="section level3 hasAnchor" number="10.2.5">
+<h3><span class="header-section-number">10.2.5</span> Nobody's perfect<a href="regression.html#nobodys-perfect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://drsimonj.svbtle.com/visualising-residuals -->
+<p>We all make mistakes. So do the linear functions:</p>
+<p><span class="math display">\[ \begin{align}
+\text{price} &amp;= 80 + 0.5 \cdot \text{age} \tag{Suggestion 1} \\
+102.5 &amp;= 80 + 0.5 \cdot 45 \tag{Age for Holbein} \\
+\end{align}\]</span></p>
+<p>The equation tells (or predicts) that for any artist at the age of 45 it expects a auction price for a painting of 102.5 million US Dollar. Darmstadt Madonna was sold for 85 million US dollar. The linear function overestimated the true value. When you look at the graph, you see some predictions are more accurate (close to the true values) than others. All are either above or below the line.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>residual</strong> (or error) is the vertical distance between the actual and the predicted value.</p>
+</div>
+<!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-146-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="vocab-wrap-up" class="section level3 hasAnchor" number="10.2.6">
+<h3><span class="header-section-number">10.2.6</span> Vocab Wrap-Up<a href="regression.html#vocab-wrap-up" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let's wrap up regression vocab! Find an equation that describes the phenomenon of interest. Equation I shows a generic statistical model; equation II a generic linear model.</p>
+<p><span class="math display">\[ \begin{align}
+\text{outcome} &amp;= f(\text{explanatory}) + \text{noise} \tag{I} \\
+\text{outcome} &amp;= \text{intercept} + \text{slope} \cdot \text{explanatory} + \text{noise} \tag{II} \\
+\end{align} \]</span></p>
+<p>A <strong>regression model</strong> is suggested by the researcher. A more concrete regression model looks like this:</p>
+<p><span class="math display">\[Y = \beta_1 + \beta_2 X + \epsilon\]</span></p>
+<p>A model can be easy or complicated. It definitely contains variables and parameters.</p>
+<ul>
+<li><strong>Variables</strong>: Things that we measure (or have data).</li>
+<li><strong>Parameters</strong>: Constant values we believe to represent some fundamental truth about the relationship between the variables.</li>
+</ul>
+<p>The calculation is called an <strong>estimation</strong>. In textbooks the same equation can be found with hats:</p>
+<p><span class="math display">\[   \widehat{Y}  = \widehat{\beta}_1 + \widehat{\beta}_2 \cdot X \]</span>
+<span class="math inline">\(\widehat{Y}\)</span> are called the <strong>fitted or predicted</strong> values. <span class="math inline">\(\widehat{\beta}\)</span> are <strong>regression coefficients</strong> (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals <span class="math inline">\(e = Y - \widehat{Y}\)</span>.</p>
+<p>The fitting procedure is called <strong>ordinary least squares</strong> (OLS).</p>
+</div>
+</div>
+<div id="for-the-truly-dedicated" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> For the truly dedicated<a href="regression.html#for-the-truly-dedicated" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- div { -->
+<!--   background-color: lightblue; -->
+<!-- } -->
+<!-- This is a cool graphic -->
+<!-- https://www.quora.com/Why-is-the-coefficient-of-determination-never-used-in-Machine-Learning -->
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- Now we have all the ingredients we need. <details> -->
+<!-- <summary>*Let's get this party started!*</summary> -->
+<!-- ![Carlton Dance](https://media1.tenor.com/images/6519b006f53708454922375a82c23682/tenor.gif?itemid=15161860) -->
+<!-- </details> -->
+<!-- ::: -->
+<p>The overall goal is to make as little as possible mistakes! What kind of mistake? The deviation from the observed values! What could come to your mind is to <strong>minimize the sum of all errors</strong>:</p>
+<p><span class="math display">\[\sum e \rightarrow \min\]</span>
+But wait, there is more. Is it fair to say that the sum should be small? Compare <strong>The Scream</strong> and <strong>Meules</strong>, their deviations are <span class="math inline">\(+17.5\)</span> and <span class="math inline">\(-13.6\)</span> (very similar). So taken these two together, there's almost not mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story:</p>
+<p><span class="math display">\[\sum e^2 \rightarrow \min\]</span>
+The goal of OLS is to <strong>minimize the residual sum of squares</strong> or the <strong>sum of squared residuals</strong>.</p>
+<div id="algebra" class="section level3 hasAnchor" number="10.3.1">
+<h3><span class="header-section-number">10.3.1</span> Algebra<a href="regression.html#algebra" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
+</div>
+<p>Algebra comes from Arabic, meaning "reunion of broken parts".</p>
+</div>
+<!-- We often work with matrices and vectors.  -->
+<p>Let's introduce matrix notation. We began with <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> being <em>variables</em> in the equation:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X + \epsilon \]</span>
+<!-- Each data point is a combination of values. --></p>
+<p>We turn this into:</p>
+<p><span class="math display">\[y = X \beta + \epsilon \]</span>
+Capital letters like <span class="math inline">\(X\)</span> represent a matrix (a table with rows and column), and small letters like <span class="math inline">\(y\)</span> and <span class="math inline">\(e\)</span> represent vectors. Since there are 6 observations and two parameters in our model we get:</p>
+<p><span class="math display">\[ \begin{align}
+\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &amp;= \begin{pmatrix} 1 &amp; X_{11} \\ 1 &amp; X_{12} \\ 1 &amp; X_{13} \\ 1 &amp; X_{14} \\ 1 &amp; X_{15} \\ 1 &amp; X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix}
+\end{align}\]</span></p>
+<p>Let's turn to the goal, minizing the residual sum of squares (RSS). By convention, the <em>normal</em> version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To <em>transpose</em> a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:</p>
+<p><span class="math display">\[\sum e^2 = e^T \cdot e \rightarrow \min\]</span>
+Notice that the sum operator is gone. <a href="https://en.wikipedia.org/wiki/Matrix_multiplication" target="_blank">Matrix multiplication</a> requires multiplying all elements pairwise with each other and summing them up. Plug in the residuals <span class="math inline">\(e = y - X \beta\)</span> in the equation:</p>
+<p><span class="math display">\[\begin{align}
+    \sum e^2 &amp;= e^T \cdot e \\
+    &amp;= (y - X \beta )^T (y - X \beta) \tag{$(A+B)^T = A^T + B^T$}\\
+    &amp;= (y^T - X^T \beta^T) (y - X \beta) \\
+    &amp;= y^T y - y^T X \beta - X^T \beta^T y + X^T \beta^T X \beta \\
+    &amp;= y^2 \underbrace{- 2 \beta^T X^T y}_{??} + \beta^2 X^2  \\
+\end{align}\]</span></p>
+<p>Did you notice what happened in the middle? The transpose of the first term is equal to the second:</p>
+<p><span class="math display">\[\begin{align}
+    (y^T X \beta)^T = y X^T \beta^T
+\end{align}\]</span></p>
+</div>
+<div id="analysis" class="section level3 hasAnchor" number="10.3.2">
+<h3><span class="header-section-number">10.3.2</span> Analysis<a href="regression.html#analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
+</div>
+<p>From Medieval Latin, analysis means "resolution of anything complex into simple elements" (opposite of synthesis).</p>
+</div>
+<!-- *Functions* are key to analysis. -->
+<p>Next, we are ready to <strong>optimize</strong>. Optimization (in math and economics) is done by <strong>differentiation</strong>:</p>
+<!-- (setting the first derivative equal to zero). What are the betas? -->
+<p><span class="math display">\[\begin{align}
+    \frac{\partial RSS}{\partial \beta} &amp;= -2 X^T y + 2 \beta X^T X = 0 \tag{first derivative = zero} \\
+    2 \beta X^T X &amp;= 2 X^T y \tag{rearrange terms}\\
+    \beta X^T X &amp;= X^T y \tag{the &quot;normal equation&quot;} \\
+    \beta &amp;= (X^T X)^{-1} X^T y \tag{Bam}\\
+\end{align}\]</span></p>
+<p>Those <span class="math inline">\(\beta\)</span> coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time.</p>
+</div>
+<div id="take-the-long-way-home" class="section level3 hasAnchor" number="10.3.3">
+<h3><span class="header-section-number">10.3.3</span> Take the Long Way Home<a href="regression.html#take-the-long-way-home" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- ::: {.infobox .information data-latex="warning"} -->
+<!-- <details> -->
+<!-- <summary>*The computer does the magic for us.*</summary> -->
+<!-- <center> -->
+<!-- ![Magic Alice](https://thumbs.gfycat.com/RemorsefulFairIndianpangolin-max-1mb.gif) -->
+<!-- </center> -->
+<!-- </details> -->
+<!-- ::: -->
+<p>First, retrieve matrix <span class="math inline">\(X\)</span> from the data set:</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="regression.html#cb94-1" tabindex="-1"></a>X</span>
+<span id="cb94-2"><a href="regression.html#cb94-2" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2]</span></span>
+<span id="cb94-3"><a href="regression.html#cb94-3" tabindex="-1"></a><span class="co">#&gt; [1,]    1   91</span></span>
+<span id="cb94-4"><a href="regression.html#cb94-4" tabindex="-1"></a><span class="co">#&gt; [2,]    1   86</span></span>
+<span id="cb94-5"><a href="regression.html#cb94-5" tabindex="-1"></a><span class="co">#&gt; [3,]    1   67</span></span>
+<span id="cb94-6"><a href="regression.html#cb94-6" tabindex="-1"></a><span class="co">#&gt; [4,]    1   45</span></span>
+<span id="cb94-7"><a href="regression.html#cb94-7" tabindex="-1"></a><span class="co">#&gt; [5,]    1   80</span></span>
+<span id="cb94-8"><a href="regression.html#cb94-8" tabindex="-1"></a><span class="co">#&gt; [6,]    1   71</span></span></code></pre></div>
+<p>Second, the transpose of <span class="math inline">\(X\)</span> has two rows and six columns (use <code>t()</code>):</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="regression.html#cb95-1" tabindex="-1"></a><span class="fu">t</span>(X)</span>
+<span id="cb95-2"><a href="regression.html#cb95-2" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
+<span id="cb95-3"><a href="regression.html#cb95-3" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    1    1    1    1</span></span>
+<span id="cb95-4"><a href="regression.html#cb95-4" tabindex="-1"></a><span class="co">#&gt; [2,]   91   86   67   45   80   71</span></span></code></pre></div>
+<p>Next, calculate the square of the matrix (transpose times original):</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="regression.html#cb96-1" tabindex="-1"></a><span class="fu">t</span>(X)<span class="sc">%*%</span>X</span>
+<span id="cb96-2"><a href="regression.html#cb96-2" tabindex="-1"></a><span class="co">#&gt;      [,1]  [,2]</span></span>
+<span id="cb96-3"><a href="regression.html#cb96-3" tabindex="-1"></a><span class="co">#&gt; [1,]    6   440</span></span>
+<span id="cb96-4"><a href="regression.html#cb96-4" tabindex="-1"></a><span class="co">#&gt; [2,]  440 33632</span></span></code></pre></div>
+<p>The inverse of the matrix product can be calculated by <code>solve()</code>:</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="regression.html#cb97-1" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X)</span>
+<span id="cb97-2"><a href="regression.html#cb97-2" tabindex="-1"></a><span class="co">#&gt;             [,1]          [,2]</span></span>
+<span id="cb97-3"><a href="regression.html#cb97-3" tabindex="-1"></a><span class="co">#&gt; [1,]  4.10546875 -0.0537109375</span></span>
+<span id="cb97-4"><a href="regression.html#cb97-4" tabindex="-1"></a><span class="co">#&gt; [2,] -0.05371094  0.0007324219</span></span></code></pre></div>
+<p>Next, multiply the inverse with the transpose from the right:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="regression.html#cb98-1" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X) <span class="sc">%*%</span> <span class="fu">t</span>(X)</span>
+<span id="cb98-2"><a href="regression.html#cb98-2" tabindex="-1"></a><span class="co">#&gt;             [,1]         [,2]         [,3]        [,4]         [,5]</span></span>
+<span id="cb98-3"><a href="regression.html#cb98-3" tabindex="-1"></a><span class="co">#&gt; [1,] -0.78222656 -0.513671875  0.506835938  1.68847656 -0.191406250</span></span>
+<span id="cb98-4"><a href="regression.html#cb98-4" tabindex="-1"></a><span class="co">#&gt; [2,]  0.01293945  0.009277344 -0.004638672 -0.02075195  0.004882813</span></span>
+<span id="cb98-5"><a href="regression.html#cb98-5" tabindex="-1"></a><span class="co">#&gt;              [,6]</span></span>
+<span id="cb98-6"><a href="regression.html#cb98-6" tabindex="-1"></a><span class="co">#&gt; [1,]  0.291992188</span></span>
+<span id="cb98-7"><a href="regression.html#cb98-7" tabindex="-1"></a><span class="co">#&gt; [2,] -0.001708984</span></span></code></pre></div>
+<p>Finally, multiply the vector <span class="math inline">\(y\)</span>:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="regression.html#cb99-1" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X)<span class="sc">%*%</span>X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y</span>
+<span id="cb99-2"><a href="regression.html#cb99-2" tabindex="-1"></a><span class="co">#&gt;           [,1]</span></span>
+<span id="cb99-3"><a href="regression.html#cb99-3" tabindex="-1"></a><span class="co">#&gt; [1,] 22.345215</span></span>
+<span id="cb99-4"><a href="regression.html#cb99-4" tabindex="-1"></a><span class="co">#&gt; [2,]  1.165747</span></span></code></pre></div>
+<p>It's the <span class="math inline">\(\beta\)</span> vector! The first entry is the <strong>intercept</strong> and the second is the <strong>slope</strong> of the linear function. The following graph shows the line created from intercept and slope in a scatter plot.</p>
+<!-- There are two numbers. -->
+</div>
+</div>
+<div id="survival-of-the-fittest-line" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Survival of the Fittest Line<a href="regression.html#survival-of-the-fittest-line" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The linear equation that best describes the data is this:</p>
+<p><span class="math display">\[Price = 22.3452 + 1.1657 \cdot Age\]</span></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-154-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="on-the-shoulders-of-giants" class="section level2 hasAnchor" number="10.5">
+<h2><span class="header-section-number">10.5</span> On the Shoulders of Giants<a href="regression.html#on-the-shoulders-of-giants" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Fortunately, we are <a href="https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants">standing on the shoulders of giants</a>. Clever people implemented the linear regression (command <code>lm()</code>) and all kinds of regressions and statistical tests in R.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="regression.html#cb100-1" tabindex="-1"></a><span class="fu">lm</span>(Price <span class="sc">~</span> Age.at.Death, <span class="at">data =</span> artists)</span>
+<span id="cb100-2"><a href="regression.html#cb100-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb100-3"><a href="regression.html#cb100-3" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb100-4"><a href="regression.html#cb100-4" tabindex="-1"></a><span class="co">#&gt; lm(formula = Price ~ Age.at.Death, data = artists)</span></span>
+<span id="cb100-5"><a href="regression.html#cb100-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb100-6"><a href="regression.html#cb100-6" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb100-7"><a href="regression.html#cb100-7" tabindex="-1"></a><span class="co">#&gt;  (Intercept)  Age.at.Death  </span></span>
+<span id="cb100-8"><a href="regression.html#cb100-8" tabindex="-1"></a><span class="co">#&gt;       22.345         1.166</span></span></code></pre></div>
+<p>The workhorse packs up work.</p>
+<p><img src="images/workhorse.jpg" width="306" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="relationships.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Becoming Fluent In Data.pdf", "Becoming Fluent In Data.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": false
+},
+"toc_depth": 1,
+"toc-title": "Table of Contents",
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
