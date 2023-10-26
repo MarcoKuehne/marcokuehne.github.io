@@ -408,27 +408,27 @@ via_1992_2020 <- viadrina_1992_2020 %>%
   select(Year, Total) %>% 
   mutate(Term = "winter")
 
-via_2013_2022 <- viadrina_2013_2023 %>% 
+via_2013_2023 <- viadrina_2013_2023 %>% 
   rename(Year = year, Term = term, Total = `Studierende gesamt`) %>% 
   select(Year, Total, Term)
 
-via_1992_2022 <- rbind(via_1992_2020, via_2013_2022)
-via_1992_2022$Year <- as.numeric(via_1992_2022$Year)
+via_1992_2023 <- rbind(via_1992_2020, via_2013_2023)
+via_1992_2023$Year <- as.numeric(via_1992_2023$Year)
 ```
 
-Plot and polish. Assume the enrollment for winter 2020/2023 was not affected by Corona virus. 
+Plot and polish. Assume the enrollment for winter 2020/2021 was not affected by Corona virus. 
 
 ```{r}
-via_1992_2022 %>% 
-  filter(Term == "winter") %>% 
-  ggplot(aes(x=Year, y=Total)) +
+via_1992_2023 %>% 
+  #filter(Term == "winter") %>% 
+  ggplot(aes(x=Year, y=Total, col = Term)) +
   geom_point() + geom_smooth(method = "gam") +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 28)) +
   labs(title = "Student numbers at Viadrina") +
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   geom_vline(xintercept=2020.5, colour="grey", linetype = "solid", lwd = 1.3) +
-  geom_text(aes(x=2021, y=4000, label="Corona"), colour="red", angle=90, vjust = 1)
+  geom_text(aes(x=2021, y=4000, label="Corona"), colour="red", angle=90, vjust = 1)  
 ```
 
 
