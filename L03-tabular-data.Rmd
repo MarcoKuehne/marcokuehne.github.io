@@ -1,0 +1,169 @@
+# Tabular Data
+
+<!-- https://hjalli.medium.com/data-tables-from-sumer-to-visicalc-7b4d7b5a2150 -->
+<!-- https://www.amazon.com/gp/product/0198508417/ -->
+
+Tabular data is the most common type of data. The ability to organize information systematically into rows and columns has been a cornerstone of data-driven decision-making for centuries. From handwritten ledgers to digital spreadsheets, tabular data has served as the foundation for understanding, managing, and extracting insights from a wide range of datasets.
+
+Since tabular data is easy to understand and easy to handle, there are approaches to transform non-tabular data like text data into a tabular format. In the R realm this has been termed the **tidy data principle**. Each variable must have its own column. Each observation must have its own row. Each value must have its own cell.^[Read more about [tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html).]
+
+In this chapter, we embark on a journey through the world of tabular data, exploring its diverse facets and applications. We will delve into the art of manipulating, analyzing, and visualizing data in this familiar format, unlocking the potential it holds for uncovering hidden patterns and informing critical decisions. But our exploration goes further, as we introduce you to a special and dynamic subset of tabular data that adds an extra layer of complexity and depth to your analytical toolkit — panel data.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Tidy data** principles are: 
+
+- Every column is a variable.
+- Every row is an observation.
+- Every cell is a single value.
+::::
+
+## Types of Tabular Data 
+
+How can there be different types of tabular data when a table always consists of rows and columns? 
+
+### Cross-section
+
+Look at the following example. This data is collected in `r format(Sys.Date(), "%Y")`. Each row represents a different person (or unit), i.e. there are 6 women at different age and their respective income.
+
+**Cross-sectional data** is a type of data collected by observing many subjects (such as individuals, firms, countries, or regions) at the one point or period of time. It can answer questions about *levels*: "How many people are poor in 2023 in Germany?" and questions about *differences*: "How are men and women affected by poverty?".
+
+```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+library(tidyverse)
+library(haven)
+soep <- read_dta("https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true")
+
+library(modelsummary)
+library(gt)
+#my_colors <- c("#FF5733", "#33FF57", "#5733FF", "#FF33AA", "#A433FF", "#33A7FF")
+
+soep %>% 
+  slice_head(n = 6) %>% 
+  mutate(Id = seq(from=1, to=6, by=1)) %>% 
+  mutate(Year = as.numeric(rep(format(Sys.Date(), "%Y"), 6))) %>% 
+  select(Id, Year, sex, alter, bildung, einkommenj1) %>% 
+  rename(Gender = sex, Age = alter, Education = bildung, Income = einkommenj1) %>% 
+  mutate(Gender = as_factor(Gender)) %>%
+  gt() %>%
+  tab_header(
+    title = "Cross-sectional socio-economic data.",  # Set the table title
+    subtitle = "Different units. Same time."  # Set the subtitle or note
+  ) %>% 
+  data_color(
+    columns = Id,
+      colors = scales::col_numeric(
+      palette = c("azure3", "coral"),  
+      domain = c(1,6))) %>% 
+  data_color(
+    columns = Year,
+      colors = scales::col_numeric(
+      palette = c("azure3"),
+      domain = c(2023))) 
+
+  #datasummary_df(fmt=0, title = "Cross-sectional socio-economic data.")
+```
+
+### Repeated cross-section
+
+Cross-sectional survey data are data for a single point in time. Repeated cross-sectional data are created where a survey (or measurement) is administered to a new sample of interviewees at successive time points. For an annual survey, this means that respondents in one year will be different people to those in a prior year. Such data can either be analysed cross-sectionally, by looking at one survey year, or combined for analysis over time.
+
+This type of data can answer questions about *trends*: "Has poverty increased or decreased?".
+
+```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+soep %>% 
+  slice_head(n = 6) %>% 
+  mutate(Id = seq(from=1, to=6, by=1)) %>% 
+  mutate(Year = as.numeric(rep(format(Sys.Date(), "%Y"), 6))) %>% 
+  select(Id, Year, sex, alter, bildung, einkommenj1) %>% 
+  rename(Gender = sex, Age = alter, Education = bildung, Income = einkommenj1) %>% 
+  mutate(Gender = as_factor(Gender)) %>%
+  mutate(Year = c(rep(as.numeric(format(Sys.Date(), "%Y"))-1, 3),
+                  rep(as.numeric(format(Sys.Date(), "%Y")), 3))) %>% 
+  #datasummary_df(fmt=0, title = "Repeated cross-sectional data.")
+  gt() %>%
+  tab_header(
+    title = "Repeated cross-sectional data.",  # Set the table title
+    subtitle = "Different units. Different time."  # Set the subtitle or note
+  ) %>% 
+  data_color(
+    columns = Id,
+      colors = scales::col_numeric(
+      palette = c("azure3", "coral"),  
+      domain = c(1,6))) %>% 
+  data_color(
+    columns = Year,
+    colors = scales::col_numeric(palette = c("azure3", "coral"), domain = c(2022, 2023))) 
+```
+
+### Time series 
+<!-- An example of a temporal line chart is total number of students per year at Viadrina in the [next chapter][The long run trend].    -->
+
+Time series is data on a single subject at multiple points in time. Most commonly, data is collected at successive equally spaced points in time e.g. daily, annually. If data is collected annually, it's likely to be a survey study. If data is collected more frequently, e.g. daily, it's likely to be meteorology or finance. A time series is very frequently plotted via a *run chart* (which is a temporal line chart). 
+
+Time series data can answer questions about *trends*: "Is there a seasonal component in unemployment?".
+
+```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+# Load the zoo package
+library(zoo)
+
+# Define a starting quarter (e.g., "2023 Q1")
+start_quarter <- as.yearqtr("2023 Q1")
+
+# Create a sequence of 6 consecutive quarters
+quarters_variable <- start_quarter + 0:5/4
+
+soep %>% 
+  slice_head(n = 6) %>% 
+  mutate(Id = rep(1, 6)) %>% 
+  mutate(Time = as.character(quarters_variable)) %>% 
+  select(Id, Time, einkommenj1) %>% 
+  rename(Income = einkommenj1) %>% 
+  gt() %>%
+  tab_header(
+    title = "Time series data.",  # Set the table title
+    subtitle = "Same units. Different time."  # Set the subtitle or note
+  ) %>% 
+  data_color(
+    columns = Time,
+    colors = scales::col_factor("Oranges", domain = NULL)) 
+```
+
+### Panel data
+
+**Panel data** are observations for the same subjects over time. Subjects can be people, households, firms or countries. Panel data are a subset of longitudinal data. Key components are the panel identifier: person (id) and time (year). Every row is a person-year combination (so called *long format*).
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JNd4p6dRrPI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+With panel data we know the time-ordering of events. Panel data allow to identify causal effects under weaker assumptions (compared to cross-sectional data). Panel data can answer questions about *change*: "How many people went in and out of poverty?".
+
+```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+soep %>% 
+  slice_head(n = 6) %>% 
+  mutate(Id = c(rep(1,3), rep(2,3))) %>% 
+  mutate(Year = c(2021,2022,2023,2021,2022,2023)) %>% 
+  select(Id, Year, sex, alter, bildung, einkommenj1) %>% 
+  rename(Gender = sex, Age = alter, Education = bildung, Income = einkommenj1) %>% 
+  mutate(Gender = as_factor(Gender)) %>%
+  gt() %>%
+  tab_header(
+    title = "Panel data.",  # Set the table title
+    subtitle = "Different units. Different time."  # Set the subtitle or note
+  ) %>% 
+  data_color(
+    columns = Id,
+      colors = scales::col_numeric(
+      palette = c("azure3", "coral"),  
+      domain = c(1,2))) %>% 
+  data_color(
+    columns = Year,
+    colors = scales::col_numeric(palette = c("azure3", "coral"), domain = c(2021, 2023)))
+```
+
+<!-- Different types of data can answer different types of questions: -->
+<!-- -   Levels: How many people are poor in 2016 in Germany? -->
+<!-- -   Trends: Has poverty increased or decreased? -->
+<!-- -   Change: How many people went in and out of poverty? -->
