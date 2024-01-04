@@ -1,14 +1,26 @@
 # Geo Data
 
-**Geospatial data**, also known as geographic or spatial data, refers to information that contains explicit geographical locations or spatial attributes. Analyzing and visualizing geospatial data is essential in various fields, including geography, environmental sciences, urban planning, epidemiology, and transportation not to mention social science.
+**Geo data**, short for geographic data, is a fundamental aspect of our digital world that captures information about locations on Earth. It encompasses a wide range of spatial data, including coordinates, addresses, and attributes tied to specific geographic points. Geo data plays a pivotal role in shaping our everyday experiences, influencing navigation, enhancing services, and providing valuable insights across various sectors.
 
-## Where Are You?
+One of the most prevalent ways individuals interact with geo data is through the Global Positioning System (GPS) embedded in their mobile phones. When you use GPS on your smartphone, you're tapping into a vast network of satellites orbiting above. These satellites beam signals to your device, allowing it to pinpoint your exact location with remarkable accuracy.
 
-Sites like <https://gps-coordinates.org/where-am-i.php> can tell where on Earth you are at the moment. They return a map view on your current surroundings and geo-coordinates.
+Analyzing and visualizing geospatial data is essential in various fields, including geography, environmental sciences, urban planning, epidemiology, and transportation not to mention social science.
+
+<center>
+<iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2609864.353940201!2d9.931419285209337!3d50.29760870509319!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x47a84e373f035901%3A0x42120465b5e3b70!2sBerlin!3m2!1d52.520006599999995!2d13.404954!4m5!1s0x479e75f9a38c5fd9%3A0x10cb84a7db1987d!2zTcO8bmNoZW4!3m2!1d48.1351253!2d11.5819805!5e0!3m2!1sde!2sde!4v1704277715694!5m2!1sde!2sde" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</center>
+
+Google Route from Berlin to Munich. 
+
+## Geo coordinates
+
+### Where Are You?
+
+Websites such as [GPS Coordinates](https://gps-coordinates.org/where-am-i.php) offer the capability to determine your precise location on Earth. By accessing these platforms, users can obtain a visual representation of their current surroundings through a map view, along with corresponding geo-coordinates. This valuable service not only provides a real-time snapshot of your location but also offers the convenience of easily retrieving accurate geographic coordinates, enhancing navigation and location-aware applications.
 
 Ask Google Maps for `Viadrina European University` returns two numbers `52.342977500409994`, *latitude* and `14.555877070488613` *latitude*.
 
-```{r, echo=F}
+```{r, echo=F, message=FALSE, warning=FALSE}
 # Conventional data frame
 FFO.df <- data.frame(name = c("Viadrina Main Building", "Best Coffee In Town"),
                      address = c("Große Scharrnstr.", "Große Scharrnstr."),
@@ -31,9 +43,7 @@ map <- leaflet(options = leafletOptions(minZoom = 18, maxZoom = 18)) %>%
 mapview(FFO.spdf, zcol = "name", layer.name = "University", map = map)
 ```
 
-## Geo-coordinates
-
-<!-- https://support.google.com/maps/answer/18539?hl=en&co=GENIE.Platform%3DDesktop -->
+### Latitude and longitude
 
 Latitude and longitude are geographic coordinates used to specify locations on the Earth's surface. They are used to precisely determine a point's position in terms of its north-south and east-west positions.
 
@@ -45,9 +55,7 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/
 
 **Longitude** measures the east-west position of a point on the Earth. It is also measured in degrees, with the Prime Meridian serving as the reference point. The Prime Meridian, located at Greenwich, London, is defined as 0 degrees longitude. Longitude lines extend from the Prime Meridian to the International Date Line, which is roughly 180 degrees longitude. The range of longitude extends from -180 degrees to +180 degrees.
 
-### It's convention
-
-Who invented latitude and longitude? Why is latitude positive in the north? What is the north anyway? And who decided on the Prime Meridian in England?
+Well, who invented latitude and longitude and why is latitude positive in the north and where is the North anyway?
 
 ::: reading
 ::: titelreading
@@ -59,87 +67,216 @@ The decision to have latitude positive in the north and negative in the south is
 Regarding the choice of the prime meridian (0 degrees longitude) passing through Greenwich, England, it was largely due to historical reasons and the influence of the British Empire. The concept of establishing a prime meridian dates back to the 19th century when international cooperation in navigation and mapping was increasing. In 1884, at the International Meridian Conference held in Washington, D.C., representatives from various countries agreed to adopt the Greenwich Meridian as the Prime Meridian, mainly because the British Royal Observatory in Greenwich was already internationally recognized for its contributions to astronomy and navigation.
 :::
 
-### Different precision
+Europe is a continent located entirely in the Northern Hemisphere and mostly in the Eastern Hemisphere. It is situated to the west of Asia, separated by the Ural Mountains, the Ural River, the Caspian Sea, the Caucasus Mountains, and the Black Sea. Here are approximate latitude and longitude ranges for Europe:
+
+- Latitude Range: Approximately 35 degrees North to 71 degrees North.
+- Longitude Range: Approximately 25 degrees West to 45 degrees East.
+    
+```{r europe_lat_long, echo=FALSE, fig.cap="Europe c. 650.", out.width = '80%', fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Europe_around_650.jpg/1920px-Europe_around_650.jpg")
+```
+
+### Angles and Degrees
+<!-- <https://r-spatial.org/book/08-Plotting.html> -->
+
+The intuition is that latitude and longitude are **angles**. Angular measurements are commonly expressed in units of *degrees, minutes, and seconds (DMS)*. 1 degree equals 60 minutes, and one minute equals 60 seconds.
+
+Berlin, the capitol of Germany is located:
+
+- Latitude: 52° 31' 12" N
+- Longitude: 13° 24' 18" E
+
+in DMS. In *decimal degrees (DD)* we get: 
+
+$$\text{Decimal degree} = \text{Degree} + \frac{\text{Minute}}{60} + \frac{\text{Minute}}{3600}$$
+
+- Latitude: 52.5200° N
+- Longitude: 13.4050° E
+   
+```{r, echo=F}
+library(sf)
+library(rnaturalearth)
+library(ggplot2)
+
+# Load world map for context
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Extract Germany's geometry
+germany <- ne_countries(country = "germany", returnclass = "sf")
+
+# Coordinates of Berlin
+berlin_coords <- data.frame(lon = 13.4050, lat = 52.5200)
+
+# Convert to sf object
+berlin_sf <- st_as_sf(berlin_coords, coords = c("lon", "lat"), crs = st_crs(world))
+
+# Plot Germany in angular degrees
+plot_angular <- ggplot() +
+  geom_sf(data = germany, fill = "grey", color = "grey", size = 1.5) +
+  geom_sf(data = berlin_sf, color = "red", size = 2, shape = 16) +  
+  geom_text(data = berlin_coords, 
+            aes(x = lon, y = lat, label = "Berlin \n 52° 31' 12\" N \n13° 24' 18\" E"), 
+            color = "red", size = 3, vjust = -0.3) +  
+  ggtitle("Germany - Angular Degrees") +
+  theme_minimal()
+
+# Plot Germany in decimal degrees
+plot_decimal <- ggplot() +
+  geom_sf(data = germany, fill = "grey", color = "grey", size = 1.5) +
+  geom_sf(data = berlin_sf, color = "red", size = 2, shape = 16) +  
+  geom_text(data = berlin_coords, 
+            aes(x = lon, y = lat, label = "Berlin \n 52.5200 N \n13.4050 E"), 
+            color = "red", size = 3, vjust = -0.3) +  
+  ggtitle("Germany - Angular Degrees") +
+  scale_x_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
+  ggtitle("Germany - Decimal Degrees") + 
+  theme_minimal()
+
+# Display the plots side by side
+gridExtra::grid.arrange(plot_angular, plot_decimal, ncol = 2)
+```
 
 In general, coordinates with six decimal places (0.000001 degrees) can provide location accuracy to approximately within a few centimeters. Each additional decimal place adds further precision, narrowing down the location to smaller units of measurement.
 
-The entrance of Viadrina main building and the best coffee in town are about 40m away. Latitude is different in the 4th and longitude differs in the 3rd decimal.
+The entrance of Viadrina main building and the best coffee in town are about 40m away. 
 
 ```{r, echo=F}
-# Google spot of Viadrina 
-# 52.34227811954683, 14.553820468413068
-
-FFO.df <- data.frame(name = c("Viadrina Main Building", "Best Coffee In Town"),
-                     lat = c(52.34227495250781, 52.34211581397726), 
-                     lon = c(14.553864999354412, 14.554587283303757))
-FFO.df
-```
-
-### Different units
-
-Look again at \@ref(fig:lon_lat). The intuition is that latitude and longitude are angles. Angular measurements are commonly expressed in units of *degrees, minutes, and seconds (DMS)*. 1 degree equals 60 minutes, and one minute equals 60 seconds.
-
-```         
-Decimal degrees (DD): 41.40338, 2.17403
-Degrees, minutes, and seconds (DMS): 41°24'12.2"N 2°10'26.5"E
-Degrees and decimal minutes (DMM): 41 24.2028, 2 10.4418
-```
-
-<https://r-spatial.org/book/08-Plotting.html>
-
-Figure 8.2: Germany in equirectangular projection: with axis units degrees (left) and metres in the equidistant cylindrical projection (right)
-
-```{r}
 library(sf)
+library(leaflet)
+
+# Conventional data frame
+FFO.df <- data.frame(
+  name = c("Viadrina Main Building", "Best Coffee In Town"),
+  address = c("Große Scharrnstr.", "Große Scharrnstr."),
+  lat = c(52.34227495250781, 52.34211581397726),
+  lon = c(14.553864999354412, 14.554587283303757)
+)
+
+# Combine to spatial data frame
+FFO.spdf <- st_as_sf(
+  FFO.df,
+  coords = c("lon", "lat"),  # Order is important
+  crs = 4326
+)  # EPSG number of CRS
+
+# Create leaflet map
+map <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(data = FFO.spdf, popup = ~name) %>%
+  addPolylines(
+    lng = c(FFO.df$lon[1], FFO.df$lon[2]),
+    lat = c(FFO.df$lat[1], FFO.df$lat[2]),
+    color = "red",  # Arrow color
+    weight = 2       # Arrow line width
+  )
+
+# Display the map
+map
+```
+
+Latitude is different in the 4th and longitude differs in the 3rd decimal.
+
+```{r, echo=F}
+library(knitr)
+library(kableExtra)
+
+# Display the data frame as a styled HTML table
+kable(FFO.df, format = "html") %>%
+  kable_styling("striped", full_width = FALSE)
+```
+
+### Coordinate Reference System
+
+A Coordinate Reference System (CRS) is a framework used to uniquely identify locations on the Earth's surface. It defines how geographic coordinates (latitude and longitude) are mapped to positions on a two-dimensional surface, whether it's a map or a computer screen. 
+
+Common CRS formats include:
+
+- Geographic CRS (GCS): Based on a three-dimensional ellipsoidal model of the Earth. Examples include WGS 84 (World Geodetic System 1984) and NAD83 (North American Datum 1983).
+- Projected CRS: Represents locations on a two-dimensional plane (e.g., a map). Examples include UTM (Universal Transverse Mercator) and Web Mercator.
+
+The European Petroleum Survey Group Geodesy (EPSG) is best known for its system of spatial reference IDs for coordinate systems. An EPSG code is a unique ID that can be a simple way to identify a CRS.
+
+```{r, echo = TRUE}
 library(rnaturalearth)
 
-DE <- st_geometry(ne_countries(country = "germany",
-                              returnclass = "sf"))
-DE |> st_transform("+proj=eqc +lat_ts=51.14 +lon_0=90w") ->
-    DE.eqc
+# Get geometries of countries (default CRS is WGS 84)
+world <- ne_countries(scale = "medium", returnclass = "sf")
 
-par(mfrow = c(1, 2), mar = c(2.2, 2.2, 0.3, 0.5))
-plot(DE, axes = TRUE)
-plot(DE.eqc, axes = TRUE)
+# Check the CRS in world 
+st_crs(world)$input
 ```
 
-### Different perspectives
+The default CRS is WGS 84 (World Geodetic System 1984) which is a widely used global geodetic datum and coordinate system, and it is based on an ellipsoidal model of the Earth.
 
-```{r}
-# Now, lets transform Germany into a CRS optimized for Iceland
-ger_rep.spdf <- st_transform(DE.eqc, crs = 5325)
+Below there are two versions of Germany. The left version shows Germany from the WGS 84 (`st_transform(germany, crs = 4326)`). The right version shows Germany seen from Iceland (`st_transform(germany, crs = 5325)`).
+ 
+```{r, echo =FALSE}
+# Extract Germany's geometry
+germany <- ne_countries(country = "germany", returnclass = "sf")
 
-par(mfrow = c(1, 2), mar = c(2.2, 2.2, 0.3, 0.5))
-plot(DE.eqc, axes = TRUE)
-plot(ger_rep.spdf, axes = TRUE)
+# Should not change anything
+germany <- st_transform(germany, crs = 4326)
+
+
+# Transform Germany into a CRS optimized for Iceland
+germany_from_iceland <- st_transform(germany, crs = 5325)
+
+# Plot Germany 
+plot_crs_germany <- ggplot() +
+  geom_sf(data = germany, fill = "grey", color = "grey", size = 1.5) +
+  ggtitle("Germany Seen From Germany") +
+  theme_minimal()
+
+# Plot Germany 
+plot_crs_iceland <- ggplot() +
+  geom_sf(data = germany_from_iceland, fill = "grey", color = "grey", size = 1.5) +
+  ggtitle("Germany Seen From Iceland") +
+  theme_minimal()
+
+# Display the plots side by side
+library(cowplot)
+plot_grid(plot_crs_germany, plot_crs_iceland, ncol = 2, 
+          rel_heights = c(1/2, 1/2))
 ```
 
-Test this yourself. Go to Google Maps and navigate to the middle of Iceland. Now, look how the shape of Germany changes.
+Test this yourself. Go to Google Maps or Google Earth and navigate to the middle of Iceland. Now, look how the shape of Germany changes.
 
-### Different distance between two coordinates
+### Distance measurement 
+
+Distances are determined by the choice of a distance formula, and considerations such as accuracy requirements, computational efficiency, and the specific shape of the Earth's surface in the area of interest come into play. There are various methods, each tailored to specific contexts:
+
+- **Euclidean distance** (beeline distance in two dimensions) calculates the straight-line distance between two points in a *Cartesian coordinate system* (2D). 
+- **Haversine distance** is the distance between two points on a *sphere* given their longitudes and latitudes (3D).
+- The earth is not perfectly round. **Vincenty distance** assumes an *ellipsoid* instead.
 
 ```{r}
-# Install and load the 'geosphere' package
-#install.packages("geosphere")
 library(geosphere)
 
-# Define the coordinates of two points
-coord1 <- c(40.7128, -74.0060)  # New York City
-coord2 <- c(51.5074, -0.1278)   # London
+# Define the coordinates of New York City and London
+coord_nyc <- c(40.7128, -74.0060)  # New York City
+coord_ldn <- c(51.5074, -0.1278)   # London
 
-# Calculate the distance using the 'distGeo' function in meters
-dist_great_circle <- distGeo(coord1, coord2)
+# Haversine Distance
+haversine_distance <- distHaversine(coord_nyc, coord_ldn)
 
-# Calculate the beeline distance using the 'distMeeus' function
-dist_bee <- distMeeus(coord1, coord2)
+# Vincenty Sphere Distance
+sphere_distance <- distVincentySphere(coord_nyc, coord_ldn) 
 
-dist_great_circle
-dist_bee
+# Vincenty Ellipsoid Distance
+ellipsoid_distance <- distVincentyEllipsoid(coord_nyc, coord_ldn)
+
+# Create a data frame
+distance_data <- data.frame(
+  Method = c("Haversine", "Vincenty Sphere", "Vincenty Ellipsoid"),
+  Distance = c(haversine_distance, sphere_distance, ellipsoid_distance)
+)
+
+# Display the data frame as a styled HTML table
+kable(distance_data, format = "html") %>%
+  kable_styling("striped", full_width = FALSE) %>% 
+  add_header_above(c("Distance between New York and London" = 2))
 ```
-
-The distGeo function from the geosphere package calculates the **great circle distance** between two points on the Earth's surface. The result is stored in the distance variable.
-
-Haversine.
 
 ## From Points And Polygons
 
