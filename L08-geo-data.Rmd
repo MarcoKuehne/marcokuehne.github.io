@@ -278,122 +278,259 @@ kable(distance_data, format = "html") %>%
   add_header_above(c("Distance between New York and London" = 2))
 ```
 
-## From Points And Polygons
+###  Points And Polygons
 
-Minimal polygon.
+Polygon data and geographical coordinates work together to represent and visualize spatial areas on a map. In a geographical context, polygons are commonly used to define the boundaries of regions, countries, cities, or any other geographic entities.
 
 ```{r}
-# Define the coordinates of the polygon vertices
-x <- c(1, 2, 3, 2)  # X-coordinates of vertices
-y <- c(1, 2, 1, 0)  # Y-coordinates of vertices
+# Load necessary libraries
+library(sf)
+library(ggplot2)
 
-# Create a plotting window
-plot.new()
-plot.window(xlim = c(0, 4), ylim = c(-1, 3))
+# Define coordinates of a simple polygon representing Germany
+germany_polygon <- st_polygon(list(cbind(c(5, 15, 15, 5, 5), c(47, 47, 55, 55, 47))))
+
+# Create an sf object with the polygon
+germany_sf <- st_sf(geometry = st_sfc(germany_polygon))
 
 # Plot the polygon
-polygon(x, y)
-
-# Add labels for the vertices (optional)
-text(x, y, labels = 1:length(x), pos = 3)
+ggplot() +
+  geom_sf(data = germany_sf, fill = "lightblue", color = "blue") +
+  ggtitle("Abstract Polygon of Germany") +
+  theme_minimal()
 ```
 
-Polygon for a country.
+Polygon data for countries typically comes from geospatial databases, GIS (Geographic Information System) data, or **shapefiles** maintained by government agencies, international organizations, or open-source initiatives.
 
-```{r}
-# library(raster)
-# Ethiopia <- getData("GADM", country = "Ethiopia", level = 2)
-# plot(Ethiopia)
-# points(coordinates(Ethiopia[which(Ethiopia$NAME_2 == "Addis Abeba"),]),
-#        pch = 16, col = 2, cex = 2)
+<!-- Get shape image png/svg from Wikipedia https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Germany_shape.svg/512px-Germany_shape.svg.png -->
+<!-- Transform to number of dots with https://spotify.github.io/coordinator/ -->
 
-library(geodata)
-# Ethiopia2 <- gadm(country = "Ethiopia", path = tempdir(), level=1, version="latest", resolution=1)
-# plot(Ethiopia2)
+```{r, animation.hook="gifski", echo=F, fig.align='center', fig.width=4, fig.height=5.5, echo=F, warning=F, message=F}
+library(tidyverse)
+library(jsonlite)
 
+# Directory containing JSON files
+json_dir <- "./data/Geo/Germany/"
+
+# Create a loop to read each JSON file and create plots
+for (i in seq(10, 100, by = 10)) {
+  
+  # Construct the file name
+  json_file <- paste0(json_dir, "Germany_Coordinator_", i, ".json")
+  
+  # Read JSON file
+  parsed_data <- fromJSON(json_file)
+  
+  # Create a data frame from the matrix
+  df_points <- data.frame(x = parsed_data[, 1], y = parsed_data[, 2])
+  
+  # Extract file name (without extension) for plot title
+  file_name <- tools::file_path_sans_ext(basename(json_file))
+  
+  # Plot the points with reversed y-axis
+  plot <- ggplot(df_points, aes(x, y)) +
+    geom_point() +
+    scale_y_reverse() +  # Reverse the y-axis
+    theme_minimal() +
+    theme(axis.ticks = element_blank(),
+        axis.text = element_blank()) +
+    labs(x = "Longitude", y = "Latitude") + 
+    ggtitle(paste("Germany in ", i, " Points"))  # Add plot title with file name and number
+  
+  # Print the plot
+  print(plot)
+}
+```
+
+
+```{r ger_shape, echo=FALSE, fig.cap="Shape of Germany.", out.width = '80%', fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/c/cb/Germany_shape.svg")
 ```
 
 ### Shapefiles
 
-In R, shapefiles are commonly used to represent geographic data. Shapefiles are a popular geospatial vector data format that stores both geometric and attribute information about geographic features. They are widely used in geographic information system (GIS) applications and can be easily imported and manipulated in R using various packages such as `sf`, `rgdal`, or `maptools`.
+**Shapefiles** are commonly used to represent geographic data. Shapefiles are a popular geospatial vector data format that stores both geometric and attribute information about geographic features. They are widely used in *geographic information system (GIS)* applications and can be easily imported and manipulated in R using various packages such as `sf`, `rgdal`, or `maptools`.
 
-.dbf File: This file is the attribute table file associated with the shapefile. It stores the attribute data for each geographic feature in a tabular format. The attributes can include information such as names, IDs, population, or any other relevant data associated with the features. The .dbf file follows the dBase file format and can be accessed using functions like read.dbf() or read.dbf()\$data in R.
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
+:::
 
-.prj File: This file contains the coordinate reference system (CRS) information for the shapefile. It specifies the spatial reference system and projection details, such as the coordinate units, projection method, and datum used. The CRS information is crucial for correctly interpreting and aligning the spatial data in the shapefile. In R, the CRS information can be accessed or set using functions provided by the sf package, such as st_crs() or st_set_crs().
+These files together make up a shapefile, a widely used format for storing geospatial vector data. The combination of geometric and attribute data, along with coordinate system information, allows for the representation of complex geographic features in a structured and interoperable manner.
 
-.shp File: This file stores the actual geometric data of the shapefile. It contains information about the shape, size, and location of each geographic feature, such as points, lines, or polygons. Each feature is represented by a set of vertices or coordinates.
+```{r, echo=F, warning=FALSE, message=FALSE}
+library(htmltools)
 
-.shx File: This file is the shapefile index file. It provides a quick lookup or index of the geometric features in the shapefile. It helps in efficiently accessing specific features without reading the entire shapefile.
+details_tag <- tags$details(
+  tags$summary(".dbf File"),
+  tags$div(
+    ".dbf File: This file is the attribute table file associated with the shapefile. It stores the attribute data for each geographic feature in a tabular format. The attributes can include information such as names, IDs, population, or any other relevant data associated with the features. The .dbf file follows the dBase file format and can be accessed using functions like `read.dbf()` or `read.dbf()` in R."
+  )
+)
 
-## Spatial scale
-
-Zoom in, zoom out, what is the best zoom level for an analysis?
-
-Inadequate spatial scales refer to situations where the chosen scale of analysis in spatial research is not suitable for capturing the underlying spatial processes or phenomena. It occurs when the spatial resolution or extent of analysis is either too coarse or too fine to effectively capture the patterns and relationships of interest. Here's more information on inadequate spatial scales, examples, and how to find an appropriate scale:
-
-Choosing an appropriate spatial scale is crucial to ensure that the analysis captures the relevant spatial patterns, relationships, and processes. It requires careful consideration of the research question, data characteristics, and prior knowledge of the phenomena under investigation.
-
-## Switzerland
-
-It is not clear how the structure of the data looks like or what kind of file ending there is. Often there are several data files that make up geographic information.
-
-```{r echo=F, eval=F}
-library(maptools)
-library(spdep)
-library(spatialreg)
-
-CH_housing <- read.table("./data/Geo/CH_Housing_Data.txt", header = TRUE)
-
-# udl undevelopable land 
-# hp house price
-
-CH_shape <- readShapePoly("./data/Geo/MS_Gebiete")
-
-plot(CH_shape)
-
-plot(CH_housing)
-cont <- tri2nb(coordinates(CH_housing))
-plot(cont, coordinates(CH_housing), col = 4, add=TRUE)
-
-nearest.six <- knearneigh(coordinates(CH), k = 6)
-
-class(cont)
-class(nearest.six)
-
-nearest.six.2 <- knn2nb(nearest.six)
-
-plot(CH)
-plot(nearest.six.2, coordinates(CH), col = 2, add=TRUE)
-
-color <- rev(heat.colors(106))
-color2 <- color[rank(dat1$hp)]
-
-plot(CH, col = color2)
-text(coordinates(CH), labels = dat1$hp/1000)
-
-plot(CH, col = color2)
-text(coordinates(CH), labels = dat1$hp/1000, cex =0.6)
-
-library(rgdal)
-library(leaflet)
-library(leaflet.extras)
-library(mapview)
-
-CH_map <- readOGR(dsn = ".", "MS_Gebiete")
-CH_map <- spTransform(CH_map, CRS("+proj=longlat +datum=WGS84"))
-
-library(shinyjs)
-library(tmaptools)
-
-tmaptools::palette_explorer()
-
-pal <- colorNumeric("inferno", domain = NULL, rev= TRUE)
-
-m <- leaflet(data = CH_map)
-m <- addProviderTiles(m, providers$OpenTopoMap)
-m <- addPolygons(m, fillColor = ~pal(log(dat1$hp)), stroke=TRUE, weight=1, 
-                 fillOpacity = 0.7, color="black", 
-                 label= ~paste0(dat1$MS.name, ":", dat1$hp),
-                 highlightOptions = highlightOptions(color = "white", weight=4, bringToFront = TRUE))
-m <- addLegend(m, pal = pal, values = dat1$hp, opacity = 1, title = "House Prices in [CHF]")
+details_tag
 ```
+
+```{r, echo=F}
+details_tag <- tags$details(
+  tags$summary(".prj File"),
+  tags$div(
+    ".prj File: This file contains the coordinate reference system (CRS) information for the shapefile. It specifies the spatial reference system and projection details, such as the coordinate units, projection method, and datum used. The CRS information is crucial for correctly interpreting and aligning the spatial data in the shapefile. In R, the CRS information can be accessed or set using functions provided by the sf package, such as st_crs() or st_set_crs()."
+  )
+)
+
+details_tag
+```
+
+```{r, echo=F}
+details_tag <- tags$details(
+  tags$summary(".shp File"),
+  tags$div(
+    ".shp File: This file stores the actual geometric data of the shapefile. It contains information about the shape, size, and location of each geographic feature, such as points, lines, or polygons. Each feature is represented by a set of vertices or coordinates."
+  )
+)
+
+details_tag
+```
+
+```{r, echo=F}
+details_tag <- tags$details(
+  tags$summary(".shx File"),
+  tags$div(
+    ".shx File: This file is the shapefile index file. It provides a quick lookup or index of the geometric features in the shapefile. It helps in efficiently accessing specific features without reading the entire shapefile."
+  )
+)
+
+details_tag
+```
+
+::::
+
+**Spatial Scale**
+
+In determining the unit and scale for spatial analysis, it is crucial to align choices with research objectives and the analysis scope, whether at national, regional, or local levels. Considerations include evaluating data availability and granularity to match the resolution of spatial data.
+
+**Geographical Entities**
+
+Spatial or geographic entities, such as regions, countries, and cities, often refer to political boundaries. Shapefiles, typically sourced from official channels, primarily represent these boundaries. Political borders, administrative divisions, and state or province limits are commonly depicted. Additionally, shapefiles extend to transportation networks, capturing roads and railways for effective planning. These versatile files also cover topography, offering insights into elevation, land cover, and contour lines. Points of interest, like landmarks and businesses, are included, making shapefiles invaluable for applications in land management, urban planning, climate analysis, and demographic mapping. Overall, shapefiles serve as indispensable tools for visualizing and analyzing spatial data across diverse domains.
+
+
+## Google Takeout 
+
+<!-- https://github.com/yashsakhuja/Cleaning-Google-Takeout-JSON-Data-to-check-places-visited -->
+
+<!-- https://raw.githubusercontent.com/yashsakhuja/Cleaning-Google-Takeout-JSON-Data-to-check-places-visited/main/2023_JANUARY.json -->
+
+Google Takeout is a service provided by Google that allows users to export their data from various Google products. Users can request an archive of their data, which is then compiled into downloadable files. One of the types of data that users can request through Google Takeout is location data.
+
+The Google Takeout in JSON format comes with nest variables in R. The class of `takeout` is a data.frame. 
+
+```{r}
+# Load JSON data
+json_data <- fromJSON("https://raw.githubusercontent.com/yashsakhuja/Cleaning-Google-Takeout-JSON-Data-to-check-places-visited/main/2023_JANUARY.json")
+
+# Convert to data frame
+takeout <- as.data.frame(json_data)
+
+# Filter NA
+takeout <- takeout %>% filter(!is.na(takeout$timelineObjects.placeVisit$location$name))
+
+# Convert E7 format to numeric for latitude and longitude
+takeout$latitude <- takeout$timelineObjects.placeVisit$location$latitudeE7 / 1e7
+takeout$longitude <- takeout$timelineObjects.placeVisit$location$longitudeE7 / 1e7
+takeout$name <- takeout$timelineObjects.placeVisit$location$name
+
+# Create a leaflet map
+library(htmlwidgets)
+
+leaflet(takeout) %>%
+  addTiles() %>%  
+  addMarkers(~longitude, ~latitude, 
+             label = ~name)
+
+```
+
+## Blood Donation 
+
+Blood donation is a vital contribution to healthcare, saving countless lives every day. In Germany, the German Red Cross (Deutsches Rotes Kreuz) plays a crucial role in organizing and facilitating blood donation events across the country. You can find information about blood donation venues on their official website:
+
+<https://www.blutspenden.de/blutspendedienste/>
+
+The code fetches, processes, and extracts information about blood donation locations in Germany from a website, organizing the data into a tidy tibble for further analysis and mapping.
+
+```{r}
+library('rvest')
+library('stringr')
+library('stringi')
+library('jsonlite')
+
+rubyhash <- "https://www.blutspenden.de/blutspendedienste/#" %>%
+  read_html() %>% 
+  html_nodes("body") %>% 
+  html_nodes("script:first-of-type") %>%  
+  html_text() %>% 
+  as_tibble() %>% 
+  slice(1)
+
+blood <- rubyhash$value %>%
+  str_replace("var instituionsmap_data = '\\[\\{", "") %>%
+  str_replace("\\}\\]';\n", '') %>% # Removes the javascript chars at the end
+  strsplit('\\},\\{') %>% # Split into component json strings
+  getElement(1) %>%
+  sapply(function(x) paste0('{', x, '}'), USE.NAMES = FALSE) %>%
+  lapply(function(x) as.data.frame(fromJSON(x))) %>%
+  bind_rows() %>%
+  as_tibble()
+
+blood <- blood %>% 
+  mutate(lat = as.numeric(lat),
+         lon = as.numeric(lon))
+
+library(DT)
+#blood %>% select(title, street, number, zip, city, lat, lon) %>% datatable()
+
+blood %>%
+  select(title, street, number, zip, city, lat, lon) %>%
+  datatable(
+    options = list(
+      dom = 't', # Display only the table
+      scrollX = TRUE, # Enable horizontal scrolling
+      pageLength = 10, # Number of rows per page
+      lengthMenu = c(10, 25, 50) # Set custom page lengths
+    ),
+    callback = JS('
+      table.rows().nodes().to$().css({"font-size": "10px", "padding": "5px"});
+    ')
+  )
+```
+
+```{r}
+library("maps")
+# Retrieve the map data for Participant Countries 
+Germany_map <- map_data("world", region = "German")
+
+ggplot(Germany_map, aes(x = long, y = lat, group = group)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_polygon(fill = "lightgray", colour = "white") +
+  scale_fill_viridis_d() +
+  theme_void() +
+  scale_color_manual(name = "Locations", values = c("red", "blue")) +
+  geom_point(data = blood, aes(x = lon, y = lat, group = title), shape = 16, col = "red") +
+  theme(
+    plot.background = element_rect(fill = "white"),
+    aspect.ratio = 1.2,  # Adjust the aspect ratio as needed
+    plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")  # Adjust margins as needed
+  )
+
+
+```
+
+
+
+
+
+
+
+
+
+

@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2024-01-04" />
+<meta name="date" content="2024-01-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -379,13 +379,11 @@ div.csl-indent {
 <li class="chapter" data-level="8.1.3" data-path="geo-data.html"><a href="geo-data.html#angles-and-degrees"><i class="fa fa-check"></i><b>8.1.3</b> Angles and Degrees</a></li>
 <li class="chapter" data-level="8.1.4" data-path="geo-data.html"><a href="geo-data.html#coordinate-reference-system"><i class="fa fa-check"></i><b>8.1.4</b> Coordinate Reference System</a></li>
 <li class="chapter" data-level="8.1.5" data-path="geo-data.html"><a href="geo-data.html#distance-measurement"><i class="fa fa-check"></i><b>8.1.5</b> Distance measurement</a></li>
+<li class="chapter" data-level="8.1.6" data-path="geo-data.html"><a href="geo-data.html#points-and-polygons"><i class="fa fa-check"></i><b>8.1.6</b> Points And Polygons</a></li>
+<li class="chapter" data-level="8.1.7" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>8.1.7</b> Shapefiles</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="geo-data.html"><a href="geo-data.html#from-points-and-polygons"><i class="fa fa-check"></i><b>8.2</b> From Points And Polygons</a>
-<ul>
-<li class="chapter" data-level="8.2.1" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>8.2.1</b> Shapefiles</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="geo-data.html"><a href="geo-data.html#spatial-scale"><i class="fa fa-check"></i><b>8.3</b> Spatial scale</a></li>
-<li class="chapter" data-level="8.4" data-path="geo-data.html"><a href="geo-data.html#switzerland"><i class="fa fa-check"></i><b>8.4</b> Switzerland</a></li>
+<li class="chapter" data-level="8.2" data-path="geo-data.html"><a href="geo-data.html#google-takeout"><i class="fa fa-check"></i><b>8.2</b> Google Takeout</a></li>
+<li class="chapter" data-level="8.3" data-path="geo-data.html"><a href="geo-data.html#blood-donation"><i class="fa fa-check"></i><b>8.3</b> Blood Donation</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>9</b> Missing Data</a>
 <ul>
@@ -557,7 +555,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <!-- https://en.wikipedia.org/wiki/White_stork#/media/File:Europe_stork.png -->
 <p>The "stork-baby-relationship" is a classic example used to illustrate the concept that correlation does not imply causation. It is based on the familiar folk tale that babies are delivered by storks.</p>
 <p>People noticed a correlation between the number of storks (birds) in an area and the number of human babies born. Stork populations and human populations seem to increase together.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-136"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-142"></span>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg" alt="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range." width="80%" />
 <p class="caption">
 Figure 10.1: The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.
@@ -566,20 +564,20 @@ Figure 10.1: The first known pair in Finland (2015), representing a northward ex
 <!-- The following story is based on  -->
 <!--     Matthews, R. (2000). Storks deliver babies (p= 0.008). Teaching Statistics, 22(2), 36-38. -->
 <p>We have data on stork and human population for 28 countries in 2005.</p>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7e0d8d3e11ffd5a78c13" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7e0d8d3e11ffd5a78c13">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28"],["Albania","Austria","Belgium","Belarus","Bosnia Herzegowina","Bulgaria","Czech Republic","Denmark","Estonia","France","Germany","Greece","The Netherlands","Hungary","Italy","Latvia","Lithuania","Poland","Portugal","Romania","Russia","Slovenia","Slovakia","Spain","Sweden","Switzerland","Turkey","Ukraine"],[2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005],[3,395,50,21362,40,4826,814,3,4500,975,4482,2157,562,5200,50,10600,13000,52500,7685,5500,10200,240,1331,33217,29,198,6195,30000],["ALB","AUT","BEL","BLR","BIH","BGR","CZE","DNK","EST","FRA","DEU","GRC","NLD","HUN","ITA","LVA","LTU","POL","PRT","ROU","RUS","SVN","SVK","ESP","SWE","CHE","TUR","UKR"],[28748,83870,30528,207600,51129,110910,78866,43094,45226,547030,357021,131940,41526,93030,301230,64589,65200,312685,92391,237500,17075200,20273,48845,504782,449964,41290,780580,603700],[3.09,8.25,10.55,9.56,3.77,7.69,10.26,5.42,1.36,61.12,81.59999999999999,11.22,16.37,10.09,58.28,2.25,3.34,38.37,10.51,21.42,143.67,1.99,5.4,44.02,9.039999999999999,7.39,67.90000000000001,46.89],[1.95,1.38,1.68,1.26,1.32,1.25,1.19,1.76,1.39,1.88,1.35,1.29,1.74,1.3,1.31,1.29,1.28,1.26,1.45,1.29,1.3,1.21,1.22,1.28,1.67,1.41,2.37,1.15],[1.44,4.85,10.27,6.96,1.66,5.42,7.55,4.65,0.93,47.23,62.05,8.41,13.52,6.69,39.84,1.53,2.23,23.57,6.08,11.4,105.51,1.03,3,34.03,7.62,5.44,46.07,31.79]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Country<\/th>\n      <th>Year<\/th>\n      <th>Storks<\/th>\n      <th>code<\/th>\n      <th>Area<\/th>\n      <th>Population<\/th>\n      <th>Fertility<\/th>\n      <th>UrbanPop<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"iDisplayLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,5,6,7,8]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Country","targets":1},{"name":"Year","targets":2},{"name":"Storks","targets":3},{"name":"code","targets":4},{"name":"Area","targets":5},{"name":"Population","targets":6},{"name":"Fertility","targets":7},{"name":"UrbanPop","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-994203de6e14b5218ef7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-994203de6e14b5218ef7">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28"],["Albania","Austria","Belgium","Belarus","Bosnia Herzegowina","Bulgaria","Czech Republic","Denmark","Estonia","France","Germany","Greece","The Netherlands","Hungary","Italy","Latvia","Lithuania","Poland","Portugal","Romania","Russia","Slovenia","Slovakia","Spain","Sweden","Switzerland","Turkey","Ukraine"],[2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005,2005],[3,395,50,21362,40,4826,814,3,4500,975,4482,2157,562,5200,50,10600,13000,52500,7685,5500,10200,240,1331,33217,29,198,6195,30000],["ALB","AUT","BEL","BLR","BIH","BGR","CZE","DNK","EST","FRA","DEU","GRC","NLD","HUN","ITA","LVA","LTU","POL","PRT","ROU","RUS","SVN","SVK","ESP","SWE","CHE","TUR","UKR"],[28748,83870,30528,207600,51129,110910,78866,43094,45226,547030,357021,131940,41526,93030,301230,64589,65200,312685,92391,237500,17075200,20273,48845,504782,449964,41290,780580,603700],[3.09,8.25,10.55,9.56,3.77,7.69,10.26,5.42,1.36,61.12,81.59999999999999,11.22,16.37,10.09,58.28,2.25,3.34,38.37,10.51,21.42,143.67,1.99,5.4,44.02,9.039999999999999,7.39,67.90000000000001,46.89],[1.95,1.38,1.68,1.26,1.32,1.25,1.19,1.76,1.39,1.88,1.35,1.29,1.74,1.3,1.31,1.29,1.28,1.26,1.45,1.29,1.3,1.21,1.22,1.28,1.67,1.41,2.37,1.15],[1.44,4.85,10.27,6.96,1.66,5.42,7.55,4.65,0.93,47.23,62.05,8.41,13.52,6.69,39.84,1.53,2.23,23.57,6.08,11.4,105.51,1.03,3,34.03,7.62,5.44,46.07,31.79]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Country<\/th>\n      <th>Year<\/th>\n      <th>Storks<\/th>\n      <th>code<\/th>\n      <th>Area<\/th>\n      <th>Population<\/th>\n      <th>Fertility<\/th>\n      <th>UrbanPop<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"iDisplayLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,5,6,7,8]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Country","targets":1},{"name":"Year","targets":2},{"name":"Storks","targets":3},{"name":"code","targets":4},{"name":"Area","targets":5},{"name":"Population","targets":6},{"name":"Fertility","targets":7},{"name":"UrbanPop","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p><code>Storks</code> is the number of pairs of storks in that country. The <code>Area</code> is in square kilometers. <code>Population</code> is the total population in million whereas <code>UrbanPop</code> is the population living in urban areas. <code>Fertility</code> refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime.</p>
 </div>
 <div id="scatterplot" class="section level2 hasAnchor" number="10.2">
 <h2><span class="header-section-number">10.2</span> Scatterplot<a href="relationships.html#scatterplot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <em>scatterplot</em> is a two-dimensional instrument that shows the number of storks on the x-axis and the population on the y-axis. The blue line illustrates the linear trend between the variables. Since its slope is increasing, it suggests a positive connection between storks and population, i.e. countries with more pairs of storks also tend to have a higher population.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-138-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-144-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>The data doesn't cluster in a nice dot cloud but is spread out in both directions. While some countries only have a hand full of storks, others have tens of thousands. Let's explore this in more detail.</p>
 </div>
 <div id="map" class="section level2 hasAnchor" number="10.3">
 <h2><span class="header-section-number">10.3</span> Map<a href="relationships.html#map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The map shows the number of stork pairs for the selected countries.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-139-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-145-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>The range goes from 3 pairs in Albania to 52500 pairs of storks in Poland. There is high variability in the number of storks. The <em>variance</em> is a measure for variability of data.</p>
 </div>
 <div id="variance" class="section level2 hasAnchor" number="10.4">
@@ -595,8 +593,8 @@ Definition
 <p><span class="math display">\[var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2\]</span></p>
 <p>To calculate the variance, we subtract each data point <span class="math inline">\(x_i\)</span> from the mean <span class="math inline">\(\overline{x}\)</span>. Then square those deviations and add them up. Finally, there is a scaling factor, we divide by the inverse number of observations minus 1.</p>
 <p>The variance of <code>Storks</code> and can be calculated via <code>var()</code> in R. It is 154084389. 150 million of what? The variance is in squared unit, i.e. <em>square storks</em> and thus hard to interpret.</p>
-<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-5ebe4a02b51eaa49a911" width="576"></span>
-<script type="application/json" data-for="htmlwidget-5ebe4a02b51eaa49a911">{"x":{"element":"variance","opts":{"content":"The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*."}},"evals":[],"jsHooks":[]}</script>
+<span class="tippy html-widget html-fill-item-overflow-hidden html-fill-item" height="480" id="htmlwidget-31ee34a5e7db6812975d" width="576"></span>
+<script type="application/json" data-for="htmlwidget-31ee34a5e7db6812975d">{"x":{"element":"variance","opts":{"content":"The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*."}},"evals":[],"jsHooks":[]}</script>
 <div class="dedicated">
 <div class="titeldedicated">
 <h2>
@@ -619,7 +617,7 @@ Truly Dedicated
 <p>The standard deviation is derived from variance and tells, on average, how far each value lies from the mean. Variance and standard deviation both measure the variability of a variable. The standard deviation is the square root of variance.</p>
 <p><span class="math display">\[sd(x) = \sqrt{var(x)} = \sqrt{ \frac{\sum (x_i - \overline{x} )^2}{n-1} } \]</span>
 In R, the standard deviation is calculated by <code>sd()</code> like <code>sd(storks$Storks)</code> which yields 12413. The mean of storks <code>mean(storks$Storks)</code> is approximately 7718. The one-dimensional variable <code>Storks</code> is visualized as points on the line.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-141-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-147-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <!-- https://stats.stackexchange.com/questions/311174/what-does-it-mean-when-three-standard-deviations-away-from-the-mean-i-land-ou -->
 <div class="dedicated">
 <div class="titeldedicated">
@@ -636,7 +634,7 @@ Truly Dedicated
 <p>of the mean within a normal distribution. See <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule">68–95–99.7 rule</a></p>
 </div>
 <p>The following scatterplot shows the number of storks and the population with their respective means as bold red lines.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-142-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-148-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>Now, that we know how to describe the variation of each of the two variables, we look for a measure that reflects the co-variation of both variables, i.e. how they change in relation to each other. The new grid of means is a good starting point. When most data points fall into lower left and upper right quadrant, we call this a positive relationship.</p>
 </div>
 <div id="covariance" class="section level2 hasAnchor" number="10.6">
@@ -658,7 +656,7 @@ Definition
 <p><span class="math display">\[cov(x,y) = \frac{1}{n-1} \sum\limits (x_i - \bar{x})(y_i - \bar{y})\]</span></p>
 <p>For each data point, we multiply the differences with the respective mean. Geometrically, this results in several rectangular areas starting at the intersection of means as a new origin. The covariance sums up all these areas. Finally, the covariance is adjusted by the number of observations. When both values are smaller or greater than the mean, the result will be positive.</p>
 <p>In R, the covariance is calculated by <code>cov(storks$Storks, storks$Population)</code> and yields 89235. The positive covariance confirms what we saw in the first scatterplot, the positive association between storks and population. Let's try to visualize the calculation procedure of the covariance.</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-143-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-149-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <div class="challenge">
 <div class="titelchallenge">
 <h2>
@@ -685,9 +683,9 @@ Definition
 <p>Does the numerator and denominator remind you of something? The formula is made of the components variance and covariance. Thus, the correlation coefficient formula is often expressed in short as:</p>
 <p><span class="math display">\[r(x,y,) = \frac{Cov(x,y)}{\sqrt{Var(x) Var(y)}}\]</span></p>
 <p><code>cor()</code> is a basic function to calculate the correlation coefficient.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="relationships.html#cb91-1" tabindex="-1"></a><span class="co"># Basic function </span></span>
-<span id="cb91-2"><a href="relationships.html#cb91-2" tabindex="-1"></a><span class="fu">cor</span>(x,y)</span>
-<span id="cb91-3"><a href="relationships.html#cb91-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.2199176</span></span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="relationships.html#cb93-1" tabindex="-1"></a><span class="co"># Basic function </span></span>
+<span id="cb93-2"><a href="relationships.html#cb93-2" tabindex="-1"></a><span class="fu">cor</span>(x,y)</span>
+<span id="cb93-3"><a href="relationships.html#cb93-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.2199176</span></span></code></pre></div>
 <p>The correlation coefficients confirms ones more, there is a positive relationship. You will find thresholds for different fields of research that classify the magnitude of the correlation coefficient as <em>weak</em>, <em>moderate</em> and <em>strong</em>. Social science usually accept lower correlation values to be meaningful. One possible classification could be:</p>
 <ul>
 <li>above 0.4 is strong</li>
@@ -695,19 +693,19 @@ Definition
 <li>and those below 0.2 are considered weak.</li>
 </ul>
 <p>Thus we may consider the stork-population-relationship as weak to moderate. Keep in mind that these thresholds are not set in stone. Now, let's turn to <code>cor.test()</code>, a more sophisticated version including a hypothesis test.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="relationships.html#cb92-1" tabindex="-1"></a><span class="co"># Advanced function </span></span>
-<span id="cb92-2"><a href="relationships.html#cb92-2" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span>
-<span id="cb92-3"><a href="relationships.html#cb92-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb92-4"><a href="relationships.html#cb92-4" tabindex="-1"></a><span class="co">#&gt;  Pearson&#39;s product-moment correlation</span></span>
-<span id="cb92-5"><a href="relationships.html#cb92-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb92-6"><a href="relationships.html#cb92-6" tabindex="-1"></a><span class="co">#&gt; data:  x and y</span></span>
-<span id="cb92-7"><a href="relationships.html#cb92-7" tabindex="-1"></a><span class="co">#&gt; t = 1.1495, df = 26, p-value = 0.2608</span></span>
-<span id="cb92-8"><a href="relationships.html#cb92-8" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true correlation is not equal to 0</span></span>
-<span id="cb92-9"><a href="relationships.html#cb92-9" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb92-10"><a href="relationships.html#cb92-10" tabindex="-1"></a><span class="co">#&gt;  -0.1668487  0.5480307</span></span>
-<span id="cb92-11"><a href="relationships.html#cb92-11" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb92-12"><a href="relationships.html#cb92-12" tabindex="-1"></a><span class="co">#&gt;       cor </span></span>
-<span id="cb92-13"><a href="relationships.html#cb92-13" tabindex="-1"></a><span class="co">#&gt; 0.2199176</span></span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="relationships.html#cb94-1" tabindex="-1"></a><span class="co"># Advanced function </span></span>
+<span id="cb94-2"><a href="relationships.html#cb94-2" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span>
+<span id="cb94-3"><a href="relationships.html#cb94-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb94-4"><a href="relationships.html#cb94-4" tabindex="-1"></a><span class="co">#&gt;  Pearson&#39;s product-moment correlation</span></span>
+<span id="cb94-5"><a href="relationships.html#cb94-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb94-6"><a href="relationships.html#cb94-6" tabindex="-1"></a><span class="co">#&gt; data:  x and y</span></span>
+<span id="cb94-7"><a href="relationships.html#cb94-7" tabindex="-1"></a><span class="co">#&gt; t = 1.1495, df = 26, p-value = 0.2608</span></span>
+<span id="cb94-8"><a href="relationships.html#cb94-8" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true correlation is not equal to 0</span></span>
+<span id="cb94-9"><a href="relationships.html#cb94-9" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb94-10"><a href="relationships.html#cb94-10" tabindex="-1"></a><span class="co">#&gt;  -0.1668487  0.5480307</span></span>
+<span id="cb94-11"><a href="relationships.html#cb94-11" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb94-12"><a href="relationships.html#cb94-12" tabindex="-1"></a><span class="co">#&gt;       cor </span></span>
+<span id="cb94-13"><a href="relationships.html#cb94-13" tabindex="-1"></a><span class="co">#&gt; 0.2199176</span></span></code></pre></div>
 <!-- ## Statistical significance: p<0.05 (or rule of thumb t>2) -->
 <!-- ## t value is 5.6757 -->
 <!-- ## p value is 0.01084  -->
@@ -748,35 +746,35 @@ Amazing Fact
 <p><span class="math display">\[\beta = cor(Y,X) \cdot \frac{SD(Y)}{SD(X)} \]</span></p>
 </div>
 <p>Here is the replication:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="relationships.html#cb93-1" tabindex="-1"></a><span class="co"># The data</span></span>
-<span id="cb93-2"><a href="relationships.html#cb93-2" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">13</span>,<span class="dv">19</span>,<span class="dv">25</span>,<span class="dv">29</span>), <span class="at">y=</span><span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">28</span>,<span class="dv">32</span>,<span class="dv">38</span>))</span>
-<span id="cb93-3"><a href="relationships.html#cb93-3" tabindex="-1"></a></span>
-<span id="cb93-4"><a href="relationships.html#cb93-4" tabindex="-1"></a><span class="co"># The correlation coefficient </span></span>
-<span id="cb93-5"><a href="relationships.html#cb93-5" tabindex="-1"></a>cor_coef <span class="ot">&lt;-</span> <span class="fu">cor</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb93-6"><a href="relationships.html#cb93-6" tabindex="-1"></a>cor_coef</span>
-<span id="cb93-7"><a href="relationships.html#cb93-7" tabindex="-1"></a><span class="co">#&gt; [1] 0.9564548</span></span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="relationships.html#cb95-1" tabindex="-1"></a><span class="co"># The data</span></span>
+<span id="cb95-2"><a href="relationships.html#cb95-2" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">13</span>,<span class="dv">19</span>,<span class="dv">25</span>,<span class="dv">29</span>), <span class="at">y=</span><span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">28</span>,<span class="dv">32</span>,<span class="dv">38</span>))</span>
+<span id="cb95-3"><a href="relationships.html#cb95-3" tabindex="-1"></a></span>
+<span id="cb95-4"><a href="relationships.html#cb95-4" tabindex="-1"></a><span class="co"># The correlation coefficient </span></span>
+<span id="cb95-5"><a href="relationships.html#cb95-5" tabindex="-1"></a>cor_coef <span class="ot">&lt;-</span> <span class="fu">cor</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb95-6"><a href="relationships.html#cb95-6" tabindex="-1"></a>cor_coef</span>
+<span id="cb95-7"><a href="relationships.html#cb95-7" tabindex="-1"></a><span class="co">#&gt; [1] 0.9564548</span></span></code></pre></div>
 <p>The correlation coefficient is 1.1495056.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="relationships.html#cb94-1" tabindex="-1"></a><span class="co"># The regression coefficient </span></span>
-<span id="cb94-2"><a href="relationships.html#cb94-2" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x, <span class="at">data=</span>df)</span>
-<span id="cb94-3"><a href="relationships.html#cb94-3" tabindex="-1"></a>reg_coef <span class="ot">&lt;-</span> linear_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
-<span id="cb94-4"><a href="relationships.html#cb94-4" tabindex="-1"></a>reg_coef</span>
-<span id="cb94-5"><a href="relationships.html#cb94-5" tabindex="-1"></a><span class="co">#&gt;       x </span></span>
-<span id="cb94-6"><a href="relationships.html#cb94-6" tabindex="-1"></a><span class="co">#&gt; 1.19898</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="relationships.html#cb96-1" tabindex="-1"></a><span class="co"># The regression coefficient </span></span>
+<span id="cb96-2"><a href="relationships.html#cb96-2" tabindex="-1"></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x, <span class="at">data=</span>df)</span>
+<span id="cb96-3"><a href="relationships.html#cb96-3" tabindex="-1"></a>reg_coef <span class="ot">&lt;-</span> linear_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb96-4"><a href="relationships.html#cb96-4" tabindex="-1"></a>reg_coef</span>
+<span id="cb96-5"><a href="relationships.html#cb96-5" tabindex="-1"></a><span class="co">#&gt;       x </span></span>
+<span id="cb96-6"><a href="relationships.html#cb96-6" tabindex="-1"></a><span class="co">#&gt; 1.19898</span></span></code></pre></div>
 <p>The regression coefficient of <code>x</code> is 1.1989796. Here is the connection:</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="relationships.html#cb95-1" tabindex="-1"></a><span class="co"># The connection</span></span>
-<span id="cb95-2"><a href="relationships.html#cb95-2" tabindex="-1"></a>cor_coef <span class="sc">*</span> <span class="fu">sd</span>(y) <span class="sc">/</span> <span class="fu">sd</span>(x)</span>
-<span id="cb95-3"><a href="relationships.html#cb95-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.002518728</span></span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="relationships.html#cb97-1" tabindex="-1"></a><span class="co"># The connection</span></span>
+<span id="cb97-2"><a href="relationships.html#cb97-2" tabindex="-1"></a>cor_coef <span class="sc">*</span> <span class="fu">sd</span>(y) <span class="sc">/</span> <span class="fu">sd</span>(x)</span>
+<span id="cb97-3"><a href="relationships.html#cb97-3" tabindex="-1"></a><span class="co">#&gt; [1] 0.002518728</span></span></code></pre></div>
 <p>Alternatively standardize the data first, then calculate correlation and regression:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="relationships.html#cb96-1" tabindex="-1"></a><span class="co"># The connection</span></span>
-<span id="cb96-2"><a href="relationships.html#cb96-2" tabindex="-1"></a>df_scaled <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scale</span>(df, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb96-3"><a href="relationships.html#cb96-3" tabindex="-1"></a></span>
-<span id="cb96-4"><a href="relationships.html#cb96-4" tabindex="-1"></a><span class="co"># The correlation on standardized variables</span></span>
-<span id="cb96-5"><a href="relationships.html#cb96-5" tabindex="-1"></a><span class="fu">cor</span>(df_scaled<span class="sc">$</span>x, df_scaled<span class="sc">$</span>y, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb96-6"><a href="relationships.html#cb96-6" tabindex="-1"></a><span class="co">#&gt; [1] 0.9564548</span></span></code></pre></div>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="relationships.html#cb97-1" tabindex="-1"></a><span class="co"># The regression on standardized variables</span></span>
-<span id="cb97-2"><a href="relationships.html#cb97-2" tabindex="-1"></a><span class="fu">lm</span>(y<span class="sc">~</span>x, <span class="at">data=</span>df_scaled)<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
-<span id="cb97-3"><a href="relationships.html#cb97-3" tabindex="-1"></a><span class="co">#&gt;         x </span></span>
-<span id="cb97-4"><a href="relationships.html#cb97-4" tabindex="-1"></a><span class="co">#&gt; 0.9564548</span></span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="relationships.html#cb98-1" tabindex="-1"></a><span class="co"># The connection</span></span>
+<span id="cb98-2"><a href="relationships.html#cb98-2" tabindex="-1"></a>df_scaled <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scale</span>(df, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb98-3"><a href="relationships.html#cb98-3" tabindex="-1"></a></span>
+<span id="cb98-4"><a href="relationships.html#cb98-4" tabindex="-1"></a><span class="co"># The correlation on standardized variables</span></span>
+<span id="cb98-5"><a href="relationships.html#cb98-5" tabindex="-1"></a><span class="fu">cor</span>(df_scaled<span class="sc">$</span>x, df_scaled<span class="sc">$</span>y, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb98-6"><a href="relationships.html#cb98-6" tabindex="-1"></a><span class="co">#&gt; [1] 0.9564548</span></span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="relationships.html#cb99-1" tabindex="-1"></a><span class="co"># The regression on standardized variables</span></span>
+<span id="cb99-2"><a href="relationships.html#cb99-2" tabindex="-1"></a><span class="fu">lm</span>(y<span class="sc">~</span>x, <span class="at">data=</span>df_scaled)<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb99-3"><a href="relationships.html#cb99-3" tabindex="-1"></a><span class="co">#&gt;         x </span></span>
+<span id="cb99-4"><a href="relationships.html#cb99-4" tabindex="-1"></a><span class="co">#&gt; 0.9564548</span></span></code></pre></div>
 
 </div>
 </div>

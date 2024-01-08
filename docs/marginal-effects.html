@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2024-01-04" />
+<meta name="date" content="2024-01-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -379,13 +379,11 @@ div.csl-indent {
 <li class="chapter" data-level="8.1.3" data-path="geo-data.html"><a href="geo-data.html#angles-and-degrees"><i class="fa fa-check"></i><b>8.1.3</b> Angles and Degrees</a></li>
 <li class="chapter" data-level="8.1.4" data-path="geo-data.html"><a href="geo-data.html#coordinate-reference-system"><i class="fa fa-check"></i><b>8.1.4</b> Coordinate Reference System</a></li>
 <li class="chapter" data-level="8.1.5" data-path="geo-data.html"><a href="geo-data.html#distance-measurement"><i class="fa fa-check"></i><b>8.1.5</b> Distance measurement</a></li>
+<li class="chapter" data-level="8.1.6" data-path="geo-data.html"><a href="geo-data.html#points-and-polygons"><i class="fa fa-check"></i><b>8.1.6</b> Points And Polygons</a></li>
+<li class="chapter" data-level="8.1.7" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>8.1.7</b> Shapefiles</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="geo-data.html"><a href="geo-data.html#from-points-and-polygons"><i class="fa fa-check"></i><b>8.2</b> From Points And Polygons</a>
-<ul>
-<li class="chapter" data-level="8.2.1" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>8.2.1</b> Shapefiles</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="geo-data.html"><a href="geo-data.html#spatial-scale"><i class="fa fa-check"></i><b>8.3</b> Spatial scale</a></li>
-<li class="chapter" data-level="8.4" data-path="geo-data.html"><a href="geo-data.html#switzerland"><i class="fa fa-check"></i><b>8.4</b> Switzerland</a></li>
+<li class="chapter" data-level="8.2" data-path="geo-data.html"><a href="geo-data.html#google-takeout"><i class="fa fa-check"></i><b>8.2</b> Google Takeout</a></li>
+<li class="chapter" data-level="8.3" data-path="geo-data.html"><a href="geo-data.html#blood-donation"><i class="fa fa-check"></i><b>8.3</b> Blood Donation</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>9</b> Missing Data</a>
 <ul>
@@ -551,43 +549,43 @@ weight &amp;= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \c
 \frac{\partial weight}{\partial height} &amp;= \beta_1 + \beta_3 \cdot female \tag{conditional effect}  \\
 \end{align}
 \]</span></p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="marginal-effects.html#cb152-1" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb152-2"><a href="marginal-effects.html#cb152-2" tabindex="-1"></a><span class="fu">stargazer</span>(simple, interact1, <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span>
-<span id="cb152-3"><a href="marginal-effects.html#cb152-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb152-4"><a href="marginal-effects.html#cb152-4" tabindex="-1"></a><span class="co">#&gt; =====================================================================</span></span>
-<span id="cb152-5"><a href="marginal-effects.html#cb152-5" tabindex="-1"></a><span class="co">#&gt;                                    Dependent variable:               </span></span>
-<span id="cb152-6"><a href="marginal-effects.html#cb152-6" tabindex="-1"></a><span class="co">#&gt;                     -------------------------------------------------</span></span>
-<span id="cb152-7"><a href="marginal-effects.html#cb152-7" tabindex="-1"></a><span class="co">#&gt;                                          Income                      </span></span>
-<span id="cb152-8"><a href="marginal-effects.html#cb152-8" tabindex="-1"></a><span class="co">#&gt;                               (1)                      (2)           </span></span>
-<span id="cb152-9"><a href="marginal-effects.html#cb152-9" tabindex="-1"></a><span class="co">#&gt; ---------------------------------------------------------------------</span></span>
-<span id="cb152-10"><a href="marginal-effects.html#cb152-10" tabindex="-1"></a><span class="co">#&gt; Age                        524.554***                                </span></span>
-<span id="cb152-11"><a href="marginal-effects.html#cb152-11" tabindex="-1"></a><span class="co">#&gt;                             (58.487)                                 </span></span>
-<span id="cb152-12"><a href="marginal-effects.html#cb152-12" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
-<span id="cb152-13"><a href="marginal-effects.html#cb152-13" tabindex="-1"></a><span class="co">#&gt; Kids1                                              4,329.056***      </span></span>
-<span id="cb152-14"><a href="marginal-effects.html#cb152-14" tabindex="-1"></a><span class="co">#&gt;                                                    (1,650.629)       </span></span>
-<span id="cb152-15"><a href="marginal-effects.html#cb152-15" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
-<span id="cb152-16"><a href="marginal-effects.html#cb152-16" tabindex="-1"></a><span class="co">#&gt; Female1                                           -6,131.395***      </span></span>
-<span id="cb152-17"><a href="marginal-effects.html#cb152-17" tabindex="-1"></a><span class="co">#&gt;                                                    (1,727.116)       </span></span>
-<span id="cb152-18"><a href="marginal-effects.html#cb152-18" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
-<span id="cb152-19"><a href="marginal-effects.html#cb152-19" tabindex="-1"></a><span class="co">#&gt; Kids1:Female1                                     -8,708.424***      </span></span>
-<span id="cb152-20"><a href="marginal-effects.html#cb152-20" tabindex="-1"></a><span class="co">#&gt;                                                    (2,954.627)       </span></span>
-<span id="cb152-21"><a href="marginal-effects.html#cb152-21" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
-<span id="cb152-22"><a href="marginal-effects.html#cb152-22" tabindex="-1"></a><span class="co">#&gt; Constant                 18,341.030***            43,476.060***      </span></span>
-<span id="cb152-23"><a href="marginal-effects.html#cb152-23" tabindex="-1"></a><span class="co">#&gt;                           (2,733.469)              (1,128.318)       </span></span>
-<span id="cb152-24"><a href="marginal-effects.html#cb152-24" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
-<span id="cb152-25"><a href="marginal-effects.html#cb152-25" tabindex="-1"></a><span class="co">#&gt; ---------------------------------------------------------------------</span></span>
-<span id="cb152-26"><a href="marginal-effects.html#cb152-26" tabindex="-1"></a><span class="co">#&gt; Observations                 1,211                    1,211          </span></span>
-<span id="cb152-27"><a href="marginal-effects.html#cb152-27" tabindex="-1"></a><span class="co">#&gt; R2                           0.062                    0.045          </span></span>
-<span id="cb152-28"><a href="marginal-effects.html#cb152-28" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                  0.062                    0.042          </span></span>
-<span id="cb152-29"><a href="marginal-effects.html#cb152-29" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error  22,753.730 (df = 1209)   22,985.580 (df = 1207) </span></span>
-<span id="cb152-30"><a href="marginal-effects.html#cb152-30" tabindex="-1"></a><span class="co">#&gt; F Statistic         80.439*** (df = 1; 1209) 18.853*** (df = 3; 1207)</span></span>
-<span id="cb152-31"><a href="marginal-effects.html#cb152-31" tabindex="-1"></a><span class="co">#&gt; =====================================================================</span></span>
-<span id="cb152-32"><a href="marginal-effects.html#cb152-32" tabindex="-1"></a><span class="co">#&gt; Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="marginal-effects.html#cb154-1" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb154-2"><a href="marginal-effects.html#cb154-2" tabindex="-1"></a><span class="fu">stargazer</span>(simple, interact1, <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span>
+<span id="cb154-3"><a href="marginal-effects.html#cb154-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb154-4"><a href="marginal-effects.html#cb154-4" tabindex="-1"></a><span class="co">#&gt; =====================================================================</span></span>
+<span id="cb154-5"><a href="marginal-effects.html#cb154-5" tabindex="-1"></a><span class="co">#&gt;                                    Dependent variable:               </span></span>
+<span id="cb154-6"><a href="marginal-effects.html#cb154-6" tabindex="-1"></a><span class="co">#&gt;                     -------------------------------------------------</span></span>
+<span id="cb154-7"><a href="marginal-effects.html#cb154-7" tabindex="-1"></a><span class="co">#&gt;                                          Income                      </span></span>
+<span id="cb154-8"><a href="marginal-effects.html#cb154-8" tabindex="-1"></a><span class="co">#&gt;                               (1)                      (2)           </span></span>
+<span id="cb154-9"><a href="marginal-effects.html#cb154-9" tabindex="-1"></a><span class="co">#&gt; ---------------------------------------------------------------------</span></span>
+<span id="cb154-10"><a href="marginal-effects.html#cb154-10" tabindex="-1"></a><span class="co">#&gt; Age                        524.554***                                </span></span>
+<span id="cb154-11"><a href="marginal-effects.html#cb154-11" tabindex="-1"></a><span class="co">#&gt;                             (58.487)                                 </span></span>
+<span id="cb154-12"><a href="marginal-effects.html#cb154-12" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb154-13"><a href="marginal-effects.html#cb154-13" tabindex="-1"></a><span class="co">#&gt; Kids1                                              4,329.056***      </span></span>
+<span id="cb154-14"><a href="marginal-effects.html#cb154-14" tabindex="-1"></a><span class="co">#&gt;                                                    (1,650.629)       </span></span>
+<span id="cb154-15"><a href="marginal-effects.html#cb154-15" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb154-16"><a href="marginal-effects.html#cb154-16" tabindex="-1"></a><span class="co">#&gt; Female1                                           -6,131.395***      </span></span>
+<span id="cb154-17"><a href="marginal-effects.html#cb154-17" tabindex="-1"></a><span class="co">#&gt;                                                    (1,727.116)       </span></span>
+<span id="cb154-18"><a href="marginal-effects.html#cb154-18" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb154-19"><a href="marginal-effects.html#cb154-19" tabindex="-1"></a><span class="co">#&gt; Kids1:Female1                                     -8,708.424***      </span></span>
+<span id="cb154-20"><a href="marginal-effects.html#cb154-20" tabindex="-1"></a><span class="co">#&gt;                                                    (2,954.627)       </span></span>
+<span id="cb154-21"><a href="marginal-effects.html#cb154-21" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb154-22"><a href="marginal-effects.html#cb154-22" tabindex="-1"></a><span class="co">#&gt; Constant                 18,341.030***            43,476.060***      </span></span>
+<span id="cb154-23"><a href="marginal-effects.html#cb154-23" tabindex="-1"></a><span class="co">#&gt;                           (2,733.469)              (1,128.318)       </span></span>
+<span id="cb154-24"><a href="marginal-effects.html#cb154-24" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb154-25"><a href="marginal-effects.html#cb154-25" tabindex="-1"></a><span class="co">#&gt; ---------------------------------------------------------------------</span></span>
+<span id="cb154-26"><a href="marginal-effects.html#cb154-26" tabindex="-1"></a><span class="co">#&gt; Observations                 1,211                    1,211          </span></span>
+<span id="cb154-27"><a href="marginal-effects.html#cb154-27" tabindex="-1"></a><span class="co">#&gt; R2                           0.062                    0.045          </span></span>
+<span id="cb154-28"><a href="marginal-effects.html#cb154-28" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                  0.062                    0.042          </span></span>
+<span id="cb154-29"><a href="marginal-effects.html#cb154-29" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error  22,753.730 (df = 1209)   22,985.580 (df = 1207) </span></span>
+<span id="cb154-30"><a href="marginal-effects.html#cb154-30" tabindex="-1"></a><span class="co">#&gt; F Statistic         80.439*** (df = 1; 1209) 18.853*** (df = 3; 1207)</span></span>
+<span id="cb154-31"><a href="marginal-effects.html#cb154-31" tabindex="-1"></a><span class="co">#&gt; =====================================================================</span></span>
+<span id="cb154-32"><a href="marginal-effects.html#cb154-32" tabindex="-1"></a><span class="co">#&gt; Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
 <p>For the simple regression, the coefficient is identical (unconditional).</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="marginal-effects.html#cb153-1" tabindex="-1"></a><span class="fu">library</span>(margins)</span>
-<span id="cb153-2"><a href="marginal-effects.html#cb153-2" tabindex="-1"></a><span class="fu">margins</span>(simple)</span>
-<span id="cb153-3"><a href="marginal-effects.html#cb153-3" tabindex="-1"></a><span class="co">#&gt;    Age</span></span>
-<span id="cb153-4"><a href="marginal-effects.html#cb153-4" tabindex="-1"></a><span class="co">#&gt;  524.6</span></span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="marginal-effects.html#cb155-1" tabindex="-1"></a><span class="fu">library</span>(margins)</span>
+<span id="cb155-2"><a href="marginal-effects.html#cb155-2" tabindex="-1"></a><span class="fu">margins</span>(simple)</span>
+<span id="cb155-3"><a href="marginal-effects.html#cb155-3" tabindex="-1"></a><span class="co">#&gt;    Age</span></span>
+<span id="cb155-4"><a href="marginal-effects.html#cb155-4" tabindex="-1"></a><span class="co">#&gt;  524.6</span></span></code></pre></div>
 <div id="marginal-effects-at-representatives" class="section level3 hasAnchor" number="15.0.1">
 <h3><span class="header-section-number">15.0.1</span> Marginal effects at representatives<a href="marginal-effects.html#marginal-effects-at-representatives" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can use representative values which we literally plug in the equation. These are the effects for each group (what we have seen before in the interaction plot):</p>
@@ -600,10 +598,10 @@ weight &amp;= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot female + \beta_3 \c
 <!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 1 = 0.845 \tag{effect for males}  \\ -->
 <!-- \frac{\partial weight}{\partial height} &= 1.069 -0.224 \cdot 2 = 0.621 \tag{effect for females}  \\ -->
 <p>Here is the R code:</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="marginal-effects.html#cb154-1" tabindex="-1"></a><span class="fu">margins</span>(interact1, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">Female =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>)))</span>
-<span id="cb154-2"><a href="marginal-effects.html#cb154-2" tabindex="-1"></a><span class="co">#&gt;  at(Female) Kids1 Female1</span></span>
-<span id="cb154-3"><a href="marginal-effects.html#cb154-3" tabindex="-1"></a><span class="co">#&gt;           0  4329   -9633</span></span>
-<span id="cb154-4"><a href="marginal-effects.html#cb154-4" tabindex="-1"></a><span class="co">#&gt;           1 -4379   -9633</span></span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="marginal-effects.html#cb156-1" tabindex="-1"></a><span class="fu">margins</span>(interact1, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">Female =</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>)))</span>
+<span id="cb156-2"><a href="marginal-effects.html#cb156-2" tabindex="-1"></a><span class="co">#&gt;  at(Female) Kids1 Female1</span></span>
+<span id="cb156-3"><a href="marginal-effects.html#cb156-3" tabindex="-1"></a><span class="co">#&gt;           0  4329   -9633</span></span>
+<span id="cb156-4"><a href="marginal-effects.html#cb156-4" tabindex="-1"></a><span class="co">#&gt;           1 -4379   -9633</span></span></code></pre></div>
 <p>Please calculate the MER of height in <code>interact1</code> for the two gender programmtic in R.</p>
 </div>
 <div id="marginal-effects-at-the-mean" class="section level3 hasAnchor" number="15.0.2">
@@ -617,114 +615,114 @@ weight &amp;= \beta_0 + \beta_1 \cdot height + \beta_2 \cdot age + \beta_3 \cdot
 \frac{\partial weight}{\partial height} &amp;= \beta_1 + \beta_3 \cdot age \tag{conditional effect}  \\
 \end{align}
 \]</span></p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="marginal-effects.html#cb156-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;stargazer&quot;</span>)</span>
-<span id="cb156-2"><a href="marginal-effects.html#cb156-2" tabindex="-1"></a><span class="fu">stargazer</span>(simple, interact2, <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span>
-<span id="cb156-3"><a href="marginal-effects.html#cb156-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb156-4"><a href="marginal-effects.html#cb156-4" tabindex="-1"></a><span class="co">#&gt; ================================================================================</span></span>
-<span id="cb156-5"><a href="marginal-effects.html#cb156-5" tabindex="-1"></a><span class="co">#&gt;                                              Dependent variable:                </span></span>
-<span id="cb156-6"><a href="marginal-effects.html#cb156-6" tabindex="-1"></a><span class="co">#&gt;                               --------------------------------------------------</span></span>
-<span id="cb156-7"><a href="marginal-effects.html#cb156-7" tabindex="-1"></a><span class="co">#&gt;                                                     Income                      </span></span>
-<span id="cb156-8"><a href="marginal-effects.html#cb156-8" tabindex="-1"></a><span class="co">#&gt;                                         (1)                       (2)           </span></span>
-<span id="cb156-9"><a href="marginal-effects.html#cb156-9" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
-<span id="cb156-10"><a href="marginal-effects.html#cb156-10" tabindex="-1"></a><span class="co">#&gt; Age                                  524.554***                                 </span></span>
-<span id="cb156-11"><a href="marginal-effects.html#cb156-11" tabindex="-1"></a><span class="co">#&gt;                                       (58.487)                                  </span></span>
-<span id="cb156-12"><a href="marginal-effects.html#cb156-12" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-13"><a href="marginal-effects.html#cb156-13" tabindex="-1"></a><span class="co">#&gt; IndustryBanking                                              46,946.530***      </span></span>
-<span id="cb156-14"><a href="marginal-effects.html#cb156-14" tabindex="-1"></a><span class="co">#&gt;                                                              (10,448.620)       </span></span>
-<span id="cb156-15"><a href="marginal-effects.html#cb156-15" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-16"><a href="marginal-effects.html#cb156-16" tabindex="-1"></a><span class="co">#&gt; IndustryConstruction                                           8,443.728        </span></span>
-<span id="cb156-17"><a href="marginal-effects.html#cb156-17" tabindex="-1"></a><span class="co">#&gt;                                                               (6,850.222)       </span></span>
-<span id="cb156-18"><a href="marginal-effects.html#cb156-18" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-19"><a href="marginal-effects.html#cb156-19" tabindex="-1"></a><span class="co">#&gt; IndustryEnergy                                               21,340.940***      </span></span>
-<span id="cb156-20"><a href="marginal-effects.html#cb156-20" tabindex="-1"></a><span class="co">#&gt;                                                               (7,884.232)       </span></span>
-<span id="cb156-21"><a href="marginal-effects.html#cb156-21" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-22"><a href="marginal-effects.html#cb156-22" tabindex="-1"></a><span class="co">#&gt; IndustryManufacturing                                        24,884.760***      </span></span>
-<span id="cb156-23"><a href="marginal-effects.html#cb156-23" tabindex="-1"></a><span class="co">#&gt;                                                               (6,508.270)       </span></span>
-<span id="cb156-24"><a href="marginal-effects.html#cb156-24" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-25"><a href="marginal-effects.html#cb156-25" tabindex="-1"></a><span class="co">#&gt; IndustryMining                                                31,740.910*       </span></span>
-<span id="cb156-26"><a href="marginal-effects.html#cb156-26" tabindex="-1"></a><span class="co">#&gt;                                                              (16,779.550)       </span></span>
-<span id="cb156-27"><a href="marginal-effects.html#cb156-27" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-28"><a href="marginal-effects.html#cb156-28" tabindex="-1"></a><span class="co">#&gt; IndustryOther                                                18,604.880***      </span></span>
-<span id="cb156-29"><a href="marginal-effects.html#cb156-29" tabindex="-1"></a><span class="co">#&gt;                                                               (6,469.352)       </span></span>
-<span id="cb156-30"><a href="marginal-effects.html#cb156-30" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-31"><a href="marginal-effects.html#cb156-31" tabindex="-1"></a><span class="co">#&gt; IndustryServices                                             31,579.780***      </span></span>
-<span id="cb156-32"><a href="marginal-effects.html#cb156-32" tabindex="-1"></a><span class="co">#&gt;                                                               (6,878.945)       </span></span>
-<span id="cb156-33"><a href="marginal-effects.html#cb156-33" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-34"><a href="marginal-effects.html#cb156-34" tabindex="-1"></a><span class="co">#&gt; IndustryTrade                                                 14,766.440*       </span></span>
-<span id="cb156-35"><a href="marginal-effects.html#cb156-35" tabindex="-1"></a><span class="co">#&gt;                                                               (7,823.505)       </span></span>
-<span id="cb156-36"><a href="marginal-effects.html#cb156-36" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-37"><a href="marginal-effects.html#cb156-37" tabindex="-1"></a><span class="co">#&gt; IndustryTransport                                            39,986.220***      </span></span>
-<span id="cb156-38"><a href="marginal-effects.html#cb156-38" tabindex="-1"></a><span class="co">#&gt;                                                               (7,048.821)       </span></span>
-<span id="cb156-39"><a href="marginal-effects.html#cb156-39" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-40"><a href="marginal-effects.html#cb156-40" tabindex="-1"></a><span class="co">#&gt; Female1                                                        -549.878         </span></span>
-<span id="cb156-41"><a href="marginal-effects.html#cb156-41" tabindex="-1"></a><span class="co">#&gt;                                                              (16,779.550)       </span></span>
-<span id="cb156-42"><a href="marginal-effects.html#cb156-42" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-43"><a href="marginal-effects.html#cb156-43" tabindex="-1"></a><span class="co">#&gt; IndustryBanking:Female1                                       -3,508.290        </span></span>
-<span id="cb156-44"><a href="marginal-effects.html#cb156-44" tabindex="-1"></a><span class="co">#&gt;                                                              (24,327.690)       </span></span>
-<span id="cb156-45"><a href="marginal-effects.html#cb156-45" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-46"><a href="marginal-effects.html#cb156-46" tabindex="-1"></a><span class="co">#&gt; IndustryConstruction:Female1                                  -4,093.737        </span></span>
-<span id="cb156-47"><a href="marginal-effects.html#cb156-47" tabindex="-1"></a><span class="co">#&gt;                                                              (18,670.560)       </span></span>
-<span id="cb156-48"><a href="marginal-effects.html#cb156-48" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-49"><a href="marginal-effects.html#cb156-49" tabindex="-1"></a><span class="co">#&gt; IndustryEnergy:Female1                                         9,357.981        </span></span>
-<span id="cb156-50"><a href="marginal-effects.html#cb156-50" tabindex="-1"></a><span class="co">#&gt;                                                              (20,595.100)       </span></span>
-<span id="cb156-51"><a href="marginal-effects.html#cb156-51" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-52"><a href="marginal-effects.html#cb156-52" tabindex="-1"></a><span class="co">#&gt; IndustryManufacturing:Female1                                 -11,453.940       </span></span>
-<span id="cb156-53"><a href="marginal-effects.html#cb156-53" tabindex="-1"></a><span class="co">#&gt;                                                              (17,038.220)       </span></span>
-<span id="cb156-54"><a href="marginal-effects.html#cb156-54" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-55"><a href="marginal-effects.html#cb156-55" tabindex="-1"></a><span class="co">#&gt; IndustryMining:Female1                                         -130.297         </span></span>
-<span id="cb156-56"><a href="marginal-effects.html#cb156-56" tabindex="-1"></a><span class="co">#&gt;                                                              (31,710.370)       </span></span>
-<span id="cb156-57"><a href="marginal-effects.html#cb156-57" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-58"><a href="marginal-effects.html#cb156-58" tabindex="-1"></a><span class="co">#&gt; IndustryOther:Female1                                         -8,681.747        </span></span>
-<span id="cb156-59"><a href="marginal-effects.html#cb156-59" tabindex="-1"></a><span class="co">#&gt;                                                              (16,886.980)       </span></span>
-<span id="cb156-60"><a href="marginal-effects.html#cb156-60" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-61"><a href="marginal-effects.html#cb156-61" tabindex="-1"></a><span class="co">#&gt; IndustryServices:Female1                                      -11,550.570       </span></span>
-<span id="cb156-62"><a href="marginal-effects.html#cb156-62" tabindex="-1"></a><span class="co">#&gt;                                                              (17,203.610)       </span></span>
-<span id="cb156-63"><a href="marginal-effects.html#cb156-63" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-64"><a href="marginal-effects.html#cb156-64" tabindex="-1"></a><span class="co">#&gt; IndustryTrade:Female1                                         -8,405.721        </span></span>
-<span id="cb156-65"><a href="marginal-effects.html#cb156-65" tabindex="-1"></a><span class="co">#&gt;                                                              (18,612.280)       </span></span>
-<span id="cb156-66"><a href="marginal-effects.html#cb156-66" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-67"><a href="marginal-effects.html#cb156-67" tabindex="-1"></a><span class="co">#&gt; IndustryTransport:Female1                                     -12,060.660       </span></span>
-<span id="cb156-68"><a href="marginal-effects.html#cb156-68" tabindex="-1"></a><span class="co">#&gt;                                                              (17,690.580)       </span></span>
-<span id="cb156-69"><a href="marginal-effects.html#cb156-69" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-70"><a href="marginal-effects.html#cb156-70" tabindex="-1"></a><span class="co">#&gt; Constant                           18,341.030***             23,513.110***      </span></span>
-<span id="cb156-71"><a href="marginal-effects.html#cb156-71" tabindex="-1"></a><span class="co">#&gt;                                     (2,733.469)               (6,342.074)       </span></span>
-<span id="cb156-72"><a href="marginal-effects.html#cb156-72" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
-<span id="cb156-73"><a href="marginal-effects.html#cb156-73" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
-<span id="cb156-74"><a href="marginal-effects.html#cb156-74" tabindex="-1"></a><span class="co">#&gt; Observations                           1,211                     1,211          </span></span>
-<span id="cb156-75"><a href="marginal-effects.html#cb156-75" tabindex="-1"></a><span class="co">#&gt; R2                                     0.062                     0.139          </span></span>
-<span id="cb156-76"><a href="marginal-effects.html#cb156-76" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                            0.062                     0.125          </span></span>
-<span id="cb156-77"><a href="marginal-effects.html#cb156-77" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error            22,753.730 (df = 1209)   21,969.590 (df = 1191)  </span></span>
-<span id="cb156-78"><a href="marginal-effects.html#cb156-78" tabindex="-1"></a><span class="co">#&gt; F Statistic                   80.439*** (df = 1; 1209) 10.112*** (df = 19; 1191)</span></span>
-<span id="cb156-79"><a href="marginal-effects.html#cb156-79" tabindex="-1"></a><span class="co">#&gt; ================================================================================</span></span>
-<span id="cb156-80"><a href="marginal-effects.html#cb156-80" tabindex="-1"></a><span class="co">#&gt; Note:                                                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="marginal-effects.html#cb158-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;stargazer&quot;</span>)</span>
+<span id="cb158-2"><a href="marginal-effects.html#cb158-2" tabindex="-1"></a><span class="fu">stargazer</span>(simple, interact2, <span class="at">type=</span><span class="st">&quot;text&quot;</span>)</span>
+<span id="cb158-3"><a href="marginal-effects.html#cb158-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb158-4"><a href="marginal-effects.html#cb158-4" tabindex="-1"></a><span class="co">#&gt; ================================================================================</span></span>
+<span id="cb158-5"><a href="marginal-effects.html#cb158-5" tabindex="-1"></a><span class="co">#&gt;                                              Dependent variable:                </span></span>
+<span id="cb158-6"><a href="marginal-effects.html#cb158-6" tabindex="-1"></a><span class="co">#&gt;                               --------------------------------------------------</span></span>
+<span id="cb158-7"><a href="marginal-effects.html#cb158-7" tabindex="-1"></a><span class="co">#&gt;                                                     Income                      </span></span>
+<span id="cb158-8"><a href="marginal-effects.html#cb158-8" tabindex="-1"></a><span class="co">#&gt;                                         (1)                       (2)           </span></span>
+<span id="cb158-9"><a href="marginal-effects.html#cb158-9" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
+<span id="cb158-10"><a href="marginal-effects.html#cb158-10" tabindex="-1"></a><span class="co">#&gt; Age                                  524.554***                                 </span></span>
+<span id="cb158-11"><a href="marginal-effects.html#cb158-11" tabindex="-1"></a><span class="co">#&gt;                                       (58.487)                                  </span></span>
+<span id="cb158-12"><a href="marginal-effects.html#cb158-12" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-13"><a href="marginal-effects.html#cb158-13" tabindex="-1"></a><span class="co">#&gt; IndustryBanking                                              46,946.530***      </span></span>
+<span id="cb158-14"><a href="marginal-effects.html#cb158-14" tabindex="-1"></a><span class="co">#&gt;                                                              (10,448.620)       </span></span>
+<span id="cb158-15"><a href="marginal-effects.html#cb158-15" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-16"><a href="marginal-effects.html#cb158-16" tabindex="-1"></a><span class="co">#&gt; IndustryConstruction                                           8,443.728        </span></span>
+<span id="cb158-17"><a href="marginal-effects.html#cb158-17" tabindex="-1"></a><span class="co">#&gt;                                                               (6,850.222)       </span></span>
+<span id="cb158-18"><a href="marginal-effects.html#cb158-18" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-19"><a href="marginal-effects.html#cb158-19" tabindex="-1"></a><span class="co">#&gt; IndustryEnergy                                               21,340.940***      </span></span>
+<span id="cb158-20"><a href="marginal-effects.html#cb158-20" tabindex="-1"></a><span class="co">#&gt;                                                               (7,884.232)       </span></span>
+<span id="cb158-21"><a href="marginal-effects.html#cb158-21" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-22"><a href="marginal-effects.html#cb158-22" tabindex="-1"></a><span class="co">#&gt; IndustryManufacturing                                        24,884.760***      </span></span>
+<span id="cb158-23"><a href="marginal-effects.html#cb158-23" tabindex="-1"></a><span class="co">#&gt;                                                               (6,508.270)       </span></span>
+<span id="cb158-24"><a href="marginal-effects.html#cb158-24" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-25"><a href="marginal-effects.html#cb158-25" tabindex="-1"></a><span class="co">#&gt; IndustryMining                                                31,740.910*       </span></span>
+<span id="cb158-26"><a href="marginal-effects.html#cb158-26" tabindex="-1"></a><span class="co">#&gt;                                                              (16,779.550)       </span></span>
+<span id="cb158-27"><a href="marginal-effects.html#cb158-27" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-28"><a href="marginal-effects.html#cb158-28" tabindex="-1"></a><span class="co">#&gt; IndustryOther                                                18,604.880***      </span></span>
+<span id="cb158-29"><a href="marginal-effects.html#cb158-29" tabindex="-1"></a><span class="co">#&gt;                                                               (6,469.352)       </span></span>
+<span id="cb158-30"><a href="marginal-effects.html#cb158-30" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-31"><a href="marginal-effects.html#cb158-31" tabindex="-1"></a><span class="co">#&gt; IndustryServices                                             31,579.780***      </span></span>
+<span id="cb158-32"><a href="marginal-effects.html#cb158-32" tabindex="-1"></a><span class="co">#&gt;                                                               (6,878.945)       </span></span>
+<span id="cb158-33"><a href="marginal-effects.html#cb158-33" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-34"><a href="marginal-effects.html#cb158-34" tabindex="-1"></a><span class="co">#&gt; IndustryTrade                                                 14,766.440*       </span></span>
+<span id="cb158-35"><a href="marginal-effects.html#cb158-35" tabindex="-1"></a><span class="co">#&gt;                                                               (7,823.505)       </span></span>
+<span id="cb158-36"><a href="marginal-effects.html#cb158-36" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-37"><a href="marginal-effects.html#cb158-37" tabindex="-1"></a><span class="co">#&gt; IndustryTransport                                            39,986.220***      </span></span>
+<span id="cb158-38"><a href="marginal-effects.html#cb158-38" tabindex="-1"></a><span class="co">#&gt;                                                               (7,048.821)       </span></span>
+<span id="cb158-39"><a href="marginal-effects.html#cb158-39" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-40"><a href="marginal-effects.html#cb158-40" tabindex="-1"></a><span class="co">#&gt; Female1                                                        -549.878         </span></span>
+<span id="cb158-41"><a href="marginal-effects.html#cb158-41" tabindex="-1"></a><span class="co">#&gt;                                                              (16,779.550)       </span></span>
+<span id="cb158-42"><a href="marginal-effects.html#cb158-42" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-43"><a href="marginal-effects.html#cb158-43" tabindex="-1"></a><span class="co">#&gt; IndustryBanking:Female1                                       -3,508.290        </span></span>
+<span id="cb158-44"><a href="marginal-effects.html#cb158-44" tabindex="-1"></a><span class="co">#&gt;                                                              (24,327.690)       </span></span>
+<span id="cb158-45"><a href="marginal-effects.html#cb158-45" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-46"><a href="marginal-effects.html#cb158-46" tabindex="-1"></a><span class="co">#&gt; IndustryConstruction:Female1                                  -4,093.737        </span></span>
+<span id="cb158-47"><a href="marginal-effects.html#cb158-47" tabindex="-1"></a><span class="co">#&gt;                                                              (18,670.560)       </span></span>
+<span id="cb158-48"><a href="marginal-effects.html#cb158-48" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-49"><a href="marginal-effects.html#cb158-49" tabindex="-1"></a><span class="co">#&gt; IndustryEnergy:Female1                                         9,357.981        </span></span>
+<span id="cb158-50"><a href="marginal-effects.html#cb158-50" tabindex="-1"></a><span class="co">#&gt;                                                              (20,595.100)       </span></span>
+<span id="cb158-51"><a href="marginal-effects.html#cb158-51" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-52"><a href="marginal-effects.html#cb158-52" tabindex="-1"></a><span class="co">#&gt; IndustryManufacturing:Female1                                 -11,453.940       </span></span>
+<span id="cb158-53"><a href="marginal-effects.html#cb158-53" tabindex="-1"></a><span class="co">#&gt;                                                              (17,038.220)       </span></span>
+<span id="cb158-54"><a href="marginal-effects.html#cb158-54" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-55"><a href="marginal-effects.html#cb158-55" tabindex="-1"></a><span class="co">#&gt; IndustryMining:Female1                                         -130.297         </span></span>
+<span id="cb158-56"><a href="marginal-effects.html#cb158-56" tabindex="-1"></a><span class="co">#&gt;                                                              (31,710.370)       </span></span>
+<span id="cb158-57"><a href="marginal-effects.html#cb158-57" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-58"><a href="marginal-effects.html#cb158-58" tabindex="-1"></a><span class="co">#&gt; IndustryOther:Female1                                         -8,681.747        </span></span>
+<span id="cb158-59"><a href="marginal-effects.html#cb158-59" tabindex="-1"></a><span class="co">#&gt;                                                              (16,886.980)       </span></span>
+<span id="cb158-60"><a href="marginal-effects.html#cb158-60" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-61"><a href="marginal-effects.html#cb158-61" tabindex="-1"></a><span class="co">#&gt; IndustryServices:Female1                                      -11,550.570       </span></span>
+<span id="cb158-62"><a href="marginal-effects.html#cb158-62" tabindex="-1"></a><span class="co">#&gt;                                                              (17,203.610)       </span></span>
+<span id="cb158-63"><a href="marginal-effects.html#cb158-63" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-64"><a href="marginal-effects.html#cb158-64" tabindex="-1"></a><span class="co">#&gt; IndustryTrade:Female1                                         -8,405.721        </span></span>
+<span id="cb158-65"><a href="marginal-effects.html#cb158-65" tabindex="-1"></a><span class="co">#&gt;                                                              (18,612.280)       </span></span>
+<span id="cb158-66"><a href="marginal-effects.html#cb158-66" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-67"><a href="marginal-effects.html#cb158-67" tabindex="-1"></a><span class="co">#&gt; IndustryTransport:Female1                                     -12,060.660       </span></span>
+<span id="cb158-68"><a href="marginal-effects.html#cb158-68" tabindex="-1"></a><span class="co">#&gt;                                                              (17,690.580)       </span></span>
+<span id="cb158-69"><a href="marginal-effects.html#cb158-69" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-70"><a href="marginal-effects.html#cb158-70" tabindex="-1"></a><span class="co">#&gt; Constant                           18,341.030***             23,513.110***      </span></span>
+<span id="cb158-71"><a href="marginal-effects.html#cb158-71" tabindex="-1"></a><span class="co">#&gt;                                     (2,733.469)               (6,342.074)       </span></span>
+<span id="cb158-72"><a href="marginal-effects.html#cb158-72" tabindex="-1"></a><span class="co">#&gt;                                                                                 </span></span>
+<span id="cb158-73"><a href="marginal-effects.html#cb158-73" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
+<span id="cb158-74"><a href="marginal-effects.html#cb158-74" tabindex="-1"></a><span class="co">#&gt; Observations                           1,211                     1,211          </span></span>
+<span id="cb158-75"><a href="marginal-effects.html#cb158-75" tabindex="-1"></a><span class="co">#&gt; R2                                     0.062                     0.139          </span></span>
+<span id="cb158-76"><a href="marginal-effects.html#cb158-76" tabindex="-1"></a><span class="co">#&gt; Adjusted R2                            0.062                     0.125          </span></span>
+<span id="cb158-77"><a href="marginal-effects.html#cb158-77" tabindex="-1"></a><span class="co">#&gt; Residual Std. Error            22,753.730 (df = 1209)   21,969.590 (df = 1191)  </span></span>
+<span id="cb158-78"><a href="marginal-effects.html#cb158-78" tabindex="-1"></a><span class="co">#&gt; F Statistic                   80.439*** (df = 1; 1209) 10.112*** (df = 19; 1191)</span></span>
+<span id="cb158-79"><a href="marginal-effects.html#cb158-79" tabindex="-1"></a><span class="co">#&gt; ================================================================================</span></span>
+<span id="cb158-80"><a href="marginal-effects.html#cb158-80" tabindex="-1"></a><span class="co">#&gt; Note:                                                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</span></span></code></pre></div>
 <p>Here is the R code with margins:</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="marginal-effects.html#cb157-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
-<span id="cb157-2"><a href="marginal-effects.html#cb157-2" tabindex="-1"></a>interact2</span>
-<span id="cb157-3"><a href="marginal-effects.html#cb157-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb157-4"><a href="marginal-effects.html#cb157-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb157-5"><a href="marginal-effects.html#cb157-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
-<span id="cb157-6"><a href="marginal-effects.html#cb157-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb157-7"><a href="marginal-effects.html#cb157-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb157-8"><a href="marginal-effects.html#cb157-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
-<span id="cb157-9"><a href="marginal-effects.html#cb157-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span>
-<span id="cb157-10"><a href="marginal-effects.html#cb157-10" tabindex="-1"></a></span>
-<span id="cb157-11"><a href="marginal-effects.html#cb157-11" tabindex="-1"></a><span class="co">#summary(margins(interact2))</span></span>
-<span id="cb157-12"><a href="marginal-effects.html#cb157-12" tabindex="-1"></a><span class="fu">margins</span>(interact2, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">Age =</span> mean_age))</span>
-<span id="cb157-13"><a href="marginal-effects.html#cb157-13" tabindex="-1"></a><span class="co">#&gt;  at(Age)   Age Satisfaction</span></span>
-<span id="cb157-14"><a href="marginal-effects.html#cb157-14" tabindex="-1"></a><span class="co">#&gt;    45.38 531.3         2439</span></span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="marginal-effects.html#cb159-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb159-2"><a href="marginal-effects.html#cb159-2" tabindex="-1"></a>interact2</span>
+<span id="cb159-3"><a href="marginal-effects.html#cb159-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb159-4"><a href="marginal-effects.html#cb159-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb159-5"><a href="marginal-effects.html#cb159-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
+<span id="cb159-6"><a href="marginal-effects.html#cb159-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb159-7"><a href="marginal-effects.html#cb159-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb159-8"><a href="marginal-effects.html#cb159-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
+<span id="cb159-9"><a href="marginal-effects.html#cb159-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span>
+<span id="cb159-10"><a href="marginal-effects.html#cb159-10" tabindex="-1"></a></span>
+<span id="cb159-11"><a href="marginal-effects.html#cb159-11" tabindex="-1"></a><span class="co">#summary(margins(interact2))</span></span>
+<span id="cb159-12"><a href="marginal-effects.html#cb159-12" tabindex="-1"></a><span class="fu">margins</span>(interact2, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">Age =</span> mean_age))</span>
+<span id="cb159-13"><a href="marginal-effects.html#cb159-13" tabindex="-1"></a><span class="co">#&gt;  at(Age)   Age Satisfaction</span></span>
+<span id="cb159-14"><a href="marginal-effects.html#cb159-14" tabindex="-1"></a><span class="co">#&gt;    45.38 531.3         2439</span></span></code></pre></div>
 <p>Please calculate the MEM of height in <code>interact2</code> programmtic in R.</p>
 </div>
 <div id="average-marginal-effects" class="section level3 hasAnchor" number="15.0.3">
 <h3><span class="header-section-number">15.0.3</span> Average marginal effects<a href="marginal-effects.html#average-marginal-effects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The default <em>margins</em> commands shows you something else than MER and MEM, namely <strong>average marginal effects</strong>. AMEs calculate marginal effects at every observed value of X and average across the resulting effect estimates. AMEs are particularly useful because -- unlike MEMs -- produce a single quantity summary that reflects the full distribution of X rather than an arbitrary prediction.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="marginal-effects.html#cb158-1" tabindex="-1"></a><span class="fu">margins</span>(interact1)</span>
-<span id="cb158-2"><a href="marginal-effects.html#cb158-2" tabindex="-1"></a><span class="co">#&gt;  Kids1 Female1</span></span>
-<span id="cb158-3"><a href="marginal-effects.html#cb158-3" tabindex="-1"></a><span class="co">#&gt;   1222   -9633</span></span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="marginal-effects.html#cb160-1" tabindex="-1"></a><span class="fu">margins</span>(interact1)</span>
+<span id="cb160-2"><a href="marginal-effects.html#cb160-2" tabindex="-1"></a><span class="co">#&gt;  Kids1 Female1</span></span>
+<span id="cb160-3"><a href="marginal-effects.html#cb160-3" tabindex="-1"></a><span class="co">#&gt;   1222   -9633</span></span></code></pre></div>
 <p>A summary provides you with information that cannot easily be calculated by hand, e.g. standard error, p-value, confidence interval:</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="marginal-effects.html#cb159-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">margins</span>(interact1))</span>
-<span id="cb159-2"><a href="marginal-effects.html#cb159-2" tabindex="-1"></a><span class="co">#&gt;   factor        AME        SE       z      p       lower      upper</span></span>
-<span id="cb159-3"><a href="marginal-effects.html#cb159-3" tabindex="-1"></a><span class="co">#&gt;  Female1 -9633.4620 1412.6589 -6.8194 0.0000 -12402.2226 -6864.7013</span></span>
-<span id="cb159-4"><a href="marginal-effects.html#cb159-4" tabindex="-1"></a><span class="co">#&gt;    Kids1  1222.4998 1375.3741  0.8888 0.3741  -1473.1839  3918.1836</span></span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="marginal-effects.html#cb161-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">margins</span>(interact1))</span>
+<span id="cb161-2"><a href="marginal-effects.html#cb161-2" tabindex="-1"></a><span class="co">#&gt;   factor        AME        SE       z      p       lower      upper</span></span>
+<span id="cb161-3"><a href="marginal-effects.html#cb161-3" tabindex="-1"></a><span class="co">#&gt;  Female1 -9633.4620 1412.6589 -6.8194 0.0000 -12402.2226 -6864.7013</span></span>
+<span id="cb161-4"><a href="marginal-effects.html#cb161-4" tabindex="-1"></a><span class="co">#&gt;    Kids1  1222.4998 1375.3741  0.8888 0.3741  -1473.1839  3918.1836</span></span></code></pre></div>
 <script>
   $(".toggle").click(function() {
     $(this).toggleClass("open");
