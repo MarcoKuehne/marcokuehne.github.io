@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2024-01-08" />
+<meta name="date" content="2024-01-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -564,8 +564,8 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <div class="sourceCode" id="cb74"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb74-1"><a href="text-data.html#cb74-1" tabindex="-1"></a><span class="fu">library</span>(wikifacts)</span>
 <span id="cb74-2"><a href="text-data.html#cb74-2" tabindex="-1"></a>R_EN <span class="ot">&lt;-</span> <span class="fu">wiki_define</span>(<span class="st">&#39;R (programming language)&#39;</span>)</span>
 <span id="cb74-3"><a href="text-data.html#cb74-3" tabindex="-1"></a>R_EN</span>
-<span id="cb74-4"><a href="text-data.html#cb74-4" tabindex="-1"></a><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              R (programming language) </span></span>
-<span id="cb74-5"><a href="text-data.html#cb74-5" tabindex="-1"></a><span class="co">#&gt; &quot;R is a programming language for statistical computing and graphics. Created by statisticians Ross Ihaka and Robert Gentleman, R is used for data mining, bioinformatics, and data analysis.The core R language is augmented by a large number of extension packages containing reusable code and documentation.\nR software is open-source free software, licensed by the GNU Project, and available under the GNU General Public License. It is written primarily in C, Fortran, and R itself. Precompiled executables are provided for various operating systems.&quot;</span></span></code></pre></div>
+<span id="cb74-4"><a href="text-data.html#cb74-4" tabindex="-1"></a><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             R (programming language) </span></span>
+<span id="cb74-5"><a href="text-data.html#cb74-5" tabindex="-1"></a><span class="co">#&gt; &quot;R is a programming language for statistical computing and data visualization. Created by statisticians Ross Ihaka and Robert Gentleman, R has been adopted in the fields of data mining, bioinformatics, and data analysis.The core R language is augmented by a large number of extension packages, containing reusable code, documentation, and sample data.\nR software is open-source free software, licensed by the GNU Project, and available under the GNU General Public License. It is written primarily in C, Fortran, and R itself. Precompiled executables are provided for various operating systems.&quot;</span></span></code></pre></div>
 <div id="cleaning" class="section level3 hasAnchor" number="7.1.1">
 <h3><span class="header-section-number">7.1.1</span> Cleaning<a href="text-data.html#cleaning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Load the <code>tidytext</code> and <code>stringr</code> package. We summarize individual tasks like removing digits, punctuation, whitespaces and seting everything to lower case in the <code>clean_text()</code> <strong>function</strong>.</p>
@@ -590,7 +590,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <span id="cb75-18"><a href="text-data.html#cb75-18" tabindex="-1"></a>}</span></code></pre></div>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="text-data.html#cb76-1" tabindex="-1"></a>R_EN_clean <span class="ot">&lt;-</span> <span class="fu">clean_text</span>(R_EN)</span>
 <span id="cb76-2"><a href="text-data.html#cb76-2" tabindex="-1"></a>R_EN_clean</span>
-<span id="cb76-3"><a href="text-data.html#cb76-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r is a programming language for statistical computing and graphics created by statisticians ross ihaka and robert gentleman r is used for data mining bioinformatics and data analysisthe core r language is augmented by a large number of extension packages containing reusable code and documentation r software is opensource free software licensed by the gnu project and available under the gnu general public license it is written primarily in c fortran and r itself precompiled executables are provided for various operating systems&quot;</span></span></code></pre></div>
+<span id="cb76-3"><a href="text-data.html#cb76-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r is a programming language for statistical computing and data visualization created by statisticians ross ihaka and robert gentleman r has been adopted in the fields of data mining bioinformatics and data analysisthe core r language is augmented by a large number of extension packages containing reusable code documentation and sample data r software is opensource free software licensed by the gnu project and available under the gnu general public license it is written primarily in c fortran and r itself precompiled executables are provided for various operating systems&quot;</span></span></code></pre></div>
 </div>
 <div id="tidytext-format" class="section level3 hasAnchor" number="7.1.2">
 <h3><span class="header-section-number">7.1.2</span> Tidytext Format<a href="text-data.html#tidytext-format" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -610,12 +610,12 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <span id="cb77-8"><a href="text-data.html#cb77-8" tabindex="-1"></a><span class="co">#&gt;   word      n</span></span>
 <span id="cb77-9"><a href="text-data.html#cb77-9" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt;</span></span>
 <span id="cb77-10"><a href="text-data.html#cb77-10" tabindex="-1"></a><span class="co">#&gt; 1 and       6</span></span>
-<span id="cb77-11"><a href="text-data.html#cb77-11" tabindex="-1"></a><span class="co">#&gt; 2 is        5</span></span>
-<span id="cb77-12"><a href="text-data.html#cb77-12" tabindex="-1"></a><span class="co">#&gt; 3 r         5</span></span>
-<span id="cb77-13"><a href="text-data.html#cb77-13" tabindex="-1"></a><span class="co">#&gt; 4 by        3</span></span>
-<span id="cb77-14"><a href="text-data.html#cb77-14" tabindex="-1"></a><span class="co">#&gt; 5 for       3</span></span>
-<span id="cb77-15"><a href="text-data.html#cb77-15" tabindex="-1"></a><span class="co">#&gt; 6 a         2</span></span></code></pre></div>
-<p>Notice that and, is, r, by, for, a do not contain a lot of valuable insights.</p>
+<span id="cb77-11"><a href="text-data.html#cb77-11" tabindex="-1"></a><span class="co">#&gt; 2 r         5</span></span>
+<span id="cb77-12"><a href="text-data.html#cb77-12" tabindex="-1"></a><span class="co">#&gt; 3 data      4</span></span>
+<span id="cb77-13"><a href="text-data.html#cb77-13" tabindex="-1"></a><span class="co">#&gt; 4 is        4</span></span>
+<span id="cb77-14"><a href="text-data.html#cb77-14" tabindex="-1"></a><span class="co">#&gt; 5 by        3</span></span>
+<span id="cb77-15"><a href="text-data.html#cb77-15" tabindex="-1"></a><span class="co">#&gt; 6 the       3</span></span></code></pre></div>
+<p>Notice that and, r, data, is, by, the do not contain a lot of valuable insights.</p>
 </div>
 <div id="stopwords" class="section level3 hasAnchor" number="7.1.3">
 <h3><span class="header-section-number">7.1.3</span> Stopwords<a href="text-data.html#stopwords" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -628,12 +628,12 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <span id="cb78-6"><a href="text-data.html#cb78-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
 <span id="cb78-7"><a href="text-data.html#cb78-7" tabindex="-1"></a><span class="co">#&gt;   word            n</span></span>
 <span id="cb78-8"><a href="text-data.html#cb78-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;</span></span>
-<span id="cb78-9"><a href="text-data.html#cb78-9" tabindex="-1"></a><span class="co">#&gt; 1 data            2</span></span>
+<span id="cb78-9"><a href="text-data.html#cb78-9" tabindex="-1"></a><span class="co">#&gt; 1 data            4</span></span>
 <span id="cb78-10"><a href="text-data.html#cb78-10" tabindex="-1"></a><span class="co">#&gt; 2 gnu             2</span></span>
 <span id="cb78-11"><a href="text-data.html#cb78-11" tabindex="-1"></a><span class="co">#&gt; 3 language        2</span></span>
 <span id="cb78-12"><a href="text-data.html#cb78-12" tabindex="-1"></a><span class="co">#&gt; 4 software        2</span></span>
-<span id="cb78-13"><a href="text-data.html#cb78-13" tabindex="-1"></a><span class="co">#&gt; 5 analysisthe     1</span></span>
-<span id="cb78-14"><a href="text-data.html#cb78-14" tabindex="-1"></a><span class="co">#&gt; 6 augmented       1</span></span></code></pre></div>
+<span id="cb78-13"><a href="text-data.html#cb78-13" tabindex="-1"></a><span class="co">#&gt; 5 adopted         1</span></span>
+<span id="cb78-14"><a href="text-data.html#cb78-14" tabindex="-1"></a><span class="co">#&gt; 6 analysisthe     1</span></span></code></pre></div>
 </div>
 <div id="term-frequency" class="section level3 hasAnchor" number="7.1.4">
 <h3><span class="header-section-number">7.1.4</span> Term Frequency<a href="text-data.html#term-frequency" class="anchor-section" aria-label="Anchor link to header"></a></h3>
