@@ -1,8 +1,9 @@
-# Welcome to My GitHub Pages and Bookdown
+# Welcome to My GitHub Pages and Bookdown Project
 
-It is a journey to data. A journey to yourself. 
+Becoming Fluent in Data is a a journey. A journey to yourself. 
 
-# OER 
+## License
 
-OER tba 
+This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See the [LICENSE](LICENSE) file for details.
+
 
