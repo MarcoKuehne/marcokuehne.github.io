@@ -22,10 +22,12 @@ In our example, we explore the stork-baby relationship by measuring the number o
 
 <!-- A correlation estimate may not represent the relationship best. Beware of spurious relationships, for they can lead us astray in our quest for understanding. Correlation can be the beginning of a more thorough research inquiry.  -->
 
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=yObnRvIdDvk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</center>
-
+<figure>
+  <center>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yObnRvIdDvk?si=CrG5N0oQjuQ-J43r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </center>
+  <figcaption>In this video I'll explain main parts of this chapter.</figcaption>
+</figure>
 
 ## Storks Deliver Babies
 
@@ -44,10 +46,14 @@ Although storks are not responsible for delivering babies, a careless interpreta
 The first International White Stork Census was initiated by Prof. Ernst Schüz in 1934 and thus has a long history. Since 1974, it has taken place at ten-yearly intervals. So far, it has been possible to enthuse countless ornithologists and people interested in protecting White Storks to record their numbers at regular intervals.
 ::::
 
-Resource: [Results of the 6th International White Stork Census 2004/2005](https://bergenhusen.nabu.de/imperia/md/nabu/images/nabu/einrichtungen/bergenhusen/zensus_ergebnisse_2004.pdf)
+We have raw data on stork population from the [Results of the 6th International White Stork Census 2004/2005](https://bergenhusen.nabu.de/imperia/md/nabu/images/nabu/einrichtungen/bergenhusen/zensus_ergebnisse_2004.pdf) for 28 countries in 2005 as well as figures for human population.
 
-We have data on stork and human population for 28 countries in 2005.
-
+<div>
+  <a href="https://github.com/MarcoKuehne/marcokuehne.github.io/raw/main/data/Storks/Storks_Clean.xlsx" download="your_file_name.xlsx" class="download-button" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">
+    <span class="icon">&#x2B07;</span> Download Stork Data (Excel Format)
+  </a>
+</div>
+  
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
 library(tidyverse)
@@ -64,12 +70,13 @@ datatable(storks, options = list(iDisplayLength = 5))
 
 `Storks` is the number of pairs of storks in that country. The `Area` is in square kilometers. `Population` is the total population in million whereas `UrbanPop` is the population living in urban areas. `Fertility` refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime. 
 
-The key characteristics of the data are:
+The following table shows some key characteristics of the data, i.e. the minimum and maximum (which define the range) and average value of each numeric variable. It further provides a tiny histogram of the variables distribution. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE}
 library(modelsummary)
-datasummary(All(storks %>% select(-Year)) ~ NUnique + Min + Mean + Max + SD + Histogram, storks %>% select(-Year))
+datasummary(All(storks %>% select(-Year)) ~ Min + Mean + Max + Histogram, storks %>% select(-Year))
 ```
+
 
 ```{r, echo=FALSE, out.width="60%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg") 
@@ -144,7 +151,14 @@ The range goes from 3 pairs in Albania to 52500 pairs of storks in Poland. There
 ::: {.titeldefbox}
 <h2> Definition </h2>
 :::
-The **<u id='variance'>variance</u>** is defined as the **average quadratic deviation from the mean**.
+The **variance** is defined as the **average quadratic deviation from the mean**.
+
+The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*.
+
+<a href="https://en.wikipedia.org/wiki/The_Correlation_between_Relatives_on_the_Supposition_of_Mendelian_Inheritance" target="_blank" class="wiki-link" style="background-color: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">
+<span class="icon">&#x1F4D6;</span> Visit Wikipedia Page
+</a>
+
 ::::
 
 $$var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2$$
