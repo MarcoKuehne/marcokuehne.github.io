@@ -68,7 +68,7 @@ library(DT)
 datatable(storks, options = list(iDisplayLength = 5))
 ```
 
-`Storks` is the number of pairs of storks in that country. The `Area` is in square kilometers. `Population` is the total population in million whereas `UrbanPop` is the population living in urban areas. `Fertility` refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime. 
+`Storks` is the number of pairs of storks in that country. The `Area` is in square kilometers. `Population` is the total population in million whereas `UrbanPop` is the population living in urban areas. `Fertility` refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime. How many storks have been observed in Ukraine in 2005? Answer: `r fitb(30000)`. Which country has more storks? `r mcq(c("Germany", "Greece", answer = "Hungary"))`
 
 The following table shows some key characteristics of the data, i.e. the minimum and maximum (which define the range) and average value of each numeric variable. It further provides a tiny histogram of the variables distribution. 
 
@@ -77,18 +77,13 @@ library(modelsummary)
 datasummary(All(storks %>% select(-Year)) ~ Min + Mean + Max + Histogram, storks %>% select(-Year))
 ```
 
-
-```{r, echo=FALSE, out.width="60%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg") 
-```
-
 ## Statistics 
 
 Before venturing into specific inquiries, it is essential to establish a solid foundation by introducing key concepts such as *variance*, *covariance*, *correlation*, and *levels of measurement*. The understanding of variance is paramount as it provides valuable insights into the degree of variability within a variable. Covariance, the measure of how two variables change together, assumes a pivotal role in unveiling the direction of association between them. The standardized measure of association, correlation, plays a central role in quantifying the strength and direction of relationships.
 
 ### Variance
 
-The map shows the number of stork pairs for the selected countries. 
+The map shows the number of stork pairs for the selected countries. Looks like storks like certain countries more than others. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 # Retrieve the map data for Participant Countries 
@@ -145,7 +140,7 @@ mapCountryData(spdf,
                colourPalette = "white2Black")
 ```
 
-The range goes from 3 pairs in Albania to 52500 pairs of storks in Poland. There is high variability in the number of storks. The *variance* is a measure for variability of data. 
+The range goes from 3 pairs in Albania to `r fitb(52500)` pairs of storks in Poland. There is high variability in the number of storks. The *variance* is a measure for variability of data. 
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -153,11 +148,7 @@ The range goes from 3 pairs in Albania to 52500 pairs of storks in Poland. There
 :::
 The **variance** is defined as the **average quadratic deviation from the mean**.
 
-The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*.
-
-<a href="https://en.wikipedia.org/wiki/The_Correlation_between_Relatives_on_the_Supposition_of_Mendelian_Inheritance" target="_blank" class="wiki-link" style="background-color: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">
-<span class="icon">&#x1F4D6;</span> Visit Wikipedia Page
-</a>
+The term variance was first introduced by Ronald Fisher in his 1918 paper *<a href="https://en.wikipedia.org/wiki/The_Correlation_between_Relatives_on_the_Supposition_of_Mendelian_Inheritance" class="fancy-link"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Wikipedia-logo_thue.png" alt="Wikipedia icon" class="wikipedia-icon"> The Correlation Between Relatives on the Supposition of Mendelian Inheritance</a>*.
 
 ::::
 
@@ -167,13 +158,9 @@ To calculate the variance, we subtract each data point $x_i$ from the mean $\ove
 
 The variance of `Storks` and can be calculated via `var()` in R. It is `r format(round(var(storks$Storks),0), scientific=FALSE)`. 150 million of what? The variance is in squared unit, i.e. *square storks* and thus hard to interpret.
 
-```{r, echo=FALSE}
-tippy::tippy_this(elementId = "variance", tooltip = "The term variance was first introduced by Ronald Fisher in his 1918 paper *The Correlation Between Relatives on the Supposition of Mendelian Inheritance*.")
-```
-
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
+<h2> Truly Dedicated: Population vs. Sample </h2>
 :::
 When you collect data from every member of the population that you’re interested in, you can get an exact value for *population variance*. When you collect data from a sample, the *sample variance* is used to make estimates or inferences about the population variance. Sample variance is divided by $n-1$. Population variance is divided by $n$. 
 ::::
@@ -184,6 +171,8 @@ When you collect data from every member of the population that you’re interest
 <!-- # Variance by hand -->
 <!-- sum( (x-mean(x))^2 )/(length(x) - 1)  -->
 <!-- ``` -->
+
+Please try mental calculation. What is the variance of 3, 5, 7, 9 and 11? Answer: `r fitb(8)`.
 
 ### Standard Deviation 
 
@@ -196,7 +185,7 @@ The standard deviation is derived from variance and tells, on average, how far e
 $$sd(x) = \sqrt{var(x)} = \sqrt{ \frac{\sum (x_i - \overline{x} )^2}{n-1} } $$
 In R, the standard deviation is calculated by `sd()` like `sd(storks$Storks)` which yields `r format(round(sd(storks$Storks),0), scientific=FALSE)`. The mean of storks `mean(storks$Storks)` is approximately `r round(mean(storks$Storks),0)`. The one-dimensional variable `Storks` is visualized as points on the line.  
 
-```{r, echo=F, eval=T, message=FALSE, warning=FALSE, out.width = '80%', fig.align="center"}
+```{r, echo=F, eval=TRUE, out.width = '80%', fig.align="center"}
 library(ggplot2)
 library(tidyverse)
 
@@ -242,7 +231,7 @@ ggplot(aes(x=x, y=c(0)), data=data) +
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
+<h2> Truly Dedicated: Empirical Rule </h2>
 :::
 In statistics, the empirical rule states that 
 
@@ -250,8 +239,12 @@ In statistics, the empirical rule states that
 - 95% will take place in the second deviation and 
 - 99.7% within the third standard deviation
 
-of the mean within a normal distribution. See [68–95–99.7 rule](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule) 
+of the mean within a normal distribution. <p>See <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule" class="fancy-link"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Wikipedia-logo_thue.png" alt="Wikipedia icon" class="wikipedia-icon"> 68–95–99.7 rule</a> for more information.</p> 
 ::::
+
+Well, the empirical rule assumes that the data follows a perfectly symmetric bell-shaped curve with no constraints on the range of possible values. In reality, many variables have natural constraints, such as a floor (minimum value) or a ceiling (maximum value). For example, age cannot be negative, so it has a natural floor of zero. Similarly, test scores might have a maximum possible value, such as 100%.
+
+Again, the standard deviation of storks is 12413. Given the graph and the table with raw data, can you tell how many percent of the stork data lies with one standard deviation on each side of the mean? Answer: `r fitb(85.71429, num = TRUE, tol = .5)`.
 
 The following scatterplot shows the number of storks and the population with their respective means as bold red lines. 
 
@@ -632,6 +625,10 @@ storks %>%
 
 
 ## Spurious Relationships
+
+```{r, echo=FALSE, out.width="60%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg") 
+```
 
 In the stork and baby relationship, the observed correlation between stork populations and birth rates could be influenced by **common causes**, such as geographical area and urbanization. Let's delve into these common causes:
 
