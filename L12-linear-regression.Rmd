@@ -1,0 +1,514 @@
+# Linear Regression 
+
+## What You Deserve Is What You Get
+
+Do you believe that people get what they deserve? The statement "what you deserve is what you get" is a controversial one. It can be interpreted such that individuals are entirely responsible for their own outcomes and that they receive exactly what they deserve based on their efforts, abilities, and choices. This view assumes a meritocratic (performance-oriented) system where everyone has an equal opportunity to succeed based on their merit, and rewards are distributed accordingly.
+
+We investigate annual income and how it is determined. The famous [Mincer Equation](https://en.wikipedia.org/wiki/Mincer_earnings_function) is single-equation model that explains wage income as a function of schooling and experience. The equation suggests that higher levels of education and experience are positively associated with earnings, and the coefficients can be estimated using statistical methods to quantify the magnitude of these relationships. When everybody has access to schooling and the equal opportunities on the labor market, better school outcomes and work experience may be determined by people efforts, abilities, and choices. 
+
+## Data & Sample
+
+We use SOEP practice data to analyse yearly income. The analysis is restricted to people who are fulltime employed (`Emp == 1`) in the working age (`Age <= 65`) who report an annual income from main job of more than one Euro (`Income > 1`). We analyse the most recent cross-section of the data (`syear == 2019`). We drop a few cases with missing information, thus conduct a complete case analysis. 
+
+```{r warning=FALSE, message=FALSE}
+library(haven)
+master <- read_dta("https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true")
+
+# The data comes with Stata labels that do not work with all tidyverse commands
+library(sjlabelled)
+soep <- remove_all_labels(master)
+
+# Rename German to English variable names
+library(tidyverse)
+soep <- soep %>% 
+  rename("Age" = "alter",
+         "Income" = "einkommenj1",
+         "NACE2" = "branche",
+         "Persons in HH" = "anz_pers", 
+         "Kids" = "anz_kind",
+         "Education" = "bildung",
+         "Health" = "gesund_org", 
+         "Satisfaction" = "lebensz_org",
+         "Emp" = "erwerb")
+
+# Explicitly define the gender variable as a factor
+soep <- soep %>% mutate(Female = factor(sex))
+
+# Round annual income to two digits
+soep <- soep %>% mutate(Income = round(Income, 2))
+
+# Build the estimation sample based on the topic
+soep <- soep %>% 
+  filter(Emp == 1) %>% 
+  filter(Age <= 65) %>% 
+  filter(Income > 1) %>% 
+  filter(syear == 2019)
+
+# Conduct a complete case analysis
+soep <- soep %>% filter(complete.cases(.))
+```
+
+The estimation sample looks like this:
+
+```{r warning=FALSE, message=FALSE}
+DT::datatable(soep[,-c(1:3,8,13:15)], rownames = FALSE)
+```
+
+The descriptive statistics of the sample look like this: 
+
+```{r warning=FALSE, message=FALSE}
+library(modelsummary)
+datasummary_skim(soep[,-c(1,2,8,13:15)])
+```
+
+The data is clean and ready for analysis. There are no missings. The working age ranges from 18 to 65 years. People have between 0 and 8 children. There are NACE codes for the job industry ranging from 1 to 97 in the data (theoretically from 1 to 99). But not all jobs are represented in the data (77 unique values). Health status is measured on a scale from 1 to 5 whereas life satisfaction is measured on a scale between 0 and 10. The minimum annual income is about 915 Euro. We could have restricted the income variable to the minimum wage in Germany. Assume it is 12€/h and people in full-time work 8h/day. Starting from 365 days a year, there are 104 weekends, assume there are 11 public holidays and 30 days of vacation. 220 working days remain earning a minimum yearly income of about `220*8*12 = 21120` Euro. In the data, `r table(soep$Income < 21120)[2]` people report earning less than that.  
+
+## Data Visualization
+
+We create a scatterplot of income (on the y-axis) versus age (on the x-axis). Data points are colored by gender (blue for men, red for women). A linear regression line is added per gende.r 
+
+```{r, echo=FALSE, eval=TRUE, out.width = '80%', fig.align="center", message=FALSE, warning=F}
+options(scipen=10000)
+library(tidyverse)
+ggplot(soep, aes(x=Age, y=Income, color=Female)) +
+  geom_point() +
+  geom_smooth(aes(group=Female), method="lm", size=2, se=FALSE) +
+  labs(title = "The relationship between Income and Age.", x = "Age", y = "Income") + 
+  theme_minimal()
+```
+
+## Simplest Regression 
+
+```{r, eval=TRUE, echo=F}
+cm <- c('Age'    = 'Age',
+        'log(Age)'    = 'Log (Age)',
+        'Female1'    = 'Female',
+        'industry'    = 'Industry',
+        'industryBanking'    = 'Banking',
+        'industryConstruction'    = 'Construction',
+        'industryEnergy'    = 'Energy',
+        'industryManufacturing'    = 'Manufacturing',
+        'industryMining'    = 'Mining',
+        'industryTransport'    = 'Transport',
+        'industryTrade'    = 'Trade',
+        'industryServices'    = 'Services',
+        'industryOther'    = 'Other',
+        '(Intercept)' = 'Constant'
+        )
+```
+
+The simplest regression or empty model does not contain any explanatory variable.
+
+```{r}
+simplest <- lm(Income ~ 1, data=soep)
+
+library(modelsummary)
+modelsummary(title = 'Empty Model.',
+             list("Income" = simplest), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             coef_map = cm)
+```
+
+The graphs below illustrate the empty model that estimates an average annual income. The left panel shows the mean income for the entire sample (sometimes referred to as grand mean), the right panel shows the data colored by gender (it can be considered two overlie plots). 
+
+<!-- Please create the graphs below. Create each ggplot graph and store the results (e.g. `plot1` and `plot2`). With help of package `gridExtra` the `grid.arrange()` function can do the job for side by side plots, e.g. `grid.arrange(plot1, plot2, ncol=2)`.  -->
+
+<!-- The left panel shows the grand mean (red) for all observations. The second panel shows the grand mean (this time black) as well as the two group means by gender (red and blue). -->
+
+```{r, echo=FALSE, eval=TRUE, out.width = '100%', fig.align="center", message=FALSE, warning=FALSE}
+require(gridExtra)
+options(scipen=10000)
+
+# Plot overall intercept
+plot1 <- ggplot() +
+  geom_point(data=soep, aes(x=1:nrow(soep), y=Income)) +
+  geom_hline(yintercept = mean(soep$Income), color="red", size=2) +
+  labs(title="Intercept model of Income", 
+       subtitle = "Grand mean",
+       x = "", y = "Income") +
+  theme_minimal()
+
+# Plot intercept by group
+means_by_gender <- soep %>% group_by(Female) %>% summarise(mean_Income = mean(Income))
+
+plot2 <- ggplot(data=soep, aes(x=1:nrow(soep), y=Income, color=Female)) +
+  geom_point() +
+  geom_hline(data = means_by_gender, 
+             aes(yintercept = mean_Income, col = Female), size=2) +
+  labs(title="Intercept model of Income", 
+       subtitle = "Group means",
+       x = "", y = "Income") +
+  theme_minimal()
+
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+## Simple Regression
+
+Simple regression suggest a one-to-one relationship between two variables. In this section we focus on the continuous outcome variable income. We relate income to three different variables, age, gender and industry. Where age is another continuous variable, gender is a binary dummy and industry is a categorical variable.  
+
+### X is continuous
+
+Income and age are continuous in principle, i.e. they can be any real number in an interval. Actually, age is reported in natural numbers, full years due to measurement restrictions. In the real SOEP data, a more precise estimate of age can be derived as a date difference between date of birth and date of interview. Thus creating a measure with day units. 
+
+In practice, a scale from 0 to 10 is often treated as continuous. Although technically speaking a categorical or ordinal approach would match the nature of the measure better. 
+
+```{r, include=TRUE, message=FALSE}
+simple1 <- lm(Income ~ Age, data=soep)
+
+modelsummary(title = 'Continuous Predictor.',
+             list("Income" = simple1), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             coef_map = cm)
+```
+
+<!-- Marco is approximately 1.85m tall. Please calculate his expected weight in kg according to model `simple1`. Hint: Please access and use the model components like `coefficients` as in `simple1$coefficients` in order to solve the task. -->
+
+<!-- `simple1$coefficients[1] + simple1$coefficients[2] * 185 = 82.50118`     -->
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
+# Scatterplot (2 numeric/continuous variables)
+ggplot(soep, aes(x=Age, y=Income)) +
+  geom_point() +
+  geom_smooth(method="lm") +
+  labs(title="Simple Regression of Weight vs. Height",
+       caption ="SOEP Teaching Sample v37") +
+  theme_minimal()
+  # geom_point(aes(x=185,y=90), 
+  #            color='red',
+  #            size=3, show.legend = TRUE) + 
+  # geom_label(aes(x=185,y=90, label = "Marco prediction"), size=3,
+  #            hjust = 0, vjust =  "inward",
+  #            nudge_x = 0.05, nudge_y = 2,
+  #            label.padding = unit(0.3, "lines")) +
+  # geom_point(aes(x=185,y=80), 
+  #            color='green',
+  #            size=3) +
+  # geom_label(aes(x=185,y=80, label = "Marco reality"), size=3,
+  #            hjust = 0, vjust =  "inward",
+  #            nudge_x = 0.15, nudge_y = -2,
+  #            label.padding = unit(0.3, "lines")) 
+```
+
+### X is a dummy
+
+A dummy or binary variable describes two groups. 
+
+In the SOEP case the gender variable is named `Female` and coded 0 for male and 1 for female. In practice, it is likely to ease interpretation by renaming the variable to `female`, where 1 stands for having the feature and 0 for not having it. Dummies also come with different values like 1 and 2. Such a variable could be recoded to 0 and 1. Last but not least, note that SOEP and other studies still have a binary perspective on gender. We can imagine more gender groups, making it a categorical variable. There might be something like a continuous gender scale as well.^[The same consideration is so handedness. Normally, people are classified a left-hander or right-hander. But you can make a case for ambidextrous people using both hands equally good as well as a mixture of hand usage, making handedness a continuous concept.]
+
+```{r, include=TRUE, message=FALSE}
+simple2 <- lm(Income ~ Female, data=soep)
+
+modelsummary(title = 'Dummy Predictor.',
+             list("Income" = simple2), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             coef_map = cm)
+```
+
+<!-- Marco is male. Please calculate his expected weight in kg according to model `simple2`. Hint: Please access and use the model components like `coefficients` as in `simple2$coefficients` in order to solve the task. -->
+
+<!-- `simple2$coefficients[1] = 85.85999`  -->
+
+### X is categorical 
+<!-- https://moderndive.com/6-multiple-regression.html#model4interactiontable -->
+
+<!-- <https://connects.world/nace-codes/> -->
+
+We investigate annual income across different industries. 
+
+NACE is the acronym used to designate the various statistical classifications of economic activities developed since 1970 in the European Union (EU). NACE provides the framework for collecting and presenting a large range of statistical data according to economic activity in the fields of economic statistics (e.g. business statistics, labour market, national accounts) and in other statistical domains.
+
+In level 2 of NACE there are 88 divisions identified by two-digit numerical codes (01 to 99). In the following we built a categorical variable `industry` from the level 2 NACE information in SOEP:
+
+<!-- 99 categories -->
+<!-- <https://ec.europa.eu/competition/mergers/cases/index/nace_all.html> -->
+<!-- <https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:International_standard_industrial_classification_of_all_economic_activities_(ISIC)> -->
+<!-- <https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Statistical_classification_of_economic_activities_in_the_European_Community_(NACE)> -->
+<!-- <https://en.wikipedia.org/wiki/Statistical_Classification_of_Economic_Activities_in_the_European_Community> -->
+<!-- Level 2: 88 divisions identified by two-digit numerical codes (01 to 99); -->
+<!-- <https://www.diw.de/documents/publikationen/73/diw_01.c.836478.de/diw_ssp1082.pdf> -->
+
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE, eval=TRUE}
+soep <- soep %>% 
+  mutate(industry = case_when(NACE2 %in% c(1,2,3) ~ "Agriculture",
+                              NACE2 %in% c(5:9) ~ "Mining",
+                              NACE2 %in% c(10:32) ~ "Manufacturing",
+                              NACE2 %in% c(35:38) ~ "Energy",
+                              NACE2 %in% c(41:43) ~ "Construction",
+                              NACE2 %in% c(50,51,52,55) ~ "Trade",
+                              NACE2 %in% c(60,61,62,63,64) ~ "Transport",
+                              NACE2 %in% c(65,66,67) ~ "Banking",
+                              NACE2 %in% c(70,71,72,73,74,75,80,85,90,91,92,93,95,98,99) ~ "Services",
+                                     TRUE ~ "Other"))
+
+table(soep$industry)
+```
+
+
+<!-- Variable `state` contains all 16 states of Germany. Whereas `female` is already recognized as a factor variable (`fct`), state is classified as a double with labels (`dbl+lbl`), i.e. R assumes `state` is a continuous variable between 1 and 16. -->
+
+<!-- Convert `state` to factor. Use `mutate` and `as_factor` on the `state` variable. Set the levels of this factor variable to official state abbreviations, i.e. `"BE", "BB", "MV", "SN", "ST", "TH"` by setting  `levels(east$state)` equal to the list of abbreviations. -->
+
+```{r, warning=FALSE, message=FALSE}
+simple3 <- lm(Income ~ industry, data=soep)
+
+modelsummary(title = 'Categorical Predictor.',
+             list("Income" = simple3), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             coef_map = cm)
+```
+
+Note that with a categorical variable, one category is missing in the output by default (the so called base level). In this case it is `Agriculture`. All coefficients are in comparison with the average annual income in Agriculture. All coefficients are positive, indicating that all industries earn more than the Agriculture sector. 
+
+### X is categorical, is it?
+
+<!-- https://stats.oarc.ucla.edu/spss/faq/coding-systems-for-categorical-variables-in-regression-analysis-2/ -->
+
+Actually, categorical variables are split into multiple dummy variable during the estimation process. 
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated </h2>
+:::
+
+We code the equivalence between linear regression with a categorical variable coded as a factor in R and a categorical variable split into multiple dummy variables. 
+
+```{r, warning=FALSE, message=FALSE}
+# All variables are internally coded as "double"
+glimpse(mtcars)
+
+# Cars have either 4, 6 or 8 cylinders
+table(mtcars$cyl)
+```
+
+There are 
+
+```{r, warning=FALSE, message=FALSE}
+# Factor coding: Use built in R style 
+mtcars <- mtcars %>% 
+  mutate(cyl_fct = as_factor(cyl))
+
+# Creating a dummy for each group 
+mtcars <- mtcars %>% 
+  mutate(cyl4 = ifelse(cyl == 4, 1, 0),
+         cyl6 = ifelse(cyl == 6, 1, 0),
+         cyl8 = ifelse(cyl == 8, 1, 0))
+
+# One hot encoding: every level of factor/categorical get its own column/dummy
+
+# Dummy coding: there are k-1 dummies, because one is redundant 
+```
+
+The following types of regression are possible. First, treat `cyl` like a continuous variable. This might or might not make sense. R assumes, there are cars with all values of cylinders. 
+
+```{r, warning=FALSE, message=FALSE}
+# Treated like continuous
+model1 <- lm(mpg ~ cyl, data=mtcars)
+
+# Treated like categorical (not showing base category)
+model2 <- lm(mpg ~ cyl_fct, data=mtcars)
+
+# One hot coding (all included, but one is NA)
+model3 <- lm(mpg ~ cyl4 + cyl6 + cyl8, data=mtcars)
+
+# Dummy coding (same coefficients, no NA)
+model4 <- lm(mpg ~ cyl4 + cyl6, data=mtcars)
+
+modelsummary(title = 'Categorical Predictor.',
+             list("MPG" = model1,
+                  "MPG" = model2,
+                  "MPG" = model3,
+                  "MPG" = model4), 
+             statistic = NULL,
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F')
+```
+
+
+
+```{r, warning=FALSE, message=FALSE}
+# Connection
+
+# cylfct6 is -6.9 less than invisible base category
+lm(mpg ~ cyl_fct, data=mtcars)
+
+# recalculate this as coefficient of cyl6 - cyl4 
+lm(mpg ~ cyl4 + cyl6, data=mtcars)$coefficients[3]-lm(mpg ~ cyl4 + cyl6, data=mtcars)$coefficients[2]
+```
+
+::::
+
+## Parallel Slopes
+
+*Parallel Slopes* is a special case of a *multiple regression* where there are multiple input variables that describe or explain an outcome. In particular, one of the variables is continuous (in this case age) and the other is a dummy variable (in this case gender). The resulting graph shows two parallel linear regression lines shifted by the dummy variable. 
+
+### X is continuous + dummy
+
+In contrast to the first Figure, we know consider all data at once and recognize gender as a factor influencing the annual income. The dummy variable gender offsets the age-income relationship. 
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, eval=TRUE}
+library(moderndive)
+ggplot(soep, aes(x=Age, y=Income, color=Female)) +
+  geom_point() +
+  geom_parallel_slopes(se=FALSE, size=2) +
+  labs(title="Income versus age with parallel slopes.",
+       x = "Age", y = "Annual Income") + theme_minimal()
+```
+
+```{r, warning=FALSE, message=FALSE}
+parallel1 <- lm(Income ~ Age + Female, data=soep)
+
+modelsummary(title = 'Categorical Predictor.',
+             list("Income" = parallel1), 
+             gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.',
+             coef_map = cm)
+```
+
+
+<!-- Please calculate his expected weight in kg according to model `parallel1`. Please access and use the model components like `coefficients` as in `parallel1$coefficients` in order to solve the task. -->
+
+<!-- ` parallel1$coefficients[1] + 185 * parallel1$coefficients[2] = 90.55837` -->
+
+## Model Comparison
+
+```{r, warning=FALSE, message=FALSE}
+multiple <- lm(Income ~ Age + Female + industry, data=soep)
+
+modelsummary(title = 'Linear regression models compared.',
+             list("Income" = simplest,
+                  "Income" = simple1,
+                  "Income" = simple2,
+                  "Income" = simple3,
+                  "Income" = parallel1,
+                  "Income" = multiple), 
+             
+             gof_omit = 'RMSE|Log.Lik.|F|AIC|BIC',
+             metrics = "all",
+             coef_map = cm)
+```
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**R square (R2)** is a statistical measure that represents the proportion of the variance in the dependent variable that is explained by the independent variable(s) in a regression model. It is also known as the **coefficient of determination**.
+::::
+
+R2 measures how well the regression model fits the data. R2 can range from 0 to 1, where 0 indicates that none of the variance in the dependent variable is explained by the independent variable(s), and 1 indicates that all of the variance in the dependent variable is explained by the independent variable(s). A higher R2 indicates a better fit between the model and the data, meaning that more of the variability in the dependent variable can be explained by the independent variable(s) in the model. The formula for R2 is:
+
+$$R2 = 1 - \frac{SSR}{SST} = 1 - \frac{\text{sum of squares residuals}}{\text{total sum of squares}} =  1 - \frac{\displaystyle\sum \left(\hat{y}- \overline{y}\right)^2}{\displaystyle\sum \left(y - \overline{y}\right)^2} $$
+
+
+**A good R2** – In some fields like social sciences or economics, an R2 value of 0.3 or higher may be considered a good fit for a model. In other fields like physics or engineering, a higher R2 value of 0.7 or above may be necessary to demonstrate a good fit.
+
+**R2 inflation** – R2 usually increases with sample size. In least squares regression using typical data, R2 is at least weakly increasing with increases in the number of regressors in the model. Because increases in the number of regressors increase the value of R2, R2 alone cannot be used as a meaningful comparison of models with very different numbers of independent variables.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Adjusted R2** is a modified version of R2 that takes into account the number of independent variables in a regression model. 
+::::
+
+$$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k} \right] \tag{with intercept}$$
+$$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k - 1} \right] \tag{no intercept}$$
+
+<!-- ## Future -->
+
+<!-- https://camilo-mora.github.io/GEO380/predict-interpolation-extrapolation.html -->
+
+## Transform to Perform 
+<!-- https://www.programmingr.com/tutorial/log-in-r/ -->
+<!-- The purpose of log transformations... -->
+
+While a lot of statistics and econometrics deals with linear relationships, we live in a very non-linear world. By taking the logarithm of your data, you can reduce the range of values and make it easier to see patterns and relationships. Log transformation is a common technique to deal with *skewed or highly variable data*, such as income. Income data often have a long right tail, meaning there are few individuals with very high incomes, but many with lower incomes (left panel). When modeling income in a regression, this can cause issues because the distribution violates the normality assumption that underpins many regression techniques.
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+hist1 <- ggplot(soep, aes(x = Income)) +
+  geom_histogram() +
+  labs(title="Histogram of Income", x = "Income", y = "Frequency") +
+  theme_minimal()
+
+hist2 <- ggplot(data=soep, aes(x=log(Income))) +
+  geom_histogram() +
+  labs(title="Histogram of Log Income", x = "Log Income", y = "Frequency") +
+  theme_minimal()
+
+grid.arrange(hist1, hist2, ncol=2)
+```
+
+Remember some key points of `log`: 
+
+* The log can only be calculated for numbers > 0.
+* The log of values between 0 and 1 is negative. 
+* The log of values above 1 is positive. 
+* The log of 1 is 0. 
+
+How to do logs in R?  
+
+```{r, warning=FALSE, message=FALSE}
+# Logs in R
+x <- c(0.1,0.5,1,2,5)
+x_log <- log(x)
+
+data.frame(x, x_log)
+```
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> It's natural.</h2>
+:::
+The default of `log()` is the natural logarithm. There are other logs as well, e.g. with base 10 `log(x, base = exp(10))`.
+::::
+
+The above specification of income versus age as two non-transformed variables is also known as a linear-linear model or level-level model. You can have a log transformation on the left, the right or both sides. All log-transformations change the interpretation of the regression coefficient. We explore these options in the following. 
+
+The log-linear or log-level model.
+
+```{r, warning=FALSE, message=FALSE}
+log_linear <- lm(log(Income) ~ Age + Female + industry, data=soep)
+log_log <- lm(log(Income) ~ log(Age) + Female + industry, data=soep)
+linear_log <- lm(Income ~ log(Age) + Female + industry, data=soep)
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+cm_2 <- c('Age'    = 'Age',
+        'log(Age)'    = 'Log (Age)')
+
+modelsummary(title = 'Linear regression with log transformations.',
+             list("Income" = multiple,
+                  "Log (Income)" = log_linear,
+                  "Log (Income)" = log_log,
+                  "Income" = linear_log), 
+             gof_omit = 'RMSE|Log.Lik.|F|AIC|BIC',
+             metrics = "all",
+             coef_map = cm_2)
+```
+
+<!-- https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/ -->
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Regression coefficients interpretation.</h2>
+:::
+Here are the interpretations:
+
+* Linear-Linear: For each additional year of age, we expect `r round(multiple$coefficients[2], 0)` € more annual income on average. Easy peasy.
+* Log-Linear (*semi-elasticity*): For each additional year of age, we expect annual income to increase by $(e^{0.014} - 1) * 100 = 1.4$ % on average. Starting from the average annual income of `r round(mean(soep$Income),0)` € one more year in age increases income by `r round(mean(soep$Income)*0.014, 0)` €.
+* Log-Log (*elasticity*): For each additional 1% increase in age, we expect the annual income to increase by `r round(log_log$coefficients[2], 2)` % €. For a 30-year-old earning average annual income, a 1% increase in age means 0.3 years or 3.6 months, increasing annual income by `r round(round(mean(soep$Income),0)*round(log_log$coefficients[2], 2)/100,0)` €.
+* Linear-Log: For each additional 1% increase in age, we expect the annual income to increase by `r round(linear_log$coefficients[2]/100, 0)` € For a 30-year-old, additional 1% or 3.6 month are expected to increase annual income by `r round(linear_log$coefficients[2]/100, 0)`  €. 
+::::
+
+Of course other mathematical transformations are possible and some are common, for example the square root or polynomial transformation (the power of two or three). @stutzer2008stress study the effect of commuting time (and commuting time squared) on life satisfaction (Tables 1 to 4). 
+
+<!-- square root of time -->
+<!-- https://www.tandfonline.com/doi/abs/10.1080/09644008.2016.1266481 -->
+
+<!-- https://www.diw.de/documents/dokumentenarchiv/17/56543/diw_sp0005.pdf -->
+
+
+
+
+
+
+

@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Interaction Models | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to become fluent in data." />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Interaction Models | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/Cover.png" />
+  <meta property="og:description" content="A guide to become fluent in data." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Interaction Models | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to become fluent in data." />
+  <meta name="twitter:image" content="/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2024-02-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="linear-regression.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.31/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/box_def.css" type="text/css" />
+<link rel="stylesheet" href="css/box_amazing.css" type="text/css" />
+<link rel="stylesheet" href="css/box_challenge.css" type="text/css" />
+<link rel="stylesheet" href="css/box_dedicated.css" type="text/css" />
+<link rel="stylesheet" href="css/box_reading.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
+<link rel="stylesheet" href="css/align.css" type="text/css" />
+<link rel="stylesheet" href="css/video.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://marcokuehne.github.io/">Becoming Fluent in Data</a></li> <li><p class="aligncenter"> <img src="images/Logo.png" width="60%" height="60%"> </p></li>
+<li class="divider"></li>
+<li class="part"><span><b>I Intro</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html"><i class="fa fa-check"></i>About the book</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#aims-of-this-book"><i class="fa fa-check"></i>Aims of this book</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#for-students"><i class="fa fa-check"></i>For students</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#for-instructors"><i class="fa fa-check"></i>For instructors</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#structure"><i class="fa fa-check"></i>Structure</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#components"><i class="fa fa-check"></i>Components</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#why-r"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="about-the-book.html"><a href="about-the-book.html#why-tidyverse"><i class="fa fa-check"></i>Why Tidyverse?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the author</a>
+<ul>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html#dust-and-dark"><i class="fa fa-check"></i>Dust and Dark</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html#teach-learn-repeat"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-a-calculator"><i class="fa fa-check"></i>R is a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-more-than-a-calculator"><i class="fa fa-check"></i>R is more than a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#define-objects"><i class="fa fa-check"></i>Define objects</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#numeric-variables"><i class="fa fa-check"></i>Numeric Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#logical-variables"><i class="fa fa-check"></i>Logical Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#string-variables"><i class="fa fa-check"></i>String Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#factor-variables"><i class="fa fa-check"></i>Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#combine-objects"><i class="fa fa-check"></i>Combine objects</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#data-frame"><i class="fa fa-check"></i>Data frame</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#plots"><i class="fa fa-check"></i>Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#data-with-readr"><i class="fa fa-check"></i>Data with readr</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#verbs-of-dplyr"><i class="fa fa-check"></i>Verbs of dplyr</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#glimpse"><i class="fa fa-check"></i>Glimpse</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#select"><i class="fa fa-check"></i>Select</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#arrange"><i class="fa fa-check"></i>Arrange</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#rename"><i class="fa fa-check"></i>Rename</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#the-pipe-operator"><i class="fa fa-check"></i>The pipe operator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#filter"><i class="fa fa-check"></i>Filter</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#mutate"><i class="fa fa-check"></i>Mutate</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#summarize"><i class="fa fa-check"></i>Summarize</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html#graphs-with-ggplot2"><i class="fa fa-check"></i>Graphs with ggplot2</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#why-we-measure"><i class="fa fa-check"></i><b>1.1</b> Why we measure</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#women-are-having-far-fewer-children."><i class="fa fa-check"></i><b>1.1.1</b> Women are having far fewer children.</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#global-surface-temperature-is-rising."><i class="fa fa-check"></i><b>1.1.2</b> Global surface temperature is rising.</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#means-of-measuring"><i class="fa fa-check"></i><b>1.2</b> Means of measuring</a></li>
+<li class="chapter" data-level="1.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#types-of-data"><i class="fa fa-check"></i><b>1.3</b> Types of data</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#origin-of-data"><i class="fa fa-check"></i><b>1.3.1</b> Origin of data</a></li>
+<li class="chapter" data-level="1.3.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#analysis-of-data"><i class="fa fa-check"></i><b>1.3.2</b> Analysis of data</a></li>
+<li class="chapter" data-level="1.3.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#structure-of-data"><i class="fa fa-check"></i><b>1.3.3</b> Structure of data</a></li>
+<li class="chapter" data-level="1.3.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-level-of-access"><i class="fa fa-check"></i><b>1.3.4</b> The level of access</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#can-we-measure-everything"><i class="fa fa-check"></i><b>1.4</b> Can we measure everything?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-reality-behind-the-data"><i class="fa fa-check"></i><b>1.5</b> The reality behind the data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>2</b> Stories and Visuals</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#facts"><i class="fa fa-check"></i><b>2.1</b> Facts</a></li>
+<li class="chapter" data-level="2.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#visualization"><i class="fa fa-check"></i><b>2.2</b> Visualization</a></li>
+<li class="chapter" data-level="2.3" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#telling-a-story"><i class="fa fa-check"></i><b>2.3</b> Telling a story</a></li>
+<li class="chapter" data-level="2.4" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#mans-best-friend"><i class="fa fa-check"></i><b>2.4</b> Man's best friend</a></li>
+<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a></li>
+<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#grammar-of-graphics"><i class="fa fa-check"></i><b>2.6</b> Grammar of Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>3</b> Tabular Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tabular-data.html"><a href="tabular-data.html#types-of-tabular-data"><i class="fa fa-check"></i><b>3.1</b> Types of Tabular Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="tabular-data.html"><a href="tabular-data.html#cross-section"><i class="fa fa-check"></i><b>3.1.1</b> Cross-section</a></li>
+<li class="chapter" data-level="3.1.2" data-path="tabular-data.html"><a href="tabular-data.html#repeated-cross-section"><i class="fa fa-check"></i><b>3.1.2</b> Repeated cross-section</a></li>
+<li class="chapter" data-level="3.1.3" data-path="tabular-data.html"><a href="tabular-data.html#time-series"><i class="fa fa-check"></i><b>3.1.3</b> Time series</a></li>
+<li class="chapter" data-level="3.1.4" data-path="tabular-data.html"><a href="tabular-data.html#panel-data"><i class="fa fa-check"></i><b>3.1.4</b> Panel data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>4</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="panel-data-1.html"><a href="panel-data-1.html#unemployment"><i class="fa fa-check"></i><b>4.1</b> Unemployment</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="panel-data-1.html"><a href="panel-data-1.html#on-decline-in-germany"><i class="fa fa-check"></i><b>4.1.1</b> On decline in Germany</a></li>
+<li class="chapter" data-level="4.1.2" data-path="panel-data-1.html"><a href="panel-data-1.html#measurement"><i class="fa fa-check"></i><b>4.1.2</b> Measurement</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="panel-data-1.html"><a href="panel-data-1.html#application"><i class="fa fa-check"></i><b>4.2</b> Application</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="panel-data-1.html"><a href="panel-data-1.html#data-inspection"><i class="fa fa-check"></i><b>4.2.1</b> Data Inspection</a></li>
+<li class="chapter" data-level="4.2.2" data-path="panel-data-1.html"><a href="panel-data-1.html#data-preparation"><i class="fa fa-check"></i><b>4.2.2</b> Data Preparation</a></li>
+<li class="chapter" data-level="4.2.3" data-path="panel-data-1.html"><a href="panel-data-1.html#data-visualization"><i class="fa fa-check"></i><b>4.2.3</b> Data Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="panel-data-1.html"><a href="panel-data-1.html#panel-studies"><i class="fa fa-check"></i><b>4.3</b> Panel Studies</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>5</b> Time data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="time-data.html"><a href="time-data.html#measuring-time"><i class="fa fa-check"></i><b>5.1</b> Measuring Time</a></li>
+<li class="chapter" data-level="5.2" data-path="time-data.html"><a href="time-data.html#measuring-dates"><i class="fa fa-check"></i><b>5.2</b> Measuring Dates</a></li>
+<li class="chapter" data-level="5.3" data-path="time-data.html"><a href="time-data.html#your-first-time-in-r"><i class="fa fa-check"></i><b>5.3</b> Your First Time (in R)</a></li>
+<li class="chapter" data-level="5.4" data-path="time-data.html"><a href="time-data.html#time-zones"><i class="fa fa-check"></i><b>5.4</b> Time Zones</a></li>
+<li class="chapter" data-level="5.5" data-path="time-data.html"><a href="time-data.html#time-management-in-r"><i class="fa fa-check"></i><b>5.5</b> Time Management in R</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="time-data.html"><a href="time-data.html#decimal-time"><i class="fa fa-check"></i><b>5.5.1</b> Decimal Time</a></li>
+<li class="chapter" data-level="5.5.2" data-path="time-data.html"><a href="time-data.html#time-formats"><i class="fa fa-check"></i><b>5.5.2</b> Time Formats</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="time-data.html"><a href="time-data.html#coffee-spending"><i class="fa fa-check"></i><b>5.6</b> Coffee Spending</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="time-data.html"><a href="time-data.html#spending-time-of-day"><i class="fa fa-check"></i><b>5.6.1</b> Spending Time of Day</a></li>
+<li class="chapter" data-level="5.6.2" data-path="time-data.html"><a href="time-data.html#run-chart"><i class="fa fa-check"></i><b>5.6.2</b> Run Chart</a></li>
+<li class="chapter" data-level="5.6.3" data-path="time-data.html"><a href="time-data.html#run-chart-grouped"><i class="fa fa-check"></i><b>5.6.3</b> Run Chart Grouped</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="time-data.html"><a href="time-data.html#run-chart-grouped-cleaned"><i class="fa fa-check"></i><b>5.7</b> Run Chart Grouped Cleaned</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>6</b> Web Data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="web-data.html"><a href="web-data.html#most-expensive-paintings"><i class="fa fa-check"></i><b>6.1</b> Most expensive paintings</a></li>
+<li class="chapter" data-level="6.2" data-path="web-data.html"><a href="web-data.html#student-numbers-at-viadrina"><i class="fa fa-check"></i><b>6.2</b> Student numbers at Viadrina</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="web-data.html"><a href="web-data.html#pdf-scraping"><i class="fa fa-check"></i><b>6.2.1</b> PDF scraping</a></li>
+<li class="chapter" data-level="6.2.2" data-path="web-data.html"><a href="web-data.html#share-of-female-students"><i class="fa fa-check"></i><b>6.2.2</b> Share of female students</a></li>
+<li class="chapter" data-level="6.2.3" data-path="web-data.html"><a href="web-data.html#share-of-foreign-students"><i class="fa fa-check"></i><b>6.2.3</b> Share of foreign students</a></li>
+<li class="chapter" data-level="6.2.4" data-path="web-data.html"><a href="web-data.html#web-scraping"><i class="fa fa-check"></i><b>6.2.4</b> Web scraping</a></li>
+<li class="chapter" data-level="6.2.5" data-path="web-data.html"><a href="web-data.html#most-recent-student-numbers"><i class="fa fa-check"></i><b>6.2.5</b> Most recent student numbers</a></li>
+<li class="chapter" data-level="6.2.6" data-path="web-data.html"><a href="web-data.html#the-long-run-trend"><i class="fa fa-check"></i><b>6.2.6</b> The long run trend</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>7</b> Geo Data</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="geo-data.html"><a href="geo-data.html#geo-coordinates"><i class="fa fa-check"></i><b>7.1</b> Geo coordinates</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="geo-data.html"><a href="geo-data.html#where-are-you"><i class="fa fa-check"></i><b>7.1.1</b> Where Are You?</a></li>
+<li class="chapter" data-level="7.1.2" data-path="geo-data.html"><a href="geo-data.html#latitude-and-longitude"><i class="fa fa-check"></i><b>7.1.2</b> Latitude and longitude</a></li>
+<li class="chapter" data-level="7.1.3" data-path="geo-data.html"><a href="geo-data.html#angles-and-degrees"><i class="fa fa-check"></i><b>7.1.3</b> Angles and Degrees</a></li>
+<li class="chapter" data-level="7.1.4" data-path="geo-data.html"><a href="geo-data.html#coordinate-reference-system"><i class="fa fa-check"></i><b>7.1.4</b> Coordinate Reference System</a></li>
+<li class="chapter" data-level="7.1.5" data-path="geo-data.html"><a href="geo-data.html#distance-measurement"><i class="fa fa-check"></i><b>7.1.5</b> Distance measurement</a></li>
+<li class="chapter" data-level="7.1.6" data-path="geo-data.html"><a href="geo-data.html#points-and-polygons"><i class="fa fa-check"></i><b>7.1.6</b> Points And Polygons</a></li>
+<li class="chapter" data-level="7.1.7" data-path="geo-data.html"><a href="geo-data.html#shapefiles"><i class="fa fa-check"></i><b>7.1.7</b> Shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="geo-data.html"><a href="geo-data.html#google-takeout"><i class="fa fa-check"></i><b>7.2</b> Google Takeout</a></li>
+<li class="chapter" data-level="7.3" data-path="geo-data.html"><a href="geo-data.html#blood-donation"><i class="fa fa-check"></i><b>7.3</b> Blood Donation</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="missing-data.html"><a href="missing-data.html#types-of-missing-data"><i class="fa fa-check"></i><b>8.1</b> Types of Missing Data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="missing-data.html"><a href="missing-data.html#missing-completely-at-random-mcar"><i class="fa fa-check"></i><b>8.1.1</b> Missing Completely at Random (MCAR)</a></li>
+<li class="chapter" data-level="8.1.2" data-path="missing-data.html"><a href="missing-data.html#missing-at-random-mar"><i class="fa fa-check"></i><b>8.1.2</b> Missing at Random (MAR)</a></li>
+<li class="chapter" data-level="8.1.3" data-path="missing-data.html"><a href="missing-data.html#missing-not-at-random-mnar"><i class="fa fa-check"></i><b>8.1.3</b> Missing Not at Random (MNAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="missing-data.html"><a href="missing-data.html#causes-of-missing-data"><i class="fa fa-check"></i><b>8.2</b> Causes of Missing Data</a></li>
+<li class="chapter" data-level="8.3" data-path="missing-data.html"><a href="missing-data.html#causes-of-missing-data-1"><i class="fa fa-check"></i><b>8.3</b> Causes of Missing Data</a></li>
+<li class="chapter" data-level="8.4" data-path="missing-data.html"><a href="missing-data.html#causes-of-missing-data-2"><i class="fa fa-check"></i><b>8.4</b> Causes of Missing Data</a></li>
+<li class="chapter" data-level="8.5" data-path="missing-data.html"><a href="missing-data.html#causes-of-missing-data-3"><i class="fa fa-check"></i><b>8.5</b> Causes of Missing Data</a></li>
+<li class="chapter" data-level="8.6" data-path="missing-data.html"><a href="missing-data.html#missing-data-in-r"><i class="fa fa-check"></i><b>8.6</b> Missing Data in R</a></li>
+</ul></li>
+<li class="part"><span><b>III Models</b></span></li>
+<li class="chapter" data-level="9" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>9</b> Relationships</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="relationships.html"><a href="relationships.html#storks-deliver-babies"><i class="fa fa-check"></i><b>9.1</b> Storks Deliver Babies</a></li>
+<li class="chapter" data-level="9.2" data-path="relationships.html"><a href="relationships.html#statistics"><i class="fa fa-check"></i><b>9.2</b> Statistics</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="relationships.html"><a href="relationships.html#variance"><i class="fa fa-check"></i><b>9.2.1</b> Variance</a></li>
+<li class="chapter" data-level="9.2.2" data-path="relationships.html"><a href="relationships.html#standard-deviation"><i class="fa fa-check"></i><b>9.2.2</b> Standard Deviation</a></li>
+<li class="chapter" data-level="9.2.3" data-path="relationships.html"><a href="relationships.html#covariance"><i class="fa fa-check"></i><b>9.2.3</b> Covariance</a></li>
+<li class="chapter" data-level="9.2.4" data-path="relationships.html"><a href="relationships.html#correlation"><i class="fa fa-check"></i><b>9.2.4</b> Correlation</a></li>
+<li class="chapter" data-level="9.2.5" data-path="relationships.html"><a href="relationships.html#an-early-glimpse-into-regression"><i class="fa fa-check"></i><b>9.2.5</b> An Early Glimpse into Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="relationships.html"><a href="relationships.html#visualizations"><i class="fa fa-check"></i><b>9.3</b> Visualizations</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="relationships.html"><a href="relationships.html#storks-and-population-in-a-scatterplot"><i class="fa fa-check"></i><b>9.3.1</b> Storks and Population in a Scatterplot</a></li>
+<li class="chapter" data-level="9.3.2" data-path="relationships.html"><a href="relationships.html#storks-and-population-in-a-barplot"><i class="fa fa-check"></i><b>9.3.2</b> Storks and Population in a Barplot</a></li>
+<li class="chapter" data-level="9.3.3" data-path="relationships.html"><a href="relationships.html#storks-and-area"><i class="fa fa-check"></i><b>9.3.3</b> Storks and Area</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="relationships.html"><a href="relationships.html#spurious-relationships"><i class="fa fa-check"></i><b>9.4</b> Spurious Relationships</a></li>
+<li class="chapter" data-level="" data-path="relationships.html"><a href="relationships.html#readings"><i class="fa fa-check"></i>Readings</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>10</b> Regression</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="regression.html"><a href="regression.html#old-but-gold"><i class="fa fa-check"></i><b>10.1</b> Old but Gold</a></li>
+<li class="chapter" data-level="10.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>10.2</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="regression.html"><a href="regression.html#data-in-a-table"><i class="fa fa-check"></i><b>10.2.1</b> Data in a table</a></li>
+<li class="chapter" data-level="10.2.2" data-path="regression.html"><a href="regression.html#data-in-a-graph"><i class="fa fa-check"></i><b>10.2.2</b> Data in a graph</a></li>
+<li class="chapter" data-level="10.2.3" data-path="regression.html"><a href="regression.html#the-trend"><i class="fa fa-check"></i><b>10.2.3</b> The trend</a></li>
+<li class="chapter" data-level="10.2.4" data-path="regression.html"><a href="regression.html#the-blackbox"><i class="fa fa-check"></i><b>10.2.4</b> The blackbox</a></li>
+<li class="chapter" data-level="10.2.5" data-path="regression.html"><a href="regression.html#nobodys-perfect"><i class="fa fa-check"></i><b>10.2.5</b> Nobody's perfect</a></li>
+<li class="chapter" data-level="10.2.6" data-path="regression.html"><a href="regression.html#vocab-wrap-up"><i class="fa fa-check"></i><b>10.2.6</b> Vocab Wrap-Up</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>10.3</b> For the truly dedicated</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="regression.html"><a href="regression.html#algebra"><i class="fa fa-check"></i><b>10.3.1</b> Algebra</a></li>
+<li class="chapter" data-level="10.3.2" data-path="regression.html"><a href="regression.html#analysis"><i class="fa fa-check"></i><b>10.3.2</b> Analysis</a></li>
+<li class="chapter" data-level="10.3.3" data-path="regression.html"><a href="regression.html#take-the-long-way-home"><i class="fa fa-check"></i><b>10.3.3</b> Take the Long Way Home</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>10.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="10.5" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>10.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>11</b> Linear Regression</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="linear-regression.html"><a href="linear-regression.html#what-you-deserve-is-what-you-get"><i class="fa fa-check"></i><b>11.1</b> What You Deserve Is What You Get</a></li>
+<li class="chapter" data-level="11.2" data-path="linear-regression.html"><a href="linear-regression.html#data-sample"><i class="fa fa-check"></i><b>11.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="11.3" data-path="linear-regression.html"><a href="linear-regression.html#data-visualization-1"><i class="fa fa-check"></i><b>11.3</b> Data Visualization</a></li>
+<li class="chapter" data-level="11.4" data-path="linear-regression.html"><a href="linear-regression.html#simplest-regression"><i class="fa fa-check"></i><b>11.4</b> Simplest Regression</a></li>
+<li class="chapter" data-level="11.5" data-path="linear-regression.html"><a href="linear-regression.html#simple-regression"><i class="fa fa-check"></i><b>11.5</b> Simple Regression</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="linear-regression.html"><a href="linear-regression.html#x-is-continuous"><i class="fa fa-check"></i><b>11.5.1</b> X is continuous</a></li>
+<li class="chapter" data-level="11.5.2" data-path="linear-regression.html"><a href="linear-regression.html#x-is-a-dummy"><i class="fa fa-check"></i><b>11.5.2</b> X is a dummy</a></li>
+<li class="chapter" data-level="11.5.3" data-path="linear-regression.html"><a href="linear-regression.html#x-is-categorical"><i class="fa fa-check"></i><b>11.5.3</b> X is categorical</a></li>
+<li class="chapter" data-level="11.5.4" data-path="linear-regression.html"><a href="linear-regression.html#x-is-categorical-is-it"><i class="fa fa-check"></i><b>11.5.4</b> X is categorical, is it?</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="linear-regression.html"><a href="linear-regression.html#parallel-slopes"><i class="fa fa-check"></i><b>11.6</b> Parallel Slopes</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="linear-regression.html"><a href="linear-regression.html#x-is-continuous-dummy"><i class="fa fa-check"></i><b>11.6.1</b> X is continuous + dummy</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="linear-regression.html"><a href="linear-regression.html#model-comparison"><i class="fa fa-check"></i><b>11.7</b> Model Comparison</a></li>
+<li class="chapter" data-level="11.8" data-path="linear-regression.html"><a href="linear-regression.html#transform-to-perform"><i class="fa fa-check"></i><b>11.8</b> Transform to Perform</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="interaction-models.html"><a href="interaction-models.html"><i class="fa fa-check"></i><b>12</b> Interaction Models</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="interaction-models.html"><a href="interaction-models.html#motivation"><i class="fa fa-check"></i><b>12.1</b> Motivation</a></li>
+<li class="chapter" data-level="12.2" data-path="interaction-models.html"><a href="interaction-models.html#data-sample-1"><i class="fa fa-check"></i><b>12.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="12.3" data-path="interaction-models.html"><a href="interaction-models.html#throwback-parallel-slopes"><i class="fa fa-check"></i><b>12.3</b> Throwback Parallel Slopes</a></li>
+<li class="chapter" data-level="12.4" data-path="interaction-models.html"><a href="interaction-models.html#regression-with-moderators"><i class="fa fa-check"></i><b>12.4</b> Regression with Moderators</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="interaction-models.html"><a href="interaction-models.html#dummy-dummy"><i class="fa fa-check"></i><b>12.4.1</b> Dummy * Dummy</a></li>
+<li class="chapter" data-level="12.4.2" data-path="interaction-models.html"><a href="interaction-models.html#categorical-dummy"><i class="fa fa-check"></i><b>12.4.2</b> Categorical * Dummy</a></li>
+<li class="chapter" data-level="12.4.3" data-path="interaction-models.html"><a href="interaction-models.html#continuous-dummy"><i class="fa fa-check"></i><b>12.4.3</b> Continuous * Dummy</a></li>
+<li class="chapter" data-level="12.4.4" data-path="interaction-models.html"><a href="interaction-models.html#continuous-continuous"><i class="fa fa-check"></i><b>12.4.4</b> Continuous * Continuous</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="interaction-models.html"><a href="interaction-models.html#model-comparison-1"><i class="fa fa-check"></i><b>12.5</b> Model Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="12.6" data-path="references.html"><a href="references.html#resources"><i class="fa fa-check"></i><b>12.6</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://marco-kuehne.com/" target="blank">Visit my personal page</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="interaction-models" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Interaction Models<a href="interaction-models.html#interaction-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="motivation" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Motivation<a href="interaction-models.html#motivation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- https://www.researchgate.net/post/Is_there_any_different_between_control_variable_and_moderating_variable2 -->
+<!-- In many contexts, the effect of one variable on another might be allowed to vary. For example, the relationship between income and mortality is nonlinear, so the effect of an additional dollar of income on mortality is different for someone earning \$20,000/year than for someone earning $100,000/year. Or maybe the relationship between income and mortality differs depending on how many years of education you have. A marginal effects plot displays the effect of X on Y for different values of Z (or X).  -->
+<!-- The plot will often include confidence intervals as well. The same code will often work if there's not an explicit interaction, but you are, for example, estimating a logit model where the effect of one variable changes with the values of the others. -->
+<!-- - Interactions often have poor statistical power, and you will generally need a lot of observations to tell if the effect of X on Y is different for two given different values of Z. -->
+<!-- - Make sure your graph has clearly labeled axes, so readers can tell whether your y-axis is the predicted value of Y or the marginal effect of X on Y. -->
+<!-- https://www.spss-tutorials.com/spss-regression-with-moderation-interaction-effect/ -->
+<p>A sports doctor routinely measures the muscle percentages of his clients. He also asks them how many hours per week they typically spend on training. Our doctor suspects that clients who train more are also more muscled. Furthermore, he thinks that the effect of training on muscularity declines with age. In multiple regression analysis, this is known as a <strong>moderation or interaction effect</strong> illustrated in the figure below.</p>
+<center>
+<p><img src="images/moderation-interaction-in-regression-diagram.png" /></p>
+</center>
+<p>In mathematical terms an interaction is an additional multiplication term:</p>
+<p><span class="math display">\[ muscle = training + age + training*age  \]</span></p>
+</div>
+<div id="data-sample-1" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Data &amp; Sample<a href="interaction-models.html#data-sample-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- <button type="button" class="btn btn-default">Show session info</button> -->
+<p>In the following we further explore the aforementioned income-age relationship and how the relationship itself may be influenced by gender and other characteristics.</p>
+<div class="toggle">
+<button>
+Show me all the data wrangling.
+</button>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="interaction-models.html#cb101-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb101-2"><a href="interaction-models.html#cb101-2" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span>
+<span id="cb101-3"><a href="interaction-models.html#cb101-3" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="interaction-models.html#cb101-4" tabindex="-1"></a><span class="co"># The data comes with Stata labels that do not work with all tidyverse commands</span></span>
+<span id="cb101-5"><a href="interaction-models.html#cb101-5" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
+<span id="cb101-6"><a href="interaction-models.html#cb101-6" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span>
+<span id="cb101-7"><a href="interaction-models.html#cb101-7" tabindex="-1"></a></span>
+<span id="cb101-8"><a href="interaction-models.html#cb101-8" tabindex="-1"></a><span class="co"># Rename German to English variable names</span></span>
+<span id="cb101-9"><a href="interaction-models.html#cb101-9" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb101-10"><a href="interaction-models.html#cb101-10" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb101-11"><a href="interaction-models.html#cb101-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="st">&quot;alter&quot;</span>,</span>
+<span id="cb101-12"><a href="interaction-models.html#cb101-12" tabindex="-1"></a>         <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> <span class="st">&quot;einkommenj1&quot;</span>,</span>
+<span id="cb101-13"><a href="interaction-models.html#cb101-13" tabindex="-1"></a>         <span class="st">&quot;NACE2&quot;</span> <span class="ot">=</span> <span class="st">&quot;branche&quot;</span>,</span>
+<span id="cb101-14"><a href="interaction-models.html#cb101-14" tabindex="-1"></a>         <span class="st">&quot;Persons in HH&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_pers&quot;</span>, </span>
+<span id="cb101-15"><a href="interaction-models.html#cb101-15" tabindex="-1"></a>         <span class="st">&quot;Num_Kids&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_kind&quot;</span>,</span>
+<span id="cb101-16"><a href="interaction-models.html#cb101-16" tabindex="-1"></a>         <span class="st">&quot;Education&quot;</span> <span class="ot">=</span> <span class="st">&quot;bildung&quot;</span>,</span>
+<span id="cb101-17"><a href="interaction-models.html#cb101-17" tabindex="-1"></a>         <span class="st">&quot;Health&quot;</span> <span class="ot">=</span> <span class="st">&quot;gesund_org&quot;</span>, </span>
+<span id="cb101-18"><a href="interaction-models.html#cb101-18" tabindex="-1"></a>         <span class="st">&quot;Satisfaction&quot;</span> <span class="ot">=</span> <span class="st">&quot;lebensz_org&quot;</span>,</span>
+<span id="cb101-19"><a href="interaction-models.html#cb101-19" tabindex="-1"></a>         <span class="st">&quot;Emp&quot;</span> <span class="ot">=</span> <span class="st">&quot;erwerb&quot;</span>) </span>
+<span id="cb101-20"><a href="interaction-models.html#cb101-20" tabindex="-1"></a></span>
+<span id="cb101-21"><a href="interaction-models.html#cb101-21" tabindex="-1"></a><span class="co"># Modify some variables</span></span>
+<span id="cb101-22"><a href="interaction-models.html#cb101-22" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb101-23"><a href="interaction-models.html#cb101-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Single =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Persons in HH</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb101-24"><a href="interaction-models.html#cb101-24" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">ifelse</span>(Num_Kids <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb101-25"><a href="interaction-models.html#cb101-25" tabindex="-1"></a>         <span class="at">Female =</span> sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-26"><a href="interaction-models.html#cb101-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Industry =</span> <span class="fu">case_when</span>(NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="sc">~</span> <span class="st">&quot;Agriculture&quot;</span>,</span>
+<span id="cb101-27"><a href="interaction-models.html#cb101-27" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">~</span> <span class="st">&quot;Mining&quot;</span>,</span>
+<span id="cb101-28"><a href="interaction-models.html#cb101-28" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">32</span>) <span class="sc">~</span> <span class="st">&quot;Manufacturing&quot;</span>,</span>
+<span id="cb101-29"><a href="interaction-models.html#cb101-29" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35</span><span class="sc">:</span><span class="dv">38</span>) <span class="sc">~</span> <span class="st">&quot;Energy&quot;</span>,</span>
+<span id="cb101-30"><a href="interaction-models.html#cb101-30" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">~</span> <span class="st">&quot;Construction&quot;</span>,</span>
+<span id="cb101-31"><a href="interaction-models.html#cb101-31" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">55</span>) <span class="sc">~</span> <span class="st">&quot;Trade&quot;</span>,</span>
+<span id="cb101-32"><a href="interaction-models.html#cb101-32" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>) <span class="sc">~</span> <span class="st">&quot;Transport&quot;</span>,</span>
+<span id="cb101-33"><a href="interaction-models.html#cb101-33" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>) <span class="sc">~</span> <span class="st">&quot;Banking&quot;</span>,</span>
+<span id="cb101-34"><a href="interaction-models.html#cb101-34" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span>  <span class="fu">c</span>(<span class="dv">70</span>,<span class="dv">71</span>,<span class="dv">72</span>,<span class="dv">73</span>,<span class="dv">74</span>,<span class="dv">75</span>,<span class="dv">80</span>,<span class="dv">85</span>,<span class="dv">90</span>,<span class="dv">91</span>,<span class="dv">92</span>,<span class="dv">93</span>,<span class="dv">95</span>,<span class="dv">98</span>,<span class="dv">99</span>) <span class="sc">~</span> <span class="st">&quot;Services&quot;</span>,</span>
+<span id="cb101-35"><a href="interaction-models.html#cb101-35" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Other&quot;</span>))</span>
+<span id="cb101-36"><a href="interaction-models.html#cb101-36" tabindex="-1"></a></span>
+<span id="cb101-37"><a href="interaction-models.html#cb101-37" tabindex="-1"></a><span class="co"># Round annual income to two digits</span></span>
+<span id="cb101-38"><a href="interaction-models.html#cb101-38" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Income =</span> <span class="fu">round</span>(Income, <span class="dv">2</span>))</span>
+<span id="cb101-39"><a href="interaction-models.html#cb101-39" tabindex="-1"></a></span>
+<span id="cb101-40"><a href="interaction-models.html#cb101-40" tabindex="-1"></a><span class="co"># Build the estimation sample based on the topic</span></span>
+<span id="cb101-41"><a href="interaction-models.html#cb101-41" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb101-42"><a href="interaction-models.html#cb101-42" tabindex="-1"></a>  <span class="fu">filter</span>(Emp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-43"><a href="interaction-models.html#cb101-43" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">65</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-44"><a href="interaction-models.html#cb101-44" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-45"><a href="interaction-models.html#cb101-45" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2019</span>)</span>
+<span id="cb101-46"><a href="interaction-models.html#cb101-46" tabindex="-1"></a></span>
+<span id="cb101-47"><a href="interaction-models.html#cb101-47" tabindex="-1"></a><span class="co"># Conduct a complete case analysis</span></span>
+<span id="cb101-48"><a href="interaction-models.html#cb101-48" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
+</div>
+<p>The <code>datasummary()</code> function from <code>modelsummary</code> package provides a good overview for clean, selected variables.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="interaction-models.html#cb102-1" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb102-2"><a href="interaction-models.html#cb102-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
+<span id="cb102-3"><a href="interaction-models.html#cb102-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Income, Age, Kids, Female, Satisfaction) <span class="sc">%&gt;%</span></span>
+<span id="cb102-4"><a href="interaction-models.html#cb102-4" tabindex="-1"></a>  <span class="fu">datasummary_skim</span>()</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Unique (#)
+</th>
+<th style="text-align:right;">
+Missing (%)
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+Min
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+Max
+</th>
+<th style="text-align:right;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Income
+</td>
+<td style="text-align:right;">
+1211
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+42145.2
+</td>
+<td style="text-align:right;">
+23488.8
+</td>
+<td style="text-align:right;">
+915.5
+</td>
+<td style="text-align:right;">
+37337.3
+</td>
+<td style="text-align:right;">
+257886.2
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewBox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.62" y="9.36" width="3.46" height="2.30" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="5.08" y="3.22" width="3.46" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.54" y="6.84" width="3.46" height="4.82" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="12.00" y="9.43" width="3.46" height="2.24" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.46" y="10.76" width="3.46" height="0.90" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="18.91" y="11.44" width="3.46" height="0.22" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="22.37" y="11.60" width="3.46" height="0.063" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="25.83" y="11.61" width="3.46" height="0.047" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="29.29" y="11.65" width="3.46" height="0.016" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.75" y="11.65" width="3.46" height="0.016" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="36.21" y="11.66" width="3.46" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="39.67" y="11.66" width="3.46" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="43.13" y="11.65" width="3.46" height="0.016" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Age
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+45.4
+</td>
+<td style="text-align:right;">
+11.2
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+47.0
+</td>
+<td style="text-align:right;">
+65.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewBox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="-1.06" y="11.32" width="4.73" height="0.34" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="3.67" y="9.67" width="4.73" height="1.99" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="8.40" y="8.32" width="4.73" height="3.34" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="13.13" y="7.12" width="4.73" height="4.54" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="17.85" y="6.82" width="4.73" height="4.84" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="22.58" y="6.11" width="4.73" height="5.55" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="27.31" y="4.76" width="4.73" height="6.91" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.04" y="3.22" width="4.73" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="36.77" y="5.58" width="4.73" height="6.08" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.49" y="8.25" width="4.73" height="3.42" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kids
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewBox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="4.44" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="5.98" width="4.44" height="5.68" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewBox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="3.22" width="4.44" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="11.66" width="4.44" height="0.00" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="6.98" width="4.44" height="4.68" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Satisfaction
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7.6
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svglite" width="48.00pt" height="12.00pt" viewBox="0 0 48.00 12.00">
+<defs>
+<style type="text/css">
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"><rect x="0.00" y="0.00" width="48.00" height="12.00"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)">
+</g><defs><clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"><rect x="0.00" y="2.88" width="48.00" height="9.12"></rect></clipPath></defs><g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"><rect x="1.78" y="11.63" width="4.44" height="0.037" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="6.22" y="11.51" width="4.44" height="0.15" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="10.67" y="11.44" width="4.44" height="0.22" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="15.11" y="11.33" width="4.44" height="0.33" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="19.56" y="10.38" width="4.44" height="1.28" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="24.00" y="10.07" width="4.44" height="1.60" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="28.44" y="6.76" width="4.44" height="4.90" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="32.89" y="3.22" width="4.44" height="8.44" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="37.33" y="7.21" width="4.44" height="4.45" style="stroke-width: 0.38; fill: #000000;"></rect><rect x="41.78" y="10.60" width="4.44" height="1.06" style="stroke-width: 0.38; fill: #000000;"></rect></g>
+</svg>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The average annual income in this sample is 42145. Notice that the income is left skewed whereas life satisfaction is skewed to the right. As expected, most people earn a low or average income and there are several extreme high incomes at the right. On the other hand, most people are on average pretty satisfied with their lifes in general. The mean of a dummy variables is the share of people with the characteristic coded with 1, i.e. about 40 % of the people have kids. In the following, binary dummy variables are coded as factors.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="interaction-models.html#cb103-1" tabindex="-1"></a><span class="co"># Explicitly code factor variables</span></span>
+<span id="cb103-2"><a href="interaction-models.html#cb103-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb103-3"><a href="interaction-models.html#cb103-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Female =</span> <span class="fu">factor</span>(Female),</span>
+<span id="cb103-4"><a href="interaction-models.html#cb103-4" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">factor</span>(Kids))</span></code></pre></div>
+</div>
+<div id="throwback-parallel-slopes" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Throwback Parallel Slopes<a href="interaction-models.html#throwback-parallel-slopes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Simple regression is very similar to the correlation between two variables. A multiple regression with one continuous and one dummy variable is called a <em>parallel slopes</em> model. The data looks like this:</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-196-1.png" width="576" /></p>
+<p>Conclusion from Parallel Slopes: The <em>fundamental truth</em> is that the effect of age on income is identical across gender (i.e. for males and females). Males and female are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?</p>
+</div>
+<div id="regression-with-moderators" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> Regression with Moderators<a href="interaction-models.html#regression-with-moderators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
+<p>In the following we consider all possible kinds of two-way interactions (between two variables). Higher-order interaction might be useful under special conditions, e.g. in a study where the effect of a new drug depends on the patient's age and gender.</p>
+<p>An interaction can be coded implicitly or explicitly in R.</p>
+<div class="toggle">
+<button>
+Show me the coding.
+</button>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="interaction-models.html#cb104-1" tabindex="-1"></a><span class="co"># implicit coding, that automatically extends</span></span>
+<span id="cb104-2"><a href="interaction-models.html#cb104-2" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">*</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb104-3"><a href="interaction-models.html#cb104-3" tabindex="-1"></a><span class="co"># explicit coding, each single term and their interaction</span></span>
+<span id="cb104-4"><a href="interaction-models.html#cb104-4" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> am <span class="sc">+</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb104-5"><a href="interaction-models.html#cb104-5" tabindex="-1"></a><span class="co"># only use the interaction term?</span></span>
+<span id="cb104-6"><a href="interaction-models.html#cb104-6" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb104-7"><a href="interaction-models.html#cb104-7" tabindex="-1"></a></span>
+<span id="cb104-8"><a href="interaction-models.html#cb104-8" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Coding Interaction in R.&#39;</span>,</span>
+<span id="cb104-9"><a href="interaction-models.html#cb104-9" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Version 1&quot;</span> <span class="ot">=</span> lm1, </span>
+<span id="cb104-10"><a href="interaction-models.html#cb104-10" tabindex="-1"></a>                  <span class="st">&quot;Version 2&quot;</span> <span class="ot">=</span> lm2,</span>
+<span id="cb104-11"><a href="interaction-models.html#cb104-11" tabindex="-1"></a>                  <span class="st">&quot;Version 3&quot;</span> <span class="ot">=</span> lm3), </span>
+<span id="cb104-12"><a href="interaction-models.html#cb104-12" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-198">Table 12.1: </span>Coding Interaction in R.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+ Version 1
+</th>
+<th style="text-align:center;">
+ Version 2
+</th>
+<th style="text-align:center;">
+ Version 3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+15.050
+</td>
+<td style="text-align:center;">
+15.050
+</td>
+<td style="text-align:center;">
+17.772
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(1.002)
+</td>
+<td style="text-align:center;">
+(1.002)
+</td>
+<td style="text-align:center;">
+(0.826)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vs
+</td>
+<td style="text-align:center;">
+5.693
+</td>
+<td style="text-align:center;">
+5.693
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(1.651)
+</td>
+<td style="text-align:center;">
+(1.651)
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+am
+</td>
+<td style="text-align:center;">
+4.700
+</td>
+<td style="text-align:center;">
+4.700
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(1.736)
+</td>
+<td style="text-align:center;">
+(1.736)
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vs × am
+</td>
+<td style="text-align:center;">
+2.929
+</td>
+<td style="text-align:center;">
+2.929
+</td>
+<td style="text-align:center;">
+10.599
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1.5px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1.5px">
+(2.541)
+</td>
+<td style="text-align:center;box-shadow: 0px 1.5px">
+(2.541)
+</td>
+<td style="text-align:center;box-shadow: 0px 1.5px">
+(1.766)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+32
+</td>
+<td style="text-align:center;">
+32
+</td>
+<td style="text-align:center;">
+32
+</td>
+</tr>
+</tbody>
+</table>
+<p>The single terms <code>vs</code> and <code>am</code> are sometimes called the <em>main effects</em>.</p>
+</div>
+<div id="dummy-dummy" class="section level3 hasAnchor" number="12.4.1">
+<h3><span class="header-section-number">12.4.1</span> Dummy * Dummy<a href="interaction-models.html#dummy-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://www.theanalysisfactor.com/interaction-dummy-variables-in-linear-regression/ -->
+<!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
+<!-- Categorical by categorical interactions: All the tools described here require at least one variable to be continuous. A separate vignette describes cat_plot, which handles the plotting of interactions in which all the focal predictors are categorical variables. -->
+<p>We estimate how income depends on having kids and being female.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="interaction-models.html#cb105-1" tabindex="-1"></a>interact1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Kids<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb105-2"><a href="interaction-models.html#cb105-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 1.&#39;</span>,</span>
+<span id="cb105-3"><a href="interaction-models.html#cb105-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact1), </span>
+<span id="cb105-4"><a href="interaction-models.html#cb105-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-199">Table 12.2: </span>Interaction Model 1.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+ Income
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+43476.056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(1128.318)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kids1
+</td>
+<td style="text-align:center;">
+4329.056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(1650.629)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Female1
+</td>
+<td style="text-align:center;">
+-6131.395
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(1727.116)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kids1 × Female1
+</td>
+<td style="text-align:center;">
+-8708.424
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1.5px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1.5px">
+(2954.627)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1211
+</td>
+</tr>
+</tbody>
+</table>
+<p>We plot the interaction with via <code>cat_plot()</code> from the <code>interactions</code> package. This interaction dedicated package makes visualization easy.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="interaction-models.html#cb106-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb106-2"><a href="interaction-models.html#cb106-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-200-1.png" width="576" /></p>
+<p>This graph suggests that men earn more than women. Men with kids earn more than men without kids. The kids-effect is reversed for women, which report higher incomes when they do not have kids.</p>
+</div>
+<div id="categorical-dummy" class="section level3 hasAnchor" number="12.4.2">
+<h3><span class="header-section-number">12.4.2</span> Categorical * Dummy<a href="interaction-models.html#categorical-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We estimate how income depends on working in different industries and being female.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="interaction-models.html#cb107-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Industry<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb107-2"><a href="interaction-models.html#cb107-2" tabindex="-1"></a></span>
+<span id="cb107-3"><a href="interaction-models.html#cb107-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb107-4"><a href="interaction-models.html#cb107-4" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb107-5"><a href="interaction-models.html#cb107-5" tabindex="-1"></a></span>
+<span id="cb107-6"><a href="interaction-models.html#cb107-6" tabindex="-1"></a><span class="co"># tidy(interact2) %&gt;% </span></span>
+<span id="cb107-7"><a href="interaction-models.html#cb107-7" tabindex="-1"></a><span class="co">#   select(term, estimate, std.error) %&gt;% </span></span>
+<span id="cb107-8"><a href="interaction-models.html#cb107-8" tabindex="-1"></a><span class="co">#   #filter(! is.na(estimate)) %&gt;% </span></span>
+<span id="cb107-9"><a href="interaction-models.html#cb107-9" tabindex="-1"></a><span class="co">#   kable(digits=3)</span></span>
+<span id="cb107-10"><a href="interaction-models.html#cb107-10" tabindex="-1"></a></span>
+<span id="cb107-11"><a href="interaction-models.html#cb107-11" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb107-12"><a href="interaction-models.html#cb107-12" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact2), </span></span>
+<span id="cb107-13"><a href="interaction-models.html#cb107-13" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span>
+<span id="cb107-14"><a href="interaction-models.html#cb107-14" tabindex="-1"></a></span>
+<span id="cb107-15"><a href="interaction-models.html#cb107-15" tabindex="-1"></a>parts <span class="ot">=</span> <span class="dv">2</span> <span class="do">## multi-column parts to display alongside</span></span>
+<span id="cb107-16"><a href="interaction-models.html#cb107-16" tabindex="-1"></a></span>
+<span id="cb107-17"><a href="interaction-models.html#cb107-17" tabindex="-1"></a><span class="fu">tidy</span>(interact2) <span class="sc">|&gt;</span></span>
+<span id="cb107-18"><a href="interaction-models.html#cb107-18" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(term, <span class="at">coefficient =</span> estimate) <span class="sc">|&gt;</span></span>
+<span id="cb107-19"><a href="interaction-models.html#cb107-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">part =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>parts, <span class="at">each =</span> <span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>()),</span>
+<span id="cb107-20"><a href="interaction-models.html#cb107-20" tabindex="-1"></a>         <span class="at">row_index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>())</span>
+<span id="cb107-21"><a href="interaction-models.html#cb107-21" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
+<span id="cb107-22"><a href="interaction-models.html#cb107-22" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span> part) <span class="sc">|&gt;</span></span>
+<span id="cb107-23"><a href="interaction-models.html#cb107-23" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="at">f =</span> \(x, y) x <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>part) <span class="sc">|&gt;</span> <span class="fu">left_join</span>(y, <span class="at">by =</span> <span class="st">&#39;row_index&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb107-24"><a href="interaction-models.html#cb107-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(row_index, part)) <span class="sc">|&gt;</span></span>
+<span id="cb107-25"><a href="interaction-models.html#cb107-25" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+term.x
+</th>
+<th style="text-align:right;">
+coefficient.x
+</th>
+<th style="text-align:left;">
+term.y
+</th>
+<th style="text-align:right;">
+coefficient.y
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+23513.113
+</td>
+<td style="text-align:left;">
+Female1
+</td>
+<td style="text-align:right;">
+-549.8783
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryBanking
+</td>
+<td style="text-align:right;">
+46946.525
+</td>
+<td style="text-align:left;">
+IndustryBanking:Female1
+</td>
+<td style="text-align:right;">
+-3508.2902
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryConstruction
+</td>
+<td style="text-align:right;">
+8443.728
+</td>
+<td style="text-align:left;">
+IndustryConstruction:Female1
+</td>
+<td style="text-align:right;">
+-4093.7365
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryEnergy
+</td>
+<td style="text-align:right;">
+21340.939
+</td>
+<td style="text-align:left;">
+IndustryEnergy:Female1
+</td>
+<td style="text-align:right;">
+9357.9811
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryManufacturing
+</td>
+<td style="text-align:right;">
+24884.761
+</td>
+<td style="text-align:left;">
+IndustryManufacturing:Female1
+</td>
+<td style="text-align:right;">
+-11453.9382
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryMining
+</td>
+<td style="text-align:right;">
+31740.912
+</td>
+<td style="text-align:left;">
+IndustryMining:Female1
+</td>
+<td style="text-align:right;">
+-130.2967
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryOther
+</td>
+<td style="text-align:right;">
+18604.883
+</td>
+<td style="text-align:left;">
+IndustryOther:Female1
+</td>
+<td style="text-align:right;">
+-8681.7468
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryServices
+</td>
+<td style="text-align:right;">
+31579.784
+</td>
+<td style="text-align:left;">
+IndustryServices:Female1
+</td>
+<td style="text-align:right;">
+-11550.5649
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryTrade
+</td>
+<td style="text-align:right;">
+14766.445
+</td>
+<td style="text-align:left;">
+IndustryTrade:Female1
+</td>
+<td style="text-align:right;">
+-8405.7213
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IndustryTransport
+</td>
+<td style="text-align:right;">
+39986.219
+</td>
+<td style="text-align:left;">
+IndustryTransport:Female1
+</td>
+<td style="text-align:right;">
+-12060.6618
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="interaction-models.html#cb108-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
+<span id="cb108-2"><a href="interaction-models.html#cb108-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb108-3"><a href="interaction-models.html#cb108-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-202-1.png" width="576" /></p>
+</div>
+<div id="continuous-dummy" class="section level3 hasAnchor" number="12.4.3">
+<h3><span class="header-section-number">12.4.3</span> Continuous * Dummy<a href="interaction-models.html#continuous-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://r4ds.had.co.nz/model-basics.html#interactions-continuous-and-categorical -->
+<!-- https://moderndive.com/6-multiple-regression.html#model4interactiontable -->
+<!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
+<!-- There are 3 possibilities of effects in a continuous-dummy interaction -->
+<p>Note that R automatically adds main effects if you use multiplication operator:</p>
+<p>Thus <span class="math display">\[ height * female \]</span></p>
+<p>translates to</p>
+<p><span class="math display">\[ height + female + height*female \]</span></p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="interaction-models.html#cb109-1" tabindex="-1"></a>interact3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb109-2"><a href="interaction-models.html#cb109-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 2.&#39;</span>,</span>
+<span id="cb109-3"><a href="interaction-models.html#cb109-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3), </span>
+<span id="cb109-4"><a href="interaction-models.html#cb109-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-203">Table 12.3: </span>Interaction Model 2.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+ Income
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+17367.198
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(3438.645)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Age
+</td>
+<td style="text-align:center;">
+612.892
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(72.860)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Female1
+</td>
+<td style="text-align:center;">
+4649.196
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(5506.496)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Age × Female1
+</td>
+<td style="text-align:center;">
+-296.045
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1.5px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1.5px">
+(118.698)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+1211
+</td>
+</tr>
+</tbody>
+</table>
+<!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
+<p>The visualization for non-parallel slopes looks like this:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="interaction-models.html#cb110-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
+<span id="cb110-2"><a href="interaction-models.html#cb110-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-204-1.png" width="576" /></p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Conclusion
+</h2>
+</div>
+<p>The <strong>fundamental truth</strong> is that the effect of age on income is positive but not identical between males and females. Men and women at the exact same age earn different annual incomes and the gap widens over time. There is <strong>effect heterogeneity</strong>.</p>
+</div>
+<p>There are two more rather uncommon combination in which one of the main effects is dropped. Graphically, the result is two lines with same intercept and different slopes.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="interaction-models.html#cb111-1" tabindex="-1"></a>interact3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Age<span class="sc">:</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb111-2"><a href="interaction-models.html#cb111-2" tabindex="-1"></a></span>
+<span id="cb111-3"><a href="interaction-models.html#cb111-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb111-4"><a href="interaction-models.html#cb111-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb111-5"><a href="interaction-models.html#cb111-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-205-1.png" width="576" /></p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="interaction-models.html#cb112-1" tabindex="-1"></a></span>
+<span id="cb112-2"><a href="interaction-models.html#cb112-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb112-3"><a href="interaction-models.html#cb112-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
+<span id="cb112-4"><a href="interaction-models.html#cb112-4" tabindex="-1"></a><span class="co">#                   &quot;Income&quot; = interact3c), </span></span>
+<span id="cb112-5"><a href="interaction-models.html#cb112-5" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span></code></pre></div>
+<!-- Now it is no longer a parallel slopes model. A different slope is equivalent to a different effect of height on weight for the two genders.  -->
+</div>
+<div id="continuous-continuous" class="section level3 hasAnchor" number="12.4.4">
+<h3><span class="header-section-number">12.4.4</span> Continuous * Continuous<a href="interaction-models.html#continuous-continuous" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
+<!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="interaction-models.html#cb113-1" tabindex="-1"></a>interact4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb113-2"><a href="interaction-models.html#cb113-2" tabindex="-1"></a>interact4</span>
+<span id="cb113-3"><a href="interaction-models.html#cb113-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb113-4"><a href="interaction-models.html#cb113-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb113-5"><a href="interaction-models.html#cb113-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
+<span id="cb113-6"><a href="interaction-models.html#cb113-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb113-7"><a href="interaction-models.html#cb113-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb113-8"><a href="interaction-models.html#cb113-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
+<span id="cb113-9"><a href="interaction-models.html#cb113-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
+<p>The interaction of two continuous variables is harder to interpret. There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="interaction-models.html#cb114-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-207-1.png" width="576" /></p>
+<p>This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.</p>
+<p>You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.</p>
+</div>
+</div>
+<div id="model-comparison-1" class="section level2 hasAnchor" number="12.5">
+<h2><span class="header-section-number">12.5</span> Model Comparison<a href="interaction-models.html#model-comparison-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>How to decide if the model with interaction is better than the model without interaction?</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="interaction-models.html#cb115-1" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb115-2"><a href="interaction-models.html#cb115-2" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="interaction-models.html#cb115-3" tabindex="-1"></a>multiple3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Female, <span class="at">data=</span>soep)</span>
+<span id="cb115-4"><a href="interaction-models.html#cb115-4" tabindex="-1"></a>multiple4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb115-5"><a href="interaction-models.html#cb115-5" tabindex="-1"></a></span>
+<span id="cb115-6"><a href="interaction-models.html#cb115-6" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Comparison&#39;</span>,</span>
+<span id="cb115-7"><a href="interaction-models.html#cb115-7" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple3,</span>
+<span id="cb115-8"><a href="interaction-models.html#cb115-8" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3,</span>
+<span id="cb115-9"><a href="interaction-models.html#cb115-9" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple4,</span>
+<span id="cb115-10"><a href="interaction-models.html#cb115-10" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact4), </span>
+<span id="cb115-11"><a href="interaction-models.html#cb115-11" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
+<span id="cb115-12"><a href="interaction-models.html#cb115-12" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;gt&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb115-13"><a href="interaction-models.html#cb115-13" tabindex="-1"></a>  <span class="co"># column labels</span></span>
+<span id="cb115-14"><a href="interaction-models.html#cb115-14" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&#39;Interaction&#39;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>)) </span></code></pre></div>
+<div id="lxesgtfeod" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lxesgtfeod table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#lxesgtfeod thead, #lxesgtfeod tbody, #lxesgtfeod tfoot, #lxesgtfeod tr, #lxesgtfeod td, #lxesgtfeod th {
+  border-style: none;
+}
+
+#lxesgtfeod p {
+  margin: 0;
+  padding: 0;
+}
+
+#lxesgtfeod .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#lxesgtfeod .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lxesgtfeod .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lxesgtfeod .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lxesgtfeod .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lxesgtfeod .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lxesgtfeod .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lxesgtfeod .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lxesgtfeod .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#lxesgtfeod .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#lxesgtfeod .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lxesgtfeod .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lxesgtfeod .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lxesgtfeod .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lxesgtfeod .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lxesgtfeod .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#lxesgtfeod .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#lxesgtfeod .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#lxesgtfeod .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lxesgtfeod .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#lxesgtfeod .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lxesgtfeod .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lxesgtfeod .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lxesgtfeod .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lxesgtfeod .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lxesgtfeod .gt_left {
+  text-align: left;
+}
+
+#lxesgtfeod .gt_center {
+  text-align: center;
+}
+
+#lxesgtfeod .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lxesgtfeod .gt_font_normal {
+  font-weight: normal;
+}
+
+#lxesgtfeod .gt_font_bold {
+  font-weight: bold;
+}
+
+#lxesgtfeod .gt_font_italic {
+  font-style: italic;
+}
+
+#lxesgtfeod .gt_super {
+  font-size: 65%;
+}
+
+#lxesgtfeod .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#lxesgtfeod .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#lxesgtfeod .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#lxesgtfeod .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#lxesgtfeod .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#lxesgtfeod .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#lxesgtfeod .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption><span id="tab:unnamed-chunk-208">Table 12.4: </span>Comparison</caption>
+  <thead>
+    
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id=" "> </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="2" colspan="1" scope="col" id="Income">Income</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="Interaction">
+        <span class="gt_column_spanner">Interaction</span>
+      </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="2" colspan="1" scope="col" id="Income  ">Income  </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Income ">Income </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Income   ">Income   </th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="" class="gt_row gt_left">(Intercept)</td>
+<td headers="Income" class="gt_row gt_center">22487.063</td>
+<td headers="Income" class="gt_row gt_center">17367.198</td>
+<td headers="Income" class="gt_row gt_center">20923.425</td>
+<td headers="Income" class="gt_row gt_center">-230.558</td></tr>
+    <tr><td headers="" class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center">(2764.643)</td>
+<td headers="Income" class="gt_row gt_center">(3438.645)</td>
+<td headers="Income" class="gt_row gt_center">(13829.780)</td>
+<td headers="Income" class="gt_row gt_center">(4385.352)</td></tr>
+    <tr><td headers="" class="gt_row gt_left">Age</td>
+<td headers="Income" class="gt_row gt_center">501.348</td>
+<td headers="Income" class="gt_row gt_center">612.892</td>
+<td headers="Income" class="gt_row gt_center">59.480</td>
+<td headers="Income" class="gt_row gt_center">527.982</td></tr>
+    <tr><td headers="" class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center">(57.643)</td>
+<td headers="Income" class="gt_row gt_center">(72.860)</td>
+<td headers="Income" class="gt_row gt_center">(296.198)</td>
+<td headers="Income" class="gt_row gt_center">(57.826)</td></tr>
+    <tr><td headers="" class="gt_row gt_left">Female1</td>
+<td headers="Income" class="gt_row gt_center">-8670.282</td>
+<td headers="Income" class="gt_row gt_center">4649.196</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td></tr>
+    <tr><td headers="" class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center">(1345.244)</td>
+<td headers="Income" class="gt_row gt_center">(5506.496)</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td></tr>
+    <tr><td headers="" class="gt_row gt_left">Age × Female1</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center">-296.045</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td></tr>
+    <tr><td headers="" class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center">(118.698)</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td></tr>
+    <tr><td headers="" class="gt_row gt_left">Satisfaction</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center">-378.773</td>
+<td headers="Income" class="gt_row gt_center">2423.054</td></tr>
+    <tr><td headers="" class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center">(1794.752)</td>
+<td headers="Income" class="gt_row gt_center">(450.609)</td></tr>
+    <tr><td headers="" class="gt_row gt_left">Age × Satisfaction</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income" class="gt_row gt_center">62.082</td>
+<td headers="Income" class="gt_row gt_center"></td></tr>
+    <tr><td headers="" class="gt_row gt_left" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
+<td headers="Income" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
+<td headers="Income" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
+<td headers="Income" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;">(38.496)</td>
+<td headers="Income" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td></tr>
+    <tr><td headers="" class="gt_row gt_left">Num.Obs.</td>
+<td headers="Income" class="gt_row gt_center">1211</td>
+<td headers="Income" class="gt_row gt_center">1211</td>
+<td headers="Income" class="gt_row gt_center">1211</td>
+<td headers="Income" class="gt_row gt_center">1211</td></tr>
+    <tr><td headers="" class="gt_row gt_left">F</td>
+<td headers="Income" class="gt_row gt_center">62.338</td>
+<td headers="Income" class="gt_row gt_center">43.812</td>
+<td headers="Income" class="gt_row gt_center">37.987</td>
+<td headers="Income" class="gt_row gt_center">55.606</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<script>
+  $(".toggle").click(function() {
+    $(this).toggleClass("open");
+  });
+</script>
+
+</div>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linear-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Becoming Fluent In Data.pdf", "Becoming Fluent In Data.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": false
+},
+"toc_depth": 1,
+"toc-title": "Table of Contents",
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
