@@ -504,6 +504,71 @@ blood %>%
   )
 ```
 
+```{r blood-donation-data, message=FALSE, warning=FALSE}
+blood_file <- file.path(
+  "data",
+  "Geo",
+  "BloodDonation",
+  "blood_donation_locations_2023.csv"
+)
+
+if (!file.exists(blood_file)) {
+  stop(
+    paste(
+      "Local blood-donation data are missing:",
+      blood_file,
+      "Download and save the historical snapshot before rendering the book."
+    )
+  )
+}
+
+blood <- readr::read_csv(
+  blood_file,
+  col_types = readr::cols(
+    .default = readr::col_character(),
+    lat = readr::col_double(),
+    lon = readr::col_double()
+  ),
+  show_col_types = FALSE
+) %>%
+  dplyr::filter(
+    !is.na(lat),
+    !is.na(lon)
+  )
+
+blood %>%
+  dplyr::select(
+    dplyr::any_of(
+      c(
+        "title",
+        "street",
+        "number",
+        "zip",
+        "city",
+        "lat",
+        "lon"
+      )
+    )
+  ) %>%
+  DT::datatable(
+    rownames = FALSE,
+    options = list(
+      dom = "tip",
+      scrollX = TRUE,
+      pageLength = 10,
+      lengthMenu = c(10, 25, 50)
+    ),
+    callback = DT::JS(
+      '
+      table.rows().nodes().to$().css({
+        "font-size": "10px",
+        "padding": "5px"
+      });
+      '
+    )
+  )
+```
+
 ```{r}
 library("maps")
 # Retrieve the map data for Participant Countries 

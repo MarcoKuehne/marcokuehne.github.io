@@ -93,67 +93,26 @@ Store the final table of expensive paintings in `paintings`. The following `DT` 
 
 ## Student numbers at Viadrina 
 
-Did you notice less and less fellow students sitting next to you? We analyse enrollment numbers of Viadrina European University. *Dezernat 1* administers and publishes student statistics. There is an overview page where they provide some time series data (overall student numbers from 1992 to 2020) and the number of study programs (between 1992 to 2014).
+Did you notice fewer and fewer fellow students sitting next to you? We analyse enrollment numbers at the European University Viadrina. *Dezernat 1* publishes both a long-run PDF time series and semester-specific summary statistics.
 
-```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
-library(webshot)
-knitr::include_url("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/index.html")
+The current statistics page is available at <https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/dezernat-1/studierendenstatistik/index.html>.
 
-# webshot is static 
-# webshot("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/index.html", zoom = 0.8)
+The website was redesigned after the first version of this chapter. The semester summaries are now collected on **one page** in expandable sections instead of being stored on a separate URL for every semester.
+
+Information is still presented in two ways: as **tables in PDF**, for example the time series of total student numbers, and as **HTML text** for the individual semesters.
+
+A simplified version of the current label-value structure looks like this:
+
+```html
+<h3>Wintersemester 2025/26</h3>
+<p>Studierende gesamt: 3877</p>
+<p>Deutsche Studierende: 2229</p>
+<p>Ausländische Studierende: 1648</p>
+<p>Weibliche Studierende: 2132</p>
+<p>Männliche Studierende: 1728</p>
 ```
 
-Information is presented in two ways, as **tables in PDF**, e.g. the time series on total student numbers:^[Get the PDF <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf>]
-
-<!-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf> -->
-<!-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Anzahl-der-Studiengaenge.pdf> -->
-
-<object data=
-"https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf" 
-                width="800" 
-                height="500"> 
-</object>
-
-And as **tables in HTML**. For each semester there is summary information on the webpage (and more comprehensive data in PDF), like for winter term 2022/2023:
-
-```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
-knitr::include_url("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-wintersemester/index.html")
-```
-
-Most web browser allow to inspect the html source:
-
-<view-source:https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-wintersemester/index.html>
-
-When you search for a characteristic value like `4.797` it shows:
-
-```{html}
-<div class="zeile"><div class="dreispaltig">
-<div class="text">
-<table>
-<tbody>
-<tr>
-<td style="width: 400px;">Studierende gesamt</td>
-<td>4.797</td>
-</tr>
-<tr>
-<td>weiblich</td>
-<td>2.785</td>
-</tr>
-<tr>
-<td>m&auml;nnlich</td>
-<td>2.012</td>
-</tr>
-<tr>
-<td>Deutsche</td>
-<td>3.201</td>
-</tr>
-<tr>
-<td>Ausl&auml;nder/innen</td>
-<td>1.596</td>
-```
-
-
-Let's investigate the student numbers. 
+Let's investigate the student numbers.
 
 ### PDF scraping 
 
@@ -165,27 +124,32 @@ Let's investigate the student numbers.
 <!-- https://cran.r-hub.io/web/packages/tabulizer/vignettes/tabulizer.html -->
 <!-- https://crimebythenumbers.com/scrape-table.html -->
 <!-- https://academy.datawrapper.de/article/135-how-to-extract-data-out-of-pdfs -->
-<!-- pdftools difficult -->
-<!-- tabulizer offline -->
 
-<!-- https://www.europa-uni.de/de/ueber_uns/zahlen_fakten/index.html -->
-<!-- https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2022-Sommersemester/Uebersicht.pdf -->
-<!-- https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf -->
+Use the built-in `download.file()` function to download the current PDF. To keep the book reproducible, the download is **not** performed during a normal render. It only runs when the refresh option is explicitly switched on.
 
-Apply a programmatic way to download a PDF Use the built in `download.file()` function and specify an url and a destination and file name.
+```{r viadrina-pdf-download}
+viadrina_pdf_url <- paste0(
+  "https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/",
+  "dezernat-1/studierendenstatistik/_dateien-statistik/",
+  "1-entwicklung-gesamtstudierendenzahl/",
+  "entwicklung-der-gesamtstudierendenzahl.pdf"
+)
 
-```{r pdftables}
-# Set URL for PDF 
-url <- "https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/Entwicklung-der-Gesamtstudierendenzahl.pdf"
-# Specify destination where file should be saved (and name)
-destfile <- "data/Viadrina/Gesamtstudierendenzahl.pdf"
-# Apply download.file function in R
-download.file(url, destfile, mode = "wb")
+viadrina_pdf_file <- file.path(
+  "data", "Viadrina", "entwicklung-der-gesamtstudierendenzahl.pdf"
+)
+
+refresh_viadrina <- isTRUE(getOption("bfid.refresh_viadrina", FALSE))
+
+if (refresh_viadrina) {
+  dir.create(dirname(viadrina_pdf_file), recursive = TRUE, showWarnings = FALSE)
+  download.file(viadrina_pdf_url, viadrina_pdf_file, mode = "wb")
+}
 ```
 
 <!-- https://www.youtube.com/watch?v=jfBZzuDMN0o -->
 
-To extract a table from a PDF we use the `pdftables` package.^[You may use other free services. Search for *Online converter PDF to csv/xlsx*] The package is a wrapper for the **PDFTables API**. It requires an API key from <https://pdftables.com/>. You can register and get one for free. The result is stored as `.csv` file. 
+To extract a table from a PDF we can use the `pdftables` package.^[You may use other free services. Search for *Online converter PDF to csv/xlsx*.] The package is a wrapper for the **PDFTables API**. It requires an API key from <https://pdftables.com/>. You can register and get one for free. The result is stored as a `.csv` file.
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -194,244 +158,413 @@ To extract a table from a PDF we use the `pdftables` package.^[You may use other
 An **application programming interface (API)** is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software.
 ::::
 
-Be careful with your API keys. If you only use a file locally on your computer, you might be fine. Don't share this file. Don't upload it. If you upload an API key on GIT, you get a notification mail from <https://www.gitguardian.com/>. Instead, put your API in your environment. This can be done by a .Renviron file. Use `usethis::edit_r_environ(scope = "project")` in order to access and edit your information. 50 pages are for free.
+Be careful with your API keys. If you only use a file locally on your computer, you might be fine. Don't share this file. Don't upload it. If you upload an API key on Git, you may get a notification from <https://www.gitguardian.com/>. Instead, put your API key in your environment. This can be done in a `.Renviron` file. Use `usethis::edit_r_environ(scope = "project")` to access and edit your information.
 
-Read more 
-* <https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html> 
+Read more:
+
+* <https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html>
 * <https://resources.numbat.space/using-rprofile-and-renviron.html>
 * <https://github.com/expersso/pdftables>
 
-```{r, echo=F, eval=F}
+```{r viadrina-pdftables-example, eval=FALSE}
 library(pdftables)
-convert_pdf(input_file = destfile, 
-            output_file = "data/Viadrina/viadrina_students.csv")
+
+convert_pdf(
+  input_file = viadrina_pdf_file,
+  output_file = "data/Viadrina/viadrina_students.csv",
+  api_key = Sys.getenv("PDFTABLES_API_KEY")
+)
 ```
 
-```{r, echo=T, eval=F}
-library(pdftables)
-convert_pdf(input_file = destfile, 
-            output_file = "data/Viadrina/viadrina_students.csv", 
-            api_key = "YOUR_KEY")
-```
+Scraped data often requires a lot of cleaning. The historic PDF-derived CSV is kept locally in the repository, so the following analysis does not depend on a live website.
 
-Scraped data often requires a lot of cleaning. 
-
-```{r}
+```{r viadrina-historic-data}
 library(tidyverse)
-# read csv file
-viadrina_1992_2020_before <- read.csv("data/Viadrina/viadrina_students.csv", header = TRUE)
+
+viadrina_1992_2020_before <- read.csv(
+  "data/Viadrina/viadrina_students.csv",
+  header = TRUE
+)
+
 viadrina_1992_2020 <- viadrina_1992_2020_before
-# replace header names by first row
-names(viadrina_1992_2020) <- viadrina_1992_2020[1,]
-# drop first row
-viadrina_1992_2020 <- viadrina_1992_2020[-1,] 
-# drop last row
-viadrina_1992_2020 <- viadrina_1992_2020[-30,] 
-# remove all \n
-colnames(viadrina_1992_2020) <- gsub("[\r\n]", "", colnames(viadrina_1992_2020)) 
-# readable column names
-colnames(viadrina_1992_2020) <- c("Year", "Total", "Female", "Female_Pct", 
-                        "German", "German_Pct", "Foreign", "Foreign_Pct",
-                        "Pole", "Pole_Pct")
 
-# remove percentage sign 
-viadrina_1992_2020 <- viadrina_1992_2020 %>%  
-  mutate(across(everything(), ~ ifelse(str_detect(.x, "%"),
-                                       parse_number(.x) / 10, 
-                                       .x)))
+# Replace header names by the first row.
+names(viadrina_1992_2020) <- viadrina_1992_2020[1, ]
 
-# convert all chr to numeric
-viadrina_1992_2020 <- viadrina_1992_2020 %>% mutate_if(is.character,as.numeric)
+# Drop the first and final non-data rows.
+viadrina_1992_2020 <- viadrina_1992_2020[-1, ]
+viadrina_1992_2020 <- viadrina_1992_2020[-nrow(viadrina_1992_2020), ]
+
+# Remove line breaks and use readable column names.
+colnames(viadrina_1992_2020) <- gsub(
+  "[\\r\\n]",
+  "",
+  colnames(viadrina_1992_2020)
+)
+
+colnames(viadrina_1992_2020) <- c(
+  "Year", "Total", "Female", "Female_Pct",
+  "German", "German_Pct", "Foreign", "Foreign_Pct",
+  "Pole", "Pole_Pct"
+)
+
+# Remove percentage signs and convert all columns to numeric.
+viadrina_1992_2020 <- viadrina_1992_2020 %>%
+  mutate(
+    across(
+      everything(),
+      ~ ifelse(
+        str_detect(.x, "%"),
+        parse_number(.x, locale = locale(decimal_mark = ",")) / 100,
+        .x
+      )
+    )
+  ) %>%
+  mutate(across(everything(), as.numeric))
 ```
 
-```{r}
+```{r viadrina-historic-table}
 library(DT)
 datatable(viadrina_1992_2020)
 ```
 
 ### Share of female students
 
-The share of female students over time in a line plot. 
+The number of female students over time in a line plot.
 
-```{r}
-viadrina_1992_2020 %>% 
-  ggplot(aes(x=Year)) +
-  geom_line(aes(y = Total, colour = "Total")) + 
+```{r viadrina-female-plot}
+viadrina_1992_2020 %>%
+  ggplot(aes(x = Year)) +
+  geom_line(aes(y = Total, colour = "Total")) +
   geom_line(aes(y = Female, colour = "Female")) +
-  labs(title = "Student numbers at Viadrina",
-       subtitle = "Share of female students")
+  labs(
+    title = "Student numbers at Viadrina",
+    subtitle = "Female and total students"
+  )
 ```
 
 ### Share of foreign students
 
-The share of foreign students over time in a stacked barplot. 
+The composition by German and foreign students over time.
 
-```{r}
-viadrina_1992_2020 %>% 
-  ggplot(aes(x=Year)) +
-  geom_col(aes(y = Total, fill = "Total")) + 
+```{r viadrina-foreign-plot}
+viadrina_1992_2020 %>%
+  ggplot(aes(x = Year)) +
+  geom_col(aes(y = Total, fill = "Total")) +
   geom_col(aes(y = German, fill = "German")) +
   geom_col(aes(y = Foreign, fill = "Foreign")) +
-  labs(title = "Student numbers at Viadrina",
-       subtitle = "Share of foreign students")
+  labs(
+    title = "Student numbers at Viadrina",
+    subtitle = "German and foreign students"
+  )
 ```
 
-### Web scraping 
+### Web scraping
 
-To get more recent numbers, we rely on the webpage information. How can we access all semester data? Investigate the pattern of the URLs. 
+The redesigned website no longer uses one URL per semester. Instead, all recent semester summaries are collected on one page. We therefore download **one HTML document**, identify the semester headings, and extract the labelled values from the text below each heading.
 
-<small>
+The live scraper is wrapped in a function. During a normal book render, the chapter reads the local snapshot `data/Viadrina/viadrina_students_recent.csv`. A deliberate refresh downloads the current page, saves the raw HTML, rebuilds the CSV, and then continues with the local file.
 
-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2013-Wintersemester/index.html>
-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2014-Sommersemester/index.html>
-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2014-Wintersemester/index.html>
-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2015-Sommersemester/index.html>
-- <https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2015-wintersemester/index.html>
-
-</small>
-
-Usually the pattern is `year-semester`. Some winter semesters are capitalized, some are not (`Wintersemester` vs. `wintersemester`). We use the `rvest` package to web scrape static html content. It always starts with reading in the html data. Then pipe and use `html_table()` to extract tabular information (lucky us, there is only one table). 
-
-```{r}
+```{r viadrina-scraping-functions}
 library(rvest)
-read_html("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/2013-Wintersemester/index.html") %>%
-  html_table() 
-```
 
-Now, we would like to do this for every subpage (semester) and combine the data in one table. Focus on the variable component in the URL and create a vector of all semesters. 
+viadrina_stats_url <- paste0(
+  "https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/",
+  "dezernat-1/studierendenstatistik/index.html"
+)
 
-```{r}
-# the manual way
-winters <- seq(from=2013, to=2022)
-summers <- seq(from=2014, to=2023)
-winters <- paste0(winters, "-wintersemester")
-summers <- paste0(summers, "-Sommersemester")
+viadrina_html_file <- file.path(
+  "data", "Viadrina", "viadrina-student-statistics.html"
+)
 
-all_terms <- c(rbind(winters, summers))
-all_terms[1] <- "2013-Wintersemester"
-all_terms[3] <- "2014-Wintersemester"
+viadrina_recent_file <- file.path(
+  "data", "Viadrina", "viadrina_students_recent.csv"
+)
 
-# we can paste them together
-all_url <- paste0("https://www.europa-uni.de/de/struktur/verwaltung/dezernat_1/statistiken/", all_terms, "/index.html")
-```
+parse_viadrina_number <- function(block, label_pattern) {
+  hit <- which(str_detect(
+    block,
+    regex(label_pattern, ignore_case = TRUE)
+  ))[1]
 
-Create a `for` loop to repeat the `rvest` procedure for each element in the URL list. 
+  if (is.na(hit)) {
+    return(NA_real_)
+  }
 
-:::: {.defbox}
-::: {.titeldefbox}
-<h2> Definition </h2>
-:::
-A **loop** is a programming structure that repeats a sequence of instructions until a specific condition is met. 
-::::
+  # Remove the label first. This avoids reading the "1" in
+  # labels such as "1. Fachsemester" as the observed value.
+  remainder <- str_remove(
+    block[hit],
+    regex(label_pattern, ignore_case = TRUE)
+  )
 
-There are two more components. We initialize a `list` to store each iteration of the loop. 
+  number_pattern <- "\\d{1,3}(?:\\.\\d{3})+|\\d+"
+  values <- str_extract_all(remainder, number_pattern)[[1]]
 
-```{r}
-tables <- list()
-index <- 1
+  # Some HTML layouts place the value in the next text node.
+  if (length(values) == 0 && hit < length(block)) {
+    values <- str_extract_all(block[hit + 1], number_pattern)[[1]]
+  }
 
-for(i in 1:length(all_url)){
-  table <- all_url[i] %>% 
-    read_html() %>% 
-    html_table()
+  if (length(values) == 0) {
+    return(NA_real_)
+  }
 
-  tables[index] <- table
-  index <- index + 1
+  parse_number(
+    tail(values, 1),
+    locale = locale(decimal_mark = ",", grouping_mark = ".")
+  )
 }
 
-df <- do.call("cbind", tables)
+parse_viadrina_page <- function(page) {
+  page_text <- page %>%
+    html_text2()
+
+  lines <- page_text %>%
+    str_split("\\n") %>%
+    pluck(1) %>%
+    str_squish()
+
+  lines <- lines[lines != ""]
+  lines <- str_remove(lines, "^\\[Button:\\s*")
+  lines <- str_remove(lines, "\\s*\\]$")
+
+  semester_pattern <- paste0(
+    "^(Sommersemester|Wintersemester)\\s+",
+    "\\d{4}(?:/\\d{2})?$"
+  )
+
+  starts <- which(str_detect(lines, semester_pattern))
+
+  if (length(starts) == 0) {
+    stop("No semester headings were found on the Viadrina statistics page.")
+  }
+
+  ends <- c(starts[-1] - 1L, length(lines))
+
+  map2_dfr(starts, ends, function(first, last) {
+    block <- lines[first:last]
+    semester_label <- block[1]
+    term <- if_else(
+      str_starts(semester_label, "Wintersemester"),
+      "winter",
+      "summer"
+    )
+    year <- parse_integer(str_extract(semester_label, "\\d{4}"))
+
+    tibble(
+      semester_label = semester_label,
+      students = parse_viadrina_number(
+        block,
+        "^Studierende gesamt"
+      ),
+      female = parse_viadrina_number(
+        block,
+        "^(weiblich|Weibliche Studierende)"
+      ),
+      male = parse_viadrina_number(
+        block,
+        "^(männlich|maennlich|Männliche Studierende)"
+      ),
+      diverse = parse_viadrina_number(
+        block,
+        "^Diverse Studierende"
+      ),
+      unspecified = parse_viadrina_number(
+        block,
+        "^ohne Angabe"
+      ),
+      german = parse_viadrina_number(
+        block,
+        "^Deutsche(?: Studierende)?"
+      ),
+      foreign = parse_viadrina_number(
+        block,
+        "^(Ausländer(?:\\*innen|/innen)?|Ausländische Studierende)"
+      ),
+      first_subject = parse_viadrina_number(
+        block,
+        "^(1\\. Fachsemester|Studierende im 1\\. Fachsemester)"
+      ),
+      first_university = parse_viadrina_number(
+        block,
+        "^(1\\. Hochschulsemester|Studierende im 1\\. Hochschulsemester)"
+      ),
+      year = year,
+      term = term,
+      semester = paste0(
+        year,
+        if_else(term == "summer", "-01", "-02")
+      )
+    )
+  }) %>%
+    filter(!is.na(students)) %>%
+    arrange(year, semester)
+}
 ```
 
-More and more cleaning. 
+The next chunk only accesses the live website when the CSV is missing or when the refresh option is enabled. If the website is temporarily unavailable, an existing local CSV remains usable.
 
-```{r}
-df[,c(seq(from=3, to=40 , by=2))] <- NULL
-colnames(df) <- c("Variable", all_terms)
-# transpose dataframe
-viadrina_2013_2023 <- as.data.frame(t(df))
-# replace header names by first row
-names(viadrina_2013_2023) <- viadrina_2013_2023[1,]
-# drop first row
-viadrina_2013_2023 <- viadrina_2013_2023[-1,] 
+```{r viadrina-refresh-or-load}
+refresh_viadrina <- isTRUE(getOption("bfid.refresh_viadrina", FALSE))
+
+dir.create(
+  dirname(viadrina_recent_file),
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+if (refresh_viadrina || !file.exists(viadrina_recent_file)) {
+  refreshed_data <- tryCatch(
+    {
+      viadrina_page <- read_html(viadrina_stats_url)
+      xml2::write_html(viadrina_page, viadrina_html_file)
+      parse_viadrina_page(viadrina_page)
+    },
+    error = function(error) {
+      warning(
+        "The live Viadrina page could not be refreshed: ",
+        conditionMessage(error)
+      )
+      NULL
+    }
+  )
+
+  if (!is.null(refreshed_data) && nrow(refreshed_data) > 0) {
+    write_csv2(refreshed_data, viadrina_recent_file, na = "")
+  }
+}
+
+if (file.exists(viadrina_recent_file)) {
+  viadrina_recent <- read_csv2(
+    viadrina_recent_file,
+    show_col_types = FALSE
+  )
+} else {
+  # Final compatibility fallback for older clones of the repository.
+  legacy_recent_file <- file.path(
+    "data", "Viadrina", "viadrina_students_2013_2025.csv"
+  )
+
+  if (!file.exists(legacy_recent_file)) {
+    stop(
+      "No local Viadrina data file is available. Add ",
+      viadrina_recent_file,
+      " or refresh the live page."
+    )
+  }
+
+  viadrina_recent <- read_csv2(
+    legacy_recent_file,
+    show_col_types = FALSE
+  ) %>%
+    transmute(
+      semester_label = paste("Wintersemester", year),
+      students,
+      female,
+      male,
+      diverse = NA_real_,
+      unspecified = NA_real_,
+      german,
+      foreign,
+      first_subject = NA_real_,
+      first_university = NA_real_,
+      year = as.integer(year),
+      term,
+      semester = paste0(year, "-02")
+    )
+}
 ```
 
-Once more, there are slightly different formats for numbers in winter term 2019, 2020 and 2021. In these terms they use a `.` for digit grouping, e.g. `3.607` instead of `3607`.
+To deliberately update the local files, run the following commands once. A normal build does not need them.
 
-```{r}
-# all chr to numeric
-# viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,parse_number)
-#viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.character,as_numeric)
-viadrina_2013_2023 <- viadrina_2013_2023 %>% mutate_if(is.character,as.numeric)
-
-# row 13, 15, 17, columns 1 to 6, multiply by 1000
-viadrina_2013_2023[c(13,15,17,19), c(1:6)] <- viadrina_2013_2023[c(13,15,17,19), c(1:6)] * 1000
-
-# round all numbers
-# viadrina_2013_2022 <- viadrina_2013_2022 %>% mutate_if(is.numeric, round)
-
-# multiply some rows by 1000
-# viadrina_2013_2022[c(13,15,17),] <- viadrina_2013_2022[c(13,15,17),] %>% 
-#   mutate_all(.funs = funs(. * 1000))
-
-# fix last column and divide by 1000
-# viadrina_2013_2022[c(13,15,17),7] <- viadrina_2013_2022[c(13,15,17),7]/1000
-
-# create a semester variable
-viadrina_2013_2023$year <- substr(all_terms, start = 1, stop = 4)
-viadrina_2013_2023$term <- rep(c("winter", "summer"), 10)
-viadrina_2013_2023$semester <- paste0(viadrina_2013_2023$year, rep(c("-02", "-01"), 10))
-# row names
-rownames(viadrina_2013_2023) <- 1:nrow(viadrina_2013_2023) 
+```{r viadrina-refresh-example, eval=FALSE}
+options(bfid.refresh_viadrina = TRUE)
+bookdown::render_book("index.Rmd")
+options(bfid.refresh_viadrina = FALSE)
 ```
 
-### Most recent student numbers 
-
-There is a structural difference between summer and winter term. Most new enrollments are in winter. 
-
-```{r}
-viadrina_2013_2023 %>% 
-  ggplot(aes(x=semester, y = `Studierende gesamt`)) +
-  geom_point(aes(col=term), size=2) + 
-  #geom_point(aes(y = `Studierende gesamt`, fill = "Total")) + 
-  #geom_point(aes(y = `1. Fachsemester`, fill = "First years")) +
-  #geom_point(aes(y = `1. Hochschulsemester`, fill = "First sem")) +
-  labs(title = "Student numbers at Viadrina") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```{r viadrina-recent-table}
+datatable(viadrina_recent)
 ```
 
-### The long run trend 
+### Most recent student numbers
 
-Combine old and new data.
+There is a structural difference between summer and winter terms. Most new enrollments are in winter.
 
-```{r}
-via_1992_2020 <- viadrina_1992_2020 %>% 
-  select(Year, Total) %>% 
-  mutate(Term = "winter")
-
-via_2013_2023 <- viadrina_2013_2023 %>% 
-  rename(Year = year, Term = term, Total = `Studierende gesamt`) %>% 
-  select(Year, Total, Term)
-
-via_1992_2023 <- rbind(via_1992_2020, via_2013_2023)
-via_1992_2023$Year <- as.numeric(via_1992_2023$Year)
+```{r viadrina-recent-plot}
+viadrina_recent %>%
+  ggplot(aes(x = semester, y = students)) +
+  geom_point(aes(colour = term), size = 2) +
+  labs(
+    title = "Student numbers at Viadrina",
+    x = "Semester",
+    y = "Students"
+  ) +
+  theme(
+    axis.text.x = element_text(
+      angle = 90,
+      vjust = 0.5,
+      hjust = 1
+    )
+  )
 ```
 
-Plot and polish. Assume the enrollment for winter 2020/2021 was not affected by Corona virus. 
+### The long run trend
 
-```{r}
-via_1992_2023 %>% 
-  #filter(Term == "winter") %>% 
-  ggplot(aes(x=Year, y=Total, col = Term)) +
-  geom_point() + geom_smooth(method = "gam") +
+Combine the historic PDF-derived series with the recent HTML-derived semester data.
+
+```{r viadrina-combine-series}
+via_1992_2020 <- viadrina_1992_2020 %>%
+  transmute(
+    Year = as.integer(Year),
+    Total = as.numeric(Total),
+    Term = "winter"
+  )
+
+via_recent <- viadrina_recent %>%
+  transmute(
+    Year = as.integer(year),
+    Total = as.numeric(students),
+    Term = term
+  )
+
+via_1992_recent <- bind_rows(via_1992_2020, via_recent) %>%
+  distinct(Year, Term, .keep_all = TRUE) %>%
+  arrange(Year, Term)
+```
+
+Plot and polish. Assume the enrollment for winter 2020/2021 was not affected by the coronavirus pandemic.
+
+```{r viadrina-long-run-plot}
+via_1992_recent %>%
+  ggplot(aes(x = Year, y = Total, colour = Term)) +
+  geom_point() +
+  geom_smooth(method = "gam") +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 28)) +
   labs(title = "Student numbers at Viadrina") +
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  geom_vline(xintercept=2020.5, colour="grey", linetype = "solid", lwd = 1.3) +
-  geom_text(aes(x=2021, y=4000, label="Corona"), colour="red", angle=90, vjust = 1)  
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(
+      angle = 90,
+      vjust = 0.5,
+      hjust = 1
+    )
+  ) +
+  geom_vline(
+    xintercept = 2020.5,
+    colour = "grey",
+    linetype = "solid",
+    linewidth = 1.3
+  ) +
+ggplot2::annotate(
+    "text",
+    x = 2021,
+    y = 4000,
+    label = "Corona",
+    colour = "red",
+    angle = 90,
+    vjust = 1
+  )
 ```
-
-
-
-
 
