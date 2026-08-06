@@ -2,28 +2,386 @@ p.caption {
   color: #777;
   margin-top: 10px;
 }
+
 p code {
   white-space: inherit;
 }
+
 pre {
   word-break: normal;
   word-wrap: normal;
 }
+
 pre code {
   white-space: inherit;
 }
 
-/* Used in TOC top Icon */
-.aligncenter {text-align: center;}
+/* Used in TOC top icon */
+.aligncenter {
+  text-align: center;
+}
 
-/* Used in some first pages, not good responsive mode */
-.columns {display: flex; }
+/* Used on some introductory pages. */
+.columns {
+  display: flex;
+  gap: 1rem;
+}
 
-/* Top Message Box */
+.column {
+  min-width: 0;
+}
+
+/* Top message box */
 .infobox {
   padding: 1em 1em 1em 4em;
   margin-bottom: 10px;
-  border: 0px solid blue;
+  border: 0 solid blue;
   border-radius: 10px;
-  background: #f5f5f5 5px center/3em no-repeat;
+  background: #f5f5f5 5px center / 3em no-repeat;
+}
+
+/* =========================================================
+   Analysis hierarchy: visible subtitles below h1 and h2
+   ========================================================= */
+
+.analysis-subtitle {
+  color: #111;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.analysis-subtitle p {
+  margin: 0;
+}
+
+/* Compare, Model, Structure, Reveal, Identify, Extract */
+.book .book-body .page-wrapper .page-inner section.normal h1 + .analysis-subtitle {
+  margin: -0.2em 0 2.8em 0.15em;
+  font-size: 1.42em;
+  line-height: 1.45;
+}
+
+/* Relationships, Comparing Means, Regression, etc. */
+.book .book-body .page-wrapper .page-inner section.normal h2 + .analysis-subtitle {
+  margin: -0.35em 0 1.8em 3.25em;
+  font-size: 1.12em;
+  line-height: 1.45;
+}
+
+/* Keep subtitles with their headings as far as the browser can. */
+.book .book-body .page-wrapper .page-inner section.normal h1,
+.book .book-body .page-wrapper .page-inner section.normal h2 {
+  break-after: avoid;
+}
+
+/* =========================================================
+   Analysis subtitles in the GitBook sidebar / TOC
+   ========================================================= */
+
+/* Chapter subtitles */
+.book-summary a[href$="compare.html"],
+.book-summary a[href$="compare.html#compare"],
+.book-summary a[href$="#compare"] {
+  --toc-subtitle: "Relationships, means, and variation";
+}
+
+.book-summary a[href$="model.html"],
+.book-summary a[href$="model.html#model"],
+.book-summary a[href$="#model"] {
+  --toc-subtitle: "Relationships, outcomes, and predictions";
+}
+
+.book-summary a[href$="structure.html"],
+.book-summary a[href$="structure.html#structure"],
+.book-summary a[href$="#structure"] {
+  --toc-subtitle: "Time, levels, and places";
+}
+
+.book-summary a[href$="reveal.html"],
+.book-summary a[href$="reveal.html#reveal"],
+.book-summary a[href$="#reveal"] {
+  --toc-subtitle: "Dimensions, groups, and latent variables";
+}
+
+.book-summary a[href$="identify.html"],
+.book-summary a[href$="identify.html#identify"],
+.book-summary a[href$="#identify"] {
+  --toc-subtitle: "Causal effects";
+}
+
+.book-summary a[href$="extract.html"],
+.book-summary a[href$="extract.html#extract"],
+.book-summary a[href$="#extract"] {
+  --toc-subtitle: "Information from language";
+}
+
+/* Compare sections */
+.book-summary a[href$="#relationships"] {
+  --toc-subtitle: "Variance, covariance, and correlation";
+}
+
+.book-summary a[href$="#comparing-means"] {
+  --toc-subtitle: "One mean, two independent groups, and paired observations";
+}
+
+.book-summary a[href$="#partitioning-variation"] {
+  --toc-subtitle: "Analysis of variance and analysis of covariance";
+}
+
+/* Model sections */
+.book-summary a[href$="#regression"] {
+  --toc-subtitle: "Tests as statistical models";
+}
+
+.book-summary a[href$="#linear-models"] {
+  --toc-subtitle: "Simple and multiple linear regression";
+}
+
+.book-summary a[href$="#decomposing-differences"] {
+  --toc-subtitle: "Regression-based decomposition of group differences";
+}
+
+.book-summary a[href$="#logistic-models"] {
+  --toc-subtitle: "Binary outcomes and predicted probabilities";
+}
+
+.book-summary a[href$="#interactions"] {
+  --toc-subtitle: "Conditional relationships and moderation";
+}
+
+.book-summary a[href$="#marginal-effects"] {
+  --toc-subtitle: "Interpreting predictions, probabilities, and interactions";
+}
+
+.book-summary a[href$="#generalized-models"] {
+  --toc-subtitle: "Models for different kinds of outcomes";
+}
+
+.book-summary a[href$="#learning-from-data"] {
+  --toc-subtitle: "Statistical learning, machine learning, and prediction";
+}
+
+/* Structure sections */
+.book-summary a[href$="#time"] {
+  --toc-subtitle: "Time-series models and temporal dependence";
+}
+
+.book-summary a[href$="#longitudinal-data"] {
+  --toc-subtitle: "Panel data and repeated measurements";
+}
+
+.book-summary a[href$="#multilevel-models"] {
+  --toc-subtitle: "Individuals, groups, and contexts";
+}
+
+.book-summary a[href$="#places"] {
+  --toc-subtitle: "Spatial models and small-area estimation";
+}
+
+/* Reveal sections */
+.book-summary a[href$="#components"] {
+  --toc-subtitle: "Principal component analysis";
+}
+
+.book-summary a[href$="#clusters"] {
+  --toc-subtitle: "Cluster analysis";
+}
+
+.book-summary a[href$="#latent-variables"] {
+  --toc-subtitle: "Constructs, indicators, and measurement models";
+}
+
+.book-summary a[href$="#exploratory-factors"] {
+  --toc-subtitle: "Discovering shared dimensions";
+}
+
+.book-summary a[href$="#confirmatory-factors"] {
+  --toc-subtitle: "Specifying and evaluating measurement models";
+}
+
+.book-summary a[href$="#structural-equations"] {
+  --toc-subtitle: "Linking measurement and relationships";
+}
+
+.book-summary a[href$="#items"] {
+  --toc-subtitle: "Item response theory";
+}
+
+/* Identify sections */
+.book-summary a[href$="#experiments"] {
+  --toc-subtitle: "Randomized experiments and experimental data";
+}
+
+.book-summary a[href$="#matching-and-balancing"] {
+  --toc-subtitle: "Propensity-score matching, weighting, and balancing";
+}
+
+.book-summary a[href$="#difference-in-differences"] {
+  --toc-subtitle: "Comparing changes across groups and time";
+}
+
+.book-summary a[href$="#discontinuities"] {
+  --toc-subtitle: "Regression discontinuity designs";
+}
+
+.book-summary a[href$="#instruments"] {
+  --toc-subtitle: "Instrumental-variable methods";
+}
+
+/* Extract sections */
+.book-summary a[href$="#text-mining"] {
+  --toc-subtitle: "Finding patterns and information in text";
+}
+
+/* Render the injected text only on links that have a subtitle. */
+.book-summary :is(
+  a[href$="compare.html"],
+  a[href$="compare.html#compare"],
+  a[href$="#compare"],
+  a[href$="model.html"],
+  a[href$="model.html#model"],
+  a[href$="#model"],
+  a[href$="structure.html"],
+  a[href$="structure.html#structure"],
+  a[href$="#structure"],
+  a[href$="reveal.html"],
+  a[href$="reveal.html#reveal"],
+  a[href$="#reveal"],
+  a[href$="identify.html"],
+  a[href$="identify.html#identify"],
+  a[href$="#identify"],
+  a[href$="extract.html"],
+  a[href$="extract.html#extract"],
+  a[href$="#extract"],
+  a[href$="#relationships"],
+  a[href$="#comparing-means"],
+  a[href$="#partitioning-variation"],
+  a[href$="#regression"],
+  a[href$="#linear-models"],
+  a[href$="#decomposing-differences"],
+  a[href$="#logistic-models"],
+  a[href$="#interactions"],
+  a[href$="#marginal-effects"],
+  a[href$="#generalized-models"],
+  a[href$="#learning-from-data"],
+  a[href$="#time"],
+  a[href$="#longitudinal-data"],
+  a[href$="#multilevel-models"],
+  a[href$="#places"],
+  a[href$="#components"],
+  a[href$="#clusters"],
+  a[href$="#latent-variables"],
+  a[href$="#exploratory-factors"],
+  a[href$="#confirmatory-factors"],
+  a[href$="#structural-equations"],
+  a[href$="#items"],
+  a[href$="#experiments"],
+  a[href$="#matching-and-balancing"],
+  a[href$="#difference-in-differences"],
+  a[href$="#discontinuities"],
+  a[href$="#instruments"],
+  a[href$="#text-mining"]
+)::after {
+  content: var(--toc-subtitle);
+  display: block;
+  margin-top: 0.18em;
+  padding-right: 0.7em;
+  color: #7d858c;
+  font-size: 0.69em;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.3;
+  white-space: normal;
+}
+
+/* Align chapter subtitles beneath chapter titles. */
+.book-summary > ul.summary > li.chapter > a::after,
+.book-summary ul.summary > li.chapter > a::after {
+  margin-left: 1.55em;
+}
+
+/* Align method subtitles beneath section titles. */
+.book-summary ul.summary li.chapter ul li.chapter > a::after {
+  margin-left: 2.65em;
+}
+
+/* The active link stays legible against GitBook's selected background. */
+.book-summary li.active > a::after {
+  color: inherit;
+  opacity: 0.72;
+}
+
+/* =========================================================
+   Responsive adjustments
+   ========================================================= */
+
+@media screen and (max-width: 700px) {
+  .columns {
+    display: block;
+  }
+
+  .column {
+    width: auto !important;
+  }
+
+  .book .book-body .page-wrapper .page-inner section.normal h1 + .analysis-subtitle {
+    margin-bottom: 2em;
+    font-size: 1.22em;
+  }
+
+  .book .book-body .page-wrapper .page-inner section.normal h2 + .analysis-subtitle {
+    margin-left: 0.2em;
+    margin-bottom: 1.35em;
+    font-size: 1em;
+  }
+}
+
+
+/* =========================================================
+   Lightweight concept boxes used in Latent Variables
+   ========================================================= */
+
+.analysis-note,
+.analysis-takeaway,
+.analysis-warning,
+.analysis-important,
+.analysis-advanced {
+  margin: 1.5em 0;
+  padding: 0.9em 1.1em;
+  border-left: 4px solid #aeb5bb;
+  background: #f6f7f8;
+}
+
+.analysis-note > :first-child,
+.analysis-takeaway > :first-child,
+.analysis-warning > :first-child,
+.analysis-important > :first-child,
+.analysis-advanced > :first-child {
+  margin-top: 0;
+}
+
+.analysis-note > :last-child,
+.analysis-takeaway > :last-child,
+.analysis-warning > :last-child,
+.analysis-important > :last-child,
+.analysis-advanced > :last-child {
+  margin-bottom: 0;
+}
+
+.analysis-takeaway {
+  border-left-color: #607d8b;
+}
+
+.analysis-warning {
+  border-left-color: #9a7650;
+}
+
+
+.analysis-important {
+  border-left-color: #607d8b;
+}
+
+.analysis-advanced {
+  border-left-color: #6f5d8c;
+  background: #f7f5fa;
 }

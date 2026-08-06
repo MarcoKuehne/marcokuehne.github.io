@@ -1,0 +1,280 @@
+/*
+ * Becoming Fluent in Data — accessible content boxes
+ *
+ * Replaces the five former box_*.css files while preserving all existing
+ * R Markdown class names. Colours are intentionally muted; each box remains
+ * identifiable by its written title and its distinct alien icon, so meaning
+ * never depends on colour alone.
+ */
+
+/* --------------------------------------------------------------------------
+   Theme tokens
+   -------------------------------------------------------------------------- */
+
+.defbox {
+  --box-accent: #315b59;
+  --box-accent-2: #426a68;
+  --box-surface-top: #e4eeec;
+  --box-surface-bottom: #f8fbfa;
+  --box-border: #cbdad7;
+  --box-icon: url("../images/icons/definition-alien.svg");
+}
+
+.amazing {
+  --box-accent: #245f86;
+  --box-accent-2: #36779e;
+  --box-surface-top: #e6eff7;
+  --box-surface-bottom: #f8fbfd;
+  --box-border: #cadce9;
+  --box-icon: url("../images/icons/amazing-alien.webp");
+}
+
+.reading {
+  --box-accent: #9b3f2d;
+  --box-accent-2: #b3533f;
+  --box-surface-top: #f7e6e0;
+  --box-surface-bottom: #fffaf8;
+  --box-border: #ebcec4;
+  --box-icon: url("../images/icons/reading-alien.webp");
+}
+
+.challenge {
+  --box-accent: #436b34;
+  --box-accent-2: #587a46;
+  --box-surface-top: #e9f1e4;
+  --box-surface-bottom: #f9fbf7;
+  --box-border: #d2dfca;
+  --box-icon: url("../images/icons/challenge-alien.webp");
+}
+
+.dedicated {
+  --box-accent: #684487;
+  --box-accent-2: #7b5599;
+  --box-surface-top: #ede5f4;
+  --box-surface-bottom: #fbf9fd;
+  --box-border: #d9cbe6;
+  --box-icon: url("../images/icons/dedicated-alien.webp");
+}
+
+/* --------------------------------------------------------------------------
+   Shared card
+   -------------------------------------------------------------------------- */
+
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) {
+  margin: 1.4rem 0;
+  padding: 0 1.25rem 1.15rem;
+  overflow: hidden;
+  color: #20262e;
+  line-height: 1.6;
+  border: 1px solid var(--box-border);
+  border-radius: 0.85rem;
+
+  /* A gentle top-to-bottom fade visually connects header and body. */
+  background: linear-gradient(
+    180deg,
+    var(--box-surface-top) 0%,
+    var(--box-surface-bottom) 46%,
+    var(--box-surface-bottom) 100%
+  );
+
+  box-shadow:
+    0 0.15rem 0.45rem rgb(15 23 42 / 5%),
+    0 0.55rem 1.2rem rgb(15 23 42 / 4%);
+}
+
+/* --------------------------------------------------------------------------
+   Shared header
+   -------------------------------------------------------------------------- */
+
+:is(
+  .titeldefbox,
+  .titelamazing,
+  .titelreading,
+  .titelchallenge,
+  .titeldedicated
+) {
+  display: flex;
+  align-items: center;
+  min-height: 3.45rem;
+  margin: 0 -1.25rem 1rem;
+  padding: 0.8rem 1.15rem 0.8rem 4.15rem;
+  color: #fff;
+
+  /* The subtle same-hue gradient avoids a flat, highly saturated colour bar. */
+  background-color: var(--box-accent);
+  background-image:
+    var(--box-icon),
+    linear-gradient(112deg, var(--box-accent) 0%, var(--box-accent-2) 100%);
+  background-repeat: no-repeat, no-repeat;
+  background-position: 1.1rem center, center;
+  background-size: auto 2.25rem, cover;
+
+  /* A soft highlight replaces a hard visual seam. */
+  box-shadow:
+    inset 0 -1px 0 rgb(255 255 255 / 16%),
+    inset 0 -0.35rem 0.7rem rgb(0 0 0 / 4%);
+}
+
+:is(
+  .titeldefbox,
+  .titelamazing,
+  .titelreading,
+  .titelchallenge,
+  .titeldedicated
+) h2 {
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font-size: 1.05rem !important;
+  font-weight: 700;
+  line-height: 1.3 !important;
+  letter-spacing: 0.005em;
+}
+
+/* --------------------------------------------------------------------------
+   Body rhythm
+   -------------------------------------------------------------------------- */
+
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) > :last-child {
+  margin-bottom: 0;
+}
+
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) >
+:is(.titeldefbox, .titelamazing, .titelreading, .titelchallenge, .titeldedicated)
++ p {
+  margin-top: 0;
+}
+
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) p,
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) ul,
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) ol,
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) pre,
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) blockquote {
+  margin-top: 0.75rem;
+}
+
+/* Links stay identifiable without relying on colour alone. */
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+:is(.defbox, .amazing, .reading, .challenge, .dedicated) a:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 3px;
+  border-radius: 0.15rem;
+}
+
+/* Compatibility with older boxes that inserted an icon element explicitly. */
+:is(.svgdefbox, .svgamazing, .svgreading, .svgchallenge, .svgdedicated) {
+  width: auto;
+  height: 1.6rem;
+  margin-right: 0.6rem;
+}
+
+/* --------------------------------------------------------------------------
+   Small screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  :is(.defbox, .amazing, .reading, .challenge, .dedicated) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    border-radius: 0.7rem;
+  }
+
+  :is(
+    .titeldefbox,
+    .titelamazing,
+    .titelreading,
+    .titelchallenge,
+    .titeldedicated
+  ) {
+    min-height: 3.2rem;
+    margin-right: -1rem;
+    margin-left: -1rem;
+    padding-left: 3.55rem;
+    background-position: 0.85rem center, center;
+    background-size: auto 1.95rem, cover;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility preferences
+   -------------------------------------------------------------------------- */
+
+/* Stronger borders and simpler surfaces for users requesting more contrast. */
+@media (prefers-contrast: more) {
+  :is(.defbox, .amazing, .reading, .challenge, .dedicated) {
+    border: 2px solid var(--box-accent);
+    background: #fff;
+    box-shadow: none;
+  }
+
+  :is(
+    .titeldefbox,
+    .titelamazing,
+    .titelreading,
+    .titelchallenge,
+    .titeldedicated
+  ) {
+    background-image: var(--box-icon);
+    background-color: var(--box-accent);
+    box-shadow: none;
+  }
+}
+
+/* Respect operating-system high-contrast / forced-colour modes. */
+@media (forced-colors: active) {
+  :is(.defbox, .amazing, .reading, .challenge, .dedicated) {
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  :is(
+    .titeldefbox,
+    .titelamazing,
+    .titelreading,
+    .titelchallenge,
+    .titeldedicated
+  ) {
+    padding-left: 1.15rem;
+    color: Canvas;
+    background: CanvasText;
+    border-bottom: 1px solid CanvasText;
+    box-shadow: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Print / PDF fallback
+   -------------------------------------------------------------------------- */
+
+@media print {
+  :is(.defbox, .amazing, .reading, .challenge, .dedicated) {
+    color: #111;
+    border: 1px solid #777;
+    background: #fff;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  :is(
+    .titeldefbox,
+    .titelamazing,
+    .titelreading,
+    .titelchallenge,
+    .titeldedicated
+  ) {
+    padding-left: 1.15rem;
+    color: #111;
+    background: #eee;
+    border-bottom: 1px solid #aaa;
+    box-shadow: none;
+  }
+}
