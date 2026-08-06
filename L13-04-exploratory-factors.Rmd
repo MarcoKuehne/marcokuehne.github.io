@@ -1,0 +1,240 @@
+## Exploratory Factors {#exploratory-factors}
+
+::: {.analysis-subtitle}
+Discovering shared dimensions
+:::
+
+Imagine a test with many reasoning tasks or a questionnaire with many personality statements. Some responses move together: people who perform well on one verbal task often perform well on other verbal tasks; respondents who describe themselves as talkative may also describe themselves as sociable and outgoing.
+
+Exploratory factor analysis asks:
+
+> Can the relationships among many observed indicators be represented by a smaller number of common dimensions?
+
+The method is **exploratory** because the complete loading pattern is not fixed in advance. The data help reveal how many factors may be needed and which indicators are most strongly related to them. The result is not a theory-free discovery of hidden truth. Indicator selection, extraction, rotation, and interpretation all involve decisions.
+
+### The Common-Factor Idea {#efa-common-factor-idea}
+
+For person \(p\), a common-factor model can be written as
+
+\[
+\mathbf{x}_p
+=
+\boldsymbol{\nu}
++
+\boldsymbol{\Lambda}\boldsymbol{\eta}_p
++
+\boldsymbol{\varepsilon}_p.
+\]
+
+The observed response vector \(\mathbf{x}_p\) is represented by:
+
+- indicator baselines \(\boldsymbol{\nu}\);
+- one or more latent factor values \(\boldsymbol{\eta}_p\);
+- factor loadings in \(\boldsymbol{\Lambda}\);
+- residual or unique components \(\boldsymbol{\varepsilon}_p\).
+
+A **factor loading** describes how strongly an indicator is related to a factor within the model. Indicators with similar loading patterns contribute evidence about the same dimension.
+
+The covariance matrix is the empirical starting point. Factor analysis asks whether its pattern can be reproduced approximately by fewer common factors:
+
+\[
+\boldsymbol{\Sigma}
+=
+\boldsymbol{\Lambda}\boldsymbol{\Phi}\boldsymbol{\Lambda}^{\top}
++
+\boldsymbol{\Theta}.
+\]
+
+Here, \(\boldsymbol{\Phi}\) contains factor variances and correlations, while \(\boldsymbol{\Theta}\) contains residual variances and any residual relations allowed by the model.
+
+::: {.analysis-warning}
+A factor represents shared variation in a statistical model. The covariance matrix alone does not prove that the factor is a causal entity or that it is identical to the complete substantive construct.
+:::
+
+### Common Variance Is Not Total Variance {#efa-common-vs-total}
+
+Factor analysis differs from principal component analysis in its target.
+
+- **PCA** constructs components that summarize total observed variance.
+- **Factor analysis** models the covariance attributed to common latent factors and separates it from indicator-specific residual variance.
+
+A component is a weighted combination of the variables. A factor is an unobserved model quantity proposed to account for their shared relationships.
+
+This distinction does not make factor analysis universally superior. PCA may be the better tool when the goal is compression or prediction. Factor analysis is more appropriate when the goal is an explicit measurement interpretation.
+
+### The Four Main EFA Decisions {#efa-four-decisions}
+
+An exploratory analysis requires at least four connected decisions:
+
+1. How many factors should be retained?
+2. How should the factors be extracted?
+3. How should the solution be rotated?
+4. How should the resulting factors be interpreted and evaluated?
+
+Treating any one of these decisions as automatic can produce a neat but misleading solution.
+
+### How Many Factors? {#efa-number-factors}
+
+Retaining too few factors forces distinct dimensions together. Retaining too many can turn sampling noise, wording effects, or small item clusters into apparently meaningful factors.
+
+Useful evidence includes:
+
+- **substantive theory:** which distinctions should the instrument represent?
+- **parallel analysis:** how many observed eigenvalues exceed those expected from comparable random data?
+- **scree plot:** where does the decline in eigenvalues begin to flatten?
+- **model adequacy:** do residual relationships remain after retaining the factors?
+- **interpretability and stability:** does the solution make sense and recur in new data?
+
+The familiar rule of retaining eigenvalues above one is easy to compute but should not be the sole criterion. Different criteria can disagree because factor retention is an inferential and substantive decision, not a mechanical fact hidden in one number.
+
+```{r efa-parallel-analysis, eval=FALSE, message=FALSE, warning=FALSE}
+library(psych)
+library(lavaan)
+
+dat <- lavaan::HolzingerSwineford1939
+items <- dat[paste0("x", 1:9)]
+
+fa.parallel(
+  items,
+  fa = "fa",
+  fm = "minres"
+)
+```
+
+The built-in Holzinger--Swineford data contain nine cognitive test variables commonly used to illustrate verbal, visual, and speed-related dimensions. They are convenient for learning, although they are a historical teaching dataset rather than a modern assessment design.
+
+### Extracting the Factors {#efa-extraction}
+
+Extraction estimates the common-factor solution. Common choices include:
+
+- **minimum residual or minimum-rank approaches**, which seek a solution with small residual correlations;
+- **principal-axis factoring**, which focuses on common variance;
+- **maximum likelihood**, which supports likelihood-based tests and intervals under stronger distributional assumptions;
+- **weighted least-squares approaches**, often used with ordinal or categorical indicators.
+
+The best estimator depends on indicator type, distribution, sample size, missing-data treatment, and inferential goals. Extraction should not be confused with rotation: extraction estimates a factor space; rotation chooses an interpretable orientation within it.
+
+### Why Rotation Is Necessary {#efa-rotation}
+
+Several loading matrices can reproduce the same covariance structure equally well. Without an additional orientation, the axes are not unique. Rotation chooses a representation intended to be easier to interpret.
+
+- **Orthogonal rotation** constrains factors to be uncorrelated.
+- **Oblique rotation** allows factors to correlate.
+
+For personality, attitudes, and cognitive abilities, correlated dimensions are often plausible. Oblique rotation is therefore a defensible default unless theory requires independence.
+
+Rotation does not alter which observations were collected, and it does not create better model fit in the ordinary sense. It redistributes loadings across equivalent orientations of the retained factor space.
+
+::: {.analysis-note}
+A visually simple loading table is not proof that the factors are real, distinct, or correctly named. Rotation supports interpretation; it does not replace theory.
+:::
+
+### Reading a Factor Solution {#efa-reading-solution}
+
+A useful interpretation considers several pieces together.
+
+#### Primary loadings {#efa-primary-loadings}
+
+A primary loading is an indicator's largest substantive loading. A group of indicators with strong loadings on the same factor may define a common dimension.
+
+#### Cross-loadings {#efa-cross-loadings}
+
+A cross-loading occurs when an indicator is meaningfully related to more than one factor. This may reflect:
+
+- genuinely overlapping content;
+- ambiguous wording;
+- a broad item spanning several constructs;
+- an inadequate number of retained factors;
+- a method or response-format effect.
+
+Cross-loadings are not automatically errors. They are evidence that the simple idea of one item measuring one factor may be too restrictive.
+
+#### Communalities and residuals {#efa-communalities}
+
+An indicator's **communality** is the part of its variance represented by the retained common factors. Low communalities indicate that the factor solution explains little of that indicator. Residual correlations show which relationships remain unexplained.
+
+#### Factor correlations {#efa-factor-correlations}
+
+In an oblique solution, factor correlations are part of the substantive result. Very high correlations may indicate that the factors are difficult to distinguish, although the conclusion depends on the indicators and the model.
+
+#### Factor labels {#efa-factor-labels}
+
+A factor is named from the shared content of its strongest indicators, not from the numerical output alone. Labels should be treated as interpretations that require content knowledge.
+
+### A Compact EFA Workflow in R {#efa-r-workflow}
+
+```{r efa-workflow, eval=FALSE, message=FALSE, warning=FALSE}
+library(psych)
+library(lavaan)
+
+dat <- lavaan::HolzingerSwineford1939
+items <- dat[paste0("x", 1:9)]
+
+# 1. Inspect variables and correlations
+summary(items)
+cor(items, use = "pairwise.complete.obs")
+
+# 2. Examine the likely number of factors
+fa.parallel(items, fa = "fa", fm = "minres")
+
+# 3. Estimate an oblique three-factor solution
+fit_efa <- fa(
+  items,
+  nfactors = 3,
+  fm = "minres",
+  rotate = "oblimin"
+)
+
+# 4. Inspect loadings, communalities, and factor correlations
+print(fit_efa$loadings, cutoff = 0.30)
+fit_efa$communality
+fit_efa$Phi
+```
+
+This workflow is deliberately compact. Before substantive use, the researcher must also inspect coding, missing values, reverse-worded items, indicator distributions, sampling design, and the stability of the solution.
+
+### What Can Go Wrong? {#efa-problems}
+
+Common problems include:
+
+- **too few indicators:** a factor may be weakly defined and unstable;
+- **highly redundant indicators:** apparent strength may come from repeated wording rather than broad construct coverage;
+- **reverse-worded item factors:** wording direction may create a method dimension;
+- **local dependence:** items sharing a text, scenario, or stimulus may correlate beyond the intended construct;
+- **sample-specific structure:** a solution may not transport to another group, language, or period;
+- **exploration presented as confirmation:** a structure discovered and optimized in one sample can fit that same sample unusually well.
+
+A factor solution is therefore a proposal about dimensionality, not the final measurement argument.
+
+### From Exploration to Confirmation {#efa-to-cfa}
+
+EFA asks:
+
+> What measurement structure might be present?
+
+CFA asks:
+
+> Does an explicitly specified measurement structure provide a defensible account of the observed relationships?
+
+The strongest workflow separates discovery from evaluation. A researcher may explore in one sample and test the resulting structure in another, or use theory and prior evidence to specify the confirmatory model directly.
+
+The transition is not from an inferior method to a superior one. It is a transition from **searching for a plausible structure** to **making the structure explicit and testable**.
+
+::: {.analysis-takeaway}
+EFA helps discover a candidate measurement structure. It does not confirm that structure, establish causal factors, or prove construct validity.
+:::
+
+### Reporting an Exploratory Analysis {#efa-reporting}
+
+A transparent report should describe:
+
+1. why the indicators were selected;
+2. their coding and response scales;
+3. the sample and missing-data treatment;
+4. the correlation matrix used, especially for ordinal items;
+5. the extraction method;
+6. the evidence used to select the number of factors;
+7. the rotation method and whether factors were allowed to correlate;
+8. loadings, communalities, cross-loadings, and factor correlations;
+9. indicators removed or revised and the substantive reason;
+10. whether the solution was evaluated in independent data.

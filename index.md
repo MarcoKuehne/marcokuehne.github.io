@@ -4,7 +4,7 @@ cover-image: "images/Cover.png"
 subtitle: "A Personal Journey – Every Time."
 description: "A guide to becoming fluent in data."
 author: "Marco Kühne"
-date: "`r Sys.Date()`"
+date: "2026-08-06"
 site: bookdown::bookdown_site
 documentclass: book
 delete_merged_file: true
@@ -51,36 +51,7 @@ output:
 
 <!-- Global code chunk options -->
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  comment = "#>",
-  echo = TRUE,
-  eval = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  collapse = TRUE,
-  tut = FALSE,
-  fig.width = 6
-)
 
-if (!requireNamespace("webexercises")) {
-  stop(
-    "You must have the 'webexercises' package installed to knit to HTML.\n",
-    "Install it with install.packages(\"webexercises\")."
-  )
-} else {
-  library("webexercises")
-}
-
-library("tidyverse")
-library("tippy")
-library("zoo")
-library("kableExtra")
-library("sjlabelled")
-library("tidytext")
-library("sentimentr")
-library("modelsummary")
-```
 
 # (PART) Introduction {-}
 
@@ -102,7 +73,7 @@ The times were changing—and so was I.
 
 <br>
 
-<center>Are you `r fitb("r", ignore_case = TRUE)` eady to join the journey?</center>
+<center>Are you <input class='webex-solveme nospaces ignorecase' size='1' data-answer='["r"]'/> eady to join the journey?</center>
 
 <br>
 
@@ -163,11 +134,11 @@ Writing this book follows the same idea. It forces me to pinpoint what I know, w
 
 > I could feel that econometrics was indispensable, and yet I was missing something. But what? It was a theory of causality […]. <b>So, desperate, I did what I always do when I want to learn something new — I developed a course on causality to force myself to learn all the things I didn’t know.</b>
 >
-> `r tufte::quote_footer('@cunningham2021causal')`
+> <footer class="blockquote-footer" style="text-align: right;">@cunningham2021causal</footer>
 
 This project has helped me learn more about R, RStudio, R Markdown, Bookdown, HTML and CSS, Git and GitHub, empirical research, causal inference, statistics, mathematics, frustration tolerance—and fun.
 
-*Learning by teaching* is associated with Jean-Pol Martin. Who is it? `r mcq(c("Jimmy Wales", "Linus Torvalds", answer = "Jean-Pol Martin", "Richard E. Pattis"))`
+*Learning by teaching* is associated with Jean-Pol Martin. Who is it? <select class='webex-select'><option value='blank'></option><option value=''>Jimmy Wales</option><option value=''>Linus Torvalds</option><option value='answer'>Jean-Pol Martin</option><option value=''>Richard E. Pattis</option></select>
 
 ## Doing something meaningful with data {-}
 
@@ -330,16 +301,16 @@ A **Truly Dedicated** section descends further into derivations, qualifications,
 
 Underlined text may contain a tooltip. Move the cursor over <u id="tippy">this example</u>.
 
-```{r, echo=FALSE}
-tippy::tippy_this(
-  elementId = "tippy",
-  tooltip = "Underlined text can provide a short explanation without interrupting the main text."
-)
+
+```{=html}
+<span class="tippy html-widget html-fill-item" height="480" id="htmlwidget-655008270b4da083b879" width="576"></span>
+<script type="application/json" data-for="htmlwidget-655008270b4da083b879">{"x":{"element":"tippy","opts":{"content":"Underlined text can provide a short explanation without interrupting the main text."}},"evals":[],"jsHooks":[]}</script>
 ```
 
-The `webexercises` package adds small interactive questions for `r mcq(c("ballroom dancing", answer = "self-guided learning", "vegetarian cooking", "stamp collecting"))`.
 
-What is the Answer to the Ultimate Question of Life, the Universe, and Everything? `r fitb(42)`
+The `webexercises` package adds small interactive questions for <select class='webex-select'><option value='blank'></option><option value=''>ballroom dancing</option><option value='answer'>self-guided learning</option><option value=''>vegetarian cooking</option><option value=''>stamp collecting</option></select>.
+
+What is the Answer to the Ultimate Question of Life, the Universe, and Everything? <input class='webex-solveme nospaces' size='2' data-answer='["42"]'/>
 
 The web annotation tool [Hypothes.is](https://web.hypothes.is/) can be used to highlight passages and add annotations to the online book.
 
@@ -350,9 +321,7 @@ These elements are invitations, not obligations. Stay at the surface when you ne
 :::::: {.columns}
 
 ::: {.column width="20%" data-latex="{0.20\textwidth}"}
-```{r, echo=FALSE, out.width="90%", fig.align="center"}
-knitr::include_graphics(path = "images/Marco-scaled.jpg")
-```
+<img src="images/Marco-scaled.jpg" alt="" width="90%" style="display: block; margin: auto;" />
 :::
 
 ::: {.column width="5%" data-latex="{0.05\textwidth}"}

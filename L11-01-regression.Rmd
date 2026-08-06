@@ -1,4 +1,8 @@
-# Regression 
+## Regression {#regression}
+
+::: {.analysis-subtitle}
+Tests as statistical models
+:::
 
 ```{r, echo=FALSE}
 htmltools::img(src = knitr::image_uri("images/workhorse.jpg"), 
@@ -35,7 +39,7 @@ This chapter introduces the workhorse of empirical research in the social scienc
 <!-- Linear regression was first introduced by **Sir Francis Galton** in the late 19th century, and he used it to study the relationship between the height of parents and their children.  -->
 <!-- :::: -->
 
-## Old but Gold
+### Old but Gold
 
 <!-- Your favorite topic -->
 <!-- > “Every artist was first an amateur.” -->
@@ -103,7 +107,7 @@ This is what we gonna explore:
 
 <!-- <sup>What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ),<sup>  -->
 
-## Data is everywhere
+### Data is everywhere
 
 <!-- ```{r echo=FALSE, warning=FALSE} -->
 <!-- library("vembedr") -->
@@ -116,7 +120,7 @@ This is what we gonna explore:
 
 Researchers use auction price data for which they have to pay. We use free information from a Wikipedia [List of most expensive paintings](https://en.wikipedia.org/wiki/List_of_most_expensive_paintings) of all time. The auction prices are inflation-adjusted by consumer price index in millions of United States dollars in 2019. That's another interesting economic procedure, that we take for given at this analysis.
 
-### Data in a table
+#### Data in a table
 
 <!-- https://www.askart.com/Search_Artist_Auction_Records.aspx -->
 <!-- https://datatables.net/ -->
@@ -143,7 +147,7 @@ DT::datatable(artists, rownames = FALSE)
 **Tabular data** is common in data analysis. You can create a table in Word or Excel. 
 ::::
 
-### Data in a graph
+#### Data in a graph
 
 Two continuous variables are plotted in a **scatterplot**. The **x-axis** is called **<u id='age'>abscissa </u>** and the **y-axis** is called **<u id='price'>ordinate</u>**.
 
@@ -184,7 +188,7 @@ Note that the axis beginning is not zero. The decision where axes start was made
 When the data really don’t fluctuate very much but a rise of small values like 1.4 or 1.4% is a big deal. With a graph that starts at zero, these changes can't be detected. The data scientist has to decide. 
 ::::
 
-### The trend
+#### The trend
 
 The graph suggests a **positive trend** between price and age. There is an **increase** in price for older artists. The older the artist, the higher the auction prices.
 
@@ -203,7 +207,7 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   theme_minimal()
 ```
 
-### The blackbox
+#### The blackbox
 
 The mission is to find a mathematical function that describes the trend. In other words, we are looking for the black box that transforms the input into the output:
 
@@ -248,7 +252,7 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
 
 How can we compare the two suggested lines? Which linear function represents the relationship best?
 
-### Nobody's perfect
+#### Nobody's perfect
 <!-- https://drsimonj.svbtle.com/visualising-residuals -->
 
 We all make mistakes. So do the linear functions:
@@ -296,7 +300,7 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   geom_point(aes(y = predicted_guess), shape = 1) 
 ```
 
-### Vocab Wrap-Up
+#### Vocab Wrap-Up
 
 Let's wrap up regression vocab! Find an equation that describes the phenomenon of interest. Equation I shows a generic statistical model; equation II a generic linear model. 
 
@@ -322,7 +326,7 @@ $\widehat{Y}$ are called the **fitted or predicted** values. $\widehat{\beta}$ a
 The fitting procedure is called **ordinary least squares** (OLS). 
 
 
-## For the truly dedicated 
+### For the truly dedicated 
 
 <!-- div { -->
 <!--   background-color: lightblue; -->
@@ -346,7 +350,7 @@ But wait, there is more. Is it fair to say that the sum should be small? Compare
 $$\sum e^2 \rightarrow \min$$
 The goal of OLS is to **minimize the residual sum of squares** or the **sum of squared residuals**.
 
-### Algebra 
+#### Algebra 
 
 :::: {.amazing}
 ::: {.titelamazing}
@@ -390,7 +394,7 @@ $$\begin{align}
 	(y^T X \beta)^T = y X^T \beta^T
 \end{align}$$
 
-### Analysis 
+#### Analysis 
 
 :::: {.amazing}
 ::: {.titelamazing}
@@ -414,7 +418,7 @@ $$\begin{align}
 
 Those $\beta$ coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time.
 
-### Take the Long Way Home 
+#### Take the Long Way Home 
 
 <!-- ::: {.infobox .information data-latex="warning"} -->
 <!-- <details> -->
@@ -470,7 +474,7 @@ It's the $\beta$ vector! The first entry is the **intercept** and the second is 
 
 <!-- There are two numbers. -->
 
-## Survival of the Fittest Line 
+### Survival of the Fittest Line 
 
 The linear equation that best describes the data is this: 
 
@@ -500,7 +504,7 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   geom_point(aes(y = predicted), shape = 1) 
 ```
 
-## On the Shoulders of Giants 
+### On the Shoulders of Giants 
 
 Fortunately, we are [standing on the shoulders of giants](https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants). Clever people implemented the linear regression (command `lm()`) and all kinds of regressions and statistical tests in R. 
 
@@ -513,4 +517,3 @@ The workhorse packs up work.
 ```{r echo=F, warning=FALSE, fig.align='center'}
 knitr::include_graphics("images/workhorse.jpg")
 ```
-

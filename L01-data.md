@@ -1,0 +1,228 @@
+# (PART) Data {-}
+
+# Data is everywhere
+
+Data is ubiquitous in today's world and its importance is growing rapidly, especially in social science. With the increasing availability of data, researchers can gain insights into human behavior, social trends, and other important phenomena. The use of data analysis tools and techniques allows researchers to extract meaningful insights from the vast amounts of data that are being generated every day, and these insights can be used to inform policies, strategies, and decisions that impact society. It is therefore crucial for social scientists to have the skills and knowledge to effectively manage and analyze data.
+
+<!-- <center> -->
+<!-- <video width="320" height="240" controls> -->
+<!--   <source src="video/Data.mp4" type="video/mp4"> -->
+<!-- </video> -->
+<!-- </center> -->
+
+<!-- <img src="video/Data.mp4" type="video/mp4"/> -->
+
+<!-- ![](https://youtu.be/jHooEmmXvpY) -->
+
+## Why we measure
+
+<center>
+Two true stories. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9yliRKjEBq8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+### Women are having far fewer children. 
+<!-- Byrne, D. (2002). Interpreting quantitative data. Sage. -->
+
+<div class="figure" style="text-align: center">
+<img src="L01-data_files/figure-html/fertility-graph-1.png" alt="Global fertility rate." width="90%" />
+<p class="caption">(\#fig:fertility-graph)Global fertility rate.</p>
+</div>
+
+<!-- ```{r, fig.cap = "Average number of babies per woman from 1800 to today. Source: [Gapminder](<https://www.gapminder.org/topics/babies-per-woman/>)", out.width="80%", echo=FALSE, fig.align='center'} -->
+<!-- knitr::include_graphics("https://s3.eu-west-1.amazonaws.com/static.gapminder.org/GapminderMedia/wp-uploads/20180313124853/babies-per-woman-1024x645.png") -->
+<!-- ``` -->
+
+<!-- ![](https://s3.eu-west-1.amazonaws.com/static.gapminder.org/GapminderMedia/wp-uploads/20180313124853/babies-per-woman-1024x645.png) -->
+<!-- <iframe src="//www.gapminder.org/tools/?embedded=true#$chart-type=bubbles&url=v1" style="width: 100%; height: 500px; margin: 0 0 0 0; border: 1px solid grey;" allowfullscreen></iframe> -->
+
+Figure \@ref(fig:fertility-graph) shows the global total fertility rate according to Gapminder.^[Data from 1800 to 1950 comes from *Gapminder v6*, for 1950 to 2014 from UN estimates and 2015 to 2099 from UN forecasts of future fertility.] There is a dramatic change in the number of babies per woman in the last 50 years. The maintenance of a stable human population requires that the mean number of children women should have by the completion of the fertile part of their life is 2.1.^[It is 2.1 rather than 2 to allow for the failure of some female children themselves to live through the fertile years of adult life.]
+
+We cannot know this without measurement. We may have an impression that families are smaller, but that could just be the people we know directly – and most of us know directly at most a couple of hundred households.^[According to Tian Zheng (Columbia College), the average American knows about 600 people. NY times <https://www.nytimes.com/2013/02/19/science/the-average-american-knows-how-many-people.html>] We have to measure to know the big picture and we have to keep measuring to see how the picture is changing. Size matters. Change matters. Without measurement we can describe neither current condition nor the history of current condition.
+
+<!-- https://en.wikipedia.org/wiki/Population_growth#/media/File:Human_population_since_1800.png -->
+
+<!-- World human population estimates from 1800 to 2100, with estimated range of future population after 2020 based on "high" and "low" scenarios. Data from the United Nations projections in 2019. -->
+
+### Global surface temperature is rising. 
+
+<!-- ![](https://upload.wikimedia.org/wikipedia/commons/0/08/Global_Temperature_And_Forces_With_Fahrenheit.svg) -->
+<!-- ![](https://upload.wikimedia.org/wikipedia/commons/3/3a/Common_Era_Temperature.svg)    -->
+
+<div class="figure" style="text-align: center">
+<img src="L01-data_files/figure-html/global-temperature-1.png" alt="Global temperature in the common era." width="90%" />
+<p class="caption">(\#fig:global-temperature)Global temperature in the common era.</p>
+</div>
+
+
+<!-- ```{r global-temperature, fig.cap = "Global temperature in the common era. Source: [Wikipedia](<https://en.wikipedia.org/wiki/Climate_change#Observed_temperature_rise>)", out.width="80%", echo=FALSE, fig.align='center'} -->
+<!-- knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/3/3a/Common_Era_Temperature.svg") -->
+<!-- ``` -->
+
+The 2011–2020 decade warmed to an average 1.09 °C [0.95–1.20 °C] compared to the pre-industrial baseline (1850–1900). Figure \@ref(fig:global-temperature) shows a global surface temperature reconstruction over the last 2000 years using proxy data from tree rings, corals, and ice cores in blue. Directly observed data is in red [@enwiki:1107472758]. 
+
+Data is required to make informed decisions. Decisions about climate change are complex, costly and have long-term implications. It is therefore vital that such decisions are based on the best available evidence. We need to understand the quality and provenance of that evidence, and whether any assumptions have been made in generating it.
+
+<!-- How would we know about, feel about and act against climate change without measurement?  -->
+
+## Means of measuring 
+
+Data collection is the process of gathering and measuring information. As social scientists we rarely count tree rings or analyse corals and ice cores. Social science is concerned about human behavior, attitudes, opinions, and characteristics to understand social phenomena. Social science researchers use a variety of data collection methods, including surveys, interviews, observations, and experiments, to collect data that can be analyzed and used to test hypotheses and answer research questions.
+
+**Surveys** are a common data collection method in social science research. They involve administering questionnaires to a sample of individuals to collect data about their attitudes, opinions, beliefs, and behaviors. Surveys can be conducted through various means, including online, telephone, and face-to-face interviews.
+
+**Interviews** are another method used in social science research to collect data. Interviews involve asking individuals questions about their experiences, attitudes, and opinions in a one-on-one or group setting. Interviews can be structured, semi-structured, or unstructured, depending on the research question.
+
+**Observations** are a method used to collect data about human behavior by observing individuals in natural or controlled settings. Researchers can collect data through direct observation or by using technology to capture behavior, such as video or audio recordings.
+
+**Experiments** involve manipulating one or more variables to observe their effect on a dependent variable. Experiments can be conducted in a controlled laboratory setting or in the natural environment.
+
+**Data scraping** is a method of data collection that involves using software or code to extract information from websites or other online sources. Data scraping can be a useful tool for gathering large amounts of data quickly, and it can be used for a variety of purposes, including market research, sentiment analysis, and trend analysis.
+
+In social science research, data collection must be conducted **ethically and with informed consent** from participants. Researchers must also consider issues of bias and sampling to ensure that their data collection methods produce accurate and representative data.
+
+<!-- - Surveys (paper vs. online) -->
+<!-- - Interviews  -->
+<!-- - Observation  -->
+<!-- - Experiment (mainly conducted by psychologists) -->
+<!-- - Focus group (qualitative research) -->
+<!-- - Case study (qualitative research) -->
+<!-- - Data scraping -->
+
+<!-- *Data Scraping* is the transfer of information from a source like a website to a database.  -->
+<!-- A focus group is a group interview involving a small number of demographically similar people or participants who have other common traits/experiences.  -->
+<!-- A case study is an in-depth, detailed examination of a particular case (or cases) within a real-world context. -->
+
+## Types of data 
+<!-- https://www.youtube.com/watch?v=69qP8kFJp_k -->
+<!-- https://www.youtube.com/watch?v=a-XtVF7Bofg -->
+
+### Origin of data
+
+Primary and secondary data are two types of data used in research, and they differ in their origin and collection method.
+
+**Primary data** is original data that is collected by the researcher or research team through direct observation, experimentation, surveys, interviews, or other methods. Primary data is often collected specifically for the research project at hand, and it is tailored to the research question and objectives. Primary data is generally more expensive and time-consuming to collect compared to secondary data, but it is often more accurate and reliable since the researcher has more control over the data collection process.
+
+**Secondary data**, on the other hand, is data that has already been collected and compiled by others for other purposes. This can include data from sources such as government reports, academic journals, newspapers, and industry reports. Secondary data can be accessed easily and is usually less expensive and less time-consuming to obtain compared to primary data. However, the accuracy and reliability of secondary data can be a concern, as it may not have been collected with the specific research question or objectives in mind, or it may be outdated or biased.
+
+<!-- **Primary data** refers to the first hand data gathered by the researcher or practitioner himself. **Secondary data** means data collected by someone else. As you expect, it can be more complicated, cost and time expensive to collect data yourself.  -->
+<!-- A lot of data can be found at various institutions (e.g. *statistical offices*). Sometimes data can be freely downloaded from web sources. Sometimes a registration is required. Some data is available for research but not for commercial purposes.  -->
+
+A lot of data comes ready for analysis and free for research purposes. Make us of it. 
+
+### Analysis of data
+
+Qualitative and quantitative data are two types of data used in research, and they differ in their nature and analysis methods.
+
+**Qualitative** data is non-numerical data that is collected through open-ended questions, observations, or other non-structured methods. This data can be text, audio or visual. Qualitative data is often descriptive and subjective, and it provides insight into how individuals perceive and interpret the world. Qualitative data is often analyzed using methods such as thematic analysis, content analysis, or discourse analysis, and it can provide rich and detailed insights into complex phenomena. There are quantitative approaches to analyse text (text mining, e.g. sentiment analysis) and visual data (machine learning, e.g. image classification) as well.
+
+**Quantitative** data, on the other hand, is numerical data that is collected through structured methods such as surveys or experiments. Quantitative data is often used to test hypotheses and to measure the magnitude and frequency of a particular phenomenon. Quantitative data is analyzed using statistical methods, such as regression analysis or hypothesis testing, and it provides objective and standardized results. That being said, quantitative data is usually expressed in numerical form and can represent size, length, duration, amount, price, and so on. 
+
+Sometimes quantitative data is understood as metric continuous as opposed to qualitative data in the form of categorical data. 
+
+<!-- The following distinctions of data are important to this course.  -->
+
+<!-- **Quantitative data** deals with things that are measurable and can be expressed in numbers or figures, or using other values that express quantity. That being said, quantitative data is usually expressed in numerical form and can represent size, length, duration, amount, price, and so on. -->
+
+<!-- **Qualitative data** is often non-numeric. Data can be text, audio or visual. There are quantitative approaches to analyse text (text mining, e.g. sentiment analysis) and visual data (machine learning, e.g. image classification). -->
+
+<!-- “Qualitative is a systematic, interactive and subjective approach used to describe life experiences and give them meaning” (Burns & Grove, 2006, p. 35). This type of research is conducted to describe and promote understanding of human experience such as stress. While, “Quantitative research is a formal, objective, and systematic process in which numerical data are used to obtain information about the world” (Burns & Grove, 2006, p. 35).^[<https://nursinganswers.net/essays/philosophy-of-quantitative-and-qualitative-nursing-essay.php>] -->
+
+### Structure of data
+
+**Rectangular data** is a type of data structure that is commonly used to organize and store data in *tables* or *spreadsheets*. In rectangular data, the rows represent individual observations or cases, while the columns represent variables or attributes that describe the observations. Each cell in the table represents a single value for a particular observation and variable.
+
+Rectangular data is also known as **"tabular data"** or "relational data," and it is the most common type of data used in quantitative research. Rectangular data is used to store various types of data, including demographic data, survey responses, financial data, and experimental data.
+
+Two common types of tabular data are cross-sectional and panel data that differ in their nature and the research question they address. 
+
+**Cross-sectional** data is collected at a single point in time, from a sample of individuals, organizations, or other units of analysis. Cross-sectional data provides a snapshot of a particular phenomenon at a specific point in time, and it can be used to analyze differences and similarities between groups. Cross-sectional data can be collected through surveys, experiments, or other methods, and it is often analyzed using descriptive statistics, such as means, medians, or percentages.
+
+**Panel data**, on the other hand, is **longitudinal data** that is collected from the same individuals, organizations, or other units of analysis over time. Panel data provides information on how a particular phenomenon changes over time, and it allows for the analysis of individual-level changes and the identification of causal relationships. Panel data can be collected through surveys, experiments, or other methods, and it is often analyzed using methods such as regression analysis or difference-in-differences.
+
+### The level of access
+
+**Open data** refers to data that is made available to the public without restrictions or limitations on its use, reuse, and redistribution. This means that anyone can access, use, and share the data without needing permission or paying fees.
+
+One example is the official portal for European data is called the [*European Data Portal* (EDP)](https://data.europa.eu/en). It is a comprehensive platform that provides access to public datasets from various European Union (EU) institutions and other sources. The EDP aims to promote the sharing and use of open data across Europe by offering a centralized platform for finding, accessing, and using data.
+
+Open data is licensed under an **open license**. An open license is a type of license that allows others to access, use, and share a work or product while also providing certain freedoms and protections to the creator or owner of the work. Open licenses are often used for software, content, and data, and they typically include conditions that allow for free distribution and modification of the work.
+
+The statistical office in Germany provides [open data](https://www.destatis.de/DE/Service/OpenData/_inhalt.html#sprg251244) under the [Data Licence Germany 2.0](https://www.govdata.de/dl-de/by-2-0).
+
+Most Wikipedia texsts are licensed under *Creative Commons Attribution-ShareAlike 3.0*. The Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) license is a type of open license that allows others to share and adapt a work, as long as they give credit to the original creator and distribute any derivative works under the same or a similar license.
+
+## Can we measure everything?
+
+<!-- In order to conduct an empirical analysis, all concepts need to be variables (columns in rectangular data).  -->
+
+In order to conduct meaningful measurement we need to make sure that we have a good understanding about the concept in question and its units of measurement. Some concepts are easy to grasp and there is a broad consensus on how to measure them. 
+
+Remember Figure \@ref(fig:global-temperature) that shows a global surface temperature. Temperature can be measured in Celsius or Fahrenheit ([SI units](https://en.wikipedia.org/wiki/International_System_of_Units)). There is an accepted translation between the Celsius and Fahrenheit, i.e. 0°C correspond to 32°F and 0°F correspond to -17.8°C. We have a good understanding of what 10°C means and even know how 10°C "feels". Still, sometimes (or most of the time?) we just don't have the data we like to have. Thus the graph shows a temperature reconstruction using **indirect proxy data** from tree rings, corals, and ice cores as well as **directly observed data** (when available). 
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Variables** are **manifest** or **observed** when they are directly measurable or **hidden** or **latent** when they are "idealized constructs at best only indirectly measurable". 
+
+<footer class="blockquote-footer" style="text-align: right;">-- *Encyclopaedia of Statistical Sciences* (1999) </footer>
+
+::::
+
+The number of Twitter follower at a given time is technically determined and can be counted. It is a natural number. Age is indisputable measured in years but it could also be measured in month or days. For most analytically purposes years will be fine. Exact birth dates may not be available due to data protection aspects.  
+
+Some concepts are harder to grasp and require a specific argument. Think about intelligence, populism, happiness or humor. What exactly are they and how can they be measured? 
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Operationalization** means turning abstract concepts into measurable observations. It involves clearly defining your variables and indicators.^[Read more: <https://www.scribbr.com/methodology/operationalization/>] 
+::::
+
+See this joke: 
+
+Q: “What’s the difference between England and a tea bag? “
+
+A: “The tea bag stays in the cup longer.”
+
+What would be the best way of measuring how funny the joke is? We could measure physiological responses to jokes, such as heart rate, respiration rate, or facial expressions. Researchers may use brain imaging techniques, such as functional magnetic resonance imaging (fMRI), to measure brain activity in response to jokes. Many times, for many analytically purposes this will be an overkill. It will be expensive in terms of money and time. Thus most of the time, we ask people how funny they rate this joke on a scale from 1 to 10 where 1 refers to "not at all funny" and 10 refers to "extremely funny"? 
+
+It is tempting to measure all social phenomena on a scale from 1 to 10.
+
+<!-- It's likely to find data and analyses on variables like *age* and *follower* as well as *intelligence* and *happiness*. There are common or popular believes on what happiness is. But there is no universal accepted measure.  -->
+
+<!-- likert scale versus more comprehensive scales ..... -->
+
+*Wechsler Adult Intelligence Scale* (version IV, released 2008) measures  intelligence. Scores from intelligence tests are estimates of intelligence. Unlike, for example, distance and mass, a concrete measure of intelligence cannot be achieved given the abstract nature of the concept of "intelligence". 
+
+Once measured, concepts can be related to each other:
+
+- What is the relation between age and Twitter usage? (See chapter [Relationships])
+- What is the effect of intelligence on happiness? (See chapter [Regression])
+
+<!-- <iframe src="https://marco-kuehne.com/wp-admin/admin-ajax.php?action=h5p_embed&id=2" width="1678" height="207" frameborder="0" allowfullscreen="allowfullscreen" title="SOEP General"></iframe><script src="https://marco-kuehne.com/wp-content/plugins/h5p/h5p-php-library/js/h5p-resizer.js" charset="UTF-8"></script> -->
+
+## The reality behind the data 
+
+> ... it is important not to lose sight of the individuals whose lives provide the data for the models. Although variables rather than individual people may become the subjects of the statistician’s narrative, it is individuals rather than variables who have the capacity to act and reflect on society.</b>
+>
+> <footer class="blockquote-footer" style="text-align: right;">Elliott, 1999. In: @byrne2002interpreting</footer>
+
+Sometimes, statisticians may become so focused on the data and the patterns they observe that they forget about the individuals behind the data. But it's important to keep in mind that it is ultimately individuals who are affected by the decisions and policies that are informed by the data. People have the ability to act and reflect on society, and understanding their experiences and perspectives is critical to building models and making decisions that truly reflect the needs and values of society as a whole.
+
+<!-- https://archive.org/details/statisticsinsoci0000unse/page/n7/mode/2up -->
+<!-- Quiz: Literature Research on Internet Archive -->
+<!-- What is the original source of the publication?  -->
+<!-- What page is the quotation from? p. 102 -->
+<!-- https://www.wiley.com/en-gb/Encyclopedia+of+Statistical+Sciences%2C+16+Volume+Set%2C+2nd+Edition-p-9780471150442 -->
+<!-- How many volumes does Encyclopaedia of Statistical Sciences have? -->
+<!-- What does it cost? -->
+
+
+
+
+
+

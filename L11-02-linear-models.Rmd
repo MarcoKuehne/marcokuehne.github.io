@@ -1,12 +1,16 @@
-# Linear Regression 
+## Linear Models {#linear-models}
 
-## What You Deserve Is What You Get
+::: {.analysis-subtitle}
+Simple and multiple linear regression
+:::
+
+### What You Deserve Is What You Get
 
 Do you believe that people get what they deserve? The statement "what you deserve is what you get" is a controversial one. It can be interpreted such that individuals are entirely responsible for their own outcomes and that they receive exactly what they deserve based on their efforts, abilities, and choices. This view assumes a meritocratic (performance-oriented) system where everyone has an equal opportunity to succeed based on their merit, and rewards are distributed accordingly.
 
 We investigate annual income and how it is determined. The famous [Mincer Equation](https://en.wikipedia.org/wiki/Mincer_earnings_function) is single-equation model that explains wage income as a function of schooling and experience. The equation suggests that higher levels of education and experience are positively associated with earnings, and the coefficients can be estimated using statistical methods to quantify the magnitude of these relationships. When everybody has access to schooling and the equal opportunities on the labor market, better school outcomes and work experience may be determined by people efforts, abilities, and choices. 
 
-## Data & Sample
+### Data & Sample
 
 We use SOEP practice data to analyse yearly income. The analysis is restricted to people who are fulltime employed (`Emp == 1`) in the working age (`Age <= 65`) who report an annual income from main job of more than one Euro (`Income > 1`). We analyse the most recent cross-section of the data (`syear == 2019`). We drop a few cases with missing information, thus conduct a complete case analysis. 
 
@@ -63,7 +67,7 @@ datasummary_skim(soep[,-c(1,2,8,13:15)])
 
 The data is clean and ready for analysis. There are no missings. The working age ranges from 18 to 65 years. People have between 0 and 8 children. There are NACE codes for the job industry ranging from 1 to 97 in the data (theoretically from 1 to 99). But not all jobs are represented in the data (77 unique values). Health status is measured on a scale from 1 to 5 whereas life satisfaction is measured on a scale between 0 and 10. The minimum annual income is about 915 Euro. We could have restricted the income variable to the minimum wage in Germany. Assume it is 12€/h and people in full-time work 8h/day. Starting from 365 days a year, there are 104 weekends, assume there are 11 public holidays and 30 days of vacation. 220 working days remain earning a minimum yearly income of about `220*8*12 = 21120` Euro. In the data, `r table(soep$Income < 21120)[2]` people report earning less than that.  
 
-## Data Visualization
+### Data Visualization
 
 We create a scatterplot of income (on the y-axis) versus age (on the x-axis). Data points are colored by gender (blue for men, red for women). A linear regression line is added per gende.r 
 
@@ -77,7 +81,7 @@ ggplot(soep, aes(x=Age, y=Income, color=Female)) +
   theme_minimal()
 ```
 
-## Simplest Regression 
+### Simplest Regression 
 
 ```{r, eval=TRUE, echo=F}
 cm <- c('Age'    = 'Age',
@@ -143,11 +147,11 @@ plot2 <- ggplot(data=soep, aes(x=1:nrow(soep), y=Income, color=Female)) +
 grid.arrange(plot1, plot2, ncol=2)
 ```
 
-## Simple Regression
+### Simple Regression
 
 Simple regression suggest a one-to-one relationship between two variables. In this section we focus on the continuous outcome variable income. We relate income to three different variables, age, gender and industry. Where age is another continuous variable, gender is a binary dummy and industry is a categorical variable.  
 
-### X is continuous
+#### X is continuous
 
 Income and age are continuous in principle, i.e. they can be any real number in an interval. Actually, age is reported in natural numbers, full years due to measurement restrictions. In the real SOEP data, a more precise estimate of age can be derived as a date difference between date of birth and date of interview. Thus creating a measure with day units. 
 
@@ -190,7 +194,7 @@ ggplot(soep, aes(x=Age, y=Income)) +
   #            label.padding = unit(0.3, "lines")) 
 ```
 
-### X is a dummy
+#### X is a dummy
 
 A dummy or binary variable describes two groups. 
 
@@ -209,7 +213,7 @@ modelsummary(title = 'Dummy Predictor.',
 
 <!-- `simple2$coefficients[1] = 85.85999`  -->
 
-### X is categorical 
+#### X is categorical 
 <!-- https://moderndive.com/6-multiple-regression.html#model4interactiontable -->
 
 <!-- <https://connects.world/nace-codes/> -->
@@ -261,7 +265,7 @@ modelsummary(title = 'Categorical Predictor.',
 
 Note that with a categorical variable, one category is missing in the output by default (the so called base level). In this case it is `Agriculture`. All coefficients are in comparison with the average annual income in Agriculture. All coefficients are positive, indicating that all industries earn more than the Agriculture sector. 
 
-### X is categorical, is it?
+#### X is categorical, is it?
 
 <!-- https://stats.oarc.ucla.edu/spss/faq/coding-systems-for-categorical-variables-in-regression-analysis-2/ -->
 
@@ -338,11 +342,11 @@ lm(mpg ~ cyl4 + cyl6, data=mtcars)$coefficients[3]-lm(mpg ~ cyl4 + cyl6, data=mt
 
 ::::
 
-## Parallel Slopes
+### Parallel Slopes
 
 *Parallel Slopes* is a special case of a *multiple regression* where there are multiple input variables that describe or explain an outcome. In particular, one of the variables is continuous (in this case age) and the other is a dummy variable (in this case gender). The resulting graph shows two parallel linear regression lines shifted by the dummy variable. 
 
-### X is continuous + dummy
+#### X is continuous + dummy
 
 In contrast to the first Figure, we know consider all data at once and recognize gender as a factor influencing the annual income. The dummy variable gender offsets the age-income relationship. 
 
@@ -369,7 +373,7 @@ modelsummary(title = 'Categorical Predictor.',
 
 <!-- ` parallel1$coefficients[1] + 185 * parallel1$coefficients[2] = 90.55837` -->
 
-## Model Comparison
+### Model Comparison
 
 ```{r, warning=FALSE, message=FALSE}
 multiple <- lm(Income ~ Age + Female + industry, data=soep)
@@ -417,7 +421,7 @@ $$\text{Adjusted R2} = 1 - \left[ (1 - R2) \cdot \frac{n - 1}{n - k - 1} \right]
 
 <!-- https://camilo-mora.github.io/GEO380/predict-interpolation-extrapolation.html -->
 
-## Transform to Perform 
+### Transform to Perform 
 <!-- https://www.programmingr.com/tutorial/log-in-r/ -->
 <!-- The purpose of log transformations... -->
 
@@ -505,10 +509,3 @@ Of course other mathematical transformations are possible and some are common, f
 <!-- https://www.tandfonline.com/doi/abs/10.1080/09644008.2016.1266481 -->
 
 <!-- https://www.diw.de/documents/dokumentenarchiv/17/56543/diw_sp0005.pdf -->
-
-
-
-
-
-
-

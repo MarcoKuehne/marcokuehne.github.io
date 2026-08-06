@@ -1,0 +1,191 @@
+## Structural Equations {#structural-equations}
+
+::: {.analysis-subtitle}
+Linking measurement and relationships
+:::
+
+Confirmatory factor analysis asks how constructs are measured. Structural equation modeling adds another layer:
+
+> How are the measured constructs and observed variables related?
+
+In a broad statistical usage, CFA is already part of the SEM family. In the narrower teaching usage adopted here, **SEM** refers to models that combine a measurement model with directed regressions or paths.
+
+### Path Models as Systems of Regressions {#sem-path-models}
+
+A path model contains several linked regression equations. For a simple mediation model:
+
+\[
+M
+=
+\alpha_M
++
+aX
++
+\varepsilon_M,
+\]
+
+\[
+Y
+=
+\alpha_Y
++
+c'X
++
+bM
++
+\varepsilon_Y.
+\]
+
+The indirect effect is \(ab\), the direct effect is \(c'\), and the total effect is
+
+\[
+c=c'+ab.
+\]
+
+When all variables are observed, this is usually called **path analysis**. SEM can replace some observed variables with latent factors measured by several indicators.
+
+### Measurement Model Plus Structural Model {#sem-measurement-structural}
+
+A measurement model describes the indicators:
+
+\[
+\mathbf{x}
+=
+\boldsymbol{\nu}
++
+\boldsymbol{\Lambda}\boldsymbol{\eta}
++
+\boldsymbol{\varepsilon}.
+\]
+
+A structural model describes relationships among latent and observed variables:
+
+\[
+\boldsymbol{\eta}
+=
+\boldsymbol{\alpha}
++
+\mathbf{B}\boldsymbol{\eta}
++
+\boldsymbol{\Gamma}\mathbf{x}
++
+\boldsymbol{\zeta}.
+\]
+
+The central advantage is that relationships can be estimated while the measurement model remains explicit. A latent predictor is not treated as a perfectly observed scale score, and a latent outcome retains its measurement uncertainty within the joint model.
+
+### A Simple Latent Mediation Model {#sem-latent-mediation}
+
+Suppose motivation is proposed to mediate the relationship between educational resources and competence. Motivation and competence may each be measured by several indicators.
+
+The model contains two claims:
+
+1. the indicators measure motivation and competence adequately;
+2. the structural paths among resources, motivation, and competence are substantively defensible.
+
+A compact `lavaan` skeleton is:
+
+```{r sem-latent-mediation, eval=FALSE, message=FALSE, warning=FALSE}
+library(lavaan)
+
+model_sem <- '
+  # Measurement models
+  motivation =~ mot1 + mot2 + mot3
+  competence =~ test1 + test2 + test3
+
+  # Structural model
+  motivation ~ a * resources
+  competence ~ b * motivation + c_prime * resources
+
+  # Effects
+  indirect := a * b
+  total    := c_prime + a * b
+'
+
+fit_sem <- sem(
+  model_sem,
+  data = dat,
+  estimator = "MLR",
+  missing = "fiml",
+  std.lv = TRUE
+)
+```
+
+The defined indirect effect is a model parameter. Its causal interpretation requires much more than statistical significance.
+
+### Measurement Comes First {#sem-measurement-first}
+
+A structural model does not rescue a weak measurement model. If indicators do not support the intended factors, the interpretation of regressions among those factors becomes unclear.
+
+A defensible sequence is:
+
+1. define the constructs and indicators;
+2. evaluate the measurement models;
+3. establish sufficient comparability when groups or time points are compared;
+4. specify the structural relations;
+5. evaluate global and local fit of the combined model;
+6. examine alternative explanations and robustness.
+
+The measurement and structural parts are estimated together in the final SEM, but they should remain conceptually distinguishable.
+
+### SEM Is Not Automatically Causal {#sem-not-causal}
+
+A directed arrow expresses a model assumption. It does not create temporal order, random assignment, or control for confounding.
+
+A causal interpretation requires evidence and assumptions about:
+
+- temporal ordering;
+- omitted common causes;
+- selection and missingness;
+- measurement validity;
+- functional form;
+- interference and treatment definition where relevant.
+
+Different directed models can sometimes imply the same covariance structure. Good fit therefore does not prove the direction of causation.
+
+::: {.analysis-warning}
+A well-fitting SEM is a well-fitting system of statistical restrictions. It becomes a causal model only when the research design and causal assumptions justify that interpretation.
+:::
+
+### Where Higher-Order and Bifactor Models Belong {#sem-higher-order-clarification}
+
+Second-order and bifactor models remain confirmatory measurement models in the organization of this book.
+
+- A **second-order model** explains relationships among first-order factors with a broader factor.
+- A **bifactor model** gives indicators direct loadings on a general factor and specific factors.
+- A **structural model** adds regressions among constructs or between constructs and external variables.
+
+All can be estimated in SEM software, but they answer different substantive questions. Software membership should not replace conceptual classification.
+
+### Model Fit Continues, but the Questions Multiply {#sem-fit}
+
+The same evaluation principles continue:
+
+- convergence and admissible estimates;
+- global and local fit;
+- comparison of defensible alternatives;
+- validation beyond the original sample.
+
+The structural part adds further questions:
+
+- Are the path directions theoretically justified?
+- Are indirect effects meaningful and sufficiently precise?
+- Are important confounders omitted?
+- Are coefficients stable across groups or time?
+- Would another plausible model imply similar observed relationships?
+
+### What This Section Will Add Later {#sem-future}
+
+The current section establishes the bridge from CFA to SEM. Later development can add:
+
+- observed path analysis;
+- latent mediation and moderation;
+- longitudinal and cross-lagged models;
+- latent growth models;
+- measurement invariance before mean comparisons;
+- model comparison and equivalent models;
+- connections to causal graphs and identification.
+
+::: {.analysis-takeaway}
+SEM extends regression by allowing several equations to be estimated together and extends CFA by placing measured latent constructs inside those equations.
+:::

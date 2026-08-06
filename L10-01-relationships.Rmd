@@ -1,6 +1,8 @@
-# (PART) Models {-}
+## Relationships {#relationships}
 
-# Relationships
+::: {.analysis-subtitle}
+Variance, covariance, and correlation
+:::
 
 <small>
 
@@ -25,7 +27,7 @@ A relationship is the way in which two or more concepts are connected. Consider 
   <figcaption>In this video I'll explain main parts of this chapter.</figcaption>
 </figure>
 
-## Storks Deliver Babies
+### Storks Deliver Babies
 
 ```{r, echo=FALSE, out.width="100%", fig.cap="Stork bringing baby - Colmar, Alsace.", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Stork_bringing_baby_-_Colmar%2C_Alsace%2C_2016.05.18_%2835%29.jpg/1920px-Stork_bringing_baby_-_Colmar%2C_Alsace%2C_2016.05.18_%2835%29.jpg") 
@@ -73,11 +75,11 @@ library(modelsummary)
 datasummary(All(storks %>% select(-Year)) ~ Min + Mean + Max + Histogram, storks %>% select(-Year))
 ```
 
-## Statistics 
+### Statistics 
 
 Before venturing into specific inquiries, it is essential to establish a solid foundation by introducing key concepts such as *variance*, *covariance*, *correlation*, and *levels of measurement*. The understanding of variance is paramount as it provides valuable insights into the degree of variability within a variable. Covariance, the measure of how two variables change together, assumes a pivotal role in unveiling the direction of association between them. The standardized measure of association, correlation, plays a central role in quantifying the strength and direction of relationships.
 
-### Variance
+#### Variance
 
 The map shows the number of stork pairs for the selected countries. Looks like storks like certain countries more than others. 
 
@@ -170,7 +172,7 @@ When you collect data from every member of the population that you’re interest
 
 Please try mental calculation. What is the variance of 3, 5, 7, 9 and 11? Answer: `r fitb(8)`.
 
-### Standard Deviation 
+#### Standard Deviation 
 
 <!-- https://www.scribbr.com/statistics/variance/ -->
 <!-- http://stla.overblog.com/schematizing-the-variance-as-a-moment-of-inertia -->
@@ -256,7 +258,7 @@ ggplot(aes(x=x, y=y), data=data) +
 
 Now, that we know how to describe the variation of each of the two variables, we look for a measure that reflects the co-variation of both variables, i.e. how they change in relation to each other. The new grid of means is a good starting point. When most data points fall into lower left and upper right quadrant, we call this a positive relationship. 
 
-### Covariance  
+#### Covariance  
 <!-- https://evangelinereynolds.netlify.app/post/geometric-covariance/ -->
 <!-- https://stats.stackexchange.com/questions/18058/how-would-you-explain-covariance-to-someone-who-understands-only-the-mean -->
 
@@ -316,7 +318,7 @@ Covariance qualifies a relationship as positive or negative, i.e. the direction 
 
 We need a measure independent of units in a fixed range, the correlation coefficient. 
 
-### Correlation 
+#### Correlation 
 
 To assess the strength of a relationship between two variables a correlation coefficient is commonly used. It brings variation to a standardized scale between -1 to +1.
 
@@ -385,7 +387,7 @@ Small p-values below 0.05 are usually considered to be statistically significant
 
 <!-- https://stats.stackexchange.com/questions/32464/how-does-the-correlation-coefficient-differ-from-regression-slope -->
 
-### An Early Glimpse into Regression
+#### An Early Glimpse into Regression
 
 Now, let's consolidate our understanding with a minimal example. Consider 5 observations for two variables, $x = (4, 13, 19, 25, 29)$  and $y = (10, 12, 28, 32, 38)$. To compute the variance for each variable, we follow a simple process: subtract the mean, square the difference, and sum the results. The mean of $x$ is `r fitb(18)` while the mean of $y$ is `r fitb(24)`.
 
@@ -499,7 +501,7 @@ df_scaled_wide %>%
 ```
 
 
-## Visualizations 
+### Visualizations 
 
 ```{r, message=FALSE, warning=FALSE, echo = F, eval = F}
 storks <- storks %>% 
@@ -514,7 +516,7 @@ modelsummary(list(model1, model2), stars = TRUE)
 
 In our example, we explored the stork-baby relationship by measuring the number of stork pairs and human population as continuous variables. Using a *scatter plot*, we depict their connection as dots on a graph. We also try another way by changing one of the continuous things into groups, like putting them in boxes. We then use a *barplot* to show this connection. This helps us see both the detailed view of the continuous things and the simpler picture when we group them. It gives readers a good understanding of how things are related in different ways.
 
-### Storks and Population in a Scatterplot 
+#### Storks and Population in a Scatterplot 
 
 The *scatterplot* is a two-dimensional instrument that shows the number of storks on the x-axis and the population on the y-axis. The blue line illustrates the linear trend between the variables. Since its slope is increasing, it suggests a positive connection between storks and population, i.e. countries with more pairs of storks also tend to have a higher population.
 
@@ -530,7 +532,7 @@ ggplot(storks, aes(x = Storks, y = Population)) +
 
 The data doesn't cluster in a nice dot cloud but is spread out in both directions. While some countries only have a hand full of storks, others have tens of thousands. Let's explore this in more detail.
 
-### Storks and Population in a Barplot  
+#### Storks and Population in a Barplot  
 
 A *barplot* is a graphical representation of categorical data where individual bars correspond to different categories, and the length of each bar represents the frequency or value associated with that category.
 
@@ -552,7 +554,7 @@ storks %>%
 
 In the first quartile are countries with a range of stork numbers between 3 and 198. For all those countries the average population is about 14 million. 
 
-### Storks and Area 
+#### Storks and Area 
 
 we should also consider area when talking about the stork population relationship. since Additionally, considerations of geographical area size reveal potential confounding factors, where larger areas might exhibit both more storks and higher human populations. 
 
@@ -591,7 +593,7 @@ combined_plot <- plot_linear + plot_logarithmic + plot_layout(ncol = 2)
 # Display the combined plot
 combined_plot
 ```
-### Storks and Urban Population
+#### Storks and Urban Population
 
 
 Examining the stork-baby relationship in light of the share of urban population provides a more nuanced understanding of the observed correlation. The positive link between stork population and human population may be influenced by several factors. 
@@ -622,7 +624,7 @@ storks %>%
 ```
 
 
-## Spurious Relationships
+### Spurious Relationships
 
 ```{r, echo=FALSE, out.width="60%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg") 
@@ -682,7 +684,7 @@ remote_driver$close()
 print(urls)
 ```
 
-## Readings {-}
+### Readings {-}
 
 - Matthews, R. (2000). Storks deliver babies (p= 0.008). Teaching Statistics, 22(2), 36-38.
 
@@ -692,5 +694,3 @@ print(urls)
 <!-- https://www.nabu.de/imperia/md/content/bergenhusen/130618-nabu-weissstorchenzensus.pdf -->
 <!-- https://www.nabu.de/news/2005/zensus.html -->
 <!-- https://en.wikipedia.org/wiki/White_stork#/media/File:Europe_stork.png -->
-
-

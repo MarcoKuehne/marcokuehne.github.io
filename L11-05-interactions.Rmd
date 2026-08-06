@@ -1,6 +1,10 @@
-# Interaction Models 
+## Interactions {#interactions}
 
-## Motivation
+::: {.analysis-subtitle}
+Conditional relationships and moderation
+:::
+
+### Motivation
 
 <!-- https://www.researchgate.net/post/Is_there_any_different_between_control_variable_and_moderating_variable2 -->
 <!-- In many contexts, the effect of one variable on another might be allowed to vary. For example, the relationship between income and mortality is nonlinear, so the effect of an additional dollar of income on mortality is different for someone earning \$20,000/year than for someone earning $100,000/year. Or maybe the relationship between income and mortality differs depending on how many years of education you have. A marginal effects plot displays the effect of X on Y for different values of Z (or X).  -->
@@ -21,7 +25,7 @@ In mathematical terms an interaction is an additional multiplication term:
 
 $$ muscle = training + age + training*age  $$
 
-## Data & Sample
+### Data & Sample
 
 <!-- <button type="button" class="btn btn-default">Show session info</button> -->
 
@@ -98,7 +102,7 @@ soep <- soep %>%
          Kids = factor(Kids))
 ```
 
-## Throwback Parallel Slopes 
+### Throwback Parallel Slopes 
 
 Simple regression is very similar to the correlation between two variables. A multiple regression with one continuous and one dummy variable is called a *parallel slopes* model. The data looks like this:
 
@@ -120,7 +124,7 @@ multiple <- lm(Income ~ Age + Female, data=soep)
 
 Conclusion from Parallel Slopes: The *fundamental truth* is that the effect of age on income is identical across gender (i.e. for males and females). Males and female are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?
 
-## Regression with Moderators
+### Regression with Moderators
 <!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
 
 In the following we consider all possible kinds of two-way interactions (between two variables). Higher-order interaction might be useful under special conditions, e.g. in a study where the effect of a new drug depends on the patient's age and gender. 
@@ -147,7 +151,7 @@ The single terms `vs` and `am` are sometimes called the *main effects*.
 
 </div>
 
-### Dummy \* Dummy
+#### Dummy \* Dummy
 <!-- https://www.theanalysisfactor.com/interaction-dummy-variables-in-linear-regression/ -->
 <!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
 <!-- Categorical by categorical interactions: All the tools described here require at least one variable to be continuous. A separate vignette describes cat_plot, which handles the plotting of interactions in which all the focal predictors are categorical variables. -->
@@ -170,7 +174,7 @@ cat_plot(interact1, pred = Kids, modx = Female)
 
 This graph suggests that men earn more than women. Men with kids earn more than men without kids. The kids-effect is reversed for women, which report higher incomes when they do not have kids.
 
-### Categorical \* Dummy
+#### Categorical \* Dummy
 
 We estimate how income depends on working in different industries and being female.
 
@@ -208,7 +212,7 @@ cat_plot(interact2, pred = Industry, modx = Female) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
-### Continuous \* Dummy
+#### Continuous \* Dummy
 <!-- https://r4ds.had.co.nz/model-basics.html#interactions-continuous-and-categorical -->
 <!-- https://moderndive.com/6-multiple-regression.html#model4interactiontable -->
 <!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
@@ -261,7 +265,7 @@ interact_plot(interact3b, pred = Age, modx = Female) +
 
 <!-- Now it is no longer a parallel slopes model. A different slope is equivalent to a different effect of height on weight for the two genders.  -->
 
-### Continuous \* Continuous
+#### Continuous \* Continuous
 <!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
 <!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
 
@@ -280,7 +284,7 @@ This shows you that interaction between two continuous variables works basically
 
 You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.
 
-## Model Comparison 
+### Model Comparison 
 
 How to decide if the model with interaction is better than the model without interaction?
 
@@ -308,5 +312,3 @@ modelsummary(title = 'Comparison',
     $(this).toggleClass("open");
   });
 </script>
-
-

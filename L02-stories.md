@@ -16,40 +16,7 @@ A good story is based on facts and reliable sources. When evaluating facts, it's
 
 Good data visualization helps to convey complex information in a way that is easily understandable and accessible to a wide range of people. By presenting data in a visually appealing and intuitive way, it can help people to identify patterns, trends, and relationships that might not be immediately apparent from a simple data table or text-based analysis. 
 
-```{r, eval=T, echo=F, warning=FALSE, message=FALSE}
-library(readxl)
-parttime <- readxl::read_xlsx("./data/OECD/parttime_gender_easy.xlsx")
-
-# Version 1
-library(showtext)
-
-female = intToUtf8(9792)
-male = intToUtf8(9794)
-
-library(tidyverse)
-parttime %>% 
-  filter(Year == 2021) %>% 
-  #mutate(Sex = forcats::fct_infreq(Sex)) %>% 
-  ggplot(aes(x = Sex, y = Percent, fill = Sex)) + 
-  geom_col(width = 0.5) + 
-  labs(title = "Share of employed in part-time employment, by sex (Germany)") + 
-  theme_minimal() +
-  ggplot2::annotate("text", x = 1, y = 5, label = male, size = 20) +
-  ggplot2::annotate("text", x = 2, y = 25, label = female, size = 20) 
-
-# Version 2 
-# library("ggimage")
-# 
-# parttime %>% 
-#   filter(Year == 2021) %>% 
-#   mutate(image = c("https://raw.githubusercontent.com/ionic-team/ionicons/main/src/svg/male-outline.svg",
-#               "https://raw.githubusercontent.com/ionic-team/ionicons/main/src/svg/female-outline.svg")) %>% 
-#   ggplot(aes(x = Sex, y = Percent, fill = Sex)) + 
-#   geom_col(width = 0.5) + 
-#   geom_image(aes(image=image), size=.2, nudge_y = -4) + 
-#   labs(title = "Share of employed in part-time employment, by sex (Germany)") + 
-#   theme_minimal() 
-```
+<img src="L02-stories_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" />
 
 Why not just tell the numbers as is? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible. 
 
@@ -93,9 +60,10 @@ Despite these societal expectations, Alex and Jamie continued to pursue their in
 
 Humans love dogs. Dogs were domesticated by humans over 15,000 years ago. They can be perfect companions for singles, for couples for families. They differ in behavior, longevity and appetite. Figure \@ref(fig:dogs) combines 6 dog characteristics in a *dog score* and compares this with the popularity of different breeds. From this scatterplot the authors define four categories of dog breads, e.g. the hot dogs and overlooked treasures (similar to a [BCG matrix](https://en.wikipedia.org/wiki/Growth%E2%80%93share_matrix)). 
 
-```{r dogs, echo=FALSE, out.width="100%", fig.cap="The Ultimate Dog Data by [informationisbeautiful](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/).", fig.align='center'}
-knitr::include_graphics("https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png")
-```
+<div class="figure" style="text-align: center">
+<img src="https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png" alt="The Ultimate Dog Data by [informationisbeautiful](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/)." width="100%" />
+<p class="caption">(\#fig:dogs)The Ultimate Dog Data by [informationisbeautiful](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/).</p>
+</div>
 
 On the one hand, this is an awesome chart that transforms a huge data table in one graph, a scatter plot on two dimensions lightened by the individual dog icons for each data point. On the other hand, this graph is so complex and does not offer a major takeaway. Looking more closely to the graph, raises more questions then the graph answers, i.e. how was *grooming* and *appetite* measured? How are the 6 factors combined in the *data score*? When you look even more closely, you notice the easter egg.^[The frightened cat among all dogs.]
 
@@ -113,9 +81,9 @@ Follow the slide presentation:
 
 <!-- According to the principles of **remove to improve**, decide on these design elements: -->
 
-<!-- -   Remove backgrounds. `r torf(TRUE)` -->
-<!-- -   Remove 3D effects. `r torf(TRUE)` -->
-<!-- -   Remove bolding. `r torf(TRUE)` -->
+<!-- -   Remove backgrounds. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> -->
+<!-- -   Remove 3D effects. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> -->
+<!-- -   Remove bolding. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> -->
 
 The concept of data-ink ratio was introduced by data visualization expert Edward Tufte. It refers to the proportion of ink or pixels used to represent actual data in a visualization, as opposed to non-data elements like gridlines, borders, or labels.
 

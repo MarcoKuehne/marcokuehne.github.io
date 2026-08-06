@@ -1,0 +1,658 @@
+## Items {#items}
+
+::: {.analysis-subtitle}
+Item response theory
+:::
+
+Factor analysis begins with several indicators and asks what latent variable could explain why they covary. Item response theory turns the same measurement problem around and looks directly at each response:
+
+> How likely is a person with a particular level of competence to solve this particular item?
+
+This shift makes **persons and items equally visible**. A response can be unlikely because the person has less of the relevant competence, because the item is difficult, or because the model does not adequately describe the response process.
+
+### Where IRT Sits among Latent Variable Models {#irt-latent-map}
+
+A useful first map distinguishes the measurement level of the observed indicators from the form of the latent variable.
+
+| Observed indicators | Continuous latent variable | Categorical latent variable |
+|---|---|---|
+| Continuous | factor analysis | latent profile analysis |
+| Categorical | item response theory / categorical factor analysis | latent class analysis |
+
+Item response theory is therefore **not one isolated model** in one cell. It is the main family of latent-trait models for categorical item responses. Categorical confirmatory factor analysis occupies much of the same mathematical territory, but uses the language of loadings and thresholds rather than item discrimination and difficulty.
+
+The table is a map, not an exhaustive classification. Models may contain several continuous and categorical latent variables, mixed item types, repeated measurements, multilevel structures, testlets, response times, or latent classes of response processes.
+
+::: {.analysis-note}
+IRT is best understood as a family of measurement models. The Rasch model is one especially important member of that family.
+:::
+
+### Persons and Items on a Common Scale {#irt-person-item-scale}
+
+For a binary item, the Rasch model is
+
+\[
+P(X_{pi}=1\mid\theta_p,b_i)
+=
+\frac{\exp(\theta_p-b_i)}
+{1+\exp(\theta_p-b_i)},
+\]
+
+where:
+
+- \(X_{pi}=1\) means that person \(p\) solved item \(i\);
+- \(\theta_p\) is the person's latent competence;
+- \(b_i\) is the item's difficulty.
+
+The same relationship can be written on the log-odds scale:
+
+\[
+\operatorname{logit}\{P(X_{pi}=1)\}
+=
+\theta_p-b_i.
+\]
+
+This simple difference has an unusually clear interpretation:
+
+- if \(\theta_p=b_i\), the predicted probability is \(.50\);
+- if the person is one logit above the item, it is about \(.73\);
+- if the person is one logit below the item, it is about \(.27\).
+
+A higher value means more competence for persons and more difficulty for items. Persons and items can therefore be placed on one common latent scale.
+
+```{r rasch-curves, echo=TRUE, fig.cap="Three Rasch item characteristic curves. The item is solved with probability .50 where person competence equals item difficulty.", out.width="85%"}
+theta <- seq(-4, 4, length.out = 200)
+difficulty <- c(-1.5, 0, 1.5)
+probability <- sapply(difficulty, function(b) plogis(theta - b))
+
+matplot(
+  theta,
+  probability,
+  type = "l",
+  lty = 1,
+  lwd = 2,
+  xlab = expression("Person competence " * theta),
+  ylab = "Probability of a correct response",
+  ylim = c(0, 1)
+)
+abline(h = 0.5, lty = 3)
+legend(
+  "topleft",
+  legend = paste("difficulty =", difficulty),
+  lty = 1,
+  lwd = 2,
+  bty = "n"
+)
+```
+
+### Why Begin with Rasch? {#why-rasch}
+
+The Rasch model is attractive because it is small, interpretable, and demanding.
+
+Its defining restrictions are:
+
+1. every item has its own difficulty \(b_i\);
+2. all items discriminate equally strongly;
+3. there is no item-specific guessing parameter;
+4. after conditioning on competence, responses are locally independent.
+
+These restrictions produce several useful consequences.
+
+#### One additive comparison
+
+The response probability depends only on \(\theta_p-b_i\). A difference of one logit has the same meaning throughout the scale.
+
+#### A raw score can be sufficient
+
+For a complete response vector to the same set of binary Rasch items, the number correct is a sufficient statistic for the person parameter. Two pupils with the same raw score receive the same Rasch point estimate, even if they solved different items.
+
+This result no longer holds so simply when pupils receive different item sets, responses are missing, items receive different discrimination parameters, or the model includes further dimensions.
+
+#### Item and person comparisons can be separated
+
+Under model fit, comparisons among persons do not depend on the particular items used, and comparisons among items do not depend on the particular persons sampled, apart from the uncertainty introduced by finite data. This property is often called **specific objectivity**.
+
+#### The model can be tested rather than merely fitted
+
+Rasch measurement treats equal discrimination and invariance as substantive requirements. If an item does not behave accordingly, the first question is whether the item, scoring, dimensionality, or population violates the intended measurement model—not merely whether another model has a better information criterion.
+
+This is also the limitation. The Rasch model may be too restrictive. A two-parameter model may describe the data better when some items distinguish much more sharply between lower- and higher-competence pupils than others.
+
+### IRT Is a Family of Models {#irt-model-family}
+
+Different item formats and response processes require different response functions.
+
+| Situation | Common model | What varies by item? |
+|---|---|---|
+| Correct / incorrect | Rasch model | difficulty |
+| Correct / incorrect | 1PL model | difficulty; one common discrimination may be estimated |
+| Correct / incorrect | 2PL model | difficulty and discrimination |
+| Multiple choice with lower asymptote | 3PL model | difficulty, discrimination, guessing |
+| Ordered partial-credit categories | partial credit model | step difficulties |
+| Same rating categories across items | rating scale model | item location, with shared category-step structure |
+| Ordered categories with varying discrimination | generalized partial credit or graded response model | thresholds and discrimination |
+| Unordered response categories | nominal response model | category-specific response parameters |
+| Several competencies | multidimensional IRT | item relations to several latent traits |
+| Items nested in common texts or stimuli | testlet model | general competence plus local testlet effects |
+
+The labels **Rasch** and **1PL** are sometimes used interchangeably. Conceptually, both impose equal item discrimination. Software may distinguish them through scale identification: for example, `mirt` fixes Rasch slopes to one and estimates the latent variance, whereas its `1PL` option handles the scale differently. After an appropriate rescaling, the substantive one-parameter response model is the same.
+
+### Models within the Rasch Family {#rasch-family}
+
+The binary Rasch model is only the beginning.
+
+#### Dichotomous Rasch model
+
+Each item is scored \(0\) or \(1\). The item has one difficulty parameter.
+
+#### Partial credit model
+
+An item can award ordered scores such as \(0,1,2\). Each transition between adjacent score categories has its own step difficulty. The item may therefore distinguish between no credit, partial credit, and full credit without abandoning Rasch-style equal discrimination.
+
+#### Rating scale model
+
+This is a more restrictive model for repeated rating categories. It assumes that the category-step structure is shared across items, while items differ in overall location.
+
+#### Many-facet Rasch model
+
+Additional facets can enter additively, such as task difficulty, rater severity, occasion, or response mode. This is useful when performance depends not only on a person and an item but also on who scored the response.
+
+#### Multidimensional and explanatory Rasch models
+
+Several latent competencies can be modelled, or item difficulty can be explained by observable item features. The linear logistic test model, for example, decomposes item difficulty into contributions from item characteristics.
+
+These extensions preserve parts of the Rasch logic, but each adds assumptions that need substantive justification.
+
+### Three Choices That Are Often Mixed Together {#irt-three-choices}
+
+A large-scale assessment involves at least three distinct decisions.
+
+#### 1. The response model
+
+This determines how item responses depend on person and item characteristics: Rasch, 2PL, partial credit, graded response, multidimensional IRT, and so forth.
+
+#### 2. Estimation of model parameters
+
+This determines how item parameters and population parameters are calibrated.
+
+| Method | Basic idea | Typical role |
+|---|---|---|
+| Conditional maximum likelihood | Conditions on the Rasch raw score so that person parameters disappear from item calibration | Classical Rasch estimation |
+| Marginal maximum likelihood | Integrates over a population distribution of competence | Large-scale assessment and modern IRT software |
+| Joint maximum likelihood | Estimates person and item parameters together | Historically important; can be biased with short tests |
+| Bayesian estimation | Combines likelihoods with prior distributions and produces posterior distributions | Complex and hierarchical IRT models |
+
+#### 3. Person scoring after calibration
+
+This determines how the fitted model is used to summarize the uncertain competence of a person. EAP, MAP, WLE, and plausible values are alternatives at this third stage. They are not different Rasch models.
+
+### From a Response Pattern to a Person Distribution {#irt-person-posterior}
+
+After the item model has been calibrated, a pupil's responses produce a likelihood for \(\theta_p\):
+
+\[
+L(\theta_p\mid\mathbf x_p,\widehat{\boldsymbol b})
+=
+\prod_i
+P(X_{pi}=x_{pi}\mid\theta_p,\widehat b_i).
+\]
+
+Combining this likelihood with a population distribution gives the posterior distribution:
+
+\[
+p(\theta_p\mid\mathbf x_p)
+\propto
+L(\theta_p\mid\mathbf x_p)\,p(\theta_p).
+\]
+
+The important object is this **whole distribution**. A person score is a summary of it—or, in the case of a plausible value, a draw from it.
+
+### Person-Score Options {#irt-score-options}
+
+| Result | Definition | Uses a prior? | Main strength | Main caution |
+|---|---|---:|---|---|
+| ML | value maximizing the response likelihood | no | based only on the response pattern and calibrated items | undefined at all-wrong or all-correct extremes in the basic model |
+| WLE | bias-adjusted likelihood estimate | no population prior | reduces first-order bias of ML and is often useful for individual point scoring | still a point estimate; uncertainty must be reported separately |
+| MAP | mode of the posterior distribution | yes | finite and stable, including near the extremes | shrinks estimates toward the prior distribution |
+| EAP | mean of the posterior distribution | yes | minimizes posterior expected squared error and is easy to accompany with a posterior SD | also shrinks; depends on the chosen population model |
+| Plausible value | random draw from the posterior distribution | yes | carries uncertainty into population analyses and regressions | not an individual diagnostic score and not meant to be averaged into one “best” score |
+
+#### EAP: the centre of gravity
+
+The expected-a-posteriori estimate is
+
+\[
+\widehat\theta_p^{EAP}
+=
+E(\theta_p\mid\mathbf x_p).
+\]
+
+It is the posterior mean. If the posterior is symmetric, EAP and MAP can be almost identical. If it is skewed, they differ.
+
+EAP estimates are stable for short tests and extreme response patterns because the population distribution contributes information. The price is shrinkage: highly unusual estimates are pulled toward the population mean, especially when the pupil answered few items.
+
+#### MAP: the highest point
+
+The maximum-a-posteriori estimate is
+
+\[
+\widehat\theta_p^{MAP}
+=
+\operatorname*{arg\,max}_{\theta_p}
+ p(\theta_p\mid\mathbf x_p).
+\]
+
+It is the mode of the posterior distribution. MAP can be easier to compute in high-dimensional models than EAP, because it finds a maximum rather than integrating over a large grid.
+
+#### WLE: a likelihood score with bias correction
+
+The weighted-likelihood estimate modifies maximum likelihood to reduce its small-sample bias. It does not use a population prior in the EAP/MAP sense and therefore usually shrinks less toward the population mean.
+
+WLE is attractive when a single person-level point estimate is required. It should still be accompanied by a conditional standard error, because measurement precision differs across the competence scale.
+
+#### Plausible values: several completed versions of the latent variable
+
+A plausible value is not the posterior mean or mode. It is a random draw:
+
+\[
+\theta_p^{(m)}
+\sim
+p(\theta_p\mid\mathbf x_p,\mathbf z_p),
+\]
+
+where \(\mathbf z_p\) may contain background variables used in a latent regression model.
+
+Several plausible values create several completed datasets. A population analysis is run once with each plausible value and the results are combined. This is closely related to multiple imputation.
+
+Plausible values are particularly valuable when the aim is to estimate population means, group differences, correlations, or regression coefficients. They are deliberately unsuitable for ranking individual pupils or reporting one supposedly exact competence value.
+
+::: {.analysis-note}
+EAP, MAP, and WLE answer: “Which single value should summarize this pupil's uncertain competence?” Plausible values answer: “How can later population analyses retain that uncertainty rather than pretending the latent variable was observed?”
+:::
+
+### Why the Methods Give Different Scores {#irt-score-differences}
+
+The differences become largest when:
+
+- the test is short;
+- many items are missing;
+- the response pattern is all correct or all incorrect;
+- the pupil is far from the centre of the item difficulties;
+- the posterior distribution is skewed;
+- background variables strongly predict the latent trait;
+- the item model is multidimensional.
+
+With a long, well-targeted test, the likelihood is concentrated and ML, WLE, MAP, and EAP will often be close. With little information, the scoring rule matters much more.
+
+### VERA as an IRT Application {#irt-vera}
+
+VERA stands for *VERgleichsArbeiten*. The assessments are administered in Years 3 and 8 and are intended primarily to support school and classroom development. They relate pupils' performance to the national educational standards and their competence-level models. The results are not intended as school rankings and are not graded.
+
+The IQB describes competence as a continuous scale that is divided into a small number of substantively interpreted levels. Item difficulties and pupil competence are located on the same metric; the levels make that otherwise abstract scale interpretable for teaching.
+
+VERA is therefore a particularly clear application of the basic IRT sequence:
+
+\[
+\text{educational standards}
+\longrightarrow
+\text{items}
+\longrightarrow
+\text{IRT scale}
+\longrightarrow
+\text{competence levels}
+\longrightarrow
+\text{feedback for instruction}.
+\]
+
+The IQB also notes that a statistical competence value can be returned for an individual pupil when the difficulties of the administered items are known. At the same time, the individual result needs additional diagnostic evidence—such as learning progress and classroom observations—to support conclusions about one child.
+
+A Rasch model is a natural starting point for VERA-style scoring because many responses are coded as correct or incorrect, items are calibrated on a common scale, and comparability is a central goal. It should not be assumed automatically, however. Dimensionality, local dependence, item fit, differential item functioning, and the consequences of different test booklets must be examined.
+
+Research using VERA data has compared Rasch, 1PL, 2PL, and multidimensional models. This is useful evidence that “VERA uses IRT” does not settle every modelling choice. The appropriate model remains an empirical and substantive question.
+
+VERA and PISA also have different reporting purposes. PISA plausible values are designed for population estimates and secondary analyses. VERA feedback may include an individual competence estimate and a competence-level classification for instructional use. The public IQB materials reviewed for this section do not specify one universal EAP, MAP, or WLE scoring rule for every Land and every assessment cycle. It would therefore be unsafe to label all VERA person scores as one particular estimator without the technical documentation for the relevant implementation.
+
+### Are VERA Items and IQB Data Public? {#irt-vera-data}
+
+The answer depends on what is meant by *the data*.
+
+#### Published example tasks: yes
+
+The IQB task browser contains many VERA examples from earlier cycles together with solutions and didactic commentaries. They can be filtered by subject, competence domain, level, and other task characteristics. Many IQB-produced tasks are released under a Creative Commons licence.
+
+These materials are excellent for understanding task design and competence levels, but they are not an item-response dataset. They do not provide one row per pupil and one scored response per item.
+
+#### The operational item pool: not fully open
+
+VERA uses newly developed tasks and may reuse tasks from earlier assessments. It follows that the current operational pool cannot simply be treated as a completely open item bank. Released examples represent the public part of a larger testing system.
+
+#### IQB research data: available by application
+
+The Research Data Centre at the IQB provides anonymized Scientific Use Files and Campus Use Files for non-commercial research and teaching. Access is generally free but requires an application and agreement to the conditions of use. Documentation, empty data structures, scaling manuals, and study reports may be available without a data application.
+
+I did not find a nationwide VERA pupil-by-item response file offered as an unrestricted direct download. The most relevant German alternative is therefore an IQB education-monitoring dataset obtained through the FDZ, such as an IQB National Assessment or Trend in Student Achievement dataset.
+
+#### Directly downloadable international alternatives
+
+PISA provides public-use files, including cognitive item-response files and scored cognitive item-response files. These are close to the full large-scale-assessment workflow, but they are too large and complex for a first five-line Rasch example.
+
+TIMSS item responses included in R packages provide a smaller bridge. The following example uses real Grade 4 mathematics responses distributed with the `sirt` package. It resembles VERA in age group, educational setting, binary items, missing-by-design responses, and a common competence scale, while remaining small enough for an introductory analysis.
+
+| Source | Item texts | Pupil response matrix | Immediate access | Best use here |
+|---|---:|---:|---:|---|
+| IQB VERA task browser | yes, selected past tasks | no | yes | understand items and competence levels |
+| IQB FDZ Scientific Use File | depends on study and restrictions | yes | application required | German secondary analysis |
+| OECD PISA public-use files | coded item information | yes | yes | full large-scale-assessment analysis |
+| `sirt::data.timss` | item identifiers and metadata | yes | yes, with R package | minimal Rasch demonstration |
+
+### A Minimal Rasch Application in R {#irt-r-example}
+
+This example has four aims:
+
+1. load a small public educational item-response dataset;
+2. estimate a Rasch model;
+3. inspect item difficulties;
+4. compare EAP, MAP, WLE, and plausible values for the same pupils.
+
+The package chunks are initially marked `eval=FALSE` so that the current book build does not depend on two new packages before they have been installed and tested locally. After installing `mirt` and `sirt`, remove `eval=FALSE` from the chunks.
+
+#### Load Grade 4 TIMSS item responses
+
+```{r irt-load-data, eval=FALSE, message=FALSE, warning=FALSE}
+# Run once in the R console:
+# install.packages(c("mirt", "sirt"))
+
+library(mirt)
+library(sirt)
+
+data(data.timss, package = "sirt")
+
+# The object contains person data and item metadata.
+timss_person <- data.timss$data
+timss_item <- data.timss$item
+
+# TIMSS mathematics item names begin with M.
+item_names <- grep("^M", names(timss_person), value = TRUE)
+responses <- timss_person[, item_names]
+
+# Keep pupils who received at least one of these items.
+keep <- rowSums(!is.na(responses)) > 0
+responses <- responses[keep, ]
+pupils <- timss_person[keep, c("idstud", "girl", "age")]
+
+c(
+  pupils = nrow(responses),
+  items = ncol(responses),
+  observed_responses = sum(!is.na(responses))
+)
+```
+
+Rows are pupils, columns are items, `1` is correct, `0` is incorrect, and `NA` indicates that an item was not observed. In a booklet design, `NA` does not automatically mean that a pupil failed the item.
+
+#### Inspect solution rates before fitting IRT
+
+```{r irt-classical-item-view, eval=FALSE}
+solution_rate <- data.frame(
+  item = names(responses),
+  administered = colSums(!is.na(responses)),
+  proportion_correct = colMeans(responses, na.rm = TRUE)
+)
+
+solution_rate <- solution_rate[order(solution_rate$proportion_correct), ]
+knitr::kable(solution_rate, digits = 2)
+```
+
+The proportion correct is an observed descriptive statistic. Rasch difficulty is a model parameter on the logit scale. The two will be strongly related, but they are not literally the same quantity—especially with different booklets or non-random missingness.
+
+#### Estimate the Rasch model
+
+```{r irt-fit-rasch, eval=FALSE, message=FALSE, warning=FALSE}
+rasch_fit <- mirt(
+  data = responses,
+  model = 1,
+  itemtype = "Rasch",
+  verbose = FALSE
+)
+
+rasch_fit
+```
+
+`model = 1` specifies one latent competence dimension. `itemtype = "Rasch"` fixes the item slopes to one. The item difficulties are estimated while the latent distribution supplies the scale.
+
+#### Extract item difficulties
+
+```{r irt-item-parameters, eval=FALSE}
+item_parameters <- as.data.frame(
+  coef(rasch_fit, IRTpars = TRUE, simplify = TRUE)$items
+)
+item_parameters$item <- rownames(item_parameters)
+
+item_metadata <- timss_item
+item_metadata$item <- as.character(item_metadata$item)
+
+item_table <- merge(
+  item_metadata,
+  item_parameters[, c("item", "b")],
+  by = "item",
+  all.y = TRUE
+)
+item_table <- item_table[order(item_table$b), ]
+
+knitr::kable(item_table, digits = 2)
+```
+
+A lower \(b_i\) indicates an easier item. An item with \(b_i=1\) is predicted to be solved with probability \(.50\) by a pupil whose competence is \(\theta=1\).
+
+#### Draw item curves and test information
+
+```{r irt-model-plots, eval=FALSE, fig.width=8, fig.height=5}
+# Six item characteristic curves for readability.
+plot(
+  rasch_fit,
+  type = "trace",
+  which.items = 1:6,
+  facet_items = TRUE
+)
+
+# Where does the whole test measure most precisely?
+plot(rasch_fit, type = "info")
+```
+
+In a Rasch model, all curves have the same shape and differ only in horizontal location. The test-information curve shows where the collection of items provides the greatest measurement precision.
+
+#### Compute EAP, MAP, and WLE scores
+
+```{r irt-point-scores, eval=FALSE}
+eap <- fscores(
+  rasch_fit,
+  method = "EAP",
+  full.scores.SE = TRUE
+)
+
+map <- fscores(
+  rasch_fit,
+  method = "MAP",
+  full.scores.SE = TRUE
+)
+
+wle <- fscores(
+  rasch_fit,
+  method = "WLE",
+  full.scores.SE = TRUE
+)
+
+score_comparison <- data.frame(
+  id = pupils$idstud,
+  administered = rowSums(!is.na(responses)),
+  raw_score = rowSums(responses, na.rm = TRUE),
+  EAP = eap[, "F1"],
+  SE_EAP = eap[, "SE_F1"],
+  MAP = map[, "F1"],
+  SE_MAP = map[, "SE_F1"],
+  WLE = wle[, "F1"],
+  SE_WLE = wle[, "SE_F1"]
+)
+
+# Select pupils across the raw-score distribution.
+ord <- order(score_comparison$raw_score)
+show <- unique(round(seq(1, length(ord), length.out = 10)))
+knitr::kable(score_comparison[ord[show], ], digits = 2)
+```
+
+The three point estimates should generally move together. Differences are expected near the extremes and for pupils with relatively little observed item information.
+
+```{r irt-score-comparison-plot, eval=FALSE, fig.width=6, fig.height=5}
+plot(
+  score_comparison$EAP,
+  score_comparison$WLE,
+  xlab = "EAP estimate",
+  ylab = "WLE estimate"
+)
+abline(0, 1, lty = 2)
+```
+
+#### Draw plausible values
+
+```{r irt-plausible-values, eval=FALSE}
+set.seed(20260806)
+
+pv_list <- fscores(
+  rasch_fit,
+  plausible.draws = 5
+)
+
+pv_matrix <- do.call(
+  cbind,
+  lapply(pv_list, function(draw) draw[, "F1"])
+)
+colnames(pv_matrix) <- paste0("PV", 1:5)
+
+score_with_pv <- cbind(score_comparison, pv_matrix)
+knitr::kable(score_with_pv[ord[show], ], digits = 2)
+```
+
+Each row now contains five different values because the latent competence remains uncertain. They should not be averaged to create a supposedly better pupil score.
+
+For a population regression, the intended workflow is instead:
+
+1. fit the regression with `PV1`;
+2. repeat it with `PV2` through `PV5`;
+3. pool coefficients and uncertainty using multiple-imputation rules.
+
+For a genuine PISA-style analysis, plausible values should be generated from a latent regression model containing relevant background variables and analysed together with the survey weights and replicate weights. The simple draws above demonstrate the logic but do not reproduce the complete PISA production procedure.
+
+### What You Need for Your Own VERA-Style Analysis {#irt-own-data}
+
+Item difficulties alone are not sufficient to estimate pupil competence. At minimum, you need:
+
+- one row per pupil;
+- one column per item or sub-item;
+- scored responses such as `0`, `1`, and possibly ordered partial-credit categories;
+- `NA` for genuinely unobserved items;
+- stable item identifiers matching the difficulty table;
+- information about test booklets or modules;
+- ideally, item metadata and relevant grouping variables for fit and DIF checks.
+
+A minimal data layout is:
+
+| pupil_id | item_01 | item_02 | item_03 | item_04 |
+|---|---:|---:|---:|---:|
+| 1001 | 1 | 0 | 1 | NA |
+| 1002 | 1 | 1 | 1 | 0 |
+| 1003 | 0 | 0 | NA | 0 |
+
+With raw responses available, the same code pattern becomes:
+
+```{r irt-own-data-template, eval=FALSE}
+vera <- read.csv("vera_scored_responses.csv")
+
+item_names <- grep("^item_", names(vera), value = TRUE)
+responses <- vera[, item_names]
+
+rasch_fit <- mirt(
+  responses,
+  model = 1,
+  itemtype = "Rasch",
+  verbose = FALSE
+)
+
+item_parameters <- coef(
+  rasch_fit,
+  IRTpars = TRUE,
+  simplify = TRUE
+)$items
+
+person_scores <- fscores(
+  rasch_fit,
+  method = "WLE",
+  full.scores.SE = TRUE
+)
+```
+
+If the item difficulties are already calibrated on the official scale, they should normally be fixed as anchor parameters rather than re-estimated from one class. That is a different task from the introductory calibration above and requires careful attention to the parameterization and scale transformation used by the original calibration software.
+
+### What Must Be Checked before Scores Are Trusted? {#irt-checks}
+
+A fitted model is not automatically a valid measurement instrument.
+
+#### Dimensionality
+
+Do the items mainly measure one competence, or are reading, listening, vocabulary, and language form empirically distinct? A single total score can conceal meaningful multidimensionality.
+
+#### Local independence
+
+After controlling for competence, item responses should not remain strongly related. Several questions based on the same text may form a testlet and violate this assumption.
+
+#### Item fit
+
+Do observed response patterns follow the item characteristic curves implied by the model? Misfitting items may contain ambiguous wording, unexpected strategies, scoring problems, or multidimensional demands.
+
+#### Differential item functioning
+
+Does an item have the same difficulty for relevant groups after controlling for competence? Potential groups include gender, language background, school type, test mode, and federal state.
+
+#### Targeting and information
+
+Are item difficulties spread across the range occupied by the pupils? A test containing mostly easy items measures high competence poorly, even if it has many items.
+
+#### Missingness and booklet design
+
+Not administered is not the same as incorrect. Missing-by-design responses can be handled by IRT, but item linking and common anchor items are then essential.
+
+#### Consequences of reporting
+
+A competence estimate and its standard error are different from a competence level. Cutting a continuous uncertain estimate into levels adds classification uncertainty, especially for pupils near a threshold.
+
+### The Main Connections {#irt-connections}
+
+The conceptual chain is now complete:
+
+\[
+\text{categorical indicators}
+\longrightarrow
+\text{latent response model}
+\longrightarrow
+\text{item calibration}
+\longrightarrow
+\text{person posterior}
+\longrightarrow
+\begin{cases}
+\text{EAP, MAP, or WLE point estimate},\\
+\text{plausible values for population analysis}.
+\end{cases}
+\]
+
+Rasch is valuable because it makes this chain especially transparent. It is not the only IRT model, and IRT is not the only method in the categorical-indicator/continuous-latent-variable cell. But Rasch provides the clearest starting point for understanding how an assessment can place item difficulty and person competence on one scale—and why the resulting person value always remains an estimate rather than an observed fact.
+
+### Sources and Data Access {#irt-sources}
+
+- [IQB: VERA overview](https://www.iqb.hu-berlin.de/de/bista/implementation-und-ueberpruefung/vera/)
+- [IQB: competence-level models](https://www.iqb.hu-berlin.de/de/bista/entwicklung/kompetenzstufenmodelle/)
+- [IQB: VERA example tasks and materials](https://www2.iqb.hu-berlin.de/vera/vera/aufgaben?view=p)
+- [IQB VERA information: test evaluation and interpretation](https://iqb-berlin.github.io/vera-info/intro/feedback.html)
+- [FDZ at IQB: using research data](https://fdz.iqb.hu-berlin.de/de/daten-nutzen/)
+- [OECD: PISA data and methodology](https://www.oecd.org/en/about/programmes/pisa/pisa-data.html)
+- [OECD: preparing and analysing the PISA database](https://www.oecd.org/en/about/programmes/pisa/how-to-prepare-and-analyse-the-pisa-database.html)
+- [CRAN documentation: `sirt::data.timss`](https://search.r-project.org/CRAN/refmans/sirt/html/data.timss.html)
+- [CRAN documentation: `mirt::mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)
+- [CRAN documentation: `mirt::fscores`](https://philchalmers.github.io/mirt/reference/fscores.html)
