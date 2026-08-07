@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6.9 Common Tests Are Linear Models | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6.9 Common Tests Are Linear Models | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6.9 Common Tests Are Linear Models | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="learning-from-data.html"/>
+<link rel="next" href="structure.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
+<link rel="stylesheet" href="css/align.css" type="text/css" />
+<link rel="stylesheet" href="css/video.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a></li>
+<li class="chapter" data-level="" data-path="why-r.html"><a href="why-r.html"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-the-tidyverse.html"><a href="why-the-tidyverse.html"><i class="fa fa-check"></i>Why the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="tests-as-models" class="section level2 hasAnchor" number="6.9">
+<h2><span class="header-section-number">6.9</span> Common Tests Are Linear Models<a href="tests-as-models.html#tests-as-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>One framework behind the whole toolbox</p>
+</div>
+<p><small></p>
+<blockquote>
+<p>"Teaching statistics as a zoo of named tests is like teaching zoology as a list of animal names."</p>
+<footer class="blockquote-footer" style="text-align: right;">
+The complaint that motivated this section
+</footer>
+</blockquote>
+<p></small></p>
+<p>Look back at what the Compare chapter asked you to learn. A one-sample t-test. A two-sample t-test, in a Student and a Welch flavour. A paired t-test. A correlation test. A one-way ANOVA. An ANCOVA. A Wilcoxon test, a Mann-Whitney test, a Kruskal-Wallis test. Nine names, nine sets of assumptions, nine entries in a decision tree that students memorise for an exam and forget by Christmas.</p>
+<p>Now that you know what a linear model is, the honest summary can finally be given: <strong>there are not nine tests. There is one model, fitted with different right-hand sides.</strong> Every test in that list is <code>lm()</code> wearing a costume.</p>
+<p>This observation is not new, but its clearest modern statement is a cheat sheet by Jonas Kristoffer Lindeløv, <em>Common statistical tests are linear models</em>, which lines up each classical test against its equivalent <code>lm()</code> formula.<a href="#fn95" class="footnote-ref" id="fnref95"><sup>95</sup></a> This section works through that correspondence on our own data, so that you can check every claim rather than take it on faith — and then pushes the list further than the cheat sheet does, into repeated measures, variance tests, model comparison, and the counts and proportions that need one step sideways into <code>glm()</code>.</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="tests-as-models.html#cb183-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb183-2"><a href="tests-as-models.html#cb183-2" tabindex="-1"></a></span>
+<span id="cb183-3"><a href="tests-as-models.html#cb183-3" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Course/GF_AllTime.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb183-4"><a href="tests-as-models.html#cb183-4" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">100</span>)</span></code></pre></div>
+<div id="tm-one-model" class="section level3 hasAnchor" number="6.9.1">
+<h3><span class="header-section-number">6.9.1</span> The one model<a href="tests-as-models.html#tm-one-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Recall the notation. In R, <code>y ~ 1</code> means "predict <code>y</code> with an intercept and nothing else", and the intercept of a model with no predictors is simply the mean of <code>y</code>. Everything else is built by adding terms to the right of the tilde:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Right-hand side</th>
+<th align="left">What it says</th>
+<th align="left">Classical name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>y ~ 1</code></td>
+<td align="left">one number predicts <code>y</code></td>
+<td align="left">one-sample t-test</td>
+</tr>
+<tr class="even">
+<td align="left"><code>(y2 - y1) ~ 1</code></td>
+<td align="left">one number predicts the within-unit change</td>
+<td align="left">paired t-test</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>y ~ 1 + x</code></td>
+<td align="left">intercept plus a slope on continuous <code>x</code></td>
+<td align="left">correlation / simple regression</td>
+</tr>
+<tr class="even">
+<td align="left"><code>y ~ 1 + G</code></td>
+<td align="left">one intercept per group (2 groups)</td>
+<td align="left">two-sample t-test</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>y ~ 1 + G</code></td>
+<td align="left">one intercept per group (3+ groups)</td>
+<td align="left">one-way ANOVA</td>
+</tr>
+<tr class="even">
+<td align="left"><code>y ~ 1 + G + x</code></td>
+<td align="left">group intercepts plus a slope</td>
+<td align="left">ANCOVA</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>y ~ 1 + G + id</code></td>
+<td align="left">group effects, holding each subject fixed</td>
+<td align="left">repeated-measures ANOVA</td>
+</tr>
+<tr class="even">
+<td align="left"><code>y ~ 1 + G * S</code></td>
+<td align="left">group effects that differ by a second factor</td>
+<td align="left">two-way ANOVA</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>rank(y) ~ ...</code></td>
+<td align="left">the same models fitted to ranks</td>
+<td align="left">the non-parametric family</td>
+</tr>
+</tbody>
+</table>
+<p>Read the fourth and fifth rows together. The two-sample t-test and the one-way ANOVA are <em>the same formula</em>; the only difference is how many levels the grouping variable happens to have. The wall between "t-test" and "ANOVA" that every introductory course erects is a wall between two and three, and there is nothing there.</p>
+<div class="analysis-note">
+<p>One caveat before the demonstrations. The equivalences below are <strong>exact</strong> for the parametric tests and <strong>approximate</strong> for the rank-based ones — good approximations, and better the larger the sample, but approximations. Where the match is exact, R will agree with itself to fifteen decimal places. Where it is approximate, the p-values will be close rather than identical, and we say so.</p>
+</div>
+</div>
+<div id="tm-one-sample" class="section level3 hasAnchor" number="6.9.2">
+<h3><span class="header-section-number">6.9.2</span> One mean is an intercept<a href="tests-as-models.html#tm-one-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Section <a href="comparing-means.html#cm-one-sample">5.2.4</a> tested whether students' self-rated R background differs from the scale midpoint of 3, and found <span class="math inline">\(t = -20.70\)</span>. Here is the same question asked of a regression with no predictors at all. Subtract the benchmark from the outcome, then let the intercept do the work:</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="tests-as-models.html#cb184-1" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.R, <span class="at">mu =</span> <span class="dv">3</span>)<span class="sc">$</span>statistic</span>
+<span id="cb184-2"><a href="tests-as-models.html#cb184-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
+<span id="cb184-3"><a href="tests-as-models.html#cb184-3" tabindex="-1"></a><span class="co">#&gt; -20.70382</span></span>
+<span id="cb184-4"><a href="tests-as-models.html#cb184-4" tabindex="-1"></a></span>
+<span id="cb184-5"><a href="tests-as-models.html#cb184-5" tabindex="-1"></a><span class="fu">lm</span>(<span class="fu">I</span>(Background.in.R <span class="sc">-</span> <span class="dv">3</span>) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
+<span id="cb184-6"><a href="tests-as-models.html#cb184-6" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error   t value</span></span>
+<span id="cb184-7"><a href="tests-as-models.html#cb184-7" tabindex="-1"></a><span class="co">#&gt; (Intercept) -1.253219 0.06053082 -20.70382</span></span>
+<span id="cb184-8"><a href="tests-as-models.html#cb184-8" tabindex="-1"></a><span class="co">#&gt;                                                                   Pr(&gt;|t|)</span></span>
+<span id="cb184-9"><a href="tests-as-models.html#cb184-9" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000000000000000000000000001235195</span></span></code></pre></div>
+<p>Identical to four decimal places, because they are the same computation. The intercept of <code>y ~ 1</code> is the mean; its standard error is <span class="math inline">\(sd(y)/\sqrt{n}\)</span>; the ratio is Gosset's <span class="math inline">\(t\)</span>. What the t-test calls "testing against <span class="math inline">\(\mu_0\)</span>" the regression calls "is the intercept zero", and every regression table you will ever read tests exactly that for every coefficient it prints.</p>
+</div>
+<div id="tm-paired" class="section level3 hasAnchor" number="6.9.3">
+<h3><span class="header-section-number">6.9.3</span> A paired test is a one-sample test on differences<a href="tests-as-models.html#tm-paired" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Section <a href="comparing-means.html#cm-paired">5.2.6</a> already made this point without the vocabulary: pairing is subtraction. Build the differences and fit the emptiest model there is.</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="tests-as-models.html#cb185-1" tabindex="-1"></a>differences <span class="ot">&lt;-</span> coursedata<span class="sc">$</span>Background.in.Statistics <span class="sc">-</span> coursedata<span class="sc">$</span>Background.in.R</span>
+<span id="cb185-2"><a href="tests-as-models.html#cb185-2" tabindex="-1"></a></span>
+<span id="cb185-3"><a href="tests-as-models.html#cb185-3" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.Statistics,</span>
+<span id="cb185-4"><a href="tests-as-models.html#cb185-4" tabindex="-1"></a>       coursedata<span class="sc">$</span>Background.in.R, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
+<span id="cb185-5"><a href="tests-as-models.html#cb185-5" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
+<span id="cb185-6"><a href="tests-as-models.html#cb185-6" tabindex="-1"></a><span class="co">#&gt; 14.09961</span></span>
+<span id="cb185-7"><a href="tests-as-models.html#cb185-7" tabindex="-1"></a></span>
+<span id="cb185-8"><a href="tests-as-models.html#cb185-8" tabindex="-1"></a><span class="fu">lm</span>(differences <span class="sc">~</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
+<span id="cb185-9"><a href="tests-as-models.html#cb185-9" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error  t value</span></span>
+<span id="cb185-10"><a href="tests-as-models.html#cb185-10" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.9098712 0.06453166 14.09961</span></span>
+<span id="cb185-11"><a href="tests-as-models.html#cb185-11" tabindex="-1"></a><span class="co">#&gt;                                              Pr(&gt;|t|)</span></span>
+<span id="cb185-12"><a href="tests-as-models.html#cb185-12" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000005072945</span></span></code></pre></div>
+<p>Both give <span class="math inline">\(t = 14.10\)</span>. The paired t-test was never a separate test — it is <code>y ~ 1</code> applied to a column you constructed.</p>
+</div>
+<div id="tm-two-sample" class="section level3 hasAnchor" number="6.9.4">
+<h3><span class="header-section-number">6.9.4</span> Two groups is a dummy variable<a href="tests-as-models.html#tm-two-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is the equivalence that section <a href="comparing-means.html#comparing-means">5.2</a> promised and deferred. Male students in this course are older than female students. The classical test and the regression:</p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="tests-as-models.html#cb186-1" tabindex="-1"></a><span class="fu">t.test</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
+<span id="cb186-2"><a href="tests-as-models.html#cb186-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
+<span id="cb186-3"><a href="tests-as-models.html#cb186-3" tabindex="-1"></a><span class="co">#&gt; -2.329451</span></span>
+<span id="cb186-4"><a href="tests-as-models.html#cb186-4" tabindex="-1"></a></span>
+<span id="cb186-5"><a href="tests-as-models.html#cb186-5" tabindex="-1"></a><span class="fu">lm</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb186-6"><a href="tests-as-models.html#cb186-6" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb186-7"><a href="tests-as-models.html#cb186-7" tabindex="-1"></a><span class="co">#&gt; (Intercept)   24.500      0.332  73.721    0.000</span></span>
+<span id="cb186-8"><a href="tests-as-models.html#cb186-8" tabindex="-1"></a><span class="co">#&gt; GenderMale     1.122      0.481   2.329    0.021</span></span></code></pre></div>
+<p>Both report <span class="math inline">\(|t| = 2.33\)</span>; the sign differs only because R's dummy coding takes <code>Female</code> as the reference and measures the <em>male</em> effect, whereas the t-test subtracts in the other order.</p>
+<p>Read the coefficients as the chapter taught you to. The intercept, 24.500, is the mean age of the reference group — the women. The slope on <code>GenderMale</code>, 1.122, is <em>not</em> the mean age of men but the <strong>difference</strong> between the groups: men average <span class="math inline">\(24.500 + 1.122 = 25.622\)</span> years. A dummy variable turns a group label into a number, and once it is a number the regression machinery does not care that it only takes two values.</p>
+<p>There is a third name for this same number, and it is worth collecting. If you code gender 0/1 and correlate it with age, you get what psychometricians call a <strong>point-biserial correlation</strong> — presented in many textbooks as a separate coefficient with its own formula:</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="tests-as-models.html#cb187-1" tabindex="-1"></a>male <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(coursedata<span class="sc">$</span>Gender <span class="sc">==</span> <span class="st">&quot;Male&quot;</span>)</span>
+<span id="cb187-2"><a href="tests-as-models.html#cb187-2" tabindex="-1"></a></span>
+<span id="cb187-3"><a href="tests-as-models.html#cb187-3" tabindex="-1"></a><span class="fu">cor</span>(coursedata<span class="sc">$</span>Age, male)                      <span class="co"># &quot;point-biserial correlation&quot;</span></span>
+<span id="cb187-4"><a href="tests-as-models.html#cb187-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.1514976</span></span>
+<span id="cb187-5"><a href="tests-as-models.html#cb187-5" tabindex="-1"></a><span class="fu">cor.test</span>(coursedata<span class="sc">$</span>Age, male)<span class="sc">$</span>statistic       <span class="co"># its significance test</span></span>
+<span id="cb187-6"><a href="tests-as-models.html#cb187-6" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
+<span id="cb187-7"><a href="tests-as-models.html#cb187-7" tabindex="-1"></a><span class="co">#&gt; 2.329451</span></span></code></pre></div>
+<p><span class="math inline">\(r = 0.152\)</span>, and <span class="math inline">\(t = 2.329\)</span> — the same <span class="math inline">\(t\)</span> as the two-sample test and the same <span class="math inline">\(t\)</span> as the regression slope. Three names, three formulas in three textbooks, one number. The point-biserial correlation is not a special coefficient for binary variables; it is Pearson's correlation, which never cared how many values your variable took.</p>
+<div class="analysis-warning">
+<p>Note <code>var.equal = TRUE</code>. Ordinary least squares assumes one common error variance across the whole model, so it reproduces <strong>Student's</strong> t-test, not Welch's. If the groups genuinely differ in spread, the regression inherits the same problem the classical test had, and the fix is the same: model the variances (<code>nlme::gls</code> with <code>weights = varIdent(form = ~1|G)</code>), or use robust standard errors.</p>
+<p>This is worth noticing rather than glossing over. "Everything is a linear model" does not mean everything is <em>safe</em> — it means the assumptions you were taught to check per test are, underneath, the same three assumptions checked once.</p>
+</div>
+</div>
+<div id="tm-correlation" class="section level3 hasAnchor" number="6.9.5">
+<h3><span class="header-section-number">6.9.5</span> Correlation is a slope<a href="tests-as-models.html#tm-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Section <a href="relationships.html#relationships">5.1</a> tested whether age and total semesters move together. A correlation test and a regression of one on the other:</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="tests-as-models.html#cb188-1" tabindex="-1"></a><span class="fu">cor.test</span>(coursedata<span class="sc">$</span>Age, coursedata<span class="sc">$</span>Total.Semesters)<span class="sc">$</span>statistic</span>
+<span id="cb188-2"><a href="tests-as-models.html#cb188-2" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
+<span id="cb188-3"><a href="tests-as-models.html#cb188-3" tabindex="-1"></a><span class="co">#&gt; 1.726396</span></span>
+<span id="cb188-4"><a href="tests-as-models.html#cb188-4" tabindex="-1"></a></span>
+<span id="cb188-5"><a href="tests-as-models.html#cb188-5" tabindex="-1"></a><span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb188-6"><a href="tests-as-models.html#cb188-6" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb188-7"><a href="tests-as-models.html#cb188-7" tabindex="-1"></a><span class="co">#&gt; (Intercept)   4.8751     1.5282  3.1902   0.0016</span></span>
+<span id="cb188-8"><a href="tests-as-models.html#cb188-8" tabindex="-1"></a><span class="co">#&gt; Age           0.1043     0.0604  1.7264   0.0856</span></span></code></pre></div>
+<p>Again identical: <span class="math inline">\(t = 1.7264\)</span>, <span class="math inline">\(p = 0.086\)</span>, a positive but unconvincing association. The correlation coefficient and the regression slope are different numbers — <span class="math inline">\(r = 0.113\)</span> is unit-free, the slope is in semesters per year — but they are the same <em>evidence</em>, because the slope is just the correlation rescaled by the two standard deviations. Testing "is <span class="math inline">\(r\)</span> zero" and "is the slope zero" cannot give different answers.</p>
+<p>And <strong>Spearman's</strong> rank correlation, usually taught as the non-parametric alternative with its own table of critical values, is Pearson's correlation applied to ranks. Not approximately — by definition:</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="tests-as-models.html#cb189-1" tabindex="-1"></a><span class="fu">cor</span>(coursedata<span class="sc">$</span>Age, coursedata<span class="sc">$</span>Total.Semesters, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb189-2"><a href="tests-as-models.html#cb189-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.1725886</span></span>
+<span id="cb189-3"><a href="tests-as-models.html#cb189-3" tabindex="-1"></a></span>
+<span id="cb189-4"><a href="tests-as-models.html#cb189-4" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">rank</span>(coursedata<span class="sc">$</span>Age), <span class="fu">rank</span>(coursedata<span class="sc">$</span>Total.Semesters))    <span class="co"># the same thing</span></span>
+<span id="cb189-5"><a href="tests-as-models.html#cb189-5" tabindex="-1"></a><span class="co">#&gt; [1] 0.1725886</span></span>
+<span id="cb189-6"><a href="tests-as-models.html#cb189-6" tabindex="-1"></a></span>
+<span id="cb189-7"><a href="tests-as-models.html#cb189-7" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">rank</span>(Total.Semesters) <span class="sc">~</span> <span class="fu">rank</span>(Age), <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, ]</span>
+<span id="cb189-8"><a href="tests-as-models.html#cb189-8" tabindex="-1"></a><span class="co">#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) </span></span>
+<span id="cb189-9"><a href="tests-as-models.html#cb189-9" tabindex="-1"></a><span class="co">#&gt; 0.172641858 0.064827830 2.663082469 0.008287573</span></span></code></pre></div>
+<p>All three give <span class="math inline">\(\rho = 0.1726\)</span>, and the regression on ranks returns <span class="math inline">\(p = 0.0083\)</span> — which is exactly what <code>cor.test(..., method = "spearman")</code> reports.</p>
+<p>Notice that Spearman finds the association (<span class="math inline">\(p = 0.008\)</span>) where Pearson did not (<span class="math inline">\(p = 0.086\)</span>). Ranking removed the leverage of a handful of very old students with unusual semester counts. When the two disagree, the disagreement is a fact about outliers, and worth a scatterplot before it is worth a decision.</p>
+</div>
+<div id="tm-anova" class="section level3 hasAnchor" number="6.9.6">
+<h3><span class="header-section-number">6.9.6</span> Many groups is many dummies<a href="tests-as-models.html#tm-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The step from two groups to seven changes nothing structurally. Our students arrive across seven terms; do the cohorts differ in age?</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="tests-as-models.html#cb190-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))[[<span class="dv">1</span>]][<span class="dv">1</span>, <span class="dv">4</span>]   <span class="co"># F from aov()</span></span>
+<span id="cb190-2"><a href="tests-as-models.html#cb190-2" tabindex="-1"></a><span class="co">#&gt; [1] 2.153487</span></span>
+<span id="cb190-3"><a href="tests-as-models.html#cb190-3" tabindex="-1"></a></span>
+<span id="cb190-4"><a href="tests-as-models.html#cb190-4" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))<span class="sc">$</span>fstatistic[<span class="dv">1</span>] <span class="co"># F from lm()</span></span>
+<span id="cb190-5"><a href="tests-as-models.html#cb190-5" tabindex="-1"></a><span class="co">#&gt;    value </span></span>
+<span id="cb190-6"><a href="tests-as-models.html#cb190-6" tabindex="-1"></a><span class="co">#&gt; 2.153487</span></span></code></pre></div>
+<p><span class="math inline">\(F = 2.15\)</span> on both sides, <span class="math inline">\(p = 0.049\)</span> — a whisker under the conventional threshold, which is a fine reminder of the last box in section <a href="comparing-means.html#cm-threshold">5.2.3.3</a>. Behind the scenes <code>lm()</code> created six dummy variables for the seven terms, and the F-statistic asks whether all six slopes are zero at once. That is precisely the question ANOVA's F-test asks. The two functions print different tables because they were written for different audiences, not because they compute different things.</p>
+<p>Adding a continuous variable to the same formula turns it into ANCOVA, which is why section <a href="partitioning-variation.html#partitioning-variation">5.3</a> could hand the dog-size effects to a height covariate without changing tools. <code>aov(y ~ G + x)</code> and <code>lm(y ~ G + x)</code> are one model.</p>
+<div id="tm-trend" class="section level4 hasAnchor" number="6.9.6.1">
+<h4><span class="header-section-number">6.9.6.1</span> Spending degrees of freedom on the right question<a href="tests-as-models.html#tm-trend" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Once groups are dummies, a new option appears that the ANOVA framing hides. Our seven terms are not just seven categories — they are <em>ordered in time</em>. Treating them as an unordered factor spends six degrees of freedom asking "are these cohorts different in any way at all?" Treating the term as a number spends <strong>one</strong>, asking the sharper question: "have students been getting older over the years?"</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="tests-as-models.html#cb191-1" tabindex="-1"></a>chrono <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;SS 2020&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;WS 2020 2021&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;SS 2021&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;SS 2022&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb191-2"><a href="tests-as-models.html#cb191-2" tabindex="-1"></a>            <span class="st">&quot;WS 2022 2023&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, <span class="st">&quot;SS 2023&quot;</span> <span class="ot">=</span> <span class="dv">6</span>, <span class="st">&quot;WS 2023 2024&quot;</span> <span class="ot">=</span> <span class="dv">7</span>)</span>
+<span id="cb191-3"><a href="tests-as-models.html#cb191-3" tabindex="-1"></a>coursedata<span class="sc">$</span>term_number <span class="ot">&lt;-</span> chrono[coursedata<span class="sc">$</span>Term]</span>
+<span id="cb191-4"><a href="tests-as-models.html#cb191-4" tabindex="-1"></a></span>
+<span id="cb191-5"><a href="tests-as-models.html#cb191-5" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> term_number, <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, ]   <span class="co"># 1 df: a trend</span></span>
+<span id="cb191-6"><a href="tests-as-models.html#cb191-6" tabindex="-1"></a><span class="co">#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) </span></span>
+<span id="cb191-7"><a href="tests-as-models.html#cb191-7" tabindex="-1"></a><span class="co">#&gt; 0.03540844 0.12919862 0.27406206 0.78428184</span></span>
+<span id="cb191-8"><a href="tests-as-models.html#cb191-8" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))[<span class="dv">1</span>, ]                  <span class="co"># 6 df: any difference</span></span>
+<span id="cb191-9"><a href="tests-as-models.html#cb191-9" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb191-10"><a href="tests-as-models.html#cb191-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb191-11"><a href="tests-as-models.html#cb191-11" tabindex="-1"></a><span class="co">#&gt; Response: Age</span></span>
+<span id="cb191-12"><a href="tests-as-models.html#cb191-12" tabindex="-1"></a><span class="co">#&gt;      Df Sum Sq Mean Sq F value  Pr(&gt;F)  </span></span>
+<span id="cb191-13"><a href="tests-as-models.html#cb191-13" tabindex="-1"></a><span class="co">#&gt; Term  6 172.28  28.714  2.1535 0.04849 *</span></span>
+<span id="cb191-14"><a href="tests-as-models.html#cb191-14" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb191-15"><a href="tests-as-models.html#cb191-15" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p>The results point in opposite directions, and the contrast is the lesson. The six-degree-of-freedom test is significant, <span class="math inline">\(F = 2.15\)</span>, <span class="math inline">\(p = 0.048\)</span>: the cohorts do differ. The one-degree-of-freedom trend test is nowhere near, slope <span class="math inline">\(0.035\)</span> years per term, <span class="math inline">\(p = 0.784\)</span>: they do not differ <em>in a straight line over time</em>. Cohorts vary, but not by drifting older.</p>
+<p>This is what a classical toolbox calls a "test for trend" and hands you as yet another named procedure. In the linear-model framework it is not a new test — it is a decision about how to code a variable, and coding an ordered factor as a number is often the single most powerful move available, because it aims all your evidence at one question instead of scattering it across six.</p>
+</div>
+</div>
+<div id="tm-repeated" class="section level3 hasAnchor" number="6.9.7">
+<h3><span class="header-section-number">6.9.7</span> Repeated measures: subjects are just another factor<a href="tests-as-models.html#tm-repeated" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here the framework earns its keep, because repeated-measures ANOVA is where the classical presentation becomes genuinely forbidding — <code>Error(id/condition)</code> strata, sphericity corrections, tables that nobody can read.</p>
+<p>Our data has the design built in. Each student rated three things: statistics, R, and academic writing. That is three measurements on 233 people — the paired comparison of section <a href="comparing-means.html#cm-paired">5.2.6</a>, extended from two conditions to three.</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="tests-as-models.html#cb192-1" tabindex="-1"></a>long <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span></span>
+<span id="cb192-2"><a href="tests-as-models.html#cb192-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(<span class="fu">row_number</span>())) <span class="sc">%&gt;%</span></span>
+<span id="cb192-3"><a href="tests-as-models.html#cb192-3" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="at">Statistics =</span> Background.in.Statistics,</span>
+<span id="cb192-4"><a href="tests-as-models.html#cb192-4" tabindex="-1"></a>             <span class="at">R          =</span> Background.in.R,</span>
+<span id="cb192-5"><a href="tests-as-models.html#cb192-5" tabindex="-1"></a>             <span class="at">Writing    =</span> Background.in.Academic.Writing) <span class="sc">%&gt;%</span></span>
+<span id="cb192-6"><a href="tests-as-models.html#cb192-6" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>id, <span class="at">names_to =</span> <span class="st">&quot;Skill&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Rating&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb192-7"><a href="tests-as-models.html#cb192-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Skill =</span> <span class="fu">factor</span>(Skill))</span>
+<span id="cb192-8"><a href="tests-as-models.html#cb192-8" tabindex="-1"></a></span>
+<span id="cb192-9"><a href="tests-as-models.html#cb192-9" tabindex="-1"></a><span class="fu">head</span>(long, <span class="dv">4</span>)</span>
+<span id="cb192-10"><a href="tests-as-models.html#cb192-10" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span id="cb192-11"><a href="tests-as-models.html#cb192-11" tabindex="-1"></a><span class="co">#&gt;   id    Skill      Rating</span></span>
+<span id="cb192-12"><a href="tests-as-models.html#cb192-12" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
+<span id="cb192-13"><a href="tests-as-models.html#cb192-13" tabindex="-1"></a><span class="co">#&gt; 1 1     Statistics      3</span></span>
+<span id="cb192-14"><a href="tests-as-models.html#cb192-14" tabindex="-1"></a><span class="co">#&gt; 2 1     R               1</span></span>
+<span id="cb192-15"><a href="tests-as-models.html#cb192-15" tabindex="-1"></a><span class="co">#&gt; 3 1     Writing         3</span></span>
+<span id="cb192-16"><a href="tests-as-models.html#cb192-16" tabindex="-1"></a><span class="co">#&gt; 4 2     Statistics      3</span></span></code></pre></div>
+<p>Now the two ways of asking whether the three ratings differ:</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="tests-as-models.html#cb193-1" tabindex="-1"></a><span class="co"># the classical incantation</span></span>
+<span id="cb193-2"><a href="tests-as-models.html#cb193-2" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Rating <span class="sc">~</span> Skill <span class="sc">+</span> <span class="fu">Error</span>(id <span class="sc">/</span> Skill), <span class="at">data =</span> long))</span>
+<span id="cb193-3"><a href="tests-as-models.html#cb193-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb193-4"><a href="tests-as-models.html#cb193-4" tabindex="-1"></a><span class="co">#&gt; Error: id</span></span>
+<span id="cb193-5"><a href="tests-as-models.html#cb193-5" tabindex="-1"></a><span class="co">#&gt;            Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span id="cb193-6"><a href="tests-as-models.html#cb193-6" tabindex="-1"></a><span class="co">#&gt; Residuals 232  419.2   1.807               </span></span>
+<span id="cb193-7"><a href="tests-as-models.html#cb193-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb193-8"><a href="tests-as-models.html#cb193-8" tabindex="-1"></a><span class="co">#&gt; Error: id:Skill</span></span>
+<span id="cb193-9"><a href="tests-as-models.html#cb193-9" tabindex="-1"></a><span class="co">#&gt;            Df Sum Sq Mean Sq F value              Pr(&gt;F)    </span></span>
+<span id="cb193-10"><a href="tests-as-models.html#cb193-10" tabindex="-1"></a><span class="co">#&gt; Skill       2  164.3   82.15     105 &lt;0.0000000000000002 ***</span></span>
+<span id="cb193-11"><a href="tests-as-models.html#cb193-11" tabindex="-1"></a><span class="co">#&gt; Residuals 464  363.0    0.78                                </span></span>
+<span id="cb193-12"><a href="tests-as-models.html#cb193-12" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb193-13"><a href="tests-as-models.html#cb193-13" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb193-14"><a href="tests-as-models.html#cb193-14" tabindex="-1"></a></span>
+<span id="cb193-15"><a href="tests-as-models.html#cb193-15" tabindex="-1"></a><span class="co"># a linear model with the student as a factor</span></span>
+<span id="cb193-16"><a href="tests-as-models.html#cb193-16" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Rating <span class="sc">~</span> Skill <span class="sc">+</span> id, <span class="at">data =</span> long))[<span class="st">&quot;Skill&quot;</span>, ]</span>
+<span id="cb193-17"><a href="tests-as-models.html#cb193-17" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb193-18"><a href="tests-as-models.html#cb193-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb193-19"><a href="tests-as-models.html#cb193-19" tabindex="-1"></a><span class="co">#&gt; Response: Rating</span></span>
+<span id="cb193-20"><a href="tests-as-models.html#cb193-20" tabindex="-1"></a><span class="co">#&gt;       Df Sum Sq Mean Sq F value                Pr(&gt;F)    </span></span>
+<span id="cb193-21"><a href="tests-as-models.html#cb193-21" tabindex="-1"></a><span class="co">#&gt; Skill  2  164.3  82.152     105 &lt; 0.00000000000000022 ***</span></span>
+<span id="cb193-22"><a href="tests-as-models.html#cb193-22" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb193-23"><a href="tests-as-models.html#cb193-23" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p><span class="math inline">\(F = 105.0\)</span> on 2 and 464 degrees of freedom, both ways. The <code>Error(id/Skill)</code> stratum that makes repeated-measures ANOVA look like a separate branch of statistics is doing one thing: giving every student their own intercept. Written as <code>+ id</code> in a formula, it stops being mysterious.</p>
+<p>And it matters enormously, exactly as pairing mattered in section <a href="comparing-means.html#cm-paired-vs-unpaired">5.2.6.1</a>:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="tests-as-models.html#cb194-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Rating <span class="sc">~</span> Skill, <span class="at">data =</span> long))[<span class="st">&quot;Skill&quot;</span>, <span class="st">&quot;F value&quot;</span>]   <span class="co"># ignoring the student</span></span>
+<span id="cb194-2"><a href="tests-as-models.html#cb194-2" tabindex="-1"></a><span class="co">#&gt; [1] 73.09861</span></span></code></pre></div>
+<p><span class="math inline">\(F = 73.1\)</span> instead of <span class="math inline">\(105.0\)</span>. Throwing away the student identifier throws away the fact that the same person produced three of the numbers, and the F-statistic drops by a third. This is the paired t-test's lesson generalised: <strong>whenever the same unit appears more than once, its identity belongs in the model.</strong> With two conditions we called it pairing; with three we call it repeated measures; with many periods and many units we call it panel data (chapter <a href="tabular-data.html#panel-data">2.1.1.4</a>) and the term for <code>+ id</code> becomes <em>fixed effects</em>. Same move every time.</p>
+<div class="analysis-note">
+<p>One honest limitation. <code>lm(y ~ C + id)</code> reproduces the F-test for the condition, which is what people usually want. It does not reproduce everything a dedicated repeated-measures routine offers — sphericity corrections such as Greenhouse-Geisser, or unbalanced designs with missing cells, which are better served by a mixed model (<code>lme4::lmer(y ~ C + (1|id))</code>). The mixed model is the honest generalisation; treating the subject as a fixed factor is the version that shows you what is going on.</p>
+</div>
+</div>
+<div id="tm-levene" class="section level3 hasAnchor" number="6.9.8">
+<h3><span class="header-section-number">6.9.8</span> Even the assumption checks are models<a href="tests-as-models.html#tm-levene" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Section <a href="partitioning-variation.html#partitioning-variation">5.3</a> used tests that compare <em>spreads</em> rather than means, and they look like a different family entirely. They are not. <strong>Levene's test</strong> — and its more robust cousin, the Brown-Forsythe test — is defined as an ordinary ANOVA run on the absolute deviations from each group's centre. Not approximately: that is the definition.</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="tests-as-models.html#cb195-1" tabindex="-1"></a>spread <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span></span>
+<span id="cb195-2"><a href="tests-as-models.html#cb195-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Term) <span class="sc">%&gt;%</span></span>
+<span id="cb195-3"><a href="tests-as-models.html#cb195-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">abs_dev =</span> <span class="fu">abs</span>(Age <span class="sc">-</span> <span class="fu">median</span>(Age))) <span class="sc">%&gt;%</span>   <span class="co"># distance from your group&#39;s centre</span></span>
+<span id="cb195-4"><a href="tests-as-models.html#cb195-4" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb195-5"><a href="tests-as-models.html#cb195-5" tabindex="-1"></a></span>
+<span id="cb195-6"><a href="tests-as-models.html#cb195-6" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(abs_dev <span class="sc">~</span> Term, <span class="at">data =</span> spread))[<span class="dv">1</span>, ]</span>
+<span id="cb195-7"><a href="tests-as-models.html#cb195-7" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb195-8"><a href="tests-as-models.html#cb195-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb195-9"><a href="tests-as-models.html#cb195-9" tabindex="-1"></a><span class="co">#&gt; Response: abs_dev</span></span>
+<span id="cb195-10"><a href="tests-as-models.html#cb195-10" tabindex="-1"></a><span class="co">#&gt;      Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span id="cb195-11"><a href="tests-as-models.html#cb195-11" tabindex="-1"></a><span class="co">#&gt; Term  6 14.578  2.4296  0.3726  0.896</span></span></code></pre></div>
+<p><span class="math inline">\(F = 0.37\)</span>, <span class="math inline">\(p = 0.90\)</span>: no evidence that the seven cohorts differ in how spread out their ages are. The trick is worth internalising because it generalises. A question about <em>variability</em> becomes a question about <em>means</em> the moment you replace each observation by its distance from its group's centre — and questions about means are what linear models answer. If you can define your quantity of interest per observation, you can usually test it with <code>lm()</code>.</p>
+</div>
+<div id="tm-glm" class="section level3 hasAnchor" number="6.9.9">
+<h3><span class="header-section-number">6.9.9</span> One step sideways: counts and proportions<a href="tests-as-models.html#tm-glm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Two families genuinely sit outside <code>lm()</code>, because their outcomes are not continuous. But they sit only just outside: the linear predictor is the same, and only the link function and the error distribution change. This is the <strong>generalized</strong> linear model of section <a href="generalized-models.html#generalized-models">6.7</a>, and the classical tests for tables and proportions live there.</p>
+<p>Take the chi-square test of independence. Are academic level and gender related in this course?</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="tests-as-models.html#cb196-1" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(coursedata<span class="sc">$</span>Gender, coursedata<span class="sc">$</span>Academic.level)</span>
+<span id="cb196-2"><a href="tests-as-models.html#cb196-2" tabindex="-1"></a>tab</span>
+<span id="cb196-3"><a href="tests-as-models.html#cb196-3" tabindex="-1"></a><span class="co">#&gt;         </span></span>
+<span id="cb196-4"><a href="tests-as-models.html#cb196-4" tabindex="-1"></a><span class="co">#&gt;          Bachelor Master</span></span>
+<span id="cb196-5"><a href="tests-as-models.html#cb196-5" tabindex="-1"></a><span class="co">#&gt;   Female       58     64</span></span>
+<span id="cb196-6"><a href="tests-as-models.html#cb196-6" tabindex="-1"></a><span class="co">#&gt;   Male         45     66</span></span>
+<span id="cb196-7"><a href="tests-as-models.html#cb196-7" tabindex="-1"></a></span>
+<span id="cb196-8"><a href="tests-as-models.html#cb196-8" tabindex="-1"></a><span class="fu">chisq.test</span>(tab, <span class="at">correct =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>statistic     <span class="co"># Pearson&#39;s X-squared</span></span>
+<span id="cb196-9"><a href="tests-as-models.html#cb196-9" tabindex="-1"></a><span class="co">#&gt; X-squared </span></span>
+<span id="cb196-10"><a href="tests-as-models.html#cb196-10" tabindex="-1"></a><span class="co">#&gt;  1.154806</span></span>
+<span id="cb196-11"><a href="tests-as-models.html#cb196-11" tabindex="-1"></a></span>
+<span id="cb196-12"><a href="tests-as-models.html#cb196-12" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(tab) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Gender =</span> Var1, <span class="at">Level =</span> Var2, <span class="at">n =</span> Freq)</span>
+<span id="cb196-13"><a href="tests-as-models.html#cb196-13" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">glm</span>(n <span class="sc">~</span> Gender <span class="sc">+</span> Level,  <span class="at">data =</span> counts, <span class="at">family =</span> poisson),   <span class="co"># independence</span></span>
+<span id="cb196-14"><a href="tests-as-models.html#cb196-14" tabindex="-1"></a>      <span class="fu">glm</span>(n <span class="sc">~</span> Gender <span class="sc">*</span> Level,  <span class="at">data =</span> counts, <span class="at">family =</span> poisson),   <span class="co"># association</span></span>
+<span id="cb196-15"><a href="tests-as-models.html#cb196-15" tabindex="-1"></a>      <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)[<span class="dv">2</span>, ]</span>
+<span id="cb196-16"><a href="tests-as-models.html#cb196-16" tabindex="-1"></a><span class="co">#&gt; Analysis of Deviance Table</span></span>
+<span id="cb196-17"><a href="tests-as-models.html#cb196-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb196-18"><a href="tests-as-models.html#cb196-18" tabindex="-1"></a><span class="co">#&gt; Model 1: n ~ Gender + Level</span></span>
+<span id="cb196-19"><a href="tests-as-models.html#cb196-19" tabindex="-1"></a><span class="co">#&gt; Model 2: n ~ Gender * Level</span></span>
+<span id="cb196-20"><a href="tests-as-models.html#cb196-20" tabindex="-1"></a><span class="co">#&gt;   Resid. Df           Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb196-21"><a href="tests-as-models.html#cb196-21" tabindex="-1"></a><span class="co">#&gt; 2         0 0.000000000000012213  1   1.1564   0.2822</span></span></code></pre></div>
+<p>Pearson's statistic is 1.155 and the log-linear model's likelihood-ratio statistic is 1.156, on 1 degree of freedom, <span class="math inline">\(p = 0.28\)</span> either way. No association: Bachelor and Master students are split much the same way across genders.</p>
+<p>The two numbers differ in the fourth decimal because Pearson's <span class="math inline">\(X^2\)</span> and the likelihood-ratio <span class="math inline">\(G^2\)</span> are two different approximations to the same quantity, and the Poisson model reproduces <span class="math inline">\(G^2\)</span> <strong>exactly</strong>. Reading the model rather than the test also tells you something the test cannot: the interaction <em>coefficient</em> is the log odds ratio, with a standard error and a confidence interval attached.</p>
+<p>Proportions work the same way, one link function over:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="tests-as-models.html#cb197-1" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(coursedata<span class="sc">$</span>Academic.level <span class="sc">==</span> <span class="st">&quot;Master&quot;</span>)</span>
+<span id="cb197-2"><a href="tests-as-models.html#cb197-2" tabindex="-1"></a></span>
+<span id="cb197-3"><a href="tests-as-models.html#cb197-3" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="fu">table</span>(coursedata<span class="sc">$</span>Gender, master)[, <span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>], <span class="at">correct =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb197-4"><a href="tests-as-models.html#cb197-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.2825452</span></span>
+<span id="cb197-5"><a href="tests-as-models.html#cb197-5" tabindex="-1"></a></span>
+<span id="cb197-6"><a href="tests-as-models.html#cb197-6" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">glm</span>(master <span class="sc">~</span> Gender, <span class="at">family =</span> binomial, <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, <span class="dv">4</span>]</span>
+<span id="cb197-7"><a href="tests-as-models.html#cb197-7" tabindex="-1"></a><span class="co">#&gt; [1] 0.2829723</span></span></code></pre></div>
+<p><span class="math inline">\(p = 0.2825\)</span> against <span class="math inline">\(p = 0.2830\)</span> — the same conclusion by two routes that make slightly different large-sample approximations. And <code>glm(y ~ 1, family = binomial)</code> tests a single proportion against 0.5, which is the classical one-proportion test.</p>
+<div class="analysis-warning">
+<p>These glm equivalences are <strong>approximate</strong>, and the approximation has a known weak spot: Wald standard errors become unreliable when a proportion approaches 0 or 1. The sign test on our 161 non-tied students, 151 of whom rate statistics above R, is a case in point — <code>binom.test()</code> gives <span class="math inline">\(p \approx 10^{-33}\)</span> while the Wald test from <code>glm()</code> gives <span class="math inline">\(p \approx 10^{-17}\)</span>. Both are overwhelming, so nothing is at stake here, but near the boundary the exact test is the one to trust.</p>
+</div>
+</div>
+<div id="tm-nested" class="section level3 hasAnchor" number="6.9.10">
+<h3><span class="header-section-number">6.9.10</span> Comparing two models is also a test<a href="tests-as-models.html#tm-nested" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One last generalisation, and it is the one that frees you from the list altogether. Every F-test in this section — ANOVA's, the trend test's, Levene's — is a comparison between a <strong>restricted</strong> and an <strong>unrestricted</strong> model: does letting these extra terms into the model explain enough additional variation to justify them?</p>
+<p>Written out, that comparison is a named test in econometrics. Does the relationship between age and semesters studied differ between Bachelor and Master students? Fit both models and ask:</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="tests-as-models.html#cb198-1" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age, <span class="at">data =</span> coursedata)                   <span class="co"># one line</span></span>
+<span id="cb198-2"><a href="tests-as-models.html#cb198-2" tabindex="-1"></a>split  <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">*</span> Academic.level, <span class="at">data =</span> coursedata)  <span class="co"># two lines</span></span>
+<span id="cb198-3"><a href="tests-as-models.html#cb198-3" tabindex="-1"></a></span>
+<span id="cb198-4"><a href="tests-as-models.html#cb198-4" tabindex="-1"></a><span class="fu">anova</span>(pooled, split)</span>
+<span id="cb198-5"><a href="tests-as-models.html#cb198-5" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb198-6"><a href="tests-as-models.html#cb198-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb198-7"><a href="tests-as-models.html#cb198-7" tabindex="-1"></a><span class="co">#&gt; Model 1: Total.Semesters ~ Age</span></span>
+<span id="cb198-8"><a href="tests-as-models.html#cb198-8" tabindex="-1"></a><span class="co">#&gt; Model 2: Total.Semesters ~ Age * Academic.level</span></span>
+<span id="cb198-9"><a href="tests-as-models.html#cb198-9" tabindex="-1"></a><span class="co">#&gt;   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    </span></span>
+<span id="cb198-10"><a href="tests-as-models.html#cb198-10" tabindex="-1"></a><span class="co">#&gt; 1    231 2683.6                                  </span></span>
+<span id="cb198-11"><a href="tests-as-models.html#cb198-11" tabindex="-1"></a><span class="co">#&gt; 2    229 2490.3  2    193.28 8.8869 0.0001918 ***</span></span>
+<span id="cb198-12"><a href="tests-as-models.html#cb198-12" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb198-13"><a href="tests-as-models.html#cb198-13" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p><span class="math inline">\(F = 8.89\)</span> on 2 and 229 degrees of freedom, <span class="math inline">\(p = 0.0002\)</span>: the relationship genuinely differs. Pooling Bachelor and Master students into one regression line hides two different lines — an instance of the aggregation warning from section <a href="relationships.html#relationships">5.1</a>.</p>
+<p>Economists call this a <strong>Chow test</strong> for a structural break. It has no separate function in R because it does not need one: it is <code>anova()</code> on two nested models, which is the same machinery that produced every F-statistic above.</p>
+</div>
+<div id="tm-list" class="section level3 hasAnchor" number="6.9.11">
+<h3><span class="header-section-number">6.9.11</span> The extended list<a href="tests-as-models.html#tm-list" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here is the full correspondence, ours and Lindeløv's combined. <span class="math inline">\(G\)</span> and <span class="math inline">\(S\)</span> are grouping factors, <span class="math inline">\(x\)</span> is continuous, <code>id</code> identifies the unit, <code>signed_rank(x)</code> is <code>sign(x) * rank(abs(x))</code>, and <code>within_rank(y)</code> ranks each unit's own measurements against each other.</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Classical test</th>
+<th align="left">Built-in R function</th>
+<th align="left">Equivalent model</th>
+<th align="left">Exact?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>One outcome, one sample</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">One-sample t-test</td>
+<td align="left"><code>t.test(y)</code></td>
+<td align="left"><code>lm(y ~ 1)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Paired t-test</td>
+<td align="left"><code>t.test(y1, y2, paired = TRUE)</code></td>
+<td align="left"><code>lm(y1 - y2 ~ 1)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="even">
+<td align="left">Wilcoxon signed-rank</td>
+<td align="left"><code>wilcox.test(y)</code></td>
+<td align="left"><code>lm(signed_rank(y) ~ 1)</code></td>
+<td align="left">approx, <span class="math inline">\(n &gt; 14\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Sign test</td>
+<td align="left"><code>binom.test(sum(y &gt; 0), n)</code></td>
+<td align="left"><code>glm(y &gt; 0 ~ 1, binomial)</code></td>
+<td align="left">approx</td>
+</tr>
+<tr class="even">
+<td align="left">One proportion</td>
+<td align="left"><code>prop.test(k, n)</code></td>
+<td align="left"><code>glm(y ~ 1, binomial)</code></td>
+<td align="left">approx</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Two variables</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Pearson correlation</td>
+<td align="left"><code>cor.test(x, y)</code></td>
+<td align="left"><code>lm(y ~ x)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Spearman correlation</td>
+<td align="left"><code>cor.test(x, y, method = "spearman")</code></td>
+<td align="left"><code>lm(rank(y) ~ rank(x))</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="even">
+<td align="left">Point-biserial correlation</td>
+<td align="left"><code>cor.test(y, G01)</code></td>
+<td align="left"><code>lm(y ~ G)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Two-sample t-test</td>
+<td align="left"><code>t.test(y ~ G, var.equal = TRUE)</code></td>
+<td align="left"><code>lm(y ~ G)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="even">
+<td align="left">Welch's t-test</td>
+<td align="left"><code>t.test(y ~ G)</code></td>
+<td align="left"><code>gls(y ~ G, weights = varIdent(~1\|G))</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Mann-Whitney U</td>
+<td align="left"><code>wilcox.test(y ~ G)</code></td>
+<td align="left"><code>lm(rank(y) ~ G)</code></td>
+<td align="left">approx, <span class="math inline">\(n &gt; 11\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Two proportions</td>
+<td align="left"><code>prop.test(tab)</code></td>
+<td align="left"><code>glm(y ~ G, binomial)</code></td>
+<td align="left">approx</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Three or more groups</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">One-way ANOVA</td>
+<td align="left"><code>aov(y ~ G)</code></td>
+<td align="left"><code>lm(y ~ G)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Kruskal-Wallis</td>
+<td align="left"><code>kruskal.test(y ~ G)</code></td>
+<td align="left"><code>lm(rank(y) ~ G)</code></td>
+<td align="left">approx, <span class="math inline">\(n &gt; 11\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">ANCOVA</td>
+<td align="left"><code>aov(y ~ G + x)</code></td>
+<td align="left"><code>lm(y ~ G + x)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Two-way ANOVA</td>
+<td align="left"><code>aov(y ~ G * S)</code></td>
+<td align="left"><code>lm(y ~ G * S)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="even">
+<td align="left">Test for trend</td>
+<td align="left"><code>prop.trend.test</code> and relatives</td>
+<td align="left"><code>lm(y ~ as.numeric(G))</code></td>
+<td align="left">exact, 1 df</td>
+</tr>
+<tr class="odd">
+<td align="left">MANOVA / Hotelling's <span class="math inline">\(T^2\)</span></td>
+<td align="left"><code>manova(...)</code></td>
+<td align="left"><code>lm(cbind(y1, y2) ~ G)</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Repeated measures</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Repeated-measures ANOVA</td>
+<td align="left"><code>aov(y ~ C + Error(id/C))</code></td>
+<td align="left"><code>lm(y ~ C + id)</code></td>
+<td align="left">exact for the F on C</td>
+</tr>
+<tr class="even">
+<td align="left">Friedman test</td>
+<td align="left"><code>friedman.test(y ~ C \| id)</code></td>
+<td align="left"><code>lm(within_rank(y) ~ C + id)</code></td>
+<td align="left">approx</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Spread rather than centre</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Levene / Brown-Forsythe</td>
+<td align="left"><code>car::leveneTest(y ~ G)</code></td>
+<td align="left"><code>lm(abs(y - median_G) ~ G)</code></td>
+<td align="left">exact, by definition</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Counts and tables</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Chi-square independence</td>
+<td align="left"><code>chisq.test(tab)</code></td>
+<td align="left"><code>glm(n ~ row + col, poisson)</code></td>
+<td align="left">exact for <span class="math inline">\(G^2\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">Chi-square goodness of fit</td>
+<td align="left"><code>chisq.test(y)</code></td>
+<td align="left"><code>glm(n ~ 1, poisson)</code></td>
+<td align="left">exact for <span class="math inline">\(G^2\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Cochran-Armitage trend</td>
+<td align="left"><code>prop.trend.test</code></td>
+<td align="left"><code>glm(y ~ dose, binomial)</code></td>
+<td align="left">approx</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Model against model</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Chow test / structural break</td>
+<td align="left">—</td>
+<td align="left"><code>anova(lm(y ~ x), lm(y ~ x * G))</code></td>
+<td align="left">exact</td>
+</tr>
+<tr class="odd">
+<td align="left">Nested model F-test</td>
+<td align="left">—</td>
+<td align="left"><code>anova(model1, model2)</code></td>
+<td align="left">exact</td>
+</tr>
+</tbody>
+</table>
+<div class="analysis-takeaway">
+<p>Count the right-hand column. Of twenty-eight named procedures, roughly two-thirds are <strong>exactly</strong> a linear model and the rest are close approximations or a single step into <code>glm()</code>. The decision tree you were asked to memorise describes one function.</p>
+</div>
+</div>
+<div id="tm-why" class="section level3 hasAnchor" number="6.9.12">
+<h3><span class="header-section-number">6.9.12</span> Why this matters<a href="tests-as-models.html#tm-why" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Three reasons, in rising order of importance.</p>
+<p><strong>It halves what you have to remember.</strong> A decision tree with dozens of leaves becomes one function and a formula syntax. When you meet a design this book never covered — three groups measured twice, a covariate plus an interaction, an ordinal predictor — you do not go looking for the name of the right test. You write the model.</p>
+<p><strong>It makes the assumptions visible.</strong> Every test in the list above inherits the same handful of assumptions from its parent model: the errors are independent, roughly constant in variance, roughly normal. Presented as twenty-eight separate tests, those become eighty-four assumptions to memorise. Presented as one model, they are three things to check, and <code>plot(model)</code> checks them.</p>
+<p><strong>It moves the conversation from testing to estimating.</strong> This is the real prize. A t-test hands you a verdict; a linear model hands you a coefficient, a standard error and a confidence interval — how big, in what units, how precisely known. Section <a href="comparing-means.html#cm-threshold">5.2.3.3</a> argued that significance is a threshold on evidence rather than a statement about importance. The linear-model framing makes that argument structural: once every test is a model, the <em>estimate</em> is what you naturally report, and the p-value becomes one column of the table rather than the point of it.</p>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated: What the framework does not swallow
+</h2>
+</div>
+<p>Honesty requires the boundaries. "Everything is a linear model" is a claim about the tests in an introductory syllabus, not about all of statistics.</p>
+<p><strong>Exact tests</strong> for small samples are not approximations of a linear model at all — they enumerate possibilities. Fisher's exact test, the binomial test, and the permutation logic behind the lady tasting tea in section <a href="partitioning-variation.html#partitioning-variation">5.3</a> count outcomes rather than fit parameters, which is precisely why they remain valid when every large-sample approximation has broken down.</p>
+<p><strong>Distributional tests</strong> have no linear model behind them because they are not about means, slopes, or spreads. The Kolmogorov-Smirnov test asks whether two entire distributions differ in shape; Shapiro-Wilk asks whether one is normal. Section <a href="partitioning-variation.html#partitioning-variation">5.3</a> used both, and neither can be written as a regression.</p>
+<p><strong>Extensions rather than special cases.</strong> Mixed and multilevel models generalise <code>+ id</code> into a random effect; survival models handle censored time; the structural equation models of chapter <a href="reveal.html#reveal">8</a> estimate relationships between variables nobody observed. Quantile regression replaces the mean with the median or any other quantile — the same idea with a different loss function. Each of these contains the linear model rather than fitting inside it.</p>
+<p>The right summary is therefore narrower than the slogan and more useful: <em>the classical tests you were taught as a list are special cases of one model, and almost everything that is not a special case is a generalisation of the same idea.</em> Either way there is one framework, not a zoo.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>You want to compare mean income across four regions. Which call does the job? <select class='webex-select'><option value='blank'></option><option value=''>aov(income ~ region) - lm() only works for two groups</option><option value='answer'>lm(income ~ region) - the number of levels does not matter</option><option value=''>lm(income ~ 1) with the regions filtered one at a time</option></select></p></li>
+<li><p><code>lm(y ~ G)</code> where <code>G</code> has exactly two levels is equivalent to which classical test? <select class='webex-select'><option value='blank'></option><option value=''>One-sample t-test</option><option value='answer'>Two-sample t-test with var.equal = TRUE</option><option value=''>Welch's t-test</option><option value=''>Paired t-test</option></select></p></li>
+<li><p>In <code>lm(Age ~ Gender)</code> the intercept was 24.500 and the slope 1.122. What is the mean age of men? <input class='webex-solveme nospaces' data-tol='0.01' size='6' data-answer='["25.622"]'/></p></li>
+<li><p><select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select> Because every test is a linear model, the assumptions of the linear model do not need to be checked for t-tests.</p></li>
+<li><p>Six cohorts are ordered in time. Testing them as an unordered factor costs 5 degrees of freedom; testing them as a number costs 1. <select class='webex-select'><option value='blank'></option><option value='answer'>TRUE</option><option value=''>FALSE</option></select> The second test can find a pattern the first misses, even though it uses less of the data's freedom.</p></li>
+<li><p>Which of these can <strong>not</strong> be rewritten as a linear model? <select class='webex-select'><option value='blank'></option><option value=''>Levene's test for equal variances</option><option value=''>Spearman's rank correlation</option><option value='answer'>The Kolmogorov-Smirnov test</option><option value=''>Repeated-measures ANOVA</option></select></p></li>
+<li><p>A colleague reports "we used a Mann-Whitney test because the data were skewed". Explain in one sentence what model they fitted, in the language of this section.</p></li>
+<li><p>You have three measurements on each of 60 patients and analyse them with <code>lm(y ~ condition)</code>, forgetting <code>+ id</code>. Will your F-statistic be too large or too small, and why? (Compare section <a href="tests-as-models.html#tm-repeated">6.9.7</a>.)</p></li>
+</ol>
+</div>
+
+</div>
+</div>
+<!-- </div> -->
+<div class="footnotes">
+<hr />
+<ol start="95">
+<li id="fn95"><p>Lindeløv, J. K., <em>Common statistical tests are linear models (or: how to teach stats)</em>, 2019, <a href="https://lindeloev.github.io/tests-as-linear/" class="uri">https://lindeloev.github.io/tests-as-linear/</a>. The accompanying one-page cheat sheet tabulates each test, its built-in R function, the equivalent <code>lm()</code> call, and whether the correspondence is exact or approximate. The idea itself is older — it is the standard view in the general-linear-model literature — but Lindeløv's presentation is what made it teachable.<a href="tests-as-models.html#fnref95" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="learning-from-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="structure.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

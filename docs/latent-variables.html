@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8.3 Latent Variables | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8.3 Latent Variables | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8.3 Latent Variables | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="clusters.html"/>
+<link rel="next" href="exploratory-factors.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
+<link rel="stylesheet" href="css/align.css" type="text/css" />
+<link rel="stylesheet" href="css/video.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a></li>
+<li class="chapter" data-level="" data-path="why-r.html"><a href="why-r.html"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-the-tidyverse.html"><a href="why-the-tidyverse.html"><i class="fa fa-check"></i>Why the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="latent-variables" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Latent Variables<a href="latent-variables.html#latent-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>Constructs, indicators, and measurement models</p>
+</div>
+<p>Some variables are comparatively straightforward to measure. Age can be taken from a register or asked directly. Income and number of children can be reported by respondents or recorded administratively. Their values may be missing, misreported, or defined differently across sources, but the variables are observable in principle.</p>
+<p>Other concepts are less tangible and less naturally represented by one value. Happiness, risk attitude, personality, intelligence, and mathematical competence are examples. Yet none of them is automatically latent. Researchers sometimes measure such concepts with one direct question, sometimes with a score built from several items, and sometimes with a latent-variable model.</p>
+<p>Every study must therefore make a <strong>measurement decision</strong>: how should a substantive concept become data? This process is called <strong>operationalization</strong>. A latent-variable model is one possible answer — an explicit model of how observed indicators relate to an unobserved quantity. It is not the only answer, and it is not automatically the best one.</p>
+<p>The rest of this section builds that decision in four steps. First the vocabulary, once and in one place. Then three worked examples that form a ladder: a construct where <strong>one item is enough</strong>, a construct where <strong>several items are averaged</strong>, and a construct where <strong>a model is unavoidable</strong>. Only then the formal model and a map of the wider family.</p>
+<div id="lv-concept-to-data" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> How a Concept Becomes Data<a href="latent-variables.html#lv-concept-to-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose you want to study happiness. You cannot put <em>happiness</em> into a regression. You can only put in a column of numbers, so something has to turn the concept into one. That step has a name — <strong>operationalization</strong> — and it is a decision, made by a researcher, that can be made well or badly.</p>
+<p>The most direct route is to ask. A survey question produces a recorded response, and anything recorded in the data is an <strong>observed</strong> variable, sometimes called <strong>manifest</strong>. In measurement contexts the same response is also called an <strong>indicator</strong>, because it is being used as evidence <em>about</em> something rather than as an interesting quantity in its own right. Nothing mysterious has happened yet: a question was asked, an answer was written down.</p>
+<p>Now notice what did <em>not</em> enter the data set. Happiness itself is nowhere in the file. Only an answer to a question about it is.</p>
+<p>At this point a natural but wrong move is to call happiness <em>unobserved</em> and stop. Consider a genuinely unobserved value instead. A respondent skips the question about age, so that cell is empty. Age is <strong>unobserved</strong> for that person — and age has not become anything exotic. It is an ordinary variable with a gap, and the appropriate response is a missing-data method. The same goes for omitted variables and regression residuals: unobserved quantities, all of them, and none of them the thing this chapter is about.</p>
+<p>The difference is not availability. It is whether a model <em>represents</em> the quantity. A variable is <strong>latent</strong> when it is not measured directly but is explicitly written into a statistical model, estimated through the indicators that are observed. Happiness is unobserved in the data either way. It becomes latent only when you build a model that contains it.</p>
+<p>Which leaves one word for the thing itself, before any of these decisions: the <strong>construct</strong> — the substantive concept you are trying to study. A construct can be measured with one question, summarized by an average of several, or represented as a latent variable. All three are legitimate, and the choice is yours to justify.</p>
+<div class="analysis-note">
+<p>Every latent variable is unobserved, but not every unobserved quantity is latent. <strong>Latentness is a modeling role, not a property of a concept.</strong></p>
+</div>
+<p>This is why there is no fixed list of latent constructs. Happiness and personality are the textbook examples, and both are routinely measured with no latent variable anywhere in sight.</p>
+<div id="lv-path-diagram" class="section level4 hasAnchor" number="8.3.1.1">
+<h4><span class="header-section-number">8.3.1.1</span> Reading a Path Diagram<a href="latent-variables.html#lv-path-diagram" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>One more convention before the examples, because these models are usually drawn rather than written. Three items measuring extraversion look like this:</p>
+<div class="figure"><span style="display:block;" id="fig:lv-intro-diagram"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-intro-diagram-1.png" alt="A latent variable with three indicators. The ellipse is not a column in the data; the rectangles are." width="499.2" />
+<p class="caption">
+Figure 8.1: A latent variable with three indicators. The ellipse is not a column in the data; the rectangles are.
+</p>
+</div>
+<p>The grammar is small enough to state in full. A <strong>rectangle</strong> is an observed variable — a column that exists in your data. An <strong>ellipse</strong> is a latent variable, which is not. A <strong>single-headed arrow</strong> points from cause to effect; running from a factor to an indicator it is called a <strong>loading</strong>, written <span class="math inline">\(\lambda\)</span>, and it says how strongly that item responds to the construct. A <strong>double-headed arc</strong> between two ellipses is a covariance or correlation: the two are related, with no claim about which drives which. Each indicator also carries a small residual arrow, <span class="math inline">\(\varepsilon\)</span>, for the part of it the factor does not explain; these are omitted from most figures in this book to keep them readable.</p>
+<p>One habit is worth forming immediately. <strong>The absence of an arrow is a claim too.</strong> Two factors drawn side by side with no arc between them are being asserted to be uncorrelated, and that assertion can be wrong.</p>
+</div>
+</div>
+<div id="lv-single-item" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> One Item Can Be Enough: Happiness and Risk<a href="latent-variables.html#lv-single-item" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Start with the case that measurement textbooks tend to skip.</p>
+<p>The European Social Survey asks every respondent, in every round:</p>
+<blockquote>
+<p><strong>Taking all things together, how happy would you say you are?</strong>
+0 = <em>extremely unhappy</em> … 10 = <em>extremely happy</em><a href="#fn96" class="footnote-ref" id="fnref96"><sup>96</sup></a></p>
+</blockquote>
+<p>The German Socio-Economic Panel asks about life satisfaction in the same format:</p>
+<blockquote>
+<p><strong>How satisfied are you with your life, all things considered?</strong>
+0 = <em>completely dissatisfied</em> … 10 = <em>completely satisfied</em><a href="#fn97" class="footnote-ref" id="fnref97"><sup>97</sup></a></p>
+</blockquote>
+<p>And the Gallup World Poll — the data source behind the <em>World Happiness Report</em> — uses the Cantril ladder:</p>
+<blockquote>
+<p><strong>Please imagine a ladder with steps numbered from 0 at the bottom to 10 at the top. The top represents the best possible life for you, the bottom the worst possible life. On which step would you say you personally stand at this time?</strong><a href="#fn98" class="footnote-ref" id="fnref98"><sup>98</sup></a></p>
+</blockquote>
+<p>Three single questions. Each produces one ordinary observed variable, and between them they support a large share of the empirical well-being literature and an annual international ranking of countries.</p>
+<p>The same design appears for risk attitude. The SOEP asks whether respondents are generally willing to take risks or try to avoid them, from 0 to 10.<a href="#fn99" class="footnote-ref" id="fnref99"><sup>99</sup></a> At the 2026 SOEP User Conference, Thomas Dohmen gave a keynote titled <em>Twenty-Two Years of the General Risk Question</em>,<a href="#fn100" class="footnote-ref" id="fnref100"><sup>100</sup></a> which is the argument in one title: a single, carefully designed question can carry two decades of evidence when its target is clear, its wording is stable, and it is repeated across people, years, and countries.</p>
+<p><strong>Why one item is the right choice here.</strong> The construct is defined as a <em>global self-assessment</em>, and the question asks for exactly that. The item is not an imperfect proxy for something deeper — it is the outcome of interest. Beyond that, single items are cheap in respondent burden, can be repeated frequently in a broad panel, support comparison over time through stable wording, and can be validated against retests, external outcomes, and behavior.</p>
+<p><strong>When one item is not enough.</strong> A single response cannot separate the construct from item-specific measurement error, so its reliability cannot be estimated from itself. It cannot reveal whether the concept has several dimensions. And its interpretation depends on wording, response style, and the respondent's reading of the question.</p>
+<p>That last limitation is not hypothetical, and the three questions above illustrate it. <em>Happiness</em> asks about affective state, <em>life satisfaction</em> asks for a cognitive judgment, and the <em>Cantril ladder</em> asks for a comparison against an imagined best possible life. They correlate substantially and they are not the same construct. Choosing one of them is a substantive decision, not a formatting detail.</p>
+<div class="analysis-note">
+<p>A single item is a measurement model too — one with the loading fixed to one and the residual variance fixed to zero. Those are assumptions, not the absence of assumptions.</p>
+</div>
+</div>
+<div id="lv-composite" class="section level3 hasAnchor" number="8.3.3">
+<h3><span class="header-section-number">8.3.3</span> Several Items, One Score: The Big Five<a href="latent-variables.html#lv-composite" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Some constructs resist a single question because they are defined as broad domains.</p>
+<p>Before the example, three instrument terms. An <strong>item</strong> is one question, statement, or task. A <strong>scale</strong> combines related items intended to measure one dimension, and a <strong>subscale</strong> is one scale inside a larger instrument. An <strong>inventory</strong> is a larger collection of items and scales describing several dimensions or facets. The usage is not perfectly rigid, but a practical distinction holds:</p>
+<blockquote>
+<p>A scale usually produces one main score; an inventory produces a profile of several scores.</p>
+</blockquote>
+<p>Personality shows why one item will not do. The Five-Factor Model distinguishes openness, conscientiousness, extraversion, agreeableness, and neuroticism. Each dimension is broader than any one statement: extraversion alone spans sociability, talkativeness, assertiveness, activity, and positive emotionality. Asking <em>How extraverted are you?</em> would collapse a facet structure that decades of psychological research established.</p>
+<p>The NEO PI-3 takes that structure seriously. It contains <strong>240 items</strong> and measures the five broad domains together with narrower facets underneath each.<a href="#fn101" class="footnote-ref" id="fnref101"><sup>101</sup></a> That number is worth pausing on: it is what a research programme looks like when it treats content coverage as the priority and can afford the testing time.</p>
+<p>A general-purpose panel study faces the opposite constraint. The SOEP must also collect work, income, education, family, health, and housing information in the same interview. It therefore uses a short Big Five instrument with <strong>15 items — three per dimension</strong>.<a href="#fn102" class="footnote-ref" id="fnref102"><sup>102</sup></a> This is not the NEO inventory mechanically truncated; it is a survey measure designed for a different purpose.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>NEO PI-3</strong></th>
+<th><strong>SOEP BFI-S</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Items</td>
+<td>240</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td>Resolution</td>
+<td>five domains plus facets</td>
+<td>five domains only</td>
+</tr>
+<tr class="odd">
+<td>Cost</td>
+<td>substantial testing time</td>
+<td>a few minutes</td>
+</tr>
+<tr class="even">
+<td>Typical use</td>
+<td>assessment, personality research</td>
+<td>population panel, broad models</td>
+</tr>
+</tbody>
+</table>
+<p>Fewer items mean less information and less precision per dimension. That is a trade-off to state, not a flaw to hide.</p>
+<p>The usual analysis reverse-codes items pointing in the opposite direction and averages within a dimension. For three extraversion items:</p>
+<p><span class="math display">\[
+\text{Extraversion score}_p
+=
+\frac{x_{p1}+x_{p2}+x_{p3}^{\mathrm{reversed}}}{3}.
+\]</span></p>
+<p>The result is an <strong>observed scale score</strong>: simple, transparent, and directly usable as a predictor or outcome. For many research questions it is entirely sufficient.</p>
+<p>The same three responses could instead be treated as indicators of a latent extraversion factor. The difference is conceptual, not computational:</p>
+<p><span class="math display">\[
+\text{items}\longrightarrow\text{fixed average}
+\qquad\text{versus}\qquad
+\text{items}\longrightarrow\text{estimated latent factor}.
+\]</span></p>
+<p>A fixed average assigns every item the same predetermined weight and treats the result as observed. A latent model estimates how strongly each item relates to the common factor and separates shared from item-specific variation.</p>
+<p><strong>More items make latent modeling possible; they do not make it mandatory.</strong> The inventory is the instrument. A scale score or a latent factor is an analytical representation built from it.</p>
+</div>
+<div id="lv-model-necessary" class="section level3 hasAnchor" number="8.3.4">
+<h3><span class="header-section-number">8.3.4</span> When a Model Is Necessary: Competence and Intelligence<a href="latent-variables.html#lv-model-necessary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The third rung is where the alternatives run out.</p>
+<p>Asking <em>How intelligent are you?</em> measures <strong>self-assessed</strong> intelligence — a real and interesting variable, but not intelligence. Asking <em>How good are you at mathematics?</em> measures <strong>perceived</strong> competence, which reflects skill but also confidence, prior feedback, social comparison, and response style. No wording repair fixes this, because the construct is defined by performance and the question collects a judgment.</p>
+<p>So switch to performance. One mathematics task records what a person actually did — but it still provides little evidence. A correct answer may reflect competence, a lucky guess, or prior familiarity with that specific problem. An incorrect answer may reflect lower competence, carelessness, a misreading, time pressure, or one unsuitable task.</p>
+<p>This is why PISA, VERA, school and university examinations, and multi-stage assessment centres all take hours rather than minutes:</p>
+<p><span class="math display">\[
+\text{many tasks}
+\longrightarrow
+\text{response pattern}
+\longrightarrow
+\text{estimated competence}.
+\]</span></p>
+<p>Four reasons make the length necessary:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Content coverage</strong> — tasks sample different parts of the intended domain.</li>
+<li><strong>Precision</strong> — isolated guesses, slips, and task-specific effects lose influence.</li>
+<li><strong>Range</strong> — tasks of varying difficulty inform about people at different competence levels.</li>
+<li><strong>Comparability</strong> — a measurement model places persons and tasks on one common scale.</li>
+</ol>
+<p>In PISA 2022, the cognitive assessment lasted two hours per student, typically about 60 minutes of mathematics plus 60 minutes in another domain. The international item pool was far larger, so different students completed different but overlapping task sets.<a href="#fn103" class="footnote-ref" id="fnref103"><sup>103</sup></a> That design buys broad coverage without asking any student to do everything — and it means raw counts of correct answers are <strong>not</strong> directly comparable across students. Item response theory exists to solve exactly that problem, and returns later in this chapter.</p>
+<p>Intelligence testing follows the same logic, and it is where the whole method began. In 1904 Charles Spearman noticed that schoolchildren's marks in unrelated subjects — classics, French, mathematics, pitch discrimination — were all <strong>positively</strong> correlated. Nobody is good at everything by coincidence. Spearman proposed that one common cause, which he called <strong>general intelligence</strong> or <strong><em>g</em></strong>, accounted for the shared part, while each subject retained its own <strong>specific</strong> ability. To argue this, he had to invent factor analysis.</p>
+<p>That pattern of uniformly positive correlations among cognitive tests is still called the <strong>positive manifold</strong>, and it remains one of the most replicated findings in psychology. What it does <em>not</em> settle is what <span class="math inline">\(g\)</span> is. A single common factor is one explanation for a positive manifold; several correlated abilities are another; mutual reinforcement between abilities during development is a third. The statistical model is compatible with all three.</p>
+<p>Even in this best case, then, the factor is not identical to the full theoretical concept. It is a model-based representation supported by one particular set of indicators — which is why the arrangement of the latent variables is itself a substantive claim, and the subject of the next section.</p>
+<div class="analysis-takeaway">
+<p><strong>Single items, composite scores, and latent variables are alternative representations, not a hierarchy from inferior to superior.</strong></p>
+<p>The right choice depends on the construct, the research question, the precision required, the available survey or testing time, and the assumptions the researcher is willing to defend.</p>
+</div>
+</div>
+<div id="lv-how-many" class="section level3 hasAnchor" number="8.3.5">
+<h3><span class="header-section-number">8.3.5</span> How Many Latent Variables?<a href="latent-variables.html#lv-how-many" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Two questions arise once the notation is in place. How <strong>few</strong> indicators can a factor survive on, and how are several factors <strong>arranged</strong> relative to one another?</p>
+<div id="lv-minimal-model" class="section level4 hasAnchor" number="8.3.5.1">
+<h4><span class="header-section-number">8.3.5.1</span> The Smallest Possible Factor Model<a href="latent-variables.html#lv-minimal-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Start at the bottom. What does one factor with a single indicator look like?</p>
+<div class="figure"><span style="display:block;" id="fig:lv-minimal"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-minimal-1.png" alt="Growing a one-factor model one indicator at a time. Only the fourth is testable." width="806.4" />
+<p class="caption">
+Figure 8.2: Growing a one-factor model one indicator at a time. Only the fourth is testable.
+</p>
+</div>
+<p>It looks perfectly reasonable, and it is useless. To see why, we need to know what the arrow actually stands for.</p>
+<p>Write the model for one item:</p>
+<p><span class="math display">\[
+x_{i} = \nu_i + \lambda_i\,\eta + \varepsilon_i .
+\]</span></p>
+<p>This is a regression — with one unusual feature: <strong>the predictor is not in your data.</strong> Everything else is familiar. <span class="math inline">\(\nu_i\)</span> is an intercept. <span class="math inline">\(\lambda_i\)</span>, the <strong>loading</strong>, is a slope: how many points item <span class="math inline">\(i\)</span> moves when the construct moves by one unit. And <span class="math inline">\(\varepsilon_i\)</span> is a residual in exactly the ordinary sense — the part of the item the construct fails to account for, containing measurement error and whatever else is specific to that question.</p>
+<p>Three quantities in that equation are unknown and must be estimated:</p>
+<ul>
+<li>the <strong>loading</strong> <span class="math inline">\(\lambda_i\)</span> — the strength of the connection between construct and item;</li>
+<li>the <strong>factor variance</strong> <span class="math inline">\(\psi = \operatorname{Var}(\eta)\)</span> — how much people differ on the construct. This one is peculiar, because the construct has no natural unit: nothing tells you whether extraversion is measured in points, kilograms, or anything else. So <span class="math inline">\(\psi\)</span> is normally <strong>fixed</strong> to 1 by convention, or one loading is fixed to 1, purely to give the factor a scale;</li>
+<li>the <strong>residual variance</strong> <span class="math inline">\(\theta_i = \operatorname{Var}(\varepsilon_i)\)</span> — how much of the item is <em>not</em> explained.</li>
+</ul>
+<p>Now take variances on both sides of the equation. Because <span class="math inline">\(\eta\)</span> and <span class="math inline">\(\varepsilon_i\)</span> are assumed unrelated, the item's variance splits cleanly in two:</p>
+<p><span class="math display">\[
+\operatorname{Var}(x_i) \;=\; \lambda_i^{2}\,\psi \;+\; \theta_i .
+\]</span></p>
+<p><strong>That single equation is the whole of factor analysis in miniature</strong>: observed variance equals explained variance plus residual variance, exactly as in regression.</p>
+<p>And it is also the problem. A model can only be estimated from the variances and covariances your data actually supply — with <span class="math inline">\(q\)</span> observed variables there are <span class="math inline">\(q(q+1)/2\)</span> of them. Subtract the free parameters and what is left is the degrees of freedom.</p>
+<p>With <strong>one indicator</strong> the data supply exactly one number: <span class="math inline">\(\operatorname{Var}(x_1)\)</span>. The equation above has three unknowns on the right. One equation, three unknowns, and no sample size on earth will fix it. To make it estimable you must fix the loading to one <em>and</em> the residual variance to zero — at which point the "latent" variable is numerically identical to the item, just drawn as an ellipse. This is precisely the point made in Section <a href="latent-variables.html#lv-single-item">8.3.2</a>: a single item <strong>is</strong> a measurement model, one whose assumptions are hidden by being invisible.</p>
+<p><strong>Two indicators</strong> add a covariance, and the covariance is where a common factor first leaves a trace: <span class="math inline">\(\operatorname{Cov}(x_1,x_2) = \lambda_1\lambda_2\psi\)</span>. Two items now supply three numbers — two variances and one covariance — against four unknowns once <span class="math inline">\(\psi\)</span> is fixed (<span class="math inline">\(\lambda_1, \lambda_2, \theta_1, \theta_2\)</span>). Still one short. A two-indicator factor becomes estimable only inside a larger model, or by forcing the two loadings to be equal — an assumption theory rarely supports.</p>
+<p><strong>Three indicators</strong> give six numbers — three variances and three covariances — against six unknowns (<span class="math inline">\(\lambda_1..\lambda_3, \theta_1..\theta_3\)</span>). Everything is estimable and <span class="math inline">\(df = 0\)</span>: the model reproduces the observed covariances exactly, by construction. It cannot misfit, so its fit tells you nothing. A CFI of 1.000 here is arithmetic, not evidence.</p>
+<p><strong>Four indicators</strong> give ten numbers for eight unknowns, so <span class="math inline">\(df = 2\)</span>. Only now can the data contradict the model. This is why the rule of thumb says three indicators to estimate and <strong>four to test</strong>, and why the SOEP's three-item personality scales are perfectly usable as scores but cannot have their one-factor structure tested item by item.</p>
+<div class="analysis-note">
+<p>Fixing a parameter is not a neutral technical step — it is the difference between a claim that can fail and one that cannot. A model with <span class="math inline">\(df = 0\)</span> is a description; a model with <span class="math inline">\(df &gt; 0\)</span> is a hypothesis.</p>
+</div>
+</div>
+<div id="lv-arrangements" class="section level4 hasAnchor" number="8.3.5.2">
+<h4><span class="header-section-number">8.3.5.2</span> Five Arrangements<a href="latent-variables.html#lv-arrangements" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>With enough indicators, the remaining question is how the latent variables relate to each other. Five arrangements cover most of what you will meet.</p>
+<div class="figure"><span style="display:block;" id="fig:lv-arr-a"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-arr-a-1.png" alt="(a) One common factor: every indicator loads on a single latent variable." width="710.4" />
+<p class="caption">
+Figure 8.3: (a) One common factor: every indicator loads on a single latent variable.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:lv-arr-b"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-arr-b-1.png" alt="(b) Correlated factors: distinct factors, related to one another." width="710.4" />
+<p class="caption">
+Figure 8.4: (b) Correlated factors: distinct factors, related to one another.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:lv-arr-c"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-arr-c-1.png" alt="(c) A cross-loading: x4 is influenced by F2 as intended, and also by F1." width="710.4" />
+<p class="caption">
+Figure 8.5: (c) A cross-loading: x4 is influenced by F2 as intended, and also by F1.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:lv-arr-d"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-arr-d-1.png" alt="(d) Second-order factor: G reaches the indicators only through F1, F2 and F3." width="556.8" />
+<p class="caption">
+Figure 8.6: (d) Second-order factor: G reaches the indicators only through F1, F2 and F3.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:lv-arr-e"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/lv-arr-e-1.png" alt="(e) Bifactor model: G loads on every indicator directly. No arcs, so G and each S are uncorrelated." width="556.8" />
+<p class="caption">
+Figure 8.7: (e) Bifactor model: G loads on every indicator directly. No arcs, so G and each S are uncorrelated.
+</p>
+</div>
+<p>The letters mark genuinely different roles. <strong>F</strong> is a common factor for its own indicators, and it carries <em>everything</em> those items share. <strong>G</strong> is a general factor spanning every indicator in the model. <strong>S</strong> is a specific factor: what its group of items still shares <strong>after</strong> G has been accounted for.</p>
+<p>So <strong>F1 and S1 are not the same object</strong>, even when they point at the same three items. In panel (b), F1 is the only common cause of x1–x3. In panel (e), G has already taken the variance common to all nine, and S1 is only what remains within x1–x3 on top of that. A specific factor is a <em>residual</em> common factor — which is why S loadings are usually smaller than the corresponding F loadings, and can even change sign.</p>
+<p>In panel (a) the single factor is labelled <strong>F</strong> because that is its structural role. In intelligence research this same shape is the historical <strong><em>g</em></strong> from Section <a href="latent-variables.html#lv-model-necessary">8.3.4</a>: the name is substantive, the shape is generic.</p>
+<p><strong>Panel (c) shows a cross-loading</strong> — a second arrow arriving at one indicator from a factor that is not its own. Here x4 is influenced by F2 as intended <em>and</em> by F1. Nothing about the picture is exotic; the claim is that one item measures two things at once. That happens when item content genuinely spans two domains, when wording is ambiguous, or when too few factors were retained. It is not automatically an error: the conventional model, which fixes every non-target loading to zero, is a strong restriction that item content does not always respect.</p>
+<p><strong>Panels (d) and (e) are the pair that gets confused.</strong> In the second-order model, G reaches the indicators only <em>through</em> the first-order factors — its job is to explain why F1, F2 and F3 correlate. In the bifactor model, G points at every indicator directly and is mediated by nothing, so each item carries two loadings. Note what is missing from panel (e): there are no arcs among G, S1, S2 and S3. In the standard bifactor specification those factors are constrained <strong>orthogonal</strong>, and that constraint is what makes "the general part of x1" and "the domain-specific part of x1" separable at all. Drop it and the model usually stops being identified.</p>
+<p>A bifactor model also contains many more loadings than the alternatives, so it can fit well for reasons unrelated to being correct — exactly the situation the model-fit chapter of this book is about.</p>
+<div class="analysis-note">
+<p>The number and arrangement of latent variables is a substantive hypothesis. Model fit can tell you that an arrangement reproduces the data poorly. It cannot tell you that a well-fitting arrangement is the right explanation.</p>
+</div>
+<p>Section <a href="confirmatory-factors.html#confirmatory-factors">8.5</a> returns to these models with specification, identification, and estimation. Here they serve a narrower purpose: to show that "the latent variable" in a path diagram may be one bubble, several side by side, or several stacked in layers.</p>
+</div>
+</div>
+<div id="lv-model-does" class="section level3 hasAnchor" number="8.3.6">
+<h3><span class="header-section-number">8.3.6</span> What a Latent Model Does<a href="latent-variables.html#lv-model-does" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For continuous indicators, a basic one-factor measurement model is</p>
+<p><span class="math display">\[
+x_{pi}
+=
+\nu_i
++
+\lambda_i\eta_p
++
+\varepsilon_{pi},
+\]</span></p>
+<p>where <span class="math inline">\(x_{pi}\)</span> is person <span class="math inline">\(p\)</span>'s response to indicator <span class="math inline">\(i\)</span>; <span class="math inline">\(\nu_i\)</span> is the indicator's intercept; <span class="math inline">\(\lambda_i\)</span> its loading on the latent variable; <span class="math inline">\(\eta_p\)</span> person <span class="math inline">\(p\)</span>'s latent standing; and <span class="math inline">\(\varepsilon_{pi}\)</span> indicator-specific residual variation.</p>
+<p>The model explains associations among indicators through their shared relation to <span class="math inline">\(\eta\)</span>. It never observes <span class="math inline">\(\eta\)</span>. It proposes that a smaller unobserved structure can account for systematic patterns in observed data:</p>
+<p><span class="math display">\[
+\text{observed variation}
+=
+\text{shared factor variation}
++
+\text{indicator-specific residual variation}.
+\]</span></p>
+<p>Compared with a fixed average, the model can let indicators contribute unequally, retain residual variation instead of averaging it away, and quantify uncertainty. None of this is automatic. The interpretation depends on which indicators were selected, how the model was specified, and which assumptions connect indicators to the proposed construct.</p>
+<p>A latent factor should therefore not be called the <strong>true</strong> construct, and residual variation should not be dismissed as meaningless noise.</p>
+<div id="lv-never-a-column" class="section level4 hasAnchor" number="8.3.6.1">
+<h4><span class="header-section-number">8.3.6.1</span> Is the Latent Variable Ever Computed?<a href="latent-variables.html#lv-never-a-column" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A natural question at this point is whether the estimation eventually produces a value of <span class="math inline">\(\eta_p\)</span> for each person — a new column to be added to the data set. It does not.</p>
+<p>What the model estimates are the loadings, intercepts, residual variances, and factor variances and covariances. The latent variable itself is integrated out: the entire model is fitted to the <strong>covariance matrix</strong> of the indicators. The practical demonstration is that a confirmatory factor model can be estimated from a covariance matrix and a sample size alone, with no individual responses at all, and the parameter estimates are identical to those obtained from the raw data. Nothing person-specific enters the estimation.</p>
+<p>The circle in the path diagram is therefore exactly what it appears to be: <strong>a quantity in the model, not a column in the data.</strong></p>
+<p>Factor scores can be <em>predicted</em> afterwards as a separate post-hoc step — <code>lavPredict()</code> in <code>lavaan</code> offers several methods for this. Such scores are estimates with their own uncertainty, and different methods give different values for the same person, so they are not simply "the" latent values. They are not required for anything in this chapter, and structural equation modeling in particular relates latent variables to one another <em>inside</em> the model, without ever scoring a person.</p>
+<p>There is one setting where person-level values genuinely are produced, and it is worth naming here because it looks like a contradiction. Large-scale assessments such as PISA do report competence on a scale, and item response theory does place each student on it. Even there, however, a single point estimate is avoided: PISA reports <strong>plausible values</strong>, several random draws from each student's posterior distribution, precisely because the student's competence remains uncertain after the test. Section <a href="items.html#items">8.7</a> takes this up.</p>
+<div class="analysis-note">
+<p>A latent variable becomes tangible through its <strong>loadings</strong> and through the covariance pattern it explains — not through a column of person values. Where person values are unavoidable, honest practice reports a distribution rather than a number.</p>
+</div>
+</div>
+</div>
+<div id="lv-first-map" class="section level3 hasAnchor" number="8.3.7">
+<h3><span class="header-section-number">8.3.7</span> A First Map of Latent-Variable Models<a href="latent-variables.html#lv-first-map" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Two questions give a useful first orientation: is the latent variable continuous or categorical, and are the indicators continuous or categorical?</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Continuous indicators</strong></th>
+<th><strong>Categorical indicators</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Continuous latent variable</strong></td>
+<td>exploratory and confirmatory factor models</td>
+<td>categorical factor models, Rasch models, item response theory</td>
+</tr>
+<tr class="even">
+<td><strong>Categorical latent variable</strong></td>
+<td>latent profile and continuous mixture models</td>
+<td>latent class models</td>
+</tr>
+</tbody>
+</table>
+<p>The map is an orientation, not a taxonomy. Indicators may be ordinal, binary, counts, continuous, or mixed; models can combine continuous factors with latent classes, add repeated measurements or multiple levels, and use response distributions that fit no cell cleanly.</p>
+<p>Structural equation modeling is deliberately absent, because it answers a different question: <strong>does the model only describe measurement, or does it also specify regressions and paths among variables?</strong></p>
+<p>The following sections follow one branch in depth:</p>
+<p><span class="math display">\[
+\text{explore a factor structure}
+\longrightarrow
+\text{specify and evaluate it}
+\longrightarrow
+\text{relate latent variables to other variables}.
+\]</span></p>
+<ul>
+<li><strong>Exploratory factor analysis</strong> asks what common dimensions may be present.</li>
+<li><strong>Confirmatory factor analysis</strong> states and evaluates an explicit measurement model.</li>
+<li><strong>Structural equation modeling</strong> adds regressions and paths to measurement models.</li>
+<li><strong>Item response theory</strong> focuses on categorical task responses, person competence, and item properties.</li>
+</ul>
+<p>Two neighboring methods answer different questions. Principal component analysis builds weighted combinations of observed variables without positing latent causes or measurement error. Cluster analysis groups similar observations rather than measuring a continuous trait.</p>
+<div class="analysis-note">
+<p>Latent-variable modeling is not one technique. It is a family of models distinguished by the observed evidence, the type of latent variable, and the relations imposed between them.</p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="96">
+<li id="fn96"><p>European Social Survey, core questionnaire, subjective well-being module (variable <code>happy</code>): <a href="https://www.europeansocialsurvey.org/methodology/ess-methodology/source-questionnaire" class="uri">https://www.europeansocialsurvey.org/methodology/ess-methodology/source-questionnaire</a>.<a href="latent-variables.html#fnref96" class="footnote-back">↩︎</a></p></li>
+<li id="fn97"><p>SOEPcompanion, <em>Life Satisfaction</em>: <a href="https://companion.soep.de/Survey%20Design/Life%20Satisfaction.html" class="uri">https://companion.soep.de/Survey%20Design/Life%20Satisfaction.html</a>.<a href="latent-variables.html#fnref97" class="footnote-back">↩︎</a></p></li>
+<li id="fn98"><p>Gallup World Poll item used in the <em>World Happiness Report</em>; see the report's statistical appendix on the Cantril ladder: <a href="https://worldhappiness.report/" class="uri">https://worldhappiness.report/</a>.<a href="latent-variables.html#fnref98" class="footnote-back">↩︎</a></p></li>
+<li id="fn99"><p>SOEPcompanion, <em>Risk Aversion</em>: <a href="https://companion.soep.de/Survey%20Design/Risk%20Aversion.html" class="uri">https://companion.soep.de/Survey%20Design/Risk%20Aversion.html</a>.<a href="latent-variables.html#fnref99" class="footnote-back">↩︎</a></p></li>
+<li id="fn100"><p>DIW Berlin, <em>SOEP 2026 -- 16th International German Socio-Economic Panel User Conference</em>, conference program and keynote announcement: <a href="https://www.diw.de/en/diw_01.c.982228.en/events/soep_2026_____16th_international_german_socio-economic_panel_user_conference.html" class="uri">https://www.diw.de/en/diw_01.c.982228.en/events/soep_2026_____16th_international_german_socio-economic_panel_user_conference.html</a>.<a href="latent-variables.html#fnref100" class="footnote-back">↩︎</a></p></li>
+<li id="fn101"><p>PAR, <em>NEO Personality Inventory-3</em>: <a href="https://www.parinc.com/products/NEO-PI-3-NU" class="uri">https://www.parinc.com/products/NEO-PI-3-NU</a>.<a href="latent-variables.html#fnref101" class="footnote-back">↩︎</a></p></li>
+<li id="fn102"><p>SOEPcompanion, <em>Personality -- Big Five</em>: <a href="https://companion.soep.de/Survey%20Design/Personality%20%E2%80%93%20Big%20Five.html" class="uri">https://companion.soep.de/Survey%20Design/Personality%20%E2%80%93%20Big%20Five.html</a>.<a href="latent-variables.html#fnref102" class="footnote-back">↩︎</a></p></li>
+<li id="fn103"><p>OECD, <em>PISA 2022 Results, Volume II</em>: <a href="https://www.oecd.org/en/publications/pisa-2022-results-volume-ii_a97db61c-en/full-report/component-7.html" class="uri">https://www.oecd.org/en/publications/pisa-2022-results-volume-ii_a97db61c-en/full-report/component-7.html</a>.<a href="latent-variables.html#fnref103" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="clusters.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exploratory-factors.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

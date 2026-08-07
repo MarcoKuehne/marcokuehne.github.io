@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Becoming Fluent in Data</title>
+  <title>8.6 Structural Equations | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to becoming fluent in data." />
   <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Becoming Fluent in Data" />
+  <meta property="og:title" content="8.6 Structural Equations | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
   <meta property="og:description" content="A guide to becoming fluent in data." />
   <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Becoming Fluent in Data" />
+  <meta name="twitter:title" content="8.6 Structural Equations | Becoming Fluent in Data" />
   
   <meta name="twitter:description" content="A guide to becoming fluent in data." />
   <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
-<link rel="prev" href="text-mining.html"/>
-<link rel="next" href="resources.html"/>
+<link rel="prev" href="confirmatory-factors.html"/>
+<link rel="next" href="items.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -329,8 +329,157 @@ div.csl-indent {
 <div class = infobox>
 This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
 </div>
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="structural-equations" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Structural Equations<a href="structural-equations.html#structural-equations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>Linking measurement and relationships</p>
+</div>
+<p>Confirmatory factor analysis asks how constructs are measured. Structural equation modeling adds another layer:</p>
+<blockquote>
+<p>How are the measured constructs and observed variables related?</p>
+</blockquote>
+<p>In a broad statistical usage, CFA is already part of the SEM family. In the narrower teaching usage adopted here, <strong>SEM</strong> refers to models that combine a measurement model with directed regressions or paths.</p>
+<div id="sem-path-models" class="section level3 hasAnchor" number="8.6.1">
+<h3><span class="header-section-number">8.6.1</span> Path Models as Systems of Regressions<a href="structural-equations.html#sem-path-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A path model contains several linked regression equations. For a simple mediation model:</p>
+<p><span class="math display">\[
+M
+=
+\alpha_M
++
+aX
++
+\varepsilon_M,
+\]</span></p>
+<p><span class="math display">\[
+Y
+=
+\alpha_Y
++
+c&#39;X
++
+bM
++
+\varepsilon_Y.
+\]</span></p>
+<p>The indirect effect is <span class="math inline">\(ab\)</span>, the direct effect is <span class="math inline">\(c&#39;\)</span>, and the total effect is</p>
+<p><span class="math display">\[
+c=c&#39;+ab.
+\]</span></p>
+<p>When all variables are observed, this is usually called <strong>path analysis</strong>. SEM can replace some observed variables with latent factors measured by several indicators.</p>
+</div>
+<div id="sem-measurement-structural" class="section level3 hasAnchor" number="8.6.2">
+<h3><span class="header-section-number">8.6.2</span> Measurement Model Plus Structural Model<a href="structural-equations.html#sem-measurement-structural" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A measurement model describes the indicators:</p>
+<p><span class="math display">\[
+\mathbf{x}
+=
+\boldsymbol{\nu}
++
+\boldsymbol{\Lambda}\boldsymbol{\eta}
++
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>A structural model describes relationships among latent and observed variables:</p>
+<p><span class="math display">\[
+\boldsymbol{\eta}
+=
+\boldsymbol{\alpha}
++
+\mathbf{B}\boldsymbol{\eta}
++
+\boldsymbol{\Gamma}\mathbf{x}
++
+\boldsymbol{\zeta}.
+\]</span></p>
+<p>The central advantage is that relationships can be estimated while the measurement model remains explicit. A latent predictor is not treated as a perfectly observed scale score, and a latent outcome retains its measurement uncertainty within the joint model.</p>
+</div>
+<div id="sem-latent-mediation" class="section level3 hasAnchor" number="8.6.3">
+<h3><span class="header-section-number">8.6.3</span> A Simple Latent Mediation Model<a href="structural-equations.html#sem-latent-mediation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose motivation is proposed to mediate the relationship between educational resources and competence. Motivation and competence may each be measured by several indicators.</p>
+<p>The model contains two claims:</p>
+<ol style="list-style-type: decimal">
+<li>the indicators measure motivation and competence adequately;</li>
+<li>the structural paths among resources, motivation, and competence are substantively defensible.</li>
+</ol>
+<p>A compact <code>lavaan</code> skeleton is:</p>
+<p>The defined indirect effect is a model parameter. Its causal interpretation requires much more than statistical significance.</p>
+</div>
+<div id="sem-measurement-first" class="section level3 hasAnchor" number="8.6.4">
+<h3><span class="header-section-number">8.6.4</span> Measurement Comes First<a href="structural-equations.html#sem-measurement-first" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A structural model does not rescue a weak measurement model. If indicators do not support the intended factors, the interpretation of regressions among those factors becomes unclear.</p>
+<p>A defensible sequence is:</p>
+<ol style="list-style-type: decimal">
+<li>define the constructs and indicators;</li>
+<li>evaluate the measurement models;</li>
+<li>establish sufficient comparability when groups or time points are compared;</li>
+<li>specify the structural relations;</li>
+<li>evaluate global and local fit of the combined model;</li>
+<li>examine alternative explanations and robustness.</li>
+</ol>
+<p>The measurement and structural parts are estimated together in the final SEM, but they should remain conceptually distinguishable.</p>
+</div>
+<div id="sem-not-causal" class="section level3 hasAnchor" number="8.6.5">
+<h3><span class="header-section-number">8.6.5</span> SEM Is Not Automatically Causal<a href="structural-equations.html#sem-not-causal" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A directed arrow expresses a model assumption. It does not create temporal order, random assignment, or control for confounding.</p>
+<p>A causal interpretation requires evidence and assumptions about:</p>
+<ul>
+<li>temporal ordering;</li>
+<li>omitted common causes;</li>
+<li>selection and missingness;</li>
+<li>measurement validity;</li>
+<li>functional form;</li>
+<li>interference and treatment definition where relevant.</li>
+</ul>
+<p>Different directed models can sometimes imply the same covariance structure. Good fit therefore does not prove the direction of causation.</p>
+<div class="analysis-warning">
+<p>A well-fitting SEM is a well-fitting system of statistical restrictions. It becomes a causal model only when the research design and causal assumptions justify that interpretation.</p>
+</div>
+</div>
+<div id="sem-higher-order-clarification" class="section level3 hasAnchor" number="8.6.6">
+<h3><span class="header-section-number">8.6.6</span> Where Higher-Order and Bifactor Models Belong<a href="structural-equations.html#sem-higher-order-clarification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Second-order and bifactor models remain confirmatory measurement models in the organization of this book.</p>
+<ul>
+<li>A <strong>second-order model</strong> explains relationships among first-order factors with a broader factor.</li>
+<li>A <strong>bifactor model</strong> gives indicators direct loadings on a general factor and specific factors.</li>
+<li>A <strong>structural model</strong> adds regressions among constructs or between constructs and external variables.</li>
+</ul>
+<p>All can be estimated in SEM software, but they answer different substantive questions. Software membership should not replace conceptual classification.</p>
+</div>
+<div id="sem-fit" class="section level3 hasAnchor" number="8.6.7">
+<h3><span class="header-section-number">8.6.7</span> Model Fit Continues, but the Questions Multiply<a href="structural-equations.html#sem-fit" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The same evaluation principles continue:</p>
+<ul>
+<li>convergence and admissible estimates;</li>
+<li>global and local fit;</li>
+<li>comparison of defensible alternatives;</li>
+<li>validation beyond the original sample.</li>
+</ul>
+<p>The structural part adds further questions:</p>
+<ul>
+<li>Are the path directions theoretically justified?</li>
+<li>Are indirect effects meaningful and sufficiently precise?</li>
+<li>Are important confounders omitted?</li>
+<li>Are coefficients stable across groups or time?</li>
+<li>Would another plausible model imply similar observed relationships?</li>
+</ul>
+</div>
+<div id="sem-future" class="section level3 hasAnchor" number="8.6.8">
+<h3><span class="header-section-number">8.6.8</span> What This Section Will Add Later<a href="structural-equations.html#sem-future" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The current section establishes the bridge from CFA to SEM. Later development can add:</p>
+<ul>
+<li>observed path analysis;</li>
+<li>latent mediation and moderation;</li>
+<li>longitudinal and cross-lagged models;</li>
+<li>latent growth models;</li>
+<li>measurement invariance before mean comparisons;</li>
+<li>model comparison and equivalent models;</li>
+<li>connections to causal graphs and identification.</li>
+</ul>
+<div class="analysis-takeaway">
+<p>SEM extends regression by allowing several equations to be estimated together and extends CFA by placing measured latent constructs inside those equations.</p>
+</div>
+</div>
 </div>
 <script>
 
@@ -508,8 +657,8 @@ window.onload = function() {
           </div>
         </div>
       </div>
-<a href="text-mining.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="confirmatory-factors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="items.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

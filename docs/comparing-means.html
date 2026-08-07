@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5.2 Comparing Means | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5.2 Comparing Means | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5.2 Comparing Means | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="relationships.html"/>
+<link rel="next" href="partitioning-variation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
+<link rel="stylesheet" href="css/align.css" type="text/css" />
+<link rel="stylesheet" href="css/video.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a></li>
+<li class="chapter" data-level="" data-path="why-r.html"><a href="why-r.html"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-the-tidyverse.html"><a href="why-the-tidyverse.html"><i class="fa fa-check"></i>Why the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="comparing-means" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Comparing Means<a href="comparing-means.html#comparing-means" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>One mean, two independent groups, and paired observations</p>
+</div>
+<p><small></p>
+<blockquote>
+<p>"The brewer wants to know how confident he can be that the barley in his hand is as good as the sample he tested. He cannot test it all. He cannot even test much of it."</p>
+<footer class="blockquote-footer" style="text-align: right;">
+The small-sample problem, as Guinness faced it around 1900
+</footer>
+</blockquote>
+<p></small></p>
+<p>Section <a href="relationships.html#relationships">5.1</a> asked whether two variables move together. This section asks something even more elementary, and even more common: <strong>is this average different from that one?</strong> Do women and men arrive in this course with different statistics backgrounds? Are Master students older than Bachelor students? Does the same student rate two of their own skills differently? Almost every empirical claim you will ever read — about wages, treatments, test scores, attitudes — is at bottom a comparison of means. This section is about when such a comparison can be trusted.</p>
+<div id="cm-guinness" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> A brewer invents modern statistics<a href="comparing-means.html#cm-guinness" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In 1899 the Guinness brewery in Dublin hired a young Oxford chemist named William Sealy Gosset. His job was quality: barley, hops, and beer vary, and Guinness wanted to know which barley varieties were genuinely better rather than luckier. The problem was the sample size. A brewery experiment might yield <strong>four</strong> observations — four plots, four malt extracts — and the statistical theory of the day, built for hundreds of observations by astronomers, quietly fell apart at <span class="math inline">\(n = 4\)</span>.<a href="#fn80" class="footnote-ref" id="fnref80"><sup>80</sup></a></p>
+<p>Gosset worked out how the average of a <em>small</em> sample behaves, publishing the result in <em>Biometrika</em> in 1908 as "The probable error of a mean". He could not publish under his own name: Guinness barred its scientists from publishing after an earlier paper had given away information competitors could exploit. So the paper appeared under a pseudonym, and the most-used distribution in applied statistics is named after that pseudonym rather than its author: <strong>Student</strong>.<a href="#fn81" class="footnote-ref" id="fnref81"><sup>81</sup></a></p>
+<div class="analysis-note">
+<p>The tool you will use for every test in this section was invented not by a professor with unlimited data, but by a brewer who could afford almost none. That is worth remembering: the t-test is a tool for <em>honest uncertainty about small evidence</em>. When samples are large, it barely matters; when samples are small, it is the difference between knowledge and wishful thinking.</p>
+<p>Gosset originally called his statistic <span class="math inline">\(z\)</span>. The letter <span class="math inline">\(t\)</span> came later, through Fisher's reworking of the theory.</p>
+</div>
+</div>
+<div id="cm-data" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> The data: seven cohorts of students<a href="comparing-means.html#cm-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The examples in this section and the next use one dataset, so it is worth introducing properly. On the first day of every term from summer 2020 to winter 2023/24, students in this seminar filled in the same short questionnaire before anything was taught. Seven cohorts, 233 usable responses.<a href="#fn82" class="footnote-ref" id="fnref82"><sup>82</sup></a></p>
+<p>Alongside term, gender, academic level, age and total semesters studied, three items asked students to rate their own background on a five-point scale anchored at <strong>1 = Beginner</strong> and <strong>5 = Advanced</strong>:</p>
+<blockquote>
+<p><strong>Background in Statistics</strong> — <em>Please rate your background knowledge in statistics.</em></p>
+<p><strong>Background in R</strong> — <em>Please rate your background knowledge in R programming.</em></p>
+<p><strong>Background in Academic Writing</strong> — <em>Please rate your background knowledge in academic writing.</em></p>
+</blockquote>
+<p>A fourth, open-ended item asked <em>What do you expect to learn in this seminar?</em> — text rather than a number, and therefore material for the chapter on text data rather than for a t-test.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="comparing-means.html#cb129-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb129-2"><a href="comparing-means.html#cb129-2" tabindex="-1"></a></span>
+<span id="cb129-3"><a href="comparing-means.html#cb129-3" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Course/GF_AllTime.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb129-4"><a href="comparing-means.html#cb129-4" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">100</span>)</span>
+<span id="cb129-5"><a href="comparing-means.html#cb129-5" tabindex="-1"></a></span>
+<span id="cb129-6"><a href="comparing-means.html#cb129-6" tabindex="-1"></a><span class="fu">dim</span>(coursedata)</span>
+<span id="cb129-7"><a href="comparing-means.html#cb129-7" tabindex="-1"></a><span class="co">#&gt; [1] 233   9</span></span></code></pre></div>
+<div class="analysis-note">
+<p>Three features of this data shape everything that follows. The three ratings are <strong>self-assessments</strong>, not tests: they measure confidence as much as competence, which is exactly what makes the gender comparison below interesting rather than trivial. The scale is <strong>bounded</strong> at 1 and 5, so a group already near an endpoint has less room to move. And the three items were answered by the <strong>same person</strong>, which is what makes the paired comparison in section <a href="comparing-means.html#cm-paired">5.2.6</a> possible at all.</p>
+</div>
+</div>
+<div id="cm-signal" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> Signal and noise<a href="comparing-means.html#cm-signal" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Every test in this section is the same fraction wearing three different coats:</p>
+<p><span class="math display">\[t = \frac{\text{signal}}{\text{noise}} = \frac{\text{difference we observed}}{\text{difference we would expect from chance alone}}\]</span></p>
+<p>The numerator is an estimate — a mean minus a benchmark, or one group mean minus another. The denominator is that estimate's <strong>standard error</strong>: how much the number would wobble if we could rerun the sampling again and again.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>The <strong>standard error of the mean</strong> is the standard deviation of the sampling distribution of the mean:</p>
+<p><span class="math display">\[se(\bar{x}) = \frac{sd(x)}{\sqrt{n}}\]</span></p>
+<p>It shrinks with <span class="math inline">\(\sqrt{n}\)</span>: four times the data buys half the wobble.</p>
+</div>
+<div id="cm-sd-se" class="section level4 hasAnchor" number="5.2.3.1">
+<h4><span class="header-section-number">5.2.3.1</span> Deviation and error are not the same word<a href="comparing-means.html#cm-sd-se" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The two quantities differ by a single square root, and confusing them is one of the most common mistakes in reading empirical results. It is worth slowing down here, because the mistake is not arithmetic — it is a mistake about <em>what the number is describing</em>.</p>
+<p>The standard <strong>deviation</strong> describes the people. It answers: how far is a typical individual from the average? It is a fact about the world, and it does not get smaller when you collect more data. Ask a thousand more students their age and students still differ from one another by about four years.</p>
+<p>The standard <strong>error</strong> describes your knowledge. It answers: how far is my estimate of the average likely to be from the truth? It is a fact about your evidence, and it <em>does</em> get smaller as you collect more — that is the entire reason to collect more.</p>
+<table>
+<caption><span id="tab:cm-sd-se-table">Table 5.1: </span>Two numbers, one square root apart, answering different questions.</caption>
+<colgroup>
+<col width="24%" />
+<col width="39%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Standard deviation</th>
+<th align="left">Standard error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Question it answers</td>
+<td align="left">How much do individuals differ?</td>
+<td align="left">How precise is my estimate?</td>
+</tr>
+<tr class="even">
+<td align="left">It describes</td>
+<td align="left">the population</td>
+<td align="left">your uncertainty</td>
+</tr>
+<tr class="odd">
+<td align="left">More data...</td>
+<td align="left">leaves it roughly unchanged</td>
+<td align="left">shrinks it by a factor √n</td>
+</tr>
+<tr class="even">
+<td align="left">Use it when</td>
+<td align="left">describing your sample</td>
+<td align="left">testing or estimating a mean</td>
+</tr>
+</tbody>
+</table>
+<p>The picture makes it concrete, and it is drawn the same way as the storks in section <a href="relationships.html#relationships">5.1</a>: the red line is the mean, and the arrows step out one unit of spread on each side.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cm-sdse-fig"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/cm-sdse-fig-1.png" alt="Individuals scatter widely (a); their averages barely move (b). The standard deviation measures the first picture, the standard error the second." width="691.2" />
+<p class="caption">
+Figure 5.3: Individuals scatter widely (a); their averages barely move (b). The standard deviation measures the first picture, the standard error the second.
+</p>
+</div>
+<p>Panel <strong>a</strong> shows the 233 students one at a time. The mean is 25.0 years and the standard deviation is 3.7, so the arrows reach from 21.3 to 28.7 — and by the empirical rule from section <a href="relationships.html#relationships">5.1</a> we would expect roughly 68% of students to fall inside that band. In this data <strong>70.4%</strong> do, which is about as close to the textbook as real, floor-bounded age data ever gets.</p>
+<p>Panel <strong>b</strong> repeats the exercise for <em>averages</em>: draw 25 students, record only their mean age, repeat. Those averages have a standard deviation of their own — that is the standard error — and it is 0.7 years. Same students, same horizontal scale, a spread five times narrower, because <span class="math inline">\(\sqrt{25} = 5\)</span>.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="comparing-means.html#cb130-1" tabindex="-1"></a><span class="fu">sd</span>(coursedata<span class="sc">$</span>Age)                          <span class="co"># how much students differ</span></span>
+<span id="cb130-2"><a href="comparing-means.html#cb130-2" tabindex="-1"></a><span class="co">#&gt; [1] 3.705614</span></span>
+<span id="cb130-3"><a href="comparing-means.html#cb130-3" tabindex="-1"></a><span class="fu">sd</span>(coursedata<span class="sc">$</span>Age) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">nrow</span>(coursedata)) <span class="co"># how well we know their average</span></span>
+<span id="cb130-4"><a href="comparing-means.html#cb130-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.2427628</span></span></code></pre></div>
+<p>Because the two are linked by <span class="math inline">\(\sqrt{n}\)</span>, the ratio between them is fixed by the sample size alone. With 233 students, <span class="math inline">\(\sqrt{233} = 15.3\)</span>, so <em>every</em> variable in this file has a standard error exactly 15.3 times smaller than its standard deviation — age, statistics rating, R rating, all of them. Nothing about the variable matters. Only <span class="math inline">\(n\)</span> does.</p>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Professionals get this wrong, in print
+</h2>
+</div>
+<p>This is not a beginner's slip. Peter Nagele went through all 860 research articles published in four anaesthesia journals in 2001 and found that <strong>198 of them — 23%, nearly one in four — used the standard error of the mean where they should have used the standard deviation</strong>, reporting the precision of an average as if it were the variability of patients.<a href="#fn83" class="footnote-ref" id="fnref83"><sup>83</sup></a></p>
+<p>Why does the mistake run in that direction? Because the standard error is always the smaller number. Reporting "mean ± 0.24" instead of "mean ± 3.71" makes any result look tidier, and no reviewer can tell from the figure alone which one you used.</p>
+<p>The misreading runs deeper than reporting. Belia, Fidler, Williams and Cumming e-mailed the authors of articles in leading psychology, neuroscience and medicine journals and asked 473 of them to position error bars at the point where two means would be just significantly different. Most could not. Their conclusion: many leading researchers "have severe misconceptions about how error bars relate to statistical significance, do not adequately distinguish CIs and SE bars, and do not appreciate the importance of whether the 2 means are independent or come from a repeated measures design".<a href="#fn84" class="footnote-ref" id="fnref84"><sup>84</sup></a></p>
+</div>
+</div>
+<div id="cm-ci" class="section level4 hasAnchor" number="5.2.3.2">
+<h4><span class="header-section-number">5.2.3.2</span> From standard error to confidence interval<a href="comparing-means.html#cm-ci" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The standard error is a unit of wobble; on its own it is hard to interpret. What people actually report is a range built from it.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>95% confidence interval</strong> for a mean is the estimate plus and minus a critical t-value times its standard error:</p>
+<p><span class="math display">\[\bar{x} \pm t_{0.975,\,n-1} \cdot se(\bar{x})\]</span></p>
+<p>For anything but a tiny sample the multiplier is close to 2, so the shorthand <em>"the estimate, give or take two standard errors"</em> is close enough for reading purposes.</p>
+<p>The 95% refers to the <strong>procedure</strong>, not to any one interval: if you repeated the whole study many times, 95% of the intervals built this way would contain the true value. Any particular interval either contains it or does not.</p>
+</div>
+<p>For the age of our students, the mean is 25.03 with a standard error of 0.243, and the multiplier at 232 degrees of freedom is 1.97:</p>
+<p><span class="math display">\[25.03 \pm 1.97 \times 0.243 = [24.56,\ 25.51]\]</span></p>
+<p>That interval is the single most useful thing you can report. It contains the estimate, it carries the precision, and — because you can check whether it excludes a benchmark — it silently performs the hypothesis test as well. This is why confidence intervals appear in every test output in this section, and why the tables below always carry one.</p>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated: Do overlapping error bars mean "no difference"?
+</h2>
+</div>
+<p>This is the single most common way of misreading a figure, and our own data provides the counter-example. Women in this course average 24.50 years, men 25.62. Each group's own 95% confidence interval is [23.83, 25.17] and [24.94, 26.30] — <strong>they overlap</strong>, by 0.23 years. And yet the difference between the two means is statistically significant, <span class="math inline">\(t = -2.33\)</span>, <span class="math inline">\(p = 0.021\)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cm-errorbar-fig"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/cm-errorbar-fig-1.png" alt="The same comparison drawn four ways. Panels a-c share one scale, so the bars really are that different in length. Only panel d answers the question that was asked." width="691.2" />
+<p class="caption">
+Figure 5.4: The same comparison drawn four ways. Panels a-c share one scale, so the bars really are that different in length. Only panel d answers the question that was asked.
+</p>
+</div>
+<p>Read the four panels. The standard-deviation bars in <strong>a</strong> span eight years and tell you nothing about the comparison — they describe students, not means. The standard-error bars in <strong>b</strong> are 15 times shorter. The confidence intervals in <strong>c</strong> are the ones a careful author would draw, and they <em>overlap</em>. Only panel <strong>d</strong> — the interval around the <em>difference itself</em> — sits clearly away from zero, which is what "significant" means here.</p>
+<p>Cumming, Fidler and Vaux quantify the trap: for two independent groups with <span class="math inline">\(n \ge 10\)</span> per group, 95% confidence intervals can overlap by about a quarter of their length and still leave <span class="math inline">\(p &lt; 0.05\)</span>, while standard-error bars must show a <em>gap</em> of one full bar before <span class="math inline">\(p\)</span> reaches 0.05.<a href="#fn85" class="footnote-ref" id="fnref85"><sup>85</sup></a> Two things break even these rules: small samples, where the bars must be stretched further, and paired data, where the two groups' bars say nothing whatsoever about the interval for the difference.</p>
+<p>The habit that follows is simple: <strong>when the claim is about a difference, plot the difference.</strong> Two bars side by side invite the reader to do arithmetic they cannot do.</p>
+</div>
+</div>
+<div id="cm-threshold" class="section level4 hasAnchor" number="5.2.3.3">
+<h4><span class="header-section-number">5.2.3.3</span> How big does t have to be?<a href="comparing-means.html#cm-threshold" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>You will hear the rule of thumb <strong><span class="math inline">\(|t| &gt; 2\)</span></strong> everywhere: in regression output, in referee reports, in this book. It covers <em>everything in this chapter and the next</em>. The one-sample test, the two-sample test, the paired test, the slope of a regression coefficient, the correlation test of section <a href="relationships.html#relationships">5.1</a> — all of them build the same fraction and compare it against the same distribution. There is no separate threshold to memorise for each test. That is precisely what Gosset gave us: one reference distribution for any average-shaped estimate divided by its own standard error.</p>
+<p>What the rule glosses over is that the exact cut-off depends on the degrees of freedom, a quantity that will follow you through the rest of this book.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>The <strong>degrees of freedom</strong> of a statistic are the number of independent pieces of information that went into it, minus the number of quantities you had to estimate along the way:</p>
+<p><span class="math display">\[df = n - (\text{parameters estimated})\]</span></p>
+<p>Once you know the mean of three numbers and two of the values, the third is not free — it is determined. So a one-sample t-test, which estimates one parameter (the mean), has <span class="math inline">\(df = n - 1\)</span>. A two-sample test estimates two means and has <span class="math inline">\(df = n_1 + n_2 - 2\)</span>. A regression with <span class="math inline">\(k\)</span> predictors plus an intercept has <span class="math inline">\(df = n - k - 1\)</span>, and the same accounting reappears far from t-tests: a factor model in the Reveal chapter (<a href="reveal.html#reveal">8</a>) is <em>identified</em> only if the number of observed covariances exceeds the number of loadings and variances it wants to estimate.</p>
+<p>Degrees of freedom are, in every one of these cases, the amount of evidence you have <strong>left over</strong> after paying for what you estimated.</p>
+</div>
+<p>The number 2 is a rounding of 1.96, which is the large-sample value:</p>
+<table>
+<caption><span id="tab:cm-crit">Table 5.2: </span>The 5% threshold falls towards 1.96 as the sample grows.</caption>
+<colgroup>
+<col width="13%" />
+<col width="20%" />
+<col width="31%" />
+<col width="34%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Sample size</th>
+<th align="right">Degrees of freedom</th>
+<th align="right">Critical |t| at 5%</th>
+<th align="right">p-value when |t| = 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3.18</td>
+<td align="right">0.139</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">2.78</td>
+<td align="right">0.116</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">2.26</td>
+<td align="right">0.077</td>
+</tr>
+<tr class="even">
+<td align="right">30</td>
+<td align="right">29</td>
+<td align="right">2.05</td>
+<td align="right">0.055</td>
+</tr>
+<tr class="odd">
+<td align="right">100</td>
+<td align="right">99</td>
+<td align="right">1.98</td>
+<td align="right">0.048</td>
+</tr>
+<tr class="even">
+<td align="right">233</td>
+<td align="right">232</td>
+<td align="right">1.97</td>
+<td align="right">0.047</td>
+</tr>
+<tr class="odd">
+<td align="right">1000</td>
+<td align="right">999</td>
+<td align="right">1.96</td>
+<td align="right">0.046</td>
+</tr>
+</tbody>
+</table>
+<p>Read the last column. With 100 observations, <span class="math inline">\(|t| = 2\)</span> gives <span class="math inline">\(p = 0.048\)</span> and the rule of thumb is honest. With 30 it gives <span class="math inline">\(p = 0.055\)</span> and the rule is very slightly too generous. With 4 observations — Gosset's brewery — <span class="math inline">\(|t| = 2\)</span> gives <span class="math inline">\(p = 0.139\)</span>, nowhere near significance, and applying the rule of thumb there would be a real error. <strong>From roughly <span class="math inline">\(n = 30\)</span> upwards, <span class="math inline">\(|t| &gt; 2\)</span> is a safe shortcut; below that, look the number up.</strong></p>
+<div class="analysis-important">
+<p>And one thing the rule never covers: importance. The 5% convention is a threshold on <em>evidence</em>, chosen by Fisher for convenience and hardened by eighty years of habit into something it was never meant to be. A <span class="math inline">\(t\)</span> of 2.1 and a <span class="math inline">\(t\)</span> of 1.9 are almost the same amount of evidence; only a publication system pretends otherwise. Report the estimate and its interval, and let <span class="math inline">\(t\)</span> be one piece of information rather than a verdict.</p>
+</div>
+</div>
+</div>
+<div id="cm-one-sample" class="section level3 hasAnchor" number="5.2.4">
+<h3><span class="header-section-number">5.2.4</span> One mean against a benchmark<a href="comparing-means.html#cm-one-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Take the R rating first. The scale midpoint is 3. Do students, on average, arrive below the middle?</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="comparing-means.html#cb131-1" tabindex="-1"></a><span class="fu">mean</span>(coursedata<span class="sc">$</span>Background.in.R)</span>
+<span id="cb131-2"><a href="comparing-means.html#cb131-2" tabindex="-1"></a><span class="co">#&gt; [1] 1.746781</span></span></code></pre></div>
+<p>The average is 1.75 — apparently far below 3. But "apparently" is exactly what a test is for. The one-sample t-test asks: <em>if the true average were 3, how surprising would a sample average of 1.75 be, given 233 students with this much spread?</em></p>
+<p><span class="math display">\[t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{1.75 - 3}{0.92/\sqrt{233}} = \frac{-1.25}{0.060} = -20.7\]</span></p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="comparing-means.html#cb132-1" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.R, <span class="at">mu =</span> <span class="dv">3</span>)</span>
+<span id="cb132-2"><a href="comparing-means.html#cb132-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb132-3"><a href="comparing-means.html#cb132-3" tabindex="-1"></a><span class="co">#&gt;  One Sample t-test</span></span>
+<span id="cb132-4"><a href="comparing-means.html#cb132-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb132-5"><a href="comparing-means.html#cb132-5" tabindex="-1"></a><span class="co">#&gt; data:  coursedata$Background.in.R</span></span>
+<span id="cb132-6"><a href="comparing-means.html#cb132-6" tabindex="-1"></a><span class="co">#&gt; t = -20.704, df = 232, p-value &lt; 2.2e-16</span></span>
+<span id="cb132-7"><a href="comparing-means.html#cb132-7" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean is not equal to 3</span></span>
+<span id="cb132-8"><a href="comparing-means.html#cb132-8" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb132-9"><a href="comparing-means.html#cb132-9" tabindex="-1"></a><span class="co">#&gt;  1.627521 1.866041</span></span>
+<span id="cb132-10"><a href="comparing-means.html#cb132-10" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb132-11"><a href="comparing-means.html#cb132-11" tabindex="-1"></a><span class="co">#&gt; mean of x </span></span>
+<span id="cb132-12"><a href="comparing-means.html#cb132-12" tabindex="-1"></a><span class="co">#&gt;  1.746781</span></span></code></pre></div>
+<p>This is the only time in this section a t-test is printed in full, so it is worth walking through the block line by line. This is what your own console will show you, and reading it fluently is a skill in its own right. From here on the results appear in tables, because the interesting comparisons come in fours and fives and no reader should have to diff five screens of output by eye.</p>
+<table>
+<caption><span id="tab:cm-output-guide">Table 5.3: </span>Reading a t-test output from top to bottom.</caption>
+<colgroup>
+<col width="37%" />
+<col width="62%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">What R prints</th>
+<th align="left">What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>One Sample t-test</code></td>
+<td align="left">which of the three tests R decided to run</td>
+</tr>
+<tr class="even">
+<td align="left"><code>t = -20.704</code></td>
+<td align="left">the signal-to-noise ratio: the gap is 20.7 times its own wobble</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>df = 232</code></td>
+<td align="left">233 students minus 1 for the mean we estimated</td>
+</tr>
+<tr class="even">
+<td align="left"><code>p-value &lt; 2.2e-16</code></td>
+<td align="left">smaller than R's printing limit — chance alone will not explain this</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>alternative hypothesis: ... not equal to 3</code></td>
+<td align="left">the comparison is two-sided: a gap in either direction would have counted</td>
+</tr>
+<tr class="even">
+<td align="left"><code>95 percent confidence interval: 1.63 1.87</code></td>
+<td align="left">the useful line: plausible values for the true average</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mean of x: 1.75</code></td>
+<td align="left">the estimate itself</td>
+</tr>
+</tbody>
+</table>
+<p>A <span class="math inline">\(t\)</span> of −20.7 means the observed gap is about twenty times larger than its own wobble. The p-value is astronomically small, and the confidence interval — 1.63 to 1.87 — says the same thing more usefully: whatever the true average of the population these students come from, it is nowhere near 3. Students arrive as R novices. (This is, frankly, the least surprising finding in this book. The course exists because of it.)</p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>The same students rate their <em>statistics</em> background at 2.66 on average and their <em>academic writing</em> at 2.86.</p>
+<p>Both are below 3. The statistics rating has <span class="math inline">\(t = -5.2\)</span>, the writing rating <span class="math inline">\(t = -1.7\)</span>. Which of the two is statistically significantly below the midpoint at the usual 5% level? <select class='webex-select'><option value='blank'></option><option value=''>Both</option><option value='answer'>Only statistics</option><option value=''>Only writing</option><option value=''>Neither</option></select></p>
+<p>Notice what that means: a <em>smaller</em> gap can be significant while a similar-looking one is not — significance is about the gap <em>relative to its noise</em>, never about the gap alone.</p>
+</div>
+<div id="cm-samplesize" class="section level4 hasAnchor" number="5.2.4.1">
+<h4><span class="header-section-number">5.2.4.1</span> Why sample size decides everything<a href="comparing-means.html#cm-samplesize" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Here is the same lesson small enough for mental arithmetic. Three students rate their R skills 1, 2 and 3. Is the average different from the midpoint 3?</p>
+<p>The mean is <input class='webex-solveme nospaces' size='1' data-answer='["2"]'/>, the deviations from it are −1, 0, +1, so the variance is <span class="math inline">\((1 + 0 + 1)/2 = 1\)</span> and the standard deviation is 1. Put the general formula and the numbers on the same line:</p>
+<p><span class="math display">\[t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{2 - 3}{1/\sqrt{3}} = \frac{-1}{0.577} = -1.73 \qquad (p = 0.225)\]</span></p>
+<p>A gap of a full point on the scale — and no evidence. Now suppose <em>twelve</em> students had produced the same pattern, the values 1, 2, 3 repeated four times. Same mean, nearly the same standard deviation, four times the data:</p>
+<p><span class="math display">\[t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{2 - 3}{0.853/\sqrt{12}} = \frac{-1}{0.246} = -4.06 \qquad (p = 0.002)\]</span></p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="comparing-means.html#cb133-1" tabindex="-1"></a><span class="fu">t.test</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dv">4</span>), <span class="at">mu =</span> <span class="dv">3</span>)<span class="sc">$</span>statistic</span>
+<span id="cb133-2"><a href="comparing-means.html#cb133-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
+<span id="cb133-3"><a href="comparing-means.html#cb133-3" tabindex="-1"></a><span class="co">#&gt; -4.062019</span></span></code></pre></div>
+<p><strong>Nothing about the difference changed. Only the amount of evidence did.</strong> Quadrupling the sample halves the standard error and so doubles <span class="math inline">\(t\)</span> on its own; the rest of the jump comes from the standard deviation settling slightly lower once there are twelve values to estimate it from.</p>
+<p>This is the single most important thing to understand about significance testing, and it cuts both ways: with three observations you can miss a real effect, and with three million you can "detect" one too small to matter to anybody. A t-test answers <em>is this difference distinguishable from chance</em> — never <em>is this difference large</em>, and never <em>does this difference matter</em>.</p>
+</div>
+</div>
+<div id="cm-two-sample" class="section level3 hasAnchor" number="5.2.5">
+<h3><span class="header-section-number">5.2.5</span> Two independent groups<a href="comparing-means.html#cm-two-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The more common comparison is between two groups of <em>different</em> people. Our questionnaire offers a socially interesting one. A well-known result in sociology is that men rate their own mathematical ability higher than women who perform identically — Shelley Correll showed this with US high-school data, and argued it quietly steers career choices long before any actual ability difference could.<a href="#fn86" class="footnote-ref" id="fnref86"><sup>86</sup></a> Does our seminar show the same pattern in self-rated <em>statistics</em> background?</p>
+<table>
+<caption><span id="tab:cm-gender-table">Table 5.4: </span>Self-rated statistics background (1-5) by gender.</caption>
+<thead>
+<tr class="header">
+<th align="left">Gender</th>
+<th align="right">n</th>
+<th align="right">Mean rating</th>
+<th align="right">SD</th>
+<th align="right">SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Female</td>
+<td align="right">122</td>
+<td align="right">2.61</td>
+<td align="right">0.94</td>
+<td align="right">0.085</td>
+</tr>
+<tr class="even">
+<td align="left">Male</td>
+<td align="right">111</td>
+<td align="right">2.70</td>
+<td align="right">1.08</td>
+<td align="right">0.102</td>
+</tr>
+</tbody>
+</table>
+<p>Men rate themselves 0.09 points higher. The two-sample t-test asks whether a gap of this size, between groups of 122 and 111, is distinguishable from chance. Four comparisons fit in one table:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="comparing-means.html#cb134-1" tabindex="-1"></a>comparisons <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb134-2"><a href="comparing-means.html#cb134-2" tabindex="-1"></a>  <span class="st">&quot;Statistics rating&quot;</span> <span class="ot">=</span> <span class="fu">t.test</span>(Background.in.Statistics <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata),</span>
+<span id="cb134-3"><a href="comparing-means.html#cb134-3" tabindex="-1"></a>  <span class="st">&quot;R rating&quot;</span>          <span class="ot">=</span> <span class="fu">t.test</span>(Background.in.R <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata),</span>
+<span id="cb134-4"><a href="comparing-means.html#cb134-4" tabindex="-1"></a>  <span class="st">&quot;Writing rating&quot;</span>    <span class="ot">=</span> <span class="fu">t.test</span>(Background.in.Academic.Writing <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata),</span>
+<span id="cb134-5"><a href="comparing-means.html#cb134-5" tabindex="-1"></a>  <span class="st">&quot;Age (years)&quot;</span>       <span class="ot">=</span> <span class="fu">t.test</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata))</span></code></pre></div>
+<table>
+<caption><span id="tab:cm-test-table-pretty">Table 5.5: </span>Four comparisons of women and men among the same 233 students. Only the last is distinguishable from chance.</caption>
+<colgroup>
+<col width="27%" />
+<col width="21%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="10%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Female - Male</th>
+<th align="right">t</th>
+<th align="right">df</th>
+<th align="right">p</th>
+<th align="right">CI low</th>
+<th align="right">CI high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Statistics rating</td>
+<td align="right">-0.088</td>
+<td align="right">-0.66</td>
+<td align="right">219.6</td>
+<td align="right">0.509</td>
+<td align="right">-0.35</td>
+<td align="right">0.17</td>
+</tr>
+<tr class="even">
+<td align="left">R rating</td>
+<td align="right">0.119</td>
+<td align="right">0.98</td>
+<td align="right">230.3</td>
+<td align="right">0.328</td>
+<td align="right">-0.12</td>
+<td align="right">0.36</td>
+</tr>
+<tr class="odd">
+<td align="left">Writing rating</td>
+<td align="right">-0.021</td>
+<td align="right">-0.13</td>
+<td align="right">231.0</td>
+<td align="right">0.894</td>
+<td align="right">-0.34</td>
+<td align="right">0.29</td>
+</tr>
+<tr class="even">
+<td align="left">Age (years)</td>
+<td align="right">-1.122</td>
+<td align="right">-2.33</td>
+<td align="right">230.0</td>
+<td align="right">0.021</td>
+<td align="right">-2.07</td>
+<td align="right">-0.17</td>
+</tr>
+</tbody>
+</table>
+<p>Three of the four rows are null results, and not marginally so: the statistics gap has <span class="math inline">\(t = -0.66\)</span> and <span class="math inline">\(p = 0.51\)</span>, and its confidence interval runs from women 0.35 points behind to women 0.17 ahead. The R rating even leans the other way, with women rating themselves <em>higher</em> by 0.12 points — also indistinguishable from chance. Whatever Correll measured in US high schools does not announce itself in this room.</p>
+<p>The fourth row is real. Male students are 1.1 years older, <span class="math inline">\(t = -2.33\)</span>, <span class="math inline">\(p = 0.021\)</span>, and the interval excludes zero. Note how ordinary that sentence sounds and how much machinery sits underneath it: two sample means, two sample spreads, two sample sizes, one standard error of the difference, and Gosset's distribution to judge the ratio.</p>
+<div class="analysis-warning">
+<p>Be careful with what the null results do and do not say. "No significant difference in self-rated statistics background" is <strong>not</strong> the same as "there is no difference". Our confidence interval allows anything from women 0.35 points <em>behind</em> to 0.17 points <em>ahead</em> — it is an interval of ignorance, not a certificate of equality. With 233 students we can rule out a large confidence gap in this course; we cannot rule out a small one. Absence of evidence, once again, is not evidence of absence.</p>
+</div>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated: Student or Welch?
+</h2>
+</div>
+<p>Look at the degrees of freedom in the table: a decidedly un-whole 219.6, 230.3, 231.0, 230.0. Whole numbers would be 231 in every row.</p>
+<p>The classical two-sample test assumes both groups have the <strong>same variance</strong>. In 1947 Bernard Welch worked out a version that drops this assumption, at the price of those fractional degrees of freedom.<a href="#fn87" class="footnote-ref" id="fnref87"><sup>87</sup></a> R uses Welch <strong>by default</strong>, and this is a deliberately opinionated choice: when the variances happen to be equal, Welch loses almost nothing; when they are not, the classical test can be badly misleading. You get the classical test only by asking for it, with <code>var.equal = TRUE</code>.</p>
+<p>For the age comparison the two versions agree to two decimals, <span class="math inline">\(t = -2.33\)</span> either way. When the answer <em>changes</em> between them, that itself is telling you the groups differ in spread — which may be more interesting than the means (more on this at the end of section <a href="partitioning-variation.html#partitioning-variation">5.3</a>).</p>
+</div>
+</div>
+<div id="cm-paired" class="section level3 hasAnchor" number="5.2.6">
+<h3><span class="header-section-number">5.2.6</span> Paired observations<a href="comparing-means.html#cm-paired" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The third coat the t-statistic wears is subtler, and it is the one social scientists most often fail to recognise when they meet it. Compare the students' statistics rating with their R rating. Two means: 2.66 and 1.75. You might reach for the two-sample test — but these are not two groups of people. <strong>They are the same 233 people, measured twice.</strong></p>
+<p>Most textbooks introduce pairing as a <em>before and after</em> design, and many readers come away thinking pairing means time. It does not. Pairing means only that each observation in one condition has exactly one partner in the other, and that the two partners share something the analysis should not have to estimate.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>Two measurements are <strong>paired</strong> when they are linked one-to-one by design rather than by chance, so that the difference between them can be computed for each unit individually. Common forms:</p>
+<ul>
+<li><strong>The same unit at two times</strong> — a patient before and after treatment, a country in 2019 and 2021. The familiar case.</li>
+<li><strong>The same unit under two conditions</strong> — a subject in a quiet and a noisy room, a firm's output with and without a subsidy.</li>
+<li><strong>The same unit on two measures</strong> — a student's statistics rating and R rating. Our case, and the most common one in survey research.</li>
+<li><strong>Two different units matched deliberately</strong> — twins, a patient and a matched control, a treated village and its nearest neighbour. Here the "unit" is the pair, not the person.</li>
+</ul>
+<p>The test is always the same: compute the difference <em>within</em> each pair, then run a one-sample test on those differences against zero.</p>
+</div>
+<p>Our case is the third kind, and it deserves one honest caveat. Statistics and R are different things, so the comparison is not "is this skill higher than the same skill later" but "does this person place themselves higher on one scale than on the other". That question is legitimate — it is precisely how a curriculum designer decides where to start — but it leans on both items sharing the same 1-to-5 Beginner-to-Advanced anchors, which they do. If the two items had different anchors, the difference would be uninterpretable no matter how significant it was.</p>
+<p>The mechanics are less mysterious than the name. Pairing is subtraction: build one column of within-student differences, and the two-sample problem collapses into the one-sample problem you already solved.</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="comparing-means.html#cb135-1" tabindex="-1"></a>differences <span class="ot">&lt;-</span> coursedata<span class="sc">$</span>Background.in.Statistics <span class="sc">-</span> coursedata<span class="sc">$</span>Background.in.R</span>
+<span id="cb135-2"><a href="comparing-means.html#cb135-2" tabindex="-1"></a></span>
+<span id="cb135-3"><a href="comparing-means.html#cb135-3" tabindex="-1"></a><span class="fu">mean</span>(differences)          <span class="co"># the paired estimate, already</span></span>
+<span id="cb135-4"><a href="comparing-means.html#cb135-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.9098712</span></span>
+<span id="cb135-5"><a href="comparing-means.html#cb135-5" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">sign</span>(differences))   <span class="co"># -1 rates R higher, 0 equal, +1 rates statistics higher</span></span>
+<span id="cb135-6"><a href="comparing-means.html#cb135-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb135-7"><a href="comparing-means.html#cb135-7" tabindex="-1"></a><span class="co">#&gt;  -1   0   1 </span></span>
+<span id="cb135-8"><a href="comparing-means.html#cb135-8" tabindex="-1"></a><span class="co">#&gt;  10  72 151</span></span></code></pre></div>
+<p>That column of 233 numbers is the whole test, and it is better seen than tabulated. Draw it:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cm-diff-fig"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/cm-diff-fig-1.png" alt="The paired t-test in one picture: is this distribution of within-student differences centred away from zero?" width="672" />
+<p class="caption">
+Figure 5.5: The paired t-test in one picture: is this distribution of within-student differences centred away from zero?
+</p>
+</div>
+<p>The picture <em>is</em> the test. The dashed line at zero is the null hypothesis; the red line is where the data actually sit. The question "are these two means different?" has become "is this pile of numbers centred away from zero?", which the eye can answer before the arithmetic does. Running <code>t.test(differences, mu = 0)</code> would now give exactly the paired result — <code>paired = TRUE</code> is a convenience, not a different procedure.</p>
+<div id="cm-paired-vs-unpaired" class="section level4 hasAnchor" number="5.2.6.1">
+<h4><span class="header-section-number">5.2.6.1</span> The same data, analysed both ways<a href="comparing-means.html#cm-paired-vs-unpaired" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Rather than assert that pairing helps, run the identical numbers through both tests and put the results side by side. Nothing changes except one argument:</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="comparing-means.html#cb136-1" tabindex="-1"></a>stats_rating <span class="ot">&lt;-</span> coursedata<span class="sc">$</span>Background.in.Statistics</span>
+<span id="cb136-2"><a href="comparing-means.html#cb136-2" tabindex="-1"></a>r_rating     <span class="ot">&lt;-</span> coursedata<span class="sc">$</span>Background.in.R</span>
+<span id="cb136-3"><a href="comparing-means.html#cb136-3" tabindex="-1"></a></span>
+<span id="cb136-4"><a href="comparing-means.html#cb136-4" tabindex="-1"></a>unpaired <span class="ot">&lt;-</span> <span class="fu">t.test</span>(stats_rating, r_rating)                 <span class="co"># pretends they are strangers</span></span>
+<span id="cb136-5"><a href="comparing-means.html#cb136-5" tabindex="-1"></a>paired   <span class="ot">&lt;-</span> <span class="fu">t.test</span>(stats_rating, r_rating, <span class="at">paired =</span> <span class="cn">TRUE</span>)  <span class="co"># knows they are the same people</span></span></code></pre></div>
+<table>
+<caption><span id="tab:cm-paired-compare-pretty">Table 5.6: </span>The same 466 numbers, analysed twice. The estimate is identical; everything about its precision is not.</caption>
+<colgroup>
+<col width="39%" />
+<col width="12%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="8%" />
+<col width="9%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Difference</th>
+<th align="right">SE</th>
+<th align="right">t</th>
+<th align="right">df</th>
+<th align="right">CI low</th>
+<th align="right">CI high</th>
+<th align="right">CI width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Treated as two independent groups</td>
+<td align="right">0.91</td>
+<td align="right">0.089</td>
+<td align="right">10.17</td>
+<td align="right">460.7</td>
+<td align="right">0.73</td>
+<td align="right">1.09</td>
+<td align="right">0.352</td>
+</tr>
+<tr class="even">
+<td align="left">Treated as paired (correct)</td>
+<td align="right">0.91</td>
+<td align="right">0.065</td>
+<td align="right">14.10</td>
+<td align="right">232.0</td>
+<td align="right">0.78</td>
+<td align="right">1.04</td>
+<td align="right">0.254</td>
+</tr>
+</tbody>
+</table>
+<p>Read the table across. The <strong>estimate does not move</strong>: 0.91 points either way, because the average of the differences is the difference of the averages — that piece of arithmetic is not in dispute. Everything to the right of it moves. The standard error falls from 0.089 to 0.065, the t-statistic rises from 10.2 to 14.1, and the confidence interval narrows from 0.35 points wide to 0.25.</p>
+<p>Why? Because people differ from each other far more than a person differs from themselves. A generally confident student rates <em>both</em> skills high; a modest one rates both low. In the two-sample setup, all of that between-person personality sits in the denominator as noise. In the paired setup it <strong>cancels</strong> — subtracting a student's two ratings subtracts their personality along with it. The two ratings correlate at 0.48, and that correlation is exactly what pairing converts into precision.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cm-ci-fig"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/cm-ci-fig-1.png" alt="The same estimate with two different amounts of confidence. Pairing does not change what we found; it changes how well we know it." width="672" />
+<p class="caption">
+Figure 5.6: The same estimate with two different amounts of confidence. Pairing does not change what we found; it changes how well we know it.
+</p>
+</div>
+</div>
+<div id="cm-pairing-worth" class="section level4 hasAnchor" number="5.2.6.2">
+<h4><span class="header-section-number">5.2.6.2</span> What the shrinking standard error is worth<a href="comparing-means.html#cm-pairing-worth" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>"The standard error fell from 0.089 to 0.065" is a true sentence that persuades almost nobody. Here is the same fact in a currency everyone understands.</p>
+<p>Pairing bought a standard error 28% smaller. To buy the same 28% by collecting more data instead — asking one set of students about statistics and a <em>different</em> set about R — you would need about <strong>448 students in each group</strong> rather than 233. And because those are two disjoint sets of people, that is 896 respondents in total instead of 233: nearly four times as many, for exactly the same answer.</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="comparing-means.html#cb137-1" tabindex="-1"></a>se_paired <span class="ot">&lt;-</span> <span class="fu">sd</span>(differences) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(differences))</span>
+<span id="cb137-2"><a href="comparing-means.html#cb137-2" tabindex="-1"></a>(<span class="fu">var</span>(stats_rating) <span class="sc">+</span> <span class="fu">var</span>(r_rating)) <span class="sc">/</span> se_paired<span class="sc">^</span><span class="dv">2</span>   <span class="co"># students needed per group</span></span>
+<span id="cb137-3"><a href="comparing-means.html#cb137-3" tabindex="-1"></a><span class="co">#&gt; [1] 447.7598</span></span></code></pre></div>
+<p>The reason is the square root. Precision improves only with <span class="math inline">\(\sqrt{n}\)</span>, so every further increment of confidence costs quadratically more fieldwork, while pairing costs one argument.</p>
+</div>
+<div id="cm-pairing-always" class="section level4 hasAnchor" number="5.2.6.3">
+<h4><span class="header-section-number">5.2.6.3</span> Does pairing always help?<a href="comparing-means.html#cm-pairing-always" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Nearly always — but "always" is too strong, and the exception is worth understanding because it tells you <em>why</em> the method works.</p>
+<p>The variance of a difference is</p>
+<p><span class="math display">\[var(x - y) = var(x) + var(y) - 2\,cov(x, y)\]</span></p>
+<p>and everything hinges on that last term. Pairing pays off exactly when the two measurements are <strong>positively correlated</strong>, because only then does subtracting them remove more noise than it adds. Written in terms of the correlation <span class="math inline">\(r\)</span>, the paired standard error is smaller than the unpaired one by a factor of <span class="math inline">\(\sqrt{1 - r}\)</span>.</p>
+<table>
+<caption><span id="tab:cm-pairing-sim">Table 5.7: </span>Pairing is a bet on positive correlation. The break-even point is r = 0.</caption>
+<colgroup>
+<col width="20%" />
+<col width="42%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Correlation r</th>
+<th align="right">SE ratio (paired / unpaired)</th>
+<th align="left">Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.5</td>
+<td align="right">1.225</td>
+<td align="left">pairing is 22% worse</td>
+</tr>
+<tr class="even">
+<td align="right">0.0</td>
+<td align="right">1.000</td>
+<td align="left">a wash, minus the lost df</td>
+</tr>
+<tr class="odd">
+<td align="right">0.3</td>
+<td align="right">0.837</td>
+<td align="left">16% better</td>
+</tr>
+<tr class="even">
+<td align="right">0.6</td>
+<td align="right">0.632</td>
+<td align="left">37% better</td>
+</tr>
+<tr class="odd">
+<td align="right">0.9</td>
+<td align="right">0.316</td>
+<td align="left">68% better</td>
+</tr>
+</tbody>
+</table>
+<p>Three regimes, then. When <span class="math inline">\(r &gt; 0\)</span> — the normal case, because the same unit carries the same idiosyncrasies into both measurements — pairing wins, and wins more the stronger the link. When <span class="math inline">\(r = 0\)</span> the standard errors are identical, but the paired test has only <span class="math inline">\(n - 1\)</span> degrees of freedom instead of <span class="math inline">\(n_1 + n_2 - 2\)</span>, so it is very slightly <em>worse</em>. When <span class="math inline">\(r &lt; 0\)</span>, pairing is actively harmful.</p>
+<div class="analysis-important">
+<p>So the honest statement is not "pairing always helps" but something sharper and more useful: <strong>pairing is not a choice you make at the analysis stage — it is a fact about your data that the analysis must respect.</strong></p>
+<p>If the observations <em>are</em> paired, analysing them as independent groups is not a missed opportunity, it is <strong>wrong</strong>: the two-sample formula assumes independence, and your observations are not independent. If they are <em>not</em> paired, you cannot pair them however much you would like the narrower interval. The efficiency gain is the reward for a good design, not a knob to turn afterwards.</p>
+</div>
+<div class="analysis-takeaway">
+<p>And notice what this implies for study design. Two measurements on the same unit are worth far more than two measurements on different units. That is the whole economic argument for <strong>panel data</strong> in chapter <a href="tabular-data.html#panel-data">2.1.1.4</a>: following the same people over many waves rather than surveying fresh people each year buys precision that fresh samples could only match at several times the cost.</p>
+<p>The paired t-test is the smallest possible panel — exactly two waves — and the "subtract each unit from itself to remove everything constant about the unit" move is the essence of the fixed-effects estimator. With <span class="math inline">\(T\)</span> waves instead of 2, the same logic sweeps out everything permanent about a person: their upbringing, their personality, their unmeasured ability. Everything you learn here about why pairing works is the intuition for why panel data is worth its cost.</p>
+</div>
+<p>The individual picture explains the arithmetic. Each grey line below is one student:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cm-paired-fig"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/cm-paired-fig-1.png" alt="Each line is one student. Most lines fall from statistics to R; a confident student is high on both, a modest one low on both - pairing subtracts that away." width="672" />
+<p class="caption">
+Figure 5.7: Each line is one student. Most lines fall from statistics to R; a confident student is high on both, a modest one low on both - pairing subtracts that away.
+</p>
+</div>
+</div>
+</div>
+<div id="cm-onwards" class="section level3 hasAnchor" number="5.2.7">
+<h3><span class="header-section-number">5.2.7</span> Where this is going<a href="comparing-means.html#cm-onwards" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Three tests, three coats, one fraction. You now have the whole t-test family, and with it the vocabulary — standard error, confidence interval, degrees of freedom — that every later chapter assumes.</p>
+<p>Two extensions follow. The immediate one gets the next section: what happens when there are not two groups, but seven? That is the analysis of variance, and it is the reason Fisher went to work on a farm.</p>
+<p>The deeper one has to wait. Every test in this section can be rewritten as a <strong>regression</strong> — the two-sample t-test turns out to be the smallest regression there is, and the same is true of the correlation test, of ANOVA, and of most of the non-parametric tests you have heard of. That is a genuinely unifying idea, but it is only unifying once you know what a regression <em>is</em>. So it is deferred to the end of the Model chapter (section <a href="tests-as-models.html#tests-as-models">6.9</a>), where it can be shown rather than promised.</p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>Master students report on average 1.95 more total semesters of study than Bachelor students (<span class="math inline">\(t = 4.8\)</span>). Before calling that a discovery, state what the <em>boring</em> explanation is — what must be true of Master students by definition?</p></li>
+<li><p>A newspaper reports: "Study with 2.4 million users finds people who use app X are significantly happier (p &lt; 0.001), by 0.02 points on a 10-point scale." Which is doing the work here, the signal or the sample size? <select class='webex-select'><option value='blank'></option><option value=''>The signal - the effect is well measured</option><option value='answer'>The sample size - a tiny difference became detectable</option><option value=''>Neither, the p-value is wrong</option></select></p></li>
+<li><p>A figure reports a mean income of 2,400 € with a bar labelled "± 40", based on 900 respondents. Is 40 more likely to be a standard deviation or a standard error? <select class='webex-select'><option value='blank'></option><option value=''>Standard deviation</option><option value='answer'>Standard error</option><option value=''>Impossible to say from the number alone</option></select></p></li>
+<li><p>Two groups' 95% confidence intervals overlap slightly. <select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select> This proves the two means are not significantly different.</p></li>
+<li><p>You measure the same countries' unemployment in 2019 and 2021 and want to test whether the pandemic changed the average. Which test? <select class='webex-select'><option value='blank'></option><option value=''>One-sample t-test</option><option value=''>Two-sample t-test</option><option value='answer'>Paired t-test</option></select></p></li>
+<li><p>A colleague ran a paired experiment on 40 subjects but analysed it as two independent groups of 40. <select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select> The analysis is merely inefficient but still valid, because the estimate of the difference is unbiased either way.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="80">
+<li id="fn80"><p>Gosset's life and the brewery context: Ziliak, S. T., <em>Guinnessometrics: The Economic Foundation of "Student's" t</em>, <em>Journal of Economic Perspectives</em> 22(4), 2008, 199–216, <a href="https://doi.org/10.1257/jep.22.4.199" class="uri">https://doi.org/10.1257/jep.22.4.199</a>. A short account: <em>The genius at Guinness and his statistical legacy</em>, The Conversation, 2018, <a href="https://theconversation.com/the-genius-at-guinness-and-his-statistical-legacy-93134" class="uri">https://theconversation.com/the-genius-at-guinness-and-his-statistical-legacy-93134</a>.<a href="comparing-means.html#fnref80" class="footnote-back">↩︎</a></p></li>
+<li id="fn81"><p>Student, <em>The probable error of a mean</em>, <em>Biometrika</em> 6(1), 1908, 1–25, <a href="https://doi.org/10.1093/biomet/6.1.1" class="uri">https://doi.org/10.1093/biomet/6.1.1</a>. Guinness's publication ban followed an earlier paper that had revealed commercially useful information; Gosset's identity was an open secret among statisticians long before his death in 1937.<a href="comparing-means.html#fnref81" class="footnote-back">↩︎</a></p></li>
+<li id="fn82"><p><code>data/Course/GF_AllTime.csv</code> in this book's repository, 234 responses in total. One respondent gave their age as 278 and is removed here by <code>filter(Age &lt; 100)</code>; that case is discussed in the chapter on missing data. Note the semicolon separator.<a href="comparing-means.html#fnref82" class="footnote-back">↩︎</a></p></li>
+<li id="fn83"><p>Nagele, P., <em>Misuse of standard error of the mean (SEM) when reporting variability of a study sample. A critical evaluation of four anaesthesia journals</em>, <em>British Journal of Anaesthesia</em> 90(4), 2003, 514–516, <a href="https://doi.org/10.1093/bja/aeg087" class="uri">https://doi.org/10.1093/bja/aeg087</a>. Misuse ranged from 11.5% of articles in the <em>European Journal of Anaesthesiology</em> to 27.7% in <em>Anesthesia &amp; Analgesia</em>.<a href="comparing-means.html#fnref83" class="footnote-back">↩︎</a></p></li>
+<li id="fn84"><p>Belia, S., Fidler, F., Williams, J., &amp; Cumming, G., <em>Researchers misunderstand confidence intervals and standard error bars</em>, <em>Psychological Methods</em> 10(4), 2005, 389–396, <a href="https://doi.org/10.1037/1082-989X.10.4.389" class="uri">https://doi.org/10.1037/1082-989X.10.4.389</a>. The 473 respondents were drawn from authors published in 21 psychology, 6 behavioural neuroscience and 5 medical journals.<a href="comparing-means.html#fnref84" class="footnote-back">↩︎</a></p></li>
+<li id="fn85"><p>Cumming, G., Fidler, F., &amp; Vaux, D. L., <em>Error bars in experimental biology</em>, <em>The Journal of Cell Biology</em> 177(1), 2007, 7–11, <a href="https://doi.org/10.1083/jcb.200611141" class="uri">https://doi.org/10.1083/jcb.200611141</a>. Their Rule 6 gives the overlap and gap rules quoted here; Rule 4 recommends inferential bars (standard error or confidence interval) over standard deviations whenever the figure is making an inferential point.<a href="comparing-means.html#fnref85" class="footnote-back">↩︎</a></p></li>
+<li id="fn86"><p>Correll, S. J., <em>Gender and the Career Choice Process: The Role of Biased Self-Assessments</em>, <em>American Journal of Sociology</em> 106(6), 2001, 1691–1730, <a href="https://doi.org/10.1086/321299" class="uri">https://doi.org/10.1086/321299</a>.<a href="comparing-means.html#fnref86" class="footnote-back">↩︎</a></p></li>
+<li id="fn87"><p>Welch, B. L., <em>The generalization of "Student's" problem when several different population variances are involved</em>, <em>Biometrika</em> 34(1–2), 1947, 28–35, <a href="https://doi.org/10.1093/biomet/34.1-2.28" class="uri">https://doi.org/10.1093/biomet/34.1-2.28</a>.<a href="comparing-means.html#fnref87" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="relationships.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="partitioning-variation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

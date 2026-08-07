@@ -1,55 +1,75 @@
 ---
+# =========================================================================
+#  BOOK METADATA
+# =========================================================================
 title: "Becoming Fluent in Data"
-cover-image: "images/Cover.png"
 subtitle: "A Personal Journey – Every Time."
-description: "A guide to becoming fluent in data."
 author: "Marco Kühne"
 date: "`r Sys.Date()`"
+description: "A guide to becoming fluent in data."
 site: bookdown::bookdown_site
-documentclass: book
-delete_merged_file: true
+
+# Absolute URLs: social-media scrapers cannot resolve a relative
+# "/images/Cover.png", which is why link previews never showed the cover.
+url: https://becoming-fluent-in-data.com
+cover-image: https://becoming-fluent-in-data.com/images/Cover.png
+favicon: "images/Logo.ico"
+
+# Adds "Edit this page" / "View source" buttons to the toolbar.
+github-repo: MarcoKuehne/marcokuehne.github.io
+
+# =========================================================================
+#  BIBLIOGRAPHY
+# =========================================================================
 bibliography: references.bib
 biblio-style: apalike
 link-citations: yes
+csl: https://www.zotero.org/styles/apa
+lang: en-GB
+
+# =========================================================================
+#  PDF / EPUB ONLY  — ignored by gitbook, needed if you ever enable downloads
+# =========================================================================
+documentclass: book
 always_allow_html: yes
-favicon: "images/Logo.ico"
-css: [www/webex.css, css/style.css, css/boxes.css,
-      css/ani.css, css/background.css, css/toggle.css, css/wikipedia_link.css,
+
+# =========================================================================
+#  STYLESHEETS
+#  css/toc.css and css/hero.css are deliberately absent: toc.css styles #TOC,
+#  which gitbook never emits (its sidebar is .book-summary), and hero.css
+#  belongs to the unused hero.html.
+# =========================================================================
+css: [www/webex.css, css/style.css, css/boxes.css, css/ani.css,
+      css/background.css, css/toggle.css, css/wikipedia_link.css,
       css/align.css, css/video.css]
-tags: [Data Science, Data Analysis, Data Fluency, Textbook, Tutorial, R]
+
+# =========================================================================
+#  OUTPUT
+#  This block overrides _output.yml completely — keep settings here only.
+# =========================================================================
 output:
   bookdown::gitbook:
-    md_extensions: -smart
-    split_by: chapter
-    split_bib: false
+    md_extensions: -smart      # keep straight quotes, do not "smarten" them
+    split_by: section          # NOTE: only after the chapter restructure.
+    toc_depth: 2               #       Until then keep chapter / omit toc_depth.
+    split_bib: false           # one bibliography page, not one per chapter
     highlight: tango
     config:
-      download: null
-      toc_depth: 1
-      toc-title: "Table of Contents"
       toc:
-        before:
+        before: |
           <li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
           <li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
-        after:
+        after: |
           <li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
         collapse: section
         scroll_highlight: false
-      toolbar:
-        position: fixed
-      sharing:
-        facebook: false
-        twitter: false
-      search:
-        engine: lunr
-        options: null
+      download: null           # no PDF/EPUB buttons. To enable: [pdf, epub]
+      sharing: null            # removes the share button entirely
     includes:
-      in_header: [hypothesis.html, google_analytics.html]
+      in_header:   [hypothesis.html, google_analytics.html]
       before_body: [top_message.html]
-      after_body:  [www/webex.js, custom_def.html]
+      after_body:  www/webex.js
 ---
-
-<!-- Global code chunk options -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(

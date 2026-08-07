@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6.5 Interactions | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6.5 Interactions | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6.5 Interactions | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="logistic-models.html"/>
+<link rel="next" href="marginal-effects.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
+<link rel="stylesheet" href="css/align.css" type="text/css" />
+<link rel="stylesheet" href="css/video.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a></li>
+<li class="chapter" data-level="" data-path="why-r.html"><a href="why-r.html"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-the-tidyverse.html"><a href="why-the-tidyverse.html"><i class="fa fa-check"></i>Why the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="interactions" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Interactions<a href="interactions.html#interactions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>Conditional relationships and moderation</p>
+</div>
+<div id="motivation" class="section level3 hasAnchor" number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> Motivation<a href="interactions.html#motivation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://www.researchgate.net/post/Is_there_any_different_between_control_variable_and_moderating_variable2 -->
+<!-- In many contexts, the effect of one variable on another might be allowed to vary. For example, the relationship between income and mortality is nonlinear, so the effect of an additional dollar of income on mortality is different for someone earning \$20,000/year than for someone earning $100,000/year. Or maybe the relationship between income and mortality differs depending on how many years of education you have. A marginal effects plot displays the effect of X on Y for different values of Z (or X).  -->
+<!-- The plot will often include confidence intervals as well. The same code will often work if there's not an explicit interaction, but you are, for example, estimating a logit model where the effect of one variable changes with the values of the others. -->
+<!-- - Interactions often have poor statistical power, and you will generally need a lot of observations to tell if the effect of X on Y is different for two given different values of Z. -->
+<!-- - Make sure your graph has clearly labeled axes, so readers can tell whether your y-axis is the predicted value of Y or the marginal effect of X on Y. -->
+<!-- https://www.spss-tutorials.com/spss-regression-with-moderation-interaction-effect/ -->
+<p>A sports doctor routinely measures the muscle percentages of his clients. He also asks them how many hours per week they typically spend on training. Our doctor suspects that clients who train more are also more muscled. Furthermore, he thinks that the effect of training on muscularity declines with age. In multiple regression analysis, this is known as a <strong>moderation or interaction effect</strong> illustrated in the figure below.</p>
+<center>
+<p><img src="images/moderation-interaction-in-regression-diagram.png" /></p>
+</center>
+<p>In mathematical terms an interaction is an additional multiplication term:</p>
+<p><span class="math display">\[ muscle = training + age + training*age  \]</span></p>
+</div>
+<div id="data-sample-1" class="section level3 hasAnchor" number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> Data &amp; Sample<a href="interactions.html#data-sample-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- <button type="button" class="btn btn-default">Show session info</button> -->
+<p>In the following we further explore the aforementioned income-age relationship and how the relationship itself may be influenced by gender and other characteristics.</p>
+<div class="toggle">
+<button>
+Show me all the data wrangling.
+</button>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="interactions.html#cb168-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb168-2"><a href="interactions.html#cb168-2" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span>
+<span id="cb168-3"><a href="interactions.html#cb168-3" tabindex="-1"></a></span>
+<span id="cb168-4"><a href="interactions.html#cb168-4" tabindex="-1"></a><span class="co"># The data comes with Stata labels that do not work with all tidyverse commands</span></span>
+<span id="cb168-5"><a href="interactions.html#cb168-5" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
+<span id="cb168-6"><a href="interactions.html#cb168-6" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span>
+<span id="cb168-7"><a href="interactions.html#cb168-7" tabindex="-1"></a></span>
+<span id="cb168-8"><a href="interactions.html#cb168-8" tabindex="-1"></a><span class="co"># Rename German to English variable names</span></span>
+<span id="cb168-9"><a href="interactions.html#cb168-9" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb168-10"><a href="interactions.html#cb168-10" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb168-11"><a href="interactions.html#cb168-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="st">&quot;alter&quot;</span>,</span>
+<span id="cb168-12"><a href="interactions.html#cb168-12" tabindex="-1"></a>         <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> <span class="st">&quot;einkommenj1&quot;</span>,</span>
+<span id="cb168-13"><a href="interactions.html#cb168-13" tabindex="-1"></a>         <span class="st">&quot;NACE2&quot;</span> <span class="ot">=</span> <span class="st">&quot;branche&quot;</span>,</span>
+<span id="cb168-14"><a href="interactions.html#cb168-14" tabindex="-1"></a>         <span class="st">&quot;Persons in HH&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_pers&quot;</span>, </span>
+<span id="cb168-15"><a href="interactions.html#cb168-15" tabindex="-1"></a>         <span class="st">&quot;Num_Kids&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_kind&quot;</span>,</span>
+<span id="cb168-16"><a href="interactions.html#cb168-16" tabindex="-1"></a>         <span class="st">&quot;Education&quot;</span> <span class="ot">=</span> <span class="st">&quot;bildung&quot;</span>,</span>
+<span id="cb168-17"><a href="interactions.html#cb168-17" tabindex="-1"></a>         <span class="st">&quot;Health&quot;</span> <span class="ot">=</span> <span class="st">&quot;gesund_org&quot;</span>, </span>
+<span id="cb168-18"><a href="interactions.html#cb168-18" tabindex="-1"></a>         <span class="st">&quot;Satisfaction&quot;</span> <span class="ot">=</span> <span class="st">&quot;lebensz_org&quot;</span>,</span>
+<span id="cb168-19"><a href="interactions.html#cb168-19" tabindex="-1"></a>         <span class="st">&quot;Emp&quot;</span> <span class="ot">=</span> <span class="st">&quot;erwerb&quot;</span>) </span>
+<span id="cb168-20"><a href="interactions.html#cb168-20" tabindex="-1"></a></span>
+<span id="cb168-21"><a href="interactions.html#cb168-21" tabindex="-1"></a><span class="co"># Modify some variables</span></span>
+<span id="cb168-22"><a href="interactions.html#cb168-22" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb168-23"><a href="interactions.html#cb168-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Single =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Persons in HH</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb168-24"><a href="interactions.html#cb168-24" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">ifelse</span>(Num_Kids <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb168-25"><a href="interactions.html#cb168-25" tabindex="-1"></a>         <span class="at">Female =</span> sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb168-26"><a href="interactions.html#cb168-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Industry =</span> <span class="fu">case_when</span>(NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="sc">~</span> <span class="st">&quot;Agriculture&quot;</span>,</span>
+<span id="cb168-27"><a href="interactions.html#cb168-27" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">~</span> <span class="st">&quot;Mining&quot;</span>,</span>
+<span id="cb168-28"><a href="interactions.html#cb168-28" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">32</span>) <span class="sc">~</span> <span class="st">&quot;Manufacturing&quot;</span>,</span>
+<span id="cb168-29"><a href="interactions.html#cb168-29" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35</span><span class="sc">:</span><span class="dv">38</span>) <span class="sc">~</span> <span class="st">&quot;Energy&quot;</span>,</span>
+<span id="cb168-30"><a href="interactions.html#cb168-30" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">~</span> <span class="st">&quot;Construction&quot;</span>,</span>
+<span id="cb168-31"><a href="interactions.html#cb168-31" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">55</span>) <span class="sc">~</span> <span class="st">&quot;Trade&quot;</span>,</span>
+<span id="cb168-32"><a href="interactions.html#cb168-32" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>) <span class="sc">~</span> <span class="st">&quot;Transport&quot;</span>,</span>
+<span id="cb168-33"><a href="interactions.html#cb168-33" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>) <span class="sc">~</span> <span class="st">&quot;Banking&quot;</span>,</span>
+<span id="cb168-34"><a href="interactions.html#cb168-34" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span>  <span class="fu">c</span>(<span class="dv">70</span>,<span class="dv">71</span>,<span class="dv">72</span>,<span class="dv">73</span>,<span class="dv">74</span>,<span class="dv">75</span>,<span class="dv">80</span>,<span class="dv">85</span>,<span class="dv">90</span>,<span class="dv">91</span>,<span class="dv">92</span>,<span class="dv">93</span>,<span class="dv">95</span>,<span class="dv">98</span>,<span class="dv">99</span>) <span class="sc">~</span> <span class="st">&quot;Services&quot;</span>,</span>
+<span id="cb168-35"><a href="interactions.html#cb168-35" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Other&quot;</span>))</span>
+<span id="cb168-36"><a href="interactions.html#cb168-36" tabindex="-1"></a></span>
+<span id="cb168-37"><a href="interactions.html#cb168-37" tabindex="-1"></a><span class="co"># Round annual income to two digits</span></span>
+<span id="cb168-38"><a href="interactions.html#cb168-38" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Income =</span> <span class="fu">round</span>(Income, <span class="dv">2</span>))</span>
+<span id="cb168-39"><a href="interactions.html#cb168-39" tabindex="-1"></a></span>
+<span id="cb168-40"><a href="interactions.html#cb168-40" tabindex="-1"></a><span class="co"># Build the estimation sample based on the topic</span></span>
+<span id="cb168-41"><a href="interactions.html#cb168-41" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb168-42"><a href="interactions.html#cb168-42" tabindex="-1"></a>  <span class="fu">filter</span>(Emp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb168-43"><a href="interactions.html#cb168-43" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">65</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb168-44"><a href="interactions.html#cb168-44" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb168-45"><a href="interactions.html#cb168-45" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2019</span>)</span>
+<span id="cb168-46"><a href="interactions.html#cb168-46" tabindex="-1"></a></span>
+<span id="cb168-47"><a href="interactions.html#cb168-47" tabindex="-1"></a><span class="co"># Conduct a complete case analysis</span></span>
+<span id="cb168-48"><a href="interactions.html#cb168-48" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
+</div>
+<p>The <code>datasummary()</code> function from <code>modelsummary</code> package provides a good overview for clean, selected variables.</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="interactions.html#cb169-1" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb169-2"><a href="interactions.html#cb169-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
+<span id="cb169-3"><a href="interactions.html#cb169-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Income, Age, Kids, Female, Satisfaction) <span class="sc">%&gt;%</span></span>
+<span id="cb169-4"><a href="interactions.html#cb169-4" tabindex="-1"></a>  <span class="fu">datasummary_skim</span>()</span></code></pre></div>
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_75ifybarwoq942t7q2h9 = TinyTable.createTableFunctions("tinytable_75ifybarwoq942t7q2h9");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '5', j: 1 }, { i: '5', j: 2 }, { i: '5', j: 3 }, { i: '5', j: 4 }, { i: '5', j: 5 }, { i: '5', j: 6 }, { i: '5', j: 7 }, { i: '5', j: 8 }, { i: '5', j: 9 } ], css_id: 'tinytable_css_wyu99q2xy6zxn99d6d37',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '1', j: 4 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '1', j: 5 }, { i: '2', j: 5 }, { i: '3', j: 5 }, { i: '4', j: 5 }, { i: '1', j: 6 }, { i: '2', j: 6 }, { i: '3', j: 6 }, { i: '4', j: 6 }, { i: '1', j: 7 }, { i: '2', j: 7 }, { i: '3', j: 7 }, { i: '4', j: 7 }, { i: '1', j: 8 }, { i: '2', j: 8 }, { i: '3', j: 8 }, { i: '4', j: 8 }, { i: '1', j: 9 }, { i: '2', j: 9 }, { i: '3', j: 9 }, { i: '4', j: 9 } ], css_id: 'tinytable_css_pndrjohe00mum8ms28d8',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 }, { i: '0', j: 6 }, { i: '0', j: 7 }, { i: '0', j: 8 }, { i: '0', j: 9 } ], css_id: 'tinytable_css_285lif3ao9blaiqn6z1y',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_75ifybarwoq942t7q2h9.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_75ifybarwoq942t7q2h9 td.tinytable_css_wyu99q2xy6zxn99d6d37, #tinytable_75ifybarwoq942t7q2h9 th.tinytable_css_wyu99q2xy6zxn99d6d37 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_75ifybarwoq942t7q2h9 td.tinytable_css_pndrjohe00mum8ms28d8, #tinytable_75ifybarwoq942t7q2h9 th.tinytable_css_pndrjohe00mum8ms28d8 { text-align: left }
+    #tinytable_75ifybarwoq942t7q2h9 td.tinytable_css_285lif3ao9blaiqn6z1y, #tinytable_75ifybarwoq942t7q2h9 th.tinytable_css_285lif3ao9blaiqn6z1y {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_75ifybarwoq942t7q2h9" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'>
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Unique</th>
+                <th scope="col" data-row="0" data-col="3">Missing Pct.</th>
+                <th scope="col" data-row="0" data-col="4">Mean</th>
+                <th scope="col" data-row="0" data-col="5">SD</th>
+                <th scope="col" data-row="0" data-col="6">Min</th>
+                <th scope="col" data-row="0" data-col="7">Median</th>
+                <th scope="col" data-row="0" data-col="8">Max</th>
+                <th scope="col" data-row="0" data-col="9">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">Income</td>
+                  <td data-row="1" data-col="2">1211</td>
+                  <td data-row="1" data-col="3">0</td>
+                  <td data-row="1" data-col="4">42145.2</td>
+                  <td data-row="1" data-col="5">23488.8</td>
+                  <td data-row="1" data-col="6">915.5</td>
+                  <td data-row="1" data-col="7">37337.3</td>
+                  <td data-row="1" data-col="8">257886.2</td>
+                  <td data-row="1" data-col="9"><img src="data:image/png;base64, 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" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">Age</td>
+                  <td data-row="2" data-col="2">47</td>
+                  <td data-row="2" data-col="3">0</td>
+                  <td data-row="2" data-col="4">45.4</td>
+                  <td data-row="2" data-col="5">11.2</td>
+                  <td data-row="2" data-col="6">18.0</td>
+                  <td data-row="2" data-col="7">47.0</td>
+                  <td data-row="2" data-col="8">65.0</td>
+                  <td data-row="2" data-col="9"><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAABLAAAAGQCAMAAACJa2lsAAAABlBMVEUAAAD///+l2Z/dAAAOT0lEQVR4nO3UgZHsOg4DwHf5J30RWH9ZIxqU3B0BDQv49z+AQ/xLHwDwVwYLOIbBAo5hsIBjGCzgGAYLOIbBAo5hsIBjGCzgGAYLOIbBAo5hsIBjGCzgGAYLyv69LP29c4gCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiiigzGCliALKDFaKKKDMYKWIAsoMVooooMxgpYgCygxWiii4wdsL8rJ0vHOIghukF6VZOt45RMEN0ovSLB3vHKLgBulFaZaOdw5RcIP0ojRLxzuHKLhBelGapeOdQxTcIL0ozdLxziEKbpBelGbpeOcQBTdIL0qzdLxziIIbpBelWTreOUTBDdKL0iwd7xyi4AbpRWmWjncOUXCD9KI0S8c7hyi4QXpRmqXjnUMU3CC9KM3S8c4hCm6QXpRm6XjnEAU3SC9Ks3S8c4iCG6QXpVk63jlEwQ3Si9IsHe8couAG6UVplo53DlFwg/SiNEvHO4couEF6UZql451DFNwgvSjN0vHOIQpukF6UZul45xAFN0gvSrN0vHOIghukF6VZOt45RMEN0ovSLB3vHKLgBulFaZaOdw5RcIP0ojRLxzuHKLhBelGapeOdQxTcIL0ozdLxziEKbpBelGbpeOcQBTdIL0qzdLxziIIbpBelWTreOUTBDdKL0iwd7xyi4AbpRWmWjncOUXCD9KLcJf03FybfBn+Vrvhd0n9zYfJt8Ffpit8l/TcXJt8Gf5Wu+F3Sf3Nh8m3wV+mK3yX9Nxcm3wZ/la74XdJ/c2HybfBX6YrfJf03FybfBn+Vrvhd0n9zYfJt8Ffpit8l/TcXJt8Gf5Wu+F3Sf3Nh8m3wV+mK3yX9Nxcm3wZ/la74XdJ/c2HybfBX6YrfJf03FybfBn+Vrvhd0n9zYfJt8Ffpit8l/TcXJt8Gf5Wu+F3Sf3Nh8m3wV+mK3yX9Nxcm3wZ/la74XdJ/c2HybfBX6YrfJf03FybfBn+Vrvhd0n9zYfJt8Ffpit8l/TcXJt8Gf5Wu+F3Sf3Nh8m3wV+mK3yX9Nxcm38a50pXjF+nXszD5Ns6Vrhy/SL+ehcm3ca505fhF+vUsTL6Nc6Urxy/Sr2dh8m2cK105fpF+PQuTb+Nc6crxi/TrWZh8G+dKV45fpF/PwuTbOFe6cvwi/XoWJt/GudKV4xfp17Mw+TbOla4cv0i/noXJt3GudOX4Rfr1LEy+jXOlK8cv0q9nYfJtnCtdOX6Rfj0Lk2/jXOnK8Yv061mYfBvnSleOX6Rfz8Lk2zhXunL8Iv16FibfxrnSleMX6dezMPk2zpWuHL9Iv56FybdxrnTl+EX69SxMvo1zpSvHL9KvZ2HybZwrXTl+kX49C5Nv41zpyvGL9OtZmHwb50pXjl+kX8/C5Ns4V7py/CL9ehYm38a50pXjF+nXszD5Ns6Vrhy/SL+ehcm3ca505fhF+vUsTL6Nc6Urxy/Sr2dh8m2cK105fpF+PQuTb+Nc6crxi/TrWZh8G+dKV45fpF/PwuTb2CjdAQ6SfqwLk29jo3QHOEj6sS5Mvo2N0h3gIOnHujD5NjZKd4CDpB/rwuTb2CjdAQ6SfqwLk29jo3QHOEj6sS5Mvo2N0h3gIOnHujD5NjZKd4CDpB/rwuTb2CjdAQ6SfqwLk29jo3QHOEj6sS5Mvo2N0h3gIOnHujD5NjZKd4CDpB/rwuTb2CjdAQ6SfqwLk29jo3QHOEj6sS5Mvu1u6UcJT9LdWJh8293SjxKepLuxMPm2u6UfJTxJd2Nh8m13Sz9KeJLuxsLk2+6WfpTwJN2Nhcm33S39KOFJuhsLk2+7W/pRwpN0NxYm33a39KOEJ+luLEy+7W7pRwlP0t1YmHzb3dKPEp6ku7Ew+ba7pR8lPEl3Y2HybXdLP0p4ku7GwuTb7pZ+lPAk3Y2FybfdLf0o4Um6GwuTb7tb+lHCk3Q3Fibfdrf0o4Qn6W4sTL7tbulHCU/S3ViYfNvd0o8SnqS7sTD5trulHyU8SXdjYfJtd0s/SniS7sbC5Nvuln6U8CTdjYXJt90t/SjhSbobC5Nvu1v6UcKTdDcWJt92t/SjhCfpbixMvu1u6UcJT9LdWJh8293SjxKepLuxMPm2u6UfJTxJd2Nh8m13Sz9KeJLuxsLk2+6WfpTwJN2Nhcm33S39KOFJuhsLk2+7W/pRwpN0NxYm33a39KOEJ+luLEy+7W7pRwlP0t1YmHzb3dKPEp6ku7Ew+ba7pR8lPEl3Y2HybXdLP0p4ku7GwuTb7pZ+lPAk3Y2FybfdLf0o4Um6GwuTb7tb+lHCk3Q3Fibfdrf0o4Qn6W4sTL7tbulHCU/S3ViYfNvd0o8SnqS7sTD5trulHyU8SXdjYfJtd0s/SniS7sbC5Nvuln6U8CTdjYXJt90t/SjhSbobC5Nvu1v6UcKTdDcWJt92t/SjhCfpbixMvu1u6UcJT9LdWJh8293SjxKGKNWmq4/8h/QrgSFKtenqI/8h/UpgiFJtuvp4nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/udJ/zb4plJLu+p/nvRvg28qtbSr/hukcwReUBqFrrXZIJ0j8ILSKHStzQbpHIEXlEaha202SOcIvKA0Cl1rs0E6R+AFpVHoWpsN0jkCLyiNQtfabJDOEXhBaRS61maDdI7AC0qj0LU2G6RzBF5QGoWutdkgnSPwgtIodK3NBukcgReURqFrbTZI5wi8oDQKXWuzQTpH4AWlUehamw3SOQIvKI1C19pskM4ReEFpFLrWZoN0jsALSqPQtTYbpHMEXlAaha612SCdI/CC0ih0rc0G6RyBF5RGoWttNkjnCLygNApda7NBOkfgBaVR6FqbDdI5Ai8ojULX2myQzhF4QWkUutZmg3SOwAtKo9C1NhukcwReUBqFrrXZIJ0j8ILSKHStzQbpHIEXlEaha202SOcIvKA0Cl1rs0E6R+AFpVHoWpsN0jkCLyiNQtfabJDOEXhBaRS61maDdI7AC0qj0LU2G6RzBF5QGoWutdkgnSPwgtIodK3NBukcgReURqFrbTZI5wi8oDQKXWuzQTpH4AWlUehamw3SOQIvKI1C19pskM4ReEFpFLrWZoN0jsALSqPQtTYbpHMEXlAaha612SCdI/CC0ih0rc0G6RyBF5RGoWttNkjnCLygNApda7NBOkfgBaVR6FqbDdI5Ai8ojULX2myQzhF4QWkUutZmg3SOwAtKo9C1NhukcwReUBqFrrXZIJ0j8ILSKHStzQbpHIEXlEaha202SOcIvKA0Cl1rs0E6R+AFpVHoWpsN0jkCLyiNQtfabJDOEXhBaRS61maDdI7AC0qj0LU2G6RzBF5QGoWutdkgnSPwgtIodK3NBukcgReURqFrbTZI5wi8oDQKXWuzQTpH4AWlUehamw3SOQIvKI1C19pskM4ReEFpFLrWZoN0jsALSqPQtTYbpHMEXlAaha612SCdI/CC0ih0rc0G6RyBF5RGoWttNkjnCLygNApda7NBOkfgBaVR6FqbDdI5Ai8ojULX2myQzhF4QWkUutZmg3SOwAtKo9C1NhukcwReUBoFCwIkGSzgGAYLOIbBAo5hsIBjGCzgGAYLOIbBAo5hsIBjGCzgGAYLOIbBAo5hsIBjGCzgGAYLOIbBAo7RNlgASQYLOIbBAo5hsIBjGCzgGAYLOIbBAo5hsIBjGCzgGAYLOIbBAo5hsIBjGCzgGAYLOMb/ATbv6oymfW5MAAAAAElFTkSuQmCC" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">Kids</td>
+                  <td data-row="3" data-col="2">2</td>
+                  <td data-row="3" data-col="3">0</td>
+                  <td data-row="3" data-col="4">0.4</td>
+                  <td data-row="3" data-col="5">0.5</td>
+                  <td data-row="3" data-col="6">0.0</td>
+                  <td data-row="3" data-col="7">0.0</td>
+                  <td data-row="3" data-col="8">1.0</td>
+                  <td data-row="3" data-col="9"><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAABLAAAAGQCAMAAACJa2lsAAAABlBMVEUAAAD///+l2Z/dAAAHN0lEQVR4nO3UsXEDAQwDwVf/TTtGZgeyjprdCsgA97wAjng+fQDAbwkWcIZgAWcIFnCGYAFnCBZwhmABZwgWcIZgAWcIFnCGYAFnCBZwhmABZ/wpWM8/e9fTwE2CBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvXLCAUd65YAGjvHPBAkZ554IFjPLOBQsY5Z0LFjDKOxcsYJR3LljAKO9csIBR3rlgAaO8c8ECRnnnggWM8s4FCxjlnQsWMMo7FyxglHcuWMAo71ywgFHeuWABo7xzwQJGeeeCBYzyzgULGOWdCxYwyjsXLGCUdy5YwCjvPB0s4Pu9LVgAnyRYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBmCBZwhWMAZggWcIVjAGYIFnCFYwBk/jGI/w6sKnPMAAAAASUVORK5CYII=" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">Female</td>
+                  <td data-row="4" data-col="2">2</td>
+                  <td data-row="4" data-col="3">0</td>
+                  <td data-row="4" data-col="4">0.4</td>
+                  <td data-row="4" data-col="5">0.5</td>
+                  <td data-row="4" data-col="6">0.0</td>
+                  <td data-row="4" data-col="7">0.0</td>
+                  <td data-row="4" data-col="8">1.0</td>
+                  <td data-row="4" data-col="9"><img src="data:image/png;base64, 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" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">Satisfaction</td>
+                  <td data-row="5" data-col="2">11</td>
+                  <td data-row="5" data-col="3">0</td>
+                  <td data-row="5" data-col="4">7.6</td>
+                  <td data-row="5" data-col="5">1.4</td>
+                  <td data-row="5" data-col="6">0.0</td>
+                  <td data-row="5" data-col="7">8.0</td>
+                  <td data-row="5" data-col="8">10.0</td>
+                  <td data-row="5" data-col="9"><img src="data:image/png;base64, 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" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+<p>The average annual income in this sample is 42145. Notice that the income is left skewed whereas life satisfaction is skewed to the right. As expected, most people earn a low or average income and there are several extreme high incomes at the right. On the other hand, most people are on average pretty satisfied with their lifes in general. The mean of a dummy variables is the share of people with the characteristic coded with 1, i.e. about 40 % of the people have kids. In the following, binary dummy variables are coded as factors.</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="interactions.html#cb170-1" tabindex="-1"></a><span class="co"># Explicitly code factor variables</span></span>
+<span id="cb170-2"><a href="interactions.html#cb170-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb170-3"><a href="interactions.html#cb170-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Female =</span> <span class="fu">factor</span>(Female),</span>
+<span id="cb170-4"><a href="interactions.html#cb170-4" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">factor</span>(Kids))</span></code></pre></div>
+</div>
+<div id="throwback-parallel-slopes" class="section level3 hasAnchor" number="6.5.3">
+<h3><span class="header-section-number">6.5.3</span> Throwback Parallel Slopes<a href="interactions.html#throwback-parallel-slopes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Simple regression is very similar to the correlation between two variables. A multiple regression with one continuous and one dummy variable is called a <em>parallel slopes</em> model. The data looks like this:</p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-469-1.png" alt="" width="576" /></p>
+<p>Conclusion from Parallel Slopes: The <em>fundamental truth</em> is that the effect of age on income is identical across gender (i.e. for males and females). Males and female are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?</p>
+</div>
+<div id="regression-with-moderators" class="section level3 hasAnchor" number="6.5.4">
+<h3><span class="header-section-number">6.5.4</span> Regression with Moderators<a href="interactions.html#regression-with-moderators" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
+<p>In the following we consider all possible kinds of two-way interactions (between two variables). Higher-order interaction might be useful under special conditions, e.g. in a study where the effect of a new drug depends on the patient's age and gender.</p>
+<p>An interaction can be coded implicitly or explicitly in R.</p>
+<div class="toggle">
+<button>
+Show me the coding.
+</button>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="interactions.html#cb171-1" tabindex="-1"></a><span class="co"># implicit coding, that automatically extends</span></span>
+<span id="cb171-2"><a href="interactions.html#cb171-2" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">*</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb171-3"><a href="interactions.html#cb171-3" tabindex="-1"></a><span class="co"># explicit coding, each single term and their interaction</span></span>
+<span id="cb171-4"><a href="interactions.html#cb171-4" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> am <span class="sc">+</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb171-5"><a href="interactions.html#cb171-5" tabindex="-1"></a><span class="co"># only use the interaction term?</span></span>
+<span id="cb171-6"><a href="interactions.html#cb171-6" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb171-7"><a href="interactions.html#cb171-7" tabindex="-1"></a></span>
+<span id="cb171-8"><a href="interactions.html#cb171-8" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Coding Interaction in R.&#39;</span>,</span>
+<span id="cb171-9"><a href="interactions.html#cb171-9" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Version 1&quot;</span> <span class="ot">=</span> lm1, </span>
+<span id="cb171-10"><a href="interactions.html#cb171-10" tabindex="-1"></a>                  <span class="st">&quot;Version 2&quot;</span> <span class="ot">=</span> lm2,</span>
+<span id="cb171-11"><a href="interactions.html#cb171-11" tabindex="-1"></a>                  <span class="st">&quot;Version 3&quot;</span> <span class="ot">=</span> lm3), </span>
+<span id="cb171-12"><a href="interactions.html#cb171-12" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_se8kdh9syx5j1uax3f8c = TinyTable.createTableFunctions("tinytable_se8kdh9syx5j1uax3f8c");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '9', j: 2 }, { i: '9', j: 3 }, { i: '9', j: 4 } ], css_id: 'tinytable_css_kku0oi3u40ky74jbupx6',}, 
+          { positions: [ { i: '8', j: 2 }, { i: '8', j: 3 }, { i: '8', j: 4 } ], css_id: 'tinytable_css_w7ip8sie4tde06gluzg2',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '1', j: 4 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '5', j: 4 }, { i: '6', j: 4 }, { i: '7', j: 4 } ], css_id: 'tinytable_css_oxhu071vavamgk8wv742',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 } ], css_id: 'tinytable_css_jn7u5fslmilfva3o5982',}, 
+          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_4kxe8oj0g5lma7mg1v10',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_g0ehqtugnvli822sw3vz',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 } ], css_id: 'tinytable_css_4eshmdauelvvr13f3b3w',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_d6bfshxn8wzenhfpsz6q',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_se8kdh9syx5j1uax3f8c.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_kku0oi3u40ky74jbupx6, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_kku0oi3u40ky74jbupx6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_w7ip8sie4tde06gluzg2, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_w7ip8sie4tde06gluzg2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_oxhu071vavamgk8wv742, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_oxhu071vavamgk8wv742 { text-align: center }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_jn7u5fslmilfva3o5982, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_jn7u5fslmilfva3o5982 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_4kxe8oj0g5lma7mg1v10, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_4kxe8oj0g5lma7mg1v10 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_g0ehqtugnvli822sw3vz, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_g0ehqtugnvli822sw3vz {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_4eshmdauelvvr13f3b3w, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_4eshmdauelvvr13f3b3w { text-align: left }
+    #tinytable_se8kdh9syx5j1uax3f8c td.tinytable_css_d6bfshxn8wzenhfpsz6q, #tinytable_se8kdh9syx5j1uax3f8c th.tinytable_css_d6bfshxn8wzenhfpsz6q {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_se8kdh9syx5j1uax3f8c" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'>
+        <caption>Coding Interaction in R.</caption>
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Version 1</th>
+                <th scope="col" data-row="0" data-col="3">Version 2</th>
+                <th scope="col" data-row="0" data-col="4">Version 3</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">(Intercept)</td>
+                  <td data-row="1" data-col="2">15.050</td>
+                  <td data-row="1" data-col="3">15.050</td>
+                  <td data-row="1" data-col="4">17.772</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(1.002)</td>
+                  <td data-row="2" data-col="3">(1.002)</td>
+                  <td data-row="2" data-col="4">(0.826)</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">vs</td>
+                  <td data-row="3" data-col="2">5.693</td>
+                  <td data-row="3" data-col="3">5.693</td>
+                  <td data-row="3" data-col="4"></td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(1.651)</td>
+                  <td data-row="4" data-col="3">(1.651)</td>
+                  <td data-row="4" data-col="4"></td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">am</td>
+                  <td data-row="5" data-col="2">4.700</td>
+                  <td data-row="5" data-col="3">4.700</td>
+                  <td data-row="5" data-col="4"></td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2">(1.736)</td>
+                  <td data-row="6" data-col="3">(1.736)</td>
+                  <td data-row="6" data-col="4"></td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">vs × am</td>
+                  <td data-row="7" data-col="2">2.929</td>
+                  <td data-row="7" data-col="3">2.929</td>
+                  <td data-row="7" data-col="4">10.599</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1"></td>
+                  <td data-row="8" data-col="2">(2.541)</td>
+                  <td data-row="8" data-col="3">(2.541)</td>
+                  <td data-row="8" data-col="4">(1.766)</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">Num.Obs.</td>
+                  <td data-row="9" data-col="2">32</td>
+                  <td data-row="9" data-col="3">32</td>
+                  <td data-row="9" data-col="4">32</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+<p>The single terms <code>vs</code> and <code>am</code> are sometimes called the <em>main effects</em>.</p>
+</div>
+<div id="dummy-dummy" class="section level4 hasAnchor" number="6.5.4.1">
+<h4><span class="header-section-number">6.5.4.1</span> Dummy * Dummy<a href="interactions.html#dummy-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- https://www.theanalysisfactor.com/interaction-dummy-variables-in-linear-regression/ -->
+<!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
+<!-- Categorical by categorical interactions: All the tools described here require at least one variable to be continuous. A separate vignette describes cat_plot, which handles the plotting of interactions in which all the focal predictors are categorical variables. -->
+<p>We estimate how income depends on having kids and being female.</p>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="interactions.html#cb172-1" tabindex="-1"></a>interact1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Kids<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb172-2"><a href="interactions.html#cb172-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 1.&#39;</span>,</span>
+<span id="cb172-3"><a href="interactions.html#cb172-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact1), </span>
+<span id="cb172-4"><a href="interactions.html#cb172-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_fx6vlme8ck80yttybtkf = TinyTable.createTableFunctions("tinytable_fx6vlme8ck80yttybtkf");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '9', j: 2 } ], css_id: 'tinytable_css_tjzo8u7dok79irz5okin',}, 
+          { positions: [ { i: '8', j: 2 } ], css_id: 'tinytable_css_tmp1hcfy6fuz95j70zws',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 } ], css_id: 'tinytable_css_20rd1bd485mdr9ingpl3',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_q9dd1uq7w8xuwjhdlybs',}, 
+          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_1rqs2erbl9g1te3d7g3h',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_5qfisw1xm7ug2xphxnzr',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 } ], css_id: 'tinytable_css_tufx3zs41rbiilnnzq1i',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_o61qh5snka9a9w5571gc',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_fx6vlme8ck80yttybtkf.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_tjzo8u7dok79irz5okin, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_tjzo8u7dok79irz5okin {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_tmp1hcfy6fuz95j70zws, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_tmp1hcfy6fuz95j70zws {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_20rd1bd485mdr9ingpl3, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_20rd1bd485mdr9ingpl3 { text-align: center }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_q9dd1uq7w8xuwjhdlybs, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_q9dd1uq7w8xuwjhdlybs {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_1rqs2erbl9g1te3d7g3h, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_1rqs2erbl9g1te3d7g3h {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_5qfisw1xm7ug2xphxnzr, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_5qfisw1xm7ug2xphxnzr {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_tufx3zs41rbiilnnzq1i, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_tufx3zs41rbiilnnzq1i { text-align: left }
+    #tinytable_fx6vlme8ck80yttybtkf td.tinytable_css_o61qh5snka9a9w5571gc, #tinytable_fx6vlme8ck80yttybtkf th.tinytable_css_o61qh5snka9a9w5571gc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_fx6vlme8ck80yttybtkf" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'>
+        <caption>Interaction Model 1.</caption>
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Income</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">(Intercept)</td>
+                  <td data-row="1" data-col="2">43476.056</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(1128.318)</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">Kids1</td>
+                  <td data-row="3" data-col="2">4329.056</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(1650.629)</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">Female1</td>
+                  <td data-row="5" data-col="2">-6131.395</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2">(1727.116)</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">Kids1 × Female1</td>
+                  <td data-row="7" data-col="2">-8708.424</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1"></td>
+                  <td data-row="8" data-col="2">(2954.627)</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">Num.Obs.</td>
+                  <td data-row="9" data-col="2">1211</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+<p>We plot the interaction with via <code>cat_plot()</code> from the <code>interactions</code> package. This interaction dedicated package makes visualization easy.</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="interactions.html#cb173-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb173-2"><a href="interactions.html#cb173-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-473-1.png" alt="" width="576" /></p>
+<p>This graph suggests that men earn more than women. Men with kids earn more than men without kids. The kids-effect is reversed for women, which report higher incomes when they do not have kids.</p>
+</div>
+<div id="categorical-dummy" class="section level4 hasAnchor" number="6.5.4.2">
+<h4><span class="header-section-number">6.5.4.2</span> Categorical * Dummy<a href="interactions.html#categorical-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We estimate how income depends on working in different industries and being female.</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="interactions.html#cb174-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Industry<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb174-2"><a href="interactions.html#cb174-2" tabindex="-1"></a></span>
+<span id="cb174-3"><a href="interactions.html#cb174-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb174-4"><a href="interactions.html#cb174-4" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb174-5"><a href="interactions.html#cb174-5" tabindex="-1"></a></span>
+<span id="cb174-6"><a href="interactions.html#cb174-6" tabindex="-1"></a><span class="co"># tidy(interact2) %&gt;% </span></span>
+<span id="cb174-7"><a href="interactions.html#cb174-7" tabindex="-1"></a><span class="co">#   select(term, estimate, std.error) %&gt;% </span></span>
+<span id="cb174-8"><a href="interactions.html#cb174-8" tabindex="-1"></a><span class="co">#   #filter(! is.na(estimate)) %&gt;% </span></span>
+<span id="cb174-9"><a href="interactions.html#cb174-9" tabindex="-1"></a><span class="co">#   kable(digits=3)</span></span>
+<span id="cb174-10"><a href="interactions.html#cb174-10" tabindex="-1"></a></span>
+<span id="cb174-11"><a href="interactions.html#cb174-11" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb174-12"><a href="interactions.html#cb174-12" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact2), </span></span>
+<span id="cb174-13"><a href="interactions.html#cb174-13" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span>
+<span id="cb174-14"><a href="interactions.html#cb174-14" tabindex="-1"></a></span>
+<span id="cb174-15"><a href="interactions.html#cb174-15" tabindex="-1"></a>parts <span class="ot">=</span> <span class="dv">2</span> <span class="do">## multi-column parts to display alongside</span></span>
+<span id="cb174-16"><a href="interactions.html#cb174-16" tabindex="-1"></a></span>
+<span id="cb174-17"><a href="interactions.html#cb174-17" tabindex="-1"></a><span class="fu">tidy</span>(interact2) <span class="sc">|&gt;</span></span>
+<span id="cb174-18"><a href="interactions.html#cb174-18" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(term, <span class="at">coefficient =</span> estimate) <span class="sc">|&gt;</span></span>
+<span id="cb174-19"><a href="interactions.html#cb174-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">part =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>parts, <span class="at">each =</span> <span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>()),</span>
+<span id="cb174-20"><a href="interactions.html#cb174-20" tabindex="-1"></a>         <span class="at">row_index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>())</span>
+<span id="cb174-21"><a href="interactions.html#cb174-21" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
+<span id="cb174-22"><a href="interactions.html#cb174-22" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span> part) <span class="sc">|&gt;</span></span>
+<span id="cb174-23"><a href="interactions.html#cb174-23" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="at">f =</span> \(x, y) x <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>part) <span class="sc">|&gt;</span> <span class="fu">left_join</span>(y, <span class="at">by =</span> <span class="st">&#39;row_index&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb174-24"><a href="interactions.html#cb174-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(row_index, part)) <span class="sc">|&gt;</span></span>
+<span id="cb174-25"><a href="interactions.html#cb174-25" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="17%" />
+<col width="37%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">term.x</th>
+<th align="right">coefficient.x</th>
+<th align="left">term.y</th>
+<th align="right">coefficient.y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">23513.113</td>
+<td align="left">Female1</td>
+<td align="right">-549.8783</td>
+</tr>
+<tr class="even">
+<td align="left">IndustryBanking</td>
+<td align="right">46946.525</td>
+<td align="left">IndustryBanking:Female1</td>
+<td align="right">-3508.2902</td>
+</tr>
+<tr class="odd">
+<td align="left">IndustryConstruction</td>
+<td align="right">8443.728</td>
+<td align="left">IndustryConstruction:Female1</td>
+<td align="right">-4093.7365</td>
+</tr>
+<tr class="even">
+<td align="left">IndustryEnergy</td>
+<td align="right">21340.939</td>
+<td align="left">IndustryEnergy:Female1</td>
+<td align="right">9357.9811</td>
+</tr>
+<tr class="odd">
+<td align="left">IndustryManufacturing</td>
+<td align="right">24884.761</td>
+<td align="left">IndustryManufacturing:Female1</td>
+<td align="right">-11453.9382</td>
+</tr>
+<tr class="even">
+<td align="left">IndustryMining</td>
+<td align="right">31740.912</td>
+<td align="left">IndustryMining:Female1</td>
+<td align="right">-130.2967</td>
+</tr>
+<tr class="odd">
+<td align="left">IndustryOther</td>
+<td align="right">18604.883</td>
+<td align="left">IndustryOther:Female1</td>
+<td align="right">-8681.7468</td>
+</tr>
+<tr class="even">
+<td align="left">IndustryServices</td>
+<td align="right">31579.784</td>
+<td align="left">IndustryServices:Female1</td>
+<td align="right">-11550.5649</td>
+</tr>
+<tr class="odd">
+<td align="left">IndustryTrade</td>
+<td align="right">14766.445</td>
+<td align="left">IndustryTrade:Female1</td>
+<td align="right">-8405.7213</td>
+</tr>
+<tr class="even">
+<td align="left">IndustryTransport</td>
+<td align="right">39986.219</td>
+<td align="left">IndustryTransport:Female1</td>
+<td align="right">-12060.6618</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="interactions.html#cb175-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
+<span id="cb175-2"><a href="interactions.html#cb175-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb175-3"><a href="interactions.html#cb175-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-475-1.png" alt="" width="576" /></p>
+</div>
+<div id="continuous-dummy" class="section level4 hasAnchor" number="6.5.4.3">
+<h4><span class="header-section-number">6.5.4.3</span> Continuous * Dummy<a href="interactions.html#continuous-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- https://r4ds.had.co.nz/model-basics.html#interactions-continuous-and-categorical -->
+<!-- https://moderndive.com/6-multiple-regression.html#model4interactiontable -->
+<!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
+<!-- There are 3 possibilities of effects in a continuous-dummy interaction -->
+<p>Note that R automatically adds main effects if you use multiplication operator:</p>
+<p>Thus <span class="math display">\[ height * female \]</span></p>
+<p>translates to</p>
+<p><span class="math display">\[ height + female + height*female \]</span></p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="interactions.html#cb176-1" tabindex="-1"></a>interact3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb176-2"><a href="interactions.html#cb176-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 2.&#39;</span>,</span>
+<span id="cb176-3"><a href="interactions.html#cb176-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3), </span>
+<span id="cb176-4"><a href="interactions.html#cb176-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_11r2sjg8canpjlco1l57 = TinyTable.createTableFunctions("tinytable_11r2sjg8canpjlco1l57");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '9', j: 2 } ], css_id: 'tinytable_css_rafbz5xjsr522eidove5',}, 
+          { positions: [ { i: '8', j: 2 } ], css_id: 'tinytable_css_vii7ykpaoxl74l61sjnn',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 } ], css_id: 'tinytable_css_lfycjdp09s594vu1gup3',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_4zo45v5vs1957y51seed',}, 
+          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_4yvynyoih87dmvlbnn2r',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_ha245bqlzybudnkbuiu9',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 } ], css_id: 'tinytable_css_4kdo512fwxoqa790pcrl',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_spi22mfsnvuciinewj3n',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_11r2sjg8canpjlco1l57.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_rafbz5xjsr522eidove5, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_rafbz5xjsr522eidove5 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_vii7ykpaoxl74l61sjnn, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_vii7ykpaoxl74l61sjnn {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_lfycjdp09s594vu1gup3, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_lfycjdp09s594vu1gup3 { text-align: center }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_4zo45v5vs1957y51seed, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_4zo45v5vs1957y51seed {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_4yvynyoih87dmvlbnn2r, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_4yvynyoih87dmvlbnn2r {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_ha245bqlzybudnkbuiu9, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_ha245bqlzybudnkbuiu9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_4kdo512fwxoqa790pcrl, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_4kdo512fwxoqa790pcrl { text-align: left }
+    #tinytable_11r2sjg8canpjlco1l57 td.tinytable_css_spi22mfsnvuciinewj3n, #tinytable_11r2sjg8canpjlco1l57 th.tinytable_css_spi22mfsnvuciinewj3n {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_11r2sjg8canpjlco1l57" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'>
+        <caption>Interaction Model 2.</caption>
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Income</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">(Intercept)</td>
+                  <td data-row="1" data-col="2">17367.198</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(3438.645)</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">Age</td>
+                  <td data-row="3" data-col="2">612.892</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(72.860)</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">Female1</td>
+                  <td data-row="5" data-col="2">4649.196</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2">(5506.496)</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">Age × Female1</td>
+                  <td data-row="7" data-col="2">-296.045</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1"></td>
+                  <td data-row="8" data-col="2">(118.698)</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">Num.Obs.</td>
+                  <td data-row="9" data-col="2">1211</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+<!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
+<p>The visualization for non-parallel slopes looks like this:</p>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="interactions.html#cb177-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
+<span id="cb177-2"><a href="interactions.html#cb177-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-477-1.png" alt="" width="576" /></p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Conclusion
+</h2>
+</div>
+<p>The <strong>fundamental truth</strong> is that the effect of age on income is positive but not identical between males and females. Men and women at the exact same age earn different annual incomes and the gap widens over time. There is <strong>effect heterogeneity</strong>.</p>
+</div>
+<p>There are two more rather uncommon combination in which one of the main effects is dropped. Graphically, the result is two lines with same intercept and different slopes.</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="interactions.html#cb178-1" tabindex="-1"></a>interact3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Age<span class="sc">:</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb178-2"><a href="interactions.html#cb178-2" tabindex="-1"></a></span>
+<span id="cb178-3"><a href="interactions.html#cb178-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb178-4"><a href="interactions.html#cb178-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb178-5"><a href="interactions.html#cb178-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-478-1.png" alt="" width="576" /></p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="interactions.html#cb179-1" tabindex="-1"></a></span>
+<span id="cb179-2"><a href="interactions.html#cb179-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb179-3"><a href="interactions.html#cb179-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
+<span id="cb179-4"><a href="interactions.html#cb179-4" tabindex="-1"></a><span class="co">#                   &quot;Income&quot; = interact3c), </span></span>
+<span id="cb179-5"><a href="interactions.html#cb179-5" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span></code></pre></div>
+<!-- Now it is no longer a parallel slopes model. A different slope is equivalent to a different effect of height on weight for the two genders.  -->
+</div>
+<div id="continuous-continuous" class="section level4 hasAnchor" number="6.5.4.4">
+<h4><span class="header-section-number">6.5.4.4</span> Continuous * Continuous<a href="interactions.html#continuous-continuous" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
+<!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="interactions.html#cb180-1" tabindex="-1"></a>interact4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb180-2"><a href="interactions.html#cb180-2" tabindex="-1"></a>interact4</span>
+<span id="cb180-3"><a href="interactions.html#cb180-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb180-4"><a href="interactions.html#cb180-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb180-5"><a href="interactions.html#cb180-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
+<span id="cb180-6"><a href="interactions.html#cb180-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb180-7"><a href="interactions.html#cb180-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb180-8"><a href="interactions.html#cb180-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
+<span id="cb180-9"><a href="interactions.html#cb180-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
+<p>The interaction of two continuous variables is harder to interpret. There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="interactions.html#cb181-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-480-1.png" alt="" width="576" /></p>
+<p>This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.</p>
+<p>You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.</p>
+</div>
+</div>
+<div id="model-comparison-1" class="section level3 hasAnchor" number="6.5.5">
+<h3><span class="header-section-number">6.5.5</span> Model Comparison<a href="interactions.html#model-comparison-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>How to decide if the model with interaction is better than the model without interaction?</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="interactions.html#cb182-1" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb182-2"><a href="interactions.html#cb182-2" tabindex="-1"></a></span>
+<span id="cb182-3"><a href="interactions.html#cb182-3" tabindex="-1"></a>multiple3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Female, <span class="at">data=</span>soep)</span>
+<span id="cb182-4"><a href="interactions.html#cb182-4" tabindex="-1"></a>multiple4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb182-5"><a href="interactions.html#cb182-5" tabindex="-1"></a></span>
+<span id="cb182-6"><a href="interactions.html#cb182-6" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Comparison&#39;</span>,</span>
+<span id="cb182-7"><a href="interactions.html#cb182-7" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple3,</span>
+<span id="cb182-8"><a href="interactions.html#cb182-8" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3,</span>
+<span id="cb182-9"><a href="interactions.html#cb182-9" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple4,</span>
+<span id="cb182-10"><a href="interactions.html#cb182-10" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact4), </span>
+<span id="cb182-11"><a href="interactions.html#cb182-11" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
+<span id="cb182-12"><a href="interactions.html#cb182-12" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;gt&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb182-13"><a href="interactions.html#cb182-13" tabindex="-1"></a>  <span class="co"># column labels</span></span>
+<span id="cb182-14"><a href="interactions.html#cb182-14" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&#39;Interaction&#39;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>)) </span></code></pre></div>
+<div id="yucpbrpxrl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yucpbrpxrl table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yucpbrpxrl thead, #yucpbrpxrl tbody, #yucpbrpxrl tfoot, #yucpbrpxrl tr, #yucpbrpxrl td, #yucpbrpxrl th {
+  border-style: none;
+}
+
+#yucpbrpxrl p {
+  margin: 0;
+  padding: 0;
+}
+
+#yucpbrpxrl .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yucpbrpxrl .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yucpbrpxrl .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yucpbrpxrl .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yucpbrpxrl .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yucpbrpxrl .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yucpbrpxrl .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yucpbrpxrl .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yucpbrpxrl .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yucpbrpxrl .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yucpbrpxrl .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yucpbrpxrl .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yucpbrpxrl .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yucpbrpxrl .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yucpbrpxrl .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yucpbrpxrl .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yucpbrpxrl .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yucpbrpxrl .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yucpbrpxrl .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yucpbrpxrl .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yucpbrpxrl .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yucpbrpxrl .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yucpbrpxrl .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yucpbrpxrl .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yucpbrpxrl .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yucpbrpxrl .gt_left {
+  text-align: left;
+}
+
+#yucpbrpxrl .gt_center {
+  text-align: center;
+}
+
+#yucpbrpxrl .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yucpbrpxrl .gt_font_normal {
+  font-weight: normal;
+}
+
+#yucpbrpxrl .gt_font_bold {
+  font-weight: bold;
+}
+
+#yucpbrpxrl .gt_font_italic {
+  font-style: italic;
+}
+
+#yucpbrpxrl .gt_super {
+  font-size: 65%;
+}
+
+#yucpbrpxrl .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yucpbrpxrl .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yucpbrpxrl .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yucpbrpxrl .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yucpbrpxrl .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yucpbrpxrl .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yucpbrpxrl .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#yucpbrpxrl .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#yucpbrpxrl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption><span id="tab:unnamed-chunk-481">Table 6.1: </span>Comparison</caption>
+  <thead>
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="a-"> </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="2" colspan="1" scope="col" id="Income">Income</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="Interaction">
+        <div class="gt_column_spanner">Interaction</div>
+      </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="2" colspan="1" scope="col" id="Income-">Income  </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Income-">Income </th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Income-">Income   </th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers=" " class="gt_row gt_left">(Intercept)</td>
+<td headers="Income" class="gt_row gt_center">22487.063</td>
+<td headers="Income " class="gt_row gt_center">17367.198</td>
+<td headers="Income   " class="gt_row gt_center">20923.425</td>
+<td headers="Income  " class="gt_row gt_center">-230.558</td></tr>
+    <tr><td headers=" " class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center">(2764.643)</td>
+<td headers="Income " class="gt_row gt_center">(3438.645)</td>
+<td headers="Income   " class="gt_row gt_center">(13829.780)</td>
+<td headers="Income  " class="gt_row gt_center">(4385.352)</td></tr>
+    <tr><td headers=" " class="gt_row gt_left">Age</td>
+<td headers="Income" class="gt_row gt_center">501.348</td>
+<td headers="Income " class="gt_row gt_center">612.892</td>
+<td headers="Income   " class="gt_row gt_center">59.480</td>
+<td headers="Income  " class="gt_row gt_center">527.982</td></tr>
+    <tr><td headers=" " class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center">(57.643)</td>
+<td headers="Income " class="gt_row gt_center">(72.860)</td>
+<td headers="Income   " class="gt_row gt_center">(296.198)</td>
+<td headers="Income  " class="gt_row gt_center">(57.826)</td></tr>
+    <tr><td headers=" " class="gt_row gt_left">Female1</td>
+<td headers="Income" class="gt_row gt_center">-8670.282</td>
+<td headers="Income " class="gt_row gt_center">4649.196</td>
+<td headers="Income   " class="gt_row gt_center"></td>
+<td headers="Income  " class="gt_row gt_center"></td></tr>
+    <tr><td headers=" " class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center">(1345.244)</td>
+<td headers="Income " class="gt_row gt_center">(5506.496)</td>
+<td headers="Income   " class="gt_row gt_center"></td>
+<td headers="Income  " class="gt_row gt_center"></td></tr>
+    <tr><td headers=" " class="gt_row gt_left">Age × Female1</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income " class="gt_row gt_center">-296.045</td>
+<td headers="Income   " class="gt_row gt_center"></td>
+<td headers="Income  " class="gt_row gt_center"></td></tr>
+    <tr><td headers=" " class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income " class="gt_row gt_center">(118.698)</td>
+<td headers="Income   " class="gt_row gt_center"></td>
+<td headers="Income  " class="gt_row gt_center"></td></tr>
+    <tr><td headers=" " class="gt_row gt_left">Satisfaction</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income " class="gt_row gt_center"></td>
+<td headers="Income   " class="gt_row gt_center">-378.773</td>
+<td headers="Income  " class="gt_row gt_center">2423.054</td></tr>
+    <tr><td headers=" " class="gt_row gt_left"></td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income " class="gt_row gt_center"></td>
+<td headers="Income   " class="gt_row gt_center">(1794.752)</td>
+<td headers="Income  " class="gt_row gt_center">(450.609)</td></tr>
+    <tr><td headers=" " class="gt_row gt_left">Age × Satisfaction</td>
+<td headers="Income" class="gt_row gt_center"></td>
+<td headers="Income " class="gt_row gt_center"></td>
+<td headers="Income   " class="gt_row gt_center">62.082</td>
+<td headers="Income  " class="gt_row gt_center"></td></tr>
+    <tr><td headers=" " class="gt_row gt_left" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
+<td headers="Income" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
+<td headers="Income " class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
+<td headers="Income   " class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;">(38.496)</td>
+<td headers="Income  " class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td></tr>
+    <tr><td headers=" " class="gt_row gt_left">Num.Obs.</td>
+<td headers="Income" class="gt_row gt_center">1211</td>
+<td headers="Income " class="gt_row gt_center">1211</td>
+<td headers="Income   " class="gt_row gt_center">1211</td>
+<td headers="Income  " class="gt_row gt_center">1211</td></tr>
+    <tr><td headers=" " class="gt_row gt_left">F</td>
+<td headers="Income" class="gt_row gt_center">62.338</td>
+<td headers="Income " class="gt_row gt_center">43.812</td>
+<td headers="Income   " class="gt_row gt_center">37.987</td>
+<td headers="Income  " class="gt_row gt_center">55.606</td></tr>
+  </tbody>
+  
+</table>
+</div>
+<script>
+  $(".toggle").click(function() {
+    $(this).toggleClass("open");
+  });
+</script>
+</div>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="logistic-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="marginal-effects.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

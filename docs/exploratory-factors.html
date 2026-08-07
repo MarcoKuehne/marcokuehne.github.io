@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Becoming Fluent in Data</title>
+  <title>8.4 Exploratory Factors | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to becoming fluent in data." />
   <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Becoming Fluent in Data" />
+  <meta property="og:title" content="8.4 Exploratory Factors | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
   <meta property="og:description" content="A guide to becoming fluent in data." />
   <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Becoming Fluent in Data" />
+  <meta name="twitter:title" content="8.4 Exploratory Factors | Becoming Fluent in Data" />
   
   <meta name="twitter:description" content="A guide to becoming fluent in data." />
   <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
-<link rel="prev" href="text-mining.html"/>
-<link rel="next" href="resources.html"/>
+<link rel="prev" href="latent-variables.html"/>
+<link rel="next" href="confirmatory-factors.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -329,8 +329,190 @@ div.csl-indent {
 <div class = infobox>
 This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
 </div>
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="exploratory-factors" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Exploratory Factors<a href="exploratory-factors.html#exploratory-factors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>Discovering shared dimensions</p>
+</div>
+<p>Imagine a test with many reasoning tasks or a questionnaire with many personality statements. Some responses move together: people who perform well on one verbal task often perform well on other verbal tasks; respondents who describe themselves as talkative may also describe themselves as sociable and outgoing.</p>
+<p>Exploratory factor analysis asks:</p>
+<blockquote>
+<p>Can the relationships among many observed indicators be represented by a smaller number of common dimensions?</p>
+</blockquote>
+<p>The method is <strong>exploratory</strong> because the complete loading pattern is not fixed in advance. The data help reveal how many factors may be needed and which indicators are most strongly related to them. The result is not a theory-free discovery of hidden truth. Indicator selection, extraction, rotation, and interpretation all involve decisions.</p>
+<div id="efa-common-factor-idea" class="section level3 hasAnchor" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> The Common-Factor Idea<a href="exploratory-factors.html#efa-common-factor-idea" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For person <span class="math inline">\(p\)</span>, a common-factor model can be written as</p>
+<p><span class="math display">\[
+\mathbf{x}_p
+=
+\boldsymbol{\nu}
++
+\boldsymbol{\Lambda}\boldsymbol{\eta}_p
++
+\boldsymbol{\varepsilon}_p.
+\]</span></p>
+<p>The observed response vector <span class="math inline">\(\mathbf{x}_p\)</span> is represented by:</p>
+<ul>
+<li>indicator baselines <span class="math inline">\(\boldsymbol{\nu}\)</span>;</li>
+<li>one or more latent factor values <span class="math inline">\(\boldsymbol{\eta}_p\)</span>;</li>
+<li>factor loadings in <span class="math inline">\(\boldsymbol{\Lambda}\)</span>;</li>
+<li>residual or unique components <span class="math inline">\(\boldsymbol{\varepsilon}_p\)</span>.</li>
+</ul>
+<p>A <strong>factor loading</strong> describes how strongly an indicator is related to a factor within the model. Indicators with similar loading patterns contribute evidence about the same dimension.</p>
+<p>The covariance matrix is the empirical starting point. Factor analysis asks whether its pattern can be reproduced approximately by fewer common factors:</p>
+<p><span class="math display">\[
+\boldsymbol{\Sigma}
+=
+\boldsymbol{\Lambda}\boldsymbol{\Phi}\boldsymbol{\Lambda}^{\top}
++
+\boldsymbol{\Theta}.
+\]</span></p>
+<p>Here, <span class="math inline">\(\boldsymbol{\Phi}\)</span> contains factor variances and correlations, while <span class="math inline">\(\boldsymbol{\Theta}\)</span> contains residual variances and any residual relations allowed by the model.</p>
+<div class="analysis-warning">
+<p>A factor represents shared variation in a statistical model. The covariance matrix alone does not prove that the factor is a causal entity or that it is identical to the complete substantive construct.</p>
+</div>
+</div>
+<div id="efa-common-vs-total" class="section level3 hasAnchor" number="8.4.2">
+<h3><span class="header-section-number">8.4.2</span> Common Variance Is Not Total Variance<a href="exploratory-factors.html#efa-common-vs-total" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Factor analysis differs from principal component analysis in its target.</p>
+<ul>
+<li><strong>PCA</strong> constructs components that summarize total observed variance.</li>
+<li><strong>Factor analysis</strong> models the covariance attributed to common latent factors and separates it from indicator-specific residual variance.</li>
+</ul>
+<p>A component is a weighted combination of the variables. A factor is an unobserved model quantity proposed to account for their shared relationships.</p>
+<p>This distinction does not make factor analysis universally superior. PCA may be the better tool when the goal is compression or prediction. Factor analysis is more appropriate when the goal is an explicit measurement interpretation.</p>
+</div>
+<div id="efa-four-decisions" class="section level3 hasAnchor" number="8.4.3">
+<h3><span class="header-section-number">8.4.3</span> The Four Main EFA Decisions<a href="exploratory-factors.html#efa-four-decisions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An exploratory analysis requires at least four connected decisions:</p>
+<ol style="list-style-type: decimal">
+<li>How many factors should be retained?</li>
+<li>How should the factors be extracted?</li>
+<li>How should the solution be rotated?</li>
+<li>How should the resulting factors be interpreted and evaluated?</li>
+</ol>
+<p>Treating any one of these decisions as automatic can produce a neat but misleading solution.</p>
+</div>
+<div id="efa-number-factors" class="section level3 hasAnchor" number="8.4.4">
+<h3><span class="header-section-number">8.4.4</span> How Many Factors?<a href="exploratory-factors.html#efa-number-factors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Retaining too few factors forces distinct dimensions together. Retaining too many can turn sampling noise, wording effects, or small item clusters into apparently meaningful factors.</p>
+<p>Useful evidence includes:</p>
+<ul>
+<li><strong>substantive theory:</strong> which distinctions should the instrument represent?</li>
+<li><strong>parallel analysis:</strong> how many observed eigenvalues exceed those expected from comparable random data?</li>
+<li><strong>scree plot:</strong> where does the decline in eigenvalues begin to flatten?</li>
+<li><strong>model adequacy:</strong> do residual relationships remain after retaining the factors?</li>
+<li><strong>interpretability and stability:</strong> does the solution make sense and recur in new data?</li>
+</ul>
+<p>The familiar rule of retaining eigenvalues above one is easy to compute but should not be the sole criterion. Different criteria can disagree because factor retention is an inferential and substantive decision, not a mechanical fact hidden in one number.</p>
+<p>The built-in Holzinger--Swineford data contain nine cognitive test variables commonly used to illustrate verbal, visual, and speed-related dimensions. They are convenient for learning, although they are a historical teaching dataset rather than a modern assessment design.</p>
+</div>
+<div id="efa-extraction" class="section level3 hasAnchor" number="8.4.5">
+<h3><span class="header-section-number">8.4.5</span> Extracting the Factors<a href="exploratory-factors.html#efa-extraction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Extraction estimates the common-factor solution. Common choices include:</p>
+<ul>
+<li><strong>minimum residual or minimum-rank approaches</strong>, which seek a solution with small residual correlations;</li>
+<li><strong>principal-axis factoring</strong>, which focuses on common variance;</li>
+<li><strong>maximum likelihood</strong>, which supports likelihood-based tests and intervals under stronger distributional assumptions;</li>
+<li><strong>weighted least-squares approaches</strong>, often used with ordinal or categorical indicators.</li>
+</ul>
+<p>The best estimator depends on indicator type, distribution, sample size, missing-data treatment, and inferential goals. Extraction should not be confused with rotation: extraction estimates a factor space; rotation chooses an interpretable orientation within it.</p>
+</div>
+<div id="efa-rotation" class="section level3 hasAnchor" number="8.4.6">
+<h3><span class="header-section-number">8.4.6</span> Why Rotation Is Necessary<a href="exploratory-factors.html#efa-rotation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Several loading matrices can reproduce the same covariance structure equally well. Without an additional orientation, the axes are not unique. Rotation chooses a representation intended to be easier to interpret.</p>
+<ul>
+<li><strong>Orthogonal rotation</strong> constrains factors to be uncorrelated.</li>
+<li><strong>Oblique rotation</strong> allows factors to correlate.</li>
+</ul>
+<p>For personality, attitudes, and cognitive abilities, correlated dimensions are often plausible. Oblique rotation is therefore a defensible default unless theory requires independence.</p>
+<p>Rotation does not alter which observations were collected, and it does not create better model fit in the ordinary sense. It redistributes loadings across equivalent orientations of the retained factor space.</p>
+<div class="analysis-note">
+<p>A visually simple loading table is not proof that the factors are real, distinct, or correctly named. Rotation supports interpretation; it does not replace theory.</p>
+</div>
+</div>
+<div id="efa-reading-solution" class="section level3 hasAnchor" number="8.4.7">
+<h3><span class="header-section-number">8.4.7</span> Reading a Factor Solution<a href="exploratory-factors.html#efa-reading-solution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A useful interpretation considers several pieces together.</p>
+<div id="efa-primary-loadings" class="section level4 hasAnchor" number="8.4.7.1">
+<h4><span class="header-section-number">8.4.7.1</span> Primary loadings<a href="exploratory-factors.html#efa-primary-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A primary loading is an indicator's largest substantive loading. A group of indicators with strong loadings on the same factor may define a common dimension.</p>
+</div>
+<div id="efa-cross-loadings" class="section level4 hasAnchor" number="8.4.7.2">
+<h4><span class="header-section-number">8.4.7.2</span> Cross-loadings<a href="exploratory-factors.html#efa-cross-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A cross-loading occurs when an indicator is meaningfully related to more than one factor. This may reflect:</p>
+<ul>
+<li>genuinely overlapping content;</li>
+<li>ambiguous wording;</li>
+<li>a broad item spanning several constructs;</li>
+<li>an inadequate number of retained factors;</li>
+<li>a method or response-format effect.</li>
+</ul>
+<p>Cross-loadings are not automatically errors. They are evidence that the simple idea of one item measuring one factor may be too restrictive.</p>
+</div>
+<div id="efa-communalities" class="section level4 hasAnchor" number="8.4.7.3">
+<h4><span class="header-section-number">8.4.7.3</span> Communalities and residuals<a href="exploratory-factors.html#efa-communalities" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>An indicator's <strong>communality</strong> is the part of its variance represented by the retained common factors. Low communalities indicate that the factor solution explains little of that indicator. Residual correlations show which relationships remain unexplained.</p>
+</div>
+<div id="efa-factor-correlations" class="section level4 hasAnchor" number="8.4.7.4">
+<h4><span class="header-section-number">8.4.7.4</span> Factor correlations<a href="exploratory-factors.html#efa-factor-correlations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In an oblique solution, factor correlations are part of the substantive result. Very high correlations may indicate that the factors are difficult to distinguish, although the conclusion depends on the indicators and the model.</p>
+</div>
+<div id="efa-factor-labels" class="section level4 hasAnchor" number="8.4.7.5">
+<h4><span class="header-section-number">8.4.7.5</span> Factor labels<a href="exploratory-factors.html#efa-factor-labels" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A factor is named from the shared content of its strongest indicators, not from the numerical output alone. Labels should be treated as interpretations that require content knowledge.</p>
+</div>
+</div>
+<div id="efa-r-workflow" class="section level3 hasAnchor" number="8.4.8">
+<h3><span class="header-section-number">8.4.8</span> A Compact EFA Workflow in R<a href="exploratory-factors.html#efa-r-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This workflow is deliberately compact. Before substantive use, the researcher must also inspect coding, missing values, reverse-worded items, indicator distributions, sampling design, and the stability of the solution.</p>
+</div>
+<div id="efa-problems" class="section level3 hasAnchor" number="8.4.9">
+<h3><span class="header-section-number">8.4.9</span> What Can Go Wrong?<a href="exploratory-factors.html#efa-problems" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Common problems include:</p>
+<ul>
+<li><strong>too few indicators:</strong> a factor may be weakly defined and unstable;</li>
+<li><strong>highly redundant indicators:</strong> apparent strength may come from repeated wording rather than broad construct coverage;</li>
+<li><strong>reverse-worded item factors:</strong> wording direction may create a method dimension;</li>
+<li><strong>local dependence:</strong> items sharing a text, scenario, or stimulus may correlate beyond the intended construct;</li>
+<li><strong>sample-specific structure:</strong> a solution may not transport to another group, language, or period;</li>
+<li><strong>exploration presented as confirmation:</strong> a structure discovered and optimized in one sample can fit that same sample unusually well.</li>
+</ul>
+<p>A factor solution is therefore a proposal about dimensionality, not the final measurement argument.</p>
+</div>
+<div id="efa-to-cfa" class="section level3 hasAnchor" number="8.4.10">
+<h3><span class="header-section-number">8.4.10</span> From Exploration to Confirmation<a href="exploratory-factors.html#efa-to-cfa" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>EFA asks:</p>
+<blockquote>
+<p>What measurement structure might be present?</p>
+</blockquote>
+<p>CFA asks:</p>
+<blockquote>
+<p>Does an explicitly specified measurement structure provide a defensible account of the observed relationships?</p>
+</blockquote>
+<p>The strongest workflow separates discovery from evaluation. A researcher may explore in one sample and test the resulting structure in another, or use theory and prior evidence to specify the confirmatory model directly.</p>
+<p>The transition is not from an inferior method to a superior one. It is a transition from <strong>searching for a plausible structure</strong> to <strong>making the structure explicit and testable</strong>.</p>
+<div class="analysis-takeaway">
+<p>EFA helps discover a candidate measurement structure. It does not confirm that structure, establish causal factors, or prove construct validity.</p>
+</div>
+</div>
+<div id="efa-reporting" class="section level3 hasAnchor" number="8.4.11">
+<h3><span class="header-section-number">8.4.11</span> Reporting an Exploratory Analysis<a href="exploratory-factors.html#efa-reporting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A transparent report should describe:</p>
+<ol style="list-style-type: decimal">
+<li>why the indicators were selected;</li>
+<li>their coding and response scales;</li>
+<li>the sample and missing-data treatment;</li>
+<li>the correlation matrix used, especially for ordinal items;</li>
+<li>the extraction method;</li>
+<li>the evidence used to select the number of factors;</li>
+<li>the rotation method and whether factors were allowed to correlate;</li>
+<li>loadings, communalities, cross-loadings, and factor correlations;</li>
+<li>indicators removed or revised and the substantive reason;</li>
+<li>whether the solution was evaluated in independent data.</li>
+</ol>
+</div>
 </div>
 <script>
 
@@ -508,8 +690,8 @@ window.onload = function() {
           </div>
         </div>
       </div>
-<a href="text-mining.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="latent-variables.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="confirmatory-factors.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8.5 Confirmatory Factors | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8.5 Confirmatory Factors | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8.5 Confirmatory Factors | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="exploratory-factors.html"/>
+<link rel="next" href="structural-equations.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+<link rel="stylesheet" href="css/ani.css" type="text/css" />
+<link rel="stylesheet" href="css/background.css" type="text/css" />
+<link rel="stylesheet" href="css/toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
+<link rel="stylesheet" href="css/align.css" type="text/css" />
+<link rel="stylesheet" href="css/video.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a></li>
+<li class="chapter" data-level="" data-path="why-r.html"><a href="why-r.html"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-the-tidyverse.html"><a href="why-the-tidyverse.html"><i class="fa fa-check"></i>Why the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="confirmatory-factors" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Confirmatory Factors<a href="confirmatory-factors.html#confirmatory-factors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="analysis-subtitle">
+<p>Specifying and evaluating measurement models</p>
+</div>
+<p>Exploratory factor analysis may suggest a structure. Confirmatory factor analysis turns that suggestion into an explicit measurement claim.</p>
+<p>Suppose nine observed tests are intended to measure three abilities: visual processing, textual ability, and speed. A CFA states which indicators measure which factors, which factor correlations are allowed, and which cross-loadings or residual relations are fixed to zero.</p>
+<p>CFA therefore asks:</p>
+<blockquote>
+<p>Can a specified measurement model reproduce the observed relationships well enough to support its intended interpretation and use?</p>
+</blockquote>
+<p>The word <strong>confirmatory</strong> does not mean that the theory will be confirmed automatically. It means that the restrictions are stated before the model is evaluated.</p>
+<div id="cfa-measurement-claim" class="section level3 hasAnchor" number="8.5.1">
+<h3><span class="header-section-number">8.5.1</span> From a Pattern to a Measurement Claim<a href="confirmatory-factors.html#cfa-measurement-claim" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A one-factor measurement equation is</p>
+<p><span class="math display">\[
+x_{pi}
+=
+\nu_i
++
+\lambda_i\eta_p
++
+\varepsilon_{pi}.
+\]</span></p>
+<p>The model says that person <span class="math inline">\(p\)</span>'s response to indicator <span class="math inline">\(i\)</span> contains:</p>
+<ul>
+<li>an indicator intercept <span class="math inline">\(\nu_i\)</span>;</li>
+<li>a factor contribution <span class="math inline">\(\lambda_i\eta_p\)</span>;</li>
+<li>residual variation <span class="math inline">\(\varepsilon_{pi}\)</span>.</li>
+</ul>
+<p>For several indicators and factors, the model-implied covariance matrix is</p>
+<p><span class="math display">\[
+\boldsymbol{\Sigma}(\boldsymbol{\vartheta})
+=
+\boldsymbol{\Lambda}
+\boldsymbol{\Phi}
+\boldsymbol{\Lambda}^{\top}
++
+\boldsymbol{\Theta}.
+\]</span></p>
+<p>The loading matrix <span class="math inline">\(\boldsymbol{\Lambda}\)</span> connects indicators to factors. The factor covariance matrix <span class="math inline">\(\boldsymbol{\Phi}\)</span> describes variation and relationships among factors. The residual covariance matrix <span class="math inline">\(\boldsymbol{\Theta}\)</span> describes indicator variation not represented by the factors.</p>
+<p>Estimation chooses parameters <span class="math inline">\(\boldsymbol{\vartheta}\)</span> so that the model-implied covariance matrix resembles the observed covariance matrix <span class="math inline">\(\mathbf{S}\)</span>.</p>
+</div>
+<div id="cfa-fixed-free" class="section level3 hasAnchor" number="8.5.2">
+<h3><span class="header-section-number">8.5.2</span> Fixed and Free Parameters<a href="confirmatory-factors.html#cfa-fixed-free" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A CFA is defined as much by what it excludes as by what it estimates.</p>
+<p>A conventional three-factor model may state that:</p>
+<ul>
+<li>each item loads on one intended factor;</li>
+<li>omitted cross-loadings are fixed to zero;</li>
+<li>the three factors may correlate;</li>
+<li>residual variances are estimated;</li>
+<li>residual correlations are initially fixed to zero.</li>
+</ul>
+<p>In <code>lavaan</code>, the measurement model is compact:</p>
+<p>The operator <code>=~</code> means <em>is measured by</em>. With <code>std.lv = TRUE</code>, each latent factor variance is fixed to one to define its scale.</p>
+<p>The syntax is short, but the claim is strong: the model assigns measurement roles, excludes many possible relations, and asks whether those restrictions are compatible with the data.</p>
+</div>
+<div id="cfa-identification" class="section level3 hasAnchor" number="8.5.3">
+<h3><span class="header-section-number">8.5.3</span> Identification and Scaling<a href="confirmatory-factors.html#cfa-identification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Before asking whether a model fits, we must ask whether its parameters can be estimated uniquely.</p>
+<p><strong>Identification</strong> asks whether the observed moments determine one unique parameter solution. With <span class="math inline">\(q\)</span> observed variables, a covariance matrix contains</p>
+<p><span class="math display">\[
+\frac{q(q+1)}{2}
+\]</span></p>
+<p>distinct variances and covariances. If the model estimates <span class="math inline">\(k\)</span> free parameters from <span class="math inline">\(m\)</span> observed moments, the degrees of freedom are</p>
+<p><span class="math display">\[
+df=m-k.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(df&lt;0\)</span>: the model is underidentified.</li>
+<li><span class="math inline">\(df=0\)</span>: the model is just identified and reproduces the observed moments by construction.</li>
+<li><span class="math inline">\(df&gt;0\)</span>: the model is overidentified and its restrictions can be contradicted by the data.</li>
+</ul>
+<p>Counting moments is necessary but not always sufficient; the equations must also contain independent information.</p>
+<p>A latent variable has no natural unit. Its scale is commonly defined by:</p>
+<ol style="list-style-type: decimal">
+<li>fixing one loading to one; or</li>
+<li>fixing the factor variance to one.</li>
+</ol>
+<p>This scaling choice defines a unit. It does not mean that the fixed value is known substantively.</p>
+<p>A one-factor model with three indicators is often just identified when the factor scale is fixed and residuals are independent. It can estimate the parameters, but global fit cannot test the one-factor restrictions. Four or more indicators usually create degrees of freedom, although identification still depends on the complete specification.</p>
+<div class="analysis-note">
+<p>A unique estimate is not the same as a good model. Identification makes evaluation possible; it does not establish validity.</p>
+</div>
+</div>
+<div id="cfa-estimation" class="section level3 hasAnchor" number="8.5.4">
+<h3><span class="header-section-number">8.5.4</span> Estimation<a href="confirmatory-factors.html#cfa-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The estimator should match the indicators and the analysis.</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Indicators and data</th>
+<th>Common approach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>approximately continuous and reasonably regular</td>
+<td>maximum likelihood</td>
+</tr>
+<tr class="even">
+<td>continuous but non-normal</td>
+<td>robust maximum likelihood such as MLR</td>
+</tr>
+<tr class="odd">
+<td>ordered categorical or binary</td>
+<td>categorical estimators such as WLSMV, or an appropriate categorical likelihood</td>
+</tr>
+<tr class="even">
+<td>incomplete continuous data under a defensible missing-at-random assumption</td>
+<td>full-information maximum likelihood with an ML-based estimator</td>
+</tr>
+</tbody>
+</table>
+<p>Treating a few ordered categories as continuous may or may not be reasonable. The consequences depend on the number of categories, response distributions, sample size, and model. The decision should be reported rather than hidden behind software defaults.</p>
+<p>Robust estimation changes standard errors and test statistics to better accommodate violations such as non-normality. It does not repair a substantively misspecified measurement model.</p>
+</div>
+<div id="cfa-reading-parameters" class="section level3 hasAnchor" number="8.5.5">
+<h3><span class="header-section-number">8.5.5</span> Reading the Parameters<a href="confirmatory-factors.html#cfa-reading-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A standardized loading indicates how strongly an indicator is represented by a factor in the specified model. In a simple standardized one-factor model, a loading of <span class="math inline">\(0.70\)</span> implies</p>
+<p><span class="math display">\[
+0.70^2=0.49,
+\]</span></p>
+<p>so about 49% of the indicator variance is represented by the factor. The interpretation becomes less direct when indicators have several loadings, residual correlations, or other predictors.</p>
+<p>Important parameters include:</p>
+<ul>
+<li><strong>factor loadings:</strong> how indicators relate to factors;</li>
+<li><strong>factor correlations:</strong> how latent dimensions relate to one another;</li>
+<li><strong>residual variances:</strong> how much indicator variation remains;</li>
+<li><strong>intercepts or thresholds:</strong> where indicators are located on their response scales;</li>
+<li><strong>latent means and variances:</strong> how factors are distributed when the model identifies them.</li>
+</ul>
+<p>Large loadings do not by themselves prove good content coverage. A factor measured by several nearly identical questions can look statistically strong while representing only a narrow part of the intended construct.</p>
+</div>
+<div id="cfa-common-models" class="section level3 hasAnchor" number="8.5.6">
+<h3><span class="header-section-number">8.5.6</span> Common Confirmatory Factor Models<a href="confirmatory-factors.html#cfa-common-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Several familiar models are different explanations of the same observed covariance structure. They are not interchangeable ways to improve fit.</p>
+<div id="cfa-one-factor" class="section level4 hasAnchor" number="8.5.6.1">
+<h4><span class="header-section-number">8.5.6.1</span> One common factor<a href="confirmatory-factors.html#cfa-one-factor" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>All indicators load on one factor:</p>
+<p><span class="math display">\[
+x_i=\nu_i+\lambda_i\eta+\varepsilon_i.
+\]</span></p>
+<p>This model is plausible when one broad dimension is expected to account for the shared variation.</p>
+</div>
+<div id="cfa-correlated-factors" class="section level4 hasAnchor" number="8.5.6.2">
+<h4><span class="header-section-number">8.5.6.2</span> Correlated factors<a href="confirmatory-factors.html#cfa-correlated-factors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Different indicator groups measure distinct but related factors. For example, visual, textual, and speed factors may correlate.</p>
+<p>This is often the most transparent starting point when theory distinguishes several domains without proposing a higher-level mechanism.</p>
+</div>
+<div id="cfa-second-order" class="section level4 hasAnchor" number="8.5.6.3">
+<h4><span class="header-section-number">8.5.6.3</span> Second-order factor<a href="confirmatory-factors.html#cfa-second-order" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A second-order model explains correlations among first-order factors through a broader factor:</p>
+<p><span class="math display">\[
+\boldsymbol{\eta}
+=
+\boldsymbol{\Gamma}G
++
+\boldsymbol{\zeta}.
+\]</span></p>
+<p>Items load on first-order factors, and the first-order factors load on the general factor <span class="math inline">\(G\)</span>. The general factor influences the indicators indirectly through the domain factors.</p>
+<pre class="text"><code>General factor
+      ↓
+First-order factors
+      ↓
+Observed indicators</code></pre>
+<p>This model is appropriate only when the correlations among the first-order factors support a meaningful higher-order interpretation.</p>
+</div>
+<div id="cfa-bifactor" class="section level4 hasAnchor" number="8.5.6.4">
+<h4><span class="header-section-number">8.5.6.4</span> Bifactor model<a href="confirmatory-factors.html#cfa-bifactor" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In a bifactor model, each indicator loads directly on:</p>
+<ul>
+<li>one general factor;</li>
+<li>one specific factor.</li>
+</ul>
+<pre class="text"><code>General factor ─────────────→ all indicators
+Specific factor 1 ─────────→ its indicator group
+Specific factor 2 ─────────→ its indicator group</code></pre>
+<p>The general factor represents variation common across all indicators. Specific factors represent remaining common variation within domains after the general factor is taken into account.</p>
+<p>A bifactor model can fit flexibly because it contains many loadings. Better fit does not automatically justify reporting one general score. The general and specific factors must be stable, interpretable, and supported by the indicator design.</p>
+<div class="analysis-warning">
+<p>Second-order and bifactor models are advanced confirmatory factor models. They are not a middle category between CFA and SEM, and they should not be selected only because a simpler model fits poorly.</p>
+</div>
+</div>
+<div id="cfa-cross-loadings" class="section level4 hasAnchor" number="8.5.6.5">
+<h4><span class="header-section-number">8.5.6.5</span> Cross-loadings<a href="confirmatory-factors.html#cfa-cross-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>An indicator may genuinely reflect more than one factor:</p>
+<p><span class="math display">\[
+x_i
+=
+\lambda_{i1}\eta_1
++
+\lambda_{i2}\eta_2
++
+\varepsilon_i.
+\]</span></p>
+<p>A cross-loading can be theoretically appropriate when item content spans dimensions. Fixing every non-target loading to zero may be too rigid.</p>
+</div>
+<div id="cfa-correlated-residuals" class="section level4 hasAnchor" number="8.5.6.6">
+<h4><span class="header-section-number">8.5.6.6</span> Correlated residuals and testlets<a href="confirmatory-factors.html#cfa-correlated-residuals" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Residuals may remain related because indicators share wording, response format, position, stimulus, or context:</p>
+<p><span class="math display">\[
+\operatorname{Cov}(\varepsilon_i,\varepsilon_j)\neq0.
+\]</span></p>
+<p>For competence assessments, tasks based on the same reading text or audio passage may share variation beyond the intended competence. For questionnaires, positive and negative wording can create method effects.</p>
+<p>Residual correlations should represent a specific source of shared indicator variation. They should not become unexplained patches added until the fit indices turn favorable.</p>
+</div>
+<div id="cfa-method-factors" class="section level4 hasAnchor" number="8.5.6.7">
+<h4><span class="header-section-number">8.5.6.7</span> Method and response-style factors<a href="confirmatory-factors.html#cfa-method-factors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A separate factor can represent systematic response behavior rather than the target construct, such as acquiescence or common wording direction. Such factors can be useful, but they require item designs that identify the method effect separately from the substantive factors.</p>
+</div>
+</div>
+<div id="cfa-evaluation" class="section level3 hasAnchor" number="8.5.7">
+<h3><span class="header-section-number">8.5.7</span> Evaluating a Confirmatory Model<a href="confirmatory-factors.html#cfa-evaluation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Day 3 of the course begins after the model has been estimated. The output is on screen, and the uncomfortable question is:</p>
+<blockquote>
+<p>Is this model good enough, and what does <em>good enough</em> mean?</p>
+</blockquote>
+<p>A defensible evaluation follows a sequence rather than one cutoff.</p>
+<div id="cfa-fit-convergence" class="section level4 hasAnchor" number="8.5.7.1">
+<h4><span class="header-section-number">8.5.7.1</span> Step 1: Did the model converge?<a href="confirmatory-factors.html#cfa-fit-convergence" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Check whether the optimizer reached a solution and whether warnings occurred. Non-convergence can result from poor starting values, an underidentified model, extreme correlations, sparse categories, or an implausible specification.</p>
+<p>A non-converged solution should not be interpreted as an ordinary fitted model.</p>
+</div>
+<div id="cfa-fit-estimates" class="section level4 hasAnchor" number="8.5.7.2">
+<h4><span class="header-section-number">8.5.7.2</span> Step 2: Are the estimates admissible and plausible?<a href="confirmatory-factors.html#cfa-fit-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Inspect:</p>
+<ul>
+<li>negative residual variances;</li>
+<li>factor correlations outside the admissible range or extremely close to one;</li>
+<li>implausibly large standard errors;</li>
+<li>unstable or weak loadings;</li>
+<li>thresholds or variances inconsistent with the data;</li>
+<li>estimates driven by miscoding or reversed items.</li>
+</ul>
+<p>A model can display attractive global fit indices and still contain inadmissible or substantively implausible parameters.</p>
+</div>
+<div id="cfa-global-fit" class="section level4 hasAnchor" number="8.5.7.3">
+<h4><span class="header-section-number">8.5.7.3</span> Step 3: How well does the model reproduce the data globally?<a href="confirmatory-factors.html#cfa-global-fit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Common global diagnostics include:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>Main question</th>
+<th>General direction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\chi^2\)</span> test</td>
+<td>Is exact fit tenable?</td>
+<td>smaller relative to degrees of freedom; non-significance is favorable but strongly sample-size dependent</td>
+</tr>
+<tr class="even">
+<td>CFI</td>
+<td>How much does the model improve over an independence baseline?</td>
+<td>higher</td>
+</tr>
+<tr class="odd">
+<td>TLI</td>
+<td>How much improvement remains after a complexity adjustment?</td>
+<td>higher</td>
+</tr>
+<tr class="even">
+<td>RMSEA</td>
+<td>How much approximation error is estimated per degree of freedom?</td>
+<td>lower; interpret with its confidence interval</td>
+</tr>
+<tr class="odd">
+<td>SRMR</td>
+<td>How large are the average standardized residual discrepancies?</td>
+<td>lower</td>
+</tr>
+<tr class="even">
+<td>AIC and BIC</td>
+<td>Which candidate balances fit and complexity better?</td>
+<td>lower, only for comparable candidate models</td>
+</tr>
+</tbody>
+</table>
+<p>Historically influential orientation points include CFI and TLI near or above .95, RMSEA near or below .06, and SRMR near or below .08. These values are not laws. Their behavior depends on sample size, model size, factor loadings, estimator, distributions, and the type of misspecification.</p>
+<p>The chi-square test asks about exact fit. With large samples, small discrepancies can become statistically detectable. Approximate fit indices answer different questions, but none identifies the substantive source of misfit.</p>
+<p>The RMSEA confidence interval is often more informative than the point estimate alone. A wide interval indicates uncertainty; an interval concentrated at high values provides stronger evidence of approximation error.</p>
+<div class="analysis-takeaway">
+<p>A fit index is evidence, not a verdict. CFI = .93 does not mean that 93% of the model is correct, and RMSEA = .05 does not prove construct validity.</p>
+</div>
+</div>
+<div id="cfa-local-fit" class="section level4 hasAnchor" number="8.5.7.4">
+<h4><span class="header-section-number">8.5.7.4</span> Step 4: Where does the model misfit locally?<a href="confirmatory-factors.html#cfa-local-fit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Global indices summarize discrepancies. Local diagnostics indicate where they occur:</p>
+<ul>
+<li>residual covariance or correlation matrices;</li>
+<li>standardized residuals;</li>
+<li>modification indices;</li>
+<li>expected parameter changes;</li>
+<li>unusual loadings and residual variances;</li>
+<li>item-level response patterns.</li>
+</ul>
+<p>A <strong>modification index</strong> approximates how much the chi-square statistic might decline if one fixed parameter were freed. It does not establish that the parameter is theoretically correct.</p>
+<p>An <strong>expected parameter change</strong> estimates the likely magnitude of the freed parameter. Ranking modification indices without examining magnitude and item content encourages accidental overfitting.</p>
+</div>
+<div id="cfa-model-decision" class="section level4 hasAnchor" number="8.5.7.5">
+<h4><span class="header-section-number">8.5.7.5</span> Step 5: Revise, compare, or reject?<a href="confirmatory-factors.html#cfa-model-decision" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Poor fit can point to different problems:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Possible source</th>
+<th>Possible response</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>one item spans two constructs</td>
+<td>consider a justified cross-loading or revise the item</td>
+</tr>
+<tr class="even">
+<td>two items share wording or a stimulus</td>
+<td>model the method relation or improve the instrument</td>
+</tr>
+<tr class="odd">
+<td>proposed factors are not distinguishable</td>
+<td>reconsider the number or meaning of factors</td>
+</tr>
+<tr class="even">
+<td>an important dimension is missing</td>
+<td>specify and test an additional factor</td>
+</tr>
+<tr class="odd">
+<td>reversed items behave differently</td>
+<td>inspect coding, wording, and response styles</td>
+</tr>
+<tr class="even">
+<td>repeated modifications only work in one sample</td>
+<td>validate in new data</td>
+</tr>
+<tr class="odd">
+<td>a simple observed score serves the purpose</td>
+<td>reconsider whether a latent model is necessary</td>
+</tr>
+</tbody>
+</table>
+<p>Researchers should distinguish revising the statistical model, revising the measurement instrument, and revising the substantive theory. These are not the same response.</p>
+</div>
+<div id="cfa-validation" class="section level4 hasAnchor" number="8.5.7.6">
+<h4><span class="header-section-number">8.5.7.6</span> Step 6: Validate beyond the original fit<a href="confirmatory-factors.html#cfa-validation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A model repeatedly modified in one sample may describe that sample unusually well. Stronger evidence comes from:</p>
+<ul>
+<li>testing the structure in a new sample;</li>
+<li>separating exploration and validation;</li>
+<li>examining stability across groups or time;</li>
+<li>testing measurement invariance;</li>
+<li>relating the construct to external variables;</li>
+<li>checking robustness to reasonable coding and estimator choices.</li>
+</ul>
+<p>Global fit is only one part of validity. A factor can fit statistically while omitting important content, and a useful measure can fail an unnecessarily rigid model.</p>
+</div>
+</div>
+<div id="cfa-beyond-cutoffs" class="section level3 hasAnchor" number="8.5.8">
+<h3><span class="header-section-number">8.5.8</span> Beyond Universal Cutoffs<a href="confirmatory-factors.html#cfa-beyond-cutoffs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The course introduced two newer approaches. They are useful because they make the limitations of universal thresholds visible, but they should be treated as advanced tools rather than automatic replacements for the full evaluation sequence.</p>
+<div id="cfa-dynamic-fit" class="section level4 hasAnchor" number="8.5.8.1">
+<h4><span class="header-section-number">8.5.8.1</span> Dynamic fit-index cutoffs<a href="confirmatory-factors.html#cfa-dynamic-fit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Dynamic approaches derive reference values for the particular model under study.<a href="#fn104" class="footnote-ref" id="fnref104"><sup>104</sup></a></p>
+<p>The general idea is:</p>
+<ol style="list-style-type: decimal">
+<li>estimate the proposed model;</li>
+<li>simulate data under correctly specified and deliberately misspecified conditions;</li>
+<li>fit the proposed model to the simulated datasets;</li>
+<li>examine how CFI, RMSEA, and SRMR behave;</li>
+<li>derive model-specific decision regions.</li>
+</ol>
+<p>The benefit is calibration to features such as model size, loading strength, and sample size. The cost is a new layer of assumptions: the answer depends on which misspecifications are simulated, how large they are, and which error rates matter.</p>
+<p>Dynamic cutoffs are therefore best viewed as a sensitivity analysis. They do not replace parameter inspection, local diagnostics, or substantive reasoning.</p>
+</div>
+<div id="cfa-ml-fit" class="section level4 hasAnchor" number="8.5.8.2">
+<h4><span class="header-section-number">8.5.8.2</span> Machine-learning-based diagnosis<a href="confirmatory-factors.html#cfa-ml-fit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A different innovation uses models trained on many simulated factor models. Instead of comparing one fit index with one threshold, the classifier combines features of the estimated model and predicts whether particular types of misspecification may be present.</p>
+<p>This approach can potentially distinguish patterns that a single CFI or RMSEA value cannot. It is closer to a diagnostic aid than to a new universal cutoff.</p>
+<p>Its validity is bounded by the training simulations. More computing power cannot compensate for missing or unrealistic training conditions. A classifier should therefore generate hypotheses for inspection, not replace theory or item-level diagnosis.</p>
+<div class="analysis-advanced">
+<p><strong>Course lesson:</strong> two models can display nearly the same global fit index and still require different conclusions. The numerical value summarizes discrepancy; it does not diagnose its source.</p>
+</div>
+</div>
+</div>
+<div id="cfa-r-workflow" class="section level3 hasAnchor" number="8.5.9">
+<h3><span class="header-section-number">8.5.9</span> A Compact CFA Workflow in R<a href="confirmatory-factors.html#cfa-r-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The code is intentionally portable and uses data included with <code>lavaan</code>. A complete analysis also requires careful item coding, missing-data decisions, distribution checks, estimator justification, and validation.</p>
+</div>
+<div id="cfa-reporting" class="section level3 hasAnchor" number="8.5.10">
+<h3><span class="header-section-number">8.5.10</span> What Should Be Reported?<a href="confirmatory-factors.html#cfa-reporting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A transparent report should describe:</p>
+<ol style="list-style-type: decimal">
+<li>the construct and indicators;</li>
+<li>the theoretical reason for the factor structure;</li>
+<li>item coding, including reversed items;</li>
+<li>sample size and missing-data treatment;</li>
+<li>estimator and software;</li>
+<li>identification and scaling;</li>
+<li>loadings, factor correlations, and residual variances;</li>
+<li>chi-square, degrees of freedom, CFI, TLI, RMSEA with interval, and SRMR;</li>
+<li>local diagnostics and every model modification;</li>
+<li>alternative models and validation analyses where relevant.</li>
+</ol>
+<p>The conclusion should combine statistical and substantive evidence. The goal is not to make every diagnostic green. It is to construct a measurement argument whose assumptions, evidence, limitations, and intended use are clear.</p>
+</div>
+<div id="cfa-to-sem" class="section level3 hasAnchor" number="8.5.11">
+<h3><span class="header-section-number">8.5.11</span> From Measurement to Structure<a href="confirmatory-factors.html#cfa-to-sem" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>CFA specifies how latent constructs are measured. The next step asks how those constructs relate to one another and to observed variables.</p>
+<p>In a broad technical sense, CFA belongs to the structural-equation-model family. In the narrower teaching sequence used here:</p>
+<p><span class="math display">\[
+\text{CFA}
+=
+\text{measurement model},
+\]</span></p>
+<p>while</p>
+<p><span class="math display">\[
+\text{SEM}
+=
+\text{measurement model}
++
+\text{structural regressions and paths}.
+\]</span></p>
+<p>This transition is more than a change of software syntax. It moves from evaluating a measurement claim to studying a system of relationships while retaining the measurement model.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="104">
+<li id="fn104"><p>McNeish, D., and Wolf, M. G., <em>Dynamic Fit Index Cutoffs for Confirmatory Factor Analysis Models</em>, <em>Psychological Methods</em>, 28(1), 61--88, <a href="https://doi.org/10.1037/met0000425" class="uri">https://doi.org/10.1037/met0000425</a>.<a href="confirmatory-factors.html#fnref104" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploratory-factors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="structural-equations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
