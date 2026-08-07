@@ -1,22 +1,119 @@
 # Becoming Fluent in Data
 
-Becoming Fluent in Data is a journey. A journey to yourself. 
+**A Personal Journey – Every Time.**
 
-## About the Book
+An open textbook on empirical research with R: how data comes to exist, what shape it arrives in, and what can honestly be concluded from it.
 
-Welcome to Becoming Fluent in Data, a comprehensive resource designed to help you master data analysis and visualization techniques using R and Bookdown. Whether you're a student looking to enhance your academic and business career prospects or an instructor seeking freely accessible educational content, this project is for you.
+📖 **Read it online:** <https://becoming-fluent-in-data.com/>
 
-## Aims of this Book
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Built with bookdown](https://img.shields.io/badge/built%20with-bookdown-blue.svg)](https://bookdown.org/)
 
-- For Students: From zero to hero in data analysis and data science. Become fluent in data and learn essential skills for your academic and business career. Foster data literacy and empower individuals to understand and critique data work.
-- For Instructors: Becoming Fluent in Data is an open educational resource (OER) providing freely accessible educational content related to data analysis. Its modular structure enables flexible use in various teaching and learning scenarios.
-   
+---
+
+## About
+
+Most statistics courses start with the test and work backwards. This book starts with the data: where it came from, who decided what to measure, what shape it arrived in, and what it quietly leaves out. Methods appear when a question needs them, and each one is worked through on real data — a stork census, a German household panel, seven cohorts of students, eighty-seven dog breeds — so that every number on the page can be recomputed from the repository.
+
+It is written for two audiences. **Students** get a route from no prior knowledge to reading, producing and criticising empirical work, with interactive exercises in every chapter. **Instructors** get an open educational resource with a modular structure: chapters and sections stand alone well enough to be reordered, excerpted, or dropped into an existing syllabus.
+
+## How the book is organised
+
+| Part | Chapter | Sections |
+|:--|:--|:--|
+| **Introduction** | Preface · Software | |
+| **Data** | 1 Foundations | Data is Everywhere · Stories and Visuals |
+| | 2 Structured Data | Tabular · Panel · Time |
+| | 3 Unstructured Data | Web · Text · Geo |
+| | 4 Imperfect Data | Missing · Synthetic |
+| **Analysis** | 5 Compare | Relationships · Comparing Means · Partitioning Variation |
+| | 6 Model | Regression · Linear Models · Decomposing Differences · Logistic · Interactions · Marginal Effects · Generalized · Learning from Data · Tests as Linear Models |
+| | 7 Structure | Time · Longitudinal · Multilevel · Places |
+| | 8 Reveal | Components · Clusters · Latent Variables · Factors · SEM · Items |
+| | 9 Identify | Experiments · Matching · Diff-in-Diff · Discontinuities · Instruments |
+| | 10 Extract | Text Mining |
+
+The two parts mirror each other: Data asks what a row *means*, Analysis asks what a difference *means*.
+
+## Repository layout
+
+```
+index.Rmd              Preface, and the YAML that configures the whole book
+Lnn-mm-name.Rmd        Chapter nn, section mm  (mm = 00 is the chapter wrapper)
+X-references.Rmd       Bibliography page
+
+_bookdown.yml          Which files are included, and in what order
+_output.yml            Output format defaults
+                       (note: index.Rmd's own `output:` block wins over this)
+
+css/                   Stylesheets: boxes, animation, layout, TOC
+www/  include/         webex.css and webex.js for the interactive exercises
+js/                    Collapse, dropdown and code-folding helpers
+scripts/webex.R        Loaded before every chapter, sets up webexercises
+data/                  All datasets used in the book, by topic
+images/                Figures, logo, cover
+docs/                  The rendered site — published by GitHub Pages
+references.bib         Bibliography
+```
+
+Filenames sort in reading order in any file browser: `L06-00-model.Rmd` comes before `L06-01-regression.Rmd`, and the chapter number in the filename is the chapter number in the book.
+
+## Building the book locally
+
+You need [R](https://cloud.r-project.org/) and, for the PDF output, a LaTeX installation ([TinyTeX](https://yihui.org/tinytex/) is the easiest).
+
+```r
+# 1. install the toolchain
+install.packages(c("bookdown", "rmarkdown", "knitr", "webexercises", "tinytex"))
+
+# 2. install the packages the chapters use
+install.packages(c(
+  "tidyverse", "modelsummary", "kableExtra", "gt", "DT", "knitr",
+  "haven", "readxl", "jsonlite", "rvest", "stringr", "stringi", "xml2",
+  "sf", "leaflet", "mapview", "rnaturalearth", "rworldmap", "maps",
+  "geosphere", "countrycode", "zoo", "chron", "lubridate", "forecast",
+  "lavaan", "psych", "mirt", "sirt", "mice", "synthpop", "moderndive",
+  "tidytext", "sentimentr", "ggpmisc", "ggimage", "patchwork", "cowplot",
+  "gridExtra", "scales", "showtext", "sjlabelled", "interactions",
+  "htmltools", "htmlwidgets", "webshot", "vembedr", "tippy", "tufte"
+))
+```
+
+Then render:
+
+```r
+bookdown::render_book()          # the whole book into docs/
+bookdown::serve_book()           # live preview, rebuilds on save
+```
+
+To iterate on a single chapter without rebuilding everything, knit its `.Rmd` on its own — but remember that section files are children of their `Lnn-00-*.Rmd` wrapper, so knit the wrapper rather than the section.
+
+Rendering writes to `docs/`, which is what GitHub Pages serves. Commit `docs/` along with your source changes or the published site will not update.
+
+## Configuration notes
+
+**The book's output settings live in `index.Rmd`, not in `_output.yml`.** Because `index.Rmd` declares its own `output: bookdown::gitbook:` block, that block takes precedence. If a change to `_output.yml` seems to have no effect, this is why — edit the YAML in `index.Rmd` instead.
+
+The `includes:` field there pulls in three small HTML fragments:
+
+| File | Where | What it does |
+|:--|:--|:--|
+| `hypothesis.html` | `in_header` | Loads the Hypothes.is annotation layer, so readers can comment on any paragraph |
+| `google_analytics.html` | `in_header` | Google Analytics 4 tag |
+| `top_message.html` | `before_body` | The "Work in Progress" banner at the top of every page |
+
+## Feedback
+
+The book is a work in progress and reader feedback shapes it. Select any passage on the site and annotate it with [Hypothes.is](https://web.hypothes.is/), or open an [issue](../../issues) for anything larger — an error in a figure, a dataset that no longer downloads, a section that does not land.
+
+## Citation
+
+> Kühne, M. *Becoming Fluent in Data: A Personal Journey – Every Time.* <https://becoming-fluent-in-data.com/>
+
 ## License
 
-This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See the [LICENSE](LICENSE) file for details.
+Licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA 4.0). See [LICENSE](LICENSE).
 
-- Attribution (BY): This part of the license requires anyone using the work to give appropriate credit to the original creator. They must provide a proper attribution, including the creator's name, the title of the work, and a link to the original work if possible. This ensures that the original creator receives recognition for their contribution.
+You are free to share and adapt this material, provided that you give appropriate credit (**BY**), do not use it commercially without permission (**NC**), and distribute any derivative work under the same licence (**SA**). Educational and personal use is explicitly welcome — that is what it is for.
 
-- NonCommercial (NC): The NonCommercial aspect of the license prohibits others from using the work for commercial purposes without explicit permission from the copyright holder. This means that the work cannot be used for commercial gain, such as selling copies of it or using it in products or services that are intended for profit. However, non-commercial use, such as personal or educational purposes, is allowed.
-
-- ShareAlike (SA): The ShareAlike provision requires derivative works to be shared under the same license as the original work. This means that if someone modifies or builds upon the original work, they must distribute their derivative work under the same CC BY-NC-SA 4.0 license. This ensures that subsequent works remain open and freely available, promoting the sharing and collaboration of creative works.
+Datasets in `data/` remain under the licences of their original providers, which are named in the chapter that uses them.
