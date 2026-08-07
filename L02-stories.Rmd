@@ -2,22 +2,25 @@
 
 Stories make data and numbers memorable. Stories are everywhere. When you think about the context of the data, stories evolve naturally: how does this data connect to you, your friends and family, your work, or society as a whole?
 
-This chapter follows one data set from beginning to end — 87 dog breeds, each scored on intelligence, longevity, health, cost and grooming, and each ranked by how popular it is in the United States.[^stories-dogdata] By the end of the chapter the same numbers will have been shown as a sortable table, as a plain chart, as an award-winning poster, taken apart element by element, and finally used to settle an argument about whether we should be drawing bars at all.
+Most of this chapter follows a single data set: dog breeds, each scored on intelligence, longevity, health, cost, appetite and grooming, and each ranked by how popular it is in the United States.[^stories-dogdata] The same numbers will be shown as a sortable table, as a plain chart, as an award-winning poster, and finally taken apart to see what a graphic is really made of. Near the end we switch to a second, smaller data set — the number of students in seven terms of this course — because stripping a chart down works better on something with seven numbers than on something with eighty-seven.
+
+A word about the file before we use it. It lists **174 breeds**, but not every breed has every measurement: popularity comes from American Kennel Club registrations, lifespan from survey data, prices from a puppy marketplace, and these sources do not cover the same animals. **87 breeds carry both a data score and a popularity rank**, and those 87 are what the chapter works with. Missing data is a subject in its own right, and it gets its own chapter later; for now it is enough to notice that "the data set" already meant a decision somebody made.
 
 ```{r stories-setup, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 
 dogs_raw <- read.csv("data/Dogs/best_in_show.csv",
                      check.names = FALSE, stringsAsFactors = FALSE)
+num <- function(v) as.numeric(gsub("[$,%]", "", v))
 
-dogs <- dogs_raw[-1, c(1, 3, 5, 6)]
-names(dogs) <- c("Breed", "Group", "Score", "Popularity")
+dogs <- dogs_raw[-1, c(1, 3, 5, 6, 35, 13)]
+names(dogs) <- c("Breed", "Group", "Score", "Popularity", "Height", "Lifespan")
 dogs <- dogs %>%
-  mutate(Score = as.numeric(Score), Popularity = as.numeric(Popularity)) %>%
+  mutate(across(c(Score, Popularity, Height, Lifespan), num)) %>%
   filter(nzchar(trimws(Breed)), !is.na(Score), !is.na(Popularity))
 ```
 
-## Facts versus visuals {#stories-facts}
+## Numbers, words and pictures {#stories-facts}
 
 A good story begins with facts, and facts usually arrive as a table. Here is the whole thing — all 87 breeds, nothing hidden, nothing summarised. **Click a column heading to sort it.**
 
@@ -36,62 +39,86 @@ Now use it. *Which breed has the highest data score?* Sort the score column: **B
 
 This is worth saying plainly, because books like this one usually rush past it: **for looking a value up, and for ranking on one column, a table beats every chart.** If that is the question, do not draw anything.
 
-### Where the table stops
+Nor should everything become a picture. The two sentences you just read carry four numbers between them, and a chart of four numbers wastes the reader's time — it takes a paragraph of space to deliver what a clause delivers. Prose can also do something no chart can: it can state the *point*. "The Border Collie scores highest and is only the 45th most popular breed" is a finding. A scatterplot showing the same thing is evidence for a finding, and leaves the reader to work out which one. Good analysis usually needs all three registers — **the number for precision, the sentence for meaning, the picture for shape** — and the skill is knowing which job each one is doing.
 
-Now a different question: **do Americans own the good dogs?**
+### Where all three stop
 
-That question is not about one column. It is about whether two columns move together. Sorting is still the right instinct — so sort by data score, and read *down the popularity column* beside it.
+Here are two questions about the same file.
 
-```{r stories-noise, echo=FALSE, warning=FALSE, message=FALSE}
-by_score <- dogs %>% arrange(desc(Score))
+> **Do Americans own the good dogs?** Is a better-scoring breed more likely to be popular?
 
-set.seed(21)
-z    <- as.numeric(scale(by_score$Score))
-f    <- 0.35 * z + sqrt(1 - 0.35^2) * rnorm(nrow(by_score))
-fake <- sort(by_score$Popularity)[rank(-f, ties.method = "first")]
+> **Do big dogs die younger?** Is a taller breed shorter-lived?
 
-tibble(Breed  = by_score$Breed,
-       `Data score` = by_score$Score,
-       `Popularity A` = by_score$Popularity,
-       `Popularity B` = fake) %>%
-  head(12) %>%
-  knitr::kable(caption = "Sorted by data score. One of the two popularity columns is the real one.",
-               align = c("l", "r", "r", "r"))
+Neither is about one column. Each asks whether two columns move together, and a table shows one order at a time. Still, sorting is the right instinct, so let us try it — sort by the first column of each pair and read down the second.
+
+```{r stories-two-sorts, echo=FALSE, warning=FALSE, message=FALSE}
+by_score  <- dogs %>% arrange(desc(Score))
+by_height <- dogs %>% filter(!is.na(Height), !is.na(Lifespan)) %>% arrange(desc(Height))
+
+knitr::kable(
+  data.frame(
+    Breed              = head(by_score$Breed, 10),
+    `Data score`       = head(by_score$Score, 10),
+    `Popularity rank`  = head(by_score$Popularity, 10),
+    ` `                = "",
+    Breed_             = head(by_height$Breed, 10),
+    `Height (cm)`      = head(by_height$Height, 10),
+    `Lifespan (yrs)`   = round(head(by_height$Lifespan, 10), 1),
+    check.names = FALSE),
+  row.names = FALSE, col.names = c("Breed", "Data score", "Popularity rank", "",
+                                   "Breed", "Height (cm)", "Lifespan (yrs)"),
+  align = c("l", "r", "r", "c", "l", "r", "r"),
+  caption = "Left: sorted by data score. Right: sorted by shoulder height. Ten of 87 and ten of 76 rows.")
 ```
 
-Read down column A: 45, 80, 30, 59, 130, 63, 27, 38, 60, 20. That is not an answer. That is a shrug.
+Read down the popularity column: 45, 80, 30, 59, 130, 63, 27, 38, 60, 20. Now read down the lifespan column: 6.9, 6.5, 7.0, 9.1, 9.3, 7.8, 11.6, 10.3, 11.9, 10.2.
 
-But here is the problem, and it is worse than it looks. Column B is not real. It is the same 87 popularity values, reshuffled so that better dogs really *are* more popular — a correlation of −0.38, which in the social sciences is a strong finding, the kind of result a paper gets built around. Read down column B and try to see it. You may have a hunch. **A hunch is not a finding.**
+Two shrugs. Both columns wobble. Neither settles anything — and note that you are looking at ten rows out of 87 and 76, which is all a printed table ever gives you: a window, never the shape.
 
-A sorted table can tell you that a relationship is *not perfect*. It cannot tell you how strong it is, what shape it has, or which cases break it. And it fails silently: noise and a real effect produce columns that look the same.
+Now draw them.
 
-This is what a chart is for. Not decoration, not persuasion. **A chart turns a reading problem into a seeing problem.**
+One convention first, because it decides how the left-hand picture reads. Popularity is a **rank**: 1 is the most registered breed in America, 160 the least, so a *small* number means a *popular* dog. The axis is therefore drawn upside down, rank 1 at the top, which makes "up" mean "more popular" — the direction a reader expects without being told.
 
-```{r stories-ab, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=8, fig.height=3.2, fig.cap="The same two columns, drawn. One second, not twelve rows."}
+```{r stories-ab, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=8, fig.height=3.4, fig.cap="The same two pairs of columns, drawn. One second each."}
 library(gridExtra)
-ab <- function(y, ttl, col) {
-  ggplot(data.frame(x = by_score$Score, y = y), aes(x, -y)) +
-    geom_point(colour = col, size = 1.7) +
-    scale_y_continuous(breaks = -c(1, 50, 100, 150), labels = c(1, 50, 100, 150)) +
-    labs(title = ttl, x = "Data score", y = "Popularity rank") +
-    theme_minimal(base_size = 9) +
-    theme(panel.grid.minor = element_blank())
-}
-grid.arrange(ab(by_score$Popularity, "A: r = 0.03", "grey45"),
-             ab(fake, "B: r = -0.38", "#9b3f2d"), ncol = 2)
+
+p1 <- ggplot(dogs, aes(Score, -Popularity)) +
+  geom_point(colour = "grey45", size = 1.7) +
+  scale_y_continuous(breaks = -c(1, 50, 100, 150),
+                     labels = c("1st", "50th", "100th", "150th")) +
+  labs(title = "Do Americans own the good dogs?", subtitle = "Answer: no pattern at all",
+       x = "Data score", y = "Popularity rank") +
+  theme_minimal(base_size = 9) +
+  theme(panel.grid.minor = element_blank(),
+        plot.subtitle = element_text(size = 8, colour = "grey35"))
+
+p2 <- ggplot(by_height, aes(Height, Lifespan)) +
+  geom_point(colour = "#9b3f2d", size = 1.7) +
+  geom_smooth(method = "lm", se = FALSE, colour = "grey45", linewidth = .5) +
+  labs(title = "Do big dogs die younger?", subtitle = "Answer: yes, and steeply",
+       x = "Shoulder height (cm)", y = "Lifespan (years)") +
+  theme_minimal(base_size = 9) +
+  theme(panel.grid.minor = element_blank(),
+        plot.subtitle = element_text(size = 8, colour = "grey35"))
+
+grid.arrange(p1, p2, ncol = 2)
 ```
 
-Nothing was added to the data between the table and the chart. Every number in the picture was already in the file. What changed is that the comparison moved from your patience into your eyes.
+One second each, and they are not remotely the same picture. The left panel is a cloud: quality tells you nothing about popularity. The right panel falls away steeply: the Irish Wolfhound stands 81 cm at the shoulder and lives under seven years, the Chihuahua stands 13 cm and lives sixteen and a half.
+
+**That is the argument.** The two sorted tables felt equally inconclusive. The two charts are not alike at all. A table cannot distinguish "there is nothing here" from "there is something enormous here", because both look like a column of wobbling numbers — and if you cannot tell those two apart, you cannot use the table to decide anything.
+
+Nothing was added to the data between the tables and the charts. Every number in the pictures was already in the file. What changed is that the comparison moved from your patience into your eyes.
 
 ::: {.analysis-note}
-Facts and visuals are not two different things. A visual **is** a fact, arranged so that a human can perceive it.
+Numbers, words and pictures are not three different things. A picture **is** a fact, arranged so that a human can perceive it; a sentence is a fact, arranged so that a human can remember it.
 
 Which means a badly arranged visual is not merely ugly. It is a fact the reader cannot reach.
 :::
 
 ## Telling a story {#stories-story}
 
-From here on, panel A is the only real one. Let us look at it properly.
+Back to the dogs, and to the question that got nowhere. A cloud with no pattern sounds like a dead end. It is not — it is the story.
 
 ```{r stories-scatter, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=7, fig.height=4.8, fig.cap="All 87 breeds at once. The grey lines mark the two averages, not zero."}
 ms <- mean(dogs$Score); mp <- mean(dogs$Popularity)
@@ -129,9 +156,15 @@ ggplot(dogs, aes(Score, -Popularity)) +
 
 The answer arrives in about one second, and it is **no**. The cloud does not run from bottom-left to top-right. If popularity tracked quality, it would.
 
+And now the story, which is in the corners.
+
+The **Border Collie** has the highest data score of any breed, 3.64, and sits only at rank 45 in popularity. The **Border Terrier** scores 3.61 and ranks 80th — barely half as owned as a dog it beats on every measure. Meanwhile the **Bulldog** is the sixth most popular dog in America with a score of 0.99, the lowest of any breed people buy in numbers at all.
+
+That is a story, and it did not come from a storyteller. It came from two columns and a scatterplot. Somebody who wanted to could now ask *why*: bulldogs are expensive, short-lived and prone to serious illness, and none of that stops people wanting one. Quality is not what makes a dog popular. Something else is — and naming that something is where the analysis would go next.
+
 ### Reading the axes
 
-Two things in that picture need explaining, and neither is obvious.
+Two things in that picture need explaining before you trust it, and neither is obvious.
 
 **The vertical axis is a rank, not a quantity.** It counts *positions*, not dogs. Rank 1 is the Labrador Retriever, rank 160 is somebody's beloved and very rare hound. The distance from rank 1 to rank 2 is not the same number of actual dogs as the distance from rank 100 to rank 101 — not remotely. A rank throws away the size of the gaps and keeps only the order. That is a real loss, and it is also why ranks are so common: they survive being merged from sources that measured different things.
 
@@ -161,14 +194,11 @@ dogs %>%
     TRUE                           ~ "Neither")) %>%
   count(Quadrant, name = "Breeds") %>%
   arrange(desc(Breeds)) %>%
-  knitr::kable(caption = "Where the 87 breeds fall.", align = c("l", "r"))
+  knitr::kable(caption = "How the 87 breeds divide between the four corners.",
+               align = c("l", "r"))
 ```
 
-### The story in the corners
-
-The **Border Collie** has the highest data score of any breed, 3.64, and sits at rank 45 in popularity. The **Border Terrier** scores 3.61 and ranks 80th. Meanwhile the **Bulldog** is the sixth most popular dog in America with a score of 0.99 — the lowest of any breed people actually buy in numbers.
-
-That is a story, and it did not come from a storyteller. It came from two columns and a scatterplot. Somebody who wanted to could now ask *why*: bulldogs are expensive, short-lived and prone to serious illness, and none of that stops people wanting one. Quality is not what makes a dog popular. Something else is.
+Count them, because the counts make the same point the picture did. **The four corners are almost equally full: 27, 21, 20, 19.** That near-tie *is* the finding. If quality drove popularity, two corners would be crowded and two nearly empty; instead a dog is about as likely to be good-and-ignored as good-and-loved. Table \@ref(tab:stories-corners) is the scatterplot with the shape thrown away — which is exactly why you needed the scatterplot.
 
 ### The designed version
 
@@ -178,36 +208,98 @@ The same data — the same file, in fact — was turned into a poster by David M
 knitr::include_graphics("https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png")
 ```
 
-This is the takeaway of the section, so slow down and count what that poster is doing. It is the *same two-dimensional scatterplot* you just read — and it carries roughly ten variables in it:
+This is the takeaway of the section, so slow down and take the poster apart. Underneath the illustration it is the *same two-dimensional scatterplot* you just read — and everything beyond those two dimensions has been smuggled in through some other property of the mark.
 
-| # | Variable | Visual channel |
-|---:|:---|:---|
-| 1 | Data score | horizontal position |
-| 2 | Popularity rank | vertical position |
-| 3 | Breed identity | the silhouette's shape |
-| 4 | Kennel-club group | colour of the silhouette |
-| 5 | Size category | size of the silhouette |
-| 6 | Quadrant membership | which named region it falls in |
-| 7 | Intelligence | folded into the score |
-| 8 | Longevity | folded into the score |
-| 9 | Genetic ailments | folded into the score |
-| 10 | Cost and grooming | folded into the score |
+| Variable | Visual channel | In `ggplot2` |
+|:---|:---|:---|
+| Data score | horizontal position | `aes(x = )` |
+| Popularity rank | vertical position | `aes(y = )` |
+| Kennel-club group | colour of the silhouette | `aes(colour = )` |
+| Size category | size of the silhouette | `aes(size = )` |
+| Intelligence | **the direction the dog faces** | — |
+| Breed | the silhouette itself, plus its printed name | `aes(shape = )`, `geom_text()` |
 
-A flat sheet of paper has exactly two dimensions. Everything past the second one has to be smuggled in through some other property of the mark: its shape, its colour, its size, its label, its position inside a named region. That is the whole craft. **Position is the strongest channel and you only get two of them — every further variable costs the reader something.**
+The first four are ordinary. Colour, size and shape are exactly the aesthetics you will map variables onto in any plotting grammar, and the top-right of the poster carries a key for each one, the way a legend should.
 
-And the corners are named: *Inexplicably Overrated*, *Hot Dogs!*, *The Rightly Ignored*, *Overlooked Treasures*. That naming does real work. It converts a statistical pattern into a claim somebody can argue with, which is exactly what a scatterplot on its own never manages.
+The fifth is not ordinary at all. **The dog faces left if it is dumb and right if it is clever** — the key spells it out, with two little silhouettes labelled *dumb* and *clever*. No plotting library offers "direction faced" as an aesthetic. It exists here only because somebody drew every dog by hand, and it is free: the silhouette had to point *somewhere*.
+
+Look at what that means. Intelligence is on this poster **twice** — once folded into the horizontal position, and once again in which way the animal is looking. The designer decided it mattered enough to say twice.
+
+And then a channel that is not a mark at all: **which named corner a dog falls into** — *Inexplicably Overrated*, *Hot Dogs!*, *The Rightly Ignored*, *Overlooked Treasures*. That naming does real work. It converts a statistical pattern into a claim somebody can argue with, which is exactly what a bare scatterplot never manages.
+
+::: {.analysis-takeaway}
+A flat sheet of paper has exactly two dimensions, and **position is the strongest channel you have** — which is why the two variables you most want compared should go on the axes and nowhere else.
+
+Everything after that is a compromise: colour, size, shape, orientation, labels, named regions. Each one works, each one is weaker than position, and each one needs a key or it carries nothing.
+:::
+
+### What the horizontal axis is hiding
+
+There is one more legend, headed *our data score*, and it is the important one. Six icons: **intelligence, costs, longevity, grooming, ailments, appetite**. Six variables, squeezed into the horizontal axis before the drawing ever began.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Composite score </h2>
+:::
+A **composite score** (or *index*) combines several variables into a single number, so that one column can stand in for many.
+
+You already live with dozens of them: a school grade average, the Human Development Index, a credit score, body mass index, a customer satisfaction score. Each one buys you the same thing — a single axis you can sort, plot and argue about — and each one costs you the same thing: the components disappear, and so do the **weights** somebody chose for them.
+::::
+
+The poster shows you the result and not the recipe. The file has the recipe:
+
+$$\text{score} = \text{intelligence} + \text{longevity} + \text{ailments} + \tfrac{1}{2}\left(\text{costs} + \text{appetite} + \text{grooming}\right)$$
+
+Every component is already a percentile between 0 and 1, so each can contribute at most 1 point, or at most ½ a point for the three halved ones. Two of the poster's words are gentler than the spreadsheet's: *costs* is the average purchase price of a puppy, and *appetite* is the annual food bill.
+
+Do it by hand for three dogs — the best, a famous one, and the worst.
+
+```{r stories-formula, echo=FALSE, warning=FALSE, message=FALSE}
+pct <- function(v) as.numeric(sub("%", "", v)) / 100
+
+three <- data.frame(
+  Breed        = dogs_raw[[1]],
+  intelligence = pct(dogs_raw[[12]]), longevity = pct(dogs_raw[[14]]),
+  ailments     = pct(dogs_raw[[16]]), costs     = pct(dogs_raw[[18]]),
+  appetite     = pct(dogs_raw[[20]]), grooming  = pct(dogs_raw[[22]]),
+  Published    = as.numeric(dogs_raw[[5]]))
+three <- three[three$Breed %in% c("Border Collie", "Beagle", "Bulldog"), ]
+three <- three[order(-three$Published), ]
+
+names(three)[2:7] <- c("intel.", "longev.", "ailm.", "costs", "appet.", "groom.")
+knitr::kable(three, row.names = FALSE, digits = 2,
+             caption = "Three dogs, six percentiles each, and the score they add up to.",
+             align = c("l", rep("r", 7)))
+```
+
+Add the first three columns, then add half of the last three.
+
+- **Border Collie:** 1.00 + 0.79 + 0.78 = 2.57, and half of (0.71 + 0.68 + 0.75 = 2.14) is 1.07. Total **3.64**.
+- **Beagle:** 0.09 + 0.72 + 0.89 = 1.70, and half of 2.18 is 1.09. Total **2.79**.
+- **Bulldog:** 0.03 + 0.01 + 0.44 = 0.48, and half of 0.99 is 0.50. Total **0.98**.
+
+Three sums you can do in your head, and all three land on the published figure. Across all 87 breeds the largest disagreement is 0.015 — the rounding of the printed percentages, nothing more. The highest score anyone could reach is 1 + 1 + 1 + ½ × 3 = **4.5**, exactly the maximum the file states.
 
 ::: {.analysis-note}
-Notice what channels 7 to 10 cost. Four variables were compressed into one number before the drawing began, and the poster does not show you how.
+Now look at what the arithmetic just made visible.
 
-The file does. The published score is exactly
+**The weights are a choice.** Intelligence, longevity and health count *twice* what price, food and grooming count. Nobody voted on that. Weight all six equally and dogs change corners.
 
-`intelligence + longevity + ailments + 0.5 × (purchase price + food cost + grooming)`
+**And the Beagle is the whole argument in one row.** It is the *least* intelligent breed in the file — 9th percentile — and it still scores 2.79, above average, because it lives long, is healthy, and is cheap to buy. A composite score lets a variable you care about be outvoted by five you were not thinking about.
 
-with every component already converted to a percentile. For the Border Collie: 1.00 + 0.79 + 0.78 + 0.5 × (0.71 + 0.68 + 0.75) = **3.64**, the published figure. Reproducing all 87 scores this way agrees with the published column to within 0.015, which is just the rounding of the percentages.
-
-So the weights are a *choice*: intelligence counts double what grooming counts. Change that one decision and the corners change breed. A reader of the poster cannot see this. A reader of the spreadsheet can.
+A reader of the poster cannot ask this. A reader of the spreadsheet can.
 :::
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> The best data dog is not a dog </h2>
+:::
+Somewhere on that poster, among 87 carefully drawn breeds with their percentiles and their kennel-club colours, there is a **cat**.
+
+It is not in the data. It has no score, no popularity rank and no group. It is there because somebody who spent weeks reconciling puppy prices from `puppyfind.com` decided the reader deserved a joke.
+
+Keep that in mind for your own work. Nothing in this chapter says a graphic has to be humourless — only that the reader must be able to tell which parts are the data. The cat is safe precisely because nobody could mistake it for a finding.
+::::
 
 ::: {.analysis-takeaway}
 Design that makes a reader look longer is worth its ink. Design that makes a reader unable to check is not.
@@ -222,6 +314,7 @@ And somewhere in the poster there is a cat.
 Figure \@ref(fig:dogs) is a masterpiece of art and data science, and it is also the exception. It earns its complexity because it is a poster: something you stand in front of, in a museum or on a wall, and give five minutes to. Almost nothing you will make is a poster. A chart in a report, a slide, a paper or a dashboard gets a few seconds and must answer one question in them — and for that, everything the poster spends is a cost. From here on we go the other way: not how much can a graphic carry, but how little can it get away with.
 
 Edward Tufte gave that principle a name.[^stories-tufte]
+
 :::: {.defbox}
 ::: {.titeldefbox}
 <h2> Definition </h2>
@@ -480,9 +573,11 @@ pt <- ggplot(sel, aes(Score, Breed)) + geom_col(fill = "#9b3f2d") +
 grid.arrange(pz, pt, ncol = 2)
 ```
 
-**Bars mean "compare these separate things."** Readers reliably associate bars with discrete comparisons and lines with trends, without ever being taught to.[^stories-zacks] That association is not decoration — it is a claim about the data, and the wrong mark makes a claim the data cannot support.
+**Bars mean "compare these separate things."** Readers reliably associate bars with discrete comparisons and lines with trends, without ever being taught to.[^stories-zacks] That association is not decoration — it is a claim about the data.
 
-Here are the seven kennel-club groups again, drawn three ways.
+Which gives a rule you may already know, and probably follow without thinking: **never join the dots across categories that have no order.** Easy to state. The figure below is *why* it holds, and it is worth seeing once, because the rule is usually taught as etiquette when it is really about truth.
+
+Here are the seven kennel-club groups, drawn three ways.
 
 ```{r stories-barsline, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=9, fig.height=3, fig.cap="The same seven numbers. Only the middle and right panels disagree with each other."}
 o1 <- c("herding", "hound", "non-sporting", "sporting", "terrier", "toy", "working")
@@ -506,9 +601,11 @@ grid.arrange(mk(o1, "bar",  "Bars, alphabetical order"),
              mk(o2, "line", "The same line, categories reordered"), ncol = 3)
 ```
 
-The middle panel invents a story: a dip at *non-sporting*, a peak at *sporting*, a recovery. The right-hand panel tells a completely different story — a steady climb — and it is the *same seven numbers*. Only the order of the categories changed, and the order of the categories is arbitrary, because "toy" does not come before or after "hound" in any sense the world cares about.
+The middle panel invents a story: a dip at *non-sporting*, a peak at *sporting*, a recovery. The right-hand panel tells a completely different story — a steady climb — from the *same seven numbers*. Only the order of the categories changed, and that order is arbitrary, because "toy" does not come before or after "hound" in any sense the world cares about. The bars are identical under reordering; the line is a different claim every time.
 
-A line asserts that the space *between* two points means something. Between "terrier" and "toy" there is nothing. The bars survive reordering because they never made that claim; the line does not, because it did. This is why the seven terms of the course stay bars: a bar says *these are seven separate cohorts*, not one continuous quantity that existed in between.
+A line asserts that the space *between* two points means something. Between "terrier" and "toy" there is nothing. That is the whole content of the rule: **you may join the dots exactly when the order along the axis is real**, because only then does "between" exist.
+
+Which also says when you *may*. The seven terms of the course did happen one after another — SS 2020 really does come before WS 2020/21 — so joining those dots is legitimate, and a line there says something the bars cannot: it went up, then down, then up again. Reorder those seven and you have not made a different picture, you have made a *wrong* one. We come back to this at the end of the section.
 
 **Familiarity is real, and small.** The conventional vertical bar is identified faster than horizontal bars or lines — by roughly 35 to 55 milliseconds.[^stories-typicality]
 
@@ -542,23 +639,23 @@ And spend what you saved on the thing that helps most: **put the message in the 
 ::: {.titelchallenge}
 <h2> Your Turn </h2>
 :::
-Here is the participants-per-term chart once more, as bars and as dots, so you do not have to scroll back.
+Here is the participants-per-term chart once more, three ways, so you do not have to scroll back. Unlike the kennel-club groups, these seven *do* have a real order, so the third panel is allowed.
 
-```{r stories-terms-two, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=8, fig.height=2.6, fig.cap="Course participants per term, two ways."}
+```{r stories-terms-two, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=9, fig.height=2.8, fig.cap="Course participants per term. All three are defensible here, because the order along the axis is real."}
 ct <- counts %>% mutate(Term = factor(Term, levels = Term))
-
-tb <- ggplot(ct, aes(Term, Students)) + geom_col(fill = "grey60") +
-  labs(title = "Bars", x = NULL, y = "Students") +
-  theme_minimal(base_size = 8.5) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-td <- ggplot(ct, aes(Term, Students)) +
-  geom_point(size = 2.4, colour = "grey25") +
+base_t <- function(p, ttl) p + labs(title = ttl, x = NULL, y = "Students") +
   scale_y_continuous(limits = c(0, 60)) +
-  labs(title = "Dots", x = NULL, y = "Students") +
   theme_minimal(base_size = 8.5) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.minor = element_blank())
 
-grid.arrange(tb, td, ncol = 2)
+grid.arrange(
+  base_t(ggplot(ct, aes(Term, Students)) + geom_col(fill = "grey60"), "Bars"),
+  base_t(ggplot(ct, aes(Term, Students)) + geom_point(size = 2.4, colour = "grey25"), "Dots"),
+  base_t(ggplot(ct, aes(Term, Students, group = 1)) +
+           geom_line(colour = "#9b3f2d", linewidth = .8) +
+           geom_point(colour = "#9b3f2d", size = 2), "Dots joined"),
+  ncol = 3)
 ```
 
 Would the dot plot be the better choice here? `r mcq(c("Yes, less ink is always better", answer = "No — these are separate cohorts and zero students is a meaningful floor, so the bars earn their ink", "It makes no difference"))`
