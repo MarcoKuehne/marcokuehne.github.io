@@ -1,0 +1,367 @@
+## Common Tests Are Linear Models {#tests-as-models}
+
+::: {.analysis-subtitle}
+One framework behind the whole toolbox
+:::
+
+<small>
+
+> "Teaching statistics as a zoo of named tests is like teaching zoology as a list of animal names."
+>
+> `r tufte::quote_footer('The complaint that motivated this section')`
+
+</small>
+
+Look back at what the Compare chapter asked you to learn. A one-sample t-test. A two-sample t-test, in a Student and a Welch flavour. A paired t-test. A correlation test. A one-way ANOVA. An ANCOVA. A Wilcoxon test, a Mann-Whitney test, a Kruskal-Wallis test. Nine names, nine sets of assumptions, nine entries in a decision tree that students memorise for an exam and forget by Christmas.
+
+Now that you know what a linear model is, the honest summary can finally be given: **there are not nine tests. There is one model, fitted with different right-hand sides.** Every test in that list is `lm()` wearing a costume.
+
+This observation is not new, but its clearest modern statement is a cheat sheet by Jonas Kristoffer Lindeløv, *Common statistical tests are linear models*, which lines up each classical test against its equivalent `lm()` formula.[^tm-lindeloev] This section works through that correspondence on our own data, so that you can check every claim rather than take it on faith — and then pushes the list further than the cheat sheet does, into repeated measures, variance tests, model comparison, and the counts and proportions that need one step sideways into `glm()`.
+
+```{r tm-load, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+coursedata <- read.csv("data/Course/GF_AllTime.csv", sep = ";") %>%
+  filter(Age < 100)
+```
+
+### The one model {#tm-one-model}
+
+Recall the notation. In R, `y ~ 1` means "predict `y` with an intercept and nothing else", and the intercept of a model with no predictors is simply the mean of `y`. Everything else is built by adding terms to the right of the tilde:
+
+| Right-hand side | What it says | Classical name |
+|:---|:---|:---|
+| `y ~ 1` | one number predicts `y` | one-sample t-test |
+| `(y2 - y1) ~ 1` | one number predicts the within-unit change | paired t-test |
+| `y ~ 1 + x` | intercept plus a slope on continuous `x` | correlation / simple regression |
+| `y ~ 1 + G` | one intercept per group (2 groups) | two-sample t-test |
+| `y ~ 1 + G` | one intercept per group (3+ groups) | one-way ANOVA |
+| `y ~ 1 + G + x` | group intercepts plus a slope | ANCOVA |
+| `y ~ 1 + G + id` | group effects, holding each subject fixed | repeated-measures ANOVA |
+| `y ~ 1 + G * S` | group effects that differ by a second factor | two-way ANOVA |
+| `rank(y) ~ ...` | the same models fitted to ranks | the non-parametric family |
+
+Read the fourth and fifth rows together. The two-sample t-test and the one-way ANOVA are *the same formula*; the only difference is how many levels the grouping variable happens to have. The wall between "t-test" and "ANOVA" that every introductory course erects is a wall between two and three, and there is nothing there.
+
+::: {.analysis-note}
+One caveat before the demonstrations. The equivalences below are **exact** for the parametric tests and **approximate** for the rank-based ones — good approximations, and better the larger the sample, but approximations. Where the match is exact, R will agree with itself to fifteen decimal places. Where it is approximate, the p-values will be close rather than identical, and we say so.
+:::
+
+### One mean is an intercept {#tm-one-sample}
+
+Section \@ref(cm-one-sample) tested whether students' self-rated R background differs from the scale midpoint of 3, and found $t = -20.70$. Here is the same question asked of a regression with no predictors at all. Subtract the benchmark from the outcome, then let the intercept do the work:
+
+```{r tm-one-sample, echo=TRUE}
+t.test(coursedata$Background.in.R, mu = 3)$statistic
+
+lm(I(Background.in.R - 3) ~ 1, data = coursedata) %>% summary() %>% coef()
+```
+
+Identical to four decimal places, because they are the same computation. The intercept of `y ~ 1` is the mean; its standard error is $sd(y)/\sqrt{n}$; the ratio is Gosset's $t$. What the t-test calls "testing against $\mu_0$" the regression calls "is the intercept zero", and every regression table you will ever read tests exactly that for every coefficient it prints.
+
+### A paired test is a one-sample test on differences {#tm-paired}
+
+Section \@ref(cm-paired) already made this point without the vocabulary: pairing is subtraction. Build the differences and fit the emptiest model there is.
+
+```{r tm-paired, echo=TRUE}
+differences <- coursedata$Background.in.Statistics - coursedata$Background.in.R
+
+t.test(coursedata$Background.in.Statistics,
+       coursedata$Background.in.R, paired = TRUE)$statistic
+
+lm(differences ~ 1) %>% summary() %>% coef()
+```
+
+Both give $t = 14.10$. The paired t-test was never a separate test — it is `y ~ 1` applied to a column you constructed.
+
+### Two groups is a dummy variable {#tm-two-sample}
+
+This is the equivalence that section \@ref(comparing-means) promised and deferred. Male students in this course are older than female students. The classical test and the regression:
+
+```{r tm-two-sample, echo=TRUE}
+t.test(Age ~ Gender, data = coursedata, var.equal = TRUE)$statistic
+
+lm(Age ~ Gender, data = coursedata) %>% summary() %>% coef() %>% round(3)
+```
+
+Both report $|t| = 2.33$; the sign differs only because R's dummy coding takes `Female` as the reference and measures the *male* effect, whereas the t-test subtracts in the other order.
+
+Read the coefficients as the chapter taught you to. The intercept, 24.500, is the mean age of the reference group — the women. The slope on `GenderMale`, 1.122, is *not* the mean age of men but the **difference** between the groups: men average $24.500 + 1.122 = 25.622$ years. A dummy variable turns a group label into a number, and once it is a number the regression machinery does not care that it only takes two values.
+
+There is a third name for this same number, and it is worth collecting. If you code gender 0/1 and correlate it with age, you get what psychometricians call a **point-biserial correlation** — presented in many textbooks as a separate coefficient with its own formula:
+
+```{r tm-pointbiserial, echo=TRUE}
+male <- as.numeric(coursedata$Gender == "Male")
+
+cor(coursedata$Age, male)                      # "point-biserial correlation"
+cor.test(coursedata$Age, male)$statistic       # its significance test
+```
+
+$r = 0.152$, and $t = 2.329$ — the same $t$ as the two-sample test and the same $t$ as the regression slope. Three names, three formulas in three textbooks, one number. The point-biserial correlation is not a special coefficient for binary variables; it is Pearson's correlation, which never cared how many values your variable took.
+
+::: {.analysis-warning}
+Note `var.equal = TRUE`. Ordinary least squares assumes one common error variance across the whole model, so it reproduces **Student's** t-test, not Welch's. If the groups genuinely differ in spread, the regression inherits the same problem the classical test had, and the fix is the same: model the variances (`nlme::gls` with `weights = varIdent(form = ~1|G)`), or use robust standard errors.
+
+This is worth noticing rather than glossing over. "Everything is a linear model" does not mean everything is *safe* — it means the assumptions you were taught to check per test are, underneath, the same three assumptions checked once.
+:::
+
+### Correlation is a slope {#tm-correlation}
+
+Section \@ref(relationships) tested whether age and total semesters move together. A correlation test and a regression of one on the other:
+
+```{r tm-correlation, echo=TRUE}
+cor.test(coursedata$Age, coursedata$Total.Semesters)$statistic
+
+lm(Total.Semesters ~ Age, data = coursedata) %>% summary() %>% coef() %>% round(4)
+```
+
+Again identical: $t = 1.7264$, $p = 0.086$, a positive but unconvincing association. The correlation coefficient and the regression slope are different numbers — $r = 0.113$ is unit-free, the slope is in semesters per year — but they are the same *evidence*, because the slope is just the correlation rescaled by the two standard deviations. Testing "is $r$ zero" and "is the slope zero" cannot give different answers.
+
+And **Spearman's** rank correlation, usually taught as the non-parametric alternative with its own table of critical values, is Pearson's correlation applied to ranks. Not approximately — by definition:
+
+```{r tm-spearman, echo=TRUE}
+cor(coursedata$Age, coursedata$Total.Semesters, method = "spearman")
+
+cor(rank(coursedata$Age), rank(coursedata$Total.Semesters))    # the same thing
+
+coef(summary(lm(rank(Total.Semesters) ~ rank(Age), data = coursedata)))[2, ]
+```
+
+All three give $\rho = 0.1726$, and the regression on ranks returns $p = 0.0083$ — which is exactly what `cor.test(..., method = "spearman")` reports.
+
+Notice that Spearman finds the association ($p = 0.008$) where Pearson did not ($p = 0.086$). Ranking removed the leverage of a handful of very old students with unusual semester counts. When the two disagree, the disagreement is a fact about outliers, and worth a scatterplot before it is worth a decision.
+
+### Many groups is many dummies {#tm-anova}
+
+The step from two groups to seven changes nothing structurally. Our students arrive across seven terms; do the cohorts differ in age?
+
+```{r tm-anova, echo=TRUE}
+summary(aov(Age ~ Term, data = coursedata))[[1]][1, 4]   # F from aov()
+
+summary(lm(Age ~ Term, data = coursedata))$fstatistic[1] # F from lm()
+```
+
+$F = 2.15$ on both sides, $p = 0.049$ — a whisker under the conventional threshold, which is a fine reminder of the last box in section \@ref(cm-threshold). Behind the scenes `lm()` created six dummy variables for the seven terms, and the F-statistic asks whether all six slopes are zero at once. That is precisely the question ANOVA's F-test asks. The two functions print different tables because they were written for different audiences, not because they compute different things.
+
+Adding a continuous variable to the same formula turns it into ANCOVA, which is why section \@ref(partitioning-variation) could hand the dog-size effects to a height covariate without changing tools. `aov(y ~ G + x)` and `lm(y ~ G + x)` are one model.
+
+#### Spending degrees of freedom on the right question {#tm-trend}
+
+Once groups are dummies, a new option appears that the ANOVA framing hides. Our seven terms are not just seven categories — they are *ordered in time*. Treating them as an unordered factor spends six degrees of freedom asking "are these cohorts different in any way at all?" Treating the term as a number spends **one**, asking the sharper question: "have students been getting older over the years?"
+
+```{r tm-trend, echo=TRUE}
+chrono <- c("SS 2020" = 1, "WS 2020 2021" = 2, "SS 2021" = 3, "SS 2022" = 4,
+            "WS 2022 2023" = 5, "SS 2023" = 6, "WS 2023 2024" = 7)
+coursedata$term_number <- chrono[coursedata$Term]
+
+coef(summary(lm(Age ~ term_number, data = coursedata)))[2, ]   # 1 df: a trend
+anova(lm(Age ~ Term, data = coursedata))[1, ]                  # 6 df: any difference
+```
+
+The results point in opposite directions, and the contrast is the lesson. The six-degree-of-freedom test is significant, $F = 2.15$, $p = 0.048$: the cohorts do differ. The one-degree-of-freedom trend test is nowhere near, slope $0.035$ years per term, $p = 0.784$: they do not differ *in a straight line over time*. Cohorts vary, but not by drifting older.
+
+This is what a classical toolbox calls a "test for trend" and hands you as yet another named procedure. In the linear-model framework it is not a new test — it is a decision about how to code a variable, and coding an ordered factor as a number is often the single most powerful move available, because it aims all your evidence at one question instead of scattering it across six.
+
+### Repeated measures: subjects are just another factor {#tm-repeated}
+
+Here the framework earns its keep, because repeated-measures ANOVA is where the classical presentation becomes genuinely forbidding — `Error(id/condition)` strata, sphericity corrections, tables that nobody can read.
+
+Our data has the design built in. Each student rated three things: statistics, R, and academic writing. That is three measurements on 233 people — the paired comparison of section \@ref(cm-paired), extended from two conditions to three.
+
+```{r tm-long, echo=TRUE}
+long <- coursedata %>%
+  mutate(id = factor(row_number())) %>%
+  select(id, Statistics = Background.in.Statistics,
+             R          = Background.in.R,
+             Writing    = Background.in.Academic.Writing) %>%
+  pivot_longer(-id, names_to = "Skill", values_to = "Rating") %>%
+  mutate(Skill = factor(Skill))
+
+head(long, 4)
+```
+
+Now the two ways of asking whether the three ratings differ:
+
+```{r tm-rm, echo=TRUE}
+# the classical incantation
+summary(aov(Rating ~ Skill + Error(id / Skill), data = long))
+
+# a linear model with the student as a factor
+anova(lm(Rating ~ Skill + id, data = long))["Skill", ]
+```
+
+$F = 105.0$ on 2 and 464 degrees of freedom, both ways. The `Error(id/Skill)` stratum that makes repeated-measures ANOVA look like a separate branch of statistics is doing one thing: giving every student their own intercept. Written as `+ id` in a formula, it stops being mysterious.
+
+And it matters enormously, exactly as pairing mattered in section \@ref(cm-paired-vs-unpaired):
+
+```{r tm-rm-naive, echo=TRUE}
+anova(lm(Rating ~ Skill, data = long))["Skill", "F value"]   # ignoring the student
+```
+
+$F = 73.1$ instead of $105.0$. Throwing away the student identifier throws away the fact that the same person produced three of the numbers, and the F-statistic drops by a third. This is the paired t-test's lesson generalised: **whenever the same unit appears more than once, its identity belongs in the model.** With two conditions we called it pairing; with three we call it repeated measures; with many periods and many units we call it panel data (chapter \@ref(panel-data)) and the term for `+ id` becomes *fixed effects*. Same move every time.
+
+::: {.analysis-note}
+One honest limitation. `lm(y ~ C + id)` reproduces the F-test for the condition, which is what people usually want. It does not reproduce everything a dedicated repeated-measures routine offers — sphericity corrections such as Greenhouse-Geisser, or unbalanced designs with missing cells, which are better served by a mixed model (`lme4::lmer(y ~ C + (1|id))`). The mixed model is the honest generalisation; treating the subject as a fixed factor is the version that shows you what is going on.
+:::
+
+### Even the assumption checks are models {#tm-levene}
+
+Section \@ref(partitioning-variation) used tests that compare *spreads* rather than means, and they look like a different family entirely. They are not. **Levene's test** — and its more robust cousin, the Brown-Forsythe test — is defined as an ordinary ANOVA run on the absolute deviations from each group's centre. Not approximately: that is the definition.
+
+```{r tm-levene, echo=TRUE}
+spread <- coursedata %>%
+  group_by(Term) %>%
+  mutate(abs_dev = abs(Age - median(Age))) %>%   # distance from your group's centre
+  ungroup()
+
+anova(lm(abs_dev ~ Term, data = spread))[1, ]
+```
+
+$F = 0.37$, $p = 0.90$: no evidence that the seven cohorts differ in how spread out their ages are. The trick is worth internalising because it generalises. A question about *variability* becomes a question about *means* the moment you replace each observation by its distance from its group's centre — and questions about means are what linear models answer. If you can define your quantity of interest per observation, you can usually test it with `lm()`.
+
+### One step sideways: counts and proportions {#tm-glm}
+
+Two families genuinely sit outside `lm()`, because their outcomes are not continuous. But they sit only just outside: the linear predictor is the same, and only the link function and the error distribution change. This is the **generalized** linear model of section \@ref(generalized-models), and the classical tests for tables and proportions live there.
+
+Take the chi-square test of independence. Are academic level and gender related in this course?
+
+```{r tm-chisq, echo=TRUE}
+tab <- table(coursedata$Gender, coursedata$Academic.level)
+tab
+
+chisq.test(tab, correct = FALSE)$statistic     # Pearson's X-squared
+
+counts <- as.data.frame(tab) %>% rename(Gender = Var1, Level = Var2, n = Freq)
+anova(glm(n ~ Gender + Level,  data = counts, family = poisson),   # independence
+      glm(n ~ Gender * Level,  data = counts, family = poisson),   # association
+      test = "Chisq")[2, ]
+```
+
+Pearson's statistic is 1.155 and the log-linear model's likelihood-ratio statistic is 1.156, on 1 degree of freedom, $p = 0.28$ either way. No association: Bachelor and Master students are split much the same way across genders.
+
+The two numbers differ in the fourth decimal because Pearson's $X^2$ and the likelihood-ratio $G^2$ are two different approximations to the same quantity, and the Poisson model reproduces $G^2$ **exactly**. Reading the model rather than the test also tells you something the test cannot: the interaction *coefficient* is the log odds ratio, with a standard error and a confidence interval attached.
+
+Proportions work the same way, one link function over:
+
+```{r tm-prop, echo=TRUE}
+master <- as.numeric(coursedata$Academic.level == "Master")
+
+prop.test(table(coursedata$Gender, master)[, 2:1], correct = FALSE)$p.value
+
+coef(summary(glm(master ~ Gender, family = binomial, data = coursedata)))[2, 4]
+```
+
+$p = 0.2825$ against $p = 0.2830$ — the same conclusion by two routes that make slightly different large-sample approximations. And `glm(y ~ 1, family = binomial)` tests a single proportion against 0.5, which is the classical one-proportion test.
+
+::: {.analysis-warning}
+These glm equivalences are **approximate**, and the approximation has a known weak spot: Wald standard errors become unreliable when a proportion approaches 0 or 1. The sign test on our 161 non-tied students, 151 of whom rate statistics above R, is a case in point — `binom.test()` gives $p \approx 10^{-33}$ while the Wald test from `glm()` gives $p \approx 10^{-17}$. Both are overwhelming, so nothing is at stake here, but near the boundary the exact test is the one to trust.
+:::
+
+### Comparing two models is also a test {#tm-nested}
+
+One last generalisation, and it is the one that frees you from the list altogether. Every F-test in this section — ANOVA's, the trend test's, Levene's — is a comparison between a **restricted** and an **unrestricted** model: does letting these extra terms into the model explain enough additional variation to justify them?
+
+Written out, that comparison is a named test in econometrics. Does the relationship between age and semesters studied differ between Bachelor and Master students? Fit both models and ask:
+
+```{r tm-chow, echo=TRUE}
+pooled <- lm(Total.Semesters ~ Age, data = coursedata)                   # one line
+split  <- lm(Total.Semesters ~ Age * Academic.level, data = coursedata)  # two lines
+
+anova(pooled, split)
+```
+
+$F = 8.89$ on 2 and 229 degrees of freedom, $p = 0.0002$: the relationship genuinely differs. Pooling Bachelor and Master students into one regression line hides two different lines — an instance of the aggregation warning from section \@ref(relationships).
+
+Economists call this a **Chow test** for a structural break. It has no separate function in R because it does not need one: it is `anova()` on two nested models, which is the same machinery that produced every F-statistic above.
+
+### The extended list {#tm-list}
+
+Here is the full correspondence, ours and Lindeløv's combined. $G$ and $S$ are grouping factors, $x$ is continuous, `id` identifies the unit, `signed_rank(x)` is `sign(x) * rank(abs(x))`, and `within_rank(y)` ranks each unit's own measurements against each other.
+
+| Classical test | Built-in R function | Equivalent model | Exact? |
+|:---|:---|:---|:---|
+| **One outcome, one sample** | | | |
+| One-sample t-test | `t.test(y)` | `lm(y ~ 1)` | exact |
+| Paired t-test | `t.test(y1, y2, paired = TRUE)` | `lm(y1 - y2 ~ 1)` | exact |
+| Wilcoxon signed-rank | `wilcox.test(y)` | `lm(signed_rank(y) ~ 1)` | approx, $n > 14$ |
+| Sign test | `binom.test(sum(y > 0), n)` | `glm(y > 0 ~ 1, binomial)` | approx |
+| One proportion | `prop.test(k, n)` | `glm(y ~ 1, binomial)` | approx |
+| **Two variables** | | | |
+| Pearson correlation | `cor.test(x, y)` | `lm(y ~ x)` | exact |
+| Spearman correlation | `cor.test(x, y, method = "spearman")` | `lm(rank(y) ~ rank(x))` | exact |
+| Point-biserial correlation | `cor.test(y, G01)` | `lm(y ~ G)` | exact |
+| Two-sample t-test | `t.test(y ~ G, var.equal = TRUE)` | `lm(y ~ G)` | exact |
+| Welch's t-test | `t.test(y ~ G)` | `gls(y ~ G, weights = varIdent(~1\|G))` | exact |
+| Mann-Whitney U | `wilcox.test(y ~ G)` | `lm(rank(y) ~ G)` | approx, $n > 11$ |
+| Two proportions | `prop.test(tab)` | `glm(y ~ G, binomial)` | approx |
+| **Three or more groups** | | | |
+| One-way ANOVA | `aov(y ~ G)` | `lm(y ~ G)` | exact |
+| Kruskal-Wallis | `kruskal.test(y ~ G)` | `lm(rank(y) ~ G)` | approx, $n > 11$ |
+| ANCOVA | `aov(y ~ G + x)` | `lm(y ~ G + x)` | exact |
+| Two-way ANOVA | `aov(y ~ G * S)` | `lm(y ~ G * S)` | exact |
+| Test for trend | `prop.trend.test` and relatives | `lm(y ~ as.numeric(G))` | exact, 1 df |
+| MANOVA / Hotelling's $T^2$ | `manova(...)` | `lm(cbind(y1, y2) ~ G)` | exact |
+| **Repeated measures** | | | |
+| Repeated-measures ANOVA | `aov(y ~ C + Error(id/C))` | `lm(y ~ C + id)` | exact for the F on C |
+| Friedman test | `friedman.test(y ~ C \| id)` | `lm(within_rank(y) ~ C + id)` | approx |
+| **Spread rather than centre** | | | |
+| Levene / Brown-Forsythe | `car::leveneTest(y ~ G)` | `lm(abs(y - median_G) ~ G)` | exact, by definition |
+| **Counts and tables** | | | |
+| Chi-square independence | `chisq.test(tab)` | `glm(n ~ row + col, poisson)` | exact for $G^2$ |
+| Chi-square goodness of fit | `chisq.test(y)` | `glm(n ~ 1, poisson)` | exact for $G^2$ |
+| Cochran-Armitage trend | `prop.trend.test` | `glm(y ~ dose, binomial)` | approx |
+| **Model against model** | | | |
+| Chow test / structural break | — | `anova(lm(y ~ x), lm(y ~ x * G))` | exact |
+| Nested model F-test | — | `anova(model1, model2)` | exact |
+
+::: {.analysis-takeaway}
+Count the right-hand column. Of twenty-eight named procedures, roughly two-thirds are **exactly** a linear model and the rest are close approximations or a single step into `glm()`. The decision tree you were asked to memorise describes one function.
+:::
+
+### Why this matters {#tm-why}
+
+Three reasons, in rising order of importance.
+
+**It halves what you have to remember.** A decision tree with dozens of leaves becomes one function and a formula syntax. When you meet a design this book never covered — three groups measured twice, a covariate plus an interaction, an ordinal predictor — you do not go looking for the name of the right test. You write the model.
+
+**It makes the assumptions visible.** Every test in the list above inherits the same handful of assumptions from its parent model: the errors are independent, roughly constant in variance, roughly normal. Presented as twenty-eight separate tests, those become eighty-four assumptions to memorise. Presented as one model, they are three things to check, and `plot(model)` checks them.
+
+**It moves the conversation from testing to estimating.** This is the real prize. A t-test hands you a verdict; a linear model hands you a coefficient, a standard error and a confidence interval — how big, in what units, how precisely known. Section \@ref(cm-threshold) argued that significance is a threshold on evidence rather than a statement about importance. The linear-model framing makes that argument structural: once every test is a model, the *estimate* is what you naturally report, and the p-value becomes one column of the table rather than the point of it.
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated: What the framework does not swallow </h2>
+:::
+Honesty requires the boundaries. "Everything is a linear model" is a claim about the tests in an introductory syllabus, not about all of statistics.
+
+**Exact tests** for small samples are not approximations of a linear model at all — they enumerate possibilities. Fisher's exact test, the binomial test, and the permutation logic behind the lady tasting tea in section \@ref(partitioning-variation) count outcomes rather than fit parameters, which is precisely why they remain valid when every large-sample approximation has broken down.
+
+**Distributional tests** have no linear model behind them because they are not about means, slopes, or spreads. The Kolmogorov-Smirnov test asks whether two entire distributions differ in shape; Shapiro-Wilk asks whether one is normal. Section \@ref(partitioning-variation) used both, and neither can be written as a regression.
+
+**Extensions rather than special cases.** Mixed and multilevel models generalise `+ id` into a random effect; survival models handle censored time; the structural equation models of chapter \@ref(reveal) estimate relationships between variables nobody observed. Quantile regression replaces the mean with the median or any other quantile — the same idea with a different loss function. Each of these contains the linear model rather than fitting inside it.
+
+The right summary is therefore narrower than the slogan and more useful: *the classical tests you were taught as a list are special cases of one model, and almost everything that is not a special case is a generalisation of the same idea.* Either way there is one framework, not a zoo.
+::::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+1. You want to compare mean income across four regions. Which call does the job? `r mcq(c("aov(income ~ region) - lm() only works for two groups", answer = "lm(income ~ region) - the number of levels does not matter", "lm(income ~ 1) with the regions filtered one at a time"))`
+
+2. `lm(y ~ G)` where `G` has exactly two levels is equivalent to which classical test? `r mcq(c("One-sample t-test", answer = "Two-sample t-test with var.equal = TRUE", "Welch's t-test", "Paired t-test"))`
+
+3. In `lm(Age ~ Gender)` the intercept was 24.500 and the slope 1.122. What is the mean age of men? `r fitb(25.622, num = TRUE, tol = 0.01)`
+
+4. `r torf(FALSE)` Because every test is a linear model, the assumptions of the linear model do not need to be checked for t-tests.
+
+5. Six cohorts are ordered in time. Testing them as an unordered factor costs 5 degrees of freedom; testing them as a number costs 1. `r torf(TRUE)` The second test can find a pattern the first misses, even though it uses less of the data's freedom.
+
+6. Which of these can **not** be rewritten as a linear model? `r mcq(c("Levene's test for equal variances", "Spearman's rank correlation", answer = "The Kolmogorov-Smirnov test", "Repeated-measures ANOVA"))`
+
+7. A colleague reports "we used a Mann-Whitney test because the data were skewed". Explain in one sentence what model they fitted, in the language of this section.
+
+8. You have three measurements on each of 60 patients and analyse them with `lm(y ~ condition)`, forgetting `+ id`. Will your F-statistic be too large or too small, and why? (Compare section \@ref(tm-repeated).)
+::::
+
+[^tm-lindeloev]: Lindeløv, J. K., *Common statistical tests are linear models (or: how to teach stats)*, 2019, <https://lindeloev.github.io/tests-as-linear/>. The accompanying one-page cheat sheet tabulates each test, its built-in R function, the equivalent `lm()` call, and whether the correspondence is exact or approximate. The idea itself is older — it is the standard view in the general-linear-model literature — but Lindeløv's presentation is what made it teachable.

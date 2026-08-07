@@ -1,0 +1,530 @@
+## Synthetic Data {#synthetic-data}
+
+In 1957 Guy Orcutt published a paper arguing that economics was modelling the wrong thing.[^syn-orcutt]
+
+The models of his day described aggregates: national income, total consumption, the unemployment rate. Orcutt's objection was that no aggregate ever decides anything. Households decide. Firms decide. People marry, move, retire, and lose jobs, and the aggregate is merely what remains after all of that has happened. His proposal was to build a model out of "elemental decision-making units" — simulated individuals, each carrying a set of rules and probabilities — and then let the national figures emerge by counting them, in his words much as a census obtains aggregates from a real population.
+
+He was proposing to build a synthetic society.
+
+The obstacle was arithmetic. Simulating a population means drawing millions of random numbers, and in 1957 that required electronic computers barely anyone had. Orcutt knew it, and said so. The idea arrived roughly a generation before the machinery.
+
+Nearly seventy years later the machinery is embarrassingly abundant, and the idea has returned in a form Orcutt could not have anticipated: ask a language model to answer a survey as though it were a German pensioner, and repeat two thousand times.
+
+This chapter is about what has changed between those two moments, and what has not.
+
+### Three Waves {#syn-waves}
+
+"Synthetic data" names at least three research programmes that share a word and very little else. Keeping them apart is the first job.
+
+| Wave | From | Core question | Typical method |
+|---|---|---|---|
+| **Synthetic populations** | 1957 | What would happen to this population under a policy change? | microsimulation, iterative proportional fitting |
+| **Synthetic microdata** | 1993 | How do we publish confidential data without publishing people? | multiple imputation, CART, generative models |
+| **Silicon samples** | 2023 | What would people say if we asked them? | LLMs conditioned on personas |
+
+The first wave builds a population that *behaves*. The second builds a data set that *analyses like* a real one. The third builds respondents that *answer*.
+
+They are frequently conflated, including by people selling things. A national statistical office releasing synthetic microdata and a market research firm selling AI respondents are not doing versions of the same activity. The first is a disclosure-control procedure with published error bounds; the second is a prediction about what humans would have said.
+
+::: {.analysis-note}
+**A false friend.** The **synthetic control method** shares the word and almost nothing else. It estimates what would have happened to one treated region by building a comparison out of *real* untreated units: its output is a vector of weights, not a generated data set, and every number in a synthetic California is a value actually measured in some real state.[^syn-scm] Synthetic data generation does the opposite — fit a model to the data, then sample from the model.
+
+The trap is concrete. The R package for synthetic control is `Synth`; the one for synthetic data is `synthpop`.
+:::
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> The oldest trick is older still </h2>
+:::
+The workhorse algorithm of synthetic-population building — **iterative proportional fitting** — was published by W. Edwards Deming and Frederick Stephan in **1940**, to adjust a sampled frequency table to known marginal totals.[^syn-ipf]
+
+It is still the standard method. When the RTI team built a synthetic population of the entire United States — **120,754,708 households and 303,128,287 individuals** for the year 2019 — the engine underneath was IPF.[^syn-rti]
+::::
+
+### Rubin's Inversion {#syn-rubin}
+
+The second wave begins with a single audacious move, and it belongs to the previous chapter.
+
+Chapter \@ref(missing-data) ended with multiple imputation: some values are missing, so we build a model, draw plausible values several times, analyse each completed data set, and pool. In 1993 Donald Rubin asked what happens if you push that idea to its limit.[^syn-rubin-1993]
+
+A survey samples, say, 20,000 households out of forty million. From the point of view of the analysis, the other 39,980,000 households are simply **unobserved**. They are missing data — a great deal of it, but not a different kind of thing.
+
+So impute them. Build a model on the sample, use it to generate the entire population, then draw a fresh public-use sample from *that*. Not one real respondent is released, yet the released file supports the same analyses.
+
+::: {.analysis-note}
+Rubin's proposal is not an analogy to multiple imputation. It is multiple imputation, applied to the people who were never sampled. The mathematics of Chapter \@ref(missing-data) is the mathematics of this chapter.
+:::
+
+Roderick Little, in the same journal issue, proposed the more conservative variant: keep the real records, replace only the values that are sensitive or that could identify someone.[^syn-little]
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Fully synthetic data** contain no real records. Every value is generated from a model fitted to the confidential data.
+
+**Partially synthetic data** retain the real records and replace only selected values — usually the sensitive or identifying ones.
+
+In both cases, the released file is a *sample from a model*, and the model is the only thing that ever touched the real data.
+::::
+
+The combining rules that make this operational arrived a decade later, and they differ from ordinary multiple-imputation rules — a detail that matters, because using the wrong ones gives wrong variances.[^syn-raghunathan]
+
+### Building One by Hand {#syn-byhand}
+
+As in Chapter \@ref(missing-data), we build it before we install it. The method is **sequential regression synthesis**: order the variables, model each one on those already synthesised, and draw.
+
+The data are real. Over seven consecutive terms, every student entering one of the author's courses filled in the same short questionnaire on arrival — degree programme, gender, age, semesters completed, and self-rated background in statistics, R and academic writing. The courses have ended; the 234 answers remain.[^syn-course]
+
+```{r syn-load, warning=FALSE, message=FALSE}
+course <- read.csv(paste0("https://raw.githubusercontent.com/MarcoKuehne/",
+                          "marcokuehne.github.io/main/data/Course/GF_AllTime.csv"),
+                   sep = ";")
+
+table(course$Term)
+range(course$Age)
+```
+
+That upper bound is not a student. It is a typing error, and it is worth pausing on, because a synthesis model has no way of knowing that.
+
+Fitted to this file as it stands, the model would treat 278 as a legitimate observation, inflate the residual variance enormously, and scatter impossible ages through the synthetic file. Silently dropping it is not obviously better: the analyst downstream never learns that the original data contained an error.
+
+::: {.analysis-note}
+A synthesis model inherits the defects of the data it is fitted to, and hides them behind a plausible-looking file. Every data-quality decision made before synthesis becomes invisible afterwards — which makes the synthesis step a *reporting* obligation, not merely a technical one.
+:::
+
+```{r syn-clean}
+course <- course[course$Age < 100,
+                 c("Term", "Gender", "Academic.level", "Age", "Total.Semesters")]
+
+n <- nrow(course)
+summary(course$Age)
+```
+
+Two hundred and thirty-three students, aged 18 to 42. Now note something about that range before we go on:
+
+```{r syn-uniqueness}
+combination <- paste(course$Gender, course$Academic.level, course$Age)
+sum(table(combination) == 1)
+```
+
+Sixteen of these people are **unique** on nothing more than gender, degree and age. Anyone who knows that a 42-year-old woman in the Master's programme attended can find her row immediately. This is not a hypothetical disclosure risk. It is the reason the file cannot simply be published.
+
+Now the four steps. Each variable is drawn from a model built only on variables already synthesised — never on the real values of the variable being generated.
+
+```{r syn-build}
+set.seed(20260807)
+
+# 1. Term: draw from the observed terms
+syn_term <- sample(course$Term, n, replace = TRUE)
+
+# 2. Gender: conditional on the synthetic term
+p_gender   <- prop.table(table(course$Term, course$Gender), margin = 1)
+syn_gender <- vapply(syn_term,
+                     function(t) sample(colnames(p_gender), 1, prob = p_gender[t, ]),
+                     character(1))
+
+# 3. Degree: conditional on the synthetic gender
+p_level   <- prop.table(table(course$Gender, course$Academic.level), margin = 1)
+syn_level <- vapply(syn_gender,
+                    function(g) sample(colnames(p_level), 1, prob = p_level[g, ]),
+                    character(1))
+
+# 4. Age: regression on the categorical variables, plus residual noise
+f_age   <- lm(Age ~ Gender + Academic.level, data = course)
+nd      <- data.frame(Term = syn_term, Gender = syn_gender,
+                      Academic.level = syn_level)
+syn_age <- round(predict(f_age, nd) + rnorm(n, 0, summary(f_age)$sigma))
+syn_age <- pmax(syn_age, min(course$Age))
+
+# 5. Semesters: regression on everything synthesised so far
+f_sem   <- lm(Total.Semesters ~ Age + Gender + Academic.level, data = course)
+nd$Age  <- syn_age
+syn_sem <- round(predict(f_sem, nd) + rnorm(n, 0, summary(f_sem)$sigma))
+syn_sem <- pmax(syn_sem, 1)
+
+synth <- data.frame(Term = syn_term, Gender = syn_gender,
+                    Academic.level = syn_level,
+                    Age = syn_age, Total.Semesters = syn_sem)
+
+head(synth)
+```
+
+Two hundred and thirty-three students who never enrolled. Note the residual draw in steps 4 and 5 — the same `rnorm()` that turned regression imputation into *stochastic* regression imputation in Chapter \@ref(missing-data), and for the same reason. Without it every synthetic student would sit exactly on a regression line.
+
+#### What survived {#syn-utility}
+
+```{r syn-compare, echo=FALSE}
+cmp <- function(f, digits = 0) sprintf(paste0("%.", digits, "f"),
+                                       c(f(course), f(synth)))
+tab <- rbind(
+  "Women (n)"              = cmp(function(d) sum(d$Gender == "Female")),
+  "Master students (n)"    = cmp(function(d) sum(d$Academic.level == "Master")),
+  "Mean age"               = cmp(function(d) mean(d$Age), 2),
+  "SD of age"              = cmp(function(d) sd(d$Age), 2),
+  "Oldest participant"     = cmp(function(d) max(d$Age)),
+  "Participants over 35"   = cmp(function(d) sum(d$Age > 35)),
+  "Mean semesters"         = cmp(function(d) mean(d$Total.Semesters), 2),
+  "cor(age, semesters)"    = cmp(function(d) cor(d$Age, d$Total.Semesters), 3),
+  "slope: semesters ~ age" = cmp(function(d)
+                              coef(lm(Total.Semesters ~ Age, data = d))[2], 3)
+)
+colnames(tab) <- c("Real", "Synthetic")
+knitr::kable(tab, align = "rr",
+             caption = "The real course and its synthetic twin.")
+```
+
+Read this table carefully, because it contains the whole argument of the second wave in miniature.
+
+The **marginal distributions** are excellent: 122 women become 121, 130 Master's students become 133, and the mean age is right to within a tenth of a year. Anyone checking the synthetic file against published summary statistics would find nothing wrong.
+
+The **regression slope of semesters on age** — 0.104 in the real data, 0.125 in the synthetic — survived. That is not luck. That relationship was explicitly built into step 5. **A synthetic data set preserves the associations its generating model contains, and only those.**
+
+And then the last two rows, which are the ones to remember.
+
+The real courses had three students over 35, the oldest 42. **The synthetic file has none, and its oldest student is 35.** The tail has not been blurred or approximated. It has been deleted. A normal residual around a linear prediction simply does not reach out that far, so the mature students — the ones who returned to university after working, the most interesting cases in a room full of twenty-two-year-olds — do not exist in the synthetic version at all.
+
+::: {.analysis-warning}
+Synthetic data cannot be analysed for something the synthesis model did not know about. An analyst who discovers an interaction, a threshold, or an outlier in a synthetic file has discovered a property of somebody else's model.
+
+The losses are not evenly distributed. They concentrate in the tails — which in social data means minorities, rare events, and the unusual biographies that research is often *about*.
+:::
+
+This is the same failure that appears at every scale of this field. Bisbee and colleagues found LLM-simulated survey respondents reproduced group means while compressing variance (Section \@ref(syn-breaks)). Shumailov and colleagues found that models trained recursively on generated data suffer irreversible degradation in which "tails of the original content distribution disappear."[^syn-collapse] Three unrelated literatures, three methods, one symptom.
+
+::: {.analysis-warning}
+Synthetic data cannot be analysed for something the synthesis model did not know about. An analyst who discovers an interaction, a threshold, or an outlier in a synthetic file has discovered a property of somebody else's model.
+:::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+Step 5 regresses semesters on age, gender and degree. Suppose the real relationship between age and semesters were *different for Bachelor and Master students* — an interaction.
+
+Would that interaction appear in the synthetic data? `r mcq(c("Yes, it is in the data", answer = "No, the model never encoded it", "Only with more observations"))`
+
+Now add `Age:Academic.level` to `f_sem`, regenerate, and check whether the interaction reappears.
+
+Then try to recover the lost tail. Replace the normal residual in step 4 with a draw from the *observed* age residuals (`sample(residuals(f_age), n, replace = TRUE)`). Does the 42-year-old come back? What have you given up in exchange?
+::::
+
+#### On the shoulders of giants {#syn-synthpop}
+
+In practice the ordering, the model per variable, and the diagnostics are handled by a package. `synthpop` was built at Edinburgh for exactly this purpose and uses classification and regression trees by default rather than linear models, which handles interactions and non-linearities without anyone having to anticipate them.[^syn-synthpop]
+
+```{r syn-synthpop-demo, eval=FALSE}
+# install.packages("synthpop")
+library(synthpop)
+
+syn_out <- syn(course, seed = 20260807)
+
+compare(syn_out, course)                       # marginal distributions
+utility.tab(syn_out, course)                   # utility measures
+
+summary(lm.synds(Total.Semesters ~ Age + Gender, data = syn_out))
+```
+
+`lm.synds()` is the part people miss. Fitting an ordinary `lm()` to a synthetic file gives standard errors that ignore the synthesis — the same error as analysing one imputed data set in Chapter \@ref(missing-data). The combining rules must be applied.
+
+### Does It Actually Work? {#syn-evidence}
+
+The second wave has been running in production for twenty years, which means we can stop arguing and look.
+
+The **SIPP Synthetic Beta** links the Survey of Income and Program Participation to Social Security and IRS earnings records — data that could never be released in raw form. It has been public since 2007. Researchers can validate: submit code, have it run against the confidential Gold Standard File, receive disclosure-reviewed output.
+
+In 2024 two Census Bureau economists published what that validation exercise has produced across many studies.[^syn-ssb]
+
+- Median absolute relative error: **0.08** for descriptive statistics, **0.24** for model-based results.
+- More than half of descriptive results fall within **10 %** of the confidential-data answer.
+- Synthetic and confidential coefficients share the same sign **79 %** of the time.
+- The same substantive conclusion is reached for about **63 %** of coefficients.
+- A significant relationship is missed **33 %** of the time; a spurious significant relationship appears about **2 %** of the time; a significant coefficient of the *opposite* sign about **2 %** of the time.
+
+That is an honest picture, and it is neither a triumph nor a scandal. Descriptive work transfers well. Regression coefficients transfer about two-thirds of the time. Roughly one analysis in three would have reached a different conclusion on the real data.
+
+Which is precisely why the validation server exists. In this wave, synthetic data is understood as a **draft medium**: you develop on it, then you verify against the confidential file before you publish.
+
+:::: {.reading}
+::: {.titelreading}
+<h2> Germany was second </h2>
+:::
+The first synthetic-data deployment outside the United States was German. Jörg Drechsler and colleagues at the **IAB** synthesised the German establishment panel, comparing fully and partially synthetic designs.[^syn-iab]
+
+The work continues. The Federal Statistical Office has run a research cluster on anonymity in integrated and georeferenced data, and published a partial synthesis of the 2018 linked employer–employee earnings survey.[^syn-destatis]
+::::
+
+### The Privacy Illusion {#syn-privacy}
+
+Here is the belief that will not die: *synthetic data contains no real people, therefore it is anonymous.*
+
+Return to our 233 students and ask a blunt question.
+
+```{r syn-duplicates}
+both <- rbind(course, synth)
+sum(duplicated(both)[-(1:n)])
+```
+
+Twenty-three synthetic students are **exact copies of real participants** — same term, same gender, same degree, same age, same semester count. Nobody copied them. The generating model, fitted to 233 people and asked to produce 233 people over a modest space of possible combinations, reproduced some of them by arithmetic necessity.
+
+Roughly one synthetic record in ten is a real person. Nothing in the file marks which ones.
+
+An attacker who knows that a 29-year-old woman in the Master's programme attended in summer 2022 cannot be refuted by the answer "that record is synthetic." The correct answer is that we do not know whether it is.
+
+The formal results are unforgiving. A large empirical study across several synthesis methods found that synthetic data either fails to prevent inference attacks or fails to retain utility, with privacy gains that are unpredictable case by case.[^syn-stadler] And the theoretical side is worse: producing differentially private synthetic data that preserves even all *two-way* marginals is computationally hard under standard cryptographic assumptions.[^syn-ullman]
+
+::: {.analysis-warning}
+The synthesis model is a function of the confidential data. Releasing draws from it releases information about the confidential data. Privacy is a property of the **fitting procedure**, not of the word "synthetic" — and it has to be bought with a formal guarantee, at a cost in utility.
+:::
+
+The US Census Bureau understood this early: OnTheMap, its first partially synthetic product, was also the first real-world deployment of a formal differential-privacy guarantee.[^syn-onthemap]
+
+### A Fourth Way: Share the Moments {#syn-moments}
+
+Before leaving the second wave, an alternative that is not synthesis at all — and that many social scientists have used for decades without thinking of it in these terms.
+
+Do not release records. Release **moments**: the means, the variances, the covariances, and the sample size.
+
+That sounds like a severe restriction, and for some purposes it is. But recall what the regression chapter established. The estimator is
+
+$$\beta = (X^TX)^{-1}X^Ty$$
+
+and both ingredients, $X^TX$ and $X^Ty$, are built entirely from sums of products — which is to say from covariances and means. Once you have those, the individual rows have no further role. They were scaffolding.
+
+```{r syn-moments-prep}
+course$Female <- as.numeric(course$Gender == "Female")
+course$Master <- as.numeric(course$Academic.level == "Master")
+
+d <- course[, c("Total.Semesters", "Age", "Female", "Master")]
+
+S <- cov(d)          # 4 x 4 = 16 numbers
+m <- colMeans(d)     # 4 numbers
+N <- nrow(d)         # 1 number
+```
+
+Twenty-one numbers. Now discard the students entirely and estimate the regression from what is left:
+
+```{r syn-moments-fit}
+x  <- c("Age", "Female", "Master")
+
+b  <- solve(S[x, x]) %*% S[x, "Total.Semesters"]     # slopes
+b0 <- unname(m["Total.Semesters"] - sum(b * m[x]))   # intercept
+
+round(c(Intercept = b0, b[, 1]), 6)
+```
+
+And the same regression on the real 233 students:
+
+```{r syn-moments-check}
+round(coef(lm(Total.Semesters ~ Age + Female + Master, data = course)), 6)
+```
+
+Identical. Not approximately, not on average — the same numbers to machine precision. Standard errors and $R^2$ follow from the same 21 quantities.
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Sufficient statistics </h2>
+:::
+This is not a trick. For a large family of methods the covariance matrix is a **sufficient statistic**: it contains everything about the data those methods can use. The individual observations are not being withheld — they are *irrelevant*.
+
+Section \@ref(latent-variables) already made the point from the other direction: a confirmatory factor model can be fitted to a covariance matrix and a sample size alone, and the estimates are identical to those from the raw data. `lavaan` accepts `sample.cov` and `sample.nobs` in place of a data frame.
+
+The reach is considerable — every linear regression among the included variables, partial correlations, analysis of variance through dummies, principal components, exploratory and confirmatory factor analysis, path models and structural equation models. A substantial share of quantitative social science runs on second moments.
+::::
+
+Notice what had to happen first, though. `Gender` and `Academic.level` had to become the numeric columns `Female` and `Master` **before** the matrix was computed. That is the entire limitation in one line.
+
+Anything not linear in the included columns is unavailable unless it was anticipated and included as its own column. An interaction needs the product term. A quadratic needs the squared term. A log needs the logged variable. Beyond that: no logistic regression or other generalised linear models, no medians or quantiles, no distributional diagnostics, no outlier inspection, no robust or clustered standard errors, no bootstrap, no subgroup that was not planned for, and nothing about the pattern of missing values.
+
+Whoever releases the matrix decides in advance which questions may be asked.
+
+::: {.analysis-takeaway}
+**Synthetic data permits every analysis, none of them exactly. Moments permit few analyses, and those exactly.**
+
+Recall the SIPP Synthetic Beta: the same sign as the confidential data 79 % of the time, the same substantive conclusion 63 % of the time. From a covariance matrix the corresponding figure is 100 %, because nothing is being approximated. It is the same arithmetic.
+:::
+
+The same warning applies as everywhere in this chapter. A covariance matrix is a function of the confidential data, so "moments, therefore anonymous" is precisely the claim that "synthetic, therefore anonymous" turned out to be. A single matrix over many cases does not determine the data — many different data sets share it. But release enough accurate statistics and reconstruction becomes possible, which is the foundational result that motivated differential privacy in the first place.[^syn-dinur] The practical danger is **differencing**: publish one matrix per federal state, per year, per age band, and an attacker can subtract overlapping releases until very small cells remain. A covariance matrix computed over seven people is, for most purposes, those seven people.
+
+
+### The Second Wave Is Not the Third {#syn-silicon}
+
+Now the question you actually came for.
+
+A German panel study is slow. SOEP fieldwork for 2022 concluded that year; SOEP-Core v39, covering 1984 to 2022, was released to researchers on **22 October 2024**. The following edition, running to 2023, appeared on **26 June 2025**.[^syn-soep] Between the interview and the analysis lies something close to two years, plus decades of accumulated infrastructure, fieldwork costs, and the patient management of panel attrition.
+
+Against this, the proposition: condition a language model on a demographic profile, ask it anything, get an answer in seconds, at a cost measured in fractions of a cent.
+
+The proposition is not silly. It has real evidence behind it.
+
+**Argyle and colleagues** introduced the term *algorithmic fidelity* and tested it on American National Election Studies data: condition GPT-3 on a respondent's demographic backstory and see whether it reproduces that respondent's politics.[^syn-argyle] Their headline results were striking. In a social-science Turing test, evaluators judged 61.7 % of human-written lists to be human — and 61.2 % of the model's, a difference indistinguishable from noise. Simulated and actual vote choice correlated at 0.90, 0.92 and 0.94 across the 2012, 2016 and 2020 elections. The first study cost about **$29** in API fees.
+
+**Park and colleagues** went considerably further. They recruited 1,052 Americans stratified to census quotas, put each through a two-hour voice interview, and built an agent from each transcript. The agents then answered the General Social Survey, the Big Five inventory, and five economic games.[^syn-park] Because the same humans were re-surveyed two weeks later, the paper can normalise against the sharpest available benchmark: *how consistently people agree with themselves*.
+
+The November 2024 preprint reported that interview-based agents matched participants' GSS answers at **85 %** of the participants' own two-week test–retest consistency. The revised version of the same paper reports **83 %** for interview-based agents, **86 %** when interviews are combined with survey responses, and **74 %** for agents given only demographics.
+
+Read that last comparison twice. It is the most important number in this literature, and it is not the 85 %. **Demographics alone get you most of the way there.** The two-hour interview buys roughly nine percentage points.
+
+:::: {.reading}
+::: {.titelreading}
+<h2> A German instrument </h2>
+:::
+The American data dominate this field, which is a problem if you study Germany. One direct response is the **GGSS Personas** collection: 5,246 persona prompts built from the 2023 ALLBUS wave, one per respondent, designed to be dropped into any model's prompt.[^syn-ggss]
+
+Evaluated across 27 outcome variables in nine topic areas — from economic situation and religion to ethnocentrism and social inequality — persona-prompted models beat classifiers trained on up to 512 labelled examples on 13 of the 27 tasks. The advantage is largest precisely where data are scarce.
+
+Note what this establishes and what it does not. It shows that persona prompting can beat a small supervised classifier at reproducing a *known* distribution. It does not show that the method discovers anything nobody measured.
+::::
+
+### Where It Breaks {#syn-breaks}
+
+The failures are as well documented as the successes, and they are more instructive.
+
+**The variance collapses.** Bisbee and colleagues generated ChatGPT personas and compared them against ANES feeling thermometers.[^syn-bisbee] Group means landed within one standard deviation of the real averages — but out-group hostility was exaggerated by 10 to 20 points on a 100-point scale, and the variance was drastically compressed. The practical consequence is savage: reaching 99 % power required 33 synthetic respondents where the real survey needed 299. An analyst who trusts that number has built a study on sand. Most damningly, **48 % of coefficients** estimated from synthetic responses differed significantly from their ANES counterparts, and the sign flipped **32 %** of the time.
+
+**The models are too good at being right.** Aher and colleagues replicated four classic studies, including the wisdom of crowds.[^syn-aher] Humans guessing a quantity produce a wide, biased spread. One aligned model produced a median of exactly 1.0 with an interquartile range of 0.0 — every simulated participant precisely correct. They named it the **hyper-accuracy distortion**, and found it grows with model size and alignment training. The very procedures that make a model a good assistant make it a bad research subject.
+
+**Identities get flattened.** A study validated against 3,200 human participants across 16 demographic identities found that LLM-simulated group members misportray and homogenise those groups, presenting them as more internally uniform and more essentialised than they are.[^syn-wang] For research about minority experience, this is not a rough edge. It is the failure mode.
+
+**And the errors are large where it counts.** An independent polling audit found topline errors of 4 to 23 percentage points across models. Simulated respondents produced almost no "don't know" answers where 3 % of real respondents did. Average subgroup error was 8 points, rising to 15 for Black respondents and 20 for the "other race" category. On a policy item outside the training window, one model predicted 59 % support against 28 % actual — and 0 % "don't know" against 29 % actual.[^syn-verasight]
+
+That last pair of numbers deserves a moment. Nearly a third of real people had no opinion about a zoning policy. The model had an opinion every single time.
+
+::: {.analysis-note}
+A survey measures what people think, including that they mostly do not think about most things. A language model has been trained on text written by people who cared enough to write. Indifference, confusion, and refusal are systematically underrepresented in the training data — and they are real properties of populations.
+:::
+
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated: but don't synthetic samples predict elections rather well? </h2>
+:::
+This claim circulates widely, and the results behind it do look impressive. They almost always turn out to be one of two things.
+
+**The first is retrodiction.** Argyle and colleagues reported correlations of 0.90, 0.92 and 0.94 between simulated and actual vote choice for the 2012, 2016 and 2020 US elections. Read the design carefully, though: the model was conditioned on the demographic backstory of a *real respondent from that election's survey*, and all three elections lie well inside its training data. The task is closer to recalling a documented association than to forecasting an unknown one. That is genuinely useful — but it is not what "predicting an election" normally means.
+
+**The second is a forecast that was quietly wrong.** In 2024 the firm Aaru issued synthetic-agent forecasts showing Harris ahead in Michigan, Nevada, Pennsylvania and Wisconsin. She lost all four. The company described the outcome as within the margin of error — a phrase with no meaning when the "sample" consists of language-model agents, since the quantity it describes is sampling variability among humans.[^syn-aaru]
+
+Where a genuine out-of-sample test has been run on individual-level data, the results have been poor. Simulating the 2017 German federal election from GLES respondent profiles, GPT-3.5 matched the real answers **39 %** of the time — worse than an ordinary regression on the same survey data, which reached a macro F1 of 0.52 against the model's 0.39. It systematically overstated Green and Left support and understated the AfD and FDP. The authors' conclusion is unambiguous: not suitable for estimating voting behaviour overall or across subpopulations.[^syn-heyde]
+
+The general rule is the one this chapter keeps arriving at. A language model interpolates within what has been written down. An election that has not happened yet has not been written down.
+::::
+
+### What Would Have to Be True {#syn-conditions}
+
+Set aside benchmark scores and ask the question directly. Under what conditions could an AI society replace the SOEP?
+
+**It would have to produce information it was not given.** This is the binding constraint. A language model trained on text about a population is not a sample from that population. It can interpolate what has been written down; it cannot observe what has not. The SOEP exists to measure things nobody has written down yet.
+
+**It would have to be right about the future.** SOEP's value lies substantially in the fact that it keeps running. A model's knowledge ends at its training cutoff. Asking it about an event after that date is asking it to guess.
+
+**It would have to represent the tail.** Our 57 synthetic students lost the 36-year-old. Social policy research is largely about people in the tails — the long-term unemployed, the severely ill, recent arrivals, the very poor. These are exactly the people underrepresented in text and hardest to survey.
+
+**It would have to avoid circularity.** Persona collections are built *from* surveys — ALLBUS for the GGSS personas, ANES for silicon samples, the GSS for validation. If simulated respondents replaced real ones, the source of calibration would dry up. The method consumes the thing it depends on.
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated: what the test–retest benchmark really says </h2>
+:::
+Normalising against participants' own two-week consistency is the right move — comparing an agent to a *perfect* respondent would be unfair, since people are not perfect respondents.
+
+But notice what it implies. The benchmark is capped at human self-consistency, around 80 % raw agreement on GSS items. An agent at 85 % of that ceiling still disagrees with the real person on roughly a third of questions. For estimating a population mean over thousands of respondents, errors of that kind may partly cancel. For anything conditional — an interaction, a small subgroup, a change over time — they need not, and Bisbee's 32 % sign flips suggest they do not.
+
+The aggregate can be right while every individual is wrong. Whether that is acceptable depends entirely on which quantity you are estimating.
+::::
+
+### What It Is Good For {#syn-uses}
+
+None of this makes the third wave useless. It makes it a different instrument than the headlines suggest.
+
+The American Association for Public Opinion Research convened a task force and ranked the use cases by risk: pre-field testing lowest, post-field augmentation moderate, full replacement of human respondents highest. Its position is that a response generated by an AI system is a model-based approximation of what a person might say, not a direct observation — and that eliminating human respondents falls outside the total survey error framework altogether, since that framework is built around the human respondent.[^syn-aapor]
+
+The productive designs are the **mixed** ones, and they have proper statistical footing. Prediction-powered inference treats model outputs as informative but fallible observations and derives how to split a budget between expensive humans and cheap predictions.[^syn-broska] A related approach shows that synthesis alone introduced 24–86 % bias across two panel surveys, while synthesis plus rectification against a small human sample brought bias below 5 % — and that roughly **100 human responses, about 1 % of the survey**, sufficed.[^syn-krsteski]
+
+That is the realistic shape of the thing. Not a replacement for the panel. A cheap layer that makes a smaller panel go further, anchored at every step by real people.
+
+Where simulation is genuinely strong is in **generating hypotheses to test**, not conclusions to report: piloting question wording before fieldwork, exploring which experiments are worth running, filling gaps in a design that will later be validated. A recent *Nature* paper found language models predicted the results of 70 preregistered survey experiments about as well as pooled human forecasters — while systematically overestimating effect sizes.[^syn-nature] A good forecaster of what an experiment will find is a useful thing. It is not the experiment.
+
+::: {.analysis-takeaway}
+**The three waves answer three different questions, and only the middle one has a settled answer.**
+
+Synthetic populations let you simulate a policy. Synthetic microdata let you publish confidential data as a draft medium, with published error rates and a validation server behind it. Silicon samples let you guess what people would say — usefully, cheaply, and with errors that are largest exactly where social science cares most.
+
+None of the three creates information. Each redistributes information that was already there.
+:::
+
+### The Map Is Not the Territory {#syn-map}
+
+A final observation, and it belongs to this book's first chapter as much as to this one.
+
+The appeal of an AI society is not really speed or cost. It is the promise of a population that always answers, never refuses, never drops out of the panel, and costs nothing to ask again. Every difficulty in Chapter \@ref(missing-data) disappears at once, because there is no longer anyone who could fail to reply.
+
+That is the tell. Nonresponse is not a defect in survey research. It is information about people — about trust, time, precarity, and the willingness to be counted. A method that abolishes nonresponse has not solved the problem. It has stopped measuring the thing that produced it.
+
+> ... it is individuals rather than variables who have the capacity to act and reflect on society.
+>
+> `r tufte::quote_footer('Elliott, 1999. In: @byrne2002interpreting')`
+
+Orcutt's insight in 1957 was that aggregates do not act, people do, and a model should therefore be built out of people. Seventy years later we can build models out of things that talk like people. Whether that is the fulfilment of his idea or its inversion is, at present, an open question — and a good one to keep asking while the field decides.
+
+[^syn-dinur]: Dinur, I., and Nissim, K., *Revealing Information while Preserving Privacy*, *Proceedings of the 22nd ACM SIGMOD-SIGACT-SIGART Symposium on Principles of Database Systems (PODS 2003)*, 202--210, <https://doi.org/10.1145/773153.773173>. The result -- that answering enough queries accurately enough permits reconstruction of the underlying database -- is the reason formal privacy guarantees exist at all.
+
+[^syn-aaru]: McKown-Dawson, E., *"AI polls" are fake polls*, Silver Bulletin, <https://www.natesilver.net/p/ai-polls-are-fake-polls>.
+
+[^syn-heyde]: von der Heyde, L., Haensch, A.-C., and Wenz, A., *Vox Populi, Vox AI? Using Large Language Models to Estimate German Vote Choice*, *Social Science Computer Review*, 2026, <https://doi.org/10.1177/08944393251337014>.
+
+[^syn-scm]: Abadie, A., *Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects*, *Journal of Economic Literature* 59(2), 2021, 391--425, <https://doi.org/10.1257/jel.20191450>. The definition is his: a synthetic control is "a weighted average of the units in the donor pool". The founding applications are Abadie, A., and Gardeazabal, J., *The Economic Costs of Conflict: A Case Study of the Basque Country*, *American Economic Review* 93(1), 2003, 113--132, and Abadie, A., Diamond, A., and Hainmueller, J., *Synthetic Control Methods for Comparative Case Studies*, *JASA* 105(490), 2010, 493--505.
+
+[^syn-orcutt]: Orcutt, G. H., *A New Type of Socio-Economic System*, *The Review of Economics and Statistics* 39(2), 1957, 116--123, <https://doi.org/10.2307/1928528>. Freely available as a reprint in the *International Journal of Microsimulation*: <https://microsimulation.pub/articles/00002>. The programme is developed at length in Orcutt, G. H., Greenberger, M., Korbel, J., and Rivlin, A. M., *Microanalysis of Socioeconomic Systems: A Simulation Study*, Harper, 1961.
+
+[^syn-ipf]: Deming, W. E., and Stephan, F. F., *On a Least Squares Adjustment of a Sampled Frequency Table When the Expected Marginal Totals are Known*, *Annals of Mathematical Statistics* 11(4), 1940, 427--444, <https://doi.org/10.1214/aoms/1177731829>. The application to synthetic populations was standardised by Beckman, R. J., Baggerly, K. A., and McKay, M. D., *Creating synthetic baseline populations*, *Transportation Research Part A* 30(6), 1996, 415--429.
+
+[^syn-rti]: Rineer, J., Kruskamp, N., Kery, C., Jones, K., Hilscher, R., and Bobashev, G., *A National Synthetic Populations Dataset for the United States*, *Scientific Data* 12, 2025, 144, <https://www.nature.com/articles/s41597-025-04380-7>.
+
+[^syn-rubin-1993]: Rubin, D. B., *Discussion: Statistical Disclosure Limitation*, *Journal of Official Statistics* 9(2), 1993, 461--468. For a thirty-year retrospective see Drechsler, J., and Haensch, A.-C., *30 Years of Synthetic Data*, *Statistical Science* 39(2), 2024, 221--242, <https://arxiv.org/abs/2304.02107>.
+
+[^syn-little]: Little, R. J. A., *Statistical Analysis of Masked Data*, *Journal of Official Statistics* 9(2), 1993, 407--426.
+
+[^syn-raghunathan]: Raghunathan, T. E., Reiter, J. P., and Rubin, D. B., *Multiple Imputation for Statistical Disclosure Limitation*, *Journal of Official Statistics* 19(1), 2003, 1--16. For partially synthetic data the rules differ again: Reiter, J. P., *Inference for Partially Synthetic, Public Use Microdata Sets*, *Survey Methodology* 29(2), 2003, 181--188.
+
+[^syn-course]: `data/Course/GF_AllTime.csv` in this book's repository: 234 responses collected on the first day of seven consecutive courses, from summer term 2020 to winter term 2023/24. A single cohort from this file is used in the Tidyverse introduction of the Software chapter. Note the semicolon separator.
+
+[^syn-collapse]: Shumailov, I., Shumaylov, Z., Zhao, Y., Papernot, N., Anderson, R., and Gal, Y., *AI models collapse when trained on recursively generated data*, *Nature* 631, 2024, 755--759, <https://doi.org/10.1038/s41586-024-07566-y>.
+
+[^syn-synthpop]: Nowok, B., Raab, G. M., and Dibben, C., *synthpop: Bespoke Creation of Synthetic Data in R*, *Journal of Statistical Software* 74(11), 2016, 1--26, <https://doi.org/10.18637/jss.v074.i11>. The CART-based approach it implements comes from Reiter, J. P., *Using CART to Generate Partially Synthetic Public Use Microdata*, *Journal of Official Statistics* 21, 2005, 441--462.
+
+[^syn-ssb]: Stanley, J. C., and Totty, E. S., *Synthetic Data and Social Science Research: Accuracy Assessments and Practical Considerations from the SIPP Synthetic Beta*, NBER Working Paper 32979, September 2024, <https://www.nber.org/papers/w32979>.
+
+[^syn-iab]: Drechsler, J., Bender, S., and Rässler, S., *Comparing Fully and Partially Synthetic Datasets for Statistical Disclosure Control in the German IAB Establishment Panel*, *Transactions on Data Privacy* 1(3), 2008, 105--130. See also Drechsler, J., *Synthetic Datasets for Statistical Disclosure Control*, Springer Lecture Notes in Statistics 201, 2011.
+
+[^syn-destatis]: Brenzel, H., and Garcia Ritz, Y., *Partielle Synthetisierung zur Anonymisierung der verknüpften Verdienststrukturerhebung 2018*, *WISTA -- Wirtschaft und Statistik* 4/2025, <https://www.destatis.de/DE/Methoden/WISTA-Wirtschaft-und-Statistik/2025/04/synthetisierung-anonymisierung-verdienststrukturerhebung-042025.pdf>.
+
+[^syn-stadler]: Stadler, T., Oprisanu, B., and Troncoso, C., *Synthetic Data -- Anonymisation Groundhog Day*, *31st USENIX Security Symposium*, 2022, 1451--1468, <https://www.usenix.org/conference/usenixsecurity22/presentation/stadler>.
+
+[^syn-ullman]: Ullman, J., and Vadhan, S., *PCPs and the Hardness of Generating Private Synthetic Data*, *Theory of Cryptography (TCC 2011)*, LNCS 6597, 400--416, <https://doi.org/10.1007/978-3-642-19571-6_24>.
+
+[^syn-onthemap]: Machanavajjhala, A., Kifer, D., Abowd, J., Gehrke, J., and Vilhuber, L., *Privacy: Theory meets Practice on the Map*, *IEEE ICDE 2008*, 277--286, <https://doi.org/10.1109/ICDE.2008.4497436>.
+
+[^syn-soep]: SOEP-Core v39 (data 1984--2022) was announced on 22 October 2024, <https://www.diw.de/en/diw_01.c.923356.en/soep-core_data_1984-2022__v39__available_now.html>; SOEP-Core v40 (data 1984--2023) carries a publication date of 26 June 2025, <https://doi.org/10.5684/soep.core.v40r>.
+
+[^syn-argyle]: Argyle, L. P., Busby, E. C., Fulda, N., Gubler, J. R., Rytting, C., and Wingate, D., *Out of One, Many: Using Language Models to Simulate Human Samples*, *Political Analysis* 31(3), 2023, 337--351, <https://doi.org/10.1017/pan.2023.2>.
+
+[^syn-park]: Park, J. S., Zou, C. Q., Shaw, A., Hill, B. M., Cai, C., Morris, M. R., Willer, R., Liang, P., and Bernstein, M. S., *Generative Agent Simulations of 1,000 People*, arXiv:2411.10109v1, November 2024, <https://arxiv.org/abs/2411.10109v1>. The paper has since been revised and retitled *LLM Agents Grounded in Self-Reports Enable General-Purpose Simulation of Individuals*, <https://arxiv.org/abs/2411.10109>. As of August 2026 it remains a working paper and has not been peer-reviewed.
+
+[^syn-ggss]: Rupprecht, J., Fröhling, L., Wagner, C., and Strohmaier, M., *German General Social Survey Personas: A Survey-Derived Persona Prompt Collection for Population-Aligned LLM Studies*, arXiv:2511.21722, 2025, <https://arxiv.org/abs/2511.21722>.
+
+[^syn-bisbee]: Bisbee, J., Clinton, J. D., Dorff, C., Kenkel, B., and Larson, J. M., *Synthetic Replacements for Human Survey Data? The Perils of Large Language Models*, *Political Analysis* 32(4), 2024, 401--416, <https://doi.org/10.1017/pan.2024.5>.
+
+[^syn-aher]: Aher, G. V., Arriaga, R. I., and Kalai, A. T., *Using Large Language Models to Simulate Multiple Humans and Replicate Human Subject Studies*, *Proceedings of the 40th International Conference on Machine Learning*, PMLR 202, 2023, 337--371, <https://proceedings.mlr.press/v202/aher23a.html>.
+
+[^syn-wang]: Wang, A., Morgenstern, J., and Dickerson, J. P., *Large language models that replace human participants can harmfully misportray and flatten identity groups*, *Nature Machine Intelligence* 7, 2025, 400--411, <https://doi.org/10.1038/s42256-025-00986-z>.
+
+[^syn-verasight]: Morris, G. E., and the Verasight data team, *Your Polls On ChatGPT*, 18 August 2025, <https://www.verasight.io/reports/synthetic-sampling>.
+
+[^syn-aapor]: AAPOR Task Force on Responsible AI Integration in Survey Research, *Responsible AI Integration in Survey Research*, American Association for Public Opinion Research, May 2026, <https://aapor.org/wp-content/uploads/2026/05/Responsible-AI-Integration-In-Survey-Research.pdf>.
+
+[^syn-broska]: Broska, D., Howes, M., and van Loon, A., *The Mixed Subjects Design: Treating Large Language Models as Potentially Informative Observations*, *Sociological Methods & Research* 54(3), 2025, 1074--1109, <https://doi.org/10.1177/00491241251326865>.
+
+[^syn-krsteski]: Krsteski, S., Russo, G., Chang, S., West, R., and Gligorić, K., *Valid Survey Simulations with Limited Human Data: The Roles of Prompting, Fine-Tuning, and Rectification*, arXiv:2510.11408, 2025, <https://arxiv.org/abs/2510.11408>.
+
+[^syn-nature]: Ashokkumar, A., Hewitt, L., Ghezae, I., and Willer, R., *Large language models can predict the results of social science experiments*, *Nature* 656, 2026, 115--122, <https://doi.org/10.1038/s41586-026-10742-x>.
