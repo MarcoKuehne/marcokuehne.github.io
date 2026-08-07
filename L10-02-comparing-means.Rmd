@@ -4,4 +4,620 @@
 One mean, two independent groups, and paired observations
 :::
 
-<!-- Content will be developed here. -->
+<small>
+
+> "The brewer wants to know how confident he can be that the barley in his hand is as good as the sample he tested. He cannot test it all. He cannot even test much of it."
+>
+> `r tufte::quote_footer('The small-sample problem, as Guinness faced it around 1900')`
+
+</small>
+
+Section \@ref(relationships) asked whether two variables move together. This section asks something even more elementary, and even more common: **is this average different from that one?** Do women and men arrive in this course with different statistics backgrounds? Are Master students older than Bachelor students? Does the same student rate two of their own skills differently? Almost every empirical claim you will ever read — about wages, treatments, test scores, attitudes — is at bottom a comparison of means. This section is about when such a comparison can be trusted.
+
+### A brewer invents modern statistics {#cm-guinness}
+
+In 1899 the Guinness brewery in Dublin hired a young Oxford chemist named William Sealy Gosset. His job was quality: barley, hops, and beer vary, and Guinness wanted to know which barley varieties were genuinely better rather than luckier. The problem was the sample size. A brewery experiment might yield **four** observations — four plots, four malt extracts — and the statistical theory of the day, built for hundreds of observations by astronomers, quietly fell apart at $n = 4$.[^cm-gosset]
+
+Gosset worked out how the average of a *small* sample behaves, publishing the result in *Biometrika* in 1908 as "The probable error of a mean". He could not publish under his own name: Guinness barred its scientists from publishing after an earlier paper had given away information competitors could exploit. So the paper appeared under a pseudonym, and the most-used distribution in applied statistics is named after that pseudonym rather than its author: **Student**.[^cm-student1908]
+
+::: {.analysis-note}
+The tool you will use for every test in this section was invented not by a professor with unlimited data, but by a brewer who could afford almost none. That is worth remembering: the t-test is a tool for *honest uncertainty about small evidence*. When samples are large, it barely matters; when samples are small, it is the difference between knowledge and wishful thinking.
+
+Gosset originally called his statistic $z$. The letter $t$ came later, through Fisher's reworking of the theory.
+:::
+
+### The data: seven cohorts of students {#cm-data}
+
+The examples in this section and the next use one dataset, so it is worth introducing properly. On the first day of every term from summer 2020 to winter 2023/24, students in this seminar filled in the same short questionnaire before anything was taught. Seven cohorts, 233 usable responses.[^cm-data-note]
+
+Alongside term, gender, academic level, age and total semesters studied, three items asked students to rate their own background on a five-point scale anchored at **1 = Beginner** and **5 = Advanced**:
+
+> **Background in Statistics** — *Please rate your background knowledge in statistics.*
+>
+> **Background in R** — *Please rate your background knowledge in R programming.*
+>
+> **Background in Academic Writing** — *Please rate your background knowledge in academic writing.*
+
+A fourth, open-ended item asked *What do you expect to learn in this seminar?* — text rather than a number, and therefore material for the chapter on text data rather than for a t-test.
+
+```{r cm-load, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+coursedata <- read.csv("data/Course/GF_AllTime.csv", sep = ";") %>%
+  filter(Age < 100)
+
+dim(coursedata)
+```
+
+::: {.analysis-note}
+Three features of this data shape everything that follows. The three ratings are **self-assessments**, not tests: they measure confidence as much as competence, which is exactly what makes the gender comparison below interesting rather than trivial. The scale is **bounded** at 1 and 5, so a group already near an endpoint has less room to move. And the three items were answered by the **same person**, which is what makes the paired comparison in section \@ref(cm-paired) possible at all.
+:::
+
+### Signal and noise {#cm-signal}
+
+Every test in this section is the same fraction wearing three different coats:
+
+$$t = \frac{\text{signal}}{\text{noise}} = \frac{\text{difference we observed}}{\text{difference we would expect from chance alone}}$$
+
+The numerator is an estimate — a mean minus a benchmark, or one group mean minus another. The denominator is that estimate's **standard error**: how much the number would wobble if we could rerun the sampling again and again.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+The **standard error of the mean** is the standard deviation of the sampling distribution of the mean:
+
+$$se(\bar{x}) = \frac{sd(x)}{\sqrt{n}}$$
+
+It shrinks with $\sqrt{n}$: four times the data buys half the wobble.
+::::
+
+#### Deviation and error are not the same word {#cm-sd-se}
+
+The two quantities differ by a single square root, and confusing them is one of the most common mistakes in reading empirical results. It is worth slowing down here, because the mistake is not arithmetic — it is a mistake about *what the number is describing*.
+
+The standard **deviation** describes the people. It answers: how far is a typical individual from the average? It is a fact about the world, and it does not get smaller when you collect more data. Ask a thousand more students their age and students still differ from one another by about four years.
+
+The standard **error** describes your knowledge. It answers: how far is my estimate of the average likely to be from the truth? It is a fact about your evidence, and it *does* get smaller as you collect more — that is the entire reason to collect more.
+
+```{r cm-sd-se-table, echo=FALSE}
+data.frame(
+  ` `                  = c("Question it answers", "It describes", "More data...", "Use it when"),
+  `Standard deviation` = c("How much do individuals differ?",
+                           "the population",
+                           "leaves it roughly unchanged",
+                           "describing your sample"),
+  `Standard error`     = c("How precise is my estimate?",
+                           "your uncertainty",
+                           "shrinks it by a factor √n",
+                           "testing or estimating a mean"),
+  check.names = FALSE
+) %>%
+  knitr::kable(caption = "Two numbers, one square root apart, answering different questions.",
+               align = c("l", "l", "l"))
+```
+
+The picture makes it concrete, and it is drawn the same way as the storks in section \@ref(relationships): the red line is the mean, and the arrows step out one unit of spread on each side.
+
+```{r cm-sdse-fig, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.width=7.2, fig.height=4.2, fig.cap="Individuals scatter widely (a); their averages barely move (b). The standard deviation measures the first picture, the standard error the second."}
+set.seed(2024)
+mu <- mean(coursedata$Age)
+s  <- sd(coursedata$Age)
+se <- s / sqrt(25)
+means25 <- replicate(4000, mean(sample(coursedata$Age, 25, replace = TRUE)))
+
+pa <- "a. One student at a time — the spread is the STANDARD DEVIATION, 3.7 years"
+pb <- "b. The average of 25 students — the spread is the STANDARD ERROR, 0.7 years"
+
+plotdat <- bind_rows(tibble(value = coursedata$Age, panel = pa),
+                     tibble(value = means25,        panel = pb))
+arrows <- data.frame(panel = c(pa, pa, pb, pb), x = mu,
+                     xend = c(mu + s, mu - s, mu + se, mu - se),
+                     y = c(.55, .45, .55, .45))
+labels <- data.frame(panel = c(pa, pa, pb, pb),
+                     x = c(mu + s, mu - s, mu + se, mu - se),
+                     y = c(.70, .30, .70, .30),
+                     lb = c("+ 1 SD", "- 1 SD", "+ 1 SE", "- 1 SE"))
+
+ggplot(plotdat, aes(value)) +
+  geom_histogram(aes(y = after_stat(ncount)), binwidth = .5,
+                 fill = "#9b3f2d", colour = "white", linewidth = .15) +
+  facet_wrap(~panel, ncol = 1) +
+  geom_vline(xintercept = mu, linewidth = 1, colour = "red") +
+  geom_segment(data = arrows, aes(x = x, xend = xend, y = y, yend = y),
+               inherit.aes = FALSE, linewidth = .7,
+               arrow = arrow(length = unit(.22, "cm"))) +
+  geom_label(data = labels, aes(x = x, y = y, label = lb),
+             inherit.aes = FALSE, size = 2.9, label.size = .2) +
+  coord_cartesian(xlim = c(17, 43), ylim = c(0, 1.15)) +
+  scale_x_continuous(breaks = seq(20, 40, 5)) +
+  labs(x = "Age (years)", y = NULL, title = "Same students, two very different spreads") +
+  theme_minimal(base_size = 10) +
+  theme(strip.text = element_text(hjust = 0, face = "bold", size = 8.4),
+        panel.grid.minor = element_blank(), axis.text.y = element_blank())
+```
+
+Panel **a** shows the 233 students one at a time. The mean is 25.0 years and the standard deviation is 3.7, so the arrows reach from 21.3 to 28.7 — and by the empirical rule from section \@ref(relationships) we would expect roughly 68% of students to fall inside that band. In this data **70.4%** do, which is about as close to the textbook as real, floor-bounded age data ever gets.
+
+Panel **b** repeats the exercise for *averages*: draw 25 students, record only their mean age, repeat. Those averages have a standard deviation of their own — that is the standard error — and it is 0.7 years. Same students, same horizontal scale, a spread five times narrower, because $\sqrt{25} = 5$.
+
+```{r cm-sd-se-ratio, echo=TRUE}
+sd(coursedata$Age)                          # how much students differ
+sd(coursedata$Age) / sqrt(nrow(coursedata)) # how well we know their average
+```
+
+Because the two are linked by $\sqrt{n}$, the ratio between them is fixed by the sample size alone. With 233 students, $\sqrt{233} = 15.3$, so *every* variable in this file has a standard error exactly 15.3 times smaller than its standard deviation — age, statistics rating, R rating, all of them. Nothing about the variable matters. Only $n$ does.
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Professionals get this wrong, in print </h2>
+:::
+This is not a beginner's slip. Peter Nagele went through all 860 research articles published in four anaesthesia journals in 2001 and found that **198 of them — 23%, nearly one in four — used the standard error of the mean where they should have used the standard deviation**, reporting the precision of an average as if it were the variability of patients.[^cm-nagele]
+
+Why does the mistake run in that direction? Because the standard error is always the smaller number. Reporting "mean ± 0.24" instead of "mean ± 3.71" makes any result look tidier, and no reviewer can tell from the figure alone which one you used.
+
+The misreading runs deeper than reporting. Belia, Fidler, Williams and Cumming e-mailed the authors of articles in leading psychology, neuroscience and medicine journals and asked 473 of them to position error bars at the point where two means would be just significantly different. Most could not. Their conclusion: many leading researchers "have severe misconceptions about how error bars relate to statistical significance, do not adequately distinguish CIs and SE bars, and do not appreciate the importance of whether the 2 means are independent or come from a repeated measures design".[^cm-belia]
+::::
+
+#### From standard error to confidence interval {#cm-ci}
+
+The standard error is a unit of wobble; on its own it is hard to interpret. What people actually report is a range built from it.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+A **95% confidence interval** for a mean is the estimate plus and minus a critical t-value times its standard error:
+
+$$\bar{x} \pm t_{0.975,\,n-1} \cdot se(\bar{x})$$
+
+For anything but a tiny sample the multiplier is close to 2, so the shorthand *"the estimate, give or take two standard errors"* is close enough for reading purposes.
+
+The 95% refers to the **procedure**, not to any one interval: if you repeated the whole study many times, 95% of the intervals built this way would contain the true value. Any particular interval either contains it or does not.
+::::
+
+For the age of our students, the mean is 25.03 with a standard error of 0.243, and the multiplier at 232 degrees of freedom is 1.97:
+
+$$25.03 \pm 1.97 \times 0.243 = [24.56,\ 25.51]$$
+
+That interval is the single most useful thing you can report. It contains the estimate, it carries the precision, and — because you can check whether it excludes a benchmark — it silently performs the hypothesis test as well. This is why confidence intervals appear in every test output in this section, and why the tables below always carry one.
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated: Do overlapping error bars mean "no difference"? </h2>
+:::
+This is the single most common way of misreading a figure, and our own data provides the counter-example. Women in this course average 24.50 years, men 25.62. Each group's own 95% confidence interval is [23.83, 25.17] and [24.94, 26.30] — **they overlap**, by 0.23 years. And yet the difference between the two means is statistically significant, $t = -2.33$, $p = 0.021$.
+
+```{r cm-errorbar-fig, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.width=7.2, fig.height=4.6, fig.cap="The same comparison drawn four ways. Panels a-c share one scale, so the bars really are that different in length. Only panel d answers the question that was asked."}
+gsum <- coursedata %>%
+  group_by(Gender) %>%
+  summarise(m = mean(Age), s = sd(Age), n = n(),
+            se = s / sqrt(n), ci = qt(.975, n - 1) * se, .groups = "drop")
+agetest <- t.test(Age ~ Gender, data = coursedata)
+
+P <- c("a. bars = 1 SD (how much students differ)",
+       "b. bars = 1 SE (how well each mean is known)",
+       "c. bars = 95% CI (each group separately)",
+       "d. bars = 95% CI of the DIFFERENCE (the question actually asked)")
+
+bars <- bind_rows(
+  data.frame(panel = P[1], grp = gsum$Gender, est = gsum$m,
+             lo = gsum$m - gsum$s,  hi = gsum$m + gsum$s),
+  data.frame(panel = P[2], grp = gsum$Gender, est = gsum$m,
+             lo = gsum$m - gsum$se, hi = gsum$m + gsum$se),
+  data.frame(panel = P[3], grp = gsum$Gender, est = gsum$m,
+             lo = gsum$m - gsum$ci, hi = gsum$m + gsum$ci),
+  data.frame(panel = P[4], grp = "Male - Female",
+             est = unname(-diff(rev(agetest$estimate))),
+             lo  = -agetest$conf.int[2], hi = -agetest$conf.int[1])) %>%
+  mutate(panel = factor(panel, levels = P))
+
+blank <- expand.grid(panel = factor(P[1:3], levels = P), grp = gsum$Gender,
+                     est = range(c(gsum$m - gsum$s, gsum$m + gsum$s)) + c(-.4, .4))
+
+ggplot(bars, aes(est, grp)) +
+  geom_blank(data = blank) +
+  geom_vline(data = data.frame(panel = factor(P[4], levels = P), x = 0),
+             aes(xintercept = x), linetype = 2, colour = "grey35") +
+  geom_errorbarh(aes(xmin = lo, xmax = hi), height = .12,
+                 linewidth = .8, colour = "#9b3f2d") +
+  geom_point(size = 2.4, colour = "#9b3f2d") +
+  facet_wrap(~panel, scales = "free", ncol = 1) +
+  labs(x = "Age (years)", y = NULL,
+       title = "Four ways to draw uncertainty around one comparison",
+       subtitle = "Panels a-c share one scale. Men are older: t = -2.33, p = 0.021.") +
+  theme_minimal(base_size = 9.5) +
+  theme(strip.text = element_text(hjust = 0, face = "bold", size = 8.2),
+        panel.grid.minor = element_blank())
+```
+
+Read the four panels. The standard-deviation bars in **a** span eight years and tell you nothing about the comparison — they describe students, not means. The standard-error bars in **b** are 15 times shorter. The confidence intervals in **c** are the ones a careful author would draw, and they *overlap*. Only panel **d** — the interval around the *difference itself* — sits clearly away from zero, which is what "significant" means here.
+
+Cumming, Fidler and Vaux quantify the trap: for two independent groups with $n \ge 10$ per group, 95% confidence intervals can overlap by about a quarter of their length and still leave $p < 0.05$, while standard-error bars must show a *gap* of one full bar before $p$ reaches 0.05.[^cm-cumming] Two things break even these rules: small samples, where the bars must be stretched further, and paired data, where the two groups' bars say nothing whatsoever about the interval for the difference.
+
+The habit that follows is simple: **when the claim is about a difference, plot the difference.** Two bars side by side invite the reader to do arithmetic they cannot do.
+::::
+
+#### How big does t have to be? {#cm-threshold}
+
+You will hear the rule of thumb **$|t| > 2$** everywhere: in regression output, in referee reports, in this book. It covers *everything in this chapter and the next*. The one-sample test, the two-sample test, the paired test, the slope of a regression coefficient, the correlation test of section \@ref(relationships) — all of them build the same fraction and compare it against the same distribution. There is no separate threshold to memorise for each test. That is precisely what Gosset gave us: one reference distribution for any average-shaped estimate divided by its own standard error.
+
+What the rule glosses over is that the exact cut-off depends on the degrees of freedom, a quantity that will follow you through the rest of this book.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+The **degrees of freedom** of a statistic are the number of independent pieces of information that went into it, minus the number of quantities you had to estimate along the way:
+
+$$df = n - (\text{parameters estimated})$$
+
+Once you know the mean of three numbers and two of the values, the third is not free — it is determined. So a one-sample t-test, which estimates one parameter (the mean), has $df = n - 1$. A two-sample test estimates two means and has $df = n_1 + n_2 - 2$. A regression with $k$ predictors plus an intercept has $df = n - k - 1$, and the same accounting reappears far from t-tests: a factor model in the Reveal chapter (\@ref(reveal)) is *identified* only if the number of observed covariances exceeds the number of loadings and variances it wants to estimate.
+
+Degrees of freedom are, in every one of these cases, the amount of evidence you have **left over** after paying for what you estimated.
+::::
+
+The number 2 is a rounding of 1.96, which is the large-sample value:
+
+```{r cm-crit, echo=FALSE}
+data.frame(n = c(4, 5, 10, 30, 100, 233, 1000)) %>%
+  mutate(`Degrees of freedom` = n - 1,
+         `Critical |t| at 5%` = round(qt(.975, n - 1), 2),
+         `p-value when |t| = 2` = round(2 * pt(-2, n - 1), 3)) %>%
+  rename(`Sample size` = n) %>%
+  knitr::kable(caption = "The 5% threshold falls towards 1.96 as the sample grows.",
+               align = "rrrr")
+```
+
+Read the last column. With 100 observations, $|t| = 2$ gives $p = 0.048$ and the rule of thumb is honest. With 30 it gives $p = 0.055$ and the rule is very slightly too generous. With 4 observations — Gosset's brewery — $|t| = 2$ gives $p = 0.139$, nowhere near significance, and applying the rule of thumb there would be a real error. **From roughly $n = 30$ upwards, $|t| > 2$ is a safe shortcut; below that, look the number up.**
+
+::: {.analysis-important}
+And one thing the rule never covers: importance. The 5% convention is a threshold on *evidence*, chosen by Fisher for convenience and hardened by eighty years of habit into something it was never meant to be. A $t$ of 2.1 and a $t$ of 1.9 are almost the same amount of evidence; only a publication system pretends otherwise. Report the estimate and its interval, and let $t$ be one piece of information rather than a verdict.
+:::
+
+### One mean against a benchmark {#cm-one-sample}
+
+Take the R rating first. The scale midpoint is 3. Do students, on average, arrive below the middle?
+
+```{r cm-mean-r, echo=TRUE}
+mean(coursedata$Background.in.R)
+```
+
+The average is 1.75 — apparently far below 3. But "apparently" is exactly what a test is for. The one-sample t-test asks: *if the true average were 3, how surprising would a sample average of 1.75 be, given 233 students with this much spread?*
+
+$$t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{1.75 - 3}{0.92/\sqrt{233}} = \frac{-1.25}{0.060} = -20.7$$
+
+```{r cm-one-sample, echo=TRUE}
+t.test(coursedata$Background.in.R, mu = 3)
+```
+
+This is the only time in this section a t-test is printed in full, so it is worth walking through the block line by line. This is what your own console will show you, and reading it fluently is a skill in its own right. From here on the results appear in tables, because the interesting comparisons come in fours and fives and no reader should have to diff five screens of output by eye.
+
+```{r cm-output-guide, echo=FALSE}
+data.frame(
+  `What R prints` = c("`One Sample t-test`",
+                      "`t = -20.704`",
+                      "`df = 232`",
+                      "`p-value < 2.2e-16`",
+                      "`alternative hypothesis: ... not equal to 3`",
+                      "`95 percent confidence interval: 1.63 1.87`",
+                      "`mean of x: 1.75`"),
+  `What it means` = c("which of the three tests R decided to run",
+                      "the signal-to-noise ratio: the gap is 20.7 times its own wobble",
+                      "233 students minus 1 for the mean we estimated",
+                      "smaller than R's printing limit — chance alone will not explain this",
+                      "the comparison is two-sided: a gap in either direction would have counted",
+                      "the useful line: plausible values for the true average",
+                      "the estimate itself"),
+  check.names = FALSE
+) %>%
+  knitr::kable(caption = "Reading a t-test output from top to bottom.", align = c("l", "l"))
+```
+
+A $t$ of −20.7 means the observed gap is about twenty times larger than its own wobble. The p-value is astronomically small, and the confidence interval — 1.63 to 1.87 — says the same thing more usefully: whatever the true average of the population these students come from, it is nowhere near 3. Students arrive as R novices. (This is, frankly, the least surprising finding in this book. The course exists because of it.)
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+The same students rate their *statistics* background at 2.66 on average and their *academic writing* at 2.86.
+
+Both are below 3. The statistics rating has $t = -5.2$, the writing rating $t = -1.7$. Which of the two is statistically significantly below the midpoint at the usual 5% level? `r mcq(c("Both", answer = "Only statistics", "Only writing", "Neither"))`
+
+Notice what that means: a *smaller* gap can be significant while a similar-looking one is not — significance is about the gap *relative to its noise*, never about the gap alone.
+::::
+
+#### Why sample size decides everything {#cm-samplesize}
+
+Here is the same lesson small enough for mental arithmetic. Three students rate their R skills 1, 2 and 3. Is the average different from the midpoint 3?
+
+The mean is `r fitb(2)`, the deviations from it are −1, 0, +1, so the variance is $(1 + 0 + 1)/2 = 1$ and the standard deviation is 1. Put the general formula and the numbers on the same line:
+
+$$t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{2 - 3}{1/\sqrt{3}} = \frac{-1}{0.577} = -1.73 \qquad (p = 0.225)$$
+
+A gap of a full point on the scale — and no evidence. Now suppose *twelve* students had produced the same pattern, the values 1, 2, 3 repeated four times. Same mean, nearly the same standard deviation, four times the data:
+
+$$t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{2 - 3}{0.853/\sqrt{12}} = \frac{-1}{0.246} = -4.06 \qquad (p = 0.002)$$
+
+```{r cm-n12, echo=TRUE}
+t.test(rep(c(1, 2, 3), 4), mu = 3)$statistic
+```
+
+**Nothing about the difference changed. Only the amount of evidence did.** Quadrupling the sample halves the standard error and so doubles $t$ on its own; the rest of the jump comes from the standard deviation settling slightly lower once there are twelve values to estimate it from.
+
+This is the single most important thing to understand about significance testing, and it cuts both ways: with three observations you can miss a real effect, and with three million you can "detect" one too small to matter to anybody. A t-test answers *is this difference distinguishable from chance* — never *is this difference large*, and never *does this difference matter*.
+
+### Two independent groups {#cm-two-sample}
+
+The more common comparison is between two groups of *different* people. Our questionnaire offers a socially interesting one. A well-known result in sociology is that men rate their own mathematical ability higher than women who perform identically — Shelley Correll showed this with US high-school data, and argued it quietly steers career choices long before any actual ability difference could.[^cm-correll] Does our seminar show the same pattern in self-rated *statistics* background?
+
+```{r cm-gender-table, echo=FALSE}
+coursedata %>%
+  group_by(Gender) %>%
+  summarise(n = n(),
+            `Mean rating` = round(mean(Background.in.Statistics), 2),
+            SD = round(sd(Background.in.Statistics), 2),
+            SE = round(sd(Background.in.Statistics) / sqrt(n()), 3)) %>%
+  knitr::kable(caption = "Self-rated statistics background (1-5) by gender.",
+               align = c("l", "r", "r", "r", "r"))
+```
+
+Men rate themselves 0.09 points higher. The two-sample t-test asks whether a gap of this size, between groups of 122 and 111, is distinguishable from chance. Four comparisons fit in one table:
+
+```{r cm-test-table, echo=TRUE}
+comparisons <- list(
+  "Statistics rating" = t.test(Background.in.Statistics ~ Gender, data = coursedata),
+  "R rating"          = t.test(Background.in.R ~ Gender, data = coursedata),
+  "Writing rating"    = t.test(Background.in.Academic.Writing ~ Gender, data = coursedata),
+  "Age (years)"       = t.test(Age ~ Gender, data = coursedata))
+```
+
+```{r cm-test-table-pretty, echo=FALSE}
+do.call(rbind, lapply(comparisons, function(x)
+  data.frame(`Female - Male` = round(unname(x$estimate[1] - x$estimate[2]), 3),
+             t  = round(unname(x$statistic), 2),
+             df = round(unname(x$parameter), 1),
+             p  = round(x$p.value, 3),
+             `CI low`  = round(x$conf.int[1], 2),
+             `CI high` = round(x$conf.int[2], 2),
+             check.names = FALSE))) %>%
+  knitr::kable(caption = "Four comparisons of women and men among the same 233 students. Only the last is distinguishable from chance.",
+               align = "rrrrrr")
+```
+
+Three of the four rows are null results, and not marginally so: the statistics gap has $t = -0.66$ and $p = 0.51$, and its confidence interval runs from women 0.35 points behind to women 0.17 ahead. The R rating even leans the other way, with women rating themselves *higher* by 0.12 points — also indistinguishable from chance. Whatever Correll measured in US high schools does not announce itself in this room.
+
+The fourth row is real. Male students are 1.1 years older, $t = -2.33$, $p = 0.021$, and the interval excludes zero. Note how ordinary that sentence sounds and how much machinery sits underneath it: two sample means, two sample spreads, two sample sizes, one standard error of the difference, and Gosset's distribution to judge the ratio.
+
+::: {.analysis-warning}
+Be careful with what the null results do and do not say. "No significant difference in self-rated statistics background" is **not** the same as "there is no difference". Our confidence interval allows anything from women 0.35 points *behind* to 0.17 points *ahead* — it is an interval of ignorance, not a certificate of equality. With 233 students we can rule out a large confidence gap in this course; we cannot rule out a small one. Absence of evidence, once again, is not evidence of absence.
+:::
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2> Truly Dedicated: Student or Welch? </h2>
+:::
+Look at the degrees of freedom in the table: a decidedly un-whole 219.6, 230.3, 231.0, 230.0. Whole numbers would be 231 in every row.
+
+The classical two-sample test assumes both groups have the **same variance**. In 1947 Bernard Welch worked out a version that drops this assumption, at the price of those fractional degrees of freedom.[^cm-welch] R uses Welch **by default**, and this is a deliberately opinionated choice: when the variances happen to be equal, Welch loses almost nothing; when they are not, the classical test can be badly misleading. You get the classical test only by asking for it, with `var.equal = TRUE`.
+
+For the age comparison the two versions agree to two decimals, $t = -2.33$ either way. When the answer *changes* between them, that itself is telling you the groups differ in spread — which may be more interesting than the means (more on this at the end of section \@ref(partitioning-variation)).
+::::
+
+### Paired observations {#cm-paired}
+
+The third coat the t-statistic wears is subtler, and it is the one social scientists most often fail to recognise when they meet it. Compare the students' statistics rating with their R rating. Two means: 2.66 and 1.75. You might reach for the two-sample test — but these are not two groups of people. **They are the same 233 people, measured twice.**
+
+Most textbooks introduce pairing as a *before and after* design, and many readers come away thinking pairing means time. It does not. Pairing means only that each observation in one condition has exactly one partner in the other, and that the two partners share something the analysis should not have to estimate.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+Two measurements are **paired** when they are linked one-to-one by design rather than by chance, so that the difference between them can be computed for each unit individually. Common forms:
+
+- **The same unit at two times** — a patient before and after treatment, a country in 2019 and 2021. The familiar case.
+- **The same unit under two conditions** — a subject in a quiet and a noisy room, a firm's output with and without a subsidy.
+- **The same unit on two measures** — a student's statistics rating and R rating. Our case, and the most common one in survey research.
+- **Two different units matched deliberately** — twins, a patient and a matched control, a treated village and its nearest neighbour. Here the "unit" is the pair, not the person.
+
+The test is always the same: compute the difference *within* each pair, then run a one-sample test on those differences against zero.
+::::
+
+Our case is the third kind, and it deserves one honest caveat. Statistics and R are different things, so the comparison is not "is this skill higher than the same skill later" but "does this person place themselves higher on one scale than on the other". That question is legitimate — it is precisely how a curriculum designer decides where to start — but it leans on both items sharing the same 1-to-5 Beginner-to-Advanced anchors, which they do. If the two items had different anchors, the difference would be uninterpretable no matter how significant it was.
+
+The mechanics are less mysterious than the name. Pairing is subtraction: build one column of within-student differences, and the two-sample problem collapses into the one-sample problem you already solved.
+
+```{r cm-differences, echo=TRUE}
+differences <- coursedata$Background.in.Statistics - coursedata$Background.in.R
+
+mean(differences)          # the paired estimate, already
+table(sign(differences))   # -1 rates R higher, 0 equal, +1 rates statistics higher
+```
+
+That column of 233 numbers is the whole test, and it is better seen than tabulated. Draw it:
+
+```{r cm-diff-fig, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.width=7, fig.height=3.2, fig.cap="The paired t-test in one picture: is this distribution of within-student differences centred away from zero?"}
+pt_ci <- t.test(differences)$conf.int
+
+ggplot(data.frame(d = differences), aes(d)) +
+  geom_histogram(binwidth = 1, fill = "#9b3f2d", colour = "white", linewidth = .3) +
+  geom_vline(xintercept = 0, linetype = 2, linewidth = .8, colour = "grey20") +
+  geom_vline(xintercept = mean(differences), colour = "red", linewidth = 1) +
+  annotate("text", x = 0, y = 99, label = "no difference", hjust = 1.08,
+           size = 3, colour = "grey20") +
+  annotate("text", x = mean(differences), y = 99, label = "mean = 0.91",
+           hjust = -0.12, size = 3, colour = "red") +
+  scale_x_continuous(breaks = -4:4) +
+  coord_cartesian(ylim = c(0, 108)) +
+  labs(x = "Statistics rating minus R rating, per student", y = "Students",
+       title = "233 within-student differences",
+       subtitle = "10 students rate R higher, 72 rate them equal, 151 rate statistics higher") +
+  theme_minimal(base_size = 10) +
+  theme(panel.grid.minor = element_blank())
+```
+
+The picture *is* the test. The dashed line at zero is the null hypothesis; the red line is where the data actually sit. The question "are these two means different?" has become "is this pile of numbers centred away from zero?", which the eye can answer before the arithmetic does. Running `t.test(differences, mu = 0)` would now give exactly the paired result — `paired = TRUE` is a convenience, not a different procedure.
+
+#### The same data, analysed both ways {#cm-paired-vs-unpaired}
+
+Rather than assert that pairing helps, run the identical numbers through both tests and put the results side by side. Nothing changes except one argument:
+
+```{r cm-paired-compare, echo=TRUE}
+stats_rating <- coursedata$Background.in.Statistics
+r_rating     <- coursedata$Background.in.R
+
+unpaired <- t.test(stats_rating, r_rating)                 # pretends they are strangers
+paired   <- t.test(stats_rating, r_rating, paired = TRUE)  # knows they are the same people
+```
+
+```{r cm-paired-compare-pretty, echo=FALSE}
+tidy2 <- function(x) data.frame(
+  Difference = round(unname(if (length(x$estimate) == 2)
+                       x$estimate[1] - x$estimate[2] else x$estimate), 3),
+  SE = round(diff(x$conf.int) / 2 / qt(.975, x$parameter), 3),
+  t  = round(unname(x$statistic), 2),
+  df = round(unname(x$parameter), 1),
+  `CI low` = round(x$conf.int[1], 2), `CI high` = round(x$conf.int[2], 2),
+  `CI width` = round(diff(x$conf.int), 3), check.names = FALSE)
+
+rbind("Treated as two independent groups" = tidy2(unpaired),
+      "Treated as paired (correct)"       = tidy2(paired)) %>%
+  knitr::kable(align = "rrrrrrr",
+               caption = "The same 466 numbers, analysed twice. The estimate is identical; everything about its precision is not.")
+```
+
+Read the table across. The **estimate does not move**: 0.91 points either way, because the average of the differences is the difference of the averages — that piece of arithmetic is not in dispute. Everything to the right of it moves. The standard error falls from 0.089 to 0.065, the t-statistic rises from 10.2 to 14.1, and the confidence interval narrows from 0.35 points wide to 0.25.
+
+Why? Because people differ from each other far more than a person differs from themselves. A generally confident student rates *both* skills high; a modest one rates both low. In the two-sample setup, all of that between-person personality sits in the denominator as noise. In the paired setup it **cancels** — subtracting a student's two ratings subtracts their personality along with it. The two ratings correlate at 0.48, and that correlation is exactly what pairing converts into precision.
+
+```{r cm-ci-fig, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.width=7, fig.height=2.4, fig.cap="The same estimate with two different amounts of confidence. Pairing does not change what we found; it changes how well we know it."}
+data.frame(
+  Analysis = factor(c("Paired", "Two independent groups"),
+                    levels = c("Paired", "Two independent groups")),
+  est = c(paired$estimate, unpaired$estimate[1] - unpaired$estimate[2]),
+  lo  = c(paired$conf.int[1], unpaired$conf.int[1]),
+  hi  = c(paired$conf.int[2], unpaired$conf.int[2])) %>%
+  ggplot(aes(est, Analysis)) +
+  geom_errorbarh(aes(xmin = lo, xmax = hi), height = .16,
+                 linewidth = .9, colour = "#9b3f2d") +
+  geom_point(size = 3, colour = "#9b3f2d") +
+  geom_text(aes(label = paste0("width ", round(hi - lo, 2))),
+            vjust = -1.4, size = 3, colour = "grey30") +
+  scale_x_continuous(limits = c(0.6, 1.2)) +
+  labs(x = "Statistics rating minus R rating (points on the 1-5 scale)", y = NULL,
+       title = "95% confidence interval for the same difference") +
+  theme_minimal(base_size = 10) +
+  theme(panel.grid.minor = element_blank())
+```
+
+#### What the shrinking standard error is worth {#cm-pairing-worth}
+
+"The standard error fell from 0.089 to 0.065" is a true sentence that persuades almost nobody. Here is the same fact in a currency everyone understands.
+
+Pairing bought a standard error 28% smaller. To buy the same 28% by collecting more data instead — asking one set of students about statistics and a *different* set about R — you would need about **448 students in each group** rather than 233. And because those are two disjoint sets of people, that is 896 respondents in total instead of 233: nearly four times as many, for exactly the same answer.
+
+```{r cm-equivalent-n, echo=TRUE}
+se_paired <- sd(differences) / sqrt(length(differences))
+(var(stats_rating) + var(r_rating)) / se_paired^2   # students needed per group
+```
+
+The reason is the square root. Precision improves only with $\sqrt{n}$, so every further increment of confidence costs quadratically more fieldwork, while pairing costs one argument.
+
+#### Does pairing always help? {#cm-pairing-always}
+
+Nearly always — but "always" is too strong, and the exception is worth understanding because it tells you *why* the method works.
+
+The variance of a difference is
+
+$$var(x - y) = var(x) + var(y) - 2\,cov(x, y)$$
+
+and everything hinges on that last term. Pairing pays off exactly when the two measurements are **positively correlated**, because only then does subtracting them remove more noise than it adds. Written in terms of the correlation $r$, the paired standard error is smaller than the unpaired one by a factor of $\sqrt{1 - r}$.
+
+```{r cm-pairing-sim, echo=FALSE}
+data.frame(
+  `Correlation r` = c(-0.5, 0.0, 0.3, 0.6, 0.9),
+  `SE ratio (paired / unpaired)` = round(sqrt(1 - c(-0.5, 0, 0.3, 0.6, 0.9)), 3),
+  `Verdict` = c("pairing is 22% worse", "a wash, minus the lost df",
+                "16% better", "37% better", "68% better"),
+  check.names = FALSE) %>%
+  knitr::kable(align = "rrl",
+               caption = "Pairing is a bet on positive correlation. The break-even point is r = 0.")
+```
+
+Three regimes, then. When $r > 0$ — the normal case, because the same unit carries the same idiosyncrasies into both measurements — pairing wins, and wins more the stronger the link. When $r = 0$ the standard errors are identical, but the paired test has only $n - 1$ degrees of freedom instead of $n_1 + n_2 - 2$, so it is very slightly *worse*. When $r < 0$, pairing is actively harmful.
+
+::: {.analysis-important}
+So the honest statement is not "pairing always helps" but something sharper and more useful: **pairing is not a choice you make at the analysis stage — it is a fact about your data that the analysis must respect.**
+
+If the observations *are* paired, analysing them as independent groups is not a missed opportunity, it is **wrong**: the two-sample formula assumes independence, and your observations are not independent. If they are *not* paired, you cannot pair them however much you would like the narrower interval. The efficiency gain is the reward for a good design, not a knob to turn afterwards.
+:::
+
+::: {.analysis-takeaway}
+And notice what this implies for study design. Two measurements on the same unit are worth far more than two measurements on different units. That is the whole economic argument for **panel data** in chapter \@ref(panel-data): following the same people over many waves rather than surveying fresh people each year buys precision that fresh samples could only match at several times the cost.
+
+The paired t-test is the smallest possible panel — exactly two waves — and the "subtract each unit from itself to remove everything constant about the unit" move is the essence of the fixed-effects estimator. With $T$ waves instead of 2, the same logic sweeps out everything permanent about a person: their upbringing, their personality, their unmeasured ability. Everything you learn here about why pairing works is the intuition for why panel data is worth its cost.
+:::
+
+The individual picture explains the arithmetic. Each grey line below is one student:
+
+```{r cm-paired-fig, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.width=7, fig.height=3.6, fig.cap="Each line is one student. Most lines fall from statistics to R; a confident student is high on both, a modest one low on both - pairing subtracts that away."}
+set.seed(1)
+coursedata %>%
+  mutate(id = row_number()) %>%
+  select(id, Statistics = Background.in.Statistics, R = Background.in.R) %>%
+  pivot_longer(-id, names_to = "Skill", values_to = "Rating") %>%
+  mutate(Skill = factor(Skill, levels = c("Statistics", "R")),
+         Rating_j = Rating + runif(n(), -.18, .18)) %>%
+  ggplot(aes(Skill, Rating_j, group = id)) +
+  geom_line(alpha = .12, colour = "grey40") +
+  geom_point(alpha = .25, size = .7, colour = "grey25") +
+  stat_summary(aes(y = Rating, group = 1), fun = mean, geom = "line",
+               colour = "#9b3f2d", linewidth = 1.2) +
+  stat_summary(aes(y = Rating, group = 1), fun = mean, geom = "point",
+               colour = "#9b3f2d", size = 3) +
+  scale_y_continuous(breaks = 1:5, limits = c(0.7, 5.3)) +
+  labs(x = NULL, y = "Self-rating (1-5)", title = "Same student, two skills") +
+  theme_minimal(base_size = 10)
+```
+
+### Where this is going {#cm-onwards}
+
+Three tests, three coats, one fraction. You now have the whole t-test family, and with it the vocabulary — standard error, confidence interval, degrees of freedom — that every later chapter assumes.
+
+Two extensions follow. The immediate one gets the next section: what happens when there are not two groups, but seven? That is the analysis of variance, and it is the reason Fisher went to work on a farm.
+
+The deeper one has to wait. Every test in this section can be rewritten as a **regression** — the two-sample t-test turns out to be the smallest regression there is, and the same is true of the correlation test, of ANOVA, and of most of the non-parametric tests you have heard of. That is a genuinely unifying idea, but it is only unifying once you know what a regression *is*. So it is deferred to the end of the Model chapter (section \@ref(tests-as-models)), where it can be shown rather than promised.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+1. Master students report on average 1.95 more total semesters of study than Bachelor students ($t = 4.8$). Before calling that a discovery, state what the *boring* explanation is — what must be true of Master students by definition?
+
+2. A newspaper reports: "Study with 2.4 million users finds people who use app X are significantly happier (p < 0.001), by 0.02 points on a 10-point scale." Which is doing the work here, the signal or the sample size? `r mcq(c("The signal - the effect is well measured", answer = "The sample size - a tiny difference became detectable", "Neither, the p-value is wrong"))`
+
+3. A figure reports a mean income of 2,400 € with a bar labelled "± 40", based on 900 respondents. Is 40 more likely to be a standard deviation or a standard error? `r mcq(c("Standard deviation", answer = "Standard error", "Impossible to say from the number alone"))`
+
+4. Two groups' 95% confidence intervals overlap slightly. `r torf(FALSE)` This proves the two means are not significantly different.
+
+5. You measure the same countries' unemployment in 2019 and 2021 and want to test whether the pandemic changed the average. Which test? `r mcq(c("One-sample t-test", "Two-sample t-test", answer = "Paired t-test"))`
+
+6. A colleague ran a paired experiment on 40 subjects but analysed it as two independent groups of 40. `r torf(FALSE)` The analysis is merely inefficient but still valid, because the estimate of the difference is unbiased either way.
+::::
+
+[^cm-gosset]: Gosset's life and the brewery context: Ziliak, S. T., *Guinnessometrics: The Economic Foundation of "Student's" t*, *Journal of Economic Perspectives* 22(4), 2008, 199–216, <https://doi.org/10.1257/jep.22.4.199>. A short account: *The genius at Guinness and his statistical legacy*, The Conversation, 2018, <https://theconversation.com/the-genius-at-guinness-and-his-statistical-legacy-93134>.
+
+[^cm-student1908]: Student, *The probable error of a mean*, *Biometrika* 6(1), 1908, 1–25, <https://doi.org/10.1093/biomet/6.1.1>. Guinness's publication ban followed an earlier paper that had revealed commercially useful information; Gosset's identity was an open secret among statisticians long before his death in 1937.
+
+[^cm-nagele]: Nagele, P., *Misuse of standard error of the mean (SEM) when reporting variability of a study sample. A critical evaluation of four anaesthesia journals*, *British Journal of Anaesthesia* 90(4), 2003, 514–516, <https://doi.org/10.1093/bja/aeg087>. Misuse ranged from 11.5% of articles in the *European Journal of Anaesthesiology* to 27.7% in *Anesthesia & Analgesia*.
+
+[^cm-belia]: Belia, S., Fidler, F., Williams, J., & Cumming, G., *Researchers misunderstand confidence intervals and standard error bars*, *Psychological Methods* 10(4), 2005, 389–396, <https://doi.org/10.1037/1082-989X.10.4.389>. The 473 respondents were drawn from authors published in 21 psychology, 6 behavioural neuroscience and 5 medical journals.
+
+[^cm-cumming]: Cumming, G., Fidler, F., & Vaux, D. L., *Error bars in experimental biology*, *The Journal of Cell Biology* 177(1), 2007, 7–11, <https://doi.org/10.1083/jcb.200611141>. Their Rule 6 gives the overlap and gap rules quoted here; Rule 4 recommends inferential bars (standard error or confidence interval) over standard deviations whenever the figure is making an inferential point.
+
+[^cm-correll]: Correll, S. J., *Gender and the Career Choice Process: The Role of Biased Self-Assessments*, *American Journal of Sociology* 106(6), 2001, 1691–1730, <https://doi.org/10.1086/321299>.
+
+[^cm-welch]: Welch, B. L., *The generalization of "Student's" problem when several different population variances are involved*, *Biometrika* 34(1–2), 1947, 28–35, <https://doi.org/10.1093/biomet/34.1-2.28>.
+
+[^cm-data-note]: `data/Course/GF_AllTime.csv` in this book's repository, 234 responses in total. One respondent gave their age as 278 and is removed here by `filter(Age < 100)`; that case is discussed in the chapter on missing data. Note the semicolon separator.
