@@ -279,8 +279,12 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#visualization"><i class="fa fa-check"></i><b>2.2</b> Visualization</a></li>
 <li class="chapter" data-level="2.3" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#telling-a-story"><i class="fa fa-check"></i><b>2.3</b> Telling a story</a></li>
 <li class="chapter" data-level="2.4" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#mans-best-friend"><i class="fa fa-check"></i><b>2.4</b> Man's best friend</a></li>
-<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a></li>
-<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#grammar-of-graphics"><i class="fa fa-check"></i><b>2.6</b> Grammar of Graphics</a></li>
+<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#stories-measuring-ink"><i class="fa fa-check"></i><b>2.5.1</b> What the ink is worth</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#never-use-pie-charts"><i class="fa fa-check"></i><b>2.6</b> Never use pie charts</a></li>
+<li class="chapter" data-level="2.7" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#stories-bars"><i class="fa fa-check"></i><b>2.7</b> Then why use bars at all?</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>3</b> Tabular Data</a>
 <ul>
@@ -671,9 +675,9 @@ Reading
 <h2><span class="header-section-number">4.2</span> Application<a href="panel-data-1.html#application" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="data-inspection" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Data Inspection<a href="panel-data-1.html#data-inspection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>SOEP practice data (2015 - 2019) comes labeled and ready for analysis. SOEP provides a digital object identifier (DOI) for this data: <a href="https://doi.org/10.5684/soep.practice.v36" class="uri">https://doi.org/10.5684/soep.practice.v36</a>.<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="panel-data-1.html#cb29-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb29-2"><a href="panel-data-1.html#cb29-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span></code></pre></div>
+<p>SOEP practice data (2015 - 2019) comes labeled and ready for analysis. SOEP provides a digital object identifier (DOI) for this data: <a href="https://doi.org/10.5684/soep.practice.v36" class="uri">https://doi.org/10.5684/soep.practice.v36</a>.<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="panel-data-1.html#cb30-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb30-2"><a href="panel-data-1.html#cb30-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span></code></pre></div>
 <!-- Column names are German, but attribute labels are English.  -->
 <p>This practice data contains socio-economic information on children, education, job, health, satisfaction and income. It contains 15 variables and 23522 observations.</p>
 <!-- preamble start -->
@@ -889,9 +893,9 @@ Reading
 <p>Column names are German, but attribute labels are in English. <code>einkommenj1</code> contains <em>Gross Income from Main Job/Year</em>.</p>
 <p>The documentation (click the DOI <a href="https://doi.org/10.5684/soep.practice.v36" class="uri">https://doi.org/10.5684/soep.practice.v36</a>) tells that there are 6.355 people in the data. Every individual is likely observed multiple times (i.e. panel data). Pipe <code>soep</code> into <code>count()</code> of personal <code>id</code>. The tibble output already contains the number of rows. To literally access the value, ask <code>nrow()</code>.</p>
 <p>Adding <code>arrange()</code> means sorting the data by a variable (i.e. the temporarily created variable <code>n</code>) either ascending or descending (from high to low). Ascending is the default. For descending order apply the <code>desc()</code> command. <code>group_by()</code> is a powerful command, especially when working with panel data. It can do any form of data manipulation or analysis with respect to the chosen variable. At this stage it's a mere alternative <code>count()</code>.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="panel-data-1.html#cb30-1" tabindex="-1"></a><span class="co"># soep %&gt;% group_by(id) %&gt;% count() %&gt;% arrange(n) # try this alternative </span></span>
-<span id="cb30-2"><a href="panel-data-1.html#cb30-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(n) </span>
-<span id="cb30-3"><a href="panel-data-1.html#cb30-3" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="panel-data-1.html#cb31-1" tabindex="-1"></a><span class="co"># soep %&gt;% group_by(id) %&gt;% count() %&gt;% arrange(n) # try this alternative </span></span>
+<span id="cb31-2"><a href="panel-data-1.html#cb31-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(n) </span>
+<span id="cb31-3"><a href="panel-data-1.html#cb31-3" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">count</span>(id) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
@@ -912,13 +916,13 @@ Reading
 #&gt; # ℹ 6,345 more rows</code></pre>
 </details>
 <p>Remember that the observation period is between 2015 and 2019, i.e. the minimum number of observations per individual is 1 year, the maximum is 5 years. Over the years, observations get less and less (panel attrition).</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="panel-data-1.html#cb32-1" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>syear)</span>
-<span id="cb32-2"><a href="panel-data-1.html#cb32-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb32-3"><a href="panel-data-1.html#cb32-3" tabindex="-1"></a><span class="co">#&gt; 2015 2016 2017 2018 2019 </span></span>
-<span id="cb32-4"><a href="panel-data-1.html#cb32-4" tabindex="-1"></a><span class="co">#&gt; 5527 4987 4720 4351 3937</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="panel-data-1.html#cb33-1" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>syear)</span>
+<span id="cb33-2"><a href="panel-data-1.html#cb33-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb33-3"><a href="panel-data-1.html#cb33-3" tabindex="-1"></a><span class="co">#&gt; 2015 2016 2017 2018 2019 </span></span>
+<span id="cb33-4"><a href="panel-data-1.html#cb33-4" tabindex="-1"></a><span class="co">#&gt; 5527 4987 4720 4351 3937</span></span></code></pre></div>
 <p>How many people are observed in all years? Filter for a specific <code>n</code> and ask for the number of rows or observations (alternatively you can check the tibble size again).</p>
 <p><code>erwerb</code> is the employment status in SOEP. Its labels range from -7 to 6. Use the <code>attributes()</code> command on a specific variable. It returns a set of information (object class is <code>list</code>). We can access elements of this list by the <code>$</code> operator. Did you notice the small mistake in the labels? (Remember this is practice data.)</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="panel-data-1.html#cb33-1" tabindex="-1"></a><span class="fu">attributes</span>(soep<span class="sc">$</span>erwerb)<span class="sc">$</span>labels</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="panel-data-1.html#cb34-1" tabindex="-1"></a><span class="fu">attributes</span>(soep<span class="sc">$</span>erwerb)<span class="sc">$</span>labels</span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
@@ -951,11 +955,11 @@ Reading
 #&gt;                                                      6</code></pre>
 Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. there are 3550 ID-groups (or units or people).
 </details>
-<p>Negative values indicate several different forms of missing data in SOEP.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> Actually, there are no negative values in this dataset. As for levels of a factor variables, labels can be empty.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="panel-data-1.html#cb35-1" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>erwerb)</span>
-<span id="cb35-2"><a href="panel-data-1.html#cb35-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb35-3"><a href="panel-data-1.html#cb35-3" tabindex="-1"></a><span class="co">#&gt;    1    2    3    4    5    6 </span></span>
-<span id="cb35-4"><a href="panel-data-1.html#cb35-4" tabindex="-1"></a><span class="co">#&gt; 8700 3481  695 1446 9169   29</span></span></code></pre></div>
+<p>Negative values indicate several different forms of missing data in SOEP.<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a> Actually, there are no negative values in this dataset. As for levels of a factor variables, labels can be empty.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="panel-data-1.html#cb36-1" tabindex="-1"></a><span class="fu">table</span>(soep<span class="sc">$</span>erwerb)</span>
+<span id="cb36-2"><a href="panel-data-1.html#cb36-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb36-3"><a href="panel-data-1.html#cb36-3" tabindex="-1"></a><span class="co">#&gt;    1    2    3    4    5    6 </span></span>
+<span id="cb36-4"><a href="panel-data-1.html#cb36-4" tabindex="-1"></a><span class="co">#&gt; 8700 3481  695 1446 9169   29</span></span></code></pre></div>
 </div>
 <div id="data-preparation" class="section level3 hasAnchor" number="4.2.2">
 <h3><span class="header-section-number">4.2.2</span> Data Preparation<a href="panel-data-1.html#data-preparation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -965,19 +969,19 @@ Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. 
 <!--   filter(erwerb %in% c(1, 2, 4, 5)) -->
 <!-- ``` -->
 <p>We summarize categories with a combination of <code>mutate()</code> and <code>case_when()</code>. For each value in <code>erwerb</code> conduct a logical comparison via <code>==</code> and assign a new value. In this case it combines <em>Employed part-time</em> with <em>Irregular employment or in marginal</em>.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="panel-data-1.html#cb36-1" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="panel-data-1.html#cb36-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">erwerb =</span> <span class="fu">case_when</span>(erwerb <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;fulltime&quot;</span>,</span>
-<span id="cb36-3"><a href="panel-data-1.html#cb36-3" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>,</span>
-<span id="cb36-4"><a href="panel-data-1.html#cb36-4" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>, </span>
-<span id="cb36-5"><a href="panel-data-1.html#cb36-5" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>,</span>
-<span id="cb36-6"><a href="panel-data-1.html#cb36-6" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;unemployed&quot;</span>,</span>
-<span id="cb36-7"><a href="panel-data-1.html#cb36-7" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>,</span>
-<span id="cb36-8"><a href="panel-data-1.html#cb36-8" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;NA&quot;</span>))</span></code></pre></div>
-<p>The unemployment rate represents the proportion of the civilian labour force that is unemployed. The labour force consists of all employed and unemployed persons of working age. Filter for working age between 18 and 67 years. There are 472 observations younger than 18 and 4125 older than 67.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="panel-data-1.html#cb37-1" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="panel-data-1.html#cb37-2" tabindex="-1"></a>  <span class="fu">filter</span>(alter <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">18</span><span class="sc">:</span><span class="dv">67</span>))</span></code></pre></div>
+<span id="cb37-2"><a href="panel-data-1.html#cb37-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">erwerb =</span> <span class="fu">case_when</span>(erwerb <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;fulltime&quot;</span>,</span>
+<span id="cb37-3"><a href="panel-data-1.html#cb37-3" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>,</span>
+<span id="cb37-4"><a href="panel-data-1.html#cb37-4" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>, </span>
+<span id="cb37-5"><a href="panel-data-1.html#cb37-5" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>,</span>
+<span id="cb37-6"><a href="panel-data-1.html#cb37-6" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;unemployed&quot;</span>,</span>
+<span id="cb37-7"><a href="panel-data-1.html#cb37-7" tabindex="-1"></a>                            erwerb <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;parttime&quot;</span>,</span>
+<span id="cb37-8"><a href="panel-data-1.html#cb37-8" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;NA&quot;</span>))</span></code></pre></div>
+<p>The unemployment rate represents the proportion of the civilian labour force that is unemployed. The labour force consists of all employed and unemployed persons of working age. Filter for working age between 18 and 67 years. There are 472 observations younger than 18 and 4125 older than 67.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="panel-data-1.html#cb38-1" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="panel-data-1.html#cb38-2" tabindex="-1"></a>  <span class="fu">filter</span>(alter <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">18</span><span class="sc">:</span><span class="dv">67</span>))</span></code></pre></div>
 <p>The moment of glory has come for <code>group_by()</code>. It accepts multiple inputs. The following combination returns for each year and each employment status the number of observations with help of <code>summarise()</code> and <code>n()</code>.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="panel-data-1.html#cb38-1" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="panel-data-1.html#cb39-1" tabindex="-1"></a><span class="cn">NA</span></span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
@@ -986,7 +990,7 @@ Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. 
 <p>From this table, the unemployment rate for 2015 can be calculated manually:</p>
 <p><span class="math display">\[\frac{1268}{2013+1261+1268} = 0.279172 = 27.92 \%\]</span></p>
 <p>Having done this, step back to focus on years again and use different n-values per year to figure out the unemployment. Relate <code>unemployed</code> to those working either <code>fulltime</code> or <code>partime</code>.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="panel-data-1.html#cb39-1" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]<span class="sc">+</span>n[<span class="dv">3</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="panel-data-1.html#cb40-1" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]<span class="sc">+</span>n[<span class="dv">3</span>]))</span></code></pre></div>
 <details>
 <summary>
 <em>See result.</em>
@@ -999,26 +1003,26 @@ Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. 
 <div id="unemployment-status" class="section level4 hasAnchor" number="4.2.3.1">
 <h4><span class="header-section-number">4.2.3.1</span> Unemployment status<a href="panel-data-1.html#unemployment-status" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Pick up the calculation of the unemployment rate and pipe it into a <code>ggplot()</code> call. Define the axes elements within <code>aes()</code> (for aesthetics) and ask for points that are connected by a line.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb40-1"><a href="panel-data-1.html#cb40-1" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb40-2"><a href="panel-data-1.html#cb40-2" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="panel-data-1.html#cb40-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-4"><a href="panel-data-1.html#cb40-4" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-5"><a href="panel-data-1.html#cb40-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]<span class="sc">+</span>n[<span class="dv">3</span>])) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-6"><a href="panel-data-1.html#cb40-6" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> syear, <span class="at">y =</span> unemployment_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb40-7"><a href="panel-data-1.html#cb40-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Unemployment Rate&quot;</span>, </span>
-<span id="cb40-8"><a href="panel-data-1.html#cb40-8" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Unemployment Rate in Germany between 2015 and 2019&quot;</span>,</span>
-<span id="cb40-9"><a href="panel-data-1.html#cb40-9" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;SOEP practice data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb41-1"><a href="panel-data-1.html#cb41-1" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="panel-data-1.html#cb41-2" tabindex="-1"></a>  <span class="fu">group_by</span>(syear, erwerb) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="panel-data-1.html#cb41-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-4"><a href="panel-data-1.html#cb41-4" tabindex="-1"></a>  <span class="fu">group_by</span>(syear) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-5"><a href="panel-data-1.html#cb41-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unemployment_rate =</span> n[<span class="dv">3</span>]<span class="sc">/</span>(n[<span class="dv">1</span>]<span class="sc">+</span>n[<span class="dv">2</span>]<span class="sc">+</span>n[<span class="dv">3</span>])) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-6"><a href="panel-data-1.html#cb41-6" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> syear, <span class="at">y =</span> unemployment_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb41-7"><a href="panel-data-1.html#cb41-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Unemployment Rate&quot;</span>, </span>
+<span id="cb41-8"><a href="panel-data-1.html#cb41-8" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Unemployment Rate in Germany between 2015 and 2019&quot;</span>,</span>
+<span id="cb41-9"><a href="panel-data-1.html#cb41-9" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;SOEP practice data&quot;</span>)</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-63-1.png" alt="" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="obs-per-individual" class="section level4 hasAnchor" number="4.2.3.2">
 <h4><span class="header-section-number">4.2.3.2</span> Obs per individual<a href="panel-data-1.html#obs-per-individual" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Pick up the number of observations per individual and pipe it in a barplot with <code>geom_bar()</code>.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="panel-data-1.html#cb41-1" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="panel-data-1.html#cb41-2" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-3"><a href="panel-data-1.html#cb41-3" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb41-4"><a href="panel-data-1.html#cb41-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb41-5"><a href="panel-data-1.html#cb41-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of observations per individual&quot;</span>) <span class="sc">+</span></span>
-<span id="cb41-6"><a href="panel-data-1.html#cb41-6" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="panel-data-1.html#cb42-1" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="panel-data-1.html#cb42-2" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-3"><a href="panel-data-1.html#cb42-3" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb42-4"><a href="panel-data-1.html#cb42-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb42-5"><a href="panel-data-1.html#cb42-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of observations per individual&quot;</span>) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="panel-data-1.html#cb42-6" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-64-1.png" alt="" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -1038,9 +1042,9 @@ Note that the output further tells you <code># A tibble: 3,550 x 2</code>, i.e. 
 </div>
 <div class="footnotes">
 <hr />
-<ol start="10">
-<li id="fn10"><p>Why are DOIs important? A DOI is a unique identifier for a digital document. DOIs are important in academic citation because they are more permanent than URLs, ensuring that your reader can reliably locate the source. Read More: <a href="https://www.scribbr.com/citing-sources/what-is-a-doi/" target="_blank">What is a DOI? | Finding and Using Digital Object Identifiers</a><a href="panel-data-1.html#fnref10" class="footnote-back">↩︎</a></p></li>
-<li id="fn11"><p>Read more on the SOEPcompanion <a href="http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html" target="_blank">Missing Conventions</a><a href="panel-data-1.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<ol start="23">
+<li id="fn23"><p>Why are DOIs important? A DOI is a unique identifier for a digital document. DOIs are important in academic citation because they are more permanent than URLs, ensuring that your reader can reliably locate the source. Read More: <a href="https://www.scribbr.com/citing-sources/what-is-a-doi/" target="_blank">What is a DOI? | Finding and Using Digital Object Identifiers</a><a href="panel-data-1.html#fnref23" class="footnote-back">↩︎</a></p></li>
+<li id="fn24"><p>Read more on the SOEPcompanion <a href="http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html" target="_blank">Missing Conventions</a><a href="panel-data-1.html#fnref24" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 <script>

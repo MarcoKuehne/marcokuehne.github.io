@@ -279,8 +279,12 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#visualization"><i class="fa fa-check"></i><b>2.2</b> Visualization</a></li>
 <li class="chapter" data-level="2.3" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#telling-a-story"><i class="fa fa-check"></i><b>2.3</b> Telling a story</a></li>
 <li class="chapter" data-level="2.4" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#mans-best-friend"><i class="fa fa-check"></i><b>2.4</b> Man's best friend</a></li>
-<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a></li>
-<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#grammar-of-graphics"><i class="fa fa-check"></i><b>2.6</b> Grammar of Graphics</a></li>
+<li class="chapter" data-level="2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>2.5</b> Less is more</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#stories-measuring-ink"><i class="fa fa-check"></i><b>2.5.1</b> What the ink is worth</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#never-use-pie-charts"><i class="fa fa-check"></i><b>2.6</b> Never use pie charts</a></li>
+<li class="chapter" data-level="2.7" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#stories-bars"><i class="fa fa-check"></i><b>2.7</b> Then why use bars at all?</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>3</b> Tabular Data</a>
 <ul>
@@ -609,7 +613,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 Bernard Marr (2018) <em>How Much Data Do We Create Every Day? The Mind-Blowing Stats Everyone Should Read</em> <a href="https://www.forbes.com/sites/bernardmarr/2018/05/21/how-much-data-do-we-create-every-day-the-mind-blowing-stats-everyone-should-read/#4472289660ba" target="_blank">Forbes.</a>
 </footer>
 </blockquote>
-<p><strong>Data scraping</strong> is a technique where a computer program extracts data from human-readable output coming from another program. Data scraping often takes place in <strong>web scraping</strong> (also known as crawling or spidering). In this process, an application is used to extract valuable information from a website. <strong>PDF scraping</strong> or more general <strong>report mining</strong> is the extraction of data from human-readable computer reports. It is worth considering alternatives before start scraping data.<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a></p>
+<p><strong>Data scraping</strong> is a technique where a computer program extracts data from human-readable output coming from another program. Data scraping often takes place in <strong>web scraping</strong> (also known as crawling or spidering). In this process, an application is used to extract valuable information from a website. <strong>PDF scraping</strong> or more general <strong>report mining</strong> is the extraction of data from human-readable computer reports. It is worth considering alternatives before start scraping data.<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a></p>
 <div id="most-expensive-paintings" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Most expensive paintings<a href="web-data.html#most-expensive-paintings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>What do The Card Players and Marshall Islands have in common?</p>
@@ -636,7 +640,7 @@ Figure 6.2:  Flag of Marshall Islands.
 <p>Well, the first was sold for about 250.000.000 million USD in an auction in 2011 and the laters nominal gross domestic product is of similar size 220.000.000 million USD in 2019. About 60.000 people live in Marshall Islands. The most expensive paintings score similar to the gross domestic product of insular states.</p>
 <p>This is the English Wikipedia article <a href="https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid">list of highest prices ever paid for paintings</a>.</p>
 <p>In a web browser use the keyboard shortcut <code>CTRL + U</code> (in Google Chrome, Firefox, Microsoft Edge, Opera) to view the source code of a webpage. Alternatively, right click and choose "show source code".</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="web-data.html#cb53-1" tabindex="-1"></a>  border<span class="sc">:</span><span class="dv">1</span>px solid black;</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="web-data.html#cb54-1" tabindex="-1"></a>  border<span class="sc">:</span><span class="dv">1</span>px solid black;</span></code></pre></div>
 <p>One approach is this. Use <code>read_html()</code> from <code>rvest</code> package to download the webpage. Extract the node <code>table.wikitable</code> with the <code>html_nodes()</code> command. Convert this node into a table with <code>html_table()</code> setting <code>header=TRUE</code>. Use this data in a pipe <code>%&gt;%</code> with <code>bind_rows()</code> and <code>as_tibble()</code>.</p>
 <p>You can use any other scraping approach.</p>
 <p>Store the final table of expensive paintings in <code>paintings</code>. The following <code>DT</code> table should yield identical results.</p>
@@ -648,12 +652,12 @@ Figure 6.2:  Flag of Marshall Islands.
 <p>The website was redesigned after the first version of this chapter. The semester summaries are now collected on <strong>one page</strong> in expandable sections instead of being stored on a separate URL for every semester.</p>
 <p>Information is still presented in two ways: as <strong>tables in PDF</strong>, for example the time series of total student numbers, and as <strong>HTML text</strong> for the individual semesters.</p>
 <p>A simplified version of the current label-value structure looks like this:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb54-1"><a href="web-data.html#cb54-1" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span>Wintersemester 2025/26<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
-<span id="cb54-2"><a href="web-data.html#cb54-2" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Studierende gesamt: 3877<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb54-3"><a href="web-data.html#cb54-3" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Deutsche Studierende: 2229<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb54-4"><a href="web-data.html#cb54-4" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Ausländische Studierende: 1648<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb54-5"><a href="web-data.html#cb54-5" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Weibliche Studierende: 2132<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb54-6"><a href="web-data.html#cb54-6" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Männliche Studierende: 1728<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb55-1"><a href="web-data.html#cb55-1" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span>Wintersemester 2025/26<span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb55-2"><a href="web-data.html#cb55-2" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Studierende gesamt: 3877<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb55-3"><a href="web-data.html#cb55-3" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Deutsche Studierende: 2229<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb55-4"><a href="web-data.html#cb55-4" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Ausländische Studierende: 1648<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb55-5"><a href="web-data.html#cb55-5" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Weibliche Studierende: 2132<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb55-6"><a href="web-data.html#cb55-6" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Männliche Studierende: 1728<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code></pre></div>
 <p>Let's investigate the student numbers.</p>
 <div id="pdf-scraping" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> PDF scraping<a href="web-data.html#pdf-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -666,25 +670,25 @@ Figure 6.2:  Flag of Marshall Islands.
 <!-- https://crimebythenumbers.com/scrape-table.html -->
 <!-- https://academy.datawrapper.de/article/135-how-to-extract-data-out-of-pdfs -->
 <p>Use the built-in <code>download.file()</code> function to download the current PDF. To keep the book reproducible, the download is <strong>not</strong> performed during a normal render. It only runs when the refresh option is explicitly switched on.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="web-data.html#cb55-1" tabindex="-1"></a>viadrina_pdf_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb55-2"><a href="web-data.html#cb55-2" tabindex="-1"></a>  <span class="st">&quot;https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/&quot;</span>,</span>
-<span id="cb55-3"><a href="web-data.html#cb55-3" tabindex="-1"></a>  <span class="st">&quot;dezernat-1/studierendenstatistik/_dateien-statistik/&quot;</span>,</span>
-<span id="cb55-4"><a href="web-data.html#cb55-4" tabindex="-1"></a>  <span class="st">&quot;1-entwicklung-gesamtstudierendenzahl/&quot;</span>,</span>
-<span id="cb55-5"><a href="web-data.html#cb55-5" tabindex="-1"></a>  <span class="st">&quot;entwicklung-der-gesamtstudierendenzahl.pdf&quot;</span></span>
-<span id="cb55-6"><a href="web-data.html#cb55-6" tabindex="-1"></a>)</span>
-<span id="cb55-7"><a href="web-data.html#cb55-7" tabindex="-1"></a></span>
-<span id="cb55-8"><a href="web-data.html#cb55-8" tabindex="-1"></a>viadrina_pdf_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
-<span id="cb55-9"><a href="web-data.html#cb55-9" tabindex="-1"></a>  <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;entwicklung-der-gesamtstudierendenzahl.pdf&quot;</span></span>
-<span id="cb55-10"><a href="web-data.html#cb55-10" tabindex="-1"></a>)</span>
-<span id="cb55-11"><a href="web-data.html#cb55-11" tabindex="-1"></a></span>
-<span id="cb55-12"><a href="web-data.html#cb55-12" tabindex="-1"></a>refresh_viadrina <span class="ot">&lt;-</span> <span class="fu">isTRUE</span>(<span class="fu">getOption</span>(<span class="st">&quot;bfid.refresh_viadrina&quot;</span>, <span class="cn">FALSE</span>))</span>
-<span id="cb55-13"><a href="web-data.html#cb55-13" tabindex="-1"></a></span>
-<span id="cb55-14"><a href="web-data.html#cb55-14" tabindex="-1"></a><span class="cf">if</span> (refresh_viadrina) {</span>
-<span id="cb55-15"><a href="web-data.html#cb55-15" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">dirname</span>(viadrina_pdf_file), <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb55-16"><a href="web-data.html#cb55-16" tabindex="-1"></a>  <span class="fu">download.file</span>(viadrina_pdf_url, viadrina_pdf_file, <span class="at">mode =</span> <span class="st">&quot;wb&quot;</span>)</span>
-<span id="cb55-17"><a href="web-data.html#cb55-17" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="web-data.html#cb56-1" tabindex="-1"></a>viadrina_pdf_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb56-2"><a href="web-data.html#cb56-2" tabindex="-1"></a>  <span class="st">&quot;https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/&quot;</span>,</span>
+<span id="cb56-3"><a href="web-data.html#cb56-3" tabindex="-1"></a>  <span class="st">&quot;dezernat-1/studierendenstatistik/_dateien-statistik/&quot;</span>,</span>
+<span id="cb56-4"><a href="web-data.html#cb56-4" tabindex="-1"></a>  <span class="st">&quot;1-entwicklung-gesamtstudierendenzahl/&quot;</span>,</span>
+<span id="cb56-5"><a href="web-data.html#cb56-5" tabindex="-1"></a>  <span class="st">&quot;entwicklung-der-gesamtstudierendenzahl.pdf&quot;</span></span>
+<span id="cb56-6"><a href="web-data.html#cb56-6" tabindex="-1"></a>)</span>
+<span id="cb56-7"><a href="web-data.html#cb56-7" tabindex="-1"></a></span>
+<span id="cb56-8"><a href="web-data.html#cb56-8" tabindex="-1"></a>viadrina_pdf_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
+<span id="cb56-9"><a href="web-data.html#cb56-9" tabindex="-1"></a>  <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;entwicklung-der-gesamtstudierendenzahl.pdf&quot;</span></span>
+<span id="cb56-10"><a href="web-data.html#cb56-10" tabindex="-1"></a>)</span>
+<span id="cb56-11"><a href="web-data.html#cb56-11" tabindex="-1"></a></span>
+<span id="cb56-12"><a href="web-data.html#cb56-12" tabindex="-1"></a>refresh_viadrina <span class="ot">&lt;-</span> <span class="fu">isTRUE</span>(<span class="fu">getOption</span>(<span class="st">&quot;bfid.refresh_viadrina&quot;</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb56-13"><a href="web-data.html#cb56-13" tabindex="-1"></a></span>
+<span id="cb56-14"><a href="web-data.html#cb56-14" tabindex="-1"></a><span class="cf">if</span> (refresh_viadrina) {</span>
+<span id="cb56-15"><a href="web-data.html#cb56-15" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">dirname</span>(viadrina_pdf_file), <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb56-16"><a href="web-data.html#cb56-16" tabindex="-1"></a>  <span class="fu">download.file</span>(viadrina_pdf_url, viadrina_pdf_file, <span class="at">mode =</span> <span class="st">&quot;wb&quot;</span>)</span>
+<span id="cb56-17"><a href="web-data.html#cb56-17" tabindex="-1"></a>}</span></code></pre></div>
 <!-- https://www.youtube.com/watch?v=jfBZzuDMN0o -->
-<p>To extract a table from a PDF we can use the <code>pdftables</code> package.<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a> The package is a wrapper for the <strong>PDFTables API</strong>. It requires an API key from <a href="https://pdftables.com/" class="uri">https://pdftables.com/</a>. You can register and get one for free. The result is stored as a <code>.csv</code> file.</p>
+<p>To extract a table from a PDF we can use the <code>pdftables</code> package.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a> The package is a wrapper for the <strong>PDFTables API</strong>. It requires an API key from <a href="https://pdftables.com/" class="uri">https://pdftables.com/</a>. You can register and get one for free. The result is stored as a <code>.csv</code> file.</p>
 <div class="defbox">
 <div class="titeldefbox">
 <h2>
@@ -700,374 +704,374 @@ Definition
 <li><a href="https://resources.numbat.space/using-rprofile-and-renviron.html" class="uri">https://resources.numbat.space/using-rprofile-and-renviron.html</a></li>
 <li><a href="https://github.com/expersso/pdftables" class="uri">https://github.com/expersso/pdftables</a></li>
 </ul>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="web-data.html#cb56-1" tabindex="-1"></a><span class="fu">library</span>(pdftables)</span>
-<span id="cb56-2"><a href="web-data.html#cb56-2" tabindex="-1"></a></span>
-<span id="cb56-3"><a href="web-data.html#cb56-3" tabindex="-1"></a><span class="fu">convert_pdf</span>(</span>
-<span id="cb56-4"><a href="web-data.html#cb56-4" tabindex="-1"></a>  <span class="at">input_file =</span> viadrina_pdf_file,</span>
-<span id="cb56-5"><a href="web-data.html#cb56-5" tabindex="-1"></a>  <span class="at">output_file =</span> <span class="st">&quot;data/Viadrina/viadrina_students.csv&quot;</span>,</span>
-<span id="cb56-6"><a href="web-data.html#cb56-6" tabindex="-1"></a>  <span class="at">api_key =</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;PDFTABLES_API_KEY&quot;</span>)</span>
-<span id="cb56-7"><a href="web-data.html#cb56-7" tabindex="-1"></a>)</span></code></pre></div>
-<p>Scraped data often requires a lot of cleaning. The historic PDF-derived CSV is kept locally in the repository, so the following analysis does not depend on a live website.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="web-data.html#cb57-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="web-data.html#cb57-1" tabindex="-1"></a><span class="fu">library</span>(pdftables)</span>
 <span id="cb57-2"><a href="web-data.html#cb57-2" tabindex="-1"></a></span>
-<span id="cb57-3"><a href="web-data.html#cb57-3" tabindex="-1"></a>viadrina_1992_2020_before <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
-<span id="cb57-4"><a href="web-data.html#cb57-4" tabindex="-1"></a>  <span class="st">&quot;data/Viadrina/viadrina_students.csv&quot;</span>,</span>
-<span id="cb57-5"><a href="web-data.html#cb57-5" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span></span>
-<span id="cb57-6"><a href="web-data.html#cb57-6" tabindex="-1"></a>)</span>
-<span id="cb57-7"><a href="web-data.html#cb57-7" tabindex="-1"></a></span>
-<span id="cb57-8"><a href="web-data.html#cb57-8" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020_before</span>
-<span id="cb57-9"><a href="web-data.html#cb57-9" tabindex="-1"></a></span>
-<span id="cb57-10"><a href="web-data.html#cb57-10" tabindex="-1"></a><span class="co"># Replace header names by the first row.</span></span>
-<span id="cb57-11"><a href="web-data.html#cb57-11" tabindex="-1"></a><span class="fu">names</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="dv">1</span>, ]</span>
-<span id="cb57-12"><a href="web-data.html#cb57-12" tabindex="-1"></a></span>
-<span id="cb57-13"><a href="web-data.html#cb57-13" tabindex="-1"></a><span class="co"># Drop the first and final non-data rows.</span></span>
-<span id="cb57-14"><a href="web-data.html#cb57-14" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="sc">-</span><span class="dv">1</span>, ]</span>
-<span id="cb57-15"><a href="web-data.html#cb57-15" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="sc">-</span><span class="fu">nrow</span>(viadrina_1992_2020), ]</span>
-<span id="cb57-16"><a href="web-data.html#cb57-16" tabindex="-1"></a></span>
-<span id="cb57-17"><a href="web-data.html#cb57-17" tabindex="-1"></a><span class="co"># Remove line breaks and use readable column names.</span></span>
-<span id="cb57-18"><a href="web-data.html#cb57-18" tabindex="-1"></a><span class="fu">colnames</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(</span>
-<span id="cb57-19"><a href="web-data.html#cb57-19" tabindex="-1"></a>  <span class="st">&quot;[</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n]&quot;</span>,</span>
-<span id="cb57-20"><a href="web-data.html#cb57-20" tabindex="-1"></a>  <span class="st">&quot;&quot;</span>,</span>
-<span id="cb57-21"><a href="web-data.html#cb57-21" tabindex="-1"></a>  <span class="fu">colnames</span>(viadrina_1992_2020)</span>
-<span id="cb57-22"><a href="web-data.html#cb57-22" tabindex="-1"></a>)</span>
-<span id="cb57-23"><a href="web-data.html#cb57-23" tabindex="-1"></a></span>
-<span id="cb57-24"><a href="web-data.html#cb57-24" tabindex="-1"></a><span class="fu">colnames</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb57-25"><a href="web-data.html#cb57-25" tabindex="-1"></a>  <span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Total&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Female_Pct&quot;</span>,</span>
-<span id="cb57-26"><a href="web-data.html#cb57-26" tabindex="-1"></a>  <span class="st">&quot;German&quot;</span>, <span class="st">&quot;German_Pct&quot;</span>, <span class="st">&quot;Foreign&quot;</span>, <span class="st">&quot;Foreign_Pct&quot;</span>,</span>
-<span id="cb57-27"><a href="web-data.html#cb57-27" tabindex="-1"></a>  <span class="st">&quot;Pole&quot;</span>, <span class="st">&quot;Pole_Pct&quot;</span></span>
-<span id="cb57-28"><a href="web-data.html#cb57-28" tabindex="-1"></a>)</span>
-<span id="cb57-29"><a href="web-data.html#cb57-29" tabindex="-1"></a></span>
-<span id="cb57-30"><a href="web-data.html#cb57-30" tabindex="-1"></a><span class="co"># Remove percentage signs and convert all columns to numeric.</span></span>
-<span id="cb57-31"><a href="web-data.html#cb57-31" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
-<span id="cb57-32"><a href="web-data.html#cb57-32" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb57-33"><a href="web-data.html#cb57-33" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb57-34"><a href="web-data.html#cb57-34" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb57-35"><a href="web-data.html#cb57-35" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ifelse</span>(</span>
-<span id="cb57-36"><a href="web-data.html#cb57-36" tabindex="-1"></a>        <span class="fu">str_detect</span>(.x, <span class="st">&quot;%&quot;</span>),</span>
-<span id="cb57-37"><a href="web-data.html#cb57-37" tabindex="-1"></a>        <span class="fu">parse_number</span>(.x, <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">decimal_mark =</span> <span class="st">&quot;,&quot;</span>)) <span class="sc">/</span> <span class="dv">100</span>,</span>
-<span id="cb57-38"><a href="web-data.html#cb57-38" tabindex="-1"></a>        .x</span>
-<span id="cb57-39"><a href="web-data.html#cb57-39" tabindex="-1"></a>      )</span>
-<span id="cb57-40"><a href="web-data.html#cb57-40" tabindex="-1"></a>    )</span>
-<span id="cb57-41"><a href="web-data.html#cb57-41" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb57-42"><a href="web-data.html#cb57-42" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric))</span></code></pre></div>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="web-data.html#cb58-1" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb58-2"><a href="web-data.html#cb58-2" tabindex="-1"></a><span class="fu">datatable</span>(viadrina_1992_2020)</span></code></pre></div>
+<span id="cb57-3"><a href="web-data.html#cb57-3" tabindex="-1"></a><span class="fu">convert_pdf</span>(</span>
+<span id="cb57-4"><a href="web-data.html#cb57-4" tabindex="-1"></a>  <span class="at">input_file =</span> viadrina_pdf_file,</span>
+<span id="cb57-5"><a href="web-data.html#cb57-5" tabindex="-1"></a>  <span class="at">output_file =</span> <span class="st">&quot;data/Viadrina/viadrina_students.csv&quot;</span>,</span>
+<span id="cb57-6"><a href="web-data.html#cb57-6" tabindex="-1"></a>  <span class="at">api_key =</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;PDFTABLES_API_KEY&quot;</span>)</span>
+<span id="cb57-7"><a href="web-data.html#cb57-7" tabindex="-1"></a>)</span></code></pre></div>
+<p>Scraped data often requires a lot of cleaning. The historic PDF-derived CSV is kept locally in the repository, so the following analysis does not depend on a live website.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="web-data.html#cb58-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb58-2"><a href="web-data.html#cb58-2" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="web-data.html#cb58-3" tabindex="-1"></a>viadrina_1992_2020_before <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
+<span id="cb58-4"><a href="web-data.html#cb58-4" tabindex="-1"></a>  <span class="st">&quot;data/Viadrina/viadrina_students.csv&quot;</span>,</span>
+<span id="cb58-5"><a href="web-data.html#cb58-5" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span></span>
+<span id="cb58-6"><a href="web-data.html#cb58-6" tabindex="-1"></a>)</span>
+<span id="cb58-7"><a href="web-data.html#cb58-7" tabindex="-1"></a></span>
+<span id="cb58-8"><a href="web-data.html#cb58-8" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020_before</span>
+<span id="cb58-9"><a href="web-data.html#cb58-9" tabindex="-1"></a></span>
+<span id="cb58-10"><a href="web-data.html#cb58-10" tabindex="-1"></a><span class="co"># Replace header names by the first row.</span></span>
+<span id="cb58-11"><a href="web-data.html#cb58-11" tabindex="-1"></a><span class="fu">names</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="dv">1</span>, ]</span>
+<span id="cb58-12"><a href="web-data.html#cb58-12" tabindex="-1"></a></span>
+<span id="cb58-13"><a href="web-data.html#cb58-13" tabindex="-1"></a><span class="co"># Drop the first and final non-data rows.</span></span>
+<span id="cb58-14"><a href="web-data.html#cb58-14" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="sc">-</span><span class="dv">1</span>, ]</span>
+<span id="cb58-15"><a href="web-data.html#cb58-15" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020[<span class="sc">-</span><span class="fu">nrow</span>(viadrina_1992_2020), ]</span>
+<span id="cb58-16"><a href="web-data.html#cb58-16" tabindex="-1"></a></span>
+<span id="cb58-17"><a href="web-data.html#cb58-17" tabindex="-1"></a><span class="co"># Remove line breaks and use readable column names.</span></span>
+<span id="cb58-18"><a href="web-data.html#cb58-18" tabindex="-1"></a><span class="fu">colnames</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(</span>
+<span id="cb58-19"><a href="web-data.html#cb58-19" tabindex="-1"></a>  <span class="st">&quot;[</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n]&quot;</span>,</span>
+<span id="cb58-20"><a href="web-data.html#cb58-20" tabindex="-1"></a>  <span class="st">&quot;&quot;</span>,</span>
+<span id="cb58-21"><a href="web-data.html#cb58-21" tabindex="-1"></a>  <span class="fu">colnames</span>(viadrina_1992_2020)</span>
+<span id="cb58-22"><a href="web-data.html#cb58-22" tabindex="-1"></a>)</span>
+<span id="cb58-23"><a href="web-data.html#cb58-23" tabindex="-1"></a></span>
+<span id="cb58-24"><a href="web-data.html#cb58-24" tabindex="-1"></a><span class="fu">colnames</span>(viadrina_1992_2020) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb58-25"><a href="web-data.html#cb58-25" tabindex="-1"></a>  <span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Total&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Female_Pct&quot;</span>,</span>
+<span id="cb58-26"><a href="web-data.html#cb58-26" tabindex="-1"></a>  <span class="st">&quot;German&quot;</span>, <span class="st">&quot;German_Pct&quot;</span>, <span class="st">&quot;Foreign&quot;</span>, <span class="st">&quot;Foreign_Pct&quot;</span>,</span>
+<span id="cb58-27"><a href="web-data.html#cb58-27" tabindex="-1"></a>  <span class="st">&quot;Pole&quot;</span>, <span class="st">&quot;Pole_Pct&quot;</span></span>
+<span id="cb58-28"><a href="web-data.html#cb58-28" tabindex="-1"></a>)</span>
+<span id="cb58-29"><a href="web-data.html#cb58-29" tabindex="-1"></a></span>
+<span id="cb58-30"><a href="web-data.html#cb58-30" tabindex="-1"></a><span class="co"># Remove percentage signs and convert all columns to numeric.</span></span>
+<span id="cb58-31"><a href="web-data.html#cb58-31" tabindex="-1"></a>viadrina_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
+<span id="cb58-32"><a href="web-data.html#cb58-32" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb58-33"><a href="web-data.html#cb58-33" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb58-34"><a href="web-data.html#cb58-34" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
+<span id="cb58-35"><a href="web-data.html#cb58-35" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ifelse</span>(</span>
+<span id="cb58-36"><a href="web-data.html#cb58-36" tabindex="-1"></a>        <span class="fu">str_detect</span>(.x, <span class="st">&quot;%&quot;</span>),</span>
+<span id="cb58-37"><a href="web-data.html#cb58-37" tabindex="-1"></a>        <span class="fu">parse_number</span>(.x, <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">decimal_mark =</span> <span class="st">&quot;,&quot;</span>)) <span class="sc">/</span> <span class="dv">100</span>,</span>
+<span id="cb58-38"><a href="web-data.html#cb58-38" tabindex="-1"></a>        .x</span>
+<span id="cb58-39"><a href="web-data.html#cb58-39" tabindex="-1"></a>      )</span>
+<span id="cb58-40"><a href="web-data.html#cb58-40" tabindex="-1"></a>    )</span>
+<span id="cb58-41"><a href="web-data.html#cb58-41" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb58-42"><a href="web-data.html#cb58-42" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric))</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="web-data.html#cb59-1" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb59-2"><a href="web-data.html#cb59-2" tabindex="-1"></a><span class="fu">datatable</span>(viadrina_1992_2020)</span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-f83a44dc881ec5289e22" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-f83a44dc881ec5289e22">{"x":{"filter":"none","vertical":false,"data":[["2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"],[1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],[472,997,1443,1810,2321,2835,3132,3451,3802,4170,4549,5094,5110,5093,5001,5145,5587,6194,6452,6506,6716,6645,6492,6501,6647,6542,6461,6020,5586],[236,546,724,949,1242,1584,1841,2057,2308,2559,2080,3214,3228,3221,3168,3222,3499,3833,4064,4096,4269,4206,4098,4073,4143,4018,3922,3607,3285],[0.5,0.5479999999999999,0.502,0.524,0.535,0.5589999999999999,0.588,0.596,0.607,0.614,0.457,0.631,0.632,0.632,0.633,0.626,0.626,0.619,0.63,0.63,0.636,0.633,0.631,0.627,0.623,0.614,0.607,0.599,0.588],[325,598,841,1030,1348,1662,1824,2048,2226,2393,2617,3056,3244,3344,3332,3633,4120,4682,4965,4958,5145,5001,4843,4861,4960,4931,4875,4413,4083],[0.6890000000000001,0.6,0.583,0.569,0.581,0.586,0.5820000000000001,0.593,0.585,0.574,0.575,0.6,0.635,0.657,0.6659999999999999,0.706,0.737,0.7559999999999999,0.77,0.762,0.7659999999999999,0.753,0.746,0.748,0.746,0.754,0.755,0.733,0.731],[169,399,602,780,973,1173,1308,1403,1576,1777,1932,2038,1866,1748,1669,1512,1467,1512,1487,1548,1571,1644,1649,1640,1687,1611,1586,1607,1503],[0.358,0.4,0.417,0.431,0.419,0.414,0.418,0.407,0.415,0.426,0.425,0.4,0.365,0.343,0.334,0.294,0.263,0.244,0.23,0.238,0.234,0.247,0.254,0.252,0.254,0.246,0.245,0.267,0.269],[167,384,566,731,883,1053,1179,1247,1364,1440,1512,1547,1331,1245,1190,1027,960,897,687,755,726,695,641,621,582,503,437,379,353],[0.354,0.385,0.392,0.404,0.38,0.371,0.376,0.361,0.359,0.345,0.332,0.304,0.26,0.244,0.238,0.2,0.172,0.145,0.106,0.116,0.108,0.105,0.099,0.096,0.08800000000000001,0.077,0.068,0.063,0.063]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Year<\/th>\n      <th>Total<\/th>\n      <th>Female<\/th>\n      <th>Female_Pct<\/th>\n      <th>German<\/th>\n      <th>German_Pct<\/th>\n      <th>Foreign<\/th>\n      <th>Foreign_Pct<\/th>\n      <th>Pole<\/th>\n      <th>Pole_Pct<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Year","targets":1},{"name":"Total","targets":2},{"name":"Female","targets":3},{"name":"Female_Pct","targets":4},{"name":"German","targets":5},{"name":"German_Pct","targets":6},{"name":"Foreign","targets":7},{"name":"Foreign_Pct","targets":8},{"name":"Pole","targets":9},{"name":"Pole_Pct","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="share-of-female-students" class="section level3 hasAnchor" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Share of female students<a href="web-data.html#share-of-female-students" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The number of female students over time in a line plot.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="web-data.html#cb59-1" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
-<span id="cb59-2"><a href="web-data.html#cb59-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
-<span id="cb59-3"><a href="web-data.html#cb59-3" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">colour =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb59-4"><a href="web-data.html#cb59-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Female, <span class="at">colour =</span> <span class="st">&quot;Female&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb59-5"><a href="web-data.html#cb59-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb59-6"><a href="web-data.html#cb59-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
-<span id="cb59-7"><a href="web-data.html#cb59-7" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Female and total students&quot;</span></span>
-<span id="cb59-8"><a href="web-data.html#cb59-8" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="web-data.html#cb60-1" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
+<span id="cb60-2"><a href="web-data.html#cb60-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
+<span id="cb60-3"><a href="web-data.html#cb60-3" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">colour =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb60-4"><a href="web-data.html#cb60-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Female, <span class="at">colour =</span> <span class="st">&quot;Female&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb60-5"><a href="web-data.html#cb60-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb60-6"><a href="web-data.html#cb60-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb60-7"><a href="web-data.html#cb60-7" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Female and total students&quot;</span></span>
+<span id="cb60-8"><a href="web-data.html#cb60-8" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/viadrina-female-plot-1.png" alt="" width="576" /></p>
 </div>
 <div id="share-of-foreign-students" class="section level3 hasAnchor" number="6.2.3">
 <h3><span class="header-section-number">6.2.3</span> Share of foreign students<a href="web-data.html#share-of-foreign-students" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The composition by German and foreign students over time.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="web-data.html#cb60-1" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
-<span id="cb60-2"><a href="web-data.html#cb60-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
-<span id="cb60-3"><a href="web-data.html#cb60-3" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">fill =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb60-4"><a href="web-data.html#cb60-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> German, <span class="at">fill =</span> <span class="st">&quot;German&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb60-5"><a href="web-data.html#cb60-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Foreign, <span class="at">fill =</span> <span class="st">&quot;Foreign&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb60-6"><a href="web-data.html#cb60-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb60-7"><a href="web-data.html#cb60-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
-<span id="cb60-8"><a href="web-data.html#cb60-8" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;German and foreign students&quot;</span></span>
-<span id="cb60-9"><a href="web-data.html#cb60-9" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="web-data.html#cb61-1" tabindex="-1"></a>viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
+<span id="cb61-2"><a href="web-data.html#cb61-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Year)) <span class="sc">+</span></span>
+<span id="cb61-3"><a href="web-data.html#cb61-3" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">fill =</span> <span class="st">&quot;Total&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb61-4"><a href="web-data.html#cb61-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> German, <span class="at">fill =</span> <span class="st">&quot;German&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb61-5"><a href="web-data.html#cb61-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> Foreign, <span class="at">fill =</span> <span class="st">&quot;Foreign&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb61-6"><a href="web-data.html#cb61-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb61-7"><a href="web-data.html#cb61-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb61-8"><a href="web-data.html#cb61-8" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;German and foreign students&quot;</span></span>
+<span id="cb61-9"><a href="web-data.html#cb61-9" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/viadrina-foreign-plot-1.png" alt="" width="576" /></p>
 </div>
 <div id="web-scraping" class="section level3 hasAnchor" number="6.2.4">
 <h3><span class="header-section-number">6.2.4</span> Web scraping<a href="web-data.html#web-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The redesigned website no longer uses one URL per semester. Instead, all recent semester summaries are collected on one page. We therefore download <strong>one HTML document</strong>, identify the semester headings, and extract the labelled values from the text below each heading.</p>
 <p>The live scraper is wrapped in a function. During a normal book render, the chapter reads the local snapshot <code>data/Viadrina/viadrina_students_recent.csv</code>. A deliberate refresh downloads the current page, saves the raw HTML, rebuilds the CSV, and then continues with the local file.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="web-data.html#cb61-1" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb61-2"><a href="web-data.html#cb61-2" tabindex="-1"></a></span>
-<span id="cb61-3"><a href="web-data.html#cb61-3" tabindex="-1"></a>viadrina_stats_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb61-4"><a href="web-data.html#cb61-4" tabindex="-1"></a>  <span class="st">&quot;https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/&quot;</span>,</span>
-<span id="cb61-5"><a href="web-data.html#cb61-5" tabindex="-1"></a>  <span class="st">&quot;dezernat-1/studierendenstatistik/index.html&quot;</span></span>
-<span id="cb61-6"><a href="web-data.html#cb61-6" tabindex="-1"></a>)</span>
-<span id="cb61-7"><a href="web-data.html#cb61-7" tabindex="-1"></a></span>
-<span id="cb61-8"><a href="web-data.html#cb61-8" tabindex="-1"></a>viadrina_html_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
-<span id="cb61-9"><a href="web-data.html#cb61-9" tabindex="-1"></a>  <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;viadrina-student-statistics.html&quot;</span></span>
-<span id="cb61-10"><a href="web-data.html#cb61-10" tabindex="-1"></a>)</span>
-<span id="cb61-11"><a href="web-data.html#cb61-11" tabindex="-1"></a></span>
-<span id="cb61-12"><a href="web-data.html#cb61-12" tabindex="-1"></a>viadrina_recent_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
-<span id="cb61-13"><a href="web-data.html#cb61-13" tabindex="-1"></a>  <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;viadrina_students_recent.csv&quot;</span></span>
-<span id="cb61-14"><a href="web-data.html#cb61-14" tabindex="-1"></a>)</span>
-<span id="cb61-15"><a href="web-data.html#cb61-15" tabindex="-1"></a></span>
-<span id="cb61-16"><a href="web-data.html#cb61-16" tabindex="-1"></a>parse_viadrina_number <span class="ot">&lt;-</span> <span class="cf">function</span>(block, label_pattern) {</span>
-<span id="cb61-17"><a href="web-data.html#cb61-17" tabindex="-1"></a>  hit <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">str_detect</span>(</span>
-<span id="cb61-18"><a href="web-data.html#cb61-18" tabindex="-1"></a>    block,</span>
-<span id="cb61-19"><a href="web-data.html#cb61-19" tabindex="-1"></a>    <span class="fu">regex</span>(label_pattern, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb61-20"><a href="web-data.html#cb61-20" tabindex="-1"></a>  ))[<span class="dv">1</span>]</span>
-<span id="cb61-21"><a href="web-data.html#cb61-21" tabindex="-1"></a></span>
-<span id="cb61-22"><a href="web-data.html#cb61-22" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(hit)) {</span>
-<span id="cb61-23"><a href="web-data.html#cb61-23" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA_real_</span>)</span>
-<span id="cb61-24"><a href="web-data.html#cb61-24" tabindex="-1"></a>  }</span>
-<span id="cb61-25"><a href="web-data.html#cb61-25" tabindex="-1"></a></span>
-<span id="cb61-26"><a href="web-data.html#cb61-26" tabindex="-1"></a>  <span class="co"># Remove the label first. This avoids reading the &quot;1&quot; in</span></span>
-<span id="cb61-27"><a href="web-data.html#cb61-27" tabindex="-1"></a>  <span class="co"># labels such as &quot;1. Fachsemester&quot; as the observed value.</span></span>
-<span id="cb61-28"><a href="web-data.html#cb61-28" tabindex="-1"></a>  remainder <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(</span>
-<span id="cb61-29"><a href="web-data.html#cb61-29" tabindex="-1"></a>    block[hit],</span>
-<span id="cb61-30"><a href="web-data.html#cb61-30" tabindex="-1"></a>    <span class="fu">regex</span>(label_pattern, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb61-31"><a href="web-data.html#cb61-31" tabindex="-1"></a>  )</span>
-<span id="cb61-32"><a href="web-data.html#cb61-32" tabindex="-1"></a></span>
-<span id="cb61-33"><a href="web-data.html#cb61-33" tabindex="-1"></a>  number_pattern <span class="ot">&lt;-</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{1,3}(?:</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d{3})+|</span><span class="sc">\\</span><span class="st">d+&quot;</span></span>
-<span id="cb61-34"><a href="web-data.html#cb61-34" tabindex="-1"></a>  values <span class="ot">&lt;-</span> <span class="fu">str_extract_all</span>(remainder, number_pattern)[[<span class="dv">1</span>]]</span>
-<span id="cb61-35"><a href="web-data.html#cb61-35" tabindex="-1"></a></span>
-<span id="cb61-36"><a href="web-data.html#cb61-36" tabindex="-1"></a>  <span class="co"># Some HTML layouts place the value in the next text node.</span></span>
-<span id="cb61-37"><a href="web-data.html#cb61-37" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(values) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> hit <span class="sc">&lt;</span> <span class="fu">length</span>(block)) {</span>
-<span id="cb61-38"><a href="web-data.html#cb61-38" tabindex="-1"></a>    values <span class="ot">&lt;-</span> <span class="fu">str_extract_all</span>(block[hit <span class="sc">+</span> <span class="dv">1</span>], number_pattern)[[<span class="dv">1</span>]]</span>
-<span id="cb61-39"><a href="web-data.html#cb61-39" tabindex="-1"></a>  }</span>
-<span id="cb61-40"><a href="web-data.html#cb61-40" tabindex="-1"></a></span>
-<span id="cb61-41"><a href="web-data.html#cb61-41" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(values) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb61-42"><a href="web-data.html#cb61-42" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA_real_</span>)</span>
-<span id="cb61-43"><a href="web-data.html#cb61-43" tabindex="-1"></a>  }</span>
-<span id="cb61-44"><a href="web-data.html#cb61-44" tabindex="-1"></a></span>
-<span id="cb61-45"><a href="web-data.html#cb61-45" tabindex="-1"></a>  <span class="fu">parse_number</span>(</span>
-<span id="cb61-46"><a href="web-data.html#cb61-46" tabindex="-1"></a>    <span class="fu">tail</span>(values, <span class="dv">1</span>),</span>
-<span id="cb61-47"><a href="web-data.html#cb61-47" tabindex="-1"></a>    <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">decimal_mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">grouping_mark =</span> <span class="st">&quot;.&quot;</span>)</span>
-<span id="cb61-48"><a href="web-data.html#cb61-48" tabindex="-1"></a>  )</span>
-<span id="cb61-49"><a href="web-data.html#cb61-49" tabindex="-1"></a>}</span>
-<span id="cb61-50"><a href="web-data.html#cb61-50" tabindex="-1"></a></span>
-<span id="cb61-51"><a href="web-data.html#cb61-51" tabindex="-1"></a>parse_viadrina_page <span class="ot">&lt;-</span> <span class="cf">function</span>(page) {</span>
-<span id="cb61-52"><a href="web-data.html#cb61-52" tabindex="-1"></a>  page_text <span class="ot">&lt;-</span> page <span class="sc">%&gt;%</span></span>
-<span id="cb61-53"><a href="web-data.html#cb61-53" tabindex="-1"></a>    <span class="fu">html_text2</span>()</span>
-<span id="cb61-54"><a href="web-data.html#cb61-54" tabindex="-1"></a></span>
-<span id="cb61-55"><a href="web-data.html#cb61-55" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> page_text <span class="sc">%&gt;%</span></span>
-<span id="cb61-56"><a href="web-data.html#cb61-56" tabindex="-1"></a>    <span class="fu">str_split</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">n&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb61-57"><a href="web-data.html#cb61-57" tabindex="-1"></a>    <span class="fu">pluck</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb61-58"><a href="web-data.html#cb61-58" tabindex="-1"></a>    <span class="fu">str_squish</span>()</span>
-<span id="cb61-59"><a href="web-data.html#cb61-59" tabindex="-1"></a></span>
-<span id="cb61-60"><a href="web-data.html#cb61-60" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> lines[lines <span class="sc">!=</span> <span class="st">&quot;&quot;</span>]</span>
-<span id="cb61-61"><a href="web-data.html#cb61-61" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(lines, <span class="st">&quot;^</span><span class="sc">\\</span><span class="st">[Button:</span><span class="sc">\\</span><span class="st">s*&quot;</span>)</span>
-<span id="cb61-62"><a href="web-data.html#cb61-62" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(lines, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">]$&quot;</span>)</span>
-<span id="cb61-63"><a href="web-data.html#cb61-63" tabindex="-1"></a></span>
-<span id="cb61-64"><a href="web-data.html#cb61-64" tabindex="-1"></a>  semester_pattern <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb61-65"><a href="web-data.html#cb61-65" tabindex="-1"></a>    <span class="st">&quot;^(Sommersemester|Wintersemester)</span><span class="sc">\\</span><span class="st">s+&quot;</span>,</span>
-<span id="cb61-66"><a href="web-data.html#cb61-66" tabindex="-1"></a>    <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{4}(?:/</span><span class="sc">\\</span><span class="st">d{2})?$&quot;</span></span>
-<span id="cb61-67"><a href="web-data.html#cb61-67" tabindex="-1"></a>  )</span>
-<span id="cb61-68"><a href="web-data.html#cb61-68" tabindex="-1"></a></span>
-<span id="cb61-69"><a href="web-data.html#cb61-69" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">str_detect</span>(lines, semester_pattern))</span>
-<span id="cb61-70"><a href="web-data.html#cb61-70" tabindex="-1"></a></span>
-<span id="cb61-71"><a href="web-data.html#cb61-71" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(starts) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb61-72"><a href="web-data.html#cb61-72" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;No semester headings were found on the Viadrina statistics page.&quot;</span>)</span>
-<span id="cb61-73"><a href="web-data.html#cb61-73" tabindex="-1"></a>  }</span>
-<span id="cb61-74"><a href="web-data.html#cb61-74" tabindex="-1"></a></span>
-<span id="cb61-75"><a href="web-data.html#cb61-75" tabindex="-1"></a>  ends <span class="ot">&lt;-</span> <span class="fu">c</span>(starts[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span><span class="dt">L</span>, <span class="fu">length</span>(lines))</span>
-<span id="cb61-76"><a href="web-data.html#cb61-76" tabindex="-1"></a></span>
-<span id="cb61-77"><a href="web-data.html#cb61-77" tabindex="-1"></a>  <span class="fu">map2_dfr</span>(starts, ends, <span class="cf">function</span>(first, last) {</span>
-<span id="cb61-78"><a href="web-data.html#cb61-78" tabindex="-1"></a>    block <span class="ot">&lt;-</span> lines[first<span class="sc">:</span>last]</span>
-<span id="cb61-79"><a href="web-data.html#cb61-79" tabindex="-1"></a>    semester_label <span class="ot">&lt;-</span> block[<span class="dv">1</span>]</span>
-<span id="cb61-80"><a href="web-data.html#cb61-80" tabindex="-1"></a>    term <span class="ot">&lt;-</span> <span class="fu">if_else</span>(</span>
-<span id="cb61-81"><a href="web-data.html#cb61-81" tabindex="-1"></a>      <span class="fu">str_starts</span>(semester_label, <span class="st">&quot;Wintersemester&quot;</span>),</span>
-<span id="cb61-82"><a href="web-data.html#cb61-82" tabindex="-1"></a>      <span class="st">&quot;winter&quot;</span>,</span>
-<span id="cb61-83"><a href="web-data.html#cb61-83" tabindex="-1"></a>      <span class="st">&quot;summer&quot;</span></span>
-<span id="cb61-84"><a href="web-data.html#cb61-84" tabindex="-1"></a>    )</span>
-<span id="cb61-85"><a href="web-data.html#cb61-85" tabindex="-1"></a>    year <span class="ot">&lt;-</span> <span class="fu">parse_integer</span>(<span class="fu">str_extract</span>(semester_label, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{4}&quot;</span>))</span>
-<span id="cb61-86"><a href="web-data.html#cb61-86" tabindex="-1"></a></span>
-<span id="cb61-87"><a href="web-data.html#cb61-87" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
-<span id="cb61-88"><a href="web-data.html#cb61-88" tabindex="-1"></a>      <span class="at">semester_label =</span> semester_label,</span>
-<span id="cb61-89"><a href="web-data.html#cb61-89" tabindex="-1"></a>      <span class="at">students =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-90"><a href="web-data.html#cb61-90" tabindex="-1"></a>        block,</span>
-<span id="cb61-91"><a href="web-data.html#cb61-91" tabindex="-1"></a>        <span class="st">&quot;^Studierende gesamt&quot;</span></span>
-<span id="cb61-92"><a href="web-data.html#cb61-92" tabindex="-1"></a>      ),</span>
-<span id="cb61-93"><a href="web-data.html#cb61-93" tabindex="-1"></a>      <span class="at">female =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-94"><a href="web-data.html#cb61-94" tabindex="-1"></a>        block,</span>
-<span id="cb61-95"><a href="web-data.html#cb61-95" tabindex="-1"></a>        <span class="st">&quot;^(weiblich|Weibliche Studierende)&quot;</span></span>
-<span id="cb61-96"><a href="web-data.html#cb61-96" tabindex="-1"></a>      ),</span>
-<span id="cb61-97"><a href="web-data.html#cb61-97" tabindex="-1"></a>      <span class="at">male =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-98"><a href="web-data.html#cb61-98" tabindex="-1"></a>        block,</span>
-<span id="cb61-99"><a href="web-data.html#cb61-99" tabindex="-1"></a>        <span class="st">&quot;^(männlich|maennlich|Männliche Studierende)&quot;</span></span>
-<span id="cb61-100"><a href="web-data.html#cb61-100" tabindex="-1"></a>      ),</span>
-<span id="cb61-101"><a href="web-data.html#cb61-101" tabindex="-1"></a>      <span class="at">diverse =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-102"><a href="web-data.html#cb61-102" tabindex="-1"></a>        block,</span>
-<span id="cb61-103"><a href="web-data.html#cb61-103" tabindex="-1"></a>        <span class="st">&quot;^Diverse Studierende&quot;</span></span>
-<span id="cb61-104"><a href="web-data.html#cb61-104" tabindex="-1"></a>      ),</span>
-<span id="cb61-105"><a href="web-data.html#cb61-105" tabindex="-1"></a>      <span class="at">unspecified =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-106"><a href="web-data.html#cb61-106" tabindex="-1"></a>        block,</span>
-<span id="cb61-107"><a href="web-data.html#cb61-107" tabindex="-1"></a>        <span class="st">&quot;^ohne Angabe&quot;</span></span>
-<span id="cb61-108"><a href="web-data.html#cb61-108" tabindex="-1"></a>      ),</span>
-<span id="cb61-109"><a href="web-data.html#cb61-109" tabindex="-1"></a>      <span class="at">german =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-110"><a href="web-data.html#cb61-110" tabindex="-1"></a>        block,</span>
-<span id="cb61-111"><a href="web-data.html#cb61-111" tabindex="-1"></a>        <span class="st">&quot;^Deutsche(?: Studierende)?&quot;</span></span>
-<span id="cb61-112"><a href="web-data.html#cb61-112" tabindex="-1"></a>      ),</span>
-<span id="cb61-113"><a href="web-data.html#cb61-113" tabindex="-1"></a>      <span class="at">foreign =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-114"><a href="web-data.html#cb61-114" tabindex="-1"></a>        block,</span>
-<span id="cb61-115"><a href="web-data.html#cb61-115" tabindex="-1"></a>        <span class="st">&quot;^(Ausländer(?:</span><span class="sc">\\</span><span class="st">*innen|/innen)?|Ausländische Studierende)&quot;</span></span>
-<span id="cb61-116"><a href="web-data.html#cb61-116" tabindex="-1"></a>      ),</span>
-<span id="cb61-117"><a href="web-data.html#cb61-117" tabindex="-1"></a>      <span class="at">first_subject =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-118"><a href="web-data.html#cb61-118" tabindex="-1"></a>        block,</span>
-<span id="cb61-119"><a href="web-data.html#cb61-119" tabindex="-1"></a>        <span class="st">&quot;^(1</span><span class="sc">\\</span><span class="st">. Fachsemester|Studierende im 1</span><span class="sc">\\</span><span class="st">. Fachsemester)&quot;</span></span>
-<span id="cb61-120"><a href="web-data.html#cb61-120" tabindex="-1"></a>      ),</span>
-<span id="cb61-121"><a href="web-data.html#cb61-121" tabindex="-1"></a>      <span class="at">first_university =</span> <span class="fu">parse_viadrina_number</span>(</span>
-<span id="cb61-122"><a href="web-data.html#cb61-122" tabindex="-1"></a>        block,</span>
-<span id="cb61-123"><a href="web-data.html#cb61-123" tabindex="-1"></a>        <span class="st">&quot;^(1</span><span class="sc">\\</span><span class="st">. Hochschulsemester|Studierende im 1</span><span class="sc">\\</span><span class="st">. Hochschulsemester)&quot;</span></span>
-<span id="cb61-124"><a href="web-data.html#cb61-124" tabindex="-1"></a>      ),</span>
-<span id="cb61-125"><a href="web-data.html#cb61-125" tabindex="-1"></a>      <span class="at">year =</span> year,</span>
-<span id="cb61-126"><a href="web-data.html#cb61-126" tabindex="-1"></a>      <span class="at">term =</span> term,</span>
-<span id="cb61-127"><a href="web-data.html#cb61-127" tabindex="-1"></a>      <span class="at">semester =</span> <span class="fu">paste0</span>(</span>
-<span id="cb61-128"><a href="web-data.html#cb61-128" tabindex="-1"></a>        year,</span>
-<span id="cb61-129"><a href="web-data.html#cb61-129" tabindex="-1"></a>        <span class="fu">if_else</span>(term <span class="sc">==</span> <span class="st">&quot;summer&quot;</span>, <span class="st">&quot;-01&quot;</span>, <span class="st">&quot;-02&quot;</span>)</span>
-<span id="cb61-130"><a href="web-data.html#cb61-130" tabindex="-1"></a>      )</span>
-<span id="cb61-131"><a href="web-data.html#cb61-131" tabindex="-1"></a>    )</span>
-<span id="cb61-132"><a href="web-data.html#cb61-132" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
-<span id="cb61-133"><a href="web-data.html#cb61-133" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(students)) <span class="sc">%&gt;%</span></span>
-<span id="cb61-134"><a href="web-data.html#cb61-134" tabindex="-1"></a>    <span class="fu">arrange</span>(year, semester)</span>
-<span id="cb61-135"><a href="web-data.html#cb61-135" tabindex="-1"></a>}</span></code></pre></div>
-<p>The next chunk only accesses the live website when the CSV is missing or when the refresh option is enabled. If the website is temporarily unavailable, an existing local CSV remains usable.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="web-data.html#cb62-1" tabindex="-1"></a>refresh_viadrina <span class="ot">&lt;-</span> <span class="fu">isTRUE</span>(<span class="fu">getOption</span>(<span class="st">&quot;bfid.refresh_viadrina&quot;</span>, <span class="cn">FALSE</span>))</span>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="web-data.html#cb62-1" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
 <span id="cb62-2"><a href="web-data.html#cb62-2" tabindex="-1"></a></span>
-<span id="cb62-3"><a href="web-data.html#cb62-3" tabindex="-1"></a><span class="fu">dir.create</span>(</span>
-<span id="cb62-4"><a href="web-data.html#cb62-4" tabindex="-1"></a>  <span class="fu">dirname</span>(viadrina_recent_file),</span>
-<span id="cb62-5"><a href="web-data.html#cb62-5" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb62-6"><a href="web-data.html#cb62-6" tabindex="-1"></a>  <span class="at">showWarnings =</span> <span class="cn">FALSE</span></span>
-<span id="cb62-7"><a href="web-data.html#cb62-7" tabindex="-1"></a>)</span>
-<span id="cb62-8"><a href="web-data.html#cb62-8" tabindex="-1"></a></span>
-<span id="cb62-9"><a href="web-data.html#cb62-9" tabindex="-1"></a><span class="cf">if</span> (refresh_viadrina <span class="sc">||</span> <span class="sc">!</span><span class="fu">file.exists</span>(viadrina_recent_file)) {</span>
-<span id="cb62-10"><a href="web-data.html#cb62-10" tabindex="-1"></a>  refreshed_data <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
-<span id="cb62-11"><a href="web-data.html#cb62-11" tabindex="-1"></a>    {</span>
-<span id="cb62-12"><a href="web-data.html#cb62-12" tabindex="-1"></a>      viadrina_page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(viadrina_stats_url)</span>
-<span id="cb62-13"><a href="web-data.html#cb62-13" tabindex="-1"></a>      xml2<span class="sc">::</span><span class="fu">write_html</span>(viadrina_page, viadrina_html_file)</span>
-<span id="cb62-14"><a href="web-data.html#cb62-14" tabindex="-1"></a>      <span class="fu">parse_viadrina_page</span>(viadrina_page)</span>
-<span id="cb62-15"><a href="web-data.html#cb62-15" tabindex="-1"></a>    },</span>
-<span id="cb62-16"><a href="web-data.html#cb62-16" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(error) {</span>
-<span id="cb62-17"><a href="web-data.html#cb62-17" tabindex="-1"></a>      <span class="fu">warning</span>(</span>
-<span id="cb62-18"><a href="web-data.html#cb62-18" tabindex="-1"></a>        <span class="st">&quot;The live Viadrina page could not be refreshed: &quot;</span>,</span>
-<span id="cb62-19"><a href="web-data.html#cb62-19" tabindex="-1"></a>        <span class="fu">conditionMessage</span>(error)</span>
-<span id="cb62-20"><a href="web-data.html#cb62-20" tabindex="-1"></a>      )</span>
-<span id="cb62-21"><a href="web-data.html#cb62-21" tabindex="-1"></a>      <span class="cn">NULL</span></span>
-<span id="cb62-22"><a href="web-data.html#cb62-22" tabindex="-1"></a>    }</span>
-<span id="cb62-23"><a href="web-data.html#cb62-23" tabindex="-1"></a>  )</span>
-<span id="cb62-24"><a href="web-data.html#cb62-24" tabindex="-1"></a></span>
-<span id="cb62-25"><a href="web-data.html#cb62-25" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(refreshed_data) <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(refreshed_data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb62-26"><a href="web-data.html#cb62-26" tabindex="-1"></a>    <span class="fu">write_csv2</span>(refreshed_data, viadrina_recent_file, <span class="at">na =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb62-27"><a href="web-data.html#cb62-27" tabindex="-1"></a>  }</span>
-<span id="cb62-28"><a href="web-data.html#cb62-28" tabindex="-1"></a>}</span>
-<span id="cb62-29"><a href="web-data.html#cb62-29" tabindex="-1"></a></span>
-<span id="cb62-30"><a href="web-data.html#cb62-30" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(viadrina_recent_file)) {</span>
-<span id="cb62-31"><a href="web-data.html#cb62-31" tabindex="-1"></a>  viadrina_recent <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(</span>
-<span id="cb62-32"><a href="web-data.html#cb62-32" tabindex="-1"></a>    viadrina_recent_file,</span>
-<span id="cb62-33"><a href="web-data.html#cb62-33" tabindex="-1"></a>    <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb62-34"><a href="web-data.html#cb62-34" tabindex="-1"></a>  )</span>
-<span id="cb62-35"><a href="web-data.html#cb62-35" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-36"><a href="web-data.html#cb62-36" tabindex="-1"></a>  <span class="co"># Final compatibility fallback for older clones of the repository.</span></span>
-<span id="cb62-37"><a href="web-data.html#cb62-37" tabindex="-1"></a>  legacy_recent_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
-<span id="cb62-38"><a href="web-data.html#cb62-38" tabindex="-1"></a>    <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;viadrina_students_2013_2025.csv&quot;</span></span>
-<span id="cb62-39"><a href="web-data.html#cb62-39" tabindex="-1"></a>  )</span>
+<span id="cb62-3"><a href="web-data.html#cb62-3" tabindex="-1"></a>viadrina_stats_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb62-4"><a href="web-data.html#cb62-4" tabindex="-1"></a>  <span class="st">&quot;https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/&quot;</span>,</span>
+<span id="cb62-5"><a href="web-data.html#cb62-5" tabindex="-1"></a>  <span class="st">&quot;dezernat-1/studierendenstatistik/index.html&quot;</span></span>
+<span id="cb62-6"><a href="web-data.html#cb62-6" tabindex="-1"></a>)</span>
+<span id="cb62-7"><a href="web-data.html#cb62-7" tabindex="-1"></a></span>
+<span id="cb62-8"><a href="web-data.html#cb62-8" tabindex="-1"></a>viadrina_html_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
+<span id="cb62-9"><a href="web-data.html#cb62-9" tabindex="-1"></a>  <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;viadrina-student-statistics.html&quot;</span></span>
+<span id="cb62-10"><a href="web-data.html#cb62-10" tabindex="-1"></a>)</span>
+<span id="cb62-11"><a href="web-data.html#cb62-11" tabindex="-1"></a></span>
+<span id="cb62-12"><a href="web-data.html#cb62-12" tabindex="-1"></a>viadrina_recent_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
+<span id="cb62-13"><a href="web-data.html#cb62-13" tabindex="-1"></a>  <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;viadrina_students_recent.csv&quot;</span></span>
+<span id="cb62-14"><a href="web-data.html#cb62-14" tabindex="-1"></a>)</span>
+<span id="cb62-15"><a href="web-data.html#cb62-15" tabindex="-1"></a></span>
+<span id="cb62-16"><a href="web-data.html#cb62-16" tabindex="-1"></a>parse_viadrina_number <span class="ot">&lt;-</span> <span class="cf">function</span>(block, label_pattern) {</span>
+<span id="cb62-17"><a href="web-data.html#cb62-17" tabindex="-1"></a>  hit <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">str_detect</span>(</span>
+<span id="cb62-18"><a href="web-data.html#cb62-18" tabindex="-1"></a>    block,</span>
+<span id="cb62-19"><a href="web-data.html#cb62-19" tabindex="-1"></a>    <span class="fu">regex</span>(label_pattern, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb62-20"><a href="web-data.html#cb62-20" tabindex="-1"></a>  ))[<span class="dv">1</span>]</span>
+<span id="cb62-21"><a href="web-data.html#cb62-21" tabindex="-1"></a></span>
+<span id="cb62-22"><a href="web-data.html#cb62-22" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(hit)) {</span>
+<span id="cb62-23"><a href="web-data.html#cb62-23" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA_real_</span>)</span>
+<span id="cb62-24"><a href="web-data.html#cb62-24" tabindex="-1"></a>  }</span>
+<span id="cb62-25"><a href="web-data.html#cb62-25" tabindex="-1"></a></span>
+<span id="cb62-26"><a href="web-data.html#cb62-26" tabindex="-1"></a>  <span class="co"># Remove the label first. This avoids reading the &quot;1&quot; in</span></span>
+<span id="cb62-27"><a href="web-data.html#cb62-27" tabindex="-1"></a>  <span class="co"># labels such as &quot;1. Fachsemester&quot; as the observed value.</span></span>
+<span id="cb62-28"><a href="web-data.html#cb62-28" tabindex="-1"></a>  remainder <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(</span>
+<span id="cb62-29"><a href="web-data.html#cb62-29" tabindex="-1"></a>    block[hit],</span>
+<span id="cb62-30"><a href="web-data.html#cb62-30" tabindex="-1"></a>    <span class="fu">regex</span>(label_pattern, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb62-31"><a href="web-data.html#cb62-31" tabindex="-1"></a>  )</span>
+<span id="cb62-32"><a href="web-data.html#cb62-32" tabindex="-1"></a></span>
+<span id="cb62-33"><a href="web-data.html#cb62-33" tabindex="-1"></a>  number_pattern <span class="ot">&lt;-</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{1,3}(?:</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d{3})+|</span><span class="sc">\\</span><span class="st">d+&quot;</span></span>
+<span id="cb62-34"><a href="web-data.html#cb62-34" tabindex="-1"></a>  values <span class="ot">&lt;-</span> <span class="fu">str_extract_all</span>(remainder, number_pattern)[[<span class="dv">1</span>]]</span>
+<span id="cb62-35"><a href="web-data.html#cb62-35" tabindex="-1"></a></span>
+<span id="cb62-36"><a href="web-data.html#cb62-36" tabindex="-1"></a>  <span class="co"># Some HTML layouts place the value in the next text node.</span></span>
+<span id="cb62-37"><a href="web-data.html#cb62-37" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(values) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> hit <span class="sc">&lt;</span> <span class="fu">length</span>(block)) {</span>
+<span id="cb62-38"><a href="web-data.html#cb62-38" tabindex="-1"></a>    values <span class="ot">&lt;-</span> <span class="fu">str_extract_all</span>(block[hit <span class="sc">+</span> <span class="dv">1</span>], number_pattern)[[<span class="dv">1</span>]]</span>
+<span id="cb62-39"><a href="web-data.html#cb62-39" tabindex="-1"></a>  }</span>
 <span id="cb62-40"><a href="web-data.html#cb62-40" tabindex="-1"></a></span>
-<span id="cb62-41"><a href="web-data.html#cb62-41" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(legacy_recent_file)) {</span>
-<span id="cb62-42"><a href="web-data.html#cb62-42" tabindex="-1"></a>    <span class="fu">stop</span>(</span>
-<span id="cb62-43"><a href="web-data.html#cb62-43" tabindex="-1"></a>      <span class="st">&quot;No local Viadrina data file is available. Add &quot;</span>,</span>
-<span id="cb62-44"><a href="web-data.html#cb62-44" tabindex="-1"></a>      viadrina_recent_file,</span>
-<span id="cb62-45"><a href="web-data.html#cb62-45" tabindex="-1"></a>      <span class="st">&quot; or refresh the live page.&quot;</span></span>
-<span id="cb62-46"><a href="web-data.html#cb62-46" tabindex="-1"></a>    )</span>
-<span id="cb62-47"><a href="web-data.html#cb62-47" tabindex="-1"></a>  }</span>
-<span id="cb62-48"><a href="web-data.html#cb62-48" tabindex="-1"></a></span>
-<span id="cb62-49"><a href="web-data.html#cb62-49" tabindex="-1"></a>  viadrina_recent <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(</span>
-<span id="cb62-50"><a href="web-data.html#cb62-50" tabindex="-1"></a>    legacy_recent_file,</span>
-<span id="cb62-51"><a href="web-data.html#cb62-51" tabindex="-1"></a>    <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb62-52"><a href="web-data.html#cb62-52" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb62-53"><a href="web-data.html#cb62-53" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
-<span id="cb62-54"><a href="web-data.html#cb62-54" tabindex="-1"></a>      <span class="at">semester_label =</span> <span class="fu">paste</span>(<span class="st">&quot;Wintersemester&quot;</span>, year),</span>
-<span id="cb62-55"><a href="web-data.html#cb62-55" tabindex="-1"></a>      students,</span>
-<span id="cb62-56"><a href="web-data.html#cb62-56" tabindex="-1"></a>      female,</span>
-<span id="cb62-57"><a href="web-data.html#cb62-57" tabindex="-1"></a>      male,</span>
-<span id="cb62-58"><a href="web-data.html#cb62-58" tabindex="-1"></a>      <span class="at">diverse =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb62-59"><a href="web-data.html#cb62-59" tabindex="-1"></a>      <span class="at">unspecified =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb62-60"><a href="web-data.html#cb62-60" tabindex="-1"></a>      german,</span>
-<span id="cb62-61"><a href="web-data.html#cb62-61" tabindex="-1"></a>      foreign,</span>
-<span id="cb62-62"><a href="web-data.html#cb62-62" tabindex="-1"></a>      <span class="at">first_subject =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb62-63"><a href="web-data.html#cb62-63" tabindex="-1"></a>      <span class="at">first_university =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb62-64"><a href="web-data.html#cb62-64" tabindex="-1"></a>      <span class="at">year =</span> <span class="fu">as.integer</span>(year),</span>
-<span id="cb62-65"><a href="web-data.html#cb62-65" tabindex="-1"></a>      term,</span>
-<span id="cb62-66"><a href="web-data.html#cb62-66" tabindex="-1"></a>      <span class="at">semester =</span> <span class="fu">paste0</span>(year, <span class="st">&quot;-02&quot;</span>)</span>
-<span id="cb62-67"><a href="web-data.html#cb62-67" tabindex="-1"></a>    )</span>
-<span id="cb62-68"><a href="web-data.html#cb62-68" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb62-41"><a href="web-data.html#cb62-41" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(values) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb62-42"><a href="web-data.html#cb62-42" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA_real_</span>)</span>
+<span id="cb62-43"><a href="web-data.html#cb62-43" tabindex="-1"></a>  }</span>
+<span id="cb62-44"><a href="web-data.html#cb62-44" tabindex="-1"></a></span>
+<span id="cb62-45"><a href="web-data.html#cb62-45" tabindex="-1"></a>  <span class="fu">parse_number</span>(</span>
+<span id="cb62-46"><a href="web-data.html#cb62-46" tabindex="-1"></a>    <span class="fu">tail</span>(values, <span class="dv">1</span>),</span>
+<span id="cb62-47"><a href="web-data.html#cb62-47" tabindex="-1"></a>    <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">decimal_mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">grouping_mark =</span> <span class="st">&quot;.&quot;</span>)</span>
+<span id="cb62-48"><a href="web-data.html#cb62-48" tabindex="-1"></a>  )</span>
+<span id="cb62-49"><a href="web-data.html#cb62-49" tabindex="-1"></a>}</span>
+<span id="cb62-50"><a href="web-data.html#cb62-50" tabindex="-1"></a></span>
+<span id="cb62-51"><a href="web-data.html#cb62-51" tabindex="-1"></a>parse_viadrina_page <span class="ot">&lt;-</span> <span class="cf">function</span>(page) {</span>
+<span id="cb62-52"><a href="web-data.html#cb62-52" tabindex="-1"></a>  page_text <span class="ot">&lt;-</span> page <span class="sc">%&gt;%</span></span>
+<span id="cb62-53"><a href="web-data.html#cb62-53" tabindex="-1"></a>    <span class="fu">html_text2</span>()</span>
+<span id="cb62-54"><a href="web-data.html#cb62-54" tabindex="-1"></a></span>
+<span id="cb62-55"><a href="web-data.html#cb62-55" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> page_text <span class="sc">%&gt;%</span></span>
+<span id="cb62-56"><a href="web-data.html#cb62-56" tabindex="-1"></a>    <span class="fu">str_split</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">n&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-57"><a href="web-data.html#cb62-57" tabindex="-1"></a>    <span class="fu">pluck</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-58"><a href="web-data.html#cb62-58" tabindex="-1"></a>    <span class="fu">str_squish</span>()</span>
+<span id="cb62-59"><a href="web-data.html#cb62-59" tabindex="-1"></a></span>
+<span id="cb62-60"><a href="web-data.html#cb62-60" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> lines[lines <span class="sc">!=</span> <span class="st">&quot;&quot;</span>]</span>
+<span id="cb62-61"><a href="web-data.html#cb62-61" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(lines, <span class="st">&quot;^</span><span class="sc">\\</span><span class="st">[Button:</span><span class="sc">\\</span><span class="st">s*&quot;</span>)</span>
+<span id="cb62-62"><a href="web-data.html#cb62-62" tabindex="-1"></a>  lines <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(lines, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">]$&quot;</span>)</span>
+<span id="cb62-63"><a href="web-data.html#cb62-63" tabindex="-1"></a></span>
+<span id="cb62-64"><a href="web-data.html#cb62-64" tabindex="-1"></a>  semester_pattern <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb62-65"><a href="web-data.html#cb62-65" tabindex="-1"></a>    <span class="st">&quot;^(Sommersemester|Wintersemester)</span><span class="sc">\\</span><span class="st">s+&quot;</span>,</span>
+<span id="cb62-66"><a href="web-data.html#cb62-66" tabindex="-1"></a>    <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{4}(?:/</span><span class="sc">\\</span><span class="st">d{2})?$&quot;</span></span>
+<span id="cb62-67"><a href="web-data.html#cb62-67" tabindex="-1"></a>  )</span>
+<span id="cb62-68"><a href="web-data.html#cb62-68" tabindex="-1"></a></span>
+<span id="cb62-69"><a href="web-data.html#cb62-69" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">str_detect</span>(lines, semester_pattern))</span>
+<span id="cb62-70"><a href="web-data.html#cb62-70" tabindex="-1"></a></span>
+<span id="cb62-71"><a href="web-data.html#cb62-71" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(starts) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb62-72"><a href="web-data.html#cb62-72" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;No semester headings were found on the Viadrina statistics page.&quot;</span>)</span>
+<span id="cb62-73"><a href="web-data.html#cb62-73" tabindex="-1"></a>  }</span>
+<span id="cb62-74"><a href="web-data.html#cb62-74" tabindex="-1"></a></span>
+<span id="cb62-75"><a href="web-data.html#cb62-75" tabindex="-1"></a>  ends <span class="ot">&lt;-</span> <span class="fu">c</span>(starts[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span><span class="dt">L</span>, <span class="fu">length</span>(lines))</span>
+<span id="cb62-76"><a href="web-data.html#cb62-76" tabindex="-1"></a></span>
+<span id="cb62-77"><a href="web-data.html#cb62-77" tabindex="-1"></a>  <span class="fu">map2_dfr</span>(starts, ends, <span class="cf">function</span>(first, last) {</span>
+<span id="cb62-78"><a href="web-data.html#cb62-78" tabindex="-1"></a>    block <span class="ot">&lt;-</span> lines[first<span class="sc">:</span>last]</span>
+<span id="cb62-79"><a href="web-data.html#cb62-79" tabindex="-1"></a>    semester_label <span class="ot">&lt;-</span> block[<span class="dv">1</span>]</span>
+<span id="cb62-80"><a href="web-data.html#cb62-80" tabindex="-1"></a>    term <span class="ot">&lt;-</span> <span class="fu">if_else</span>(</span>
+<span id="cb62-81"><a href="web-data.html#cb62-81" tabindex="-1"></a>      <span class="fu">str_starts</span>(semester_label, <span class="st">&quot;Wintersemester&quot;</span>),</span>
+<span id="cb62-82"><a href="web-data.html#cb62-82" tabindex="-1"></a>      <span class="st">&quot;winter&quot;</span>,</span>
+<span id="cb62-83"><a href="web-data.html#cb62-83" tabindex="-1"></a>      <span class="st">&quot;summer&quot;</span></span>
+<span id="cb62-84"><a href="web-data.html#cb62-84" tabindex="-1"></a>    )</span>
+<span id="cb62-85"><a href="web-data.html#cb62-85" tabindex="-1"></a>    year <span class="ot">&lt;-</span> <span class="fu">parse_integer</span>(<span class="fu">str_extract</span>(semester_label, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d{4}&quot;</span>))</span>
+<span id="cb62-86"><a href="web-data.html#cb62-86" tabindex="-1"></a></span>
+<span id="cb62-87"><a href="web-data.html#cb62-87" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb62-88"><a href="web-data.html#cb62-88" tabindex="-1"></a>      <span class="at">semester_label =</span> semester_label,</span>
+<span id="cb62-89"><a href="web-data.html#cb62-89" tabindex="-1"></a>      <span class="at">students =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-90"><a href="web-data.html#cb62-90" tabindex="-1"></a>        block,</span>
+<span id="cb62-91"><a href="web-data.html#cb62-91" tabindex="-1"></a>        <span class="st">&quot;^Studierende gesamt&quot;</span></span>
+<span id="cb62-92"><a href="web-data.html#cb62-92" tabindex="-1"></a>      ),</span>
+<span id="cb62-93"><a href="web-data.html#cb62-93" tabindex="-1"></a>      <span class="at">female =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-94"><a href="web-data.html#cb62-94" tabindex="-1"></a>        block,</span>
+<span id="cb62-95"><a href="web-data.html#cb62-95" tabindex="-1"></a>        <span class="st">&quot;^(weiblich|Weibliche Studierende)&quot;</span></span>
+<span id="cb62-96"><a href="web-data.html#cb62-96" tabindex="-1"></a>      ),</span>
+<span id="cb62-97"><a href="web-data.html#cb62-97" tabindex="-1"></a>      <span class="at">male =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-98"><a href="web-data.html#cb62-98" tabindex="-1"></a>        block,</span>
+<span id="cb62-99"><a href="web-data.html#cb62-99" tabindex="-1"></a>        <span class="st">&quot;^(männlich|maennlich|Männliche Studierende)&quot;</span></span>
+<span id="cb62-100"><a href="web-data.html#cb62-100" tabindex="-1"></a>      ),</span>
+<span id="cb62-101"><a href="web-data.html#cb62-101" tabindex="-1"></a>      <span class="at">diverse =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-102"><a href="web-data.html#cb62-102" tabindex="-1"></a>        block,</span>
+<span id="cb62-103"><a href="web-data.html#cb62-103" tabindex="-1"></a>        <span class="st">&quot;^Diverse Studierende&quot;</span></span>
+<span id="cb62-104"><a href="web-data.html#cb62-104" tabindex="-1"></a>      ),</span>
+<span id="cb62-105"><a href="web-data.html#cb62-105" tabindex="-1"></a>      <span class="at">unspecified =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-106"><a href="web-data.html#cb62-106" tabindex="-1"></a>        block,</span>
+<span id="cb62-107"><a href="web-data.html#cb62-107" tabindex="-1"></a>        <span class="st">&quot;^ohne Angabe&quot;</span></span>
+<span id="cb62-108"><a href="web-data.html#cb62-108" tabindex="-1"></a>      ),</span>
+<span id="cb62-109"><a href="web-data.html#cb62-109" tabindex="-1"></a>      <span class="at">german =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-110"><a href="web-data.html#cb62-110" tabindex="-1"></a>        block,</span>
+<span id="cb62-111"><a href="web-data.html#cb62-111" tabindex="-1"></a>        <span class="st">&quot;^Deutsche(?: Studierende)?&quot;</span></span>
+<span id="cb62-112"><a href="web-data.html#cb62-112" tabindex="-1"></a>      ),</span>
+<span id="cb62-113"><a href="web-data.html#cb62-113" tabindex="-1"></a>      <span class="at">foreign =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-114"><a href="web-data.html#cb62-114" tabindex="-1"></a>        block,</span>
+<span id="cb62-115"><a href="web-data.html#cb62-115" tabindex="-1"></a>        <span class="st">&quot;^(Ausländer(?:</span><span class="sc">\\</span><span class="st">*innen|/innen)?|Ausländische Studierende)&quot;</span></span>
+<span id="cb62-116"><a href="web-data.html#cb62-116" tabindex="-1"></a>      ),</span>
+<span id="cb62-117"><a href="web-data.html#cb62-117" tabindex="-1"></a>      <span class="at">first_subject =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-118"><a href="web-data.html#cb62-118" tabindex="-1"></a>        block,</span>
+<span id="cb62-119"><a href="web-data.html#cb62-119" tabindex="-1"></a>        <span class="st">&quot;^(1</span><span class="sc">\\</span><span class="st">. Fachsemester|Studierende im 1</span><span class="sc">\\</span><span class="st">. Fachsemester)&quot;</span></span>
+<span id="cb62-120"><a href="web-data.html#cb62-120" tabindex="-1"></a>      ),</span>
+<span id="cb62-121"><a href="web-data.html#cb62-121" tabindex="-1"></a>      <span class="at">first_university =</span> <span class="fu">parse_viadrina_number</span>(</span>
+<span id="cb62-122"><a href="web-data.html#cb62-122" tabindex="-1"></a>        block,</span>
+<span id="cb62-123"><a href="web-data.html#cb62-123" tabindex="-1"></a>        <span class="st">&quot;^(1</span><span class="sc">\\</span><span class="st">. Hochschulsemester|Studierende im 1</span><span class="sc">\\</span><span class="st">. Hochschulsemester)&quot;</span></span>
+<span id="cb62-124"><a href="web-data.html#cb62-124" tabindex="-1"></a>      ),</span>
+<span id="cb62-125"><a href="web-data.html#cb62-125" tabindex="-1"></a>      <span class="at">year =</span> year,</span>
+<span id="cb62-126"><a href="web-data.html#cb62-126" tabindex="-1"></a>      <span class="at">term =</span> term,</span>
+<span id="cb62-127"><a href="web-data.html#cb62-127" tabindex="-1"></a>      <span class="at">semester =</span> <span class="fu">paste0</span>(</span>
+<span id="cb62-128"><a href="web-data.html#cb62-128" tabindex="-1"></a>        year,</span>
+<span id="cb62-129"><a href="web-data.html#cb62-129" tabindex="-1"></a>        <span class="fu">if_else</span>(term <span class="sc">==</span> <span class="st">&quot;summer&quot;</span>, <span class="st">&quot;-01&quot;</span>, <span class="st">&quot;-02&quot;</span>)</span>
+<span id="cb62-130"><a href="web-data.html#cb62-130" tabindex="-1"></a>      )</span>
+<span id="cb62-131"><a href="web-data.html#cb62-131" tabindex="-1"></a>    )</span>
+<span id="cb62-132"><a href="web-data.html#cb62-132" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
+<span id="cb62-133"><a href="web-data.html#cb62-133" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(students)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-134"><a href="web-data.html#cb62-134" tabindex="-1"></a>    <span class="fu">arrange</span>(year, semester)</span>
+<span id="cb62-135"><a href="web-data.html#cb62-135" tabindex="-1"></a>}</span></code></pre></div>
+<p>The next chunk only accesses the live website when the CSV is missing or when the refresh option is enabled. If the website is temporarily unavailable, an existing local CSV remains usable.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="web-data.html#cb63-1" tabindex="-1"></a>refresh_viadrina <span class="ot">&lt;-</span> <span class="fu">isTRUE</span>(<span class="fu">getOption</span>(<span class="st">&quot;bfid.refresh_viadrina&quot;</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb63-2"><a href="web-data.html#cb63-2" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="web-data.html#cb63-3" tabindex="-1"></a><span class="fu">dir.create</span>(</span>
+<span id="cb63-4"><a href="web-data.html#cb63-4" tabindex="-1"></a>  <span class="fu">dirname</span>(viadrina_recent_file),</span>
+<span id="cb63-5"><a href="web-data.html#cb63-5" tabindex="-1"></a>  <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb63-6"><a href="web-data.html#cb63-6" tabindex="-1"></a>  <span class="at">showWarnings =</span> <span class="cn">FALSE</span></span>
+<span id="cb63-7"><a href="web-data.html#cb63-7" tabindex="-1"></a>)</span>
+<span id="cb63-8"><a href="web-data.html#cb63-8" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="web-data.html#cb63-9" tabindex="-1"></a><span class="cf">if</span> (refresh_viadrina <span class="sc">||</span> <span class="sc">!</span><span class="fu">file.exists</span>(viadrina_recent_file)) {</span>
+<span id="cb63-10"><a href="web-data.html#cb63-10" tabindex="-1"></a>  refreshed_data <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb63-11"><a href="web-data.html#cb63-11" tabindex="-1"></a>    {</span>
+<span id="cb63-12"><a href="web-data.html#cb63-12" tabindex="-1"></a>      viadrina_page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(viadrina_stats_url)</span>
+<span id="cb63-13"><a href="web-data.html#cb63-13" tabindex="-1"></a>      xml2<span class="sc">::</span><span class="fu">write_html</span>(viadrina_page, viadrina_html_file)</span>
+<span id="cb63-14"><a href="web-data.html#cb63-14" tabindex="-1"></a>      <span class="fu">parse_viadrina_page</span>(viadrina_page)</span>
+<span id="cb63-15"><a href="web-data.html#cb63-15" tabindex="-1"></a>    },</span>
+<span id="cb63-16"><a href="web-data.html#cb63-16" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(error) {</span>
+<span id="cb63-17"><a href="web-data.html#cb63-17" tabindex="-1"></a>      <span class="fu">warning</span>(</span>
+<span id="cb63-18"><a href="web-data.html#cb63-18" tabindex="-1"></a>        <span class="st">&quot;The live Viadrina page could not be refreshed: &quot;</span>,</span>
+<span id="cb63-19"><a href="web-data.html#cb63-19" tabindex="-1"></a>        <span class="fu">conditionMessage</span>(error)</span>
+<span id="cb63-20"><a href="web-data.html#cb63-20" tabindex="-1"></a>      )</span>
+<span id="cb63-21"><a href="web-data.html#cb63-21" tabindex="-1"></a>      <span class="cn">NULL</span></span>
+<span id="cb63-22"><a href="web-data.html#cb63-22" tabindex="-1"></a>    }</span>
+<span id="cb63-23"><a href="web-data.html#cb63-23" tabindex="-1"></a>  )</span>
+<span id="cb63-24"><a href="web-data.html#cb63-24" tabindex="-1"></a></span>
+<span id="cb63-25"><a href="web-data.html#cb63-25" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(refreshed_data) <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(refreshed_data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb63-26"><a href="web-data.html#cb63-26" tabindex="-1"></a>    <span class="fu">write_csv2</span>(refreshed_data, viadrina_recent_file, <span class="at">na =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb63-27"><a href="web-data.html#cb63-27" tabindex="-1"></a>  }</span>
+<span id="cb63-28"><a href="web-data.html#cb63-28" tabindex="-1"></a>}</span>
+<span id="cb63-29"><a href="web-data.html#cb63-29" tabindex="-1"></a></span>
+<span id="cb63-30"><a href="web-data.html#cb63-30" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(viadrina_recent_file)) {</span>
+<span id="cb63-31"><a href="web-data.html#cb63-31" tabindex="-1"></a>  viadrina_recent <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(</span>
+<span id="cb63-32"><a href="web-data.html#cb63-32" tabindex="-1"></a>    viadrina_recent_file,</span>
+<span id="cb63-33"><a href="web-data.html#cb63-33" tabindex="-1"></a>    <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb63-34"><a href="web-data.html#cb63-34" tabindex="-1"></a>  )</span>
+<span id="cb63-35"><a href="web-data.html#cb63-35" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb63-36"><a href="web-data.html#cb63-36" tabindex="-1"></a>  <span class="co"># Final compatibility fallback for older clones of the repository.</span></span>
+<span id="cb63-37"><a href="web-data.html#cb63-37" tabindex="-1"></a>  legacy_recent_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
+<span id="cb63-38"><a href="web-data.html#cb63-38" tabindex="-1"></a>    <span class="st">&quot;data&quot;</span>, <span class="st">&quot;Viadrina&quot;</span>, <span class="st">&quot;viadrina_students_2013_2025.csv&quot;</span></span>
+<span id="cb63-39"><a href="web-data.html#cb63-39" tabindex="-1"></a>  )</span>
+<span id="cb63-40"><a href="web-data.html#cb63-40" tabindex="-1"></a></span>
+<span id="cb63-41"><a href="web-data.html#cb63-41" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(legacy_recent_file)) {</span>
+<span id="cb63-42"><a href="web-data.html#cb63-42" tabindex="-1"></a>    <span class="fu">stop</span>(</span>
+<span id="cb63-43"><a href="web-data.html#cb63-43" tabindex="-1"></a>      <span class="st">&quot;No local Viadrina data file is available. Add &quot;</span>,</span>
+<span id="cb63-44"><a href="web-data.html#cb63-44" tabindex="-1"></a>      viadrina_recent_file,</span>
+<span id="cb63-45"><a href="web-data.html#cb63-45" tabindex="-1"></a>      <span class="st">&quot; or refresh the live page.&quot;</span></span>
+<span id="cb63-46"><a href="web-data.html#cb63-46" tabindex="-1"></a>    )</span>
+<span id="cb63-47"><a href="web-data.html#cb63-47" tabindex="-1"></a>  }</span>
+<span id="cb63-48"><a href="web-data.html#cb63-48" tabindex="-1"></a></span>
+<span id="cb63-49"><a href="web-data.html#cb63-49" tabindex="-1"></a>  viadrina_recent <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(</span>
+<span id="cb63-50"><a href="web-data.html#cb63-50" tabindex="-1"></a>    legacy_recent_file,</span>
+<span id="cb63-51"><a href="web-data.html#cb63-51" tabindex="-1"></a>    <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb63-52"><a href="web-data.html#cb63-52" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb63-53"><a href="web-data.html#cb63-53" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
+<span id="cb63-54"><a href="web-data.html#cb63-54" tabindex="-1"></a>      <span class="at">semester_label =</span> <span class="fu">paste</span>(<span class="st">&quot;Wintersemester&quot;</span>, year),</span>
+<span id="cb63-55"><a href="web-data.html#cb63-55" tabindex="-1"></a>      students,</span>
+<span id="cb63-56"><a href="web-data.html#cb63-56" tabindex="-1"></a>      female,</span>
+<span id="cb63-57"><a href="web-data.html#cb63-57" tabindex="-1"></a>      male,</span>
+<span id="cb63-58"><a href="web-data.html#cb63-58" tabindex="-1"></a>      <span class="at">diverse =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb63-59"><a href="web-data.html#cb63-59" tabindex="-1"></a>      <span class="at">unspecified =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb63-60"><a href="web-data.html#cb63-60" tabindex="-1"></a>      german,</span>
+<span id="cb63-61"><a href="web-data.html#cb63-61" tabindex="-1"></a>      foreign,</span>
+<span id="cb63-62"><a href="web-data.html#cb63-62" tabindex="-1"></a>      <span class="at">first_subject =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb63-63"><a href="web-data.html#cb63-63" tabindex="-1"></a>      <span class="at">first_university =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb63-64"><a href="web-data.html#cb63-64" tabindex="-1"></a>      <span class="at">year =</span> <span class="fu">as.integer</span>(year),</span>
+<span id="cb63-65"><a href="web-data.html#cb63-65" tabindex="-1"></a>      term,</span>
+<span id="cb63-66"><a href="web-data.html#cb63-66" tabindex="-1"></a>      <span class="at">semester =</span> <span class="fu">paste0</span>(year, <span class="st">&quot;-02&quot;</span>)</span>
+<span id="cb63-67"><a href="web-data.html#cb63-67" tabindex="-1"></a>    )</span>
+<span id="cb63-68"><a href="web-data.html#cb63-68" tabindex="-1"></a>}</span></code></pre></div>
 <p>To deliberately update the local files, run the following commands once. A normal build does not need them.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="web-data.html#cb63-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">bfid.refresh_viadrina =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb63-2"><a href="web-data.html#cb63-2" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>)</span>
-<span id="cb63-3"><a href="web-data.html#cb63-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">bfid.refresh_viadrina =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="web-data.html#cb64-1" tabindex="-1"></a><span class="fu">datatable</span>(viadrina_recent)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="web-data.html#cb64-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">bfid.refresh_viadrina =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-2"><a href="web-data.html#cb64-2" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>)</span>
+<span id="cb64-3"><a href="web-data.html#cb64-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">bfid.refresh_viadrina =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="web-data.html#cb65-1" tabindex="-1"></a><span class="fu">datatable</span>(viadrina_recent)</span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-4830e2faa551904c6bae" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-4830e2faa551904c6bae">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],["Wintersemester 2019/20","Sommersemester 2020","Wintersemester 2020/21","Sommersemester 2021","Wintersemester 2021/22","Sommersemester 2022","Wintersemester 2022/23","Sommersemester 2023","Wintersemester 2023/24","Sommersemester 2024","Wintersemester 2024/25"],[6020,5409,5586,5131,5209,4851,4797,4366,4242,4039,3933],[3607,3212,3285,3037,3045,2847,2785,2549,2456,2301,2231],[2413,2197,2301,2054,2164,2004,2012,1817,1786,1738,1691],[null,null,null,null,null,null,null,null,null,null,7],[null,null,null,null,null,null,null,null,null,null,4],[4413,4040,4083,3698,3682,3360,3201,2925,2711,2448,2321],[1607,1369,1503,1433,1527,1491,1596,1441,1531,1591,1612],[1353,405,1303,394,1138,403,915,317,847,481,743],[795,78,767,143,672,189,606,159,599,319,543],[2019,2020,2020,2021,2021,2022,2022,2023,2023,2024,2024],["winter","summer","winter","summer","winter","summer","winter","summer","winter","summer","winter"],["2019-02","2020-01","2020-02","2021-01","2021-02","2022-01","2022-02","2023-01","2023-02","2024-01","2024-02"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>semester_label<\/th>\n      <th>students<\/th>\n      <th>female<\/th>\n      <th>male<\/th>\n      <th>diverse<\/th>\n      <th>unspecified<\/th>\n      <th>german<\/th>\n      <th>foreign<\/th>\n      <th>first_subject<\/th>\n      <th>first_university<\/th>\n      <th>year<\/th>\n      <th>term<\/th>\n      <th>semester<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"semester_label","targets":1},{"name":"students","targets":2},{"name":"female","targets":3},{"name":"male","targets":4},{"name":"diverse","targets":5},{"name":"unspecified","targets":6},{"name":"german","targets":7},{"name":"foreign","targets":8},{"name":"first_subject","targets":9},{"name":"first_university","targets":10},{"name":"year","targets":11},{"name":"term","targets":12},{"name":"semester","targets":13}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="most-recent-student-numbers" class="section level3 hasAnchor" number="6.2.5">
 <h3><span class="header-section-number">6.2.5</span> Most recent student numbers<a href="web-data.html#most-recent-student-numbers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There is a structural difference between summer and winter terms. Most new enrollments are in winter.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="web-data.html#cb65-1" tabindex="-1"></a>viadrina_recent <span class="sc">%&gt;%</span></span>
-<span id="cb65-2"><a href="web-data.html#cb65-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> semester, <span class="at">y =</span> students)) <span class="sc">+</span></span>
-<span id="cb65-3"><a href="web-data.html#cb65-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> term), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb65-4"><a href="web-data.html#cb65-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb65-5"><a href="web-data.html#cb65-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
-<span id="cb65-6"><a href="web-data.html#cb65-6" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Semester&quot;</span>,</span>
-<span id="cb65-7"><a href="web-data.html#cb65-7" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Students&quot;</span></span>
-<span id="cb65-8"><a href="web-data.html#cb65-8" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb65-9"><a href="web-data.html#cb65-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb65-10"><a href="web-data.html#cb65-10" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
-<span id="cb65-11"><a href="web-data.html#cb65-11" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
-<span id="cb65-12"><a href="web-data.html#cb65-12" tabindex="-1"></a>      <span class="at">vjust =</span> <span class="fl">0.5</span>,</span>
-<span id="cb65-13"><a href="web-data.html#cb65-13" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">1</span></span>
-<span id="cb65-14"><a href="web-data.html#cb65-14" tabindex="-1"></a>    )</span>
-<span id="cb65-15"><a href="web-data.html#cb65-15" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="web-data.html#cb66-1" tabindex="-1"></a>viadrina_recent <span class="sc">%&gt;%</span></span>
+<span id="cb66-2"><a href="web-data.html#cb66-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> semester, <span class="at">y =</span> students)) <span class="sc">+</span></span>
+<span id="cb66-3"><a href="web-data.html#cb66-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> term), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb66-4"><a href="web-data.html#cb66-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb66-5"><a href="web-data.html#cb66-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>,</span>
+<span id="cb66-6"><a href="web-data.html#cb66-6" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Semester&quot;</span>,</span>
+<span id="cb66-7"><a href="web-data.html#cb66-7" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Students&quot;</span></span>
+<span id="cb66-8"><a href="web-data.html#cb66-8" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb66-9"><a href="web-data.html#cb66-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb66-10"><a href="web-data.html#cb66-10" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
+<span id="cb66-11"><a href="web-data.html#cb66-11" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb66-12"><a href="web-data.html#cb66-12" tabindex="-1"></a>      <span class="at">vjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb66-13"><a href="web-data.html#cb66-13" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">1</span></span>
+<span id="cb66-14"><a href="web-data.html#cb66-14" tabindex="-1"></a>    )</span>
+<span id="cb66-15"><a href="web-data.html#cb66-15" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/viadrina-recent-plot-1.png" alt="" width="576" /></p>
 </div>
 <div id="the-long-run-trend" class="section level3 hasAnchor" number="6.2.6">
 <h3><span class="header-section-number">6.2.6</span> The long run trend<a href="web-data.html#the-long-run-trend" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Combine the historic PDF-derived series with the recent HTML-derived semester data.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="web-data.html#cb66-1" tabindex="-1"></a>via_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
-<span id="cb66-2"><a href="web-data.html#cb66-2" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb66-3"><a href="web-data.html#cb66-3" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">as.integer</span>(Year),</span>
-<span id="cb66-4"><a href="web-data.html#cb66-4" tabindex="-1"></a>    <span class="at">Total =</span> <span class="fu">as.numeric</span>(Total),</span>
-<span id="cb66-5"><a href="web-data.html#cb66-5" tabindex="-1"></a>    <span class="at">Term =</span> <span class="st">&quot;winter&quot;</span></span>
-<span id="cb66-6"><a href="web-data.html#cb66-6" tabindex="-1"></a>  )</span>
-<span id="cb66-7"><a href="web-data.html#cb66-7" tabindex="-1"></a></span>
-<span id="cb66-8"><a href="web-data.html#cb66-8" tabindex="-1"></a>via_recent <span class="ot">&lt;-</span> viadrina_recent <span class="sc">%&gt;%</span></span>
-<span id="cb66-9"><a href="web-data.html#cb66-9" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb66-10"><a href="web-data.html#cb66-10" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">as.integer</span>(year),</span>
-<span id="cb66-11"><a href="web-data.html#cb66-11" tabindex="-1"></a>    <span class="at">Total =</span> <span class="fu">as.numeric</span>(students),</span>
-<span id="cb66-12"><a href="web-data.html#cb66-12" tabindex="-1"></a>    <span class="at">Term =</span> term</span>
-<span id="cb66-13"><a href="web-data.html#cb66-13" tabindex="-1"></a>  )</span>
-<span id="cb66-14"><a href="web-data.html#cb66-14" tabindex="-1"></a></span>
-<span id="cb66-15"><a href="web-data.html#cb66-15" tabindex="-1"></a>via_1992_recent <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(via_1992_2020, via_recent) <span class="sc">%&gt;%</span></span>
-<span id="cb66-16"><a href="web-data.html#cb66-16" tabindex="-1"></a>  <span class="fu">distinct</span>(Year, Term, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb66-17"><a href="web-data.html#cb66-17" tabindex="-1"></a>  <span class="fu">arrange</span>(Year, Term)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="web-data.html#cb67-1" tabindex="-1"></a>via_1992_2020 <span class="ot">&lt;-</span> viadrina_1992_2020 <span class="sc">%&gt;%</span></span>
+<span id="cb67-2"><a href="web-data.html#cb67-2" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb67-3"><a href="web-data.html#cb67-3" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">as.integer</span>(Year),</span>
+<span id="cb67-4"><a href="web-data.html#cb67-4" tabindex="-1"></a>    <span class="at">Total =</span> <span class="fu">as.numeric</span>(Total),</span>
+<span id="cb67-5"><a href="web-data.html#cb67-5" tabindex="-1"></a>    <span class="at">Term =</span> <span class="st">&quot;winter&quot;</span></span>
+<span id="cb67-6"><a href="web-data.html#cb67-6" tabindex="-1"></a>  )</span>
+<span id="cb67-7"><a href="web-data.html#cb67-7" tabindex="-1"></a></span>
+<span id="cb67-8"><a href="web-data.html#cb67-8" tabindex="-1"></a>via_recent <span class="ot">&lt;-</span> viadrina_recent <span class="sc">%&gt;%</span></span>
+<span id="cb67-9"><a href="web-data.html#cb67-9" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb67-10"><a href="web-data.html#cb67-10" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">as.integer</span>(year),</span>
+<span id="cb67-11"><a href="web-data.html#cb67-11" tabindex="-1"></a>    <span class="at">Total =</span> <span class="fu">as.numeric</span>(students),</span>
+<span id="cb67-12"><a href="web-data.html#cb67-12" tabindex="-1"></a>    <span class="at">Term =</span> term</span>
+<span id="cb67-13"><a href="web-data.html#cb67-13" tabindex="-1"></a>  )</span>
+<span id="cb67-14"><a href="web-data.html#cb67-14" tabindex="-1"></a></span>
+<span id="cb67-15"><a href="web-data.html#cb67-15" tabindex="-1"></a>via_1992_recent <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(via_1992_2020, via_recent) <span class="sc">%&gt;%</span></span>
+<span id="cb67-16"><a href="web-data.html#cb67-16" tabindex="-1"></a>  <span class="fu">distinct</span>(Year, Term, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb67-17"><a href="web-data.html#cb67-17" tabindex="-1"></a>  <span class="fu">arrange</span>(Year, Term)</span></code></pre></div>
 <p>Plot and polish. Assume the enrollment for winter 2020/2021 was not affected by the coronavirus pandemic.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="web-data.html#cb67-1" tabindex="-1"></a>via_1992_recent <span class="sc">%&gt;%</span></span>
-<span id="cb67-2"><a href="web-data.html#cb67-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Total, <span class="at">colour =</span> Term)) <span class="sc">+</span></span>
-<span id="cb67-3"><a href="web-data.html#cb67-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb67-4"><a href="web-data.html#cb67-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>) <span class="sc">+</span></span>
-<span id="cb67-5"><a href="web-data.html#cb67-5" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">28</span>)) <span class="sc">+</span></span>
-<span id="cb67-6"><a href="web-data.html#cb67-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>) <span class="sc">+</span></span>
-<span id="cb67-7"><a href="web-data.html#cb67-7" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb67-8"><a href="web-data.html#cb67-8" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb67-9"><a href="web-data.html#cb67-9" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
-<span id="cb67-10"><a href="web-data.html#cb67-10" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
-<span id="cb67-11"><a href="web-data.html#cb67-11" tabindex="-1"></a>      <span class="at">vjust =</span> <span class="fl">0.5</span>,</span>
-<span id="cb67-12"><a href="web-data.html#cb67-12" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">1</span></span>
-<span id="cb67-13"><a href="web-data.html#cb67-13" tabindex="-1"></a>    )</span>
-<span id="cb67-14"><a href="web-data.html#cb67-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb67-15"><a href="web-data.html#cb67-15" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
-<span id="cb67-16"><a href="web-data.html#cb67-16" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fl">2020.5</span>,</span>
-<span id="cb67-17"><a href="web-data.html#cb67-17" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb67-18"><a href="web-data.html#cb67-18" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;solid&quot;</span>,</span>
-<span id="cb67-19"><a href="web-data.html#cb67-19" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.3</span></span>
-<span id="cb67-20"><a href="web-data.html#cb67-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb67-21"><a href="web-data.html#cb67-21" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">annotate</span>(</span>
-<span id="cb67-22"><a href="web-data.html#cb67-22" tabindex="-1"></a>    <span class="st">&quot;text&quot;</span>,</span>
-<span id="cb67-23"><a href="web-data.html#cb67-23" tabindex="-1"></a>    <span class="at">x =</span> <span class="dv">2021</span>,</span>
-<span id="cb67-24"><a href="web-data.html#cb67-24" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">4000</span>,</span>
-<span id="cb67-25"><a href="web-data.html#cb67-25" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">&quot;Corona&quot;</span>,</span>
-<span id="cb67-26"><a href="web-data.html#cb67-26" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb67-27"><a href="web-data.html#cb67-27" tabindex="-1"></a>    <span class="at">angle =</span> <span class="dv">90</span>,</span>
-<span id="cb67-28"><a href="web-data.html#cb67-28" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="dv">1</span></span>
-<span id="cb67-29"><a href="web-data.html#cb67-29" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="web-data.html#cb68-1" tabindex="-1"></a>via_1992_recent <span class="sc">%&gt;%</span></span>
+<span id="cb68-2"><a href="web-data.html#cb68-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Total, <span class="at">colour =</span> Term)) <span class="sc">+</span></span>
+<span id="cb68-3"><a href="web-data.html#cb68-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb68-4"><a href="web-data.html#cb68-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>) <span class="sc">+</span></span>
+<span id="cb68-5"><a href="web-data.html#cb68-5" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">28</span>)) <span class="sc">+</span></span>
+<span id="cb68-6"><a href="web-data.html#cb68-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Student numbers at Viadrina&quot;</span>) <span class="sc">+</span></span>
+<span id="cb68-7"><a href="web-data.html#cb68-7" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb68-8"><a href="web-data.html#cb68-8" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb68-9"><a href="web-data.html#cb68-9" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
+<span id="cb68-10"><a href="web-data.html#cb68-10" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb68-11"><a href="web-data.html#cb68-11" tabindex="-1"></a>      <span class="at">vjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb68-12"><a href="web-data.html#cb68-12" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">1</span></span>
+<span id="cb68-13"><a href="web-data.html#cb68-13" tabindex="-1"></a>    )</span>
+<span id="cb68-14"><a href="web-data.html#cb68-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb68-15"><a href="web-data.html#cb68-15" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb68-16"><a href="web-data.html#cb68-16" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fl">2020.5</span>,</span>
+<span id="cb68-17"><a href="web-data.html#cb68-17" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb68-18"><a href="web-data.html#cb68-18" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;solid&quot;</span>,</span>
+<span id="cb68-19"><a href="web-data.html#cb68-19" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.3</span></span>
+<span id="cb68-20"><a href="web-data.html#cb68-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb68-21"><a href="web-data.html#cb68-21" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">annotate</span>(</span>
+<span id="cb68-22"><a href="web-data.html#cb68-22" tabindex="-1"></a>    <span class="st">&quot;text&quot;</span>,</span>
+<span id="cb68-23"><a href="web-data.html#cb68-23" tabindex="-1"></a>    <span class="at">x =</span> <span class="dv">2021</span>,</span>
+<span id="cb68-24"><a href="web-data.html#cb68-24" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">4000</span>,</span>
+<span id="cb68-25"><a href="web-data.html#cb68-25" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">&quot;Corona&quot;</span>,</span>
+<span id="cb68-26"><a href="web-data.html#cb68-26" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb68-27"><a href="web-data.html#cb68-27" tabindex="-1"></a>    <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb68-28"><a href="web-data.html#cb68-28" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="dv">1</span></span>
+<span id="cb68-29"><a href="web-data.html#cb68-29" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/viadrina-long-run-plot-1.png" alt="" width="576" /></p>
 
 </div>
@@ -1075,9 +1079,9 @@ Definition
 </div>
 <div class="footnotes">
 <hr />
-<ol start="12">
-<li id="fn12"><p>(1) Look for a download button. (2) Search same or similar data somewhere else. (3) Check if there is an API. (4) Ask the website owner for the data.<a href="web-data.html#fnref12" class="footnote-back">↩︎</a></p></li>
-<li id="fn13"><p>You may use other free services. Search for <em>Online converter PDF to csv/xlsx</em>.<a href="web-data.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<ol start="25">
+<li id="fn25"><p>(1) Look for a download button. (2) Search same or similar data somewhere else. (3) Check if there is an API. (4) Ask the website owner for the data.<a href="web-data.html#fnref25" class="footnote-back">↩︎</a></p></li>
+<li id="fn26"><p>You may use other free services. Search for <em>Online converter PDF to csv/xlsx</em>.<a href="web-data.html#fnref26" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 <script>

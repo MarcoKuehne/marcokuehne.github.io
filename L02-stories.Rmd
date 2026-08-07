@@ -101,94 +101,267 @@ On the one hand, this is an awesome chart that transforms a huge data table in o
 
 ## Less is more
 
-Figure \@ref(fig:dogs) is an awesome data aggregate. Still, "less is more" in data visualization because too much information or visual clutter can overwhelm and confuse the audience, making it harder for them to understand the key insights and trends in the data. The complex scatterplot demands a lot of attention. 
+Figure \@ref(fig:dogs) is an awesome data aggregate. Still, "less is more" in data visualization, because visual clutter can overwhelm the audience and make it harder to see the key insight. The complex scatterplot demands a lot of attention.
 
-<!-- Read more: <http://socialmediaguerilla.com/content-marketing/less-is-more-improving-the-data-ink-ratio/> -->
+Edward Tufte gave this intuition a name.[^stories-tufte]
 
-Follow the slide presentation:
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+The **data-ink ratio** is the proportion of the ink in a graphic that presents actual data, relative to the total ink used.
 
-<object data="https://files.speakerdeck.com/presentations/87bb9f00ec1e01308020727faa1f9e72/data-ink.pdf" width="100%" height="500">
+Tufte's prescription follows from it: show the data, maximise the data-ink ratio, and erase non-data ink.
+::::
 
-</object>
+Most charts fail this test not because anybody decided to clutter them, but because the software defaults did it for them. Below is one chart — the number of participants in seven terms of this course — taken apart one element at a time.
 
-<!-- According to the principles of **remove to improve**, decide on these design elements: -->
+**Drag the slider, or click it and use the arrow keys.** Twenty-two steps. Nothing is ever added except at step 17.
 
-<!-- -   Remove backgrounds. `r torf(TRUE)` -->
-<!-- -   Remove 3D effects. `r torf(TRUE)` -->
-<!-- -   Remove bolding. `r torf(TRUE)` -->
+```{r ink-slider, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(tidyverse)
 
-The concept of data-ink ratio was introduced by data visualization expert Edward Tufte. It refers to the proportion of ink or pixels used to represent actual data in a visualization, as opposed to non-data elements like gridlines, borders, or labels.
+counts <- read.csv(paste0("https://raw.githubusercontent.com/MarcoKuehne/",
+                          "marcokuehne.github.io/main/data/Course/GF_AllTime.csv"),
+                   sep = ";") %>%
+  count(Term, name = "Students")
 
-The reason why we should care about data-ink ratio is that it directly affects the clarity and effectiveness of the visualization. The more ink or pixels we use to represent non-data elements, the less space we have to represent actual data, which can make it harder for the audience to discern the insights and trends in the data.
+short <- sub("^SS (\\d{4})$", "S\\1",
+             sub("^WS (\\d{4}) \\d{4}$", "W\\1", counts$Term))
 
-::: defbox
-::: titeldefbox
-<h2>Definition</h2>
+state <- list(frame = TRUE, plotbg = TRUE, panelbg = TRUE, minor = TRUE,
+              gridcol = "black", vgrid = TRUE, hgrid = TRUE, border = TRUE,
+              multicol = TRUE, legend = TRUE, xtitle = TRUE, bold = TRUE,
+              ticks = TRUE, wide = TRUE, dark = TRUE, labels = FALSE,
+              ytext = TRUE, ytitle = TRUE, axisline = TRUE,
+              longnames = TRUE, rotate = TRUE)
+
+draw <- function(s, caption) {
+  d <- counts
+  d$Lab <- factor(if (s$longnames) d$Term else short,
+                  levels = if (s$longnames) d$Term else short)
+  p <- ggplot(d, aes(x = Lab, y = Students))
+  p <- p + if (s$multicol) {
+    geom_col(aes(fill = Lab), colour = if (s$border) "black" else NA,
+             linewidth = if (s$border) 1 else 0, width = if (s$wide) .9 else .65)
+  } else {
+    geom_col(fill = if (s$dark) "grey35" else "grey65",
+             colour = if (s$border) "black" else NA,
+             linewidth = if (s$border) 1 else 0, width = if (s$wide) .9 else .65)
+  }
+  if (s$labels) {
+    p <- p + geom_text(aes(label = Students), vjust = -0.5, size = 3, colour = "grey20")
+  }
+  p + labs(title = "Course participants per term", subtitle = caption,
+           x = if (s$xtitle) "Term" else NULL,
+           y = if (s$ytitle) "Number of Students" else NULL) +
+    theme_grey(base_size = 10) +
+    theme(
+      plot.background = if (s$plotbg) {
+        element_rect(fill = "grey95", colour = if (s$frame) "black" else NA,
+                     linewidth = if (s$frame) 2 else 0)
+      } else element_blank(),
+      panel.background = if (s$panelbg) element_rect(fill = "grey80") else element_blank(),
+      panel.grid.minor = if (s$minor) element_line(colour = s$gridcol, linewidth = .3) else element_blank(),
+      panel.grid.major.x = if (s$vgrid) element_line(colour = s$gridcol, linewidth = .6) else element_blank(),
+      panel.grid.major.y = if (s$hgrid) element_line(colour = s$gridcol, linewidth = .6) else element_blank(),
+      axis.line.y = if (s$axisline) element_line(colour = "grey40") else element_blank(),
+      axis.ticks  = if (s$ticks) element_line() else element_blank(),
+      axis.title  = if (s$bold) element_text(face = "bold") else element_text(),
+      axis.text.y = if (s$ytext) element_text() else element_blank(),
+      axis.text.x = element_text(angle = if (s$rotate) 45 else 0,
+                                 hjust = if (s$rotate) 1 else .5,
+                                 face = if (s$bold) "bold" else "plain"),
+      legend.position = if (s$legend) "right" else "none",
+      plot.subtitle = element_text(size = 8, colour = "grey30"))
+}
+
+steps <- list(
+  c(NA,          "everything the defaults offer"),
+  c("frame",     "outer frame removed"),
+  c("plotbg",    "page background removed"),
+  c("panelbg",   "panel background removed"),
+  c("minor",     "minor gridlines removed"),
+  c("gridcol",   "gridlines lightened"),
+  c("vgrid",     "vertical gridlines removed - the bars already mark the categories"),
+  c("hgrid",     "horizontal gridlines removed"),
+  c("border",    "bar outlines removed"),
+  c("multicol",  "colour removed - it encoded nothing the axis did not"),
+  c("legend",    "legend removed - it repeated the axis labels"),
+  c("xtitle",    "axis title removed - the labels already say it"),
+  c("bold",      "bold removed"),
+  c("ticks",     "tick marks removed"),
+  c("wide",      "bars narrowed"),
+  c("dark",      "fill lightened"),
+  c("labels",    "numbers ADDED - ink spent to gain information"),
+  c("ytext",     "y axis text removed - now redundant"),
+  c("ytitle",    "y axis title removed"),
+  c("axisline",  "axis line removed"),
+  c("longnames", "labels shortened"),
+  c("rotate",    "labels set horizontal"))
+
+# Each frame is embedded directly in the page, so no file paths can break.
+tmp <- tempfile(fileext = ".png")
+s <- state
+uris <- character(length(steps))
+for (i in seq_along(steps)) {
+  key <- steps[[i]][1]
+  if (!is.na(key)) {
+    s[[key]] <- if (key == "gridcol") "grey85" else if (key == "labels") TRUE else FALSE
+  }
+  ggsave(tmp, draw(s, sprintf("step %d of %d - %s", i, length(steps), steps[[i]][2])),
+         width = 6, height = 3.8, dpi = 90, bg = "white")
+  uris[i] <- knitr::image_uri(tmp)
+}
+
+cat('<div style="margin:1.5rem 0;">\n',
+    '<img id="inkImg" src="', uris[1],
+    '" alt="data-ink step" style="width:100%;border:1px solid #e3e3e3;border-radius:6px;">\n',
+    '<input type="range" id="inkSlider" min="1" max="', length(steps),
+    '" value="1" step="1" style="width:100%;margin-top:.6rem;">\n</div>\n',
+    '<script>\nvar inkFrames = ["', paste(uris, collapse = '","'), '"];\n',
+    '(function(){var i=document.getElementById("inkImg"),s=document.getElementById("inkSlider");',
+    's.addEventListener("input",function(){i.src=inkFrames[+s.value-1];});})();\n</script>\n',
+    sep = "")
+```
+
+Nothing was added between step 1 and step 22 except the numbers at step 17. Everything else was taken away: a frame, two background fills, two sets of gridlines, bar outlines, seven colours that encoded nothing the axis did not already say, a legend that repeated those labels a second time, an axis title, bold type, tick marks, and finally the y-axis itself.
+
+### What the ink is worth {#stories-measuring-ink}
+
+Data-ink is usually discussed as a metaphor. It does not have to be one. Save each chart as an image and count the pixels that are not white, and you have a measure of how much ink the graphic actually spends.
+
+| Step | | Ink (pixels) | Reduction |
+|---:|---|---:|---:|
+| 1 | everything the defaults offer | 307,390 | — |
+| 4 | backgrounds removed | 98,264 | 68 % |
+| 11 | colour and legend removed | 99,825 | 68 % |
+| 22 | data and labels only | 93,383 | **70 %** |
+
+The final chart spends **70 % less ink than the first and carries exactly the same seven numbers**. Two-thirds of the original was decoration, and most of it vanished in the first four steps.
+
+Notice, though, that step 11 uses slightly *more* ink than step 4 even while looking cleaner. Dropping the legend gave the panel more room, so the bars grew. Ink is a proxy, not a goal.
+
+::: {.analysis-note}
+Tufte was writing in 1983, about paper, when the metaphor was almost literal. So let us take it literally and see what it is worth.
+
+A six-by-nine-inch page is about 0.035 m². Offset printing lays down an ink film of roughly one micrometre, which works out to around 1.2 grams per square metre at full coverage, and black offset ink costs on the order of ten to fifteen euros per kilogram. Replacing one bar chart with a version that spends 14 percentage points less ink therefore saves about **0.0013 grams per copy**.
+
+For a 500-copy academic monograph that is roughly **one cent** — for every chart in the book. For a 50,000-copy bestseller, under **one euro**.
+
+These are order-of-magnitude estimates, and the direction is what matters: **the data-ink ratio cannot be defended on economic grounds.** On paper it is worth cents. On a screen, ink is free and the saving is exactly zero.
 :::
 
-The **data-ink ratio** is the proportion of Ink that is used to present actual data compared to the total amount of ink (or pixels) used in the entire display. Good graphics should include only data-Ink. Non-Data-Ink is to be deleted everywhere where possible.
+So the principle has to be re-founded, and the foundation is not economics but attention. Every element on a chart competes for a reader who will give the graphic a few seconds. Non-data ink does not cost money; it costs the reader's limited capacity to find the thing you drew the chart to show.
+
+That reframing has a consequence, and it is the rule for the rest of this chapter:
+
+> **Message before design. Design only where it helps understanding.**
+
+## Never use pie charts
+
+The data-ink argument is about what a graphic spends. There is a second question, and it is about what the human eye can actually do.
+
+```{r pie-data}
+x      <- c(14, 62, 17, 53)
+labels <- c("London", "New York", "Singapore", "Mumbai")
+```
+
+**One question: is the share for Singapore larger or smaller than the share for London?**
+
+```{r pie-chart, echo=FALSE, fig.align='center', fig.width=5.2, fig.height=3.8}
+par(mar = c(0, 2, 0, 2), xpd = TRUE)
+pie(x, labels, radius = 1, col = grey(c(.85, .55, .75, .65)), border = "white")
+```
+
+Take a moment before you scroll.
+
+<details>
+<summary>**Can you tell now?**</summary>
+
+```{r pie-bar, echo=FALSE, fig.align='center', fig.width=5.2, fig.height=3.4}
+par(mar = c(3, 3.5, 1, 1), mgp = c(2, .6, 0))
+barplot(x, names.arg = labels, col = "grey65", border = NA, las = 1)
+```
+
+</details>
+
+Both charts show the same four numbers. The second answers the question instantly; the first requires guessing. The reason is perceptual rather than aesthetic. A pie chart asks you to compare **angles and areas**; a bar chart asks you to compare **positions and lengths along a common scale**.
+
+Cleveland and McGill measured this. In their experiments, position judgements were about **twice as accurate** as angle judgements, and **88 % of the large errors** occurred on the angle task.[^stories-cleveland] They proposed a ranking of perceptual tasks by accuracy, with position along a common scale at the top and area, volume, shading and colour saturation at the bottom.[^stories-ranking]
+
+R's own documentation is blunter. The help page for `pie()` states: *"Pie charts are a very bad way of displaying information."*
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> When a pie chart is defensible </h2>
+:::
+Two or three slices, one obviously dominant, and the point being *part of a whole* rather than a comparison between parts.
+
+Recent experimental work is gentler than the folklore: pies, donuts and bars performed **equally well for extracting part–whole relationships**, and where differences appeared they were often small. Bars won on *ranking* tasks and were faster overall.[^stories-hill]
+
+So the rule is not "pie charts are evil." It is: **the moment a reader has to rank the slices, a bar chart wins.**
+::::
+
+## Then why use bars at all? {#stories-bars}
+
+Follow the argument to its end and it turns on the bar chart itself.
+
+A bar spends a great deal of ink to place one number. It draws a filled rectangle from zero to the value, when only the *tip* carries information. Everything below the tip is a container. If position along a common scale is what the eye reads well, a single dot at the same height would do the same job for a fraction of the ink — which is exactly what Cleveland proposed with the **dot plot**.[^stories-dotplot]
+
+And the container is not free. Shown a bar representing a mean, readers judge data points **inside** the bar as more likely than points equally far from the mean but **outside** it — as though the bar contained the data.[^stories-withinbar] The effect replicates across labs and, disturbingly, gets *stronger* among readers with higher graph literacy.[^stories-okan] A later study using drawing rather than rating suggests the mechanism is narrower than first thought: about **one reader in five** makes a categorical error, reading a mean bar as if it were a count bar with the data capped at the tip.[^stories-btl]
+
+Meanwhile a survey of 703 physiology papers found that **85.6 % contained at least one bar graph**, and of those, three-quarters showed mean ± standard error — a display in which wildly different distributions produce identical pictures.[^stories-weissgerber]
+
+So: technically we could plot almost anything. Empirically, people mostly plot bars. What lies between?
+
+Three things are worth holding on to before deleting every bar you own.
+
+**Bars carry the zero.** A bar is dishonest if its axis is truncated, in a way a dot plot is not — but that is because the bar *insists* on the baseline. Dot plots relinquish that discipline, and truncating an axis biases judgement in any encoding, with or without visual cues warning the reader.[^stories-truncation]
+
+**Bars mean "compare these separate things."** Readers reliably associate bars with discrete comparisons and lines with trends, and this correspondence appears without anyone being taught it.[^stories-zacks] For seven separate terms, a bar is doing something a dot cannot: saying *these are categories, not a series*.
+
+**Familiarity is real, and small.** The conventional vertical bar is identified faster than horizontal bars or lines — by roughly 35 to 55 milliseconds.[^stories-typicality] That is an advantage in recognition speed, not in accuracy of reading values, and it should not be inflated into a defence of bars for every purpose.
+
+::: {.analysis-takeaway}
+**Technically possible:** almost any encoding, animated, interactive, three-dimensional.
+
+**Actually used:** bars and pies, because that is what spreadsheets offer and what audiences have learned to read. Across a large collection of web charts, bar share ranged from 12 % to 57 % depending only on *which tool* made them.[^stories-usage]
+
+**The defensible middle:** use the most conventional form that supports the specific judgement your reader has to make. Bars for comparing separate categories with a meaningful zero. Dots when the zero is not meaningful, when the labels are long, or when many series must be compared. Lines for trends. And in every case, spend the ink you saved on the one thing that helps most — **putting the message in the title** and labelling the data directly, so the reader does not have to translate a legend before they can think.
 :::
 
-<!-- ## Never use pie charts -->
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn </h2>
+:::
+Look back at step 22 of the slider. Would a dot plot be better than those bars for the seven terms? `r mcq(c("Yes, less ink is always better", answer = "No, the terms are separate categories and zero is meaningful", "It makes no difference"))`
 
-<!-- One of the main criticisms of pie charts is that they can be difficult to read and interpret accurately, especially when there are multiple slices or small differences between the sizes of the slices. It can be hard for the audience to accurately compare the sizes of the different slices, and this can lead to misinterpretation or misunderstanding of the data. -->
+Now change the chart's title from "Course participants per term" to whatever you think the chart actually shows. Which change improved the graphic more — the twenty-two removals, or the title?
+::::
 
-<!-- From the *note* of the documentation of `pie()` function in R it says: -->
+[^stories-tufte]: Tufte, E. R., *The Visual Display of Quantitative Information*, 2nd edition, Graphics Press, 2001 (first edition 1983). The data-ink ratio is developed in Chapter 4.
 
-<!-- ```{r, eval=F} -->
-<!-- ?pie() -->
-<!-- ``` -->
+[^stories-cleveland]: Cleveland, W. S., and McGill, R., *Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods*, *Journal of the American Statistical Association* 79(387), 1984, 531--554, <https://doi.org/10.1080/01621459.1984.10478080>.
 
-<!-- *Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.* -->
+[^stories-ranking]: Cleveland and McGill's own ranking leaves several tasks tied, including length, direction and angle. The familiar tie-free ordering (position, length, angle, slope, area, volume, colour) is Mackinlay's adaptation: Mackinlay, J. D., *Automating the Design of Graphical Presentations of Relational Information*, *ACM Transactions on Graphics* 5(2), 1986, 110--141.
 
-<!-- *Cleveland (1985), page 264: "Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements." This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.* -->
+[^stories-hill]: Hill, A., *Are pie charts evil? An assessment of the value of pie and donut charts compared to bar charts*, *Information Visualization*, 2025, <https://doi.org/10.1177/14738716241259432>.
 
-<!-- ```{r message=FALSE, warning=FALSE, echo=F, eval=T} -->
-<!-- # Create data for the graph. -->
-<!-- x <- c(14, 62, 17, 53) -->
-<!-- labels <- c("London", "New York", "Singapore", "Mumbai") -->
-<!-- ``` -->
+[^stories-dotplot]: Cleveland, W. S., *Graphical Methods for Data Presentation: Full Scale Breaks, Dot Charts, and Multibased Logging*, *The American Statistician* 38(4), 1984, 270--280. Developed further in *The Elements of Graphing Data*, Wadsworth, 1985.
 
-<!-- **Can you tell whether Singapore or London have the higher share?** -->
+[^stories-withinbar]: Newman, G. E., and Scholl, B. J., *Bar graphs depicting averages are perceptually misinterpreted: The within-the-bar bias*, *Psychonomic Bulletin & Review* 19(4), 2012, 601--607, <https://doi.org/10.3758/s13423-012-0247-5>.
 
-<!-- ```{r message=FALSE, warning=FALSE, echo=F} -->
-<!-- # Plot the chart. -->
-<!-- pie(x,labels) -->
-<!-- ``` -->
+[^stories-okan]: Okan, Y., Garcia-Retamero, R., Cokely, E. T., and Maldonado, A., *Biasing and debiasing health decisions with bar graphs*, *Quarterly Journal of Experimental Psychology* 71(12), 2018, 2506--2519. The bias changed treatment choices, and higher graph literacy predicted a *stronger* effect.
 
-<!-- <details> -->
+[^stories-btl]: Kerns, S. H., and Wilmer, J. B., *Two graphs walk into a bar: Readout-based measurement reveals the Bar-Tip Limit error*, *Journal of Vision* 21(12):17, 2021, <https://doi.org/10.1167/jov.21.12.17>. Prevalence 22.1 %, 95 % CI [18.9, 25.8].
 
-<!-- <summary>**Can you tell now?**</summary> -->
+[^stories-weissgerber]: Weissgerber, T. L., Milic, N. M., Winham, S. J., and Garovic, V. D., *Beyond Bar and Line Graphs: Time for a New Data Presentation Paradigm*, *PLOS Biology* 13(4), 2015, e1002128. Survey of 703 articles in the top quartile of physiology journals, first quarter of 2014.
 
-<!-- ```{r message=FALSE, warning=FALSE} -->
-<!-- # Plot the chart. -->
-<!-- barplot(x, names.arg = labels) -->
-<!-- ``` -->
+[^stories-truncation]: Correll, M., Bertini, E., and Franconeri, S., *Truncating the Y-Axis: Threat or Menace?*, *Proceedings of CHI 2020*, <https://doi.org/10.1145/3313831.3376222>.
 
-<!-- </details> -->
+[^stories-zacks]: Zacks, J., and Tversky, B., *Bars and lines: A study of graphic communication*, *Memory & Cognition* 27(6), 1999, 1073--1079.
 
-<!-- <details> -->
+[^stories-typicality]: Reimann, D., Struwe, M., Ram, N., and Gaschler, R., *Typicality effect in data graphs*, *Visual Communication* 24(1), 2025, 114--128. Vertical bars were identified in about 720 ms, horizontal bars 757 ms, lines 773 ms.
 
-<!-- <summary>Here is the R code.</summary> -->
-
-<!-- ```{r message=FALSE, warning=FALSE, echo=T, eval=F} -->
-<!-- # Create data for the graph. -->
-<!-- x <- c(14, 62, 17, 53) -->
-<!-- labels <- c("London", "New York", "Singapore", "Mumbai") -->
-
-<!-- # Plot the chart. -->
-<!-- pie(x,labels) -->
-
-<!-- # Plot the chart. -->
-<!-- barplot(x, names.arg = labels) -->
-<!-- ``` -->
-
-<!-- </details> -->
-
-## Grammar of Graphics
-
-`ggplot2` is a system for declaratively creating graphics, based on **The Grammar of Graphics**. You provide the data, tell `ggplot2` how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details. `ggplot2` is now over 10 years old and is used by hundreds of thousands of people to make millions of plots.
-
-<iframe seamless width="100%" height="400" frameborder="0" src="https://pmassicotte.github.io/ivado_ggplot2_workshop_2022/#1">
-
-</iframe>
+[^stories-usage]: Battle, L., Duan, P., Miranda, Z., Mukusheva, D., Chang, R., and Stonebraker, M., *Beagle: Automated Extraction and Interpretation of Visualizations from the Web*, *Proceedings of CHI 2018*. Over 42,000 charts; four types — bar, line, scatter and map — account for 65 % to 90 % of each collection.
