@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-07" />
+<meta name="date" content="2026-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -198,12 +198,6 @@ div.csl-indent {
 <link rel="stylesheet" href="www/webex.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/boxes.css" type="text/css" />
-<link rel="stylesheet" href="css/ani.css" type="text/css" />
-<link rel="stylesheet" href="css/background.css" type="text/css" />
-<link rel="stylesheet" href="css/toggle.css" type="text/css" />
-<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
-<link rel="stylesheet" href="css/align.css" type="text/css" />
-<link rel="stylesheet" href="css/video.css" type="text/css" />
 </head>
 
 <body>
@@ -580,13 +574,7 @@ Definition
 <div id="summarize" class="section level4 unnumbered hasAnchor">
 <h4>Summarize<a href="intro-to-tidyverse.html#summarize" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Would you like to know the average age of course participants? It is 24.7192982 There are two ways in order to achieve this.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro-to-tidyverse.html#cb26-1" tabindex="-1"></a><span class="co"># calculate mean age with mutate()</span></span>
-<span id="cb26-2"><a href="intro-to-tidyverse.html#cb26-2" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
-<span id="cb26-3"><a href="intro-to-tidyverse.html#cb26-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(Age)) </span>
-<span id="cb26-4"><a href="intro-to-tidyverse.html#cb26-4" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="intro-to-tidyverse.html#cb26-5" tabindex="-1"></a><span class="co"># calculate mean age with summarize() </span></span>
-<span id="cb26-6"><a href="intro-to-tidyverse.html#cb26-6" tabindex="-1"></a>coursedata <span class="sc">%&gt;%</span>      </span>
-<span id="cb26-7"><a href="intro-to-tidyverse.html#cb26-7" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(Age)) </span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro-to-tidyverse.html#cb26-1" tabindex="-1"></a><span class="co"># calculate mean age with summarize() </span></span></code></pre></div>
 <p>What is the difference between them? <code>mutate()</code> creates a new variable <code>mean_age</code> in the data set for all 57 observations. But there is only 1 mean value. Thus, <code>mutate()</code> repeats this mean value 57 times. The result is a 57x9 tibble. <code>summarize()</code> collapses the tibble to a single value. The result is a 1x1 tibble.</p>
 <p>The question is, what do you plan to do next with your results. After <code>summarize()</code> all other information is gone. We will see this in the next graph.</p>
 </div>
@@ -597,8 +585,8 @@ Definition
 <iframe seamless width="100%" height="400" frameborder="0" src="https://pmassicotte.github.io/ivado_ggplot2_workshop_2022/#1">
 </iframe>
 <p><code>ggplot()</code> follows the <u id='gg'>Grammar of Graphics</u>. The first argument is the data, the second is <code>aes()</code> aesthetics (that define the x- and y-variable). In order to add more to the graph, use the <code>+</code> operator (instead a pipe). Add layers, so called geoms, like <code>geom_point()</code> to create points in a coordinate system, a.k.a the scatter plot. <code>theme_minimal()</code> is a particular set of options that controls non-data display.</p>
-<span class="tippy html-widget html-fill-item" height="480" id="htmlwidget-8812317ddaee63b9cc15" width="576"></span>
-<script type="application/json" data-for="htmlwidget-8812317ddaee63b9cc15">{"x":{"element":"gg","opts":{"content":"By Leland Wilkinson."}},"evals":[],"jsHooks":[]}</script>
+<span class="tippy html-widget html-fill-item" height="480" id="htmlwidget-57bd33b4cda77bcba722" width="576"></span>
+<script type="application/json" data-for="htmlwidget-57bd33b4cda77bcba722">{"x":{"element":"gg","opts":{"content":"By Leland Wilkinson."}},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro-to-tidyverse.html#cb27-1" tabindex="-1"></a><span class="fu">ggplot</span>(coursedata, <span class="fu">aes</span>(<span class="at">x =</span> Age, <span class="at">y =</span> Total.Semesters)) <span class="sc">+</span> </span>
 <span id="cb27-2"><a href="intro-to-tidyverse.html#cb27-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
 <span id="cb27-3"><a href="intro-to-tidyverse.html#cb27-3" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>

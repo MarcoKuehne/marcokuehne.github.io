@@ -1,6 +1,35 @@
+/*
+ * Becoming Fluent in Data — main stylesheet
+ *
+ * Consolidated from style.css + align.css + toggle.css + wikipedia_link.css.
+ * The content boxes live in boxes.css; everything else is here.
+ *
+ * Contents
+ *   1. Base typography
+ *   2. Layout helpers
+ *   3. Small components
+ *   4. Section subtitles on the page
+ *   5. Section subtitles in the sidebar
+ *   6. Lightweight note boxes
+ *   7. Responsive adjustments
+ */
+
+/* =========================================================
+   1. Base typography
+   ========================================================= */
+
+/* Justified text needs hyphenation, otherwise long words open "rivers" of
+   white space. hyphens:auto requires a language to be set - the `lang:` field
+   in index.Rmd supplies it. Remove both lines together if you ever prefer
+   ragged-right, which is the more accessible default. */
+body {
+  text-align: justify;
+  hyphens: auto;
+}
+
 p.caption {
-  color: #777;
   margin-top: 10px;
+  color: #777;
 }
 
 p code {
@@ -16,12 +45,16 @@ pre code {
   white-space: inherit;
 }
 
-/* Used in TOC top icon */
+/* =========================================================
+   2. Layout helpers
+   ========================================================= */
+
+/* Logo at the top of the sidebar. */
 .aligncenter {
   text-align: center;
 }
 
-/* Used on some introductory pages. */
+/* Side-by-side blocks, used on introductory pages. */
 .columns {
   display: flex;
   gap: 1rem;
@@ -31,17 +64,50 @@ pre code {
   min-width: 0;
 }
 
-/* Top message box */
+/* =========================================================
+   3. Small components
+   ========================================================= */
+
+/* The "Work in Progress" banner from top_message.html. */
 .infobox {
-  padding: 1em 1em 1em 4em;
   margin-bottom: 10px;
+  padding: 1em 1em 1em 4em;
   border: 0 solid blue;
   border-radius: 10px;
   background: #f5f5f5 5px center / 3em no-repeat;
 }
 
+/* Collapsible block, opened by js/collapse.js. */
+.toggle {
+  height: 1.95em;
+  overflow-y: hidden;
+}
+
+.toggle.open {
+  height: auto;
+}
+
+/* Wikipedia and other external reference links. */
+.fancy-link {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  text-decoration: none;
+  transition: border-bottom 0.2s;
+}
+
+.fancy-link:hover {
+  border-bottom-color: #0056b3;
+}
+
+.wikipedia-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
 /* =========================================================
-   Analysis hierarchy: visible subtitles below h1 and h2
+   4. Section subtitles on the page
    ========================================================= */
 
 .analysis-subtitle {
@@ -54,14 +120,14 @@ pre code {
   margin: 0;
 }
 
-/* Compare, Model, Structure, Reveal, Identify, Extract */
+/* Chapter level: Compare, Model, Foundations, Structured Data, ... */
 .book .book-body .page-wrapper .page-inner section.normal h1 + .analysis-subtitle {
   margin: -0.2em 0 2.8em 0.15em;
   font-size: 1.42em;
   line-height: 1.45;
 }
 
-/* Relationships, Comparing Means, Regression, etc. */
+/* Section level: Relationships, Comparing Means, Regression, ... */
 .book .book-body .page-wrapper .page-inner section.normal h2 + .analysis-subtitle {
   margin: -0.35em 0 1.8em 3.25em;
   font-size: 1.12em;
@@ -75,72 +141,84 @@ pre code {
 }
 
 /* =========================================================
-   Analysis subtitles in the GitBook sidebar / TOC
+   5. Section subtitles in the sidebar
+   -----------------------------------------------------------------
+   HOW THIS WORKS, AND HOW TO ADD ONE
+   Each entry below sets a --toc-subtitle variable on one sidebar link.
+   The single rule at the end of this block renders it. Links without the
+   variable fall back to `content: none`, which means no pseudo-element is
+   generated at all - so adding a subtitle takes ONE new entry, and nothing
+   else has to be kept in sync.
+
+   To add a subtitle for a new section:
+       .book-summary a[href$="#my-anchor"] {
+         --toc-subtitle: "My subtitle";
+       }
+
+   Chapter links have no #fragment (e.g. "compare.html"), section links do
+   (e.g. "compare.html#relationships"), which is why chapters list both forms.
+
+   ORDER MATTERS in one place: [href$="structured-data.html"] also matches
+   "unstructured-data.html", because $= has no word boundary. The unstructured
+   entry therefore comes after the structured one and wins.
    ========================================================= */
 
-/* Chapter subtitles */
-.book-summary a[href$="compare.html"],
-.book-summary a[href$="compare.html#compare"],
-.book-summary a[href$="#compare"] {
-  --toc-subtitle: "Relationships, means, and variation";
-}
+/* ---- Data chapters ---- */
 
-.book-summary a[href$="model.html"],
-.book-summary a[href$="model.html#model"],
-.book-summary a[href$="#model"] {
-  --toc-subtitle: "Relationships, outcomes, and predictions";
-}
-
-.book-summary a[href$="structure.html"],
-.book-summary a[href$="structure.html#structure"],
-.book-summary a[href$="#structure"] {
-  --toc-subtitle: "Time, levels, and places";
-}
-
-.book-summary a[href$="reveal.html"],
-.book-summary a[href$="reveal.html#reveal"],
-.book-summary a[href$="#reveal"] {
-  --toc-subtitle: "Dimensions, groups, and latent variables";
-}
-
-.book-summary a[href$="identify.html"],
-.book-summary a[href$="identify.html#identify"],
-.book-summary a[href$="#identify"] {
-  --toc-subtitle: "Causal effects";
-}
-
-.book-summary a[href$="extract.html"],
-.book-summary a[href$="extract.html#extract"],
-.book-summary a[href$="#extract"] {
-  --toc-subtitle: "Information from language";
-}
-
-/* Data chapter subtitles */
 .book-summary a[href$="foundations.html"],
-.book-summary a[href$="foundations.html#foundations"],
 .book-summary a[href$="#foundations"] {
   --toc-subtitle: "What data is, and how to look at it";
 }
 
 .book-summary a[href$="structured-data.html"],
-.book-summary a[href$="structured-data.html#structured-data"],
 .book-summary a[href$="#structured-data"] {
   --toc-subtitle: "Rows, units, and time";
 }
 
 .book-summary a[href$="unstructured-data.html"],
-.book-summary a[href$="unstructured-data.html#unstructured-data"],
 .book-summary a[href$="#unstructured-data"] {
   --toc-subtitle: "Pages, words, and places";
 }
 
 .book-summary a[href$="imperfect-data.html"],
-.book-summary a[href$="imperfect-data.html#imperfect-data"],
 .book-summary a[href$="#imperfect-data"] {
   --toc-subtitle: "What is absent, and what is invented";
 }
 
-/* Compare sections */
+/* ---- Analysis chapters ---- */
+
+.book-summary a[href$="compare.html"],
+.book-summary a[href$="#compare"] {
+  --toc-subtitle: "Relationships, means, and variation";
+}
+
+.book-summary a[href$="model.html"],
+.book-summary a[href$="#model"] {
+  --toc-subtitle: "Relationships, outcomes, and predictions";
+}
+
+.book-summary a[href$="structure.html"],
+.book-summary a[href$="#structure"] {
+  --toc-subtitle: "Time, levels, and places";
+}
+
+.book-summary a[href$="reveal.html"],
+.book-summary a[href$="#reveal"] {
+  --toc-subtitle: "Dimensions, groups, and latent variables";
+}
+
+.book-summary a[href$="identify.html"],
+.book-summary a[href$="#identify"] {
+  --toc-subtitle: "Causal effects";
+}
+
+.book-summary a[href$="extract.html"],
+.book-summary a[href$="#extract"] {
+  --toc-subtitle: "Information from language";
+}
+
+/* ---- Compare sections ---- */
+
 .book-summary a[href$="#relationships"] {
   --toc-subtitle: "Variance, covariance, and correlation";
 }
@@ -153,7 +231,8 @@ pre code {
   --toc-subtitle: "Analysis of variance and analysis of covariance";
 }
 
-/* Model sections */
+/* ---- Model sections ---- */
+
 .book-summary a[href$="#regression"] {
   --toc-subtitle: "Tests as statistical models";
 }
@@ -186,7 +265,12 @@ pre code {
   --toc-subtitle: "Statistical learning, machine learning, and prediction";
 }
 
-/* Structure sections */
+.book-summary a[href$="#tests-as-models"] {
+  --toc-subtitle: "One framework behind the whole toolbox";
+}
+
+/* ---- Structure sections ---- */
+
 .book-summary a[href$="#time"] {
   --toc-subtitle: "Time-series models and temporal dependence";
 }
@@ -203,7 +287,8 @@ pre code {
   --toc-subtitle: "Spatial models and small-area estimation";
 }
 
-/* Reveal sections */
+/* ---- Reveal sections ---- */
+
 .book-summary a[href$="#components"] {
   --toc-subtitle: "Principal component analysis";
 }
@@ -232,7 +317,8 @@ pre code {
   --toc-subtitle: "Item response theory";
 }
 
-/* Identify sections */
+/* ---- Identify sections ---- */
+
 .book-summary a[href$="#experiments"] {
   --toc-subtitle: "Randomized experiments and experimental data";
 }
@@ -253,61 +339,16 @@ pre code {
   --toc-subtitle: "Instrumental-variable methods";
 }
 
-/* Extract sections */
+/* ---- Extract sections ---- */
+
 .book-summary a[href$="#text-mining"] {
   --toc-subtitle: "Finding patterns and information in text";
 }
 
-/* Render the injected text only on links that have a subtitle. */
-.book-summary :is(
-  a[href$="compare.html"],
-  a[href$="compare.html#compare"],
-  a[href$="#compare"],
-  a[href$="model.html"],
-  a[href$="model.html#model"],
-  a[href$="#model"],
-  a[href$="structure.html"],
-  a[href$="structure.html#structure"],
-  a[href$="#structure"],
-  a[href$="reveal.html"],
-  a[href$="reveal.html#reveal"],
-  a[href$="#reveal"],
-  a[href$="identify.html"],
-  a[href$="identify.html#identify"],
-  a[href$="#identify"],
-  a[href$="extract.html"],
-  a[href$="extract.html#extract"],
-  a[href$="#extract"],
-  a[href$="#relationships"],
-  a[href$="#comparing-means"],
-  a[href$="#partitioning-variation"],
-  a[href$="#regression"],
-  a[href$="#linear-models"],
-  a[href$="#decomposing-differences"],
-  a[href$="#logistic-models"],
-  a[href$="#interactions"],
-  a[href$="#marginal-effects"],
-  a[href$="#generalized-models"],
-  a[href$="#learning-from-data"],
-  a[href$="#time"],
-  a[href$="#longitudinal-data"],
-  a[href$="#multilevel-models"],
-  a[href$="#places"],
-  a[href$="#components"],
-  a[href$="#clusters"],
-  a[href$="#latent-variables"],
-  a[href$="#exploratory-factors"],
-  a[href$="#confirmatory-factors"],
-  a[href$="#structural-equations"],
-  a[href$="#items"],
-  a[href$="#experiments"],
-  a[href$="#matching-and-balancing"],
-  a[href$="#difference-in-differences"],
-  a[href$="#discontinuities"],
-  a[href$="#instruments"],
-  a[href$="#text-mining"]
-)::after {
-  content: var(--toc-subtitle);
+/* ---- The one rule that renders them all ---- */
+
+.book-summary a::after {
+  content: var(--toc-subtitle, none);
   display: block;
   margin-top: 0.18em;
   padding-right: 0.7em;
@@ -320,12 +361,11 @@ pre code {
 }
 
 /* Align chapter subtitles beneath chapter titles. */
-.book-summary > ul.summary > li.chapter > a::after,
 .book-summary ul.summary > li.chapter > a::after {
   margin-left: 1.55em;
 }
 
-/* Align method subtitles beneath section titles. */
+/* Align section subtitles beneath section titles. */
 .book-summary ul.summary li.chapter ul li.chapter > a::after {
   margin-left: 2.65em;
 }
@@ -337,33 +377,7 @@ pre code {
 }
 
 /* =========================================================
-   Responsive adjustments
-   ========================================================= */
-
-@media screen and (max-width: 700px) {
-  .columns {
-    display: block;
-  }
-
-  .column {
-    width: auto !important;
-  }
-
-  .book .book-body .page-wrapper .page-inner section.normal h1 + .analysis-subtitle {
-    margin-bottom: 2em;
-    font-size: 1.22em;
-  }
-
-  .book .book-body .page-wrapper .page-inner section.normal h2 + .analysis-subtitle {
-    margin-left: 0.2em;
-    margin-bottom: 1.35em;
-    font-size: 1em;
-  }
-}
-
-
-/* =========================================================
-   Lightweight concept boxes used in Latent Variables
+   6. Lightweight note boxes
    ========================================================= */
 
 .analysis-note,
@@ -393,7 +407,8 @@ pre code {
   margin-bottom: 0;
 }
 
-.analysis-takeaway {
+.analysis-takeaway,
+.analysis-important {
   border-left-color: #607d8b;
 }
 
@@ -401,12 +416,32 @@ pre code {
   border-left-color: #9a7650;
 }
 
-
-.analysis-important {
-  border-left-color: #607d8b;
-}
-
 .analysis-advanced {
   border-left-color: #6f5d8c;
   background: #f7f5fa;
+}
+
+/* =========================================================
+   7. Responsive adjustments
+   ========================================================= */
+
+@media screen and (max-width: 700px) {
+  .columns {
+    display: block;
+  }
+
+  .column {
+    width: auto !important;
+  }
+
+  .book .book-body .page-wrapper .page-inner section.normal h1 + .analysis-subtitle {
+    margin-bottom: 2em;
+    font-size: 1.22em;
+  }
+
+  .book .book-body .page-wrapper .page-inner section.normal h2 + .analysis-subtitle {
+    margin-bottom: 1.35em;
+    margin-left: 0.2em;
+    font-size: 1em;
+  }
 }

@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-07" />
+<meta name="date" content="2026-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -198,12 +198,6 @@ div.csl-indent {
 <link rel="stylesheet" href="www/webex.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/boxes.css" type="text/css" />
-<link rel="stylesheet" href="css/ani.css" type="text/css" />
-<link rel="stylesheet" href="css/background.css" type="text/css" />
-<link rel="stylesheet" href="css/toggle.css" type="text/css" />
-<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
-<link rel="stylesheet" href="css/align.css" type="text/css" />
-<link rel="stylesheet" href="css/video.css" type="text/css" />
 </head>
 
 <body>
@@ -360,8 +354,8 @@ In everyday conversation, we often use a combination of clock time and spatial m
 <div id="your-first-time-in-r" class="section level3 hasAnchor" number="2.3.3">
 <h3><span class="header-section-number">2.3.3</span> Your First Time (in R)<a href="time-data.html#your-first-time-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>Sys.time()</code> and <code>Sys.Date()</code> return the time and date on your system and they come in date formats.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="time-data.html#cb48-1" tabindex="-1"></a><span class="fu">Sys.time</span>()</span>
-<span id="cb48-2"><a href="time-data.html#cb48-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2026-08-07 23:27:23 CEST&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="time-data.html#cb43-1" tabindex="-1"></a><span class="fu">Sys.time</span>()</span>
+<span id="cb43-2"><a href="time-data.html#cb43-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2026-08-08 09:10:12 CEST&quot;</span></span></code></pre></div>
 <p>The default format for dates and date-times in R is the <em>ISO 8601 format</em>. This format is widely used and unambiguous, representing the date in the format <em>YYYY-MM-DD</em> and the date-time in the format <em>YYYY-MM-DD HH:MM:SS</em>. It looks like a character, but is not. <strong>CET</strong> stands for <strong>Central European Time</strong>. CET is a time zone that is 1 hour ahead of <strong>Coordinated Universal Time</strong> (UTC+1).</p>
 </div>
 <div id="time-zones" class="section level3 hasAnchor" number="2.3.4">
@@ -387,84 +381,84 @@ Historically, China used five time zones, corresponding to its geographical expa
 <li>During daylight saving time (DST), CET becomes CEST (Central European Summer Time) and is UTC+2.</li>
 </ul>
 <p>Australia, positioned ahead of numerous countries in the global time zones, stands among the foremost nations to usher in the New Year. As the first place to celebrate the New Year is typically in the Pacific region, Australia's geographical location allows it to be among the early heralds of the new calendar year. Notably, the city of Sydney has gained international acclaim for its legendary New Year's Eve festivities. The iconic celebrations in Sydney feature a breathtaking fireworks display illuminating the night sky over the Sydney Harbour Bridge and the Sydney Opera House, creating a dazzling spectacle that marks the beginning of the New Year in grandeur.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="time-data.html#cb49-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb49-2"><a href="time-data.html#cb49-2" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb49-3"><a href="time-data.html#cb49-3" tabindex="-1"></a></span>
-<span id="cb49-4"><a href="time-data.html#cb49-4" tabindex="-1"></a>new_year_berlin <span class="ot">&lt;-</span> <span class="st">&quot;2023-12-31 23:59:59&quot;</span> <span class="sc">%&gt;%</span> <span class="fu">with_tz</span>(<span class="st">&quot;Europe/Berlin&quot;</span>)</span>
-<span id="cb49-5"><a href="time-data.html#cb49-5" tabindex="-1"></a>new_year_berlin</span>
-<span id="cb49-6"><a href="time-data.html#cb49-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023-12-31 23:59:59 CET&quot;</span></span>
-<span id="cb49-7"><a href="time-data.html#cb49-7" tabindex="-1"></a></span>
-<span id="cb49-8"><a href="time-data.html#cb49-8" tabindex="-1"></a>new_year_sydney <span class="ot">&lt;-</span> new_year_berlin <span class="sc">%&gt;%</span> <span class="fu">with_tz</span>(<span class="st">&quot;Australia/Sydney&quot;</span>)</span>
-<span id="cb49-9"><a href="time-data.html#cb49-9" tabindex="-1"></a>new_year_sydney</span>
-<span id="cb49-10"><a href="time-data.html#cb49-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2024-01-01 09:59:59 AEDT&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="time-data.html#cb44-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb44-2"><a href="time-data.html#cb44-2" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb44-3"><a href="time-data.html#cb44-3" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="time-data.html#cb44-4" tabindex="-1"></a>new_year_berlin <span class="ot">&lt;-</span> <span class="st">&quot;2023-12-31 23:59:59&quot;</span> <span class="sc">%&gt;%</span> <span class="fu">with_tz</span>(<span class="st">&quot;Europe/Berlin&quot;</span>)</span>
+<span id="cb44-5"><a href="time-data.html#cb44-5" tabindex="-1"></a>new_year_berlin</span>
+<span id="cb44-6"><a href="time-data.html#cb44-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023-12-31 23:59:59 CET&quot;</span></span>
+<span id="cb44-7"><a href="time-data.html#cb44-7" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="time-data.html#cb44-8" tabindex="-1"></a>new_year_sydney <span class="ot">&lt;-</span> new_year_berlin <span class="sc">%&gt;%</span> <span class="fu">with_tz</span>(<span class="st">&quot;Australia/Sydney&quot;</span>)</span>
+<span id="cb44-9"><a href="time-data.html#cb44-9" tabindex="-1"></a>new_year_sydney</span>
+<span id="cb44-10"><a href="time-data.html#cb44-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2024-01-01 09:59:59 AEDT&quot;</span></span></code></pre></div>
 </div>
 <div id="time-management-in-r" class="section level3 hasAnchor" number="2.3.5">
 <h3><span class="header-section-number">2.3.5</span> Time Management in R<a href="time-data.html#time-management-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="decimal-time" class="section level4 hasAnchor" number="2.3.5.1">
 <h4><span class="header-section-number">2.3.5.1</span> Decimal Time<a href="time-data.html#decimal-time" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>How can we code one hour in R? Well, we can put numbers in a <code>numeric</code> vector. Combinations of hours, minutes and seconds can be represented by decimals, e.g. one and a half hours are 1.5 and 1 hour and 10 min corresponds to 1.166 hours.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="time-data.html#cb50-1" tabindex="-1"></a><span class="co"># one hour</span></span>
-<span id="cb50-2"><a href="time-data.html#cb50-2" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
-<span id="cb50-3"><a href="time-data.html#cb50-3" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="time-data.html#cb50-4" tabindex="-1"></a><span class="co"># half hours</span></span>
-<span id="cb50-5"><a href="time-data.html#cb50-5" tabindex="-1"></a>hours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>)</span>
-<span id="cb50-6"><a href="time-data.html#cb50-6" tabindex="-1"></a></span>
-<span id="cb50-7"><a href="time-data.html#cb50-7" tabindex="-1"></a><span class="co"># 1 hour 10 min = 7/6 (in hours)</span></span>
-<span id="cb50-8"><a href="time-data.html#cb50-8" tabindex="-1"></a>one_hour_10_min <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.1666667</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="time-data.html#cb45-1" tabindex="-1"></a><span class="co"># one hour</span></span>
+<span id="cb45-2"><a href="time-data.html#cb45-2" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
+<span id="cb45-3"><a href="time-data.html#cb45-3" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="time-data.html#cb45-4" tabindex="-1"></a><span class="co"># half hours</span></span>
+<span id="cb45-5"><a href="time-data.html#cb45-5" tabindex="-1"></a>hours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb45-6"><a href="time-data.html#cb45-6" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="time-data.html#cb45-7" tabindex="-1"></a><span class="co"># 1 hour 10 min = 7/6 (in hours)</span></span>
+<span id="cb45-8"><a href="time-data.html#cb45-8" tabindex="-1"></a>one_hour_10_min <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.1666667</span>)</span></code></pre></div>
 <p>Well, fractions are a complicated way of representing minutes.</p>
 </div>
 <div id="time-formats" class="section level4 hasAnchor" number="2.3.5.2">
 <h4><span class="header-section-number">2.3.5.2</span> Time Formats<a href="time-data.html#time-formats" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In R, time formats are essential for handling and representing date and time information. Two commonly used time-related classes in R are <code>Date</code> and <code>POSIXct</code>.</p>
 <p>In Germany, it is more common to have <em>DD-MM-YYYY</em>, e.g. <code>24.12.2023</code>. <code>format()</code> (or the <code>format</code> option in <code>as.Date()</code>) can change the internal representation:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="time-data.html#cb51-1" tabindex="-1"></a>German_Date <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;24.12.2023&quot;</span>)</span>
-<span id="cb51-2"><a href="time-data.html#cb51-2" tabindex="-1"></a></span>
-<span id="cb51-3"><a href="time-data.html#cb51-3" tabindex="-1"></a><span class="co"># This does not work without the format option </span></span>
-<span id="cb51-4"><a href="time-data.html#cb51-4" tabindex="-1"></a><span class="co">#as.Date(German_Date)  </span></span>
-<span id="cb51-5"><a href="time-data.html#cb51-5" tabindex="-1"></a></span>
-<span id="cb51-6"><a href="time-data.html#cb51-6" tabindex="-1"></a><span class="fu">as.Date</span>(German_Date, <span class="at">format =</span> <span class="st">&quot;%d.%m.%Y&quot;</span>)</span>
-<span id="cb51-7"><a href="time-data.html#cb51-7" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023-12-24&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="time-data.html#cb46-1" tabindex="-1"></a>German_Date <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;24.12.2023&quot;</span>)</span>
+<span id="cb46-2"><a href="time-data.html#cb46-2" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="time-data.html#cb46-3" tabindex="-1"></a><span class="co"># This does not work without the format option </span></span>
+<span id="cb46-4"><a href="time-data.html#cb46-4" tabindex="-1"></a><span class="co">#as.Date(German_Date)  </span></span>
+<span id="cb46-5"><a href="time-data.html#cb46-5" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="time-data.html#cb46-6" tabindex="-1"></a><span class="fu">as.Date</span>(German_Date, <span class="at">format =</span> <span class="st">&quot;%d.%m.%Y&quot;</span>)</span>
+<span id="cb46-7"><a href="time-data.html#cb46-7" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023-12-24&quot;</span></span></code></pre></div>
 <p>Note that date variables often come as character and need to be converted to a time format. In base R, there is no specific <code>as.time()</code> function for converting objects to time class objects. However, there are functions like <code>as.POSIXct()</code> and <code>as.POSIXlt()</code> for working with date and time information.</p>
 <p>Well, what is the benefit of converting to a time and date format? For example <em>date arithmetic</em> such as calculating the difference between dates (e.g. <code>difftime()</code>), adding or subtracting days, months, or years, and other operations. This is more straightforward and accurate than performing such operations on raw character strings.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="time-data.html#cb52-1" tabindex="-1"></a><span class="co"># Calculate the difference between two times</span></span>
-<span id="cb52-2"><a href="time-data.html#cb52-2" tabindex="-1"></a>time1 <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">&quot;2023-12-25 14:30:00&quot;</span>, <span class="at">format =</span> <span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
-<span id="cb52-3"><a href="time-data.html#cb52-3" tabindex="-1"></a>time2 <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">&quot;2023-12-25 15:45:00&quot;</span>, <span class="at">format =</span> <span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
-<span id="cb52-4"><a href="time-data.html#cb52-4" tabindex="-1"></a><span class="fu">difftime</span>(time2, time1, <span class="at">units =</span> <span class="st">&quot;mins&quot;</span>)</span>
-<span id="cb52-5"><a href="time-data.html#cb52-5" tabindex="-1"></a><span class="co">#&gt; Time difference of 75 mins</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="time-data.html#cb47-1" tabindex="-1"></a><span class="co"># Calculate the difference between two times</span></span>
+<span id="cb47-2"><a href="time-data.html#cb47-2" tabindex="-1"></a>time1 <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">&quot;2023-12-25 14:30:00&quot;</span>, <span class="at">format =</span> <span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
+<span id="cb47-3"><a href="time-data.html#cb47-3" tabindex="-1"></a>time2 <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">&quot;2023-12-25 15:45:00&quot;</span>, <span class="at">format =</span> <span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
+<span id="cb47-4"><a href="time-data.html#cb47-4" tabindex="-1"></a><span class="fu">difftime</span>(time2, time1, <span class="at">units =</span> <span class="st">&quot;mins&quot;</span>)</span>
+<span id="cb47-5"><a href="time-data.html#cb47-5" tabindex="-1"></a><span class="co">#&gt; Time difference of 75 mins</span></span></code></pre></div>
 </div>
 </div>
 <div id="coffee-spending" class="section level3 hasAnchor" number="2.3.6">
 <h3><span class="header-section-number">2.3.6</span> Coffee Spending<a href="time-data.html#coffee-spending" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The coffee data comes from the app <em>Money Manager</em>. It allows to track your spendings and export data to <code>.xlsx</code> format. Variables and date information is German.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="time-data.html#cb53-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb53-2"><a href="time-data.html#cb53-2" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="time-data.html#cb53-3" tabindex="-1"></a>Coffee <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./data/Coffee/Coffee.csv&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb53-4"><a href="time-data.html#cb53-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Date =</span> Datum, </span>
-<span id="cb53-5"><a href="time-data.html#cb53-5" tabindex="-1"></a>         <span class="at">Category =</span> Kategorie, </span>
-<span id="cb53-6"><a href="time-data.html#cb53-6" tabindex="-1"></a>         <span class="at">Note =</span> Notiz...<span class="dv">5</span>, </span>
-<span id="cb53-7"><a href="time-data.html#cb53-7" tabindex="-1"></a>         <span class="at">Amount =</span> Betrag) </span>
-<span id="cb53-8"><a href="time-data.html#cb53-8" tabindex="-1"></a></span>
-<span id="cb53-9"><a href="time-data.html#cb53-9" tabindex="-1"></a><span class="fu">glimpse</span>(Coffee)</span>
-<span id="cb53-10"><a href="time-data.html#cb53-10" tabindex="-1"></a><span class="co">#&gt; Rows: 150</span></span>
-<span id="cb53-11"><a href="time-data.html#cb53-11" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb53-12"><a href="time-data.html#cb53-12" tabindex="-1"></a><span class="co">#&gt; $ Date     &lt;chr&gt; &quot;24/05/2023 12:40:44&quot;, &quot;24/05/2023 12:12:20&quot;, &quot;23/05/2023 12:…</span></span>
-<span id="cb53-13"><a href="time-data.html#cb53-13" tabindex="-1"></a><span class="co">#&gt; $ Category &lt;chr&gt; &quot;Lebensmittelkosten&quot;, &quot;Lebensmittelkosten&quot;, &quot;Lebensmittelkost…</span></span>
-<span id="cb53-14"><a href="time-data.html#cb53-14" tabindex="-1"></a><span class="co">#&gt; $ Note     &lt;chr&gt; &quot;Kaffee&quot;, &quot;Mensa&quot;, &quot;Getränke&quot;, &quot;Mensa&quot;, &quot;Getränke&quot;, &quot;Mensa&quot;, …</span></span>
-<span id="cb53-15"><a href="time-data.html#cb53-15" tabindex="-1"></a><span class="co">#&gt; $ Amount   &lt;dbl&gt; 1.60, 6.73, 3.85, 6.73, 3.85, 4.78, 6.80, 1.60, 6.40, 3.85, 5…</span></span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="time-data.html#cb48-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb48-2"><a href="time-data.html#cb48-2" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="time-data.html#cb48-3" tabindex="-1"></a>Coffee <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./data/Coffee/Coffee.csv&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-4"><a href="time-data.html#cb48-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Date =</span> Datum, </span>
+<span id="cb48-5"><a href="time-data.html#cb48-5" tabindex="-1"></a>         <span class="at">Category =</span> Kategorie, </span>
+<span id="cb48-6"><a href="time-data.html#cb48-6" tabindex="-1"></a>         <span class="at">Note =</span> Notiz...<span class="dv">5</span>, </span>
+<span id="cb48-7"><a href="time-data.html#cb48-7" tabindex="-1"></a>         <span class="at">Amount =</span> Betrag) </span>
+<span id="cb48-8"><a href="time-data.html#cb48-8" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="time-data.html#cb48-9" tabindex="-1"></a><span class="fu">glimpse</span>(Coffee)</span>
+<span id="cb48-10"><a href="time-data.html#cb48-10" tabindex="-1"></a><span class="co">#&gt; Rows: 150</span></span>
+<span id="cb48-11"><a href="time-data.html#cb48-11" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb48-12"><a href="time-data.html#cb48-12" tabindex="-1"></a><span class="co">#&gt; $ Date     &lt;chr&gt; &quot;24/05/2023 12:40:44&quot;, &quot;24/05/2023 12:12:20&quot;, &quot;23/05/2023 12:…</span></span>
+<span id="cb48-13"><a href="time-data.html#cb48-13" tabindex="-1"></a><span class="co">#&gt; $ Category &lt;chr&gt; &quot;Lebensmittelkosten&quot;, &quot;Lebensmittelkosten&quot;, &quot;Lebensmittelkost…</span></span>
+<span id="cb48-14"><a href="time-data.html#cb48-14" tabindex="-1"></a><span class="co">#&gt; $ Note     &lt;chr&gt; &quot;Kaffee&quot;, &quot;Mensa&quot;, &quot;Getränke&quot;, &quot;Mensa&quot;, &quot;Getränke&quot;, &quot;Mensa&quot;, …</span></span>
+<span id="cb48-15"><a href="time-data.html#cb48-15" tabindex="-1"></a><span class="co">#&gt; $ Amount   &lt;dbl&gt; 1.60, 6.73, 3.85, 6.73, 3.85, 4.78, 6.80, 1.60, 6.40, 3.85, 5…</span></span></code></pre></div>
 <p>Change the character to a date format:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="time-data.html#cb54-1" tabindex="-1"></a>Coffee<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(Coffee<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y %H:%M:%S&quot;</span>)</span>
-<span id="cb54-2"><a href="time-data.html#cb54-2" tabindex="-1"></a><span class="fu">head</span>(Coffee<span class="sc">$</span>Date)</span>
-<span id="cb54-3"><a href="time-data.html#cb54-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023-05-24 12:40:44 CEST&quot; &quot;2023-05-24 12:12:20 CEST&quot;</span></span>
-<span id="cb54-4"><a href="time-data.html#cb54-4" tabindex="-1"></a><span class="co">#&gt; [3] &quot;2023-05-23 12:31:46 CEST&quot; &quot;2023-05-23 12:01:52 CEST&quot;</span></span>
-<span id="cb54-5"><a href="time-data.html#cb54-5" tabindex="-1"></a><span class="co">#&gt; [5] &quot;2023-05-22 12:25:08 CEST&quot; &quot;2023-05-22 12:00:26 CEST&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="time-data.html#cb49-1" tabindex="-1"></a>Coffee<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(Coffee<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y %H:%M:%S&quot;</span>)</span>
+<span id="cb49-2"><a href="time-data.html#cb49-2" tabindex="-1"></a><span class="fu">head</span>(Coffee<span class="sc">$</span>Date)</span>
+<span id="cb49-3"><a href="time-data.html#cb49-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023-05-24 12:40:44 CEST&quot; &quot;2023-05-24 12:12:20 CEST&quot;</span></span>
+<span id="cb49-4"><a href="time-data.html#cb49-4" tabindex="-1"></a><span class="co">#&gt; [3] &quot;2023-05-23 12:31:46 CEST&quot; &quot;2023-05-23 12:01:52 CEST&quot;</span></span>
+<span id="cb49-5"><a href="time-data.html#cb49-5" tabindex="-1"></a><span class="co">#&gt; [5] &quot;2023-05-22 12:25:08 CEST&quot; &quot;2023-05-22 12:00:26 CEST&quot;</span></span></code></pre></div>
 <p>What is the time interval of available data:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="time-data.html#cb55-1" tabindex="-1"></a><span class="co"># First and Last Date</span></span>
-<span id="cb55-2"><a href="time-data.html#cb55-2" tabindex="-1"></a><span class="fu">range</span>(Coffee<span class="sc">$</span>Date)</span>
-<span id="cb55-3"><a href="time-data.html#cb55-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2022-10-26 07:03:04 CEST&quot; &quot;2023-05-24 12:40:44 CEST&quot;</span></span>
-<span id="cb55-4"><a href="time-data.html#cb55-4" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="time-data.html#cb55-5" tabindex="-1"></a><span class="co"># Range in Days</span></span>
-<span id="cb55-6"><a href="time-data.html#cb55-6" tabindex="-1"></a><span class="fu">diff</span>(<span class="fu">range</span>(Coffee<span class="sc">$</span>Date))</span>
-<span id="cb55-7"><a href="time-data.html#cb55-7" tabindex="-1"></a><span class="co">#&gt; Time difference of 210.2345 days</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="time-data.html#cb50-1" tabindex="-1"></a><span class="co"># First and Last Date</span></span>
+<span id="cb50-2"><a href="time-data.html#cb50-2" tabindex="-1"></a><span class="fu">range</span>(Coffee<span class="sc">$</span>Date)</span>
+<span id="cb50-3"><a href="time-data.html#cb50-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2022-10-26 07:03:04 CEST&quot; &quot;2023-05-24 12:40:44 CEST&quot;</span></span>
+<span id="cb50-4"><a href="time-data.html#cb50-4" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="time-data.html#cb50-5" tabindex="-1"></a><span class="co"># Range in Days</span></span>
+<span id="cb50-6"><a href="time-data.html#cb50-6" tabindex="-1"></a><span class="fu">diff</span>(<span class="fu">range</span>(Coffee<span class="sc">$</span>Date))</span>
+<span id="cb50-7"><a href="time-data.html#cb50-7" tabindex="-1"></a><span class="co">#&gt; Time difference of 210.2345 days</span></span></code></pre></div>
 <div id="spending-time-of-day" class="section level4 hasAnchor" number="2.3.6.1">
 <h4><span class="header-section-number">2.3.6.1</span> Spending Time of Day<a href="time-data.html#spending-time-of-day" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To calculate the usual time of spendings, calculate the average of all observed times. First, extract the time of day of spending with <code>format()</code> to create <code>Coffee$time_of_day</code>.</p>
@@ -475,13 +469,13 @@ Historically, China used five time zones, corresponding to its geographical expa
 <div id="run-chart" class="section level4 hasAnchor" number="2.3.6.2">
 <h4><span class="header-section-number">2.3.6.2</span> Run Chart<a href="time-data.html#run-chart" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Use <code>scale_x_datetime()</code> to show each month on the x-axis.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="time-data.html#cb58-1" tabindex="-1"></a><span class="fu">ggplot</span>(Coffee, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Amount)) <span class="sc">+</span></span>
-<span id="cb58-2"><a href="time-data.html#cb58-2" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb58-3"><a href="time-data.html#cb58-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Running Chart with Time on X-Axis and Spending on Y-Axis&quot;</span>,</span>
-<span id="cb58-4"><a href="time-data.html#cb58-4" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Time&quot;</span>,</span>
-<span id="cb58-5"><a href="time-data.html#cb58-5" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Spending (in €)&quot;</span>) <span class="sc">+</span>  </span>
-<span id="cb58-6"><a href="time-data.html#cb58-6" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb58-7"><a href="time-data.html#cb58-7" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%b %Y&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="time-data.html#cb53-1" tabindex="-1"></a><span class="fu">ggplot</span>(Coffee, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Amount)) <span class="sc">+</span></span>
+<span id="cb53-2"><a href="time-data.html#cb53-2" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb53-3"><a href="time-data.html#cb53-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Running Chart with Time on X-Axis and Spending on Y-Axis&quot;</span>,</span>
+<span id="cb53-4"><a href="time-data.html#cb53-4" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Time&quot;</span>,</span>
+<span id="cb53-5"><a href="time-data.html#cb53-5" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Spending (in €)&quot;</span>) <span class="sc">+</span>  </span>
+<span id="cb53-6"><a href="time-data.html#cb53-6" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb53-7"><a href="time-data.html#cb53-7" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%b %Y&quot;</span>) </span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-162-1.png" alt="" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="run-chart-grouped" class="section level4 hasAnchor" number="2.3.6.3">

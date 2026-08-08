@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-07" />
+<meta name="date" content="2026-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -198,12 +198,6 @@ div.csl-indent {
 <link rel="stylesheet" href="www/webex.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/boxes.css" type="text/css" />
-<link rel="stylesheet" href="css/ani.css" type="text/css" />
-<link rel="stylesheet" href="css/background.css" type="text/css" />
-<link rel="stylesheet" href="css/toggle.css" type="text/css" />
-<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
-<link rel="stylesheet" href="css/align.css" type="text/css" />
-<link rel="stylesheet" href="css/video.css" type="text/css" />
 </head>
 
 <body>
@@ -418,78 +412,78 @@ Definition
 <h3><span class="header-section-number">4.2.3</span> Building One by Hand<a href="synthetic-data.html#syn-byhand" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As in Chapter <a href="missing-data.html#missing-data">4.1</a>, we build it before we install it. The method is <strong>sequential regression synthesis</strong>: order the variables, model each one on those already synthesised, and draw.</p>
 <p>The data are real. Over seven consecutive terms, every student entering one of the author's courses filled in the same short questionnaire on arrival — degree programme, gender, age, semesters completed, and self-rated background in statistics, R and academic writing. The courses have ended; the 234 answers remain.<a href="#fn56" class="footnote-ref" id="fnref56"><sup>56</sup></a></p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="synthetic-data.html#cb118-1" tabindex="-1"></a>course <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/&quot;</span>,</span>
-<span id="cb118-2"><a href="synthetic-data.html#cb118-2" tabindex="-1"></a>                          <span class="st">&quot;marcokuehne.github.io/main/data/Course/GF_AllTime.csv&quot;</span>),</span>
-<span id="cb118-3"><a href="synthetic-data.html#cb118-3" tabindex="-1"></a>                   <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>)</span>
-<span id="cb118-4"><a href="synthetic-data.html#cb118-4" tabindex="-1"></a></span>
-<span id="cb118-5"><a href="synthetic-data.html#cb118-5" tabindex="-1"></a><span class="fu">table</span>(course<span class="sc">$</span>Term)</span>
-<span id="cb118-6"><a href="synthetic-data.html#cb118-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb118-7"><a href="synthetic-data.html#cb118-7" tabindex="-1"></a><span class="co">#&gt;      SS 2020      SS 2021      SS 2022      SS 2023 WS 2020 2021 WS 2022 2023 </span></span>
-<span id="cb118-8"><a href="synthetic-data.html#cb118-8" tabindex="-1"></a><span class="co">#&gt;           25           30           57           44           32           18 </span></span>
-<span id="cb118-9"><a href="synthetic-data.html#cb118-9" tabindex="-1"></a><span class="co">#&gt; WS 2023 2024 </span></span>
-<span id="cb118-10"><a href="synthetic-data.html#cb118-10" tabindex="-1"></a><span class="co">#&gt;           28</span></span>
-<span id="cb118-11"><a href="synthetic-data.html#cb118-11" tabindex="-1"></a><span class="fu">range</span>(course<span class="sc">$</span>Age)</span>
-<span id="cb118-12"><a href="synthetic-data.html#cb118-12" tabindex="-1"></a><span class="co">#&gt; [1]  18 278</span></span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="synthetic-data.html#cb113-1" tabindex="-1"></a>course <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;https://raw.githubusercontent.com/MarcoKuehne/&quot;</span>,</span>
+<span id="cb113-2"><a href="synthetic-data.html#cb113-2" tabindex="-1"></a>                          <span class="st">&quot;marcokuehne.github.io/main/data/Course/GF_AllTime.csv&quot;</span>),</span>
+<span id="cb113-3"><a href="synthetic-data.html#cb113-3" tabindex="-1"></a>                   <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>)</span>
+<span id="cb113-4"><a href="synthetic-data.html#cb113-4" tabindex="-1"></a></span>
+<span id="cb113-5"><a href="synthetic-data.html#cb113-5" tabindex="-1"></a><span class="fu">table</span>(course<span class="sc">$</span>Term)</span>
+<span id="cb113-6"><a href="synthetic-data.html#cb113-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb113-7"><a href="synthetic-data.html#cb113-7" tabindex="-1"></a><span class="co">#&gt;      SS 2020      SS 2021      SS 2022      SS 2023 WS 2020 2021 WS 2022 2023 </span></span>
+<span id="cb113-8"><a href="synthetic-data.html#cb113-8" tabindex="-1"></a><span class="co">#&gt;           25           30           57           44           32           18 </span></span>
+<span id="cb113-9"><a href="synthetic-data.html#cb113-9" tabindex="-1"></a><span class="co">#&gt; WS 2023 2024 </span></span>
+<span id="cb113-10"><a href="synthetic-data.html#cb113-10" tabindex="-1"></a><span class="co">#&gt;           28</span></span>
+<span id="cb113-11"><a href="synthetic-data.html#cb113-11" tabindex="-1"></a><span class="fu">range</span>(course<span class="sc">$</span>Age)</span>
+<span id="cb113-12"><a href="synthetic-data.html#cb113-12" tabindex="-1"></a><span class="co">#&gt; [1]  18 278</span></span></code></pre></div>
 <p>That upper bound is not a student. It is a typing error, and it is worth pausing on, because a synthesis model has no way of knowing that.</p>
 <p>Fitted to this file as it stands, the model would treat 278 as a legitimate observation, inflate the residual variance enormously, and scatter impossible ages through the synthetic file. Silently dropping it is not obviously better: the analyst downstream never learns that the original data contained an error.</p>
 <div class="analysis-note">
 <p>A synthesis model inherits the defects of the data it is fitted to, and hides them behind a plausible-looking file. Every data-quality decision made before synthesis becomes invisible afterwards — which makes the synthesis step a <em>reporting</em> obligation, not merely a technical one.</p>
 </div>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="synthetic-data.html#cb119-1" tabindex="-1"></a>course <span class="ot">&lt;-</span> course[course<span class="sc">$</span>Age <span class="sc">&lt;</span> <span class="dv">100</span>,</span>
-<span id="cb119-2"><a href="synthetic-data.html#cb119-2" tabindex="-1"></a>                 <span class="fu">c</span>(<span class="st">&quot;Term&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;Academic.level&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Total.Semesters&quot;</span>)]</span>
-<span id="cb119-3"><a href="synthetic-data.html#cb119-3" tabindex="-1"></a></span>
-<span id="cb119-4"><a href="synthetic-data.html#cb119-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(course)</span>
-<span id="cb119-5"><a href="synthetic-data.html#cb119-5" tabindex="-1"></a><span class="fu">summary</span>(course<span class="sc">$</span>Age)</span>
-<span id="cb119-6"><a href="synthetic-data.html#cb119-6" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb119-7"><a href="synthetic-data.html#cb119-7" tabindex="-1"></a><span class="co">#&gt;   18.00   22.00   24.00   25.03   27.00   42.00</span></span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="synthetic-data.html#cb114-1" tabindex="-1"></a>course <span class="ot">&lt;-</span> course[course<span class="sc">$</span>Age <span class="sc">&lt;</span> <span class="dv">100</span>,</span>
+<span id="cb114-2"><a href="synthetic-data.html#cb114-2" tabindex="-1"></a>                 <span class="fu">c</span>(<span class="st">&quot;Term&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;Academic.level&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Total.Semesters&quot;</span>)]</span>
+<span id="cb114-3"><a href="synthetic-data.html#cb114-3" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="synthetic-data.html#cb114-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(course)</span>
+<span id="cb114-5"><a href="synthetic-data.html#cb114-5" tabindex="-1"></a><span class="fu">summary</span>(course<span class="sc">$</span>Age)</span>
+<span id="cb114-6"><a href="synthetic-data.html#cb114-6" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb114-7"><a href="synthetic-data.html#cb114-7" tabindex="-1"></a><span class="co">#&gt;   18.00   22.00   24.00   25.03   27.00   42.00</span></span></code></pre></div>
 <p>Two hundred and thirty-three students, aged 18 to 42. Now note something about that range before we go on:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="synthetic-data.html#cb120-1" tabindex="-1"></a>combination <span class="ot">&lt;-</span> <span class="fu">paste</span>(course<span class="sc">$</span>Gender, course<span class="sc">$</span>Academic.level, course<span class="sc">$</span>Age)</span>
-<span id="cb120-2"><a href="synthetic-data.html#cb120-2" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">table</span>(combination) <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb120-3"><a href="synthetic-data.html#cb120-3" tabindex="-1"></a><span class="co">#&gt; [1] 16</span></span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="synthetic-data.html#cb115-1" tabindex="-1"></a>combination <span class="ot">&lt;-</span> <span class="fu">paste</span>(course<span class="sc">$</span>Gender, course<span class="sc">$</span>Academic.level, course<span class="sc">$</span>Age)</span>
+<span id="cb115-2"><a href="synthetic-data.html#cb115-2" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">table</span>(combination) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb115-3"><a href="synthetic-data.html#cb115-3" tabindex="-1"></a><span class="co">#&gt; [1] 16</span></span></code></pre></div>
 <p>Sixteen of these people are <strong>unique</strong> on nothing more than gender, degree and age. Anyone who knows that a 42-year-old woman in the Master's programme attended can find her row immediately. This is not a hypothetical disclosure risk. It is the reason the file cannot simply be published.</p>
 <p>Now the four steps. Each variable is drawn from a model built only on variables already synthesised — never on the real values of the variable being generated.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="synthetic-data.html#cb121-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260807</span>)</span>
-<span id="cb121-2"><a href="synthetic-data.html#cb121-2" tabindex="-1"></a></span>
-<span id="cb121-3"><a href="synthetic-data.html#cb121-3" tabindex="-1"></a><span class="co"># 1. Term: draw from the observed terms</span></span>
-<span id="cb121-4"><a href="synthetic-data.html#cb121-4" tabindex="-1"></a>syn_term <span class="ot">&lt;-</span> <span class="fu">sample</span>(course<span class="sc">$</span>Term, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb121-5"><a href="synthetic-data.html#cb121-5" tabindex="-1"></a></span>
-<span id="cb121-6"><a href="synthetic-data.html#cb121-6" tabindex="-1"></a><span class="co"># 2. Gender: conditional on the synthetic term</span></span>
-<span id="cb121-7"><a href="synthetic-data.html#cb121-7" tabindex="-1"></a>p_gender   <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(course<span class="sc">$</span>Term, course<span class="sc">$</span>Gender), <span class="at">margin =</span> <span class="dv">1</span>)</span>
-<span id="cb121-8"><a href="synthetic-data.html#cb121-8" tabindex="-1"></a>syn_gender <span class="ot">&lt;-</span> <span class="fu">vapply</span>(syn_term,</span>
-<span id="cb121-9"><a href="synthetic-data.html#cb121-9" tabindex="-1"></a>                     <span class="cf">function</span>(t) <span class="fu">sample</span>(<span class="fu">colnames</span>(p_gender), <span class="dv">1</span>, <span class="at">prob =</span> p_gender[t, ]),</span>
-<span id="cb121-10"><a href="synthetic-data.html#cb121-10" tabindex="-1"></a>                     <span class="fu">character</span>(<span class="dv">1</span>))</span>
-<span id="cb121-11"><a href="synthetic-data.html#cb121-11" tabindex="-1"></a></span>
-<span id="cb121-12"><a href="synthetic-data.html#cb121-12" tabindex="-1"></a><span class="co"># 3. Degree: conditional on the synthetic gender</span></span>
-<span id="cb121-13"><a href="synthetic-data.html#cb121-13" tabindex="-1"></a>p_level   <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(course<span class="sc">$</span>Gender, course<span class="sc">$</span>Academic.level), <span class="at">margin =</span> <span class="dv">1</span>)</span>
-<span id="cb121-14"><a href="synthetic-data.html#cb121-14" tabindex="-1"></a>syn_level <span class="ot">&lt;-</span> <span class="fu">vapply</span>(syn_gender,</span>
-<span id="cb121-15"><a href="synthetic-data.html#cb121-15" tabindex="-1"></a>                    <span class="cf">function</span>(g) <span class="fu">sample</span>(<span class="fu">colnames</span>(p_level), <span class="dv">1</span>, <span class="at">prob =</span> p_level[g, ]),</span>
-<span id="cb121-16"><a href="synthetic-data.html#cb121-16" tabindex="-1"></a>                    <span class="fu">character</span>(<span class="dv">1</span>))</span>
-<span id="cb121-17"><a href="synthetic-data.html#cb121-17" tabindex="-1"></a></span>
-<span id="cb121-18"><a href="synthetic-data.html#cb121-18" tabindex="-1"></a><span class="co"># 4. Age: regression on the categorical variables, plus residual noise</span></span>
-<span id="cb121-19"><a href="synthetic-data.html#cb121-19" tabindex="-1"></a>f_age   <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age <span class="sc">~</span> Gender <span class="sc">+</span> Academic.level, <span class="at">data =</span> course)</span>
-<span id="cb121-20"><a href="synthetic-data.html#cb121-20" tabindex="-1"></a>nd      <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Term =</span> syn_term, <span class="at">Gender =</span> syn_gender,</span>
-<span id="cb121-21"><a href="synthetic-data.html#cb121-21" tabindex="-1"></a>                      <span class="at">Academic.level =</span> syn_level)</span>
-<span id="cb121-22"><a href="synthetic-data.html#cb121-22" tabindex="-1"></a>syn_age <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(f_age, nd) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fu">summary</span>(f_age)<span class="sc">$</span>sigma))</span>
-<span id="cb121-23"><a href="synthetic-data.html#cb121-23" tabindex="-1"></a>syn_age <span class="ot">&lt;-</span> <span class="fu">pmax</span>(syn_age, <span class="fu">min</span>(course<span class="sc">$</span>Age))</span>
-<span id="cb121-24"><a href="synthetic-data.html#cb121-24" tabindex="-1"></a></span>
-<span id="cb121-25"><a href="synthetic-data.html#cb121-25" tabindex="-1"></a><span class="co"># 5. Semesters: regression on everything synthesised so far</span></span>
-<span id="cb121-26"><a href="synthetic-data.html#cb121-26" tabindex="-1"></a>f_sem   <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Academic.level, <span class="at">data =</span> course)</span>
-<span id="cb121-27"><a href="synthetic-data.html#cb121-27" tabindex="-1"></a>nd<span class="sc">$</span>Age  <span class="ot">&lt;-</span> syn_age</span>
-<span id="cb121-28"><a href="synthetic-data.html#cb121-28" tabindex="-1"></a>syn_sem <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(f_sem, nd) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fu">summary</span>(f_sem)<span class="sc">$</span>sigma))</span>
-<span id="cb121-29"><a href="synthetic-data.html#cb121-29" tabindex="-1"></a>syn_sem <span class="ot">&lt;-</span> <span class="fu">pmax</span>(syn_sem, <span class="dv">1</span>)</span>
-<span id="cb121-30"><a href="synthetic-data.html#cb121-30" tabindex="-1"></a></span>
-<span id="cb121-31"><a href="synthetic-data.html#cb121-31" tabindex="-1"></a>synth <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Term =</span> syn_term, <span class="at">Gender =</span> syn_gender,</span>
-<span id="cb121-32"><a href="synthetic-data.html#cb121-32" tabindex="-1"></a>                    <span class="at">Academic.level =</span> syn_level,</span>
-<span id="cb121-33"><a href="synthetic-data.html#cb121-33" tabindex="-1"></a>                    <span class="at">Age =</span> syn_age, <span class="at">Total.Semesters =</span> syn_sem)</span>
-<span id="cb121-34"><a href="synthetic-data.html#cb121-34" tabindex="-1"></a></span>
-<span id="cb121-35"><a href="synthetic-data.html#cb121-35" tabindex="-1"></a><span class="fu">head</span>(synth)</span>
-<span id="cb121-36"><a href="synthetic-data.html#cb121-36" tabindex="-1"></a><span class="co">#&gt;           Term Gender Academic.level Age Total.Semesters</span></span>
-<span id="cb121-37"><a href="synthetic-data.html#cb121-37" tabindex="-1"></a><span class="co">#&gt; 1      SS 2022 Female       Bachelor  25               8</span></span>
-<span id="cb121-38"><a href="synthetic-data.html#cb121-38" tabindex="-1"></a><span class="co">#&gt; 2 WS 2020 2021   Male       Bachelor  18              13</span></span>
-<span id="cb121-39"><a href="synthetic-data.html#cb121-39" tabindex="-1"></a><span class="co">#&gt; 3      SS 2023 Female         Master  27               7</span></span>
-<span id="cb121-40"><a href="synthetic-data.html#cb121-40" tabindex="-1"></a><span class="co">#&gt; 4 WS 2022 2023   Male       Bachelor  27              11</span></span>
-<span id="cb121-41"><a href="synthetic-data.html#cb121-41" tabindex="-1"></a><span class="co">#&gt; 5      SS 2023 Female       Bachelor  21               9</span></span>
-<span id="cb121-42"><a href="synthetic-data.html#cb121-42" tabindex="-1"></a><span class="co">#&gt; 6      SS 2022   Male         Master  24               7</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="synthetic-data.html#cb116-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260807</span>)</span>
+<span id="cb116-2"><a href="synthetic-data.html#cb116-2" tabindex="-1"></a></span>
+<span id="cb116-3"><a href="synthetic-data.html#cb116-3" tabindex="-1"></a><span class="co"># 1. Term: draw from the observed terms</span></span>
+<span id="cb116-4"><a href="synthetic-data.html#cb116-4" tabindex="-1"></a>syn_term <span class="ot">&lt;-</span> <span class="fu">sample</span>(course<span class="sc">$</span>Term, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb116-5"><a href="synthetic-data.html#cb116-5" tabindex="-1"></a></span>
+<span id="cb116-6"><a href="synthetic-data.html#cb116-6" tabindex="-1"></a><span class="co"># 2. Gender: conditional on the synthetic term</span></span>
+<span id="cb116-7"><a href="synthetic-data.html#cb116-7" tabindex="-1"></a>p_gender   <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(course<span class="sc">$</span>Term, course<span class="sc">$</span>Gender), <span class="at">margin =</span> <span class="dv">1</span>)</span>
+<span id="cb116-8"><a href="synthetic-data.html#cb116-8" tabindex="-1"></a>syn_gender <span class="ot">&lt;-</span> <span class="fu">vapply</span>(syn_term,</span>
+<span id="cb116-9"><a href="synthetic-data.html#cb116-9" tabindex="-1"></a>                     <span class="cf">function</span>(t) <span class="fu">sample</span>(<span class="fu">colnames</span>(p_gender), <span class="dv">1</span>, <span class="at">prob =</span> p_gender[t, ]),</span>
+<span id="cb116-10"><a href="synthetic-data.html#cb116-10" tabindex="-1"></a>                     <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb116-11"><a href="synthetic-data.html#cb116-11" tabindex="-1"></a></span>
+<span id="cb116-12"><a href="synthetic-data.html#cb116-12" tabindex="-1"></a><span class="co"># 3. Degree: conditional on the synthetic gender</span></span>
+<span id="cb116-13"><a href="synthetic-data.html#cb116-13" tabindex="-1"></a>p_level   <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(course<span class="sc">$</span>Gender, course<span class="sc">$</span>Academic.level), <span class="at">margin =</span> <span class="dv">1</span>)</span>
+<span id="cb116-14"><a href="synthetic-data.html#cb116-14" tabindex="-1"></a>syn_level <span class="ot">&lt;-</span> <span class="fu">vapply</span>(syn_gender,</span>
+<span id="cb116-15"><a href="synthetic-data.html#cb116-15" tabindex="-1"></a>                    <span class="cf">function</span>(g) <span class="fu">sample</span>(<span class="fu">colnames</span>(p_level), <span class="dv">1</span>, <span class="at">prob =</span> p_level[g, ]),</span>
+<span id="cb116-16"><a href="synthetic-data.html#cb116-16" tabindex="-1"></a>                    <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb116-17"><a href="synthetic-data.html#cb116-17" tabindex="-1"></a></span>
+<span id="cb116-18"><a href="synthetic-data.html#cb116-18" tabindex="-1"></a><span class="co"># 4. Age: regression on the categorical variables, plus residual noise</span></span>
+<span id="cb116-19"><a href="synthetic-data.html#cb116-19" tabindex="-1"></a>f_age   <span class="ot">&lt;-</span> <span class="fu">lm</span>(Age <span class="sc">~</span> Gender <span class="sc">+</span> Academic.level, <span class="at">data =</span> course)</span>
+<span id="cb116-20"><a href="synthetic-data.html#cb116-20" tabindex="-1"></a>nd      <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Term =</span> syn_term, <span class="at">Gender =</span> syn_gender,</span>
+<span id="cb116-21"><a href="synthetic-data.html#cb116-21" tabindex="-1"></a>                      <span class="at">Academic.level =</span> syn_level)</span>
+<span id="cb116-22"><a href="synthetic-data.html#cb116-22" tabindex="-1"></a>syn_age <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(f_age, nd) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fu">summary</span>(f_age)<span class="sc">$</span>sigma))</span>
+<span id="cb116-23"><a href="synthetic-data.html#cb116-23" tabindex="-1"></a>syn_age <span class="ot">&lt;-</span> <span class="fu">pmax</span>(syn_age, <span class="fu">min</span>(course<span class="sc">$</span>Age))</span>
+<span id="cb116-24"><a href="synthetic-data.html#cb116-24" tabindex="-1"></a></span>
+<span id="cb116-25"><a href="synthetic-data.html#cb116-25" tabindex="-1"></a><span class="co"># 5. Semesters: regression on everything synthesised so far</span></span>
+<span id="cb116-26"><a href="synthetic-data.html#cb116-26" tabindex="-1"></a>f_sem   <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Academic.level, <span class="at">data =</span> course)</span>
+<span id="cb116-27"><a href="synthetic-data.html#cb116-27" tabindex="-1"></a>nd<span class="sc">$</span>Age  <span class="ot">&lt;-</span> syn_age</span>
+<span id="cb116-28"><a href="synthetic-data.html#cb116-28" tabindex="-1"></a>syn_sem <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">predict</span>(f_sem, nd) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fu">summary</span>(f_sem)<span class="sc">$</span>sigma))</span>
+<span id="cb116-29"><a href="synthetic-data.html#cb116-29" tabindex="-1"></a>syn_sem <span class="ot">&lt;-</span> <span class="fu">pmax</span>(syn_sem, <span class="dv">1</span>)</span>
+<span id="cb116-30"><a href="synthetic-data.html#cb116-30" tabindex="-1"></a></span>
+<span id="cb116-31"><a href="synthetic-data.html#cb116-31" tabindex="-1"></a>synth <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Term =</span> syn_term, <span class="at">Gender =</span> syn_gender,</span>
+<span id="cb116-32"><a href="synthetic-data.html#cb116-32" tabindex="-1"></a>                    <span class="at">Academic.level =</span> syn_level,</span>
+<span id="cb116-33"><a href="synthetic-data.html#cb116-33" tabindex="-1"></a>                    <span class="at">Age =</span> syn_age, <span class="at">Total.Semesters =</span> syn_sem)</span>
+<span id="cb116-34"><a href="synthetic-data.html#cb116-34" tabindex="-1"></a></span>
+<span id="cb116-35"><a href="synthetic-data.html#cb116-35" tabindex="-1"></a><span class="fu">head</span>(synth)</span>
+<span id="cb116-36"><a href="synthetic-data.html#cb116-36" tabindex="-1"></a><span class="co">#&gt;           Term Gender Academic.level Age Total.Semesters</span></span>
+<span id="cb116-37"><a href="synthetic-data.html#cb116-37" tabindex="-1"></a><span class="co">#&gt; 1      SS 2022 Female       Bachelor  25               8</span></span>
+<span id="cb116-38"><a href="synthetic-data.html#cb116-38" tabindex="-1"></a><span class="co">#&gt; 2 WS 2020 2021   Male       Bachelor  18              13</span></span>
+<span id="cb116-39"><a href="synthetic-data.html#cb116-39" tabindex="-1"></a><span class="co">#&gt; 3      SS 2023 Female         Master  27               7</span></span>
+<span id="cb116-40"><a href="synthetic-data.html#cb116-40" tabindex="-1"></a><span class="co">#&gt; 4 WS 2022 2023   Male       Bachelor  27              11</span></span>
+<span id="cb116-41"><a href="synthetic-data.html#cb116-41" tabindex="-1"></a><span class="co">#&gt; 5      SS 2023 Female       Bachelor  21               9</span></span>
+<span id="cb116-42"><a href="synthetic-data.html#cb116-42" tabindex="-1"></a><span class="co">#&gt; 6      SS 2022   Male         Master  24               7</span></span></code></pre></div>
 <p>Two hundred and thirty-three students who never enrolled. Note the residual draw in steps 4 and 5 — the same <code>rnorm()</code> that turned regression imputation into <em>stochastic</em> regression imputation in Chapter <a href="missing-data.html#missing-data">4.1</a>, and for the same reason. Without it every synthetic student would sit exactly on a regression line.</p>
 <div id="syn-utility" class="section level4 hasAnchor" number="4.2.3.1">
 <h4><span class="header-section-number">4.2.3.1</span> What survived<a href="synthetic-data.html#syn-utility" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -578,15 +572,15 @@ Your Turn
 <div id="syn-synthpop" class="section level4 hasAnchor" number="4.2.3.2">
 <h4><span class="header-section-number">4.2.3.2</span> On the shoulders of giants<a href="synthetic-data.html#syn-synthpop" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In practice the ordering, the model per variable, and the diagnostics are handled by a package. <code>synthpop</code> was built at Edinburgh for exactly this purpose and uses classification and regression trees by default rather than linear models, which handles interactions and non-linearities without anyone having to anticipate them.<a href="#fn58" class="footnote-ref" id="fnref58"><sup>58</sup></a></p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="synthetic-data.html#cb122-1" tabindex="-1"></a><span class="co"># install.packages(&quot;synthpop&quot;)</span></span>
-<span id="cb122-2"><a href="synthetic-data.html#cb122-2" tabindex="-1"></a><span class="fu">library</span>(synthpop)</span>
-<span id="cb122-3"><a href="synthetic-data.html#cb122-3" tabindex="-1"></a></span>
-<span id="cb122-4"><a href="synthetic-data.html#cb122-4" tabindex="-1"></a>syn_out <span class="ot">&lt;-</span> <span class="fu">syn</span>(course, <span class="at">seed =</span> <span class="dv">20260807</span>)</span>
-<span id="cb122-5"><a href="synthetic-data.html#cb122-5" tabindex="-1"></a></span>
-<span id="cb122-6"><a href="synthetic-data.html#cb122-6" tabindex="-1"></a><span class="fu">compare</span>(syn_out, course)                       <span class="co"># marginal distributions</span></span>
-<span id="cb122-7"><a href="synthetic-data.html#cb122-7" tabindex="-1"></a><span class="fu">utility.tab</span>(syn_out, course)                   <span class="co"># utility measures</span></span>
-<span id="cb122-8"><a href="synthetic-data.html#cb122-8" tabindex="-1"></a></span>
-<span id="cb122-9"><a href="synthetic-data.html#cb122-9" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm.synds</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">+</span> Gender, <span class="at">data =</span> syn_out))</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="synthetic-data.html#cb117-1" tabindex="-1"></a><span class="co"># install.packages(&quot;synthpop&quot;)</span></span>
+<span id="cb117-2"><a href="synthetic-data.html#cb117-2" tabindex="-1"></a><span class="fu">library</span>(synthpop)</span>
+<span id="cb117-3"><a href="synthetic-data.html#cb117-3" tabindex="-1"></a></span>
+<span id="cb117-4"><a href="synthetic-data.html#cb117-4" tabindex="-1"></a>syn_out <span class="ot">&lt;-</span> <span class="fu">syn</span>(course, <span class="at">seed =</span> <span class="dv">20260807</span>)</span>
+<span id="cb117-5"><a href="synthetic-data.html#cb117-5" tabindex="-1"></a></span>
+<span id="cb117-6"><a href="synthetic-data.html#cb117-6" tabindex="-1"></a><span class="fu">compare</span>(syn_out, course)                       <span class="co"># marginal distributions</span></span>
+<span id="cb117-7"><a href="synthetic-data.html#cb117-7" tabindex="-1"></a><span class="fu">utility.tab</span>(syn_out, course)                   <span class="co"># utility measures</span></span>
+<span id="cb117-8"><a href="synthetic-data.html#cb117-8" tabindex="-1"></a></span>
+<span id="cb117-9"><a href="synthetic-data.html#cb117-9" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm.synds</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">+</span> Gender, <span class="at">data =</span> syn_out))</span></code></pre></div>
 <p><code>lm.synds()</code> is the part people miss. Fitting an ordinary <code>lm()</code> to a synthetic file gives standard errors that ignore the synthesis — the same error as analysing one imputed data set in Chapter <a href="missing-data.html#missing-data">4.1</a>. The combining rules must be applied.</p>
 </div>
 </div>
@@ -618,9 +612,9 @@ Germany was second
 <h3><span class="header-section-number">4.2.5</span> The Privacy Illusion<a href="synthetic-data.html#syn-privacy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here is the belief that will not die: <em>synthetic data contains no real people, therefore it is anonymous.</em></p>
 <p>Return to our 233 students and ask a blunt question.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="synthetic-data.html#cb123-1" tabindex="-1"></a>both <span class="ot">&lt;-</span> <span class="fu">rbind</span>(course, synth)</span>
-<span id="cb123-2"><a href="synthetic-data.html#cb123-2" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(both)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>n)])</span>
-<span id="cb123-3"><a href="synthetic-data.html#cb123-3" tabindex="-1"></a><span class="co">#&gt; [1] 23</span></span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="synthetic-data.html#cb118-1" tabindex="-1"></a>both <span class="ot">&lt;-</span> <span class="fu">rbind</span>(course, synth)</span>
+<span id="cb118-2"><a href="synthetic-data.html#cb118-2" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(both)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>n)])</span>
+<span id="cb118-3"><a href="synthetic-data.html#cb118-3" tabindex="-1"></a><span class="co">#&gt; [1] 23</span></span></code></pre></div>
 <p>Twenty-three synthetic students are <strong>exact copies of real participants</strong> — same term, same gender, same degree, same age, same semester count. Nobody copied them. The generating model, fitted to 233 people and asked to produce 233 people over a modest space of possible combinations, reproduced some of them by arithmetic necessity.</p>
 <p>Roughly one synthetic record in ten is a real person. Nothing in the file marks which ones.</p>
 <p>An attacker who knows that a 29-year-old woman in the Master's programme attended in summer 2022 cannot be refuted by the answer "that record is synthetic." The correct answer is that we do not know whether it is.</p>
@@ -637,27 +631,27 @@ Germany was second
 <p>That sounds like a severe restriction, and for some purposes it is. But recall what the regression chapter established. The estimator is</p>
 <p><span class="math display">\[\beta = (X^TX)^{-1}X^Ty\]</span></p>
 <p>and both ingredients, <span class="math inline">\(X^TX\)</span> and <span class="math inline">\(X^Ty\)</span>, are built entirely from sums of products — which is to say from covariances and means. Once you have those, the individual rows have no further role. They were scaffolding.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="synthetic-data.html#cb124-1" tabindex="-1"></a>course<span class="sc">$</span>Female <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(course<span class="sc">$</span>Gender <span class="sc">==</span> <span class="st">&quot;Female&quot;</span>)</span>
-<span id="cb124-2"><a href="synthetic-data.html#cb124-2" tabindex="-1"></a>course<span class="sc">$</span>Master <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(course<span class="sc">$</span>Academic.level <span class="sc">==</span> <span class="st">&quot;Master&quot;</span>)</span>
-<span id="cb124-3"><a href="synthetic-data.html#cb124-3" tabindex="-1"></a></span>
-<span id="cb124-4"><a href="synthetic-data.html#cb124-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> course[, <span class="fu">c</span>(<span class="st">&quot;Total.Semesters&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Master&quot;</span>)]</span>
-<span id="cb124-5"><a href="synthetic-data.html#cb124-5" tabindex="-1"></a></span>
-<span id="cb124-6"><a href="synthetic-data.html#cb124-6" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">cov</span>(d)          <span class="co"># 4 x 4 = 16 numbers</span></span>
-<span id="cb124-7"><a href="synthetic-data.html#cb124-7" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(d)     <span class="co"># 4 numbers</span></span>
-<span id="cb124-8"><a href="synthetic-data.html#cb124-8" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(d)         <span class="co"># 1 number</span></span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="synthetic-data.html#cb119-1" tabindex="-1"></a>course<span class="sc">$</span>Female <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(course<span class="sc">$</span>Gender <span class="sc">==</span> <span class="st">&quot;Female&quot;</span>)</span>
+<span id="cb119-2"><a href="synthetic-data.html#cb119-2" tabindex="-1"></a>course<span class="sc">$</span>Master <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(course<span class="sc">$</span>Academic.level <span class="sc">==</span> <span class="st">&quot;Master&quot;</span>)</span>
+<span id="cb119-3"><a href="synthetic-data.html#cb119-3" tabindex="-1"></a></span>
+<span id="cb119-4"><a href="synthetic-data.html#cb119-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> course[, <span class="fu">c</span>(<span class="st">&quot;Total.Semesters&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Master&quot;</span>)]</span>
+<span id="cb119-5"><a href="synthetic-data.html#cb119-5" tabindex="-1"></a></span>
+<span id="cb119-6"><a href="synthetic-data.html#cb119-6" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">cov</span>(d)          <span class="co"># 4 x 4 = 16 numbers</span></span>
+<span id="cb119-7"><a href="synthetic-data.html#cb119-7" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(d)     <span class="co"># 4 numbers</span></span>
+<span id="cb119-8"><a href="synthetic-data.html#cb119-8" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(d)         <span class="co"># 1 number</span></span></code></pre></div>
 <p>Twenty-one numbers. Now discard the students entirely and estimate the regression from what is left:</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="synthetic-data.html#cb125-1" tabindex="-1"></a>x  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Master&quot;</span>)</span>
-<span id="cb125-2"><a href="synthetic-data.html#cb125-2" tabindex="-1"></a></span>
-<span id="cb125-3"><a href="synthetic-data.html#cb125-3" tabindex="-1"></a>b  <span class="ot">&lt;-</span> <span class="fu">solve</span>(S[x, x]) <span class="sc">%*%</span> S[x, <span class="st">&quot;Total.Semesters&quot;</span>]     <span class="co"># slopes</span></span>
-<span id="cb125-4"><a href="synthetic-data.html#cb125-4" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">unname</span>(m[<span class="st">&quot;Total.Semesters&quot;</span>] <span class="sc">-</span> <span class="fu">sum</span>(b <span class="sc">*</span> m[x]))   <span class="co"># intercept</span></span>
-<span id="cb125-5"><a href="synthetic-data.html#cb125-5" tabindex="-1"></a></span>
-<span id="cb125-6"><a href="synthetic-data.html#cb125-6" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">Intercept =</span> b0, b[, <span class="dv">1</span>]), <span class="dv">6</span>)</span>
-<span id="cb125-7"><a href="synthetic-data.html#cb125-7" tabindex="-1"></a><span class="co">#&gt; Intercept       Age    Female    Master </span></span>
-<span id="cb125-8"><a href="synthetic-data.html#cb125-8" tabindex="-1"></a><span class="co">#&gt;  5.266207  0.036239  0.480464  1.899795</span></span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="synthetic-data.html#cb120-1" tabindex="-1"></a>x  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Female&quot;</span>, <span class="st">&quot;Master&quot;</span>)</span>
+<span id="cb120-2"><a href="synthetic-data.html#cb120-2" tabindex="-1"></a></span>
+<span id="cb120-3"><a href="synthetic-data.html#cb120-3" tabindex="-1"></a>b  <span class="ot">&lt;-</span> <span class="fu">solve</span>(S[x, x]) <span class="sc">%*%</span> S[x, <span class="st">&quot;Total.Semesters&quot;</span>]     <span class="co"># slopes</span></span>
+<span id="cb120-4"><a href="synthetic-data.html#cb120-4" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">unname</span>(m[<span class="st">&quot;Total.Semesters&quot;</span>] <span class="sc">-</span> <span class="fu">sum</span>(b <span class="sc">*</span> m[x]))   <span class="co"># intercept</span></span>
+<span id="cb120-5"><a href="synthetic-data.html#cb120-5" tabindex="-1"></a></span>
+<span id="cb120-6"><a href="synthetic-data.html#cb120-6" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">Intercept =</span> b0, b[, <span class="dv">1</span>]), <span class="dv">6</span>)</span>
+<span id="cb120-7"><a href="synthetic-data.html#cb120-7" tabindex="-1"></a><span class="co">#&gt; Intercept       Age    Female    Master </span></span>
+<span id="cb120-8"><a href="synthetic-data.html#cb120-8" tabindex="-1"></a><span class="co">#&gt;  5.266207  0.036239  0.480464  1.899795</span></span></code></pre></div>
 <p>And the same regression on the real 233 students:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="synthetic-data.html#cb126-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">+</span> Female <span class="sc">+</span> Master, <span class="at">data =</span> course)), <span class="dv">6</span>)</span>
-<span id="cb126-2"><a href="synthetic-data.html#cb126-2" tabindex="-1"></a><span class="co">#&gt; (Intercept)         Age      Female      Master </span></span>
-<span id="cb126-3"><a href="synthetic-data.html#cb126-3" tabindex="-1"></a><span class="co">#&gt;    5.266207    0.036239    0.480464    1.899795</span></span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="synthetic-data.html#cb121-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">+</span> Female <span class="sc">+</span> Master, <span class="at">data =</span> course)), <span class="dv">6</span>)</span>
+<span id="cb121-2"><a href="synthetic-data.html#cb121-2" tabindex="-1"></a><span class="co">#&gt; (Intercept)         Age      Female      Master </span></span>
+<span id="cb121-3"><a href="synthetic-data.html#cb121-3" tabindex="-1"></a><span class="co">#&gt;    5.266207    0.036239    0.480464    1.899795</span></span></code></pre></div>
 <p>Identical. Not approximately, not on average — the same numbers to machine precision. Standard errors and <span class="math inline">\(R^2\)</span> follow from the same 21 quantities.</p>
 <div class="amazing">
 <div class="titelamazing">

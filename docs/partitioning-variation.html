@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-07" />
+<meta name="date" content="2026-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -198,12 +198,6 @@ div.csl-indent {
 <link rel="stylesheet" href="www/webex.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/boxes.css" type="text/css" />
-<link rel="stylesheet" href="css/ani.css" type="text/css" />
-<link rel="stylesheet" href="css/background.css" type="text/css" />
-<link rel="stylesheet" href="css/toggle.css" type="text/css" />
-<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
-<link rel="stylesheet" href="css/align.css" type="text/css" />
-<link rel="stylesheet" href="css/video.css" type="text/css" />
 </head>
 
 <body>
@@ -387,14 +381,14 @@ Definition
 </div>
 <p>The <strong>analysis of variance (ANOVA)</strong> splits the total variation of an outcome into a part <em>between</em> group means and a part <em>within</em> groups. The <strong>F-statistic</strong> is the ratio of the two (per degree of freedom). If the groups' means were all equal, F would hover around 1; the further above 1, the less plausible "all means are equal" becomes.</p>
 </div>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="partitioning-variation.html#cb138-1" tabindex="-1"></a>toy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y   =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>,  <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>,  <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>),</span>
-<span id="cb138-2"><a href="partitioning-variation.html#cb138-2" tabindex="-1"></a>                  <span class="at">grp =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="at">each =</span> <span class="dv">3</span>))</span>
-<span id="cb138-3"><a href="partitioning-variation.html#cb138-3" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(y <span class="sc">~</span> grp, <span class="at">data =</span> toy))</span>
-<span id="cb138-4"><a href="partitioning-variation.html#cb138-4" tabindex="-1"></a><span class="co">#&gt;             Df Sum Sq Mean Sq F value  Pr(&gt;F)   </span></span>
-<span id="cb138-5"><a href="partitioning-variation.html#cb138-5" tabindex="-1"></a><span class="co">#&gt; grp          2     42      21      21 0.00195 **</span></span>
-<span id="cb138-6"><a href="partitioning-variation.html#cb138-6" tabindex="-1"></a><span class="co">#&gt; Residuals    6      6       1                   </span></span>
-<span id="cb138-7"><a href="partitioning-variation.html#cb138-7" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb138-8"><a href="partitioning-variation.html#cb138-8" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="partitioning-variation.html#cb133-1" tabindex="-1"></a>toy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y   =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>,  <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>,  <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>),</span>
+<span id="cb133-2"><a href="partitioning-variation.html#cb133-2" tabindex="-1"></a>                  <span class="at">grp =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="at">each =</span> <span class="dv">3</span>))</span>
+<span id="cb133-3"><a href="partitioning-variation.html#cb133-3" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(y <span class="sc">~</span> grp, <span class="at">data =</span> toy))</span>
+<span id="cb133-4"><a href="partitioning-variation.html#cb133-4" tabindex="-1"></a><span class="co">#&gt;             Df Sum Sq Mean Sq F value  Pr(&gt;F)   </span></span>
+<span id="cb133-5"><a href="partitioning-variation.html#cb133-5" tabindex="-1"></a><span class="co">#&gt; grp          2     42      21      21 0.00195 **</span></span>
+<span id="cb133-6"><a href="partitioning-variation.html#cb133-6" tabindex="-1"></a><span class="co">#&gt; Residuals    6      6       1                   </span></span>
+<span id="cb133-7"><a href="partitioning-variation.html#cb133-7" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb133-8"><a href="partitioning-variation.html#cb133-8" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>R agrees with our hand calculation on every entry: sums of squares 42 and 6, mean squares 21 and 1, F = 21, and a p-value of 0.002. Note that F answers only <em>whether the group labels matter at all</em> — one question about all groups jointly, not which particular groups differ. That is a feature, and the next subsection shows why.</p>
 </div>
 <div id="pv-multiple" class="section level3 hasAnchor" number="5.3.3">
@@ -416,17 +410,17 @@ A lady tasting tea
 <div id="pv-dogs" class="section level3 hasAnchor" number="5.3.4">
 <h3><span class="header-section-number">5.3.4</span> Do big dogs die younger, part two<a href="partitioning-variation.html#pv-dogs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The stories chapter answered this question with a scatterplot of shoulder height against lifespan. But the dog data also contains a coarser, more human variable: each breed labelled simply <strong>small, medium or large</strong>. Coarse categories are how people actually talk — nobody asks a breeder for a dog of 46 centimetres — so let us run the comparison the way a buyer would frame it.</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="partitioning-variation.html#cb139-1" tabindex="-1"></a>dogs_raw <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Dogs/best_in_show.csv&quot;</span>,</span>
-<span id="cb139-2"><a href="partitioning-variation.html#cb139-2" tabindex="-1"></a>                     <span class="at">check.names =</span> <span class="cn">FALSE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb139-3"><a href="partitioning-variation.html#cb139-3" tabindex="-1"></a>num <span class="ot">&lt;-</span> <span class="cf">function</span>(v) <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;[$,%]&quot;</span>, <span class="st">&quot;&quot;</span>, v))</span>
-<span id="cb139-4"><a href="partitioning-variation.html#cb139-4" tabindex="-1"></a></span>
-<span id="cb139-5"><a href="partitioning-variation.html#cb139-5" tabindex="-1"></a>dogs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Breed  =</span> dogs_raw[[<span class="dv">1</span>]],  <span class="at">Group =</span> dogs_raw[[<span class="dv">3</span>]],</span>
-<span id="cb139-6"><a href="partitioning-variation.html#cb139-6" tabindex="-1"></a>                   <span class="at">Score  =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">5</span>]]),  <span class="at">Popularity =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">6</span>]]),</span>
-<span id="cb139-7"><a href="partitioning-variation.html#cb139-7" tabindex="-1"></a>                   <span class="at">Life   =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">13</span>]]), <span class="at">Height =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">35</span>]]),</span>
-<span id="cb139-8"><a href="partitioning-variation.html#cb139-8" tabindex="-1"></a>                   <span class="at">Size   =</span> dogs_raw[[<span class="dv">32</span>]])[<span class="sc">-</span><span class="dv">1</span>, ] <span class="sc">%&gt;%</span></span>
-<span id="cb139-9"><a href="partitioning-variation.html#cb139-9" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Score), <span class="sc">!</span><span class="fu">is.na</span>(Popularity), <span class="sc">!</span><span class="fu">is.na</span>(Life),</span>
-<span id="cb139-10"><a href="partitioning-variation.html#cb139-10" tabindex="-1"></a>         Size <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;small&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;large&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb139-11"><a href="partitioning-variation.html#cb139-11" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Size =</span> <span class="fu">factor</span>(Size, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;small&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;large&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="partitioning-variation.html#cb134-1" tabindex="-1"></a>dogs_raw <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Dogs/best_in_show.csv&quot;</span>,</span>
+<span id="cb134-2"><a href="partitioning-variation.html#cb134-2" tabindex="-1"></a>                     <span class="at">check.names =</span> <span class="cn">FALSE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb134-3"><a href="partitioning-variation.html#cb134-3" tabindex="-1"></a>num <span class="ot">&lt;-</span> <span class="cf">function</span>(v) <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;[$,%]&quot;</span>, <span class="st">&quot;&quot;</span>, v))</span>
+<span id="cb134-4"><a href="partitioning-variation.html#cb134-4" tabindex="-1"></a></span>
+<span id="cb134-5"><a href="partitioning-variation.html#cb134-5" tabindex="-1"></a>dogs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Breed  =</span> dogs_raw[[<span class="dv">1</span>]],  <span class="at">Group =</span> dogs_raw[[<span class="dv">3</span>]],</span>
+<span id="cb134-6"><a href="partitioning-variation.html#cb134-6" tabindex="-1"></a>                   <span class="at">Score  =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">5</span>]]),  <span class="at">Popularity =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">6</span>]]),</span>
+<span id="cb134-7"><a href="partitioning-variation.html#cb134-7" tabindex="-1"></a>                   <span class="at">Life   =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">13</span>]]), <span class="at">Height =</span> <span class="fu">num</span>(dogs_raw[[<span class="dv">35</span>]]),</span>
+<span id="cb134-8"><a href="partitioning-variation.html#cb134-8" tabindex="-1"></a>                   <span class="at">Size   =</span> dogs_raw[[<span class="dv">32</span>]])[<span class="sc">-</span><span class="dv">1</span>, ] <span class="sc">%&gt;%</span></span>
+<span id="cb134-9"><a href="partitioning-variation.html#cb134-9" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Score), <span class="sc">!</span><span class="fu">is.na</span>(Popularity), <span class="sc">!</span><span class="fu">is.na</span>(Life),</span>
+<span id="cb134-10"><a href="partitioning-variation.html#cb134-10" tabindex="-1"></a>         Size <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;small&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;large&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb134-11"><a href="partitioning-variation.html#cb134-11" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Size =</span> <span class="fu">factor</span>(Size, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;small&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;large&quot;</span>)))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:pv-dogs-fig"></span>
 <img src="Becoming-Fluent-In-Data_files/figure-html/pv-dogs-fig-1.png" alt="Lifespan of 87 breeds by size category. Red points mark the group means; the dashed line is the grand mean. ANOVA measures whether the red points' spread is large relative to the grey points' spread." width="672" />
 <p class="caption">
@@ -434,12 +428,12 @@ Figure 5.8: Lifespan of 87 breeds by size category. Red points mark the group me
 </p>
 </div>
 <p>Small breeds live 12.4 years on average, medium 11.2, large 9.6. The ANOVA:</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="partitioning-variation.html#cb140-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Life <span class="sc">~</span> Size, <span class="at">data =</span> dogs))</span>
-<span id="cb140-2"><a href="partitioning-variation.html#cb140-2" tabindex="-1"></a><span class="co">#&gt;             Df Sum Sq Mean Sq F value   Pr(&gt;F)    </span></span>
-<span id="cb140-3"><a href="partitioning-variation.html#cb140-3" tabindex="-1"></a><span class="co">#&gt; Size         2  111.9   55.96   22.25 1.76e-08 ***</span></span>
-<span id="cb140-4"><a href="partitioning-variation.html#cb140-4" tabindex="-1"></a><span class="co">#&gt; Residuals   84  211.2    2.51                     </span></span>
-<span id="cb140-5"><a href="partitioning-variation.html#cb140-5" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb140-6"><a href="partitioning-variation.html#cb140-6" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="partitioning-variation.html#cb135-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Life <span class="sc">~</span> Size, <span class="at">data =</span> dogs))</span>
+<span id="cb135-2"><a href="partitioning-variation.html#cb135-2" tabindex="-1"></a><span class="co">#&gt;             Df Sum Sq Mean Sq F value   Pr(&gt;F)    </span></span>
+<span id="cb135-3"><a href="partitioning-variation.html#cb135-3" tabindex="-1"></a><span class="co">#&gt; Size         2  111.9   55.96   22.25 1.76e-08 ***</span></span>
+<span id="cb135-4"><a href="partitioning-variation.html#cb135-4" tabindex="-1"></a><span class="co">#&gt; Residuals   84  211.2    2.51                     </span></span>
+<span id="cb135-5"><a href="partitioning-variation.html#cb135-5" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb135-6"><a href="partitioning-variation.html#cb135-6" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>F = 22.3 with a p-value in the hundred-millionths: the size labels matter, beyond any reasonable doubt. And the sums of squares give us something the p-value cannot — a measure of <em>how much</em> they matter. The size category accounts for <span class="math inline">\(111.9 / (111.9 + 211.2) = 0.35\)</span> of the total variation in lifespan.</p>
 <div class="defbox">
 <div class="titeldefbox">
@@ -453,17 +447,17 @@ Definition
 </div>
 <p>So size explains 35% of lifespan variation — and leaves 65% within the categories: some large breeds outlive some small ones. Both halves of that sentence are findings.</p>
 <p>Now, <em>which</em> sizes differ from which? This is where the multiple comparisons problem returns, and where John Tukey's <strong>honestly significant difference</strong> enters: pairwise comparisons with the family-wise error held at 5% across the whole set.<a href="#fn92" class="footnote-ref" id="fnref92"><sup>92</sup></a></p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="partitioning-variation.html#cb141-1" tabindex="-1"></a><span class="fu">TukeyHSD</span>(<span class="fu">aov</span>(Life <span class="sc">~</span> Size, <span class="at">data =</span> dogs))</span>
-<span id="cb141-2"><a href="partitioning-variation.html#cb141-2" tabindex="-1"></a><span class="co">#&gt;   Tukey multiple comparisons of means</span></span>
-<span id="cb141-3"><a href="partitioning-variation.html#cb141-3" tabindex="-1"></a><span class="co">#&gt;     95% family-wise confidence level</span></span>
-<span id="cb141-4"><a href="partitioning-variation.html#cb141-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb141-5"><a href="partitioning-variation.html#cb141-5" tabindex="-1"></a><span class="co">#&gt; Fit: aov(formula = Life ~ Size, data = dogs)</span></span>
-<span id="cb141-6"><a href="partitioning-variation.html#cb141-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb141-7"><a href="partitioning-variation.html#cb141-7" tabindex="-1"></a><span class="co">#&gt; $Size</span></span>
-<span id="cb141-8"><a href="partitioning-variation.html#cb141-8" tabindex="-1"></a><span class="co">#&gt;                   diff       lwr        upr     p adj</span></span>
-<span id="cb141-9"><a href="partitioning-variation.html#cb141-9" tabindex="-1"></a><span class="co">#&gt; medium-small -1.129555 -2.107047 -0.1520629 0.0193878</span></span>
-<span id="cb141-10"><a href="partitioning-variation.html#cb141-10" tabindex="-1"></a><span class="co">#&gt; large-small  -2.778303 -3.774325 -1.7822818 0.0000000</span></span>
-<span id="cb141-11"><a href="partitioning-variation.html#cb141-11" tabindex="-1"></a><span class="co">#&gt; large-medium -1.648748 -2.660632 -0.6368646 0.0005856</span></span></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="partitioning-variation.html#cb136-1" tabindex="-1"></a><span class="fu">TukeyHSD</span>(<span class="fu">aov</span>(Life <span class="sc">~</span> Size, <span class="at">data =</span> dogs))</span>
+<span id="cb136-2"><a href="partitioning-variation.html#cb136-2" tabindex="-1"></a><span class="co">#&gt;   Tukey multiple comparisons of means</span></span>
+<span id="cb136-3"><a href="partitioning-variation.html#cb136-3" tabindex="-1"></a><span class="co">#&gt;     95% family-wise confidence level</span></span>
+<span id="cb136-4"><a href="partitioning-variation.html#cb136-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb136-5"><a href="partitioning-variation.html#cb136-5" tabindex="-1"></a><span class="co">#&gt; Fit: aov(formula = Life ~ Size, data = dogs)</span></span>
+<span id="cb136-6"><a href="partitioning-variation.html#cb136-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb136-7"><a href="partitioning-variation.html#cb136-7" tabindex="-1"></a><span class="co">#&gt; $Size</span></span>
+<span id="cb136-8"><a href="partitioning-variation.html#cb136-8" tabindex="-1"></a><span class="co">#&gt;                   diff       lwr        upr     p adj</span></span>
+<span id="cb136-9"><a href="partitioning-variation.html#cb136-9" tabindex="-1"></a><span class="co">#&gt; medium-small -1.129555 -2.107047 -0.1520629 0.0193878</span></span>
+<span id="cb136-10"><a href="partitioning-variation.html#cb136-10" tabindex="-1"></a><span class="co">#&gt; large-small  -2.778303 -3.774325 -1.7822818 0.0000000</span></span>
+<span id="cb136-11"><a href="partitioning-variation.html#cb136-11" tabindex="-1"></a><span class="co">#&gt; large-medium -1.648748 -2.660632 -0.6368646 0.0005856</span></span></code></pre></div>
 <p>All three gaps survive the correction: medium−small (−1.1 years), large−medium (−1.6), large−small (−2.8). The word <em>honestly</em> in the name is doing real work — these intervals are wider than three naive t-tests would draw, because they have paid, in advance, for the fact that we went looking three times.</p>
 <div class="challenge">
 <div class="titelchallenge">
@@ -479,25 +473,25 @@ Your Turn
 <div id="pv-regression" class="section level3 hasAnchor" number="5.3.5">
 <h3><span class="header-section-number">5.3.5</span> ANOVA is also a regression<a href="partitioning-variation.html#pv-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Section <a href="comparing-means.html#comparing-means">5.2</a> ended by unmasking the t-test as a regression with one binary variable. ANOVA falls to the same unmasking:</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="partitioning-variation.html#cb142-1" tabindex="-1"></a><span class="fu">lm</span>(Life <span class="sc">~</span> Size, <span class="at">data =</span> dogs) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb142-2"><a href="partitioning-variation.html#cb142-2" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb142-3"><a href="partitioning-variation.html#cb142-3" tabindex="-1"></a><span class="co">#&gt; (Intercept)   12.356      0.285  43.383    0.000</span></span>
-<span id="cb142-4"><a href="partitioning-variation.html#cb142-4" tabindex="-1"></a><span class="co">#&gt; Sizemedium    -1.130      0.410  -2.757    0.007</span></span>
-<span id="cb142-5"><a href="partitioning-variation.html#cb142-5" tabindex="-1"></a><span class="co">#&gt; Sizelarge     -2.778      0.417  -6.655    0.000</span></span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="partitioning-variation.html#cb137-1" tabindex="-1"></a><span class="fu">lm</span>(Life <span class="sc">~</span> Size, <span class="at">data =</span> dogs) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb137-2"><a href="partitioning-variation.html#cb137-2" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb137-3"><a href="partitioning-variation.html#cb137-3" tabindex="-1"></a><span class="co">#&gt; (Intercept)   12.356      0.285  43.383    0.000</span></span>
+<span id="cb137-4"><a href="partitioning-variation.html#cb137-4" tabindex="-1"></a><span class="co">#&gt; Sizemedium    -1.130      0.410  -2.757    0.007</span></span>
+<span id="cb137-5"><a href="partitioning-variation.html#cb137-5" tabindex="-1"></a><span class="co">#&gt; Sizelarge     -2.778      0.417  -6.655    0.000</span></span></code></pre></div>
 <p>The intercept, 12.36, is the small-breed mean. The two coefficients, −1.13 and −2.78, are exactly the medium−small and large−small gaps from the Tukey table. And running <code>anova()</code> on this regression reproduces the F of 22.3. One category was consumed as the baseline; the other two became <strong>dummy variables</strong> — a preview of how the model chapter (<a href="model.html#model">6</a>) handles every categorical variable it meets.</p>
 <p>This is worth internalising as a general truth: <strong>t-test, ANOVA and regression are not three methods. They are one method — comparing conditional means — at three levels of generality.</strong> Which brings us to the natural next question: what happens when we compare group means <em>while holding something else constant</em>?</p>
 </div>
 <div id="pv-ancova" class="section level3 hasAnchor" number="5.3.6">
 <h3><span class="header-section-number">5.3.6</span> ANCOVA: the control variable enters<a href="partitioning-variation.html#pv-ancova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The size categories explain 35% of lifespan variation. But the stories chapter showed that <em>height</em> — the continuous measurement underneath the categories — predicts lifespan too. What happens if we put both into the comparison? Adding a continuous covariate to an ANOVA has its own name, <strong>analysis of covariance (ANCOVA)</strong>, and the result here is worth staring at:</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="partitioning-variation.html#cb143-1" tabindex="-1"></a>dogs_h <span class="ot">&lt;-</span> dogs <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Height))     <span class="co"># 76 of 87 breeds have height</span></span>
-<span id="cb143-2"><a href="partitioning-variation.html#cb143-2" tabindex="-1"></a></span>
-<span id="cb143-3"><a href="partitioning-variation.html#cb143-3" tabindex="-1"></a><span class="fu">lm</span>(Life <span class="sc">~</span> Size <span class="sc">+</span> Height, <span class="at">data =</span> dogs_h) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb143-4"><a href="partitioning-variation.html#cb143-4" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb143-5"><a href="partitioning-variation.html#cb143-5" tabindex="-1"></a><span class="co">#&gt; (Intercept)   15.325      0.829  18.491    0.000</span></span>
-<span id="cb143-6"><a href="partitioning-variation.html#cb143-6" tabindex="-1"></a><span class="co">#&gt; Sizemedium     1.437      0.725   1.983    0.051</span></span>
-<span id="cb143-7"><a href="partitioning-variation.html#cb143-7" tabindex="-1"></a><span class="co">#&gt; Sizelarge      1.105      1.103   1.002    0.320</span></span>
-<span id="cb143-8"><a href="partitioning-variation.html#cb143-8" tabindex="-1"></a><span class="co">#&gt; Height        -0.104      0.027  -3.785    0.000</span></span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="partitioning-variation.html#cb138-1" tabindex="-1"></a>dogs_h <span class="ot">&lt;-</span> dogs <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Height))     <span class="co"># 76 of 87 breeds have height</span></span>
+<span id="cb138-2"><a href="partitioning-variation.html#cb138-2" tabindex="-1"></a></span>
+<span id="cb138-3"><a href="partitioning-variation.html#cb138-3" tabindex="-1"></a><span class="fu">lm</span>(Life <span class="sc">~</span> Size <span class="sc">+</span> Height, <span class="at">data =</span> dogs_h) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb138-4"><a href="partitioning-variation.html#cb138-4" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb138-5"><a href="partitioning-variation.html#cb138-5" tabindex="-1"></a><span class="co">#&gt; (Intercept)   15.325      0.829  18.491    0.000</span></span>
+<span id="cb138-6"><a href="partitioning-variation.html#cb138-6" tabindex="-1"></a><span class="co">#&gt; Sizemedium     1.437      0.725   1.983    0.051</span></span>
+<span id="cb138-7"><a href="partitioning-variation.html#cb138-7" tabindex="-1"></a><span class="co">#&gt; Sizelarge      1.105      1.103   1.002    0.320</span></span>
+<span id="cb138-8"><a href="partitioning-variation.html#cb138-8" tabindex="-1"></a><span class="co">#&gt; Height        -0.104      0.027  -3.785    0.000</span></span></code></pre></div>
 <p>Compare the coefficients with and without the covariate:</p>
 <table>
 <thead>
@@ -549,12 +543,12 @@ Your Turn
 <p><strong>Compare ranks, not values</strong> — <code>wilcox.test()</code>. Frank Wilcoxon, an industrial chemist (industry again: beer, then fertiliser, now pesticides), replaced the values with their ranks in 1945.<a href="#fn93" class="footnote-ref" id="fnref93"><sup>93</sup></a> The test asks whether one group <em>tends to sit above</em> the other, and outliers lose their leverage: our 278-year-old student would have wrecked a mean but merely occupies rank 233 of 233. The price is that "tends to sit above" is vaguer than "differs by 1.1 years" — robustness is bought with precision.</p>
 <p><strong>Compare entire distributions</strong> — <code>ks.test()</code>. The Kolmogorov–Smirnov statistic is beautifully blunt: draw both cumulative distributions and report the widest vertical gap between them. Any difference — in centre, spread, or shape — widens the gap, so it is the honest answer to "are these two groups distributed differently, in any way at all?" The price of catching everything is that a rejection alone does not say <em>what</em> differs; the picture has to accompany the test.</p>
 <p><strong>Compare the spread itself</strong> — <code>var.test()</code>, or Levene's more robust cousin. Sometimes the standard deviation <em>is</em> the substance. Whether a reform raised average performance is one question; whether it widened the gap between the strongest and weakest students is another, and parents may care more about the second.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="partitioning-variation.html#cb144-1" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Course/GF_AllTime.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">100</span>)</span>
-<span id="cb144-2"><a href="partitioning-variation.html#cb144-2" tabindex="-1"></a></span>
-<span id="cb144-3"><a href="partitioning-variation.html#cb144-3" tabindex="-1"></a><span class="fu">ks.test</span>(Age <span class="sc">~</span> Academic.level, <span class="at">data =</span> coursedata)<span class="sc">$</span>p.value      <span class="co"># distributions differ?</span></span>
-<span id="cb144-4"><a href="partitioning-variation.html#cb144-4" tabindex="-1"></a><span class="co">#&gt; [1] 8.315482e-08</span></span>
-<span id="cb144-5"><a href="partitioning-variation.html#cb144-5" tabindex="-1"></a><span class="fu">var.test</span>(Age <span class="sc">~</span> Academic.level, <span class="at">data =</span> coursedata)<span class="sc">$</span>p.value     <span class="co"># spreads differ?</span></span>
-<span id="cb144-6"><a href="partitioning-variation.html#cb144-6" tabindex="-1"></a><span class="co">#&gt; [1] 0.2960909</span></span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="partitioning-variation.html#cb139-1" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Course/GF_AllTime.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">100</span>)</span>
+<span id="cb139-2"><a href="partitioning-variation.html#cb139-2" tabindex="-1"></a></span>
+<span id="cb139-3"><a href="partitioning-variation.html#cb139-3" tabindex="-1"></a><span class="fu">ks.test</span>(Age <span class="sc">~</span> Academic.level, <span class="at">data =</span> coursedata)<span class="sc">$</span>p.value      <span class="co"># distributions differ?</span></span>
+<span id="cb139-4"><a href="partitioning-variation.html#cb139-4" tabindex="-1"></a><span class="co">#&gt; [1] 8.315482e-08</span></span>
+<span id="cb139-5"><a href="partitioning-variation.html#cb139-5" tabindex="-1"></a><span class="fu">var.test</span>(Age <span class="sc">~</span> Academic.level, <span class="at">data =</span> coursedata)<span class="sc">$</span>p.value     <span class="co"># spreads differ?</span></span>
+<span id="cb139-6"><a href="partitioning-variation.html#cb139-6" tabindex="-1"></a><span class="co">#&gt; [1] 0.2960909</span></span></code></pre></div>
 <p>For age by academic level: the t-test (p ≈ 10⁻⁶), the rank test and the KS test all agree the distributions differ, while the variance test does not (p = 0.30) — Bachelor and Master ages differ in <em>location</em>, not in <em>spread</em>. Four tests, and only together do they say something precise: the whole Master age distribution sits about two years to the right of the Bachelor one, with a similar shape.</p>
 <div class="analysis-takeaway">
 <p><strong>"Do the groups differ?" is not one question.</strong> In means — t-test, ANOVA. In means, net of a covariate — ANCOVA. In tendency, robust to outliers — rank tests. In spread — variance tests. In distribution overall — Kolmogorov–Smirnov. For <em>categorical</em> outcomes, in proportions — the chi-square logic that returns with the logistic models of the model chapter.</p>

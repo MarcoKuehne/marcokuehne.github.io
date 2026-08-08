@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-07" />
+<meta name="date" content="2026-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -198,12 +198,6 @@ div.csl-indent {
 <link rel="stylesheet" href="www/webex.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/boxes.css" type="text/css" />
-<link rel="stylesheet" href="css/ani.css" type="text/css" />
-<link rel="stylesheet" href="css/background.css" type="text/css" />
-<link rel="stylesheet" href="css/toggle.css" type="text/css" />
-<link rel="stylesheet" href="css/wikipedia_link.css" type="text/css" />
-<link rel="stylesheet" href="css/align.css" type="text/css" />
-<link rel="stylesheet" href="css/video.css" type="text/css" />
 </head>
 
 <body>
@@ -357,60 +351,60 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <button>
 Show me all the data wrangling.
 </button>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="interactions.html#cb168-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb168-2"><a href="interactions.html#cb168-2" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span>
-<span id="cb168-3"><a href="interactions.html#cb168-3" tabindex="-1"></a></span>
-<span id="cb168-4"><a href="interactions.html#cb168-4" tabindex="-1"></a><span class="co"># The data comes with Stata labels that do not work with all tidyverse commands</span></span>
-<span id="cb168-5"><a href="interactions.html#cb168-5" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
-<span id="cb168-6"><a href="interactions.html#cb168-6" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span>
-<span id="cb168-7"><a href="interactions.html#cb168-7" tabindex="-1"></a></span>
-<span id="cb168-8"><a href="interactions.html#cb168-8" tabindex="-1"></a><span class="co"># Rename German to English variable names</span></span>
-<span id="cb168-9"><a href="interactions.html#cb168-9" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb168-10"><a href="interactions.html#cb168-10" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb168-11"><a href="interactions.html#cb168-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="st">&quot;alter&quot;</span>,</span>
-<span id="cb168-12"><a href="interactions.html#cb168-12" tabindex="-1"></a>         <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> <span class="st">&quot;einkommenj1&quot;</span>,</span>
-<span id="cb168-13"><a href="interactions.html#cb168-13" tabindex="-1"></a>         <span class="st">&quot;NACE2&quot;</span> <span class="ot">=</span> <span class="st">&quot;branche&quot;</span>,</span>
-<span id="cb168-14"><a href="interactions.html#cb168-14" tabindex="-1"></a>         <span class="st">&quot;Persons in HH&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_pers&quot;</span>, </span>
-<span id="cb168-15"><a href="interactions.html#cb168-15" tabindex="-1"></a>         <span class="st">&quot;Num_Kids&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_kind&quot;</span>,</span>
-<span id="cb168-16"><a href="interactions.html#cb168-16" tabindex="-1"></a>         <span class="st">&quot;Education&quot;</span> <span class="ot">=</span> <span class="st">&quot;bildung&quot;</span>,</span>
-<span id="cb168-17"><a href="interactions.html#cb168-17" tabindex="-1"></a>         <span class="st">&quot;Health&quot;</span> <span class="ot">=</span> <span class="st">&quot;gesund_org&quot;</span>, </span>
-<span id="cb168-18"><a href="interactions.html#cb168-18" tabindex="-1"></a>         <span class="st">&quot;Satisfaction&quot;</span> <span class="ot">=</span> <span class="st">&quot;lebensz_org&quot;</span>,</span>
-<span id="cb168-19"><a href="interactions.html#cb168-19" tabindex="-1"></a>         <span class="st">&quot;Emp&quot;</span> <span class="ot">=</span> <span class="st">&quot;erwerb&quot;</span>) </span>
-<span id="cb168-20"><a href="interactions.html#cb168-20" tabindex="-1"></a></span>
-<span id="cb168-21"><a href="interactions.html#cb168-21" tabindex="-1"></a><span class="co"># Modify some variables</span></span>
-<span id="cb168-22"><a href="interactions.html#cb168-22" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb168-23"><a href="interactions.html#cb168-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Single =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Persons in HH</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb168-24"><a href="interactions.html#cb168-24" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">ifelse</span>(Num_Kids <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb168-25"><a href="interactions.html#cb168-25" tabindex="-1"></a>         <span class="at">Female =</span> sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb168-26"><a href="interactions.html#cb168-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Industry =</span> <span class="fu">case_when</span>(NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="sc">~</span> <span class="st">&quot;Agriculture&quot;</span>,</span>
-<span id="cb168-27"><a href="interactions.html#cb168-27" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">~</span> <span class="st">&quot;Mining&quot;</span>,</span>
-<span id="cb168-28"><a href="interactions.html#cb168-28" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">32</span>) <span class="sc">~</span> <span class="st">&quot;Manufacturing&quot;</span>,</span>
-<span id="cb168-29"><a href="interactions.html#cb168-29" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35</span><span class="sc">:</span><span class="dv">38</span>) <span class="sc">~</span> <span class="st">&quot;Energy&quot;</span>,</span>
-<span id="cb168-30"><a href="interactions.html#cb168-30" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">~</span> <span class="st">&quot;Construction&quot;</span>,</span>
-<span id="cb168-31"><a href="interactions.html#cb168-31" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">55</span>) <span class="sc">~</span> <span class="st">&quot;Trade&quot;</span>,</span>
-<span id="cb168-32"><a href="interactions.html#cb168-32" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>) <span class="sc">~</span> <span class="st">&quot;Transport&quot;</span>,</span>
-<span id="cb168-33"><a href="interactions.html#cb168-33" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>) <span class="sc">~</span> <span class="st">&quot;Banking&quot;</span>,</span>
-<span id="cb168-34"><a href="interactions.html#cb168-34" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span>  <span class="fu">c</span>(<span class="dv">70</span>,<span class="dv">71</span>,<span class="dv">72</span>,<span class="dv">73</span>,<span class="dv">74</span>,<span class="dv">75</span>,<span class="dv">80</span>,<span class="dv">85</span>,<span class="dv">90</span>,<span class="dv">91</span>,<span class="dv">92</span>,<span class="dv">93</span>,<span class="dv">95</span>,<span class="dv">98</span>,<span class="dv">99</span>) <span class="sc">~</span> <span class="st">&quot;Services&quot;</span>,</span>
-<span id="cb168-35"><a href="interactions.html#cb168-35" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Other&quot;</span>))</span>
-<span id="cb168-36"><a href="interactions.html#cb168-36" tabindex="-1"></a></span>
-<span id="cb168-37"><a href="interactions.html#cb168-37" tabindex="-1"></a><span class="co"># Round annual income to two digits</span></span>
-<span id="cb168-38"><a href="interactions.html#cb168-38" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Income =</span> <span class="fu">round</span>(Income, <span class="dv">2</span>))</span>
-<span id="cb168-39"><a href="interactions.html#cb168-39" tabindex="-1"></a></span>
-<span id="cb168-40"><a href="interactions.html#cb168-40" tabindex="-1"></a><span class="co"># Build the estimation sample based on the topic</span></span>
-<span id="cb168-41"><a href="interactions.html#cb168-41" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb168-42"><a href="interactions.html#cb168-42" tabindex="-1"></a>  <span class="fu">filter</span>(Emp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb168-43"><a href="interactions.html#cb168-43" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">65</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb168-44"><a href="interactions.html#cb168-44" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb168-45"><a href="interactions.html#cb168-45" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2019</span>)</span>
-<span id="cb168-46"><a href="interactions.html#cb168-46" tabindex="-1"></a></span>
-<span id="cb168-47"><a href="interactions.html#cb168-47" tabindex="-1"></a><span class="co"># Conduct a complete case analysis</span></span>
-<span id="cb168-48"><a href="interactions.html#cb168-48" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="interactions.html#cb163-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb163-2"><a href="interactions.html#cb163-2" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true&quot;</span>)</span>
+<span id="cb163-3"><a href="interactions.html#cb163-3" tabindex="-1"></a></span>
+<span id="cb163-4"><a href="interactions.html#cb163-4" tabindex="-1"></a><span class="co"># The data comes with Stata labels that do not work with all tidyverse commands</span></span>
+<span id="cb163-5"><a href="interactions.html#cb163-5" tabindex="-1"></a><span class="fu">library</span>(sjlabelled)</span>
+<span id="cb163-6"><a href="interactions.html#cb163-6" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">remove_all_labels</span>(master)</span>
+<span id="cb163-7"><a href="interactions.html#cb163-7" tabindex="-1"></a></span>
+<span id="cb163-8"><a href="interactions.html#cb163-8" tabindex="-1"></a><span class="co"># Rename German to English variable names</span></span>
+<span id="cb163-9"><a href="interactions.html#cb163-9" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb163-10"><a href="interactions.html#cb163-10" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb163-11"><a href="interactions.html#cb163-11" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="st">&quot;alter&quot;</span>,</span>
+<span id="cb163-12"><a href="interactions.html#cb163-12" tabindex="-1"></a>         <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> <span class="st">&quot;einkommenj1&quot;</span>,</span>
+<span id="cb163-13"><a href="interactions.html#cb163-13" tabindex="-1"></a>         <span class="st">&quot;NACE2&quot;</span> <span class="ot">=</span> <span class="st">&quot;branche&quot;</span>,</span>
+<span id="cb163-14"><a href="interactions.html#cb163-14" tabindex="-1"></a>         <span class="st">&quot;Persons in HH&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_pers&quot;</span>, </span>
+<span id="cb163-15"><a href="interactions.html#cb163-15" tabindex="-1"></a>         <span class="st">&quot;Num_Kids&quot;</span> <span class="ot">=</span> <span class="st">&quot;anz_kind&quot;</span>,</span>
+<span id="cb163-16"><a href="interactions.html#cb163-16" tabindex="-1"></a>         <span class="st">&quot;Education&quot;</span> <span class="ot">=</span> <span class="st">&quot;bildung&quot;</span>,</span>
+<span id="cb163-17"><a href="interactions.html#cb163-17" tabindex="-1"></a>         <span class="st">&quot;Health&quot;</span> <span class="ot">=</span> <span class="st">&quot;gesund_org&quot;</span>, </span>
+<span id="cb163-18"><a href="interactions.html#cb163-18" tabindex="-1"></a>         <span class="st">&quot;Satisfaction&quot;</span> <span class="ot">=</span> <span class="st">&quot;lebensz_org&quot;</span>,</span>
+<span id="cb163-19"><a href="interactions.html#cb163-19" tabindex="-1"></a>         <span class="st">&quot;Emp&quot;</span> <span class="ot">=</span> <span class="st">&quot;erwerb&quot;</span>) </span>
+<span id="cb163-20"><a href="interactions.html#cb163-20" tabindex="-1"></a></span>
+<span id="cb163-21"><a href="interactions.html#cb163-21" tabindex="-1"></a><span class="co"># Modify some variables</span></span>
+<span id="cb163-22"><a href="interactions.html#cb163-22" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb163-23"><a href="interactions.html#cb163-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Single =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Persons in HH</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb163-24"><a href="interactions.html#cb163-24" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">ifelse</span>(Num_Kids <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb163-25"><a href="interactions.html#cb163-25" tabindex="-1"></a>         <span class="at">Female =</span> sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-26"><a href="interactions.html#cb163-26" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Industry =</span> <span class="fu">case_when</span>(NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="sc">~</span> <span class="st">&quot;Agriculture&quot;</span>,</span>
+<span id="cb163-27"><a href="interactions.html#cb163-27" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">~</span> <span class="st">&quot;Mining&quot;</span>,</span>
+<span id="cb163-28"><a href="interactions.html#cb163-28" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">32</span>) <span class="sc">~</span> <span class="st">&quot;Manufacturing&quot;</span>,</span>
+<span id="cb163-29"><a href="interactions.html#cb163-29" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">35</span><span class="sc">:</span><span class="dv">38</span>) <span class="sc">~</span> <span class="st">&quot;Energy&quot;</span>,</span>
+<span id="cb163-30"><a href="interactions.html#cb163-30" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">41</span><span class="sc">:</span><span class="dv">43</span>) <span class="sc">~</span> <span class="st">&quot;Construction&quot;</span>,</span>
+<span id="cb163-31"><a href="interactions.html#cb163-31" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">52</span>,<span class="dv">55</span>) <span class="sc">~</span> <span class="st">&quot;Trade&quot;</span>,</span>
+<span id="cb163-32"><a href="interactions.html#cb163-32" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">60</span>,<span class="dv">61</span>,<span class="dv">62</span>,<span class="dv">63</span>,<span class="dv">64</span>) <span class="sc">~</span> <span class="st">&quot;Transport&quot;</span>,</span>
+<span id="cb163-33"><a href="interactions.html#cb163-33" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">66</span>,<span class="dv">67</span>) <span class="sc">~</span> <span class="st">&quot;Banking&quot;</span>,</span>
+<span id="cb163-34"><a href="interactions.html#cb163-34" tabindex="-1"></a>                              NACE2 <span class="sc">%in%</span>  <span class="fu">c</span>(<span class="dv">70</span>,<span class="dv">71</span>,<span class="dv">72</span>,<span class="dv">73</span>,<span class="dv">74</span>,<span class="dv">75</span>,<span class="dv">80</span>,<span class="dv">85</span>,<span class="dv">90</span>,<span class="dv">91</span>,<span class="dv">92</span>,<span class="dv">93</span>,<span class="dv">95</span>,<span class="dv">98</span>,<span class="dv">99</span>) <span class="sc">~</span> <span class="st">&quot;Services&quot;</span>,</span>
+<span id="cb163-35"><a href="interactions.html#cb163-35" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Other&quot;</span>))</span>
+<span id="cb163-36"><a href="interactions.html#cb163-36" tabindex="-1"></a></span>
+<span id="cb163-37"><a href="interactions.html#cb163-37" tabindex="-1"></a><span class="co"># Round annual income to two digits</span></span>
+<span id="cb163-38"><a href="interactions.html#cb163-38" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Income =</span> <span class="fu">round</span>(Income, <span class="dv">2</span>))</span>
+<span id="cb163-39"><a href="interactions.html#cb163-39" tabindex="-1"></a></span>
+<span id="cb163-40"><a href="interactions.html#cb163-40" tabindex="-1"></a><span class="co"># Build the estimation sample based on the topic</span></span>
+<span id="cb163-41"><a href="interactions.html#cb163-41" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb163-42"><a href="interactions.html#cb163-42" tabindex="-1"></a>  <span class="fu">filter</span>(Emp <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-43"><a href="interactions.html#cb163-43" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;=</span> <span class="dv">65</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-44"><a href="interactions.html#cb163-44" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-45"><a href="interactions.html#cb163-45" tabindex="-1"></a>  <span class="fu">filter</span>(syear <span class="sc">==</span> <span class="dv">2019</span>)</span>
+<span id="cb163-46"><a href="interactions.html#cb163-46" tabindex="-1"></a></span>
+<span id="cb163-47"><a href="interactions.html#cb163-47" tabindex="-1"></a><span class="co"># Conduct a complete case analysis</span></span>
+<span id="cb163-48"><a href="interactions.html#cb163-48" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div>
 </div>
 <p>The <code>datasummary()</code> function from <code>modelsummary</code> package provides a good overview for clean, selected variables.</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="interactions.html#cb169-1" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb169-2"><a href="interactions.html#cb169-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
-<span id="cb169-3"><a href="interactions.html#cb169-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Income, Age, Kids, Female, Satisfaction) <span class="sc">%&gt;%</span></span>
-<span id="cb169-4"><a href="interactions.html#cb169-4" tabindex="-1"></a>  <span class="fu">datasummary_skim</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="interactions.html#cb164-1" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb164-2"><a href="interactions.html#cb164-2" tabindex="-1"></a>soep <span class="sc">%&gt;%</span></span>
+<span id="cb164-3"><a href="interactions.html#cb164-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Income, Age, Kids, Female, Satisfaction) <span class="sc">%&gt;%</span></span>
+<span id="cb164-4"><a href="interactions.html#cb164-4" tabindex="-1"></a>  <span class="fu">datasummary_skim</span>()</span></code></pre></div>
 <!-- preamble start -->
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
@@ -521,10 +515,10 @@ Show me all the data wrangling.
     </div>
 <!-- hack to avoid NA insertion in last line -->
 <p>The average annual income in this sample is 42145. Notice that the income is left skewed whereas life satisfaction is skewed to the right. As expected, most people earn a low or average income and there are several extreme high incomes at the right. On the other hand, most people are on average pretty satisfied with their lifes in general. The mean of a dummy variables is the share of people with the characteristic coded with 1, i.e. about 40 % of the people have kids. In the following, binary dummy variables are coded as factors.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="interactions.html#cb170-1" tabindex="-1"></a><span class="co"># Explicitly code factor variables</span></span>
-<span id="cb170-2"><a href="interactions.html#cb170-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
-<span id="cb170-3"><a href="interactions.html#cb170-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Female =</span> <span class="fu">factor</span>(Female),</span>
-<span id="cb170-4"><a href="interactions.html#cb170-4" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">factor</span>(Kids))</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="interactions.html#cb165-1" tabindex="-1"></a><span class="co"># Explicitly code factor variables</span></span>
+<span id="cb165-2"><a href="interactions.html#cb165-2" tabindex="-1"></a>soep <span class="ot">&lt;-</span> soep <span class="sc">%&gt;%</span> </span>
+<span id="cb165-3"><a href="interactions.html#cb165-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Female =</span> <span class="fu">factor</span>(Female),</span>
+<span id="cb165-4"><a href="interactions.html#cb165-4" tabindex="-1"></a>         <span class="at">Kids =</span> <span class="fu">factor</span>(Kids))</span></code></pre></div>
 </div>
 <div id="throwback-parallel-slopes" class="section level3 hasAnchor" number="6.5.3">
 <h3><span class="header-section-number">6.5.3</span> Throwback Parallel Slopes<a href="interactions.html#throwback-parallel-slopes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -541,18 +535,18 @@ Show me all the data wrangling.
 <button>
 Show me the coding.
 </button>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="interactions.html#cb171-1" tabindex="-1"></a><span class="co"># implicit coding, that automatically extends</span></span>
-<span id="cb171-2"><a href="interactions.html#cb171-2" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">*</span>am, <span class="at">data=</span>mtcars)</span>
-<span id="cb171-3"><a href="interactions.html#cb171-3" tabindex="-1"></a><span class="co"># explicit coding, each single term and their interaction</span></span>
-<span id="cb171-4"><a href="interactions.html#cb171-4" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> am <span class="sc">+</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
-<span id="cb171-5"><a href="interactions.html#cb171-5" tabindex="-1"></a><span class="co"># only use the interaction term?</span></span>
-<span id="cb171-6"><a href="interactions.html#cb171-6" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
-<span id="cb171-7"><a href="interactions.html#cb171-7" tabindex="-1"></a></span>
-<span id="cb171-8"><a href="interactions.html#cb171-8" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Coding Interaction in R.&#39;</span>,</span>
-<span id="cb171-9"><a href="interactions.html#cb171-9" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Version 1&quot;</span> <span class="ot">=</span> lm1, </span>
-<span id="cb171-10"><a href="interactions.html#cb171-10" tabindex="-1"></a>                  <span class="st">&quot;Version 2&quot;</span> <span class="ot">=</span> lm2,</span>
-<span id="cb171-11"><a href="interactions.html#cb171-11" tabindex="-1"></a>                  <span class="st">&quot;Version 3&quot;</span> <span class="ot">=</span> lm3), </span>
-<span id="cb171-12"><a href="interactions.html#cb171-12" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="interactions.html#cb166-1" tabindex="-1"></a><span class="co"># implicit coding, that automatically extends</span></span>
+<span id="cb166-2"><a href="interactions.html#cb166-2" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">*</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb166-3"><a href="interactions.html#cb166-3" tabindex="-1"></a><span class="co"># explicit coding, each single term and their interaction</span></span>
+<span id="cb166-4"><a href="interactions.html#cb166-4" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> am <span class="sc">+</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb166-5"><a href="interactions.html#cb166-5" tabindex="-1"></a><span class="co"># only use the interaction term?</span></span>
+<span id="cb166-6"><a href="interactions.html#cb166-6" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs<span class="sc">:</span>am, <span class="at">data=</span>mtcars)</span>
+<span id="cb166-7"><a href="interactions.html#cb166-7" tabindex="-1"></a></span>
+<span id="cb166-8"><a href="interactions.html#cb166-8" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Coding Interaction in R.&#39;</span>,</span>
+<span id="cb166-9"><a href="interactions.html#cb166-9" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Version 1&quot;</span> <span class="ot">=</span> lm1, </span>
+<span id="cb166-10"><a href="interactions.html#cb166-10" tabindex="-1"></a>                  <span class="st">&quot;Version 2&quot;</span> <span class="ot">=</span> lm2,</span>
+<span id="cb166-11"><a href="interactions.html#cb166-11" tabindex="-1"></a>                  <span class="st">&quot;Version 3&quot;</span> <span class="ot">=</span> lm3), </span>
+<span id="cb166-12"><a href="interactions.html#cb166-12" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
 <!-- preamble start -->
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
@@ -674,10 +668,10 @@ Show me the coding.
 <!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
 <!-- Categorical by categorical interactions: All the tools described here require at least one variable to be continuous. A separate vignette describes cat_plot, which handles the plotting of interactions in which all the focal predictors are categorical variables. -->
 <p>We estimate how income depends on having kids and being female.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="interactions.html#cb172-1" tabindex="-1"></a>interact1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Kids<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb172-2"><a href="interactions.html#cb172-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 1.&#39;</span>,</span>
-<span id="cb172-3"><a href="interactions.html#cb172-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact1), </span>
-<span id="cb172-4"><a href="interactions.html#cb172-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="interactions.html#cb167-1" tabindex="-1"></a>interact1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Kids<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb167-2"><a href="interactions.html#cb167-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 1.&#39;</span>,</span>
+<span id="cb167-3"><a href="interactions.html#cb167-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact1), </span>
+<span id="cb167-4"><a href="interactions.html#cb167-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
 <!-- preamble start -->
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
@@ -772,39 +766,39 @@ Show me the coding.
     </div>
 <!-- hack to avoid NA insertion in last line -->
 <p>We plot the interaction with via <code>cat_plot()</code> from the <code>interactions</code> package. This interaction dedicated package makes visualization easy.</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="interactions.html#cb173-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
-<span id="cb173-2"><a href="interactions.html#cb173-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="interactions.html#cb168-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb168-2"><a href="interactions.html#cb168-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-473-1.png" alt="" width="576" /></p>
 <p>This graph suggests that men earn more than women. Men with kids earn more than men without kids. The kids-effect is reversed for women, which report higher incomes when they do not have kids.</p>
 </div>
 <div id="categorical-dummy" class="section level4 hasAnchor" number="6.5.4.2">
 <h4><span class="header-section-number">6.5.4.2</span> Categorical * Dummy<a href="interactions.html#categorical-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>We estimate how income depends on working in different industries and being female.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="interactions.html#cb174-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Industry<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb174-2"><a href="interactions.html#cb174-2" tabindex="-1"></a></span>
-<span id="cb174-3"><a href="interactions.html#cb174-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb174-4"><a href="interactions.html#cb174-4" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb174-5"><a href="interactions.html#cb174-5" tabindex="-1"></a></span>
-<span id="cb174-6"><a href="interactions.html#cb174-6" tabindex="-1"></a><span class="co"># tidy(interact2) %&gt;% </span></span>
-<span id="cb174-7"><a href="interactions.html#cb174-7" tabindex="-1"></a><span class="co">#   select(term, estimate, std.error) %&gt;% </span></span>
-<span id="cb174-8"><a href="interactions.html#cb174-8" tabindex="-1"></a><span class="co">#   #filter(! is.na(estimate)) %&gt;% </span></span>
-<span id="cb174-9"><a href="interactions.html#cb174-9" tabindex="-1"></a><span class="co">#   kable(digits=3)</span></span>
-<span id="cb174-10"><a href="interactions.html#cb174-10" tabindex="-1"></a></span>
-<span id="cb174-11"><a href="interactions.html#cb174-11" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
-<span id="cb174-12"><a href="interactions.html#cb174-12" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact2), </span></span>
-<span id="cb174-13"><a href="interactions.html#cb174-13" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span>
-<span id="cb174-14"><a href="interactions.html#cb174-14" tabindex="-1"></a></span>
-<span id="cb174-15"><a href="interactions.html#cb174-15" tabindex="-1"></a>parts <span class="ot">=</span> <span class="dv">2</span> <span class="do">## multi-column parts to display alongside</span></span>
-<span id="cb174-16"><a href="interactions.html#cb174-16" tabindex="-1"></a></span>
-<span id="cb174-17"><a href="interactions.html#cb174-17" tabindex="-1"></a><span class="fu">tidy</span>(interact2) <span class="sc">|&gt;</span></span>
-<span id="cb174-18"><a href="interactions.html#cb174-18" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(term, <span class="at">coefficient =</span> estimate) <span class="sc">|&gt;</span></span>
-<span id="cb174-19"><a href="interactions.html#cb174-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">part =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>parts, <span class="at">each =</span> <span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>()),</span>
-<span id="cb174-20"><a href="interactions.html#cb174-20" tabindex="-1"></a>         <span class="at">row_index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>())</span>
-<span id="cb174-21"><a href="interactions.html#cb174-21" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
-<span id="cb174-22"><a href="interactions.html#cb174-22" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span> part) <span class="sc">|&gt;</span></span>
-<span id="cb174-23"><a href="interactions.html#cb174-23" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="at">f =</span> \(x, y) x <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>part) <span class="sc">|&gt;</span> <span class="fu">left_join</span>(y, <span class="at">by =</span> <span class="st">&#39;row_index&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb174-24"><a href="interactions.html#cb174-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(row_index, part)) <span class="sc">|&gt;</span></span>
-<span id="cb174-25"><a href="interactions.html#cb174-25" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="interactions.html#cb169-1" tabindex="-1"></a>interact2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Industry<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb169-2"><a href="interactions.html#cb169-2" tabindex="-1"></a></span>
+<span id="cb169-3"><a href="interactions.html#cb169-3" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb169-4"><a href="interactions.html#cb169-4" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb169-5"><a href="interactions.html#cb169-5" tabindex="-1"></a></span>
+<span id="cb169-6"><a href="interactions.html#cb169-6" tabindex="-1"></a><span class="co"># tidy(interact2) %&gt;% </span></span>
+<span id="cb169-7"><a href="interactions.html#cb169-7" tabindex="-1"></a><span class="co">#   select(term, estimate, std.error) %&gt;% </span></span>
+<span id="cb169-8"><a href="interactions.html#cb169-8" tabindex="-1"></a><span class="co">#   #filter(! is.na(estimate)) %&gt;% </span></span>
+<span id="cb169-9"><a href="interactions.html#cb169-9" tabindex="-1"></a><span class="co">#   kable(digits=3)</span></span>
+<span id="cb169-10"><a href="interactions.html#cb169-10" tabindex="-1"></a></span>
+<span id="cb169-11"><a href="interactions.html#cb169-11" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb169-12"><a href="interactions.html#cb169-12" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact2), </span></span>
+<span id="cb169-13"><a href="interactions.html#cb169-13" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span>
+<span id="cb169-14"><a href="interactions.html#cb169-14" tabindex="-1"></a></span>
+<span id="cb169-15"><a href="interactions.html#cb169-15" tabindex="-1"></a>parts <span class="ot">=</span> <span class="dv">2</span> <span class="do">## multi-column parts to display alongside</span></span>
+<span id="cb169-16"><a href="interactions.html#cb169-16" tabindex="-1"></a></span>
+<span id="cb169-17"><a href="interactions.html#cb169-17" tabindex="-1"></a><span class="fu">tidy</span>(interact2) <span class="sc">|&gt;</span></span>
+<span id="cb169-18"><a href="interactions.html#cb169-18" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(term, <span class="at">coefficient =</span> estimate) <span class="sc">|&gt;</span></span>
+<span id="cb169-19"><a href="interactions.html#cb169-19" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">part =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>parts, <span class="at">each =</span> <span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>()),</span>
+<span id="cb169-20"><a href="interactions.html#cb169-20" tabindex="-1"></a>         <span class="at">row_index =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">n</span>()<span class="sc">/</span>parts), <span class="at">length.out =</span> <span class="fu">n</span>())</span>
+<span id="cb169-21"><a href="interactions.html#cb169-21" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
+<span id="cb169-22"><a href="interactions.html#cb169-22" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span> part) <span class="sc">|&gt;</span></span>
+<span id="cb169-23"><a href="interactions.html#cb169-23" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="at">f =</span> \(x, y) x <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>part) <span class="sc">|&gt;</span> <span class="fu">left_join</span>(y, <span class="at">by =</span> <span class="st">&#39;row_index&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb169-24"><a href="interactions.html#cb169-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(row_index, part)) <span class="sc">|&gt;</span></span>
+<span id="cb169-25"><a href="interactions.html#cb169-25" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <colgroup>
 <col width="27%" />
@@ -883,9 +877,9 @@ Show me the coding.
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="interactions.html#cb175-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
-<span id="cb175-2"><a href="interactions.html#cb175-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
-<span id="cb175-3"><a href="interactions.html#cb175-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="interactions.html#cb170-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
+<span id="cb170-2"><a href="interactions.html#cb170-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb170-3"><a href="interactions.html#cb170-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-475-1.png" alt="" width="576" /></p>
 </div>
 <div id="continuous-dummy" class="section level4 hasAnchor" number="6.5.4.3">
@@ -898,10 +892,10 @@ Show me the coding.
 <p>Thus <span class="math display">\[ height * female \]</span></p>
 <p>translates to</p>
 <p><span class="math display">\[ height + female + height*female \]</span></p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="interactions.html#cb176-1" tabindex="-1"></a>interact3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb176-2"><a href="interactions.html#cb176-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 2.&#39;</span>,</span>
-<span id="cb176-3"><a href="interactions.html#cb176-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3), </span>
-<span id="cb176-4"><a href="interactions.html#cb176-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="interactions.html#cb171-1" tabindex="-1"></a>interact3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb171-2"><a href="interactions.html#cb171-2" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Interaction Model 2.&#39;</span>,</span>
+<span id="cb171-3"><a href="interactions.html#cb171-3" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3), </span>
+<span id="cb171-4"><a href="interactions.html#cb171-4" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;</span>)</span></code></pre></div>
 <!-- preamble start -->
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
@@ -997,8 +991,8 @@ Show me the coding.
 <!-- hack to avoid NA insertion in last line -->
 <!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
 <p>The visualization for non-parallel slopes looks like this:</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="interactions.html#cb177-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
-<span id="cb177-2"><a href="interactions.html#cb177-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="interactions.html#cb172-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
+<span id="cb172-2"><a href="interactions.html#cb172-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-477-1.png" alt="" width="576" /></p>
 <div class="challenge">
 <div class="titelchallenge">
@@ -1009,34 +1003,34 @@ Conclusion
 <p>The <strong>fundamental truth</strong> is that the effect of age on income is positive but not identical between males and females. Men and women at the exact same age earn different annual incomes and the gap widens over time. There is <strong>effect heterogeneity</strong>.</p>
 </div>
 <p>There are two more rather uncommon combination in which one of the main effects is dropped. Graphically, the result is two lines with same intercept and different slopes.</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="interactions.html#cb178-1" tabindex="-1"></a>interact3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Age<span class="sc">:</span>Female, <span class="at">data=</span>soep)</span>
-<span id="cb178-2"><a href="interactions.html#cb178-2" tabindex="-1"></a></span>
-<span id="cb178-3"><a href="interactions.html#cb178-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
-<span id="cb178-4"><a href="interactions.html#cb178-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
-<span id="cb178-5"><a href="interactions.html#cb178-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="interactions.html#cb173-1" tabindex="-1"></a>interact3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Age<span class="sc">:</span>Female, <span class="at">data=</span>soep)</span>
+<span id="cb173-2"><a href="interactions.html#cb173-2" tabindex="-1"></a></span>
+<span id="cb173-3"><a href="interactions.html#cb173-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
+<span id="cb173-4"><a href="interactions.html#cb173-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb173-5"><a href="interactions.html#cb173-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-478-1.png" alt="" width="576" /></p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="interactions.html#cb179-1" tabindex="-1"></a></span>
-<span id="cb179-2"><a href="interactions.html#cb179-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
-<span id="cb179-3"><a href="interactions.html#cb179-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
-<span id="cb179-4"><a href="interactions.html#cb179-4" tabindex="-1"></a><span class="co">#                   &quot;Income&quot; = interact3c), </span></span>
-<span id="cb179-5"><a href="interactions.html#cb179-5" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="interactions.html#cb174-1" tabindex="-1"></a></span>
+<span id="cb174-2"><a href="interactions.html#cb174-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
+<span id="cb174-3"><a href="interactions.html#cb174-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
+<span id="cb174-4"><a href="interactions.html#cb174-4" tabindex="-1"></a><span class="co">#                   &quot;Income&quot; = interact3c), </span></span>
+<span id="cb174-5"><a href="interactions.html#cb174-5" tabindex="-1"></a><span class="co">#              gof_omit = &#39;R2|AIC|BIC|RMSE|Log.Lik.|F&#39;)</span></span></code></pre></div>
 <!-- Now it is no longer a parallel slopes model. A different slope is equivalent to a different effect of height on weight for the two genders.  -->
 </div>
 <div id="continuous-continuous" class="section level4 hasAnchor" number="6.5.4.4">
 <h4><span class="header-section-number">6.5.4.4</span> Continuous * Continuous<a href="interactions.html#continuous-continuous" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
 <!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="interactions.html#cb180-1" tabindex="-1"></a>interact4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
-<span id="cb180-2"><a href="interactions.html#cb180-2" tabindex="-1"></a>interact4</span>
-<span id="cb180-3"><a href="interactions.html#cb180-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb180-4"><a href="interactions.html#cb180-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb180-5"><a href="interactions.html#cb180-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
-<span id="cb180-6"><a href="interactions.html#cb180-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb180-7"><a href="interactions.html#cb180-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb180-8"><a href="interactions.html#cb180-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
-<span id="cb180-9"><a href="interactions.html#cb180-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="interactions.html#cb175-1" tabindex="-1"></a>interact4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age<span class="sc">*</span>Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb175-2"><a href="interactions.html#cb175-2" tabindex="-1"></a>interact4</span>
+<span id="cb175-3"><a href="interactions.html#cb175-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb175-4"><a href="interactions.html#cb175-4" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb175-5"><a href="interactions.html#cb175-5" tabindex="-1"></a><span class="co">#&gt; lm(formula = Income ~ Age * Satisfaction, data = soep)</span></span>
+<span id="cb175-6"><a href="interactions.html#cb175-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb175-7"><a href="interactions.html#cb175-7" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb175-8"><a href="interactions.html#cb175-8" tabindex="-1"></a><span class="co">#&gt;      (Intercept)               Age      Satisfaction  Age:Satisfaction  </span></span>
+<span id="cb175-9"><a href="interactions.html#cb175-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
 <p>The interaction of two continuous variables is harder to interpret. There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="interactions.html#cb181-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="interactions.html#cb176-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
 <p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-480-1.png" alt="" width="576" /></p>
 <p>This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.</p>
 <p>You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.</p>
@@ -1045,20 +1039,20 @@ Conclusion
 <div id="model-comparison-1" class="section level3 hasAnchor" number="6.5.5">
 <h3><span class="header-section-number">6.5.5</span> Model Comparison<a href="interactions.html#model-comparison-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>How to decide if the model with interaction is better than the model without interaction?</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="interactions.html#cb182-1" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb182-2"><a href="interactions.html#cb182-2" tabindex="-1"></a></span>
-<span id="cb182-3"><a href="interactions.html#cb182-3" tabindex="-1"></a>multiple3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Female, <span class="at">data=</span>soep)</span>
-<span id="cb182-4"><a href="interactions.html#cb182-4" tabindex="-1"></a>multiple4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Satisfaction, <span class="at">data=</span>soep)</span>
-<span id="cb182-5"><a href="interactions.html#cb182-5" tabindex="-1"></a></span>
-<span id="cb182-6"><a href="interactions.html#cb182-6" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Comparison&#39;</span>,</span>
-<span id="cb182-7"><a href="interactions.html#cb182-7" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple3,</span>
-<span id="cb182-8"><a href="interactions.html#cb182-8" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3,</span>
-<span id="cb182-9"><a href="interactions.html#cb182-9" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple4,</span>
-<span id="cb182-10"><a href="interactions.html#cb182-10" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact4), </span>
-<span id="cb182-11"><a href="interactions.html#cb182-11" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
-<span id="cb182-12"><a href="interactions.html#cb182-12" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;gt&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb182-13"><a href="interactions.html#cb182-13" tabindex="-1"></a>  <span class="co"># column labels</span></span>
-<span id="cb182-14"><a href="interactions.html#cb182-14" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&#39;Interaction&#39;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="interactions.html#cb177-1" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb177-2"><a href="interactions.html#cb177-2" tabindex="-1"></a></span>
+<span id="cb177-3"><a href="interactions.html#cb177-3" tabindex="-1"></a>multiple3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Female, <span class="at">data=</span>soep)</span>
+<span id="cb177-4"><a href="interactions.html#cb177-4" tabindex="-1"></a>multiple4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Age <span class="sc">+</span> Satisfaction, <span class="at">data=</span>soep)</span>
+<span id="cb177-5"><a href="interactions.html#cb177-5" tabindex="-1"></a></span>
+<span id="cb177-6"><a href="interactions.html#cb177-6" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="at">title =</span> <span class="st">&#39;Comparison&#39;</span>,</span>
+<span id="cb177-7"><a href="interactions.html#cb177-7" tabindex="-1"></a>             <span class="fu">list</span>(<span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple3,</span>
+<span id="cb177-8"><a href="interactions.html#cb177-8" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact3,</span>
+<span id="cb177-9"><a href="interactions.html#cb177-9" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> multiple4,</span>
+<span id="cb177-10"><a href="interactions.html#cb177-10" tabindex="-1"></a>                  <span class="st">&quot;Income&quot;</span> <span class="ot">=</span> interact4), </span>
+<span id="cb177-11"><a href="interactions.html#cb177-11" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&#39;R2|AIC|BIC|RMSE|Log.Lik.&#39;</span>,</span>
+<span id="cb177-12"><a href="interactions.html#cb177-12" tabindex="-1"></a>             <span class="at">output =</span> <span class="st">&quot;gt&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb177-13"><a href="interactions.html#cb177-13" tabindex="-1"></a>  <span class="co"># column labels</span></span>
+<span id="cb177-14"><a href="interactions.html#cb177-14" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&#39;Interaction&#39;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">5</span>)) </span></code></pre></div>
 <div id="yucpbrpxrl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#yucpbrpxrl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
