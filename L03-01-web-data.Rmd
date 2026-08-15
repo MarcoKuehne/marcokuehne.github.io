@@ -1,570 +1,499 @@
-## Web Data 
+## Web Data {#web-data}
 
 > “Over the last two years alone, 90 percent of the data in the world was generated.”</b>
 >
 > `r tufte::quote_footer('Bernard Marr (2018) *How Much Data Do We Create Every Day? The Mind-Blowing Stats Everyone Should Read* [Forbes.](https://www.forbes.com/sites/bernardmarr/2018/05/21/how-much-data-do-we-create-every-day-the-mind-blowing-stats-everyone-should-read/#4472289660ba){target="_blank"}')`
 
-**Data scraping** is a technique where a computer program extracts data from human-readable output coming from another program. Data scraping often takes place in **web scraping** (also known as crawling or spidering). In this process, an application is used to extract valuable information from a website. **PDF scraping** or more general **report mining** is the extraction of data from human-readable computer reports. It is worth considering alternatives before start scraping data.^[(1) Look for a download button. (2)  Search same or similar data somewhere else. (3) Check if there is an API. (4) Ask the website owner for the data.]
+Volume was never the hard part. The quote is about *how much* data exists; this section is about *what shape* it arrives in.
+
+Practically everything is on the web, and both data scientists and social scientists live off it: numerical, textual, spatial and relational data, used to train models, to study human behaviour and to test research questions. Most of it, though, comes in a civilised way — as a **file you download** or a **service you query**. Benchmark data sets from Kaggle, official numbers from Destatis or Eurostat, surveys from GESIS, digitised parliamentary records, weather and financial feeds.^[Good starting points: [Kaggle](https://www.kaggle.com/datasets) and the [UCI repository](https://archive.ics.uci.edu/) for machine-learning data, [Destatis](https://www.destatis.de/) and [Eurostat](https://ec.europa.eu/eurostat) for official statistics, [GESIS](https://www.gesis.org/) for social surveys.] None of that needs the techniques below.
+
+**Web data**, as we use the term here, is what the browser *builds* for a human reader: the content that a server delivers as **HTML** and dresses up with **CSS**. Two kinds of it interest us. **Numbers** — prices, student counts, rankings — sitting in tables, lists or plain sentences; that is this section. And **text** — articles, reviews, speeches, posts — which is its own craft and has its own section, [Text Data](#text-data). Other shapes exist and mostly leave the browser behind: spatial data comes as map files rather than as page content (see [Geo Data]), and relational data such as social networks is handed out, if at all, through the platform's own gate rather than through the page you see.
+
+**Data scraping** is the technique of letting a program extract data from output that was written for people, not for programs. On the web this is called **web scraping** (also crawling or spidering): read the page, find the values, build a table. The same idea applied to reports and documents is **PDF scraping**, or more generally **report mining** — a harder problem, because a PDF knows where a character sits on the page but not which column it belongs to. We stay with HTML and only borrow one PDF result later on.
+
+And one warning before any code: scraping should always be the *second* idea. Look for a download button. Check whether the same numbers exist somewhere friendlier. Ask whether the provider offers a database connection or an API — that route has its own section, [Remote Data](#remote-data), and it is a far better place to be. Write to the person who runs the site, the most underrated option of all. Each of those gives you data that still works next year; a scraper works until somebody redesigns a page.
+
+When none of them exists, we scrape. Two examples follow, ordered by how much the website fights back.
+
+1. **A ranking on Wikipedia.** The data already sits in a real HTML `<table>`, so getting it takes three lines. Getting it *usable* still takes a few more: footnote markers, an image column, prices in four currencies.
+2. **Student numbers of a university.** No table, no download button. The values hide inside collapsible boxes as running text, and even then we only get the most recent semesters — the long history lives in a separate PDF, so a complete series has to be assembled from two sources.
+
+Both follow the same four steps: **find the data, get it, clean it, look at it.**
 
 ### Most expensive paintings
 
-What do The Card Players and Marshall Islands have in common? 
+What does a painting of Christ have in common with a Pacific island state?
 
-:::::: {.columns}
+On 15 November 2017, *Salvator Mundi* — attributed to Leonardo da Vinci — was auctioned at Christie's in New York. Nineteen minutes of bidding later the hammer fell at **450.3 million US dollars**. In the same years, the nominal gross domestic product of the **Marshall Islands**, a country of about 60,000 people, was around **220 million US dollars**. One canvas, one country, and the canvas wins by a factor of two.
 
-::: {.column width="45%" data-latex="{0.45\textwidth}"}
+The most expensive paintings play in the league of small national economies — and English Wikipedia keeps score.
 
-```{r , echo=FALSE, out.width="100%", fig.cap="\\label{fig:Player} The Card Players.", fig.align='center', warning=F, message=F}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg/800px-Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg")
-```
+#### Finding the data
 
-<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg/800px-Les_Joueurs_de_cartes%2C_par_Paul_C%C3%A9zanne%2C_collection_Al-Thani%2C_Yorck.jpg" height="250"> -->
+Before writing a single line of code, ask the question that decides everything else: **in what form does this data exist?** So let us look at the page first. This is the address we are going to work with:
 
-:::
+<center>**<https://en.wikipedia.org/wiki/List_of_most_expensive_paintings>**</center>
 
-::: {.column width="10%" data-latex="{0.1\textwidth}"}
-\ 
-<!-- an empty Div (with a white space), serving as
-a column separator -->
-:::
+<br>
 
-```{r , echo=FALSE, out.width="100%", fig.cap="\\label{fig:Masrshall} Flag of Marshall Islands.", fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/180px-Flag_of_the_Marshall_Islands.svg.png")
-```
-
-<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/180px-Flag_of_the_Marshall_Islands.svg.png" height="250"> -->
-
-:::
-
-Well, the first was sold for about 250.000.000 million USD in an auction in 2011 and the laters nominal gross domestic product is of similar size 220.000.000 million USD in 2019. About 60.000 people live in Marshall Islands. The most expensive paintings score similar to the gross domestic product of insular states. 
-
-This is the English Wikipedia article [list of highest prices ever paid for paintings](https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid).
+The window below is not a screenshot. It is the **live page**, embedded into this book. Scroll down inside it until you reach the long ranking with the columns *Adjusted*, *Original*, *Name*, *Artist*. That also means the content changes without asking us: a new record sale, a renamed column, a restructured article — and code that worked today may need repair in a year or two. Keep that in mind while reading the rest of this section.
 
 ```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
 library(webshot)
 knitr::include_url("https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid")
 ```
 
-In a web browser use the keyboard shortcut `CTRL + U` (in Google Chrome, Firefox, Microsoft Edge, Opera) to view the source code of a webpage. Alternatively, right click and choose "show source code". 
+That ranking is a real HTML **table**, and that is the best news a scraper can get. To see it yourself, use the keyboard shortcut `CTRL + U` in the browser (Chrome, Firefox, Edge, Opera) to view the source code of a page. Alternatively, right click and choose "show source code". A table in HTML always follows the same skeleton: `<table>` wraps rows `<tr>`, a row wraps header cells `<th>` and data cells `<td>`.
 
 ```{r, echo=T, eval=F}
-<!DOCTYPE html>
-<html>
-<style>
-table, th, td {
-  border:1px solid black;
-}
-</style>
-<body>
-
-<h2>A basic HTML table</h2>
-
-<table style="width:100%">
+<table class="wikitable">
   <tr>
-    <th>Company</th>
-    <th>Contact</th>
-    <th>Country</th>
+    <th>Name</th>
+    <th>Artist</th>
+    <th>Price</th>
   </tr>
   <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td>
-    <td>Mexico</td>
+    <td>Salvator Mundi</td>
+    <td>Leonardo da Vinci</td>
+    <td>450.3</td>
   </tr>
 </table>
-
-<p>To understand the example better, we have added borders to the table.</p>
-
-</body>
-</html>
 ```
 
+This regular skeleton is the reason why table scraping is so comfortable. We do not have to describe where a value sits — we only have to point at the table. Wikipedia even labels its tables with the CSS class `wikitable`, which is the address we will use.
 
-One approach is this. Use `read_html()` from `rvest` package to download the webpage. Extract the node `table.wikitable` with the `html_nodes()` command. Convert this node into a table with `html_table()` setting `header=TRUE`. Use this data in a pipe ` %>% ` with `bind_rows()` and `as_tibble()`.
+#### Scraping
 
-You can use any other scraping approach.
+Three steps, three functions from the `rvest` package. `read_html()` downloads the page, `html_element()` picks the node we want, and `html_table()` turns that node into a data frame. Wikipedia marks its tables with the CSS class `wikitable`, so the selector `"table.wikitable"` is all we need. `html_element()` in singular returns the *first* match.
 
-Store the final table of expensive paintings in `paintings`. The following `DT` table should yield identical results. 
-
-
-### Student numbers at Viadrina 
-
-Did you notice fewer and fewer fellow students sitting next to you? We analyse enrollment numbers at the European University Viadrina. *Dezernat 1* publishes both a long-run PDF time series and semester-specific summary statistics.
-
-The current statistics page is available at <https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/dezernat-1/studierendenstatistik/index.html>.
-
-The website was redesigned after the first version of this chapter. The semester summaries are now collected on **one page** in expandable sections instead of being stored on a separate URL for every semester.
-
-Information is still presented in two ways: as **tables in PDF**, for example the time series of total student numbers, and as **HTML text** for the individual semesters.
-
-A simplified version of the current label-value structure looks like this:
-
-```html
-<h3>Wintersemester 2025/26</h3>
-<p>Studierende gesamt: 3877</p>
-<p>Deutsche Studierende: 2229</p>
-<p>Ausländische Studierende: 1648</p>
-<p>Weibliche Studierende: 2132</p>
-<p>Männliche Studierende: 1728</p>
-```
-
-Let's investigate the student numbers.
-
-#### PDF scraping 
-
-<!-- https://www.dataquest.io/blog/web-scraping-in-r-rvest/ -->
-<!-- https://www.r-bloggers.com/2019/09/pdf-scraping-in-r-with-tabulizer/ -->
-<!-- https://www.brodrigues.co/blog/2018-06-10-scraping_pdfs/-->
-<!-- https://blog.az.sg/posts/reading-pdfs-in-r/ -->
-<!-- https://tabula.technology/ -->
-<!-- https://cran.r-hub.io/web/packages/tabulizer/vignettes/tabulizer.html -->
-<!-- https://crimebythenumbers.com/scrape-table.html -->
-<!-- https://academy.datawrapper.de/article/135-how-to-extract-data-out-of-pdfs -->
-
-Use the built-in `download.file()` function to download the current PDF. To keep the book reproducible, the download is **not** performed during a normal render. It only runs when the refresh option is explicitly switched on.
-
-```{r viadrina-pdf-download}
-viadrina_pdf_url <- paste0(
-  "https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/",
-  "dezernat-1/studierendenstatistik/_dateien-statistik/",
-  "1-entwicklung-gesamtstudierendenzahl/",
-  "entwicklung-der-gesamtstudierendenzahl.pdf"
-)
-
-viadrina_pdf_file <- file.path(
-  "data", "Viadrina", "entwicklung-der-gesamtstudierendenzahl.pdf"
-)
-
-refresh_viadrina <- isTRUE(getOption("bfid.refresh_viadrina", FALSE))
-
-if (refresh_viadrina) {
-  dir.create(dirname(viadrina_pdf_file), recursive = TRUE, showWarnings = FALSE)
-  download.file(viadrina_pdf_url, viadrina_pdf_file, mode = "wb")
-}
-```
-
-<!-- https://www.youtube.com/watch?v=jfBZzuDMN0o -->
-
-To extract a table from a PDF we can use the `pdftables` package.^[You may use other free services. Search for *Online converter PDF to csv/xlsx*.] The package is a wrapper for the **PDFTables API**. It requires an API key from <https://pdftables.com/>. You can register and get one for free. The result is stored as a `.csv` file.
-
-:::: {.defbox}
-::: {.titeldefbox}
-<h2> Definition </h2>
-:::
-An **application programming interface (API)** is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software.
-::::
-
-Be careful with your API keys. If you only use a file locally on your computer, you might be fine. Don't share this file. Don't upload it. If you upload an API key on Git, you may get a notification from <https://www.gitguardian.com/>. Instead, put your API key in your environment. This can be done in a `.Renviron` file. Use `usethis::edit_r_environ(scope = "project")` to access and edit your information.
-
-Read more:
-
-* <https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html>
-* <https://resources.numbat.space/using-rprofile-and-renviron.html>
-* <https://github.com/expersso/pdftables>
-
-```{r viadrina-pdftables-example, eval=FALSE}
-library(pdftables)
-
-convert_pdf(
-  input_file = viadrina_pdf_file,
-  output_file = "data/Viadrina/viadrina_students.csv",
-  api_key = Sys.getenv("PDFTABLES_API_KEY")
-)
-```
-
-Scraped data often requires a lot of cleaning. The historic PDF-derived CSV is kept locally in the repository, so the following analysis does not depend on a live website.
-
-```{r viadrina-historic-data}
+```{r paintings-scrape, message=FALSE, warning=FALSE}
 library(tidyverse)
-
-viadrina_1992_2020_before <- read.csv(
-  "data/Viadrina/viadrina_students.csv",
-  header = TRUE
-)
-
-viadrina_1992_2020 <- viadrina_1992_2020_before
-
-# Replace header names by the first row.
-names(viadrina_1992_2020) <- viadrina_1992_2020[1, ]
-
-# Drop the first and final non-data rows.
-viadrina_1992_2020 <- viadrina_1992_2020[-1, ]
-viadrina_1992_2020 <- viadrina_1992_2020[-nrow(viadrina_1992_2020), ]
-
-# Remove line breaks and use readable column names.
-colnames(viadrina_1992_2020) <- gsub(
-  "[\\r\\n]",
-  "",
-  colnames(viadrina_1992_2020)
-)
-
-colnames(viadrina_1992_2020) <- c(
-  "Year", "Total", "Female", "Female_Pct",
-  "German", "German_Pct", "Foreign", "Foreign_Pct",
-  "Pole", "Pole_Pct"
-)
-
-# Remove percentage signs and convert all columns to numeric.
-viadrina_1992_2020 <- viadrina_1992_2020 %>%
-  mutate(
-    across(
-      everything(),
-      ~ ifelse(
-        str_detect(.x, "%"),
-        parse_number(.x, locale = locale(decimal_mark = ",")) / 100,
-        .x
-      )
-    )
-  ) %>%
-  mutate(across(everything(), as.numeric))
-```
-
-```{r viadrina-historic-table}
-library(DT)
-datatable(viadrina_1992_2020)
-```
-
-#### Share of female students
-
-The number of female students over time in a line plot.
-
-```{r viadrina-female-plot}
-viadrina_1992_2020 %>%
-  ggplot(aes(x = Year)) +
-  geom_line(aes(y = Total, colour = "Total")) +
-  geom_line(aes(y = Female, colour = "Female")) +
-  labs(
-    title = "Student numbers at Viadrina",
-    subtitle = "Female and total students"
-  )
-```
-
-#### Share of foreign students
-
-The composition by German and foreign students over time.
-
-```{r viadrina-foreign-plot}
-viadrina_1992_2020 %>%
-  ggplot(aes(x = Year)) +
-  geom_col(aes(y = Total, fill = "Total")) +
-  geom_col(aes(y = German, fill = "German")) +
-  geom_col(aes(y = Foreign, fill = "Foreign")) +
-  labs(
-    title = "Student numbers at Viadrina",
-    subtitle = "German and foreign students"
-  )
-```
-
-#### Web scraping
-
-The redesigned website no longer uses one URL per semester. Instead, all recent semester summaries are collected on one page. We therefore download **one HTML document**, identify the semester headings, and extract the labelled values from the text below each heading.
-
-The live scraper is wrapped in a function. During a normal book render, the chapter reads the local snapshot `data/Viadrina/viadrina_students_recent.csv`. A deliberate refresh downloads the current page, saves the raw HTML, rebuilds the CSV, and then continues with the local file.
-
-```{r viadrina-scraping-functions}
 library(rvest)
 
-viadrina_stats_url <- paste0(
+paintings_url <- "https://en.wikipedia.org/wiki/List_of_most_expensive_paintings"
+
+paintings_raw <- paintings_url %>%
+  read_html() %>%              # 1. download the page
+  html_element("table.wikitable") %>%   # 2. pick the first wikitable
+  html_table()                 # 3. turn the node into a data frame
+
+dim(paintings_raw)
+names(paintings_raw)
+```
+
+Ninety-odd rows and eleven columns, in three lines of code. Everything after this point is cleaning.
+
+#### Cleaning
+
+The result is already rectangular, but the column names are long, one column holds nothing but images, and every cell still carries Wikipedia's footnote markers such as `[b]`. Three moves are enough: keep four columns under short names, delete everything in square brackets, and let `parse_number()` turn the rest into numbers. Then show the result right away.
+
+```{r paintings-clean}
+library(DT)
+
+paintings <- paintings_raw %>%
+  # 1. Keep four columns and rename them. starts_with() is safer than the
+  #    full header, which is long and may be edited on Wikipedia.
+  select(
+    painting = starts_with("Name"),
+    artist   = starts_with("Artist"),
+    price    = starts_with("Original"),
+    sale     = starts_with("Date of sale")
+  ) %>%
+  mutate(
+    # 2. "[b]" and friends are footnote markers, not content.
+    painting   = str_squish(str_remove_all(painting, "\\[.*?\\]")),
+    artist     = str_squish(str_remove_all(artist, "\\[.*?\\]")),
+    # 3. Text to number. parse_number() ignores currency signs and notes.
+    price_musd = parse_number(price),
+    # The sale date is a full date, we only want the four-digit year.
+    year_sold  = parse_number(str_extract(sale, "\\d{4}"))
+  ) %>%
+  select(painting, artist, price_musd, year_sold) %>%
+  # 4. Rows without a price are separators or notes, not paintings.
+  filter(!is.na(price_musd))
+
+datatable(
+  paintings,
+  rownames = FALSE,
+  colnames = c("Painting", "Artist", "Price (million USD)", "Year of sale"),
+  options = list(pageLength = 5, dom = "ftip")
+) %>%
+  formatRound("price_musd", digits = 1)
+```
+
+Four clean columns, sortable and searchable. Ninety paintings that were text on a website a minute ago.
+
+#### Visualizing
+
+A ranking asks for a sorted bar chart. The plotting code is hidden here — this section is about getting data, not about `ggplot2` — but it is in the source file if you want it.
+
+```{r paintings-plot, echo=FALSE, fig.align='center', fig.width=7, fig.height=4.5}
+paintings %>%
+  slice_max(price_musd, n = 12) %>%
+  mutate(painting = fct_reorder(painting, price_musd)) %>%
+  ggplot(aes(x = price_musd, y = painting)) +
+  geom_col(fill = "#2C5F8A", width = 0.7) +
+  geom_text(aes(label = round(price_musd)), hjust = -0.2, size = 3, colour = "grey30") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
+  labs(
+    title = "The twelve most expensive paintings ever sold",
+    subtitle = "Price at the time of sale, million USD",
+    x = NULL, y = NULL,
+    caption = "Source: Wikipedia, List of most expensive paintings"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    plot.caption = element_text(colour = "grey50")
+  )
+```
+
+**What did we actually do?** We took a public web page and left with a data set — three lines to scrape, five to clean. That was easy for one reason only: somebody else had already put the numbers into a `<table>`, and we could point at it by name.
+
+Three things could still go wrong, and it is worth naming them before they bite.
+
+* **The page changes.** Column names, footnotes and row order on Wikipedia are edited by strangers. Our chunk downloads the live page at *every* render, so a rename tomorrow breaks the book today. Keeping a local copy of the page — or of the cleaned result — is the cure.
+* **The numbers are not comparable.** Prices are converted from euros, pounds and yen at different exchange rates, and inflation adjustment is a second column for a reason. Scraping gives you values, not meaning.
+* **A table is a luxury.** Most websites publish numbers as sentences, in expandable boxes, or as a PDF link.
+
+The next example has exactly that problem, so we will have to describe *where* a value sits before we can read it.
+
+### Student numbers at Viadrina
+
+Did you notice fewer and fewer fellow students sitting next to you? Let us check whether that feeling survives contact with data. *Dezernat 1* of the European University Viadrina publishes enrollment statistics for every semester. There is no download button, no API, and no `<table>` tag. This is what most real scraping looks like. We walk the same four steps as before — find, scrape, clean, visualize — and every one of them is harder.
+
+#### Finding the data
+
+Again, the address first:
+
+<center>**<https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/dezernat-1/studierendenstatistik/index.html>**</center>
+
+<br>
+
+And again the live page, embedded. Click one of the semester headings — the section folds open and reveals the numbers. That folding is the whole problem in one gesture: what looks like a list of semesters is one long page whose content is hidden inside collapsible boxes.^[If the frame stays empty, the university's web server refuses to be embedded. Open the link above in a new tab instead.]
+
+```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
+knitr::include_url("https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/dezernat-1/studierendenstatistik/index.html")
+```
+
+**Where do the numbers live?** The website was redesigned since the first version of this chapter. Three levels are worth distinguishing.
+
+1. **The overview page.** One single HTML page collects all recent semesters in expandable sections (an "accordion"). Older versions of the site used one URL per semester — this is exactly the kind of change that breaks a scraper.
+2. **The detail files.** Every semester links to four PDFs in its own folder, for example
+   `.../_dateien-statistik/884-2026-Sommersemester/Uebersicht-Studierende-20261.pdf`
+   and
+   `.../_dateien-statistik/885-2025-Wintersemester/WiSe-2025-Fachsemester.pdf`.
+   Note the folder numbers `884`, `885`, `886`: they do **not** run in chronological order. Guessing URLs would fail here; we have to read the links from the page.
+3. **The long history.** One PDF holds the total student number since 1992,
+   `.../_dateien-statistik/1-entwicklung-gesamtstudierendenzahl/entwicklung-der-gesamtstudierendenzahl.pdf`.
+   This is the PDF-scraping part of the story, and it needs a different toolbox — `pdftools` and `tabulizer` in R, or one of the free online PDF-to-CSV converters. The cleaned result is stored in the repository as `data/Viadrina/viadrina_students.csv`, so this chapter can use the history without repeating the extraction.
+
+The lesson of this list: the recent numbers and the long history are **two different sources**. Scraping the page alone would give us seven years and a wrong story.
+
+**In what form?** Not as a table. Every semester lives in one `div` with the class `accordion-item`. Inside, the heading sits in a `<button>` and the numbers sit in a single `<p>` where `<br>` tags separate the lines. Label and value are one piece of running text.
+
+```{r, echo=T, eval=F}
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button ...>Sommersemester 2026</button>
+  </h3>
+  <div class="accordion-body px-4 py-4">
+    <p><strong>Studierendenzahlen<br></strong>
+       Studierende gesamt: 3651<br>
+       Deutsche Studierende: 2050<br>
+       Ausländische Studierende: 1601<br>
+       Studierende im 1. Fachsemester: 324<br>
+       Studierende im 1. Hochschulsemester: 191</p>
+    <p><strong>Geschlecht<br></strong>
+       Weibliche Studierende: 2016<br>
+       Männliche Studierende: 1609<br>
+       Diverse Studierende: 9<br>
+       ohne Angabe: 17</p>
+    <a href="_dateien-statistik/884-2026-Sommersemester/...pdf">Übersicht</a>
+  </div>
+</div>
+```
+
+So the plan is: take all `accordion-item` nodes, read the heading from the button, read the text from the body — and only afterwards pull the numbers out of that text.
+
+#### Scraping
+
+**Download once, parse often.** A book should still build when a website is down or has changed overnight. We therefore save the raw page in the repository and always parse the saved copy. The download only happens when we deliberately ask for it.
+
+```{r viadrina-download, message=FALSE, warning=FALSE}
+viadrina_url <- paste0(
   "https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/",
   "dezernat-1/studierendenstatistik/index.html"
 )
 
-viadrina_html_file <- file.path(
+viadrina_file <- file.path(
   "data", "Viadrina", "viadrina-student-statistics.html"
 )
 
-viadrina_recent_file <- file.path(
-  "data", "Viadrina", "viadrina_students_recent.csv"
+# The snapshot is only re-downloaded when we ask for it explicitly, by
+# setting options(bfid.refresh_viadrina = TRUE) before rendering the book.
+if (isTRUE(getOption("bfid.refresh_viadrina", FALSE))) {
+  dir.create(dirname(viadrina_file), recursive = TRUE, showWarnings = FALSE)
+  xml2::write_html(read_html(viadrina_url), viadrina_file)
+}
+
+page <- read_html(viadrina_file)
+```
+
+The links we identified above can now be listed instead of guessed.
+
+```{r viadrina-links}
+links <- page %>%
+  html_elements("div.accordion-body a")
+
+tibble(
+  link = html_text2(links),
+  href = html_attr(links, "href")
+) %>%
+  slice(1:4)
+```
+
+Now the harvest itself. `html_element()` in singular is applied to a whole set of nodes and returns exactly one heading and one body per accordion item — `NA` when an item has none. `html_text2()` converts `<br>` into a line break, which is what makes the labels findable at all.
+
+```{r viadrina-scrape}
+sections <- page %>%
+  html_elements("div.accordion-item")
+
+viadrina_raw <- tibble(
+  heading = sections %>% html_element("button") %>% html_text2(),
+  body    = sections %>% html_element(".accordion-body") %>% html_text2()
 )
 
-parse_viadrina_number <- function(block, label_pattern) {
-  hit <- which(str_detect(
-    block,
-    regex(label_pattern, ignore_case = TRUE)
-  ))[1]
+viadrina_raw %>%
+  slice(1:3) %>%
+  mutate(body = str_trunc(str_replace_all(body, "\n", " | "), 70))
+```
 
-  if (is.na(hit)) {
-    return(NA_real_)
-  }
+Fifteen rows of raw text: fourteen semesters plus one section called *Zeitreihe* that holds only the link to the long-run PDF. Nothing is a number yet.
 
-  # Remove the label first. This avoids reading the "1" in
-  # labels such as "1. Fachsemester" as the observed value.
-  remainder <- str_remove(
-    block[hit],
-    regex(label_pattern, ignore_case = TRUE)
-  )
+#### Cleaning
 
-  number_pattern <- "\\d{1,3}(?:\\.\\d{3})+|\\d+"
-  values <- str_extract_all(remainder, number_pattern)[[1]]
+Two ingredients. First a helper that finds one label in a block of text and returns the number behind it. German thousands separators are dots, so `1.234` has to become `1234`. The colon is optional, because on some semesters it is simply missing (`Ausländer*innen 1441`).
 
-  # Some HTML layouts place the value in the next text node.
-  if (length(values) == 0 && hit < length(block)) {
-    values <- str_extract_all(block[hit + 1], number_pattern)[[1]]
-  }
-
-  if (length(values) == 0) {
-    return(NA_real_)
-  }
+```{r viadrina-helper}
+pick_number <- function(text, label) {
+  # "Studierende gesamt: 4.797"  ->  "4.797"  ->  4797
+  hit <- str_extract(text, paste0(label, "\\s*:?\\s*[\\d.]*\\d"))
 
   parse_number(
-    tail(values, 1),
+    str_extract(hit, "[\\d.]*\\d$"),
     locale = locale(decimal_mark = ",", grouping_mark = ".")
   )
 }
-
-parse_viadrina_page <- function(page) {
-  page_text <- page %>%
-    html_text2()
-
-  lines <- page_text %>%
-    str_split("\\n") %>%
-    pluck(1) %>%
-    str_squish()
-
-  lines <- lines[lines != ""]
-  lines <- str_remove(lines, "^\\[Button:\\s*")
-  lines <- str_remove(lines, "\\s*\\]$")
-
-  semester_pattern <- paste0(
-    "^(Sommersemester|Wintersemester)\\s+",
-    "\\d{4}(?:/\\d{2})?$"
-  )
-
-  starts <- which(str_detect(lines, semester_pattern))
-
-  if (length(starts) == 0) {
-    stop("No semester headings were found on the Viadrina statistics page.")
-  }
-
-  ends <- c(starts[-1] - 1L, length(lines))
-
-  map2_dfr(starts, ends, function(first, last) {
-    block <- lines[first:last]
-    semester_label <- block[1]
-    term <- if_else(
-      str_starts(semester_label, "Wintersemester"),
-      "winter",
-      "summer"
-    )
-    year <- parse_integer(str_extract(semester_label, "\\d{4}"))
-
-    tibble(
-      semester_label = semester_label,
-      students = parse_viadrina_number(
-        block,
-        "^Studierende gesamt"
-      ),
-      female = parse_viadrina_number(
-        block,
-        "^(weiblich|Weibliche Studierende)"
-      ),
-      male = parse_viadrina_number(
-        block,
-        "^(männlich|maennlich|Männliche Studierende)"
-      ),
-      diverse = parse_viadrina_number(
-        block,
-        "^Diverse Studierende"
-      ),
-      unspecified = parse_viadrina_number(
-        block,
-        "^ohne Angabe"
-      ),
-      german = parse_viadrina_number(
-        block,
-        "^Deutsche(?: Studierende)?"
-      ),
-      foreign = parse_viadrina_number(
-        block,
-        "^(Ausländer(?:\\*innen|/innen)?|Ausländische Studierende)"
-      ),
-      first_subject = parse_viadrina_number(
-        block,
-        "^(1\\. Fachsemester|Studierende im 1\\. Fachsemester)"
-      ),
-      first_university = parse_viadrina_number(
-        block,
-        "^(1\\. Hochschulsemester|Studierende im 1\\. Hochschulsemester)"
-      ),
-      year = year,
-      term = term,
-      semester = paste0(
-        year,
-        if_else(term == "summer", "-01", "-02")
-      )
-    )
-  }) %>%
-    filter(!is.na(students)) %>%
-    arrange(year, semester)
-}
 ```
 
-The next chunk only accesses the live website when the CSV is missing or when the refresh option is enabled. If the website is temporarily unavailable, an existing local CSV remains usable.
+The second ingredient is a list of labels — and here the site takes revenge. The wording changed along the way: what used to be `weiblich: 3.607` is now `Weibliche Studierende: 2016`. A scraper that only knows the new wording silently returns `NA` for the older semesters, which is the most dangerous kind of scraping bug. We therefore allow both spellings with a regular expression alternative `(A|B)`.
 
-```{r viadrina-refresh-or-load}
-refresh_viadrina <- isTRUE(getOption("bfid.refresh_viadrina", FALSE))
+Now everything can be assembled. Instead of *testing* the heading with a strict pattern, we *extract* the semester label out of it. That is more forgiving: the *Zeitreihe* section simply yields `NA` and drops out by itself.
 
-dir.create(
-  dirname(viadrina_recent_file),
-  recursive = TRUE,
-  showWarnings = FALSE
+```{r viadrina-clean}
+viadrina <- viadrina_raw %>%
+  # Keep the semester label only. This drops the "Zeitreihe" section, and it
+  # survives rvest versions that wrap button text as "[Button: ... ]".
+  mutate(label = str_extract(heading, "(Sommer|Winter)semester\\s+\\d{4}(/\\d{2})?")) %>%
+  filter(!is.na(label), !is.na(body)) %>%
+  transmute(
+    semester      = label,
+    # "Wintersemester 2025/26" -> term "winter", year 2025.
+    term          = if_else(str_starts(label, "Winter"), "winter", "summer"),
+    year          = parse_number(str_extract(label, "\\d{4}")),
+    # One line per value. (A|B) covers the old and the new wording.
+    students      = pick_number(body, "Studierende gesamt"),
+    german        = pick_number(body, "Deutsche( Studierende)?"),
+    international = pick_number(body, "Ausländ(ische Studierende|er\\*innen)"),
+    women         = pick_number(body, "(Weibliche Studierende|weiblich)"),
+    men           = pick_number(body, "(Männliche Studierende|männlich)"),
+    freshers      = pick_number(body, "1\\. Fachsemester")
+  ) %>%
+  # Chronological order: summer semester first, winter semester second.
+  arrange(year, term)
+
+glimpse(viadrina)
+```
+
+One row per semester, nine columns, no manual typing. Note the `arrange()`: within one calendar year the summer semester comes first (*Sommersemester 2024*), the winter semester second (*Wintersemester 2024/25*).
+
+**Make the table talk.** Two derived columns turn a list of digits into a story: the share of international students and the change against the same semester one year earlier.
+
+```{r viadrina-table}
+viadrina_display <- viadrina %>%
+  # Compare summer with summer and winter with winter, never across terms.
+  group_by(term) %>%
+  mutate(change = students / lag(students) - 1) %>%
+  ungroup() %>%
+  # Newest semester on top.
+  arrange(desc(year), desc(term)) %>%
+  transmute(
+    Semester = semester,
+    Students = students,
+    `vs. year before` = change,
+    German = german,
+    International = international,
+    `International share` = international / students,
+    Women = women,
+    Men = men,
+    `First semester` = freshers
+  )
+
+datatable(
+  viadrina_display,
+  rownames = FALSE,
+  options = list(pageLength = 6, dom = "tip", ordering = FALSE)
+) %>%
+  formatRound(c("Students", "German", "International", "Women", "Men",
+                "First semester"), digits = 0, mark = ",") %>%
+  formatPercentage(c("vs. year before", "International share"), digits = 1)
+```
+
+Three things stand out. First, the university shrinks in almost every single semester — the *vs. year before* column is negative nearly all the way down. Second, it shrinks although the number of international students hardly moves at all (1,607 in winter 2019/20, 1,648 in winter 2025/26). The decline is a decline of German students, and the international share therefore climbs from 27 % to over 40 %. Third, the *first semester* column shows where the intake happens: 875 newcomers in winter 2025/26 against 324 in the following summer. Winter is the semester that decides the year.
+
+**Add the long history.** The scraped page only reaches back to winter 2019/20. The PDF-derived file adds the years since the university was founded. It carries two title rows and one signature row, so we name the columns ourselves, read everything as text, and keep only the rows that start with a year.
+
+```{r viadrina-history, message=FALSE, warning=FALSE}
+history_columns <- c(
+  "year", "total", "female", "female_pct", "german", "german_pct",
+  "foreign", "foreign_pct", "polish", "polish_pct"
 )
 
-if (refresh_viadrina || !file.exists(viadrina_recent_file)) {
-  refreshed_data <- tryCatch(
-    {
-      viadrina_page <- read_html(viadrina_stats_url)
-      xml2::write_html(viadrina_page, viadrina_html_file)
-      parse_viadrina_page(viadrina_page)
-    },
-    error = function(error) {
-      warning(
-        "The live Viadrina page could not be refreshed: ",
-        conditionMessage(error)
-      )
-      NULL
-    }
-  )
+viadrina_history <- read_csv(
+  file.path("data", "Viadrina", "viadrina_students.csv"),
+  col_names = history_columns,
+  col_types = cols(.default = col_character())
+) %>%
+  # Keep data rows only: two title rows and one signature row have no year.
+  filter(str_detect(year, "^\\d{4}$")) %>%
+  # Everything was read as text. "50,0%" becomes 50.0, then 0.50.
+  mutate(across(everything(),
+                ~ parse_number(.x, locale = locale(decimal_mark = ",")))) %>%
+  mutate(across(ends_with("_pct"), ~ .x / 100))
 
-  if (!is.null(refreshed_data) && nrow(refreshed_data) > 0) {
-    write_csv2(refreshed_data, viadrina_recent_file, na = "")
-  }
-}
+range(viadrina_history$year)
+```
 
-if (file.exists(viadrina_recent_file)) {
-  viadrina_recent <- read_csv2(
-    viadrina_recent_file,
-    show_col_types = FALSE
-  )
-} else {
-  # Final compatibility fallback for older clones of the repository.
-  legacy_recent_file <- file.path(
-    "data", "Viadrina", "viadrina_students_2013_2025.csv"
-  )
+Both sources describe winter semesters, and they overlap in 2019 and 2020. We keep the history up to 2018 and take everything from 2019 onwards from the scraper.
 
-  if (!file.exists(legacy_recent_file)) {
-    stop(
-      "No local Viadrina data file is available. Add ",
-      viadrina_recent_file,
-      " or refresh the live page."
+```{r viadrina-combine}
+viadrina_winter <- bind_rows(
+  # PDF-derived history, cut off before the overlap.
+  viadrina_history %>%
+    filter(year <= 2018) %>%
+    transmute(year, students = total),
+  # Scraped semesters, winter only.
+  viadrina %>%
+    filter(term == "winter") %>%
+    transmute(year, students)
+) %>%
+  arrange(year)
+```
+
+#### Visualizing
+
+**Is it Viadrina?** A falling curve on its own proves nothing. Between 2019 and 2025 a pandemic happened, a demographic dip arrived, and every German university had to deal with both. The honest question is therefore not "does Viadrina shrink?" but "does Viadrina shrink *more than others*?".
+
+The benchmark comes from the Federal Statistical Office: total students at German universities, winter semester by winter semester.^[Destatis press releases [PD20_497](https://www.destatis.de/DE/Presse/Pressemitteilungen/2020/12/PD20_497_213.html), [PD21_538](https://www.destatis.de/DE/Presse/Pressemitteilungen/2021/11/PD21_538_21.html), [PD22_503](https://www.destatis.de/DE/Presse/Pressemitteilungen/2022/11/PD22_503_21.html), [PD24_447](https://www.destatis.de/DE/Presse/Pressemitteilungen/2024/11/PD24_447_21.html) and [PD25_426](https://www.destatis.de/DE/Presse/Pressemitteilungen/2025/11/PD25_426_21.html). Figures are as published; provisional numbers are revised in later releases.] The year refers to the start of the winter semester, so `2025` is winter semester 2025/26.
+
+```{r germany-benchmark}
+germany <- tribble(
+  ~year, ~students_de,
+  2019,  2891049,
+  2020,  2948700,
+  2021,  2946100,
+  2022,  2915700,
+  2023,  2868300,
+  2024,  2864100,
+  2025,  2876900
+)
+```
+
+Instead of plotting two series on wildly different scales, we ask a counterfactual question: **how many students would Viadrina have today if it had simply followed the national trend since 2019?** We take the national index and apply it to Viadrina's 2019 level.
+
+```{r viadrina-counterfactual}
+base_viadrina <- viadrina_winter %>% filter(year == 2019) %>% pull(students)
+base_germany  <- germany %>% filter(year == 2019) %>% pull(students_de)
+
+# Safety net: if the scraper ever comes back empty, stop here with a clear
+# message instead of failing three lines later for a cryptic reason.
+stopifnot(length(base_viadrina) == 1, length(base_germany) == 1)
+
+# National index (2019 = 1) applied to Viadrina's 2019 level.
+counterfactual <- germany %>%
+  transmute(year, students = students_de / base_germany * base_viadrina)
+
+gap <- counterfactual$students[counterfactual$year == 2025] -
+  viadrina_winter$students[viadrina_winter$year == 2025]
+
+round(gap)
+```
+
+One graph, one message.
+
+```{r viadrina-long-run-plot, fig.align='center', fig.width=8, fig.height=5}
+peak <- viadrina_winter %>% slice_max(students, n = 1)
+
+ggplot(viadrina_winter, aes(x = year, y = students)) +
+  geom_line(data = counterfactual,
+            aes(colour = "If Viadrina had followed the national trend"),
+            linetype = "dashed", linewidth = 0.9) +
+  geom_line(aes(colour = "Viadrina, winter semester"), linewidth = 1) +
+  geom_point(aes(colour = "Viadrina, winter semester"), size = 1.6,
+             show.legend = FALSE) +
+  geom_point(data = peak, colour = "#2C5F8A", size = 3) +
+  annotate("text", x = peak$year, y = peak$students + 380,
+           label = paste0("Peak ", peak$year, ": ", format(peak$students, big.mark = ",")),
+           size = 3.2, colour = "#2C5F8A") +
+  annotate("segment", x = 2025, xend = 2025,
+           y = viadrina_winter$students[viadrina_winter$year == 2025],
+           yend = counterfactual$students[counterfactual$year == 2025],
+           colour = "grey40", linewidth = 0.5,
+           arrow = arrow(ends = "both", length = grid::unit(0.15, "cm"))) +
+  annotate("text", x = 2025.8, y = 4900,
+           label = paste0("~", format(round(gap, -1), big.mark = ","),
+                          "\nstudents\nmissing"),
+           size = 3.2, colour = "grey30", hjust = 0, lineheight = 0.95) +
+  scale_colour_manual(
+    values = c(
+      "Viadrina, winter semester" = "#2C5F8A",
+      "If Viadrina had followed the national trend" = "grey55"
+    ),
+    breaks = c(
+      "Viadrina, winter semester",
+      "If Viadrina had followed the national trend"
     )
-  }
-
-  viadrina_recent <- read_csv2(
-    legacy_recent_file,
-    show_col_types = FALSE
-  ) %>%
-    transmute(
-      semester_label = paste("Wintersemester", year),
-      students,
-      female,
-      male,
-      diverse = NA_real_,
-      unspecified = NA_real_,
-      german,
-      foreign,
-      first_subject = NA_real_,
-      first_university = NA_real_,
-      year = as.integer(year),
-      term,
-      semester = paste0(year, "-02")
-    )
-}
-```
-
-To deliberately update the local files, run the following commands once. A normal build does not need them.
-
-```{r viadrina-refresh-example, eval=FALSE}
-options(bfid.refresh_viadrina = TRUE)
-bookdown::render_book("index.Rmd")
-options(bfid.refresh_viadrina = FALSE)
-```
-
-```{r viadrina-recent-table}
-datatable(viadrina_recent)
-```
-
-#### Most recent student numbers
-
-There is a structural difference between summer and winter terms. Most new enrollments are in winter.
-
-```{r viadrina-recent-plot}
-viadrina_recent %>%
-  ggplot(aes(x = semester, y = students)) +
-  geom_point(aes(colour = term), size = 2) +
+  ) +
+  scale_x_continuous(breaks = seq(1992, 2024, by = 4),
+                     limits = c(1992, 2030)) +
+  scale_y_continuous(labels = scales::comma, limits = c(0, 7200)) +
   labs(
-    title = "Student numbers at Viadrina",
-    x = "Semester",
-    y = "Students"
+    title = "Viadrina is not shrinking with the crowd",
+    subtitle = "Total students in winter semesters, 1992 to 2025/26",
+    x = NULL, y = NULL, colour = NULL,
+    caption = "Sources: Dezernat 1 (europa-uni.de), Statistisches Bundesamt"
   ) +
+  theme_minimal(base_size = 11) +
   theme(
-    axis.text.x = element_text(
-      angle = 90,
-      vjust = 0.5,
-      hjust = 1
-    )
+    legend.position = "top",
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    plot.caption = element_text(colour = "grey50")
   )
 ```
 
-#### The long run trend
+The curve rises for twenty years, peaks in 2012, drifts down slowly, and then falls off a cliff from 2019 onwards. The dashed line does something else entirely: German universities are today within half a percent of their 2019 level, while Viadrina lost 36 % of its students. Brandenburg as a federal state did not shrink at all — it grew from 50,304 students in winter 2021/22 to 54,608 in winter 2025/26.^[Amt für Statistik Berlin-Brandenburg, press releases [292/2021](https://www.statistik-berlin-brandenburg.de/292-2021/) and [173/2025](https://www.statistik-berlin-brandenburg.de/173-2025/).]
 
-Combine the historic PDF-derived series with the recent HTML-derived semester data.
+So the pandemic and the demographic trend are not the explanation. Something specific to this university, or to its location and profile, is. That is where a scraping exercise ends and a real research question begins: enrollment by subject, the share of Polish students (which fell from 35 % in the 1990s to 6 % in 2020), programme closures, and competition from Berlin. All of those numbers are, again, one semester folder away.
 
-```{r viadrina-combine-series}
-via_1992_2020 <- viadrina_1992_2020 %>%
-  transmute(
-    Year = as.integer(Year),
-    Total = as.numeric(Total),
-    Term = "winter"
-  )
+### What scraping is good for
 
-via_recent <- viadrina_recent %>%
-  transmute(
-    Year = as.integer(year),
-    Total = as.numeric(students),
-    Term = term
-  )
+Two pages, two techniques, one lesson. The Wikipedia ranking was structured by somebody who wanted it read; the university page was structured by somebody who wanted it *looked at*. In both cases we had to reconstruct, from the outside, a shape that already existed somewhere on the inside — in a spreadsheet in an office, in a database behind a web server.
 
-via_1992_recent <- bind_rows(via_1992_2020, via_recent) %>%
-  distinct(Year, Term, .keep_all = TRUE) %>%
-  arrange(Year, Term)
-```
+That reconstruction is always a little bit fragile. Column names change, wordings change, a redesign moves everything. So scraping earns its place only when the friendlier routes are closed: no download, no database, no API, and nobody to ask. Then it is a genuinely powerful skill, and `rvest` plus a handful of regular expressions will get you a surprisingly long way.
 
-Plot and polish. Assume the enrollment for winter 2020/2021 was not affected by the coronavirus pandemic.
-
-```{r viadrina-long-run-plot}
-via_1992_recent %>%
-  ggplot(aes(x = Year, y = Total, colour = Term)) +
-  geom_point() +
-  geom_smooth(method = "gam") +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 28)) +
-  labs(title = "Student numbers at Viadrina") +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(
-      angle = 90,
-      vjust = 0.5,
-      hjust = 1
-    )
-  ) +
-  geom_vline(
-    xintercept = 2020.5,
-    colour = "grey",
-    linetype = "solid",
-    linewidth = 1.3
-  ) +
-ggplot2::annotate(
-    "text",
-    x = 2021,
-    y = 4000,
-    label = "Corona",
-    colour = "red",
-    angle = 90,
-    vjust = 1
-  )
-```
-
+When those routes *are* open, take them. [Remote Data](#remote-data) shows what the same work looks like when the provider hands you a query interface instead of a page: no selectors, no snapshots, no repair work in two years.

@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-08" />
+<meta name="date" content="2026-08-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -235,6 +235,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
 <li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
 <li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+<li class="chapter" data-level="2.4" data-path="remote-data.html"><a href="remote-data.html"><i class="fa fa-check"></i><b>2.4</b> Remote Data</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
 <ul>
@@ -327,7 +328,7 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <h2><span class="header-section-number">4.1</span> Missing Data<a href="missing-data.html#missing-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In 1943 the American military asked a group of statisticians in New York a practical question. Bombers were returning from raids over Europe with bullet holes, and armour is heavy. Where should it go?</p>
 <p>Officers had already collected the data. They had walked around the returning aircraft and recorded where the damage was. The pattern was clear: many holes in the wings and the fuselage, far fewer around the engines. The recommendation seemed to follow by itself. Armour the parts that get hit.</p>
-<p>Abraham Wald said the opposite. Armour the engines.<a href="#fn44" class="footnote-ref" id="fnref44"><sup>44</sup></a></p>
+<p>Abraham Wald said the opposite. Armour the engines.<a href="#fn46" class="footnote-ref" id="fnref46"><sup>46</sup></a></p>
 <p>His reasoning was not about the holes that were there. It was about the holes that were not. The damage had been recorded on aircraft that came back. A plane hit in the engine did not come back, so its holes were never counted. The empty regions on the diagram were not evidence of safety. They were evidence of absence.</p>
 <p>The data set consisted entirely of survivors, and nothing in the data set said so.</p>
 <div class="amazing">
@@ -337,7 +338,7 @@ More data did not help
 </h2>
 </div>
 <p>In 1936 the <em>Literary Digest</em> mailed about ten million mock ballots for the American presidential election and received roughly <strong>2.4 million</strong> replies — one of the largest polls ever conducted. It predicted Landon 57 %, Roosevelt 43 %. Roosevelt won with about 61 % of the popular vote.</p>
-<p>In the same election George Gallup used about <strong>50,000</strong> respondents and called it correctly.<a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a></p>
+<p>In the same election George Gallup used about <strong>50,000</strong> respondents and called it correctly.<a href="#fn47" class="footnote-ref" id="fnref47"><sup>47</sup></a></p>
 <p>The <em>Digest</em> did not have too little data. It had a great deal of data from people who were not a cross-section of voters, and no information at all about the millions who never replied.</p>
 </div>
 <p>Most missing data is less dramatic. Someone skips a question about income. An instrument fails for three days. A respondent moves away and leaves the panel. A variable was introduced only in the third wave. None of this feels like a bomber, but the logical structure is identical: we know something about the units we observed, and the units we did not observe are described by nothing at all.</p>
@@ -368,14 +369,14 @@ Definition
 <h4><span class="header-section-number">4.1.1.2</span> Losses accumulate<a href="missing-data.html#md-accumulate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A trap that catches nearly everyone: missing values on different variables usually sit in different rows. Add a variable to a model and you may lose cases that had nothing missing on any of the previous ones.</p>
 <p>R ships with a small data set that shows this well. <code>airquality</code> records daily air measurements in New York from May to September 1973.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="missing-data.html#cb87-1" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(airquality))</span>
-<span id="cb87-2"><a href="missing-data.html#cb87-2" tabindex="-1"></a><span class="co">#&gt;   Ozone Solar.R    Wind    Temp   Month     Day </span></span>
-<span id="cb87-3"><a href="missing-data.html#cb87-3" tabindex="-1"></a><span class="co">#&gt;      37       7       0       0       0       0</span></span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="missing-data.html#cb95-1" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(airquality))</span>
+<span id="cb95-2"><a href="missing-data.html#cb95-2" tabindex="-1"></a><span class="co">#&gt;   Ozone Solar.R    Wind    Temp   Month     Day </span></span>
+<span id="cb95-3"><a href="missing-data.html#cb95-3" tabindex="-1"></a><span class="co">#&gt;      37       7       0       0       0       0</span></span></code></pre></div>
 <p>Only two variables have gaps at all: <code>Ozone</code> is missing on 37 of 153 days, <code>Solar.R</code> on 7. That looks like a modest problem. But those two sets of days barely overlap:</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="missing-data.html#cb88-1" tabindex="-1"></a><span class="fu">nrow</span>(airquality)                      <span class="co"># all days</span></span>
-<span id="cb88-2"><a href="missing-data.html#cb88-2" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
-<span id="cb88-3"><a href="missing-data.html#cb88-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">complete.cases</span>(airquality))       <span class="co"># days with nothing missing</span></span>
-<span id="cb88-4"><a href="missing-data.html#cb88-4" tabindex="-1"></a><span class="co">#&gt; [1] 111</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="missing-data.html#cb96-1" tabindex="-1"></a><span class="fu">nrow</span>(airquality)                      <span class="co"># all days</span></span>
+<span id="cb96-2"><a href="missing-data.html#cb96-2" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
+<span id="cb96-3"><a href="missing-data.html#cb96-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">complete.cases</span>(airquality))       <span class="co"># days with nothing missing</span></span>
+<span id="cb96-4"><a href="missing-data.html#cb96-4" tabindex="-1"></a><span class="co">#&gt; [1] 111</span></span></code></pre></div>
 <p>72.5 % of days survive. Two variables with small individual gaps removed more than a quarter of the data between them.</p>
 <p>With ten or twenty variables — an ordinary regression in social science — this arithmetic becomes brutal. A model with twenty variables, each missing on a well-behaved 5 % of cases in different rows, can retain well under half the sample.</p>
 <div class="challenge">
@@ -395,24 +396,24 @@ Your Turn
 <div id="md-na-types" class="section level4 hasAnchor" number="4.1.2.1">
 <h4><span class="header-section-number">4.1.2.1</span> <code>NA</code>, <code>NaN</code>, <code>NULL</code>, and the empty string<a href="missing-data.html#md-na-types" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>R has one general marker for a missing value, and several things that look like it but are not.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="missing-data.html#cb89-1" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NA</span>, <span class="dv">3</span>)          <span class="co"># NA: a value that exists but is unknown</span></span>
-<span id="cb89-2"><a href="missing-data.html#cb89-2" tabindex="-1"></a><span class="co">#&gt; [1]  1 NA  3</span></span>
-<span id="cb89-3"><a href="missing-data.html#cb89-3" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NULL</span>, <span class="dv">3</span>)        <span class="co"># NULL: nothing at all - the vector is shorter</span></span>
-<span id="cb89-4"><a href="missing-data.html#cb89-4" tabindex="-1"></a><span class="co">#&gt; [1] 1 3</span></span>
-<span id="cb89-5"><a href="missing-data.html#cb89-5" tabindex="-1"></a><span class="dv">0</span> <span class="sc">/</span> <span class="dv">0</span>                <span class="co"># NaN: an undefined numerical result</span></span>
-<span id="cb89-6"><a href="missing-data.html#cb89-6" tabindex="-1"></a><span class="co">#&gt; [1] NaN</span></span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="missing-data.html#cb97-1" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NA</span>, <span class="dv">3</span>)          <span class="co"># NA: a value that exists but is unknown</span></span>
+<span id="cb97-2"><a href="missing-data.html#cb97-2" tabindex="-1"></a><span class="co">#&gt; [1]  1 NA  3</span></span>
+<span id="cb97-3"><a href="missing-data.html#cb97-3" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NULL</span>, <span class="dv">3</span>)        <span class="co"># NULL: nothing at all - the vector is shorter</span></span>
+<span id="cb97-4"><a href="missing-data.html#cb97-4" tabindex="-1"></a><span class="co">#&gt; [1] 1 3</span></span>
+<span id="cb97-5"><a href="missing-data.html#cb97-5" tabindex="-1"></a><span class="dv">0</span> <span class="sc">/</span> <span class="dv">0</span>                <span class="co"># NaN: an undefined numerical result</span></span>
+<span id="cb97-6"><a href="missing-data.html#cb97-6" tabindex="-1"></a><span class="co">#&gt; [1] NaN</span></span></code></pre></div>
 <p><code>NA</code> means <em>there should be a value here and we do not know it</em>. <code>NULL</code> means <em>there is nothing here</em>, and it disappears rather than leaving a gap — note that the second vector has length 2, not 3. <code>NaN</code> means <em>this calculation has no defined answer</em>.</p>
 <p>The relationship between the last two is asymmetric and catches people out:</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="missing-data.html#cb90-1" tabindex="-1"></a><span class="fu">is.na</span>(<span class="cn">NaN</span>)     <span class="co"># TRUE  - NaN counts as missing</span></span>
-<span id="cb90-2"><a href="missing-data.html#cb90-2" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb90-3"><a href="missing-data.html#cb90-3" tabindex="-1"></a><span class="fu">is.nan</span>(<span class="cn">NA</span>)     <span class="co"># FALSE - NA is not a failed calculation</span></span>
-<span id="cb90-4"><a href="missing-data.html#cb90-4" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="missing-data.html#cb98-1" tabindex="-1"></a><span class="fu">is.na</span>(<span class="cn">NaN</span>)     <span class="co"># TRUE  - NaN counts as missing</span></span>
+<span id="cb98-2"><a href="missing-data.html#cb98-2" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb98-3"><a href="missing-data.html#cb98-3" tabindex="-1"></a><span class="fu">is.nan</span>(<span class="cn">NA</span>)     <span class="co"># FALSE - NA is not a failed calculation</span></span>
+<span id="cb98-4"><a href="missing-data.html#cb98-4" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p>Unlike some other statistical packages, R uses the same <code>NA</code> for numeric and character data, so there is no separate missing-string convention. But an empty string is <em>not</em> missing:</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="missing-data.html#cb91-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="cn">NA</span>)</span>
-<span id="cb91-2"><a href="missing-data.html#cb91-2" tabindex="-1"></a><span class="fu">is.na</span>(x)</span>
-<span id="cb91-3"><a href="missing-data.html#cb91-3" tabindex="-1"></a><span class="co">#&gt; [1] FALSE FALSE  TRUE</span></span>
-<span id="cb91-4"><a href="missing-data.html#cb91-4" tabindex="-1"></a><span class="fu">nchar</span>(x)</span>
-<span id="cb91-5"><a href="missing-data.html#cb91-5" tabindex="-1"></a><span class="co">#&gt; [1]  3  0 NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="missing-data.html#cb99-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="cn">NA</span>)</span>
+<span id="cb99-2"><a href="missing-data.html#cb99-2" tabindex="-1"></a><span class="fu">is.na</span>(x)</span>
+<span id="cb99-3"><a href="missing-data.html#cb99-3" tabindex="-1"></a><span class="co">#&gt; [1] FALSE FALSE  TRUE</span></span>
+<span id="cb99-4"><a href="missing-data.html#cb99-4" tabindex="-1"></a><span class="fu">nchar</span>(x)</span>
+<span id="cb99-5"><a href="missing-data.html#cb99-5" tabindex="-1"></a><span class="co">#&gt; [1]  3  0 NA</span></span></code></pre></div>
 <p>A CSV file with empty cells will often import those cells as <code>""</code> rather than <code>NA</code>, and every subsequent count will treat them as a real category. <code>read_csv()</code> from <code>readr</code> handles this better than base <code>read.csv()</code>, but it is worth checking rather than assuming.</p>
 </div>
 <div id="md-sentinels" class="section level4 hasAnchor" number="4.1.2.2">
@@ -425,7 +426,7 @@ Your Turn
 SOEP missing conventions
 </h2>
 </div>
-<p>The German Socio-Economic Panel does something more interesting than marking values as merely absent. It records <strong>why</strong> they are absent, using negative codes.<a href="#fn46" class="footnote-ref" id="fnref46"><sup>46</sup></a></p>
+<p>The German Socio-Economic Panel does something more interesting than marking values as merely absent. It records <strong>why</strong> they are absent, using negative codes.<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a></p>
 <table>
 <thead>
 <tr class="header">
@@ -467,27 +468,27 @@ SOEP missing conventions
 <p>These are not seven flavours of the same thing. A <span class="math inline">\(-2\)</span> means the question was correctly skipped — an unemployed person has no answer to a question about their current employer, and nothing is missing in any meaningful sense. A <span class="math inline">\(-8\)</span> is a property of the questionnaire, not of the respondent. A <span class="math inline">\(-1\)</span> is a genuine refusal, and it is the only one of the three that carries information about the person.</p>
 </div>
 <p>This is the point worth taking away from the box. Converting everything to <code>NA</code> is the standard first step, and it throws away exactly the information needed to judge what kind of problem you have:</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="missing-data.html#cb92-1" tabindex="-1"></a>erwerb <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">8</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)      <span class="co"># a small illustration</span></span>
-<span id="cb92-2"><a href="missing-data.html#cb92-2" tabindex="-1"></a></span>
-<span id="cb92-3"><a href="missing-data.html#cb92-3" tabindex="-1"></a><span class="co"># The usual move: everything negative becomes NA</span></span>
-<span id="cb92-4"><a href="missing-data.html#cb92-4" tabindex="-1"></a>employment <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(erwerb <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, erwerb)</span>
-<span id="cb92-5"><a href="missing-data.html#cb92-5" tabindex="-1"></a></span>
-<span id="cb92-6"><a href="missing-data.html#cb92-6" tabindex="-1"></a><span class="co"># Better: keep the reason alongside the value</span></span>
-<span id="cb92-7"><a href="missing-data.html#cb92-7" tabindex="-1"></a>reason <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
-<span id="cb92-8"><a href="missing-data.html#cb92-8" tabindex="-1"></a>  <span class="fu">ifelse</span>(erwerb <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="st">&quot;observed&quot;</span>, <span class="fu">as.character</span>(erwerb)),</span>
-<span id="cb92-9"><a href="missing-data.html#cb92-9" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;observed&quot;</span>, <span class="st">&quot;-1&quot;</span>, <span class="st">&quot;-2&quot;</span>, <span class="st">&quot;-8&quot;</span>),</span>
-<span id="cb92-10"><a href="missing-data.html#cb92-10" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;observed&quot;</span>, <span class="st">&quot;refused&quot;</span>, <span class="st">&quot;does not apply&quot;</span>, <span class="st">&quot;not asked&quot;</span>)</span>
-<span id="cb92-11"><a href="missing-data.html#cb92-11" tabindex="-1"></a>)</span>
-<span id="cb92-12"><a href="missing-data.html#cb92-12" tabindex="-1"></a></span>
-<span id="cb92-13"><a href="missing-data.html#cb92-13" tabindex="-1"></a><span class="fu">data.frame</span>(erwerb, employment, reason)</span>
-<span id="cb92-14"><a href="missing-data.html#cb92-14" tabindex="-1"></a><span class="co">#&gt;   erwerb employment         reason</span></span>
-<span id="cb92-15"><a href="missing-data.html#cb92-15" tabindex="-1"></a><span class="co">#&gt; 1      1          1       observed</span></span>
-<span id="cb92-16"><a href="missing-data.html#cb92-16" tabindex="-1"></a><span class="co">#&gt; 2      2          2       observed</span></span>
-<span id="cb92-17"><a href="missing-data.html#cb92-17" tabindex="-1"></a><span class="co">#&gt; 3     -2         NA does not apply</span></span>
-<span id="cb92-18"><a href="missing-data.html#cb92-18" tabindex="-1"></a><span class="co">#&gt; 4      1          1       observed</span></span>
-<span id="cb92-19"><a href="missing-data.html#cb92-19" tabindex="-1"></a><span class="co">#&gt; 5     -8         NA      not asked</span></span>
-<span id="cb92-20"><a href="missing-data.html#cb92-20" tabindex="-1"></a><span class="co">#&gt; 6     -1         NA        refused</span></span>
-<span id="cb92-21"><a href="missing-data.html#cb92-21" tabindex="-1"></a><span class="co">#&gt; 7      2          2       observed</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="missing-data.html#cb100-1" tabindex="-1"></a>erwerb <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">8</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>)      <span class="co"># a small illustration</span></span>
+<span id="cb100-2"><a href="missing-data.html#cb100-2" tabindex="-1"></a></span>
+<span id="cb100-3"><a href="missing-data.html#cb100-3" tabindex="-1"></a><span class="co"># The usual move: everything negative becomes NA</span></span>
+<span id="cb100-4"><a href="missing-data.html#cb100-4" tabindex="-1"></a>employment <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(erwerb <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, erwerb)</span>
+<span id="cb100-5"><a href="missing-data.html#cb100-5" tabindex="-1"></a></span>
+<span id="cb100-6"><a href="missing-data.html#cb100-6" tabindex="-1"></a><span class="co"># Better: keep the reason alongside the value</span></span>
+<span id="cb100-7"><a href="missing-data.html#cb100-7" tabindex="-1"></a>reason <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb100-8"><a href="missing-data.html#cb100-8" tabindex="-1"></a>  <span class="fu">ifelse</span>(erwerb <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="st">&quot;observed&quot;</span>, <span class="fu">as.character</span>(erwerb)),</span>
+<span id="cb100-9"><a href="missing-data.html#cb100-9" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;observed&quot;</span>, <span class="st">&quot;-1&quot;</span>, <span class="st">&quot;-2&quot;</span>, <span class="st">&quot;-8&quot;</span>),</span>
+<span id="cb100-10"><a href="missing-data.html#cb100-10" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;observed&quot;</span>, <span class="st">&quot;refused&quot;</span>, <span class="st">&quot;does not apply&quot;</span>, <span class="st">&quot;not asked&quot;</span>)</span>
+<span id="cb100-11"><a href="missing-data.html#cb100-11" tabindex="-1"></a>)</span>
+<span id="cb100-12"><a href="missing-data.html#cb100-12" tabindex="-1"></a></span>
+<span id="cb100-13"><a href="missing-data.html#cb100-13" tabindex="-1"></a><span class="fu">data.frame</span>(erwerb, employment, reason)</span>
+<span id="cb100-14"><a href="missing-data.html#cb100-14" tabindex="-1"></a><span class="co">#&gt;   erwerb employment         reason</span></span>
+<span id="cb100-15"><a href="missing-data.html#cb100-15" tabindex="-1"></a><span class="co">#&gt; 1      1          1       observed</span></span>
+<span id="cb100-16"><a href="missing-data.html#cb100-16" tabindex="-1"></a><span class="co">#&gt; 2      2          2       observed</span></span>
+<span id="cb100-17"><a href="missing-data.html#cb100-17" tabindex="-1"></a><span class="co">#&gt; 3     -2         NA does not apply</span></span>
+<span id="cb100-18"><a href="missing-data.html#cb100-18" tabindex="-1"></a><span class="co">#&gt; 4      1          1       observed</span></span>
+<span id="cb100-19"><a href="missing-data.html#cb100-19" tabindex="-1"></a><span class="co">#&gt; 5     -8         NA      not asked</span></span>
+<span id="cb100-20"><a href="missing-data.html#cb100-20" tabindex="-1"></a><span class="co">#&gt; 6     -1         NA        refused</span></span>
+<span id="cb100-21"><a href="missing-data.html#cb100-21" tabindex="-1"></a><span class="co">#&gt; 7      2          2       observed</span></span></code></pre></div>
 <p>The second column is what the analysis uses. The third is what tells you whether the first column can be trusted — and whether a case is missing at all. A person coded <span class="math inline">\(-2\)</span> should usually leave the analysis by a <strong>filter</strong>, not by an imputation.</p>
 <div class="analysis-note">
 <p>Recoding to <code>NA</code> is not a neutral cleaning step. It compresses several different reasons for absence into one symbol. Do it, but keep the reasons somewhere.</p>
@@ -498,30 +499,30 @@ SOEP missing conventions
 <div id="md-in-r" class="section level3 hasAnchor" number="4.1.3">
 <h3><span class="header-section-number">4.1.3</span> What R Does With <code>NA</code><a href="missing-data.html#md-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>NA</code> is contagious by design. Any arithmetic touching an unknown value produces an unknown result, because that is the honest answer.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="missing-data.html#cb93-1" tabindex="-1"></a><span class="fu">mean</span>(airquality<span class="sc">$</span>Ozone)</span>
-<span id="cb93-2"><a href="missing-data.html#cb93-2" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
-<span id="cb93-3"><a href="missing-data.html#cb93-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>))</span>
-<span id="cb93-4"><a href="missing-data.html#cb93-4" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="missing-data.html#cb101-1" tabindex="-1"></a><span class="fu">mean</span>(airquality<span class="sc">$</span>Ozone)</span>
+<span id="cb101-2"><a href="missing-data.html#cb101-2" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb101-3"><a href="missing-data.html#cb101-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>))</span>
+<span id="cb101-4"><a href="missing-data.html#cb101-4" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
 <p>This is a feature. R refuses to guess, and it tells you loudly. The cure is to state explicitly that missing values should be dropped:</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="missing-data.html#cb94-1" tabindex="-1"></a><span class="fu">mean</span>(airquality<span class="sc">$</span>Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb94-2"><a href="missing-data.html#cb94-2" tabindex="-1"></a><span class="co">#&gt; [1] 42.12931</span></span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="missing-data.html#cb102-1" tabindex="-1"></a><span class="fu">mean</span>(airquality<span class="sc">$</span>Ozone, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb102-2"><a href="missing-data.html#cb102-2" tabindex="-1"></a><span class="co">#&gt; [1] 42.12931</span></span></code></pre></div>
 <p>Note what <code>na.rm = TRUE</code> actually claims. It does not remove a problem; it computes the mean <strong>among the observed cases</strong> and asks you to accept that as an estimate of the mean overall. That is a real assumption, made with two words.</p>
 <div id="md-comparison" class="section level4 hasAnchor" number="4.1.3.1">
 <h4><span class="header-section-number">4.1.3.1</span> Comparisons do not work the way you expect<a href="missing-data.html#md-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The single most common <code>NA</code> bug in R:</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="missing-data.html#cb95-1" tabindex="-1"></a><span class="cn">NA</span> <span class="sc">==</span> <span class="cn">NA</span></span>
-<span id="cb95-2"><a href="missing-data.html#cb95-2" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
-<span id="cb95-3"><a href="missing-data.html#cb95-3" tabindex="-1"></a><span class="cn">NA</span> <span class="sc">&gt;</span> <span class="dv">5</span></span>
-<span id="cb95-4"><a href="missing-data.html#cb95-4" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="missing-data.html#cb103-1" tabindex="-1"></a><span class="cn">NA</span> <span class="sc">==</span> <span class="cn">NA</span></span>
+<span id="cb103-2"><a href="missing-data.html#cb103-2" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb103-3"><a href="missing-data.html#cb103-3" tabindex="-1"></a><span class="cn">NA</span> <span class="sc">&gt;</span> <span class="dv">5</span></span>
+<span id="cb103-4"><a href="missing-data.html#cb103-4" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
 <p>Both return <code>NA</code>, not <code>TRUE</code> or <code>FALSE</code>. Logically this is right — comparing two unknown quantities cannot yield a known answer — but it means <code>x == NA</code> never works as a test. Use <code>is.na(x)</code>.</p>
 <p>It also means filters behave oddly. In base R, rows with <code>NA</code> in the filtering variable produce phantom rows of <code>NA</code>:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="missing-data.html#cb96-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="cn">NA</span>, <span class="dv">30</span>, <span class="cn">NA</span>, <span class="dv">50</span>))</span>
-<span id="cb96-2"><a href="missing-data.html#cb96-2" tabindex="-1"></a>d[d<span class="sc">$</span>x <span class="sc">&gt;</span> <span class="dv">20</span>, ]</span>
-<span id="cb96-3"><a href="missing-data.html#cb96-3" tabindex="-1"></a><span class="co">#&gt;      id  x</span></span>
-<span id="cb96-4"><a href="missing-data.html#cb96-4" tabindex="-1"></a><span class="co">#&gt; NA   NA NA</span></span>
-<span id="cb96-5"><a href="missing-data.html#cb96-5" tabindex="-1"></a><span class="co">#&gt; 3     3 30</span></span>
-<span id="cb96-6"><a href="missing-data.html#cb96-6" tabindex="-1"></a><span class="co">#&gt; NA.1 NA NA</span></span>
-<span id="cb96-7"><a href="missing-data.html#cb96-7" tabindex="-1"></a><span class="co">#&gt; 5     5 50</span></span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="missing-data.html#cb104-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="cn">NA</span>, <span class="dv">30</span>, <span class="cn">NA</span>, <span class="dv">50</span>))</span>
+<span id="cb104-2"><a href="missing-data.html#cb104-2" tabindex="-1"></a>d[d<span class="sc">$</span>x <span class="sc">&gt;</span> <span class="dv">20</span>, ]</span>
+<span id="cb104-3"><a href="missing-data.html#cb104-3" tabindex="-1"></a><span class="co">#&gt;      id  x</span></span>
+<span id="cb104-4"><a href="missing-data.html#cb104-4" tabindex="-1"></a><span class="co">#&gt; NA   NA NA</span></span>
+<span id="cb104-5"><a href="missing-data.html#cb104-5" tabindex="-1"></a><span class="co">#&gt; 3     3 30</span></span>
+<span id="cb104-6"><a href="missing-data.html#cb104-6" tabindex="-1"></a><span class="co">#&gt; NA.1 NA NA</span></span>
+<span id="cb104-7"><a href="missing-data.html#cb104-7" tabindex="-1"></a><span class="co">#&gt; 5     5 50</span></span></code></pre></div>
 <p>Two rows of pure <code>NA</code> appear that correspond to no observation. <code>subset()</code> and <code>dplyr::filter()</code> both drop them instead — which is usually what you wanted, but note that they drop them <strong>silently</strong>.</p>
 </div>
 <div id="md-loud-quiet" class="section level4 hasAnchor" number="4.1.3.2">
@@ -584,15 +585,15 @@ SOEP missing conventions
 </tbody>
 </table>
 <p>The quiet row that matters most is <code>table()</code>, because it is what people use to check a variable:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="missing-data.html#cb97-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="cn">NA</span>, <span class="st">&quot;yes&quot;</span>, <span class="cn">NA</span>)</span>
-<span id="cb97-2"><a href="missing-data.html#cb97-2" tabindex="-1"></a><span class="fu">table</span>(x)                    <span class="co"># 3 observations reported, 5 exist</span></span>
-<span id="cb97-3"><a href="missing-data.html#cb97-3" tabindex="-1"></a><span class="co">#&gt; x</span></span>
-<span id="cb97-4"><a href="missing-data.html#cb97-4" tabindex="-1"></a><span class="co">#&gt;  no yes </span></span>
-<span id="cb97-5"><a href="missing-data.html#cb97-5" tabindex="-1"></a><span class="co">#&gt;   1   2</span></span>
-<span id="cb97-6"><a href="missing-data.html#cb97-6" tabindex="-1"></a><span class="fu">table</span>(x, <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)   <span class="co"># the truth</span></span>
-<span id="cb97-7"><a href="missing-data.html#cb97-7" tabindex="-1"></a><span class="co">#&gt; x</span></span>
-<span id="cb97-8"><a href="missing-data.html#cb97-8" tabindex="-1"></a><span class="co">#&gt;   no  yes &lt;NA&gt; </span></span>
-<span id="cb97-9"><a href="missing-data.html#cb97-9" tabindex="-1"></a><span class="co">#&gt;    1    2    2</span></span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="missing-data.html#cb105-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="cn">NA</span>, <span class="st">&quot;yes&quot;</span>, <span class="cn">NA</span>)</span>
+<span id="cb105-2"><a href="missing-data.html#cb105-2" tabindex="-1"></a><span class="fu">table</span>(x)                    <span class="co"># 3 observations reported, 5 exist</span></span>
+<span id="cb105-3"><a href="missing-data.html#cb105-3" tabindex="-1"></a><span class="co">#&gt; x</span></span>
+<span id="cb105-4"><a href="missing-data.html#cb105-4" tabindex="-1"></a><span class="co">#&gt;  no yes </span></span>
+<span id="cb105-5"><a href="missing-data.html#cb105-5" tabindex="-1"></a><span class="co">#&gt;   1   2</span></span>
+<span id="cb105-6"><a href="missing-data.html#cb105-6" tabindex="-1"></a><span class="fu">table</span>(x, <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)   <span class="co"># the truth</span></span>
+<span id="cb105-7"><a href="missing-data.html#cb105-7" tabindex="-1"></a><span class="co">#&gt; x</span></span>
+<span id="cb105-8"><a href="missing-data.html#cb105-8" tabindex="-1"></a><span class="co">#&gt;   no  yes &lt;NA&gt; </span></span>
+<span id="cb105-9"><a href="missing-data.html#cb105-9" tabindex="-1"></a><span class="co">#&gt;    1    2    2</span></span></code></pre></div>
 <p>A variable that is 40 % missing looks perfectly healthy in the first output. Make <code>useNA = "ifany"</code> a habit.</p>
 <div class="challenge">
 <div class="titelchallenge">
@@ -609,19 +610,19 @@ Your Turn
 <h3><span class="header-section-number">4.1.4</span> Why Everyone Does Complete-Case Analysis<a href="missing-data.html#md-listwise" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Ask a room of social scientists how they handle missing data and most will say listwise deletion — dropping every row that has a gap anywhere. Ask why, and the answers usually concern robustness, transparency, or convention.</p>
 <p>The honest answer is simpler. <strong>They did not choose it.</strong> R chose it for them, and did not mention it.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="missing-data.html#cb98-1" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> airquality)</span>
-<span id="cb98-2"><a href="missing-data.html#cb98-2" tabindex="-1"></a></span>
-<span id="cb98-3"><a href="missing-data.html#cb98-3" tabindex="-1"></a><span class="fu">nrow</span>(airquality)   <span class="co"># rows in the data</span></span>
-<span id="cb98-4"><a href="missing-data.html#cb98-4" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
-<span id="cb98-5"><a href="missing-data.html#cb98-5" tabindex="-1"></a><span class="fu">nobs</span>(model)        <span class="co"># rows the model actually used</span></span>
-<span id="cb98-6"><a href="missing-data.html#cb98-6" tabindex="-1"></a><span class="co">#&gt; [1] 116</span></span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="missing-data.html#cb106-1" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> airquality)</span>
+<span id="cb106-2"><a href="missing-data.html#cb106-2" tabindex="-1"></a></span>
+<span id="cb106-3"><a href="missing-data.html#cb106-3" tabindex="-1"></a><span class="fu">nrow</span>(airquality)   <span class="co"># rows in the data</span></span>
+<span id="cb106-4"><a href="missing-data.html#cb106-4" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
+<span id="cb106-5"><a href="missing-data.html#cb106-5" tabindex="-1"></a><span class="fu">nobs</span>(model)        <span class="co"># rows the model actually used</span></span>
+<span id="cb106-6"><a href="missing-data.html#cb106-6" tabindex="-1"></a><span class="co">#&gt; [1] 116</span></span></code></pre></div>
 <p>37 days — 24.2 % of the data — were removed, and <code>lm()</code> printed nothing about it. The behaviour is controlled by a global option most users never see:</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="missing-data.html#cb99-1" tabindex="-1"></a><span class="fu">getOption</span>(<span class="st">&quot;na.action&quot;</span>)</span>
-<span id="cb99-2"><a href="missing-data.html#cb99-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;na.omit&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="missing-data.html#cb107-1" tabindex="-1"></a><span class="fu">getOption</span>(<span class="st">&quot;na.action&quot;</span>)</span>
+<span id="cb107-2"><a href="missing-data.html#cb107-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;na.omit&quot;</span></span></code></pre></div>
 <p><code>na.omit</code> silently discards incomplete rows. There are alternatives. <code>na.exclude</code> also drops them from the fit but pads <code>residuals()</code> and <code>fitted()</code> back to the original length, which makes plotting against the original data far less error-prone. And <code>na.fail</code> refuses to run at all:</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="missing-data.html#cb100-1" tabindex="-1"></a><span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> airquality, <span class="at">na.action =</span> na.fail)</span>
-<span id="cb100-2"><a href="missing-data.html#cb100-2" tabindex="-1"></a><span class="co">#&gt; Error in `na.fail.default()`:</span></span>
-<span id="cb100-3"><a href="missing-data.html#cb100-3" tabindex="-1"></a><span class="co">#&gt; ! fehlende Werte im Objekt</span></span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="missing-data.html#cb108-1" tabindex="-1"></a><span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> airquality, <span class="at">na.action =</span> na.fail)</span>
+<span id="cb108-2"><a href="missing-data.html#cb108-2" tabindex="-1"></a><span class="co">#&gt; Error in `na.fail.default()`:</span></span>
+<span id="cb108-3"><a href="missing-data.html#cb108-3" tabindex="-1"></a><span class="co">#&gt; ! fehlende Werte im Objekt</span></span></code></pre></div>
 <p>That error message is arguably what should happen by default.</p>
 <div class="analysis-note">
 <p>Complete-case analysis is the most widely used missing-data method in the social sciences, and it is used mostly because it is a <strong>software default rather than a decision</strong>. A default is not a justification.</p>
@@ -641,7 +642,7 @@ Truly Dedicated: when complete cases are actually fine
 </div>
 <div id="md-mechanisms" class="section level3 hasAnchor" number="4.1.5">
 <h3><span class="header-section-number">4.1.5</span> Three Mechanisms<a href="missing-data.html#md-mechanisms" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The literature classifies missing data by the <strong>mechanism</strong> that produced it. The three terms go back to Donald Rubin.<a href="#fn47" class="footnote-ref" id="fnref47"><sup>47</sup></a></p>
+<p>The literature classifies missing data by the <strong>mechanism</strong> that produced it. The three terms go back to Donald Rubin.<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a></p>
 <p>Before the definitions, one warning: these are not three types of missing value that you can look at and tell apart. They are three claims about a process you never observe.</p>
 <div id="md-mcar" class="section level4 hasAnchor" number="4.1.5.1">
 <h4><span class="header-section-number">4.1.5.1</span> Missing Completely at Random<a href="missing-data.html#md-mcar" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -681,20 +682,20 @@ Truly Dedicated: what can be tested?
 <div id="md-simulation" class="section level4 hasAnchor" number="4.1.5.5">
 <h4><span class="header-section-number">4.1.5.5</span> Seeing the difference where the truth is known<a href="missing-data.html#md-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Since we cannot test the mechanism in real data, we simulate one where the answer is known. Two thousand people, income generated from education, then three different missingness mechanisms applied to the same income variable.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="missing-data.html#cb101-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260806</span>)</span>
-<span id="cb101-2"><a href="missing-data.html#cb101-2" tabindex="-1"></a></span>
-<span id="cb101-3"><a href="missing-data.html#cb101-3" tabindex="-1"></a>N   <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb101-4"><a href="missing-data.html#cb101-4" tabindex="-1"></a>edu <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(N, <span class="at">mean =</span> <span class="dv">12</span>, <span class="at">sd =</span> <span class="dv">3</span>))</span>
-<span id="cb101-5"><a href="missing-data.html#cb101-5" tabindex="-1"></a>edu[edu <span class="sc">&lt;</span> <span class="dv">7</span>] <span class="ot">&lt;-</span> <span class="dv">7</span></span>
-<span id="cb101-6"><a href="missing-data.html#cb101-6" tabindex="-1"></a>inc <span class="ot">&lt;-</span> <span class="dv">20000</span> <span class="sc">+</span> <span class="dv">2000</span> <span class="sc">*</span> edu <span class="sc">+</span> <span class="fu">rnorm</span>(N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">8000</span>)</span>
-<span id="cb101-7"><a href="missing-data.html#cb101-7" tabindex="-1"></a></span>
-<span id="cb101-8"><a href="missing-data.html#cb101-8" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">mean</span>(inc)</span>
-<span id="cb101-9"><a href="missing-data.html#cb101-9" tabindex="-1"></a></span>
-<span id="cb101-10"><a href="missing-data.html#cb101-10" tabindex="-1"></a>logistic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span>x))</span>
-<span id="cb101-11"><a href="missing-data.html#cb101-11" tabindex="-1"></a></span>
-<span id="cb101-12"><a href="missing-data.html#cb101-12" tabindex="-1"></a>mcar <span class="ot">&lt;-</span> <span class="fu">runif</span>(N) <span class="sc">&lt;</span> <span class="fl">0.35</span>                            <span class="co"># pure chance</span></span>
-<span id="cb101-13"><a href="missing-data.html#cb101-13" tabindex="-1"></a>mar  <span class="ot">&lt;-</span> <span class="fu">runif</span>(N) <span class="sc">&lt;</span> <span class="fu">logistic</span>(<span class="fl">3.2</span> <span class="sc">-</span> <span class="fl">0.30</span> <span class="sc">*</span> edu)      <span class="co"># depends on education</span></span>
-<span id="cb101-14"><a href="missing-data.html#cb101-14" tabindex="-1"></a>mnar <span class="ot">&lt;-</span> <span class="fu">runif</span>(N) <span class="sc">&lt;</span> <span class="fu">logistic</span>(<span class="fl">3.6</span> <span class="sc">-</span> <span class="fl">0.00009</span> <span class="sc">*</span> inc)   <span class="co"># depends on income itself</span></span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="missing-data.html#cb109-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260806</span>)</span>
+<span id="cb109-2"><a href="missing-data.html#cb109-2" tabindex="-1"></a></span>
+<span id="cb109-3"><a href="missing-data.html#cb109-3" tabindex="-1"></a>N   <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb109-4"><a href="missing-data.html#cb109-4" tabindex="-1"></a>edu <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(N, <span class="at">mean =</span> <span class="dv">12</span>, <span class="at">sd =</span> <span class="dv">3</span>))</span>
+<span id="cb109-5"><a href="missing-data.html#cb109-5" tabindex="-1"></a>edu[edu <span class="sc">&lt;</span> <span class="dv">7</span>] <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb109-6"><a href="missing-data.html#cb109-6" tabindex="-1"></a>inc <span class="ot">&lt;-</span> <span class="dv">20000</span> <span class="sc">+</span> <span class="dv">2000</span> <span class="sc">*</span> edu <span class="sc">+</span> <span class="fu">rnorm</span>(N, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">8000</span>)</span>
+<span id="cb109-7"><a href="missing-data.html#cb109-7" tabindex="-1"></a></span>
+<span id="cb109-8"><a href="missing-data.html#cb109-8" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">mean</span>(inc)</span>
+<span id="cb109-9"><a href="missing-data.html#cb109-9" tabindex="-1"></a></span>
+<span id="cb109-10"><a href="missing-data.html#cb109-10" tabindex="-1"></a>logistic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span>x))</span>
+<span id="cb109-11"><a href="missing-data.html#cb109-11" tabindex="-1"></a></span>
+<span id="cb109-12"><a href="missing-data.html#cb109-12" tabindex="-1"></a>mcar <span class="ot">&lt;-</span> <span class="fu">runif</span>(N) <span class="sc">&lt;</span> <span class="fl">0.35</span>                            <span class="co"># pure chance</span></span>
+<span id="cb109-13"><a href="missing-data.html#cb109-13" tabindex="-1"></a>mar  <span class="ot">&lt;-</span> <span class="fu">runif</span>(N) <span class="sc">&lt;</span> <span class="fu">logistic</span>(<span class="fl">3.2</span> <span class="sc">-</span> <span class="fl">0.30</span> <span class="sc">*</span> edu)      <span class="co"># depends on education</span></span>
+<span id="cb109-14"><a href="missing-data.html#cb109-14" tabindex="-1"></a>mnar <span class="ot">&lt;-</span> <span class="fu">runif</span>(N) <span class="sc">&lt;</span> <span class="fu">logistic</span>(<span class="fl">3.6</span> <span class="sc">-</span> <span class="fl">0.00009</span> <span class="sc">*</span> inc)   <span class="co"># depends on income itself</span></span></code></pre></div>
 <p>The mechanisms differ only in what drives the gap. In each case we then compute the mean income among the observed cases and compare it with the truth we planted:</p>
 <table>
 <caption><span id="tab:md-sim-results">Table 4.1: </span>Complete-case mean income under three mechanisms.</caption>
@@ -738,29 +739,29 @@ Truly Dedicated: what can be tested?
 <div id="md-pattern" class="section level3 hasAnchor" number="4.1.6">
 <h3><span class="header-section-number">4.1.6</span> Looking at the Pattern<a href="missing-data.html#md-pattern" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Before choosing a remedy, look at the gaps. Three questions are usually enough: how much, where, and together with what.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="missing-data.html#cb102-1" tabindex="-1"></a><span class="fu">sapply</span>(airquality, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span>
-<span id="cb102-2"><a href="missing-data.html#cb102-2" tabindex="-1"></a><span class="co">#&gt;   Ozone Solar.R    Wind    Temp   Month     Day </span></span>
-<span id="cb102-3"><a href="missing-data.html#cb102-3" tabindex="-1"></a><span class="co">#&gt;      37       7       0       0       0       0</span></span>
-<span id="cb102-4"><a href="missing-data.html#cb102-4" tabindex="-1"></a><span class="fu">sapply</span>(airquality, <span class="cf">function</span>(x) <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(x)), <span class="dv">3</span>))</span>
-<span id="cb102-5"><a href="missing-data.html#cb102-5" tabindex="-1"></a><span class="co">#&gt;   Ozone Solar.R    Wind    Temp   Month     Day </span></span>
-<span id="cb102-6"><a href="missing-data.html#cb102-6" tabindex="-1"></a><span class="co">#&gt;   0.242   0.046   0.000   0.000   0.000   0.000</span></span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="missing-data.html#cb110-1" tabindex="-1"></a><span class="fu">sapply</span>(airquality, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span>
+<span id="cb110-2"><a href="missing-data.html#cb110-2" tabindex="-1"></a><span class="co">#&gt;   Ozone Solar.R    Wind    Temp   Month     Day </span></span>
+<span id="cb110-3"><a href="missing-data.html#cb110-3" tabindex="-1"></a><span class="co">#&gt;      37       7       0       0       0       0</span></span>
+<span id="cb110-4"><a href="missing-data.html#cb110-4" tabindex="-1"></a><span class="fu">sapply</span>(airquality, <span class="cf">function</span>(x) <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(x)), <span class="dv">3</span>))</span>
+<span id="cb110-5"><a href="missing-data.html#cb110-5" tabindex="-1"></a><span class="co">#&gt;   Ozone Solar.R    Wind    Temp   Month     Day </span></span>
+<span id="cb110-6"><a href="missing-data.html#cb110-6" tabindex="-1"></a><span class="co">#&gt;   0.242   0.046   0.000   0.000   0.000   0.000</span></span></code></pre></div>
 <p>A picture of the whole matrix shows structure that counts cannot:</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="missing-data.html#cb103-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb103-2"><a href="missing-data.html#cb103-2" tabindex="-1"></a></span>
-<span id="cb103-3"><a href="missing-data.html#cb103-3" tabindex="-1"></a>missmap <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb103-4"><a href="missing-data.html#cb103-4" tabindex="-1"></a>  <span class="at">day      =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(airquality)), <span class="at">times =</span> <span class="fu">ncol</span>(airquality)),</span>
-<span id="cb103-5"><a href="missing-data.html#cb103-5" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">names</span>(airquality), <span class="at">each =</span> <span class="fu">nrow</span>(airquality)),</span>
-<span id="cb103-6"><a href="missing-data.html#cb103-6" tabindex="-1"></a>                    <span class="at">levels =</span> <span class="fu">names</span>(airquality)),</span>
-<span id="cb103-7"><a href="missing-data.html#cb103-7" tabindex="-1"></a>  <span class="at">missing  =</span> <span class="fu">as.vector</span>(<span class="fu">is.na</span>(<span class="fu">as.matrix</span>(airquality)))</span>
-<span id="cb103-8"><a href="missing-data.html#cb103-8" tabindex="-1"></a>)</span>
-<span id="cb103-9"><a href="missing-data.html#cb103-9" tabindex="-1"></a></span>
-<span id="cb103-10"><a href="missing-data.html#cb103-10" tabindex="-1"></a><span class="fu">ggplot</span>(missmap, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> day, <span class="at">fill =</span> missing)) <span class="sc">+</span></span>
-<span id="cb103-11"><a href="missing-data.html#cb103-11" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb103-12"><a href="missing-data.html#cb103-12" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb103-13"><a href="missing-data.html#cb103-13" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;FALSE&quot;</span> <span class="ot">=</span> <span class="st">&quot;grey88&quot;</span>, <span class="st">&quot;TRUE&quot;</span> <span class="ot">=</span> <span class="st">&quot;#9b3f2d&quot;</span>),</span>
-<span id="cb103-14"><a href="missing-data.html#cb103-14" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;observed&quot;</span>, <span class="st">&quot;missing&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb103-15"><a href="missing-data.html#cb103-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Day of season&quot;</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb103-16"><a href="missing-data.html#cb103-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="missing-data.html#cb111-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb111-2"><a href="missing-data.html#cb111-2" tabindex="-1"></a></span>
+<span id="cb111-3"><a href="missing-data.html#cb111-3" tabindex="-1"></a>missmap <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb111-4"><a href="missing-data.html#cb111-4" tabindex="-1"></a>  <span class="at">day      =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(airquality)), <span class="at">times =</span> <span class="fu">ncol</span>(airquality)),</span>
+<span id="cb111-5"><a href="missing-data.html#cb111-5" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">names</span>(airquality), <span class="at">each =</span> <span class="fu">nrow</span>(airquality)),</span>
+<span id="cb111-6"><a href="missing-data.html#cb111-6" tabindex="-1"></a>                    <span class="at">levels =</span> <span class="fu">names</span>(airquality)),</span>
+<span id="cb111-7"><a href="missing-data.html#cb111-7" tabindex="-1"></a>  <span class="at">missing  =</span> <span class="fu">as.vector</span>(<span class="fu">is.na</span>(<span class="fu">as.matrix</span>(airquality)))</span>
+<span id="cb111-8"><a href="missing-data.html#cb111-8" tabindex="-1"></a>)</span>
+<span id="cb111-9"><a href="missing-data.html#cb111-9" tabindex="-1"></a></span>
+<span id="cb111-10"><a href="missing-data.html#cb111-10" tabindex="-1"></a><span class="fu">ggplot</span>(missmap, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> day, <span class="at">fill =</span> missing)) <span class="sc">+</span></span>
+<span id="cb111-11"><a href="missing-data.html#cb111-11" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb111-12"><a href="missing-data.html#cb111-12" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb111-13"><a href="missing-data.html#cb111-13" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;FALSE&quot;</span> <span class="ot">=</span> <span class="st">&quot;grey88&quot;</span>, <span class="st">&quot;TRUE&quot;</span> <span class="ot">=</span> <span class="st">&quot;#9b3f2d&quot;</span>),</span>
+<span id="cb111-14"><a href="missing-data.html#cb111-14" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;observed&quot;</span>, <span class="st">&quot;missing&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb111-15"><a href="missing-data.html#cb111-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Day of season&quot;</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb111-16"><a href="missing-data.html#cb111-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:md-pattern-plot"></span>
 <img src="Becoming-Fluent-In-Data_files/figure-html/md-pattern-plot-1.png" alt="Missing values in airquality. Each column is a variable, each row a day." width="576" />
 <p class="caption">
@@ -769,19 +770,19 @@ Figure 4.1: Missing values in airquality. Each column is a variable, each row a 
 </div>
 <p>The gaps in <code>Ozone</code> are not scattered evenly — they cluster into runs of consecutive days. There are 17 such runs, the longest covering ten days in a row. Individual refusals do not look like this; equipment downtime does. That is a substantive clue about the mechanism, and it came from a picture rather than a test.</p>
 <p>The second diagnostic is more direct: compare observed variables between cases with and without a gap. If they differ, MCAR is already in trouble.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="missing-data.html#cb104-1" tabindex="-1"></a><span class="fu">aggregate</span>(<span class="fu">cbind</span>(Temp, Wind, Month) <span class="sc">~</span> <span class="fu">is.na</span>(Ozone), <span class="at">data =</span> airquality, <span class="at">FUN =</span> mean)</span>
-<span id="cb104-2"><a href="missing-data.html#cb104-2" tabindex="-1"></a><span class="co">#&gt;   is.na(Ozone)     Temp      Wind    Month</span></span>
-<span id="cb104-3"><a href="missing-data.html#cb104-3" tabindex="-1"></a><span class="co">#&gt; 1        FALSE 77.87069  9.862069 7.198276</span></span>
-<span id="cb104-4"><a href="missing-data.html#cb104-4" tabindex="-1"></a><span class="co">#&gt; 2         TRUE 77.91892 10.256757 6.351351</span></span>
-<span id="cb104-5"><a href="missing-data.html#cb104-5" tabindex="-1"></a></span>
-<span id="cb104-6"><a href="missing-data.html#cb104-6" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Month =</span> airquality<span class="sc">$</span>Month, <span class="at">missing =</span> <span class="fu">is.na</span>(airquality<span class="sc">$</span>Ozone))</span>
-<span id="cb104-7"><a href="missing-data.html#cb104-7" tabindex="-1"></a><span class="co">#&gt;      missing</span></span>
-<span id="cb104-8"><a href="missing-data.html#cb104-8" tabindex="-1"></a><span class="co">#&gt; Month FALSE TRUE</span></span>
-<span id="cb104-9"><a href="missing-data.html#cb104-9" tabindex="-1"></a><span class="co">#&gt;     5    26    5</span></span>
-<span id="cb104-10"><a href="missing-data.html#cb104-10" tabindex="-1"></a><span class="co">#&gt;     6     9   21</span></span>
-<span id="cb104-11"><a href="missing-data.html#cb104-11" tabindex="-1"></a><span class="co">#&gt;     7    26    5</span></span>
-<span id="cb104-12"><a href="missing-data.html#cb104-12" tabindex="-1"></a><span class="co">#&gt;     8    26    5</span></span>
-<span id="cb104-13"><a href="missing-data.html#cb104-13" tabindex="-1"></a><span class="co">#&gt;     9    29    1</span></span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="missing-data.html#cb112-1" tabindex="-1"></a><span class="fu">aggregate</span>(<span class="fu">cbind</span>(Temp, Wind, Month) <span class="sc">~</span> <span class="fu">is.na</span>(Ozone), <span class="at">data =</span> airquality, <span class="at">FUN =</span> mean)</span>
+<span id="cb112-2"><a href="missing-data.html#cb112-2" tabindex="-1"></a><span class="co">#&gt;   is.na(Ozone)     Temp      Wind    Month</span></span>
+<span id="cb112-3"><a href="missing-data.html#cb112-3" tabindex="-1"></a><span class="co">#&gt; 1        FALSE 77.87069  9.862069 7.198276</span></span>
+<span id="cb112-4"><a href="missing-data.html#cb112-4" tabindex="-1"></a><span class="co">#&gt; 2         TRUE 77.91892 10.256757 6.351351</span></span>
+<span id="cb112-5"><a href="missing-data.html#cb112-5" tabindex="-1"></a></span>
+<span id="cb112-6"><a href="missing-data.html#cb112-6" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Month =</span> airquality<span class="sc">$</span>Month, <span class="at">missing =</span> <span class="fu">is.na</span>(airquality<span class="sc">$</span>Ozone))</span>
+<span id="cb112-7"><a href="missing-data.html#cb112-7" tabindex="-1"></a><span class="co">#&gt;      missing</span></span>
+<span id="cb112-8"><a href="missing-data.html#cb112-8" tabindex="-1"></a><span class="co">#&gt; Month FALSE TRUE</span></span>
+<span id="cb112-9"><a href="missing-data.html#cb112-9" tabindex="-1"></a><span class="co">#&gt;     5    26    5</span></span>
+<span id="cb112-10"><a href="missing-data.html#cb112-10" tabindex="-1"></a><span class="co">#&gt;     6     9   21</span></span>
+<span id="cb112-11"><a href="missing-data.html#cb112-11" tabindex="-1"></a><span class="co">#&gt;     7    26    5</span></span>
+<span id="cb112-12"><a href="missing-data.html#cb112-12" tabindex="-1"></a><span class="co">#&gt;     8    26    5</span></span>
+<span id="cb112-13"><a href="missing-data.html#cb112-13" tabindex="-1"></a><span class="co">#&gt;     9    29    1</span></span></code></pre></div>
 <p>Temperature is practically identical in the two groups, and wind only slightly higher on the missing days. The month, however, is decisive: <strong>21 of the 30 days in June have no ozone reading</strong>, against five in May, five in July, five in August and one in September. Seventy per cent of one month is gone.</p>
 <p>That single table changes the analysis. Any summer average computed from complete cases is really an average with June almost entirely removed — and ozone has a strong seasonal pattern. It also tells us what any imputation model must contain: <code>Month</code> above all, and <code>Wind</code>. Temperature earns its place because it predicts ozone well, not because it predicts the gaps.</p>
 <div class="challenge">
@@ -798,28 +799,28 @@ Your Turn
 <p>We now walk up a ladder, using one deliberately simple target: the average ozone level in New York, summer 1973.</p>
 <div id="md-remedy-cc" class="section level4 hasAnchor" number="4.1.7.1">
 <h4><span class="header-section-number">4.1.7.1</span> Rung 1: complete cases<a href="missing-data.html#md-remedy-cc" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="missing-data.html#cb105-1" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(airquality<span class="sc">$</span>Ozone)</span>
-<span id="cb105-2"><a href="missing-data.html#cb105-2" tabindex="-1"></a>ozone_cc <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone[observed]</span>
-<span id="cb105-3"><a href="missing-data.html#cb105-3" tabindex="-1"></a></span>
-<span id="cb105-4"><a href="missing-data.html#cb105-4" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n    =</span> <span class="fu">length</span>(ozone_cc),</span>
-<span id="cb105-5"><a href="missing-data.html#cb105-5" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">mean</span>(ozone_cc),</span>
-<span id="cb105-6"><a href="missing-data.html#cb105-6" tabindex="-1"></a>  <span class="at">sd   =</span> <span class="fu">sd</span>(ozone_cc),</span>
-<span id="cb105-7"><a href="missing-data.html#cb105-7" tabindex="-1"></a>  <span class="at">se   =</span> <span class="fu">sd</span>(ozone_cc) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(ozone_cc)))</span>
-<span id="cb105-8"><a href="missing-data.html#cb105-8" tabindex="-1"></a><span class="co">#&gt;          n       mean         sd         se </span></span>
-<span id="cb105-9"><a href="missing-data.html#cb105-9" tabindex="-1"></a><span class="co">#&gt; 116.000000  42.129310  32.987885   3.062848</span></span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="missing-data.html#cb113-1" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(airquality<span class="sc">$</span>Ozone)</span>
+<span id="cb113-2"><a href="missing-data.html#cb113-2" tabindex="-1"></a>ozone_cc <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone[observed]</span>
+<span id="cb113-3"><a href="missing-data.html#cb113-3" tabindex="-1"></a></span>
+<span id="cb113-4"><a href="missing-data.html#cb113-4" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n    =</span> <span class="fu">length</span>(ozone_cc),</span>
+<span id="cb113-5"><a href="missing-data.html#cb113-5" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">mean</span>(ozone_cc),</span>
+<span id="cb113-6"><a href="missing-data.html#cb113-6" tabindex="-1"></a>  <span class="at">sd   =</span> <span class="fu">sd</span>(ozone_cc),</span>
+<span id="cb113-7"><a href="missing-data.html#cb113-7" tabindex="-1"></a>  <span class="at">se   =</span> <span class="fu">sd</span>(ozone_cc) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(ozone_cc)))</span>
+<span id="cb113-8"><a href="missing-data.html#cb113-8" tabindex="-1"></a><span class="co">#&gt;          n       mean         sd         se </span></span>
+<span id="cb113-9"><a href="missing-data.html#cb113-9" tabindex="-1"></a><span class="co">#&gt; 116.000000  42.129310  32.987885   3.062848</span></span></code></pre></div>
 </div>
 <div id="md-remedy-mean" class="section level4 hasAnchor" number="4.1.7.2">
 <h4><span class="header-section-number">4.1.7.2</span> Rung 2: mean imputation<a href="missing-data.html#md-remedy-mean" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Fill every gap with the mean of the observed values. It is the most intuitive repair, and it is worse than doing nothing.</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="missing-data.html#cb106-1" tabindex="-1"></a>ozone_meanimp <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
-<span id="cb106-2"><a href="missing-data.html#cb106-2" tabindex="-1"></a>ozone_meanimp[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">mean</span>(ozone_cc)</span>
-<span id="cb106-3"><a href="missing-data.html#cb106-3" tabindex="-1"></a></span>
-<span id="cb106-4"><a href="missing-data.html#cb106-4" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n    =</span> <span class="fu">length</span>(ozone_meanimp),</span>
-<span id="cb106-5"><a href="missing-data.html#cb106-5" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">mean</span>(ozone_meanimp),</span>
-<span id="cb106-6"><a href="missing-data.html#cb106-6" tabindex="-1"></a>  <span class="at">sd   =</span> <span class="fu">sd</span>(ozone_meanimp),</span>
-<span id="cb106-7"><a href="missing-data.html#cb106-7" tabindex="-1"></a>  <span class="at">se   =</span> <span class="fu">sd</span>(ozone_meanimp) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(ozone_meanimp)))</span>
-<span id="cb106-8"><a href="missing-data.html#cb106-8" tabindex="-1"></a><span class="co">#&gt;          n       mean         sd         se </span></span>
-<span id="cb106-9"><a href="missing-data.html#cb106-9" tabindex="-1"></a><span class="co">#&gt; 153.000000  42.129310  28.693372   2.319722</span></span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="missing-data.html#cb114-1" tabindex="-1"></a>ozone_meanimp <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
+<span id="cb114-2"><a href="missing-data.html#cb114-2" tabindex="-1"></a>ozone_meanimp[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">mean</span>(ozone_cc)</span>
+<span id="cb114-3"><a href="missing-data.html#cb114-3" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="missing-data.html#cb114-4" tabindex="-1"></a><span class="fu">c</span>(<span class="at">n    =</span> <span class="fu">length</span>(ozone_meanimp),</span>
+<span id="cb114-5"><a href="missing-data.html#cb114-5" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">mean</span>(ozone_meanimp),</span>
+<span id="cb114-6"><a href="missing-data.html#cb114-6" tabindex="-1"></a>  <span class="at">sd   =</span> <span class="fu">sd</span>(ozone_meanimp),</span>
+<span id="cb114-7"><a href="missing-data.html#cb114-7" tabindex="-1"></a>  <span class="at">se   =</span> <span class="fu">sd</span>(ozone_meanimp) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(ozone_meanimp)))</span>
+<span id="cb114-8"><a href="missing-data.html#cb114-8" tabindex="-1"></a><span class="co">#&gt;          n       mean         sd         se </span></span>
+<span id="cb114-9"><a href="missing-data.html#cb114-9" tabindex="-1"></a><span class="co">#&gt; 153.000000  42.129310  28.693372   2.319722</span></span></code></pre></div>
 <p>Look at what happened. The mean is <strong>identical</strong> — filling gaps with the mean cannot move the mean. Nothing was gained. But the standard deviation fell from about 33 to about 29, and the standard error fell by roughly a quarter.</p>
 <p>Mean imputation lies twice. It invents 37 observations that sit exactly on the average, which mechanically shrinks the variance — and every variance, correlation and regression coefficient computed afterwards inherits that distortion. Then it reports a standard error as though those invented values were real measurements.</p>
 <div class="analysis-warning">
@@ -830,30 +831,30 @@ Your Turn
 <h4><span class="header-section-number">4.1.7.3</span> Rung 3: regression imputation<a href="missing-data.html#md-remedy-reg" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A better guess uses the other variables. Predict ozone from temperature, wind and month, and fill the gaps with the predictions.</p>
 <p>Month enters as a <strong>factor</strong>, not as a number. Ozone does not rise steadily from May to September; it peaks in July and August. A linear month term would impose a straight line on a hump, and Section <a href="missing-data.html#md-imputation-model">4.1.7.6</a> shows what that costs.</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="missing-data.html#cb107-1" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind <span class="sc">+</span> <span class="fu">factor</span>(Month), <span class="at">data =</span> airquality)</span>
-<span id="cb107-2"><a href="missing-data.html#cb107-2" tabindex="-1"></a></span>
-<span id="cb107-3"><a href="missing-data.html#cb107-3" tabindex="-1"></a>ozone_reg <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
-<span id="cb107-4"><a href="missing-data.html#cb107-4" tabindex="-1"></a>ozone_reg[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> airquality[<span class="sc">!</span>observed, ])</span>
-<span id="cb107-5"><a href="missing-data.html#cb107-5" tabindex="-1"></a></span>
-<span id="cb107-6"><a href="missing-data.html#cb107-6" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(ozone_reg), <span class="at">sd =</span> <span class="fu">sd</span>(ozone_reg))</span>
-<span id="cb107-7"><a href="missing-data.html#cb107-7" tabindex="-1"></a><span class="co">#&gt;     mean       sd </span></span>
-<span id="cb107-8"><a href="missing-data.html#cb107-8" tabindex="-1"></a><span class="co">#&gt; 41.24926 30.66070</span></span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="missing-data.html#cb115-1" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind <span class="sc">+</span> <span class="fu">factor</span>(Month), <span class="at">data =</span> airquality)</span>
+<span id="cb115-2"><a href="missing-data.html#cb115-2" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="missing-data.html#cb115-3" tabindex="-1"></a>ozone_reg <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
+<span id="cb115-4"><a href="missing-data.html#cb115-4" tabindex="-1"></a>ozone_reg[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> airquality[<span class="sc">!</span>observed, ])</span>
+<span id="cb115-5"><a href="missing-data.html#cb115-5" tabindex="-1"></a></span>
+<span id="cb115-6"><a href="missing-data.html#cb115-6" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(ozone_reg), <span class="at">sd =</span> <span class="fu">sd</span>(ozone_reg))</span>
+<span id="cb115-7"><a href="missing-data.html#cb115-7" tabindex="-1"></a><span class="co">#&gt;     mean       sd </span></span>
+<span id="cb115-8"><a href="missing-data.html#cb115-8" tabindex="-1"></a><span class="co">#&gt; 41.24926 30.66070</span></span></code></pre></div>
 <p>The mean has moved from 42.13 down to 41.25 — and the direction is exactly what Section <a href="missing-data.html#md-pattern">4.1.6</a> led us to expect. June was nearly absent, June has low ozone, so restoring it must pull the average down. A diagnostic finding and an estimate agreeing with one another is the most reassuring thing that can happen in an analysis of this kind.</p>
 <p>But the variance is still too small, and for an instructive reason: every imputed value sits exactly on the regression line. Real observations scatter around it. We have filled the gaps with values that are <em>too well behaved</em> — a data set in which some points obey the model perfectly.</p>
 </div>
 <div id="md-remedy-stochastic" class="section level4 hasAnchor" number="4.1.7.4">
 <h4><span class="header-section-number">4.1.7.4</span> Rung 4: add the noise back<a href="missing-data.html#md-remedy-stochastic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The repair is to add a random draw from the residual distribution to each prediction, so that imputed values scatter the way real ones do.</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="missing-data.html#cb108-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260806</span>)</span>
-<span id="cb108-2"><a href="missing-data.html#cb108-2" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>sigma</span>
-<span id="cb108-3"><a href="missing-data.html#cb108-3" tabindex="-1"></a></span>
-<span id="cb108-4"><a href="missing-data.html#cb108-4" tabindex="-1"></a>ozone_stoch <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
-<span id="cb108-5"><a href="missing-data.html#cb108-5" tabindex="-1"></a>ozone_stoch[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> airquality[<span class="sc">!</span>observed, ]) <span class="sc">+</span></span>
-<span id="cb108-6"><a href="missing-data.html#cb108-6" tabindex="-1"></a>                          <span class="fu">rnorm</span>(<span class="fu">sum</span>(<span class="sc">!</span>observed), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma)</span>
-<span id="cb108-7"><a href="missing-data.html#cb108-7" tabindex="-1"></a></span>
-<span id="cb108-8"><a href="missing-data.html#cb108-8" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(ozone_stoch), <span class="at">sd =</span> <span class="fu">sd</span>(ozone_stoch))</span>
-<span id="cb108-9"><a href="missing-data.html#cb108-9" tabindex="-1"></a><span class="co">#&gt;     mean       sd </span></span>
-<span id="cb108-10"><a href="missing-data.html#cb108-10" tabindex="-1"></a><span class="co">#&gt; 41.20483 33.08921</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="missing-data.html#cb116-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260806</span>)</span>
+<span id="cb116-2"><a href="missing-data.html#cb116-2" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>sigma</span>
+<span id="cb116-3"><a href="missing-data.html#cb116-3" tabindex="-1"></a></span>
+<span id="cb116-4"><a href="missing-data.html#cb116-4" tabindex="-1"></a>ozone_stoch <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
+<span id="cb116-5"><a href="missing-data.html#cb116-5" tabindex="-1"></a>ozone_stoch[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> airquality[<span class="sc">!</span>observed, ]) <span class="sc">+</span></span>
+<span id="cb116-6"><a href="missing-data.html#cb116-6" tabindex="-1"></a>                          <span class="fu">rnorm</span>(<span class="fu">sum</span>(<span class="sc">!</span>observed), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma)</span>
+<span id="cb116-7"><a href="missing-data.html#cb116-7" tabindex="-1"></a></span>
+<span id="cb116-8"><a href="missing-data.html#cb116-8" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(ozone_stoch), <span class="at">sd =</span> <span class="fu">sd</span>(ozone_stoch))</span>
+<span id="cb116-9"><a href="missing-data.html#cb116-9" tabindex="-1"></a><span class="co">#&gt;     mean       sd </span></span>
+<span id="cb116-10"><a href="missing-data.html#cb116-10" tabindex="-1"></a><span class="co">#&gt; 41.20483 33.08921</span></span></code></pre></div>
 <p>Now the spread is realistic. One problem remains, and it is the deep one. We have produced <strong>one</strong> completed data set and will analyse it as though it were the truth. But those imputed values were guesses, and a different random draw would have given different numbers — and a slightly different answer. That uncertainty is real, and a single completed data set hides it completely.</p>
 </div>
 <div id="md-remedy-mi" class="section level4 hasAnchor" number="4.1.7.5">
@@ -861,23 +862,23 @@ Your Turn
 <p>The solution is almost embarrassingly direct: do it several times.</p>
 <p>Create <span class="math inline">\(M\)</span> completed data sets, each with different random draws. Run the analysis separately on each. Then combine the <span class="math inline">\(M\)</span> answers using rules that account for two distinct sources of uncertainty — the ordinary sampling uncertainty <em>within</em> each analysis, and the disagreement <em>between</em> the analyses, which is exactly the uncertainty caused by the gaps.</p>
 <p>Following the spirit of Section <a href="regression.html#regression">6.1</a>, we build it by hand before reaching for a package.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="missing-data.html#cb109-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260806</span>)</span>
-<span id="cb109-2"><a href="missing-data.html#cb109-2" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb109-3"><a href="missing-data.html#cb109-3" tabindex="-1"></a></span>
-<span id="cb109-4"><a href="missing-data.html#cb109-4" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="fu">numeric</span>(M)   <span class="co"># the estimate from each completed data set</span></span>
-<span id="cb109-5"><a href="missing-data.html#cb109-5" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="fu">numeric</span>(M)   <span class="co"># its squared standard error</span></span>
-<span id="cb109-6"><a href="missing-data.html#cb109-6" tabindex="-1"></a></span>
-<span id="cb109-7"><a href="missing-data.html#cb109-7" tabindex="-1"></a><span class="cf">for</span> (m <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M) {</span>
-<span id="cb109-8"><a href="missing-data.html#cb109-8" tabindex="-1"></a>  y <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
-<span id="cb109-9"><a href="missing-data.html#cb109-9" tabindex="-1"></a>  y[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> airquality[<span class="sc">!</span>observed, ]) <span class="sc">+</span></span>
-<span id="cb109-10"><a href="missing-data.html#cb109-10" tabindex="-1"></a>                  <span class="fu">rnorm</span>(<span class="fu">sum</span>(<span class="sc">!</span>observed), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma)</span>
-<span id="cb109-11"><a href="missing-data.html#cb109-11" tabindex="-1"></a></span>
-<span id="cb109-12"><a href="missing-data.html#cb109-12" tabindex="-1"></a>  Q[m] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
-<span id="cb109-13"><a href="missing-data.html#cb109-13" tabindex="-1"></a>  U[m] <span class="ot">&lt;-</span> <span class="fu">var</span>(y) <span class="sc">/</span> <span class="fu">length</span>(y)</span>
-<span id="cb109-14"><a href="missing-data.html#cb109-14" tabindex="-1"></a>}</span>
-<span id="cb109-15"><a href="missing-data.html#cb109-15" tabindex="-1"></a></span>
-<span id="cb109-16"><a href="missing-data.html#cb109-16" tabindex="-1"></a><span class="fu">round</span>(Q, <span class="dv">2</span>)     <span class="co"># five different answers to the same question</span></span>
-<span id="cb109-17"><a href="missing-data.html#cb109-17" tabindex="-1"></a><span class="co">#&gt; [1] 41.20 41.37 41.66 41.54 41.28</span></span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="missing-data.html#cb117-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260806</span>)</span>
+<span id="cb117-2"><a href="missing-data.html#cb117-2" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb117-3"><a href="missing-data.html#cb117-3" tabindex="-1"></a></span>
+<span id="cb117-4"><a href="missing-data.html#cb117-4" tabindex="-1"></a>Q <span class="ot">&lt;-</span> <span class="fu">numeric</span>(M)   <span class="co"># the estimate from each completed data set</span></span>
+<span id="cb117-5"><a href="missing-data.html#cb117-5" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="fu">numeric</span>(M)   <span class="co"># its squared standard error</span></span>
+<span id="cb117-6"><a href="missing-data.html#cb117-6" tabindex="-1"></a></span>
+<span id="cb117-7"><a href="missing-data.html#cb117-7" tabindex="-1"></a><span class="cf">for</span> (m <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M) {</span>
+<span id="cb117-8"><a href="missing-data.html#cb117-8" tabindex="-1"></a>  y <span class="ot">&lt;-</span> airquality<span class="sc">$</span>Ozone</span>
+<span id="cb117-9"><a href="missing-data.html#cb117-9" tabindex="-1"></a>  y[<span class="sc">!</span>observed] <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> airquality[<span class="sc">!</span>observed, ]) <span class="sc">+</span></span>
+<span id="cb117-10"><a href="missing-data.html#cb117-10" tabindex="-1"></a>                  <span class="fu">rnorm</span>(<span class="fu">sum</span>(<span class="sc">!</span>observed), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma)</span>
+<span id="cb117-11"><a href="missing-data.html#cb117-11" tabindex="-1"></a></span>
+<span id="cb117-12"><a href="missing-data.html#cb117-12" tabindex="-1"></a>  Q[m] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb117-13"><a href="missing-data.html#cb117-13" tabindex="-1"></a>  U[m] <span class="ot">&lt;-</span> <span class="fu">var</span>(y) <span class="sc">/</span> <span class="fu">length</span>(y)</span>
+<span id="cb117-14"><a href="missing-data.html#cb117-14" tabindex="-1"></a>}</span>
+<span id="cb117-15"><a href="missing-data.html#cb117-15" tabindex="-1"></a></span>
+<span id="cb117-16"><a href="missing-data.html#cb117-16" tabindex="-1"></a><span class="fu">round</span>(Q, <span class="dv">2</span>)     <span class="co"># five different answers to the same question</span></span>
+<span id="cb117-17"><a href="missing-data.html#cb117-17" tabindex="-1"></a><span class="co">#&gt; [1] 41.20 41.37 41.66 41.54 41.28</span></span></code></pre></div>
 <p>Five completed data sets, five slightly different means. That disagreement is the point: it is the visible trace of what we do not know.</p>
 <p><strong>Rubin's rules</strong> combine them. The pooled estimate is the average, and the total variance adds the between-imputation variance to the average within-imputation variance:</p>
 <p><span class="math display">\[\bar{Q} = \frac{1}{M} \sum_{m=1}^{M} Q_m
@@ -886,29 +887,29 @@ Your Turn
 \qquad
 B = \frac{1}{M-1} \sum_{m=1}^{M} (Q_m - \bar{Q})^2\]</span></p>
 <p><span class="math display">\[T = \bar{U} + \left(1 + \frac{1}{M}\right) B\]</span></p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="missing-data.html#cb110-1" tabindex="-1"></a>Qbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(Q)</span>
-<span id="cb110-2"><a href="missing-data.html#cb110-2" tabindex="-1"></a>Ubar <span class="ot">&lt;-</span> <span class="fu">mean</span>(U)</span>
-<span id="cb110-3"><a href="missing-data.html#cb110-3" tabindex="-1"></a>B    <span class="ot">&lt;-</span> <span class="fu">var</span>(Q)</span>
-<span id="cb110-4"><a href="missing-data.html#cb110-4" tabindex="-1"></a>Tvar <span class="ot">&lt;-</span> Ubar <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>M) <span class="sc">*</span> B</span>
-<span id="cb110-5"><a href="missing-data.html#cb110-5" tabindex="-1"></a></span>
-<span id="cb110-6"><a href="missing-data.html#cb110-6" tabindex="-1"></a><span class="fu">c</span>(<span class="at">estimate =</span> Qbar, <span class="at">se =</span> <span class="fu">sqrt</span>(Tvar))</span>
-<span id="cb110-7"><a href="missing-data.html#cb110-7" tabindex="-1"></a><span class="co">#&gt;  estimate        se </span></span>
-<span id="cb110-8"><a href="missing-data.html#cb110-8" tabindex="-1"></a><span class="co">#&gt; 41.410672  2.648021</span></span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="missing-data.html#cb118-1" tabindex="-1"></a>Qbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(Q)</span>
+<span id="cb118-2"><a href="missing-data.html#cb118-2" tabindex="-1"></a>Ubar <span class="ot">&lt;-</span> <span class="fu">mean</span>(U)</span>
+<span id="cb118-3"><a href="missing-data.html#cb118-3" tabindex="-1"></a>B    <span class="ot">&lt;-</span> <span class="fu">var</span>(Q)</span>
+<span id="cb118-4"><a href="missing-data.html#cb118-4" tabindex="-1"></a>Tvar <span class="ot">&lt;-</span> Ubar <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>M) <span class="sc">*</span> B</span>
+<span id="cb118-5"><a href="missing-data.html#cb118-5" tabindex="-1"></a></span>
+<span id="cb118-6"><a href="missing-data.html#cb118-6" tabindex="-1"></a><span class="fu">c</span>(<span class="at">estimate =</span> Qbar, <span class="at">se =</span> <span class="fu">sqrt</span>(Tvar))</span>
+<span id="cb118-7"><a href="missing-data.html#cb118-7" tabindex="-1"></a><span class="co">#&gt;  estimate        se </span></span>
+<span id="cb118-8"><a href="missing-data.html#cb118-8" tabindex="-1"></a><span class="co">#&gt; 41.410672  2.648021</span></span></code></pre></div>
 <p>The term <span class="math inline">\(\bar{U}\)</span> is the uncertainty an analyst would face with no missing data at all. The term <span class="math inline">\(B\)</span> is the price of the gaps. The factor <span class="math inline">\((1 + 1/M)\)</span> corrects for having used a finite number of imputations. If <span class="math inline">\(B\)</span> is near zero, the missing values were well predicted by the other variables and cost little. If <span class="math inline">\(B\)</span> is large, the gaps matter a great deal — and multiple imputation is the method that says so out loud.</p>
 </div>
 <div id="md-imputation-model" class="section level4 hasAnchor" number="4.1.7.6">
 <h4><span class="header-section-number">4.1.7.6</span> The imputation model can be wrong<a href="missing-data.html#md-imputation-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Everything above depends on one thing we have not yet examined: whether the model producing the imputations is any good.</p>
 <p>Recall the choice made in Section <a href="missing-data.html#md-remedy-reg">4.1.7.3</a> to treat month as a factor. Suppose we had written <code>Month</code> instead — the obvious, careless thing to do, since month is stored as a number.</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="missing-data.html#cb111-1" tabindex="-1"></a>fit_linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind <span class="sc">+</span> Month, <span class="at">data =</span> airquality)</span>
-<span id="cb111-2"><a href="missing-data.html#cb111-2" tabindex="-1"></a></span>
-<span id="cb111-3"><a href="missing-data.html#cb111-3" tabindex="-1"></a>june <span class="ot">&lt;-</span> <span class="sc">!</span>observed <span class="sc">&amp;</span> airquality<span class="sc">$</span>Month <span class="sc">==</span> <span class="dv">6</span></span>
-<span id="cb111-4"><a href="missing-data.html#cb111-4" tabindex="-1"></a></span>
-<span id="cb111-5"><a href="missing-data.html#cb111-5" tabindex="-1"></a><span class="fu">c</span>(<span class="at">linear      =</span> <span class="fu">mean</span>(<span class="fu">predict</span>(fit_linear, <span class="at">newdata =</span> airquality[june, ])),</span>
-<span id="cb111-6"><a href="missing-data.html#cb111-6" tabindex="-1"></a>  <span class="at">factor      =</span> <span class="fu">mean</span>(<span class="fu">predict</span>(fit,        <span class="at">newdata =</span> airquality[june, ])),</span>
-<span id="cb111-7"><a href="missing-data.html#cb111-7" tabindex="-1"></a>  <span class="at">observed_in_june =</span> <span class="fu">mean</span>(airquality<span class="sc">$</span>Ozone[observed <span class="sc">&amp;</span> airquality<span class="sc">$</span>Month <span class="sc">==</span> <span class="dv">6</span>]))</span>
-<span id="cb111-8"><a href="missing-data.html#cb111-8" tabindex="-1"></a><span class="co">#&gt;           linear           factor observed_in_june </span></span>
-<span id="cb111-9"><a href="missing-data.html#cb111-9" tabindex="-1"></a><span class="co">#&gt;         50.83404         39.67835         29.44444</span></span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="missing-data.html#cb119-1" tabindex="-1"></a>fit_linear <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind <span class="sc">+</span> Month, <span class="at">data =</span> airquality)</span>
+<span id="cb119-2"><a href="missing-data.html#cb119-2" tabindex="-1"></a></span>
+<span id="cb119-3"><a href="missing-data.html#cb119-3" tabindex="-1"></a>june <span class="ot">&lt;-</span> <span class="sc">!</span>observed <span class="sc">&amp;</span> airquality<span class="sc">$</span>Month <span class="sc">==</span> <span class="dv">6</span></span>
+<span id="cb119-4"><a href="missing-data.html#cb119-4" tabindex="-1"></a></span>
+<span id="cb119-5"><a href="missing-data.html#cb119-5" tabindex="-1"></a><span class="fu">c</span>(<span class="at">linear      =</span> <span class="fu">mean</span>(<span class="fu">predict</span>(fit_linear, <span class="at">newdata =</span> airquality[june, ])),</span>
+<span id="cb119-6"><a href="missing-data.html#cb119-6" tabindex="-1"></a>  <span class="at">factor      =</span> <span class="fu">mean</span>(<span class="fu">predict</span>(fit,        <span class="at">newdata =</span> airquality[june, ])),</span>
+<span id="cb119-7"><a href="missing-data.html#cb119-7" tabindex="-1"></a>  <span class="at">observed_in_june =</span> <span class="fu">mean</span>(airquality<span class="sc">$</span>Ozone[observed <span class="sc">&amp;</span> airquality<span class="sc">$</span>Month <span class="sc">==</span> <span class="dv">6</span>]))</span>
+<span id="cb119-8"><a href="missing-data.html#cb119-8" tabindex="-1"></a><span class="co">#&gt;           linear           factor observed_in_june </span></span>
+<span id="cb119-9"><a href="missing-data.html#cb119-9" tabindex="-1"></a><span class="co">#&gt;         50.83404         39.67835         29.44444</span></span></code></pre></div>
 <p>The linear model predicts about 51 for the missing June days. The observed June days average about 29. It is wrong by more than twenty units on the very cases that matter most — because a straight line through a seasonal hump has to be too high at the ends.</p>
 <p>The consequence flows straight through to the estimate: multiple imputation under the linear model returns roughly 42.7, slightly <em>further</em> from the truth than doing nothing. Under the factor model it returns 41.4.</p>
 <div class="analysis-warning">
@@ -980,13 +981,13 @@ Your Turn
 </div>
 <div id="md-remedy-mice" class="section level4 hasAnchor" number="4.1.7.7">
 <h4><span class="header-section-number">4.1.7.7</span> On the shoulders of giants<a href="missing-data.html#md-remedy-mice" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>In practice nobody codes this by hand. The <code>mice</code> package implements multiple imputation by chained equations, handling several incomplete variables at once, each with a model suited to its type.<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a></p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="missing-data.html#cb112-1" tabindex="-1"></a><span class="co"># install.packages(&quot;mice&quot;)</span></span>
-<span id="cb112-2"><a href="missing-data.html#cb112-2" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
-<span id="cb112-3"><a href="missing-data.html#cb112-3" tabindex="-1"></a></span>
-<span id="cb112-4"><a href="missing-data.html#cb112-4" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(airquality, <span class="at">m =</span> <span class="dv">20</span>, <span class="at">seed =</span> <span class="dv">20260806</span>, <span class="at">printFlag =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb112-5"><a href="missing-data.html#cb112-5" tabindex="-1"></a>fit_mi <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind))</span>
-<span id="cb112-6"><a href="missing-data.html#cb112-6" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">pool</span>(fit_mi))</span></code></pre></div>
+<p>In practice nobody codes this by hand. The <code>mice</code> package implements multiple imputation by chained equations, handling several incomplete variables at once, each with a model suited to its type.<a href="#fn50" class="footnote-ref" id="fnref50"><sup>50</sup></a></p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="missing-data.html#cb120-1" tabindex="-1"></a><span class="co"># install.packages(&quot;mice&quot;)</span></span>
+<span id="cb120-2"><a href="missing-data.html#cb120-2" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb120-3"><a href="missing-data.html#cb120-3" tabindex="-1"></a></span>
+<span id="cb120-4"><a href="missing-data.html#cb120-4" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(airquality, <span class="at">m =</span> <span class="dv">20</span>, <span class="at">seed =</span> <span class="dv">20260806</span>, <span class="at">printFlag =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb120-5"><a href="missing-data.html#cb120-5" tabindex="-1"></a>fit_mi <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind))</span>
+<span id="cb120-6"><a href="missing-data.html#cb120-6" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">pool</span>(fit_mi))</span></code></pre></div>
 <p><code>pool()</code> applies exactly the rules computed above. Three practical points that the syntax hides:</p>
 <p>The imputation model must be <strong>at least as rich as the analysis model</strong>. If you impute without a variable that later appears in your regression — especially an interaction or a non-linear term — you have imputed under a model that assumes the effect away, and you will find it attenuated.</p>
 <p><strong>Include auxiliary variables</strong> that predict missingness or the missing values, even if they play no part in the substantive model. This is the practical route to making MAR plausible, as argued in Section <a href="missing-data.html#md-mar-relative">4.1.5.4</a>.</p>
@@ -1110,12 +1111,12 @@ Elliott, 1999. In: <span class="citation">Byrne (<a href="resources.html#ref-byr
 </div>
 <div class="footnotes">
 <hr />
-<ol start="44">
-<li id="fn44"><p>Wald, A., <em>A Method of Estimating Plane Vulnerability Based on Damage of Survivors</em>, Statistical Research Group, Columbia University, 1943; reprinted by the Center for Naval Analyses in 1980, <a href="https://www.cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability" class="uri">https://www.cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability</a>. The widely circulated diagram of a bomber covered in red dots is a modern illustration, not part of Wald's memoranda. See also <a href="https://en.wikipedia.org/wiki/Survivorship_bias" class="fancy-link"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Wikipedia-logo_thue.png" alt="Wikipedia icon" class="wikipedia-icon"> Survivorship bias</a>.<a href="missing-data.html#fnref44" class="footnote-back">↩︎</a></p></li>
-<li id="fn45"><p>Approximately ten million ballots mailed, about 2.4 million returned; the <em>Digest</em> predicted Landon 57 % to Roosevelt 43 %, while Roosevelt took roughly 61 % of the popular vote. See <a href="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_1936_United_States_presidential_election" class="uri">https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_1936_United_States_presidential_election</a>.<a href="missing-data.html#fnref45" class="footnote-back">↩︎</a></p></li>
-<li id="fn46"><p>SOEPcompanion, <em>Missing Conventions</em>: <a href="http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html" class="uri">http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html</a>.<a href="missing-data.html#fnref46" class="footnote-back">↩︎</a></p></li>
-<li id="fn47"><p>Rubin, D. B., <em>Inference and Missing Data</em>, <em>Biometrika</em> 63(3), 1976, 581--592. The standard modern reference is Little, R. J. A., and Rubin, D. B., <em>Statistical Analysis with Missing Data</em>, 3rd edition, Wiley, 2019.<a href="missing-data.html#fnref47" class="footnote-back">↩︎</a></p></li>
-<li id="fn48"><p>van Buuren, S., and Groothuis-Oudshoorn, K., <em>mice: Multivariate Imputation by Chained Equations in R</em>, <em>Journal of Statistical Software</em> 45(3), 2011, 1--67. A freely available book-length treatment is van Buuren, S., <em>Flexible Imputation of Missing Data</em>, 2nd edition: <a href="https://stefvanbuuren.name/fimd/" class="uri">https://stefvanbuuren.name/fimd/</a>.<a href="missing-data.html#fnref48" class="footnote-back">↩︎</a></p></li>
+<ol start="46">
+<li id="fn46"><p>Wald, A., <em>A Method of Estimating Plane Vulnerability Based on Damage of Survivors</em>, Statistical Research Group, Columbia University, 1943; reprinted by the Center for Naval Analyses in 1980, <a href="https://www.cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability" class="uri">https://www.cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability</a>. The widely circulated diagram of a bomber covered in red dots is a modern illustration, not part of Wald's memoranda. See also <a href="https://en.wikipedia.org/wiki/Survivorship_bias" class="fancy-link"> <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Wikipedia-logo_thue.png" alt="Wikipedia icon" class="wikipedia-icon"> Survivorship bias</a>.<a href="missing-data.html#fnref46" class="footnote-back">↩︎</a></p></li>
+<li id="fn47"><p>Approximately ten million ballots mailed, about 2.4 million returned; the <em>Digest</em> predicted Landon 57 % to Roosevelt 43 %, while Roosevelt took roughly 61 % of the popular vote. See <a href="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_1936_United_States_presidential_election" class="uri">https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_1936_United_States_presidential_election</a>.<a href="missing-data.html#fnref47" class="footnote-back">↩︎</a></p></li>
+<li id="fn48"><p>SOEPcompanion, <em>Missing Conventions</em>: <a href="http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html" class="uri">http://companion.soep.de/Data%20Structure%20of%20SOEPcore/Missing%20Conventions.html</a>.<a href="missing-data.html#fnref48" class="footnote-back">↩︎</a></p></li>
+<li id="fn49"><p>Rubin, D. B., <em>Inference and Missing Data</em>, <em>Biometrika</em> 63(3), 1976, 581--592. The standard modern reference is Little, R. J. A., and Rubin, D. B., <em>Statistical Analysis with Missing Data</em>, 3rd edition, Wiley, 2019.<a href="missing-data.html#fnref49" class="footnote-back">↩︎</a></p></li>
+<li id="fn50"><p>van Buuren, S., and Groothuis-Oudshoorn, K., <em>mice: Multivariate Imputation by Chained Equations in R</em>, <em>Journal of Statistical Software</em> 45(3), 2011, 1--67. A freely available book-length treatment is van Buuren, S., <em>Flexible Imputation of Missing Data</em>, 2nd edition: <a href="https://stefvanbuuren.name/fimd/" class="uri">https://stefvanbuuren.name/fimd/</a>.<a href="missing-data.html#fnref50" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 <script>

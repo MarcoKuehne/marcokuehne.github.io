@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-08" />
+<meta name="date" content="2026-08-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -235,6 +235,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
 <li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
 <li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+<li class="chapter" data-level="2.4" data-path="remote-data.html"><a href="remote-data.html"><i class="fa fa-check"></i><b>2.4</b> Remote Data</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
 <ul>
@@ -338,11 +339,11 @@ The complaint that motivated this section
 <p></small></p>
 <p>Look back at what the Compare chapter asked you to learn. A one-sample t-test. A two-sample t-test, in a Student and a Welch flavour. A paired t-test. A correlation test. A one-way ANOVA. An ANCOVA. A Wilcoxon test, a Mann-Whitney test, a Kruskal-Wallis test. Nine names, nine sets of assumptions, nine entries in a decision tree that students memorise for an exam and forget by Christmas.</p>
 <p>Now that you know what a linear model is, the honest summary can finally be given: <strong>there are not nine tests. There is one model, fitted with different right-hand sides.</strong> Every test in that list is <code>lm()</code> wearing a costume.</p>
-<p>This observation is not new, but its clearest modern statement is a cheat sheet by Jonas Kristoffer Lindeløv, <em>Common statistical tests are linear models</em>, which lines up each classical test against its equivalent <code>lm()</code> formula.<a href="#fn95" class="footnote-ref" id="fnref95"><sup>95</sup></a> This section works through that correspondence on our own data, so that you can check every claim rather than take it on faith — and then pushes the list further than the cheat sheet does, into repeated measures, variance tests, model comparison, and the counts and proportions that need one step sideways into <code>glm()</code>.</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="tests-as-models.html#cb178-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb178-2"><a href="tests-as-models.html#cb178-2" tabindex="-1"></a></span>
-<span id="cb178-3"><a href="tests-as-models.html#cb178-3" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Course/GF_AllTime.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb178-4"><a href="tests-as-models.html#cb178-4" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">100</span>)</span></code></pre></div>
+<p>This observation is not new, but its clearest modern statement is a cheat sheet by Jonas Kristoffer Lindeløv, <em>Common statistical tests are linear models</em>, which lines up each classical test against its equivalent <code>lm()</code> formula.<a href="#fn97" class="footnote-ref" id="fnref97"><sup>97</sup></a> This section works through that correspondence on our own data, so that you can check every claim rather than take it on faith — and then pushes the list further than the cheat sheet does, into repeated measures, variance tests, model comparison, and the counts and proportions that need one step sideways into <code>glm()</code>.</p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="tests-as-models.html#cb186-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb186-2"><a href="tests-as-models.html#cb186-2" tabindex="-1"></a></span>
+<span id="cb186-3"><a href="tests-as-models.html#cb186-3" tabindex="-1"></a>coursedata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/Course/GF_AllTime.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb186-4"><a href="tests-as-models.html#cb186-4" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&lt;</span> <span class="dv">100</span>)</span></code></pre></div>
 <div id="tm-one-model" class="section level3 hasAnchor" number="6.9.1">
 <h3><span class="header-section-number">6.9.1</span> The one model<a href="tests-as-models.html#tm-one-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Recall the notation. In R, <code>y ~ 1</code> means "predict <code>y</code> with an intercept and nothing else", and the intercept of a model with no predictors is simply the mean of <code>y</code>. Everything else is built by adding terms to the right of the tilde:</p>
@@ -415,55 +416,55 @@ The complaint that motivated this section
 <div id="tm-one-sample" class="section level3 hasAnchor" number="6.9.2">
 <h3><span class="header-section-number">6.9.2</span> One mean is an intercept<a href="tests-as-models.html#tm-one-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Section <a href="comparing-means.html#cm-one-sample">5.2.4</a> tested whether students' self-rated R background differs from the scale midpoint of 3, and found <span class="math inline">\(t = -20.70\)</span>. Here is the same question asked of a regression with no predictors at all. Subtract the benchmark from the outcome, then let the intercept do the work:</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="tests-as-models.html#cb179-1" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.R, <span class="at">mu =</span> <span class="dv">3</span>)<span class="sc">$</span>statistic</span>
-<span id="cb179-2"><a href="tests-as-models.html#cb179-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
-<span id="cb179-3"><a href="tests-as-models.html#cb179-3" tabindex="-1"></a><span class="co">#&gt; -20.70382</span></span>
-<span id="cb179-4"><a href="tests-as-models.html#cb179-4" tabindex="-1"></a></span>
-<span id="cb179-5"><a href="tests-as-models.html#cb179-5" tabindex="-1"></a><span class="fu">lm</span>(<span class="fu">I</span>(Background.in.R <span class="sc">-</span> <span class="dv">3</span>) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
-<span id="cb179-6"><a href="tests-as-models.html#cb179-6" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error   t value</span></span>
-<span id="cb179-7"><a href="tests-as-models.html#cb179-7" tabindex="-1"></a><span class="co">#&gt; (Intercept) -1.253219 0.06053082 -20.70382</span></span>
-<span id="cb179-8"><a href="tests-as-models.html#cb179-8" tabindex="-1"></a><span class="co">#&gt;                                                                   Pr(&gt;|t|)</span></span>
-<span id="cb179-9"><a href="tests-as-models.html#cb179-9" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000000000000000000000000001235195</span></span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="tests-as-models.html#cb187-1" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.R, <span class="at">mu =</span> <span class="dv">3</span>)<span class="sc">$</span>statistic</span>
+<span id="cb187-2"><a href="tests-as-models.html#cb187-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
+<span id="cb187-3"><a href="tests-as-models.html#cb187-3" tabindex="-1"></a><span class="co">#&gt; -20.70382</span></span>
+<span id="cb187-4"><a href="tests-as-models.html#cb187-4" tabindex="-1"></a></span>
+<span id="cb187-5"><a href="tests-as-models.html#cb187-5" tabindex="-1"></a><span class="fu">lm</span>(<span class="fu">I</span>(Background.in.R <span class="sc">-</span> <span class="dv">3</span>) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
+<span id="cb187-6"><a href="tests-as-models.html#cb187-6" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error   t value</span></span>
+<span id="cb187-7"><a href="tests-as-models.html#cb187-7" tabindex="-1"></a><span class="co">#&gt; (Intercept) -1.253219 0.06053082 -20.70382</span></span>
+<span id="cb187-8"><a href="tests-as-models.html#cb187-8" tabindex="-1"></a><span class="co">#&gt;                                                                   Pr(&gt;|t|)</span></span>
+<span id="cb187-9"><a href="tests-as-models.html#cb187-9" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000000000000000000000000001235195</span></span></code></pre></div>
 <p>Identical to four decimal places, because they are the same computation. The intercept of <code>y ~ 1</code> is the mean; its standard error is <span class="math inline">\(sd(y)/\sqrt{n}\)</span>; the ratio is Gosset's <span class="math inline">\(t\)</span>. What the t-test calls "testing against <span class="math inline">\(\mu_0\)</span>" the regression calls "is the intercept zero", and every regression table you will ever read tests exactly that for every coefficient it prints.</p>
 </div>
 <div id="tm-paired" class="section level3 hasAnchor" number="6.9.3">
 <h3><span class="header-section-number">6.9.3</span> A paired test is a one-sample test on differences<a href="tests-as-models.html#tm-paired" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Section <a href="comparing-means.html#cm-paired">5.2.6</a> already made this point without the vocabulary: pairing is subtraction. Build the differences and fit the emptiest model there is.</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="tests-as-models.html#cb180-1" tabindex="-1"></a>differences <span class="ot">&lt;-</span> coursedata<span class="sc">$</span>Background.in.Statistics <span class="sc">-</span> coursedata<span class="sc">$</span>Background.in.R</span>
-<span id="cb180-2"><a href="tests-as-models.html#cb180-2" tabindex="-1"></a></span>
-<span id="cb180-3"><a href="tests-as-models.html#cb180-3" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.Statistics,</span>
-<span id="cb180-4"><a href="tests-as-models.html#cb180-4" tabindex="-1"></a>       coursedata<span class="sc">$</span>Background.in.R, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
-<span id="cb180-5"><a href="tests-as-models.html#cb180-5" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
-<span id="cb180-6"><a href="tests-as-models.html#cb180-6" tabindex="-1"></a><span class="co">#&gt; 14.09961</span></span>
-<span id="cb180-7"><a href="tests-as-models.html#cb180-7" tabindex="-1"></a></span>
-<span id="cb180-8"><a href="tests-as-models.html#cb180-8" tabindex="-1"></a><span class="fu">lm</span>(differences <span class="sc">~</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
-<span id="cb180-9"><a href="tests-as-models.html#cb180-9" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error  t value</span></span>
-<span id="cb180-10"><a href="tests-as-models.html#cb180-10" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.9098712 0.06453166 14.09961</span></span>
-<span id="cb180-11"><a href="tests-as-models.html#cb180-11" tabindex="-1"></a><span class="co">#&gt;                                              Pr(&gt;|t|)</span></span>
-<span id="cb180-12"><a href="tests-as-models.html#cb180-12" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000005072945</span></span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="tests-as-models.html#cb188-1" tabindex="-1"></a>differences <span class="ot">&lt;-</span> coursedata<span class="sc">$</span>Background.in.Statistics <span class="sc">-</span> coursedata<span class="sc">$</span>Background.in.R</span>
+<span id="cb188-2"><a href="tests-as-models.html#cb188-2" tabindex="-1"></a></span>
+<span id="cb188-3"><a href="tests-as-models.html#cb188-3" tabindex="-1"></a><span class="fu">t.test</span>(coursedata<span class="sc">$</span>Background.in.Statistics,</span>
+<span id="cb188-4"><a href="tests-as-models.html#cb188-4" tabindex="-1"></a>       coursedata<span class="sc">$</span>Background.in.R, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
+<span id="cb188-5"><a href="tests-as-models.html#cb188-5" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
+<span id="cb188-6"><a href="tests-as-models.html#cb188-6" tabindex="-1"></a><span class="co">#&gt; 14.09961</span></span>
+<span id="cb188-7"><a href="tests-as-models.html#cb188-7" tabindex="-1"></a></span>
+<span id="cb188-8"><a href="tests-as-models.html#cb188-8" tabindex="-1"></a><span class="fu">lm</span>(differences <span class="sc">~</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
+<span id="cb188-9"><a href="tests-as-models.html#cb188-9" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error  t value</span></span>
+<span id="cb188-10"><a href="tests-as-models.html#cb188-10" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.9098712 0.06453166 14.09961</span></span>
+<span id="cb188-11"><a href="tests-as-models.html#cb188-11" tabindex="-1"></a><span class="co">#&gt;                                              Pr(&gt;|t|)</span></span>
+<span id="cb188-12"><a href="tests-as-models.html#cb188-12" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000005072945</span></span></code></pre></div>
 <p>Both give <span class="math inline">\(t = 14.10\)</span>. The paired t-test was never a separate test — it is <code>y ~ 1</code> applied to a column you constructed.</p>
 </div>
 <div id="tm-two-sample" class="section level3 hasAnchor" number="6.9.4">
 <h3><span class="header-section-number">6.9.4</span> Two groups is a dummy variable<a href="tests-as-models.html#tm-two-sample" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is the equivalence that section <a href="comparing-means.html#comparing-means">5.2</a> promised and deferred. Male students in this course are older than female students. The classical test and the regression:</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="tests-as-models.html#cb181-1" tabindex="-1"></a><span class="fu">t.test</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
-<span id="cb181-2"><a href="tests-as-models.html#cb181-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
-<span id="cb181-3"><a href="tests-as-models.html#cb181-3" tabindex="-1"></a><span class="co">#&gt; -2.329451</span></span>
-<span id="cb181-4"><a href="tests-as-models.html#cb181-4" tabindex="-1"></a></span>
-<span id="cb181-5"><a href="tests-as-models.html#cb181-5" tabindex="-1"></a><span class="fu">lm</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb181-6"><a href="tests-as-models.html#cb181-6" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb181-7"><a href="tests-as-models.html#cb181-7" tabindex="-1"></a><span class="co">#&gt; (Intercept)   24.500      0.332  73.721    0.000</span></span>
-<span id="cb181-8"><a href="tests-as-models.html#cb181-8" tabindex="-1"></a><span class="co">#&gt; GenderMale     1.122      0.481   2.329    0.021</span></span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="tests-as-models.html#cb189-1" tabindex="-1"></a><span class="fu">t.test</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
+<span id="cb189-2"><a href="tests-as-models.html#cb189-2" tabindex="-1"></a><span class="co">#&gt;         t </span></span>
+<span id="cb189-3"><a href="tests-as-models.html#cb189-3" tabindex="-1"></a><span class="co">#&gt; -2.329451</span></span>
+<span id="cb189-4"><a href="tests-as-models.html#cb189-4" tabindex="-1"></a></span>
+<span id="cb189-5"><a href="tests-as-models.html#cb189-5" tabindex="-1"></a><span class="fu">lm</span>(Age <span class="sc">~</span> Gender, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb189-6"><a href="tests-as-models.html#cb189-6" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb189-7"><a href="tests-as-models.html#cb189-7" tabindex="-1"></a><span class="co">#&gt; (Intercept)   24.500      0.332  73.721    0.000</span></span>
+<span id="cb189-8"><a href="tests-as-models.html#cb189-8" tabindex="-1"></a><span class="co">#&gt; GenderMale     1.122      0.481   2.329    0.021</span></span></code></pre></div>
 <p>Both report <span class="math inline">\(|t| = 2.33\)</span>; the sign differs only because R's dummy coding takes <code>Female</code> as the reference and measures the <em>male</em> effect, whereas the t-test subtracts in the other order.</p>
 <p>Read the coefficients as the chapter taught you to. The intercept, 24.500, is the mean age of the reference group — the women. The slope on <code>GenderMale</code>, 1.122, is <em>not</em> the mean age of men but the <strong>difference</strong> between the groups: men average <span class="math inline">\(24.500 + 1.122 = 25.622\)</span> years. A dummy variable turns a group label into a number, and once it is a number the regression machinery does not care that it only takes two values.</p>
 <p>There is a third name for this same number, and it is worth collecting. If you code gender 0/1 and correlate it with age, you get what psychometricians call a <strong>point-biserial correlation</strong> — presented in many textbooks as a separate coefficient with its own formula:</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="tests-as-models.html#cb182-1" tabindex="-1"></a>male <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(coursedata<span class="sc">$</span>Gender <span class="sc">==</span> <span class="st">&quot;Male&quot;</span>)</span>
-<span id="cb182-2"><a href="tests-as-models.html#cb182-2" tabindex="-1"></a></span>
-<span id="cb182-3"><a href="tests-as-models.html#cb182-3" tabindex="-1"></a><span class="fu">cor</span>(coursedata<span class="sc">$</span>Age, male)                      <span class="co"># &quot;point-biserial correlation&quot;</span></span>
-<span id="cb182-4"><a href="tests-as-models.html#cb182-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.1514976</span></span>
-<span id="cb182-5"><a href="tests-as-models.html#cb182-5" tabindex="-1"></a><span class="fu">cor.test</span>(coursedata<span class="sc">$</span>Age, male)<span class="sc">$</span>statistic       <span class="co"># its significance test</span></span>
-<span id="cb182-6"><a href="tests-as-models.html#cb182-6" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
-<span id="cb182-7"><a href="tests-as-models.html#cb182-7" tabindex="-1"></a><span class="co">#&gt; 2.329451</span></span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="tests-as-models.html#cb190-1" tabindex="-1"></a>male <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(coursedata<span class="sc">$</span>Gender <span class="sc">==</span> <span class="st">&quot;Male&quot;</span>)</span>
+<span id="cb190-2"><a href="tests-as-models.html#cb190-2" tabindex="-1"></a></span>
+<span id="cb190-3"><a href="tests-as-models.html#cb190-3" tabindex="-1"></a><span class="fu">cor</span>(coursedata<span class="sc">$</span>Age, male)                      <span class="co"># &quot;point-biserial correlation&quot;</span></span>
+<span id="cb190-4"><a href="tests-as-models.html#cb190-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.1514976</span></span>
+<span id="cb190-5"><a href="tests-as-models.html#cb190-5" tabindex="-1"></a><span class="fu">cor.test</span>(coursedata<span class="sc">$</span>Age, male)<span class="sc">$</span>statistic       <span class="co"># its significance test</span></span>
+<span id="cb190-6"><a href="tests-as-models.html#cb190-6" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
+<span id="cb190-7"><a href="tests-as-models.html#cb190-7" tabindex="-1"></a><span class="co">#&gt; 2.329451</span></span></code></pre></div>
 <p><span class="math inline">\(r = 0.152\)</span>, and <span class="math inline">\(t = 2.329\)</span> — the same <span class="math inline">\(t\)</span> as the two-sample test and the same <span class="math inline">\(t\)</span> as the regression slope. Three names, three formulas in three textbooks, one number. The point-biserial correlation is not a special coefficient for binary variables; it is Pearson's correlation, which never cared how many values your variable took.</p>
 <div class="analysis-warning">
 <p>Note <code>var.equal = TRUE</code>. Ordinary least squares assumes one common error variance across the whole model, so it reproduces <strong>Student's</strong> t-test, not Welch's. If the groups genuinely differ in spread, the regression inherits the same problem the classical test had, and the fix is the same: model the variances (<code>nlme::gls</code> with <code>weights = varIdent(form = ~1|G)</code>), or use robust standard errors.</p>
@@ -473,57 +474,57 @@ The complaint that motivated this section
 <div id="tm-correlation" class="section level3 hasAnchor" number="6.9.5">
 <h3><span class="header-section-number">6.9.5</span> Correlation is a slope<a href="tests-as-models.html#tm-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Section <a href="relationships.html#relationships">5.1</a> tested whether age and total semesters move together. A correlation test and a regression of one on the other:</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="tests-as-models.html#cb183-1" tabindex="-1"></a><span class="fu">cor.test</span>(coursedata<span class="sc">$</span>Age, coursedata<span class="sc">$</span>Total.Semesters)<span class="sc">$</span>statistic</span>
-<span id="cb183-2"><a href="tests-as-models.html#cb183-2" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
-<span id="cb183-3"><a href="tests-as-models.html#cb183-3" tabindex="-1"></a><span class="co">#&gt; 1.726396</span></span>
-<span id="cb183-4"><a href="tests-as-models.html#cb183-4" tabindex="-1"></a></span>
-<span id="cb183-5"><a href="tests-as-models.html#cb183-5" tabindex="-1"></a><span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">4</span>)</span>
-<span id="cb183-6"><a href="tests-as-models.html#cb183-6" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb183-7"><a href="tests-as-models.html#cb183-7" tabindex="-1"></a><span class="co">#&gt; (Intercept)   4.8751     1.5282  3.1902   0.0016</span></span>
-<span id="cb183-8"><a href="tests-as-models.html#cb183-8" tabindex="-1"></a><span class="co">#&gt; Age           0.1043     0.0604  1.7264   0.0856</span></span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="tests-as-models.html#cb191-1" tabindex="-1"></a><span class="fu">cor.test</span>(coursedata<span class="sc">$</span>Age, coursedata<span class="sc">$</span>Total.Semesters)<span class="sc">$</span>statistic</span>
+<span id="cb191-2"><a href="tests-as-models.html#cb191-2" tabindex="-1"></a><span class="co">#&gt;        t </span></span>
+<span id="cb191-3"><a href="tests-as-models.html#cb191-3" tabindex="-1"></a><span class="co">#&gt; 1.726396</span></span>
+<span id="cb191-4"><a href="tests-as-models.html#cb191-4" tabindex="-1"></a></span>
+<span id="cb191-5"><a href="tests-as-models.html#cb191-5" tabindex="-1"></a><span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>() <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb191-6"><a href="tests-as-models.html#cb191-6" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb191-7"><a href="tests-as-models.html#cb191-7" tabindex="-1"></a><span class="co">#&gt; (Intercept)   4.8751     1.5282  3.1902   0.0016</span></span>
+<span id="cb191-8"><a href="tests-as-models.html#cb191-8" tabindex="-1"></a><span class="co">#&gt; Age           0.1043     0.0604  1.7264   0.0856</span></span></code></pre></div>
 <p>Again identical: <span class="math inline">\(t = 1.7264\)</span>, <span class="math inline">\(p = 0.086\)</span>, a positive but unconvincing association. The correlation coefficient and the regression slope are different numbers — <span class="math inline">\(r = 0.113\)</span> is unit-free, the slope is in semesters per year — but they are the same <em>evidence</em>, because the slope is just the correlation rescaled by the two standard deviations. Testing "is <span class="math inline">\(r\)</span> zero" and "is the slope zero" cannot give different answers.</p>
 <p>And <strong>Spearman's</strong> rank correlation, usually taught as the non-parametric alternative with its own table of critical values, is Pearson's correlation applied to ranks. Not approximately — by definition:</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="tests-as-models.html#cb184-1" tabindex="-1"></a><span class="fu">cor</span>(coursedata<span class="sc">$</span>Age, coursedata<span class="sc">$</span>Total.Semesters, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb184-2"><a href="tests-as-models.html#cb184-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.1725886</span></span>
-<span id="cb184-3"><a href="tests-as-models.html#cb184-3" tabindex="-1"></a></span>
-<span id="cb184-4"><a href="tests-as-models.html#cb184-4" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">rank</span>(coursedata<span class="sc">$</span>Age), <span class="fu">rank</span>(coursedata<span class="sc">$</span>Total.Semesters))    <span class="co"># the same thing</span></span>
-<span id="cb184-5"><a href="tests-as-models.html#cb184-5" tabindex="-1"></a><span class="co">#&gt; [1] 0.1725886</span></span>
-<span id="cb184-6"><a href="tests-as-models.html#cb184-6" tabindex="-1"></a></span>
-<span id="cb184-7"><a href="tests-as-models.html#cb184-7" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">rank</span>(Total.Semesters) <span class="sc">~</span> <span class="fu">rank</span>(Age), <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, ]</span>
-<span id="cb184-8"><a href="tests-as-models.html#cb184-8" tabindex="-1"></a><span class="co">#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) </span></span>
-<span id="cb184-9"><a href="tests-as-models.html#cb184-9" tabindex="-1"></a><span class="co">#&gt; 0.172641858 0.064827830 2.663082469 0.008287573</span></span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="tests-as-models.html#cb192-1" tabindex="-1"></a><span class="fu">cor</span>(coursedata<span class="sc">$</span>Age, coursedata<span class="sc">$</span>Total.Semesters, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb192-2"><a href="tests-as-models.html#cb192-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.1725886</span></span>
+<span id="cb192-3"><a href="tests-as-models.html#cb192-3" tabindex="-1"></a></span>
+<span id="cb192-4"><a href="tests-as-models.html#cb192-4" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">rank</span>(coursedata<span class="sc">$</span>Age), <span class="fu">rank</span>(coursedata<span class="sc">$</span>Total.Semesters))    <span class="co"># the same thing</span></span>
+<span id="cb192-5"><a href="tests-as-models.html#cb192-5" tabindex="-1"></a><span class="co">#&gt; [1] 0.1725886</span></span>
+<span id="cb192-6"><a href="tests-as-models.html#cb192-6" tabindex="-1"></a></span>
+<span id="cb192-7"><a href="tests-as-models.html#cb192-7" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">rank</span>(Total.Semesters) <span class="sc">~</span> <span class="fu">rank</span>(Age), <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, ]</span>
+<span id="cb192-8"><a href="tests-as-models.html#cb192-8" tabindex="-1"></a><span class="co">#&gt;    Estimate  Std. Error     t value    Pr(&gt;|t|) </span></span>
+<span id="cb192-9"><a href="tests-as-models.html#cb192-9" tabindex="-1"></a><span class="co">#&gt; 0.172641858 0.064827830 2.663082469 0.008287573</span></span></code></pre></div>
 <p>All three give <span class="math inline">\(\rho = 0.1726\)</span>, and the regression on ranks returns <span class="math inline">\(p = 0.0083\)</span> — which is exactly what <code>cor.test(..., method = "spearman")</code> reports.</p>
 <p>Notice that Spearman finds the association (<span class="math inline">\(p = 0.008\)</span>) where Pearson did not (<span class="math inline">\(p = 0.086\)</span>). Ranking removed the leverage of a handful of very old students with unusual semester counts. When the two disagree, the disagreement is a fact about outliers, and worth a scatterplot before it is worth a decision.</p>
 </div>
 <div id="tm-anova" class="section level3 hasAnchor" number="6.9.6">
 <h3><span class="header-section-number">6.9.6</span> Many groups is many dummies<a href="tests-as-models.html#tm-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The step from two groups to seven changes nothing structurally. Our students arrive across seven terms; do the cohorts differ in age?</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="tests-as-models.html#cb185-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))[[<span class="dv">1</span>]][<span class="dv">1</span>, <span class="dv">4</span>]   <span class="co"># F from aov()</span></span>
-<span id="cb185-2"><a href="tests-as-models.html#cb185-2" tabindex="-1"></a><span class="co">#&gt; [1] 2.153487</span></span>
-<span id="cb185-3"><a href="tests-as-models.html#cb185-3" tabindex="-1"></a></span>
-<span id="cb185-4"><a href="tests-as-models.html#cb185-4" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))<span class="sc">$</span>fstatistic[<span class="dv">1</span>] <span class="co"># F from lm()</span></span>
-<span id="cb185-5"><a href="tests-as-models.html#cb185-5" tabindex="-1"></a><span class="co">#&gt;    value </span></span>
-<span id="cb185-6"><a href="tests-as-models.html#cb185-6" tabindex="-1"></a><span class="co">#&gt; 2.153487</span></span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="tests-as-models.html#cb193-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))[[<span class="dv">1</span>]][<span class="dv">1</span>, <span class="dv">4</span>]   <span class="co"># F from aov()</span></span>
+<span id="cb193-2"><a href="tests-as-models.html#cb193-2" tabindex="-1"></a><span class="co">#&gt; [1] 2.153487</span></span>
+<span id="cb193-3"><a href="tests-as-models.html#cb193-3" tabindex="-1"></a></span>
+<span id="cb193-4"><a href="tests-as-models.html#cb193-4" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))<span class="sc">$</span>fstatistic[<span class="dv">1</span>] <span class="co"># F from lm()</span></span>
+<span id="cb193-5"><a href="tests-as-models.html#cb193-5" tabindex="-1"></a><span class="co">#&gt;    value </span></span>
+<span id="cb193-6"><a href="tests-as-models.html#cb193-6" tabindex="-1"></a><span class="co">#&gt; 2.153487</span></span></code></pre></div>
 <p><span class="math inline">\(F = 2.15\)</span> on both sides, <span class="math inline">\(p = 0.049\)</span> — a whisker under the conventional threshold, which is a fine reminder of the last box in section <a href="comparing-means.html#cm-threshold">5.2.3.3</a>. Behind the scenes <code>lm()</code> created six dummy variables for the seven terms, and the F-statistic asks whether all six slopes are zero at once. That is precisely the question ANOVA's F-test asks. The two functions print different tables because they were written for different audiences, not because they compute different things.</p>
 <p>Adding a continuous variable to the same formula turns it into ANCOVA, which is why section <a href="partitioning-variation.html#partitioning-variation">5.3</a> could hand the dog-size effects to a height covariate without changing tools. <code>aov(y ~ G + x)</code> and <code>lm(y ~ G + x)</code> are one model.</p>
 <div id="tm-trend" class="section level4 hasAnchor" number="6.9.6.1">
 <h4><span class="header-section-number">6.9.6.1</span> Spending degrees of freedom on the right question<a href="tests-as-models.html#tm-trend" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Once groups are dummies, a new option appears that the ANOVA framing hides. Our seven terms are not just seven categories — they are <em>ordered in time</em>. Treating them as an unordered factor spends six degrees of freedom asking "are these cohorts different in any way at all?" Treating the term as a number spends <strong>one</strong>, asking the sharper question: "have students been getting older over the years?"</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="tests-as-models.html#cb186-1" tabindex="-1"></a>chrono <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;SS 2020&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;WS 2020 2021&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;SS 2021&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;SS 2022&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
-<span id="cb186-2"><a href="tests-as-models.html#cb186-2" tabindex="-1"></a>            <span class="st">&quot;WS 2022 2023&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, <span class="st">&quot;SS 2023&quot;</span> <span class="ot">=</span> <span class="dv">6</span>, <span class="st">&quot;WS 2023 2024&quot;</span> <span class="ot">=</span> <span class="dv">7</span>)</span>
-<span id="cb186-3"><a href="tests-as-models.html#cb186-3" tabindex="-1"></a>coursedata<span class="sc">$</span>term_number <span class="ot">&lt;-</span> chrono[coursedata<span class="sc">$</span>Term]</span>
-<span id="cb186-4"><a href="tests-as-models.html#cb186-4" tabindex="-1"></a></span>
-<span id="cb186-5"><a href="tests-as-models.html#cb186-5" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> term_number, <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, ]   <span class="co"># 1 df: a trend</span></span>
-<span id="cb186-6"><a href="tests-as-models.html#cb186-6" tabindex="-1"></a><span class="co">#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) </span></span>
-<span id="cb186-7"><a href="tests-as-models.html#cb186-7" tabindex="-1"></a><span class="co">#&gt; 0.03540844 0.12919862 0.27406206 0.78428184</span></span>
-<span id="cb186-8"><a href="tests-as-models.html#cb186-8" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))[<span class="dv">1</span>, ]                  <span class="co"># 6 df: any difference</span></span>
-<span id="cb186-9"><a href="tests-as-models.html#cb186-9" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
-<span id="cb186-10"><a href="tests-as-models.html#cb186-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb186-11"><a href="tests-as-models.html#cb186-11" tabindex="-1"></a><span class="co">#&gt; Response: Age</span></span>
-<span id="cb186-12"><a href="tests-as-models.html#cb186-12" tabindex="-1"></a><span class="co">#&gt;      Df Sum Sq Mean Sq F value  Pr(&gt;F)  </span></span>
-<span id="cb186-13"><a href="tests-as-models.html#cb186-13" tabindex="-1"></a><span class="co">#&gt; Term  6 172.28  28.714  2.1535 0.04849 *</span></span>
-<span id="cb186-14"><a href="tests-as-models.html#cb186-14" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb186-15"><a href="tests-as-models.html#cb186-15" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="tests-as-models.html#cb194-1" tabindex="-1"></a>chrono <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;SS 2020&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;WS 2020 2021&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;SS 2021&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;SS 2022&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb194-2"><a href="tests-as-models.html#cb194-2" tabindex="-1"></a>            <span class="st">&quot;WS 2022 2023&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, <span class="st">&quot;SS 2023&quot;</span> <span class="ot">=</span> <span class="dv">6</span>, <span class="st">&quot;WS 2023 2024&quot;</span> <span class="ot">=</span> <span class="dv">7</span>)</span>
+<span id="cb194-3"><a href="tests-as-models.html#cb194-3" tabindex="-1"></a>coursedata<span class="sc">$</span>term_number <span class="ot">&lt;-</span> chrono[coursedata<span class="sc">$</span>Term]</span>
+<span id="cb194-4"><a href="tests-as-models.html#cb194-4" tabindex="-1"></a></span>
+<span id="cb194-5"><a href="tests-as-models.html#cb194-5" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> term_number, <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, ]   <span class="co"># 1 df: a trend</span></span>
+<span id="cb194-6"><a href="tests-as-models.html#cb194-6" tabindex="-1"></a><span class="co">#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) </span></span>
+<span id="cb194-7"><a href="tests-as-models.html#cb194-7" tabindex="-1"></a><span class="co">#&gt; 0.03540844 0.12919862 0.27406206 0.78428184</span></span>
+<span id="cb194-8"><a href="tests-as-models.html#cb194-8" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Age <span class="sc">~</span> Term, <span class="at">data =</span> coursedata))[<span class="dv">1</span>, ]                  <span class="co"># 6 df: any difference</span></span>
+<span id="cb194-9"><a href="tests-as-models.html#cb194-9" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb194-10"><a href="tests-as-models.html#cb194-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb194-11"><a href="tests-as-models.html#cb194-11" tabindex="-1"></a><span class="co">#&gt; Response: Age</span></span>
+<span id="cb194-12"><a href="tests-as-models.html#cb194-12" tabindex="-1"></a><span class="co">#&gt;      Df Sum Sq Mean Sq F value  Pr(&gt;F)  </span></span>
+<span id="cb194-13"><a href="tests-as-models.html#cb194-13" tabindex="-1"></a><span class="co">#&gt; Term  6 172.28  28.714  2.1535 0.04849 *</span></span>
+<span id="cb194-14"><a href="tests-as-models.html#cb194-14" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb194-15"><a href="tests-as-models.html#cb194-15" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>The results point in opposite directions, and the contrast is the lesson. The six-degree-of-freedom test is significant, <span class="math inline">\(F = 2.15\)</span>, <span class="math inline">\(p = 0.048\)</span>: the cohorts do differ. The one-degree-of-freedom trend test is nowhere near, slope <span class="math inline">\(0.035\)</span> years per term, <span class="math inline">\(p = 0.784\)</span>: they do not differ <em>in a straight line over time</em>. Cohorts vary, but not by drifting older.</p>
 <p>This is what a classical toolbox calls a "test for trend" and hands you as yet another named procedure. In the linear-model framework it is not a new test — it is a decision about how to code a variable, and coding an ordered factor as a number is often the single most powerful move available, because it aims all your evidence at one question instead of scattering it across six.</p>
 </div>
@@ -532,50 +533,50 @@ The complaint that motivated this section
 <h3><span class="header-section-number">6.9.7</span> Repeated measures: subjects are just another factor<a href="tests-as-models.html#tm-repeated" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here the framework earns its keep, because repeated-measures ANOVA is where the classical presentation becomes genuinely forbidding — <code>Error(id/condition)</code> strata, sphericity corrections, tables that nobody can read.</p>
 <p>Our data has the design built in. Each student rated three things: statistics, R, and academic writing. That is three measurements on 233 people — the paired comparison of section <a href="comparing-means.html#cm-paired">5.2.6</a>, extended from two conditions to three.</p>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="tests-as-models.html#cb187-1" tabindex="-1"></a>long <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span></span>
-<span id="cb187-2"><a href="tests-as-models.html#cb187-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(<span class="fu">row_number</span>())) <span class="sc">%&gt;%</span></span>
-<span id="cb187-3"><a href="tests-as-models.html#cb187-3" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="at">Statistics =</span> Background.in.Statistics,</span>
-<span id="cb187-4"><a href="tests-as-models.html#cb187-4" tabindex="-1"></a>             <span class="at">R          =</span> Background.in.R,</span>
-<span id="cb187-5"><a href="tests-as-models.html#cb187-5" tabindex="-1"></a>             <span class="at">Writing    =</span> Background.in.Academic.Writing) <span class="sc">%&gt;%</span></span>
-<span id="cb187-6"><a href="tests-as-models.html#cb187-6" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>id, <span class="at">names_to =</span> <span class="st">&quot;Skill&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Rating&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb187-7"><a href="tests-as-models.html#cb187-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Skill =</span> <span class="fu">factor</span>(Skill))</span>
-<span id="cb187-8"><a href="tests-as-models.html#cb187-8" tabindex="-1"></a></span>
-<span id="cb187-9"><a href="tests-as-models.html#cb187-9" tabindex="-1"></a><span class="fu">head</span>(long, <span class="dv">4</span>)</span>
-<span id="cb187-10"><a href="tests-as-models.html#cb187-10" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
-<span id="cb187-11"><a href="tests-as-models.html#cb187-11" tabindex="-1"></a><span class="co">#&gt;   id    Skill      Rating</span></span>
-<span id="cb187-12"><a href="tests-as-models.html#cb187-12" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
-<span id="cb187-13"><a href="tests-as-models.html#cb187-13" tabindex="-1"></a><span class="co">#&gt; 1 1     Statistics      3</span></span>
-<span id="cb187-14"><a href="tests-as-models.html#cb187-14" tabindex="-1"></a><span class="co">#&gt; 2 1     R               1</span></span>
-<span id="cb187-15"><a href="tests-as-models.html#cb187-15" tabindex="-1"></a><span class="co">#&gt; 3 1     Writing         3</span></span>
-<span id="cb187-16"><a href="tests-as-models.html#cb187-16" tabindex="-1"></a><span class="co">#&gt; 4 2     Statistics      3</span></span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="tests-as-models.html#cb195-1" tabindex="-1"></a>long <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span></span>
+<span id="cb195-2"><a href="tests-as-models.html#cb195-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">factor</span>(<span class="fu">row_number</span>())) <span class="sc">%&gt;%</span></span>
+<span id="cb195-3"><a href="tests-as-models.html#cb195-3" tabindex="-1"></a>  <span class="fu">select</span>(id, <span class="at">Statistics =</span> Background.in.Statistics,</span>
+<span id="cb195-4"><a href="tests-as-models.html#cb195-4" tabindex="-1"></a>             <span class="at">R          =</span> Background.in.R,</span>
+<span id="cb195-5"><a href="tests-as-models.html#cb195-5" tabindex="-1"></a>             <span class="at">Writing    =</span> Background.in.Academic.Writing) <span class="sc">%&gt;%</span></span>
+<span id="cb195-6"><a href="tests-as-models.html#cb195-6" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>id, <span class="at">names_to =</span> <span class="st">&quot;Skill&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Rating&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb195-7"><a href="tests-as-models.html#cb195-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Skill =</span> <span class="fu">factor</span>(Skill))</span>
+<span id="cb195-8"><a href="tests-as-models.html#cb195-8" tabindex="-1"></a></span>
+<span id="cb195-9"><a href="tests-as-models.html#cb195-9" tabindex="-1"></a><span class="fu">head</span>(long, <span class="dv">4</span>)</span>
+<span id="cb195-10"><a href="tests-as-models.html#cb195-10" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span id="cb195-11"><a href="tests-as-models.html#cb195-11" tabindex="-1"></a><span class="co">#&gt;   id    Skill      Rating</span></span>
+<span id="cb195-12"><a href="tests-as-models.html#cb195-12" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;</span></span>
+<span id="cb195-13"><a href="tests-as-models.html#cb195-13" tabindex="-1"></a><span class="co">#&gt; 1 1     Statistics      3</span></span>
+<span id="cb195-14"><a href="tests-as-models.html#cb195-14" tabindex="-1"></a><span class="co">#&gt; 2 1     R               1</span></span>
+<span id="cb195-15"><a href="tests-as-models.html#cb195-15" tabindex="-1"></a><span class="co">#&gt; 3 1     Writing         3</span></span>
+<span id="cb195-16"><a href="tests-as-models.html#cb195-16" tabindex="-1"></a><span class="co">#&gt; 4 2     Statistics      3</span></span></code></pre></div>
 <p>Now the two ways of asking whether the three ratings differ:</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="tests-as-models.html#cb188-1" tabindex="-1"></a><span class="co"># the classical incantation</span></span>
-<span id="cb188-2"><a href="tests-as-models.html#cb188-2" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Rating <span class="sc">~</span> Skill <span class="sc">+</span> <span class="fu">Error</span>(id <span class="sc">/</span> Skill), <span class="at">data =</span> long))</span>
-<span id="cb188-3"><a href="tests-as-models.html#cb188-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb188-4"><a href="tests-as-models.html#cb188-4" tabindex="-1"></a><span class="co">#&gt; Error: id</span></span>
-<span id="cb188-5"><a href="tests-as-models.html#cb188-5" tabindex="-1"></a><span class="co">#&gt;            Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
-<span id="cb188-6"><a href="tests-as-models.html#cb188-6" tabindex="-1"></a><span class="co">#&gt; Residuals 232  419.2   1.807               </span></span>
-<span id="cb188-7"><a href="tests-as-models.html#cb188-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb188-8"><a href="tests-as-models.html#cb188-8" tabindex="-1"></a><span class="co">#&gt; Error: id:Skill</span></span>
-<span id="cb188-9"><a href="tests-as-models.html#cb188-9" tabindex="-1"></a><span class="co">#&gt;            Df Sum Sq Mean Sq F value              Pr(&gt;F)    </span></span>
-<span id="cb188-10"><a href="tests-as-models.html#cb188-10" tabindex="-1"></a><span class="co">#&gt; Skill       2  164.3   82.15     105 &lt;0.0000000000000002 ***</span></span>
-<span id="cb188-11"><a href="tests-as-models.html#cb188-11" tabindex="-1"></a><span class="co">#&gt; Residuals 464  363.0    0.78                                </span></span>
-<span id="cb188-12"><a href="tests-as-models.html#cb188-12" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb188-13"><a href="tests-as-models.html#cb188-13" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb188-14"><a href="tests-as-models.html#cb188-14" tabindex="-1"></a></span>
-<span id="cb188-15"><a href="tests-as-models.html#cb188-15" tabindex="-1"></a><span class="co"># a linear model with the student as a factor</span></span>
-<span id="cb188-16"><a href="tests-as-models.html#cb188-16" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Rating <span class="sc">~</span> Skill <span class="sc">+</span> id, <span class="at">data =</span> long))[<span class="st">&quot;Skill&quot;</span>, ]</span>
-<span id="cb188-17"><a href="tests-as-models.html#cb188-17" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
-<span id="cb188-18"><a href="tests-as-models.html#cb188-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb188-19"><a href="tests-as-models.html#cb188-19" tabindex="-1"></a><span class="co">#&gt; Response: Rating</span></span>
-<span id="cb188-20"><a href="tests-as-models.html#cb188-20" tabindex="-1"></a><span class="co">#&gt;       Df Sum Sq Mean Sq F value                Pr(&gt;F)    </span></span>
-<span id="cb188-21"><a href="tests-as-models.html#cb188-21" tabindex="-1"></a><span class="co">#&gt; Skill  2  164.3  82.152     105 &lt; 0.00000000000000022 ***</span></span>
-<span id="cb188-22"><a href="tests-as-models.html#cb188-22" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb188-23"><a href="tests-as-models.html#cb188-23" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="tests-as-models.html#cb196-1" tabindex="-1"></a><span class="co"># the classical incantation</span></span>
+<span id="cb196-2"><a href="tests-as-models.html#cb196-2" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Rating <span class="sc">~</span> Skill <span class="sc">+</span> <span class="fu">Error</span>(id <span class="sc">/</span> Skill), <span class="at">data =</span> long))</span>
+<span id="cb196-3"><a href="tests-as-models.html#cb196-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb196-4"><a href="tests-as-models.html#cb196-4" tabindex="-1"></a><span class="co">#&gt; Error: id</span></span>
+<span id="cb196-5"><a href="tests-as-models.html#cb196-5" tabindex="-1"></a><span class="co">#&gt;            Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span id="cb196-6"><a href="tests-as-models.html#cb196-6" tabindex="-1"></a><span class="co">#&gt; Residuals 232  419.2   1.807               </span></span>
+<span id="cb196-7"><a href="tests-as-models.html#cb196-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb196-8"><a href="tests-as-models.html#cb196-8" tabindex="-1"></a><span class="co">#&gt; Error: id:Skill</span></span>
+<span id="cb196-9"><a href="tests-as-models.html#cb196-9" tabindex="-1"></a><span class="co">#&gt;            Df Sum Sq Mean Sq F value              Pr(&gt;F)    </span></span>
+<span id="cb196-10"><a href="tests-as-models.html#cb196-10" tabindex="-1"></a><span class="co">#&gt; Skill       2  164.3   82.15     105 &lt;0.0000000000000002 ***</span></span>
+<span id="cb196-11"><a href="tests-as-models.html#cb196-11" tabindex="-1"></a><span class="co">#&gt; Residuals 464  363.0    0.78                                </span></span>
+<span id="cb196-12"><a href="tests-as-models.html#cb196-12" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb196-13"><a href="tests-as-models.html#cb196-13" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb196-14"><a href="tests-as-models.html#cb196-14" tabindex="-1"></a></span>
+<span id="cb196-15"><a href="tests-as-models.html#cb196-15" tabindex="-1"></a><span class="co"># a linear model with the student as a factor</span></span>
+<span id="cb196-16"><a href="tests-as-models.html#cb196-16" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Rating <span class="sc">~</span> Skill <span class="sc">+</span> id, <span class="at">data =</span> long))[<span class="st">&quot;Skill&quot;</span>, ]</span>
+<span id="cb196-17"><a href="tests-as-models.html#cb196-17" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb196-18"><a href="tests-as-models.html#cb196-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb196-19"><a href="tests-as-models.html#cb196-19" tabindex="-1"></a><span class="co">#&gt; Response: Rating</span></span>
+<span id="cb196-20"><a href="tests-as-models.html#cb196-20" tabindex="-1"></a><span class="co">#&gt;       Df Sum Sq Mean Sq F value                Pr(&gt;F)    </span></span>
+<span id="cb196-21"><a href="tests-as-models.html#cb196-21" tabindex="-1"></a><span class="co">#&gt; Skill  2  164.3  82.152     105 &lt; 0.00000000000000022 ***</span></span>
+<span id="cb196-22"><a href="tests-as-models.html#cb196-22" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb196-23"><a href="tests-as-models.html#cb196-23" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p><span class="math inline">\(F = 105.0\)</span> on 2 and 464 degrees of freedom, both ways. The <code>Error(id/Skill)</code> stratum that makes repeated-measures ANOVA look like a separate branch of statistics is doing one thing: giving every student their own intercept. Written as <code>+ id</code> in a formula, it stops being mysterious.</p>
 <p>And it matters enormously, exactly as pairing mattered in section <a href="comparing-means.html#cm-paired-vs-unpaired">5.2.6.1</a>:</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="tests-as-models.html#cb189-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Rating <span class="sc">~</span> Skill, <span class="at">data =</span> long))[<span class="st">&quot;Skill&quot;</span>, <span class="st">&quot;F value&quot;</span>]   <span class="co"># ignoring the student</span></span>
-<span id="cb189-2"><a href="tests-as-models.html#cb189-2" tabindex="-1"></a><span class="co">#&gt; [1] 73.09861</span></span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="tests-as-models.html#cb197-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(Rating <span class="sc">~</span> Skill, <span class="at">data =</span> long))[<span class="st">&quot;Skill&quot;</span>, <span class="st">&quot;F value&quot;</span>]   <span class="co"># ignoring the student</span></span>
+<span id="cb197-2"><a href="tests-as-models.html#cb197-2" tabindex="-1"></a><span class="co">#&gt; [1] 73.09861</span></span></code></pre></div>
 <p><span class="math inline">\(F = 73.1\)</span> instead of <span class="math inline">\(105.0\)</span>. Throwing away the student identifier throws away the fact that the same person produced three of the numbers, and the F-statistic drops by a third. This is the paired t-test's lesson generalised: <strong>whenever the same unit appears more than once, its identity belongs in the model.</strong> With two conditions we called it pairing; with three we call it repeated measures; with many periods and many units we call it panel data (chapter <a href="tabular-data.html#panel-data">2.1.1.4</a>) and the term for <code>+ id</code> becomes <em>fixed effects</em>. Same move every time.</p>
 <div class="analysis-note">
 <p>One honest limitation. <code>lm(y ~ C + id)</code> reproduces the F-test for the condition, which is what people usually want. It does not reproduce everything a dedicated repeated-measures routine offers — sphericity corrections such as Greenhouse-Geisser, or unbalanced designs with missing cells, which are better served by a mixed model (<code>lme4::lmer(y ~ C + (1|id))</code>). The mixed model is the honest generalisation; treating the subject as a fixed factor is the version that shows you what is going on.</p>
@@ -584,54 +585,54 @@ The complaint that motivated this section
 <div id="tm-levene" class="section level3 hasAnchor" number="6.9.8">
 <h3><span class="header-section-number">6.9.8</span> Even the assumption checks are models<a href="tests-as-models.html#tm-levene" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Section <a href="partitioning-variation.html#partitioning-variation">5.3</a> used tests that compare <em>spreads</em> rather than means, and they look like a different family entirely. They are not. <strong>Levene's test</strong> — and its more robust cousin, the Brown-Forsythe test — is defined as an ordinary ANOVA run on the absolute deviations from each group's centre. Not approximately: that is the definition.</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="tests-as-models.html#cb190-1" tabindex="-1"></a>spread <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span></span>
-<span id="cb190-2"><a href="tests-as-models.html#cb190-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Term) <span class="sc">%&gt;%</span></span>
-<span id="cb190-3"><a href="tests-as-models.html#cb190-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">abs_dev =</span> <span class="fu">abs</span>(Age <span class="sc">-</span> <span class="fu">median</span>(Age))) <span class="sc">%&gt;%</span>   <span class="co"># distance from your group&#39;s centre</span></span>
-<span id="cb190-4"><a href="tests-as-models.html#cb190-4" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb190-5"><a href="tests-as-models.html#cb190-5" tabindex="-1"></a></span>
-<span id="cb190-6"><a href="tests-as-models.html#cb190-6" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(abs_dev <span class="sc">~</span> Term, <span class="at">data =</span> spread))[<span class="dv">1</span>, ]</span>
-<span id="cb190-7"><a href="tests-as-models.html#cb190-7" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
-<span id="cb190-8"><a href="tests-as-models.html#cb190-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb190-9"><a href="tests-as-models.html#cb190-9" tabindex="-1"></a><span class="co">#&gt; Response: abs_dev</span></span>
-<span id="cb190-10"><a href="tests-as-models.html#cb190-10" tabindex="-1"></a><span class="co">#&gt;      Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
-<span id="cb190-11"><a href="tests-as-models.html#cb190-11" tabindex="-1"></a><span class="co">#&gt; Term  6 14.578  2.4296  0.3726  0.896</span></span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="tests-as-models.html#cb198-1" tabindex="-1"></a>spread <span class="ot">&lt;-</span> coursedata <span class="sc">%&gt;%</span></span>
+<span id="cb198-2"><a href="tests-as-models.html#cb198-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Term) <span class="sc">%&gt;%</span></span>
+<span id="cb198-3"><a href="tests-as-models.html#cb198-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">abs_dev =</span> <span class="fu">abs</span>(Age <span class="sc">-</span> <span class="fu">median</span>(Age))) <span class="sc">%&gt;%</span>   <span class="co"># distance from your group&#39;s centre</span></span>
+<span id="cb198-4"><a href="tests-as-models.html#cb198-4" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb198-5"><a href="tests-as-models.html#cb198-5" tabindex="-1"></a></span>
+<span id="cb198-6"><a href="tests-as-models.html#cb198-6" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(abs_dev <span class="sc">~</span> Term, <span class="at">data =</span> spread))[<span class="dv">1</span>, ]</span>
+<span id="cb198-7"><a href="tests-as-models.html#cb198-7" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb198-8"><a href="tests-as-models.html#cb198-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb198-9"><a href="tests-as-models.html#cb198-9" tabindex="-1"></a><span class="co">#&gt; Response: abs_dev</span></span>
+<span id="cb198-10"><a href="tests-as-models.html#cb198-10" tabindex="-1"></a><span class="co">#&gt;      Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span id="cb198-11"><a href="tests-as-models.html#cb198-11" tabindex="-1"></a><span class="co">#&gt; Term  6 14.578  2.4296  0.3726  0.896</span></span></code></pre></div>
 <p><span class="math inline">\(F = 0.37\)</span>, <span class="math inline">\(p = 0.90\)</span>: no evidence that the seven cohorts differ in how spread out their ages are. The trick is worth internalising because it generalises. A question about <em>variability</em> becomes a question about <em>means</em> the moment you replace each observation by its distance from its group's centre — and questions about means are what linear models answer. If you can define your quantity of interest per observation, you can usually test it with <code>lm()</code>.</p>
 </div>
 <div id="tm-glm" class="section level3 hasAnchor" number="6.9.9">
 <h3><span class="header-section-number">6.9.9</span> One step sideways: counts and proportions<a href="tests-as-models.html#tm-glm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Two families genuinely sit outside <code>lm()</code>, because their outcomes are not continuous. But they sit only just outside: the linear predictor is the same, and only the link function and the error distribution change. This is the <strong>generalized</strong> linear model of section <a href="generalized-models.html#generalized-models">6.7</a>, and the classical tests for tables and proportions live there.</p>
 <p>Take the chi-square test of independence. Are academic level and gender related in this course?</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="tests-as-models.html#cb191-1" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(coursedata<span class="sc">$</span>Gender, coursedata<span class="sc">$</span>Academic.level)</span>
-<span id="cb191-2"><a href="tests-as-models.html#cb191-2" tabindex="-1"></a>tab</span>
-<span id="cb191-3"><a href="tests-as-models.html#cb191-3" tabindex="-1"></a><span class="co">#&gt;         </span></span>
-<span id="cb191-4"><a href="tests-as-models.html#cb191-4" tabindex="-1"></a><span class="co">#&gt;          Bachelor Master</span></span>
-<span id="cb191-5"><a href="tests-as-models.html#cb191-5" tabindex="-1"></a><span class="co">#&gt;   Female       58     64</span></span>
-<span id="cb191-6"><a href="tests-as-models.html#cb191-6" tabindex="-1"></a><span class="co">#&gt;   Male         45     66</span></span>
-<span id="cb191-7"><a href="tests-as-models.html#cb191-7" tabindex="-1"></a></span>
-<span id="cb191-8"><a href="tests-as-models.html#cb191-8" tabindex="-1"></a><span class="fu">chisq.test</span>(tab, <span class="at">correct =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>statistic     <span class="co"># Pearson&#39;s X-squared</span></span>
-<span id="cb191-9"><a href="tests-as-models.html#cb191-9" tabindex="-1"></a><span class="co">#&gt; X-squared </span></span>
-<span id="cb191-10"><a href="tests-as-models.html#cb191-10" tabindex="-1"></a><span class="co">#&gt;  1.154806</span></span>
-<span id="cb191-11"><a href="tests-as-models.html#cb191-11" tabindex="-1"></a></span>
-<span id="cb191-12"><a href="tests-as-models.html#cb191-12" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(tab) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Gender =</span> Var1, <span class="at">Level =</span> Var2, <span class="at">n =</span> Freq)</span>
-<span id="cb191-13"><a href="tests-as-models.html#cb191-13" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">glm</span>(n <span class="sc">~</span> Gender <span class="sc">+</span> Level,  <span class="at">data =</span> counts, <span class="at">family =</span> poisson),   <span class="co"># independence</span></span>
-<span id="cb191-14"><a href="tests-as-models.html#cb191-14" tabindex="-1"></a>      <span class="fu">glm</span>(n <span class="sc">~</span> Gender <span class="sc">*</span> Level,  <span class="at">data =</span> counts, <span class="at">family =</span> poisson),   <span class="co"># association</span></span>
-<span id="cb191-15"><a href="tests-as-models.html#cb191-15" tabindex="-1"></a>      <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)[<span class="dv">2</span>, ]</span>
-<span id="cb191-16"><a href="tests-as-models.html#cb191-16" tabindex="-1"></a><span class="co">#&gt; Analysis of Deviance Table</span></span>
-<span id="cb191-17"><a href="tests-as-models.html#cb191-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb191-18"><a href="tests-as-models.html#cb191-18" tabindex="-1"></a><span class="co">#&gt; Model 1: n ~ Gender + Level</span></span>
-<span id="cb191-19"><a href="tests-as-models.html#cb191-19" tabindex="-1"></a><span class="co">#&gt; Model 2: n ~ Gender * Level</span></span>
-<span id="cb191-20"><a href="tests-as-models.html#cb191-20" tabindex="-1"></a><span class="co">#&gt;   Resid. Df           Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
-<span id="cb191-21"><a href="tests-as-models.html#cb191-21" tabindex="-1"></a><span class="co">#&gt; 2         0 0.000000000000012213  1   1.1564   0.2822</span></span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="tests-as-models.html#cb199-1" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(coursedata<span class="sc">$</span>Gender, coursedata<span class="sc">$</span>Academic.level)</span>
+<span id="cb199-2"><a href="tests-as-models.html#cb199-2" tabindex="-1"></a>tab</span>
+<span id="cb199-3"><a href="tests-as-models.html#cb199-3" tabindex="-1"></a><span class="co">#&gt;         </span></span>
+<span id="cb199-4"><a href="tests-as-models.html#cb199-4" tabindex="-1"></a><span class="co">#&gt;          Bachelor Master</span></span>
+<span id="cb199-5"><a href="tests-as-models.html#cb199-5" tabindex="-1"></a><span class="co">#&gt;   Female       58     64</span></span>
+<span id="cb199-6"><a href="tests-as-models.html#cb199-6" tabindex="-1"></a><span class="co">#&gt;   Male         45     66</span></span>
+<span id="cb199-7"><a href="tests-as-models.html#cb199-7" tabindex="-1"></a></span>
+<span id="cb199-8"><a href="tests-as-models.html#cb199-8" tabindex="-1"></a><span class="fu">chisq.test</span>(tab, <span class="at">correct =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>statistic     <span class="co"># Pearson&#39;s X-squared</span></span>
+<span id="cb199-9"><a href="tests-as-models.html#cb199-9" tabindex="-1"></a><span class="co">#&gt; X-squared </span></span>
+<span id="cb199-10"><a href="tests-as-models.html#cb199-10" tabindex="-1"></a><span class="co">#&gt;  1.154806</span></span>
+<span id="cb199-11"><a href="tests-as-models.html#cb199-11" tabindex="-1"></a></span>
+<span id="cb199-12"><a href="tests-as-models.html#cb199-12" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(tab) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Gender =</span> Var1, <span class="at">Level =</span> Var2, <span class="at">n =</span> Freq)</span>
+<span id="cb199-13"><a href="tests-as-models.html#cb199-13" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">glm</span>(n <span class="sc">~</span> Gender <span class="sc">+</span> Level,  <span class="at">data =</span> counts, <span class="at">family =</span> poisson),   <span class="co"># independence</span></span>
+<span id="cb199-14"><a href="tests-as-models.html#cb199-14" tabindex="-1"></a>      <span class="fu">glm</span>(n <span class="sc">~</span> Gender <span class="sc">*</span> Level,  <span class="at">data =</span> counts, <span class="at">family =</span> poisson),   <span class="co"># association</span></span>
+<span id="cb199-15"><a href="tests-as-models.html#cb199-15" tabindex="-1"></a>      <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)[<span class="dv">2</span>, ]</span>
+<span id="cb199-16"><a href="tests-as-models.html#cb199-16" tabindex="-1"></a><span class="co">#&gt; Analysis of Deviance Table</span></span>
+<span id="cb199-17"><a href="tests-as-models.html#cb199-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb199-18"><a href="tests-as-models.html#cb199-18" tabindex="-1"></a><span class="co">#&gt; Model 1: n ~ Gender + Level</span></span>
+<span id="cb199-19"><a href="tests-as-models.html#cb199-19" tabindex="-1"></a><span class="co">#&gt; Model 2: n ~ Gender * Level</span></span>
+<span id="cb199-20"><a href="tests-as-models.html#cb199-20" tabindex="-1"></a><span class="co">#&gt;   Resid. Df           Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb199-21"><a href="tests-as-models.html#cb199-21" tabindex="-1"></a><span class="co">#&gt; 2         0 0.000000000000012213  1   1.1564   0.2822</span></span></code></pre></div>
 <p>Pearson's statistic is 1.155 and the log-linear model's likelihood-ratio statistic is 1.156, on 1 degree of freedom, <span class="math inline">\(p = 0.28\)</span> either way. No association: Bachelor and Master students are split much the same way across genders.</p>
 <p>The two numbers differ in the fourth decimal because Pearson's <span class="math inline">\(X^2\)</span> and the likelihood-ratio <span class="math inline">\(G^2\)</span> are two different approximations to the same quantity, and the Poisson model reproduces <span class="math inline">\(G^2\)</span> <strong>exactly</strong>. Reading the model rather than the test also tells you something the test cannot: the interaction <em>coefficient</em> is the log odds ratio, with a standard error and a confidence interval attached.</p>
 <p>Proportions work the same way, one link function over:</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="tests-as-models.html#cb192-1" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(coursedata<span class="sc">$</span>Academic.level <span class="sc">==</span> <span class="st">&quot;Master&quot;</span>)</span>
-<span id="cb192-2"><a href="tests-as-models.html#cb192-2" tabindex="-1"></a></span>
-<span id="cb192-3"><a href="tests-as-models.html#cb192-3" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="fu">table</span>(coursedata<span class="sc">$</span>Gender, master)[, <span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>], <span class="at">correct =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb192-4"><a href="tests-as-models.html#cb192-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.2825452</span></span>
-<span id="cb192-5"><a href="tests-as-models.html#cb192-5" tabindex="-1"></a></span>
-<span id="cb192-6"><a href="tests-as-models.html#cb192-6" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">glm</span>(master <span class="sc">~</span> Gender, <span class="at">family =</span> binomial, <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, <span class="dv">4</span>]</span>
-<span id="cb192-7"><a href="tests-as-models.html#cb192-7" tabindex="-1"></a><span class="co">#&gt; [1] 0.2829723</span></span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="tests-as-models.html#cb200-1" tabindex="-1"></a>master <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(coursedata<span class="sc">$</span>Academic.level <span class="sc">==</span> <span class="st">&quot;Master&quot;</span>)</span>
+<span id="cb200-2"><a href="tests-as-models.html#cb200-2" tabindex="-1"></a></span>
+<span id="cb200-3"><a href="tests-as-models.html#cb200-3" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="fu">table</span>(coursedata<span class="sc">$</span>Gender, master)[, <span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>], <span class="at">correct =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb200-4"><a href="tests-as-models.html#cb200-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.2825452</span></span>
+<span id="cb200-5"><a href="tests-as-models.html#cb200-5" tabindex="-1"></a></span>
+<span id="cb200-6"><a href="tests-as-models.html#cb200-6" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(<span class="fu">glm</span>(master <span class="sc">~</span> Gender, <span class="at">family =</span> binomial, <span class="at">data =</span> coursedata)))[<span class="dv">2</span>, <span class="dv">4</span>]</span>
+<span id="cb200-7"><a href="tests-as-models.html#cb200-7" tabindex="-1"></a><span class="co">#&gt; [1] 0.2829723</span></span></code></pre></div>
 <p><span class="math inline">\(p = 0.2825\)</span> against <span class="math inline">\(p = 0.2830\)</span> — the same conclusion by two routes that make slightly different large-sample approximations. And <code>glm(y ~ 1, family = binomial)</code> tests a single proportion against 0.5, which is the classical one-proportion test.</p>
 <div class="analysis-warning">
 <p>These glm equivalences are <strong>approximate</strong>, and the approximation has a known weak spot: Wald standard errors become unreliable when a proportion approaches 0 or 1. The sign test on our 161 non-tied students, 151 of whom rate statistics above R, is a case in point — <code>binom.test()</code> gives <span class="math inline">\(p \approx 10^{-33}\)</span> while the Wald test from <code>glm()</code> gives <span class="math inline">\(p \approx 10^{-17}\)</span>. Both are overwhelming, so nothing is at stake here, but near the boundary the exact test is the one to trust.</p>
@@ -641,19 +642,19 @@ The complaint that motivated this section
 <h3><span class="header-section-number">6.9.10</span> Comparing two models is also a test<a href="tests-as-models.html#tm-nested" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>One last generalisation, and it is the one that frees you from the list altogether. Every F-test in this section — ANOVA's, the trend test's, Levene's — is a comparison between a <strong>restricted</strong> and an <strong>unrestricted</strong> model: does letting these extra terms into the model explain enough additional variation to justify them?</p>
 <p>Written out, that comparison is a named test in econometrics. Does the relationship between age and semesters studied differ between Bachelor and Master students? Fit both models and ask:</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="tests-as-models.html#cb193-1" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age, <span class="at">data =</span> coursedata)                   <span class="co"># one line</span></span>
-<span id="cb193-2"><a href="tests-as-models.html#cb193-2" tabindex="-1"></a>split  <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">*</span> Academic.level, <span class="at">data =</span> coursedata)  <span class="co"># two lines</span></span>
-<span id="cb193-3"><a href="tests-as-models.html#cb193-3" tabindex="-1"></a></span>
-<span id="cb193-4"><a href="tests-as-models.html#cb193-4" tabindex="-1"></a><span class="fu">anova</span>(pooled, split)</span>
-<span id="cb193-5"><a href="tests-as-models.html#cb193-5" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
-<span id="cb193-6"><a href="tests-as-models.html#cb193-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb193-7"><a href="tests-as-models.html#cb193-7" tabindex="-1"></a><span class="co">#&gt; Model 1: Total.Semesters ~ Age</span></span>
-<span id="cb193-8"><a href="tests-as-models.html#cb193-8" tabindex="-1"></a><span class="co">#&gt; Model 2: Total.Semesters ~ Age * Academic.level</span></span>
-<span id="cb193-9"><a href="tests-as-models.html#cb193-9" tabindex="-1"></a><span class="co">#&gt;   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    </span></span>
-<span id="cb193-10"><a href="tests-as-models.html#cb193-10" tabindex="-1"></a><span class="co">#&gt; 1    231 2683.6                                  </span></span>
-<span id="cb193-11"><a href="tests-as-models.html#cb193-11" tabindex="-1"></a><span class="co">#&gt; 2    229 2490.3  2    193.28 8.8869 0.0001918 ***</span></span>
-<span id="cb193-12"><a href="tests-as-models.html#cb193-12" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb193-13"><a href="tests-as-models.html#cb193-13" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="tests-as-models.html#cb201-1" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age, <span class="at">data =</span> coursedata)                   <span class="co"># one line</span></span>
+<span id="cb201-2"><a href="tests-as-models.html#cb201-2" tabindex="-1"></a>split  <span class="ot">&lt;-</span> <span class="fu">lm</span>(Total.Semesters <span class="sc">~</span> Age <span class="sc">*</span> Academic.level, <span class="at">data =</span> coursedata)  <span class="co"># two lines</span></span>
+<span id="cb201-3"><a href="tests-as-models.html#cb201-3" tabindex="-1"></a></span>
+<span id="cb201-4"><a href="tests-as-models.html#cb201-4" tabindex="-1"></a><span class="fu">anova</span>(pooled, split)</span>
+<span id="cb201-5"><a href="tests-as-models.html#cb201-5" tabindex="-1"></a><span class="co">#&gt; Analysis of Variance Table</span></span>
+<span id="cb201-6"><a href="tests-as-models.html#cb201-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb201-7"><a href="tests-as-models.html#cb201-7" tabindex="-1"></a><span class="co">#&gt; Model 1: Total.Semesters ~ Age</span></span>
+<span id="cb201-8"><a href="tests-as-models.html#cb201-8" tabindex="-1"></a><span class="co">#&gt; Model 2: Total.Semesters ~ Age * Academic.level</span></span>
+<span id="cb201-9"><a href="tests-as-models.html#cb201-9" tabindex="-1"></a><span class="co">#&gt;   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    </span></span>
+<span id="cb201-10"><a href="tests-as-models.html#cb201-10" tabindex="-1"></a><span class="co">#&gt; 1    231 2683.6                                  </span></span>
+<span id="cb201-11"><a href="tests-as-models.html#cb201-11" tabindex="-1"></a><span class="co">#&gt; 2    229 2490.3  2    193.28 8.8869 0.0001918 ***</span></span>
+<span id="cb201-12"><a href="tests-as-models.html#cb201-12" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb201-13"><a href="tests-as-models.html#cb201-13" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p><span class="math inline">\(F = 8.89\)</span> on 2 and 229 degrees of freedom, <span class="math inline">\(p = 0.0002\)</span>: the relationship genuinely differs. Pooling Bachelor and Master students into one regression line hides two different lines — an instance of the aggregation warning from section <a href="relationships.html#relationships">5.1</a>.</p>
 <p>Economists call this a <strong>Chow test</strong> for a structural break. It has no separate function in R because it does not need one: it is <code>anova()</code> on two nested models, which is the same machinery that produced every F-statistic above.</p>
 </div>
@@ -921,8 +922,8 @@ Your Turn
 <!-- </div> -->
 <div class="footnotes">
 <hr />
-<ol start="95">
-<li id="fn95"><p>Lindeløv, J. K., <em>Common statistical tests are linear models (or: how to teach stats)</em>, 2019, <a href="https://lindeloev.github.io/tests-as-linear/" class="uri">https://lindeloev.github.io/tests-as-linear/</a>. The accompanying one-page cheat sheet tabulates each test, its built-in R function, the equivalent <code>lm()</code> call, and whether the correspondence is exact or approximate. The idea itself is older — it is the standard view in the general-linear-model literature — but Lindeløv's presentation is what made it teachable.<a href="tests-as-models.html#fnref95" class="footnote-back">↩︎</a></p></li>
+<ol start="97">
+<li id="fn97"><p>Lindeløv, J. K., <em>Common statistical tests are linear models (or: how to teach stats)</em>, 2019, <a href="https://lindeloev.github.io/tests-as-linear/" class="uri">https://lindeloev.github.io/tests-as-linear/</a>. The accompanying one-page cheat sheet tabulates each test, its built-in R function, the equivalent <code>lm()</code> call, and whether the correspondence is exact or approximate. The idea itself is older — it is the standard view in the general-linear-model literature — but Lindeløv's presentation is what made it teachable.<a href="tests-as-models.html#fnref97" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 <script>

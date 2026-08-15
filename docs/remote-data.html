@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2.4 Remote Data | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2.4 Remote Data | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2.4 Remote Data | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="time-data.html"/>
+<link rel="next" href="unstructured-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a></li>
+<li class="chapter" data-level="" data-path="why-r.html"><a href="why-r.html"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-the-tidyverse.html"><a href="why-the-tidyverse.html"><i class="fa fa-check"></i>Why the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-tidyverse.html"><a href="intro-to-tidyverse.html"><i class="fa fa-check"></i>Intro to Tidyverse</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a></li>
+<li class="chapter" data-level="2.4" data-path="remote-data.html"><a href="remote-data.html"><i class="fa fa-check"></i><b>2.4</b> Remote Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="remote-data" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Remote Data<a href="remote-data.html#remote-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<blockquote>
+<p>“The cheapest, fastest, and most reliable components of a computer system are those that aren't there.”</p>
+<footer class="blockquote-footer" style="text-align: right;">
+Gordon Bell
+</footer>
+</blockquote>
+<p>Everything so far assumed that the rectangle is <em>here</em>: a file you read, an object in memory, a <code>tibble</code> you can print. That assumption quietly breaks in most real projects. The table is 40 million rows and will not fit. It is updated hourly by somebody else. Four colleagues need the same numbers and must not each keep their own copy.</p>
+<p>The answer in all three cases is the same, and it is a change of habit rather than of tools: <strong>stop moving the data, start sending questions.</strong> The table stays on a server. You describe the subset you want, the server does the work, and only the answer travels back.</p>
+<p>Two technologies do this, and they are far more similar than their reputations suggest. A <strong>database</strong> answers questions written in <strong>SQL</strong>. A <strong>web API</strong> answers questions written as a URL. This section treats them together, because once you have seen the first, the second is a variation.</p>
+<div id="databases" class="section level3 hasAnchor" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Databases<a href="remote-data.html#databases" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A <strong>database</strong> is software whose only job is to store tables and answer questions about them. The tables look exactly like the rectangles of the previous sections — rows are observations, columns are variables — but they live in a system built for size, for simultaneous users, and for guaranteeing that a row is either written completely or not at all.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>relational database</strong> stores data in tables that are linked by shared key columns. <strong>SQL</strong> (Structured Query Language, pronounced "sequel" or spelled out) is the language used to ask such a database for data. A <strong>query</strong> is a single question; the answer is itself a table.</p>
+</div>
+<p>You do not need a server to practise. <strong>SQLite</strong> is a complete database that lives in a single file — or, as here, purely in memory. It ships with the R package <code>RSQLite</code>, and <code>DBI</code> provides the vocabulary that works the same way for every database engine.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="remote-data.html#cb54-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb54-2"><a href="remote-data.html#cb54-2" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb54-3"><a href="remote-data.html#cb54-3" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="remote-data.html#cb54-4" tabindex="-1"></a><span class="co"># &quot;:memory:&quot; creates a temporary database that disappears with the session.</span></span>
+<span id="cb54-5"><a href="remote-data.html#cb54-5" tabindex="-1"></a><span class="co"># Replace it with a path like &quot;data/diamonds.sqlite&quot; for a permanent one.</span></span>
+<span id="cb54-6"><a href="remote-data.html#cb54-6" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">&quot;:memory:&quot;</span>)</span>
+<span id="cb54-7"><a href="remote-data.html#cb54-7" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="remote-data.html#cb54-8" tabindex="-1"></a><span class="co"># Copy two data frames into the database, as two tables.</span></span>
+<span id="cb54-9"><a href="remote-data.html#cb54-9" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">&quot;diamonds&quot;</span>, ggplot2<span class="sc">::</span>diamonds)</span>
+<span id="cb54-10"><a href="remote-data.html#cb54-10" tabindex="-1"></a></span>
+<span id="cb54-11"><a href="remote-data.html#cb54-11" tabindex="-1"></a>clarity_key <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb54-12"><a href="remote-data.html#cb54-12" tabindex="-1"></a>  <span class="at">clarity =</span> <span class="fu">c</span>(<span class="st">&quot;I1&quot;</span>, <span class="st">&quot;SI2&quot;</span>, <span class="st">&quot;SI1&quot;</span>, <span class="st">&quot;VS2&quot;</span>, <span class="st">&quot;VS1&quot;</span>, <span class="st">&quot;VVS2&quot;</span>, <span class="st">&quot;VVS1&quot;</span>, <span class="st">&quot;IF&quot;</span>),</span>
+<span id="cb54-13"><a href="remote-data.html#cb54-13" tabindex="-1"></a>  <span class="at">meaning =</span> <span class="fu">c</span>(</span>
+<span id="cb54-14"><a href="remote-data.html#cb54-14" tabindex="-1"></a>    <span class="st">&quot;included&quot;</span>, <span class="st">&quot;slightly included&quot;</span>, <span class="st">&quot;slightly included&quot;</span>,</span>
+<span id="cb54-15"><a href="remote-data.html#cb54-15" tabindex="-1"></a>    <span class="st">&quot;very slightly included&quot;</span>, <span class="st">&quot;very slightly included&quot;</span>,</span>
+<span id="cb54-16"><a href="remote-data.html#cb54-16" tabindex="-1"></a>    <span class="st">&quot;very very slightly included&quot;</span>, <span class="st">&quot;very very slightly included&quot;</span>,</span>
+<span id="cb54-17"><a href="remote-data.html#cb54-17" tabindex="-1"></a>    <span class="st">&quot;internally flawless&quot;</span></span>
+<span id="cb54-18"><a href="remote-data.html#cb54-18" tabindex="-1"></a>  )</span>
+<span id="cb54-19"><a href="remote-data.html#cb54-19" tabindex="-1"></a>)</span>
+<span id="cb54-20"><a href="remote-data.html#cb54-20" tabindex="-1"></a></span>
+<span id="cb54-21"><a href="remote-data.html#cb54-21" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">&quot;clarity_key&quot;</span>, clarity_key)</span>
+<span id="cb54-22"><a href="remote-data.html#cb54-22" tabindex="-1"></a></span>
+<span id="cb54-23"><a href="remote-data.html#cb54-23" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span>
+<span id="cb54-24"><a href="remote-data.html#cb54-24" tabindex="-1"></a><span class="co">#&gt; [1] &quot;clarity_key&quot; &quot;diamonds&quot;</span></span></code></pre></div>
+<p>The <code>diamonds</code> table has almost 54,000 rows. That is small enough to load, which is exactly why it is a good teaching example: everything below would work identically if it had 54 million.</p>
+<div id="reading-sql" class="section level4 hasAnchor" number="2.4.1.1">
+<h4><span class="header-section-number">2.4.1.1</span> Reading SQL<a href="remote-data.html#reading-sql" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A query is one sentence with a fixed word order. Five clauses cover most of what analysts write:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SQL</th>
+<th align="left">Meaning</th>
+<th align="left"><code>dplyr</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>SELECT</code></td>
+<td align="left">which columns</td>
+<td align="left"><code>select()</code>, <code>summarise()</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>FROM</code></td>
+<td align="left">which table</td>
+<td align="left">the data argument</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>WHERE</code></td>
+<td align="left">which rows, before grouping</td>
+<td align="left"><code>filter()</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>GROUP BY</code></td>
+<td align="left">build groups</td>
+<td align="left"><code>group_by()</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>ORDER BY</code></td>
+<td align="left">sort the answer</td>
+<td align="left"><code>arrange()</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>dbGetQuery()</code> sends the sentence and returns the answer as a data frame.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="remote-data.html#cb55-1" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, <span class="st">&quot;</span></span>
+<span id="cb55-2"><a href="remote-data.html#cb55-2" tabindex="-1"></a><span class="st">  SELECT   cut,                      -- column to group by</span></span>
+<span id="cb55-3"><a href="remote-data.html#cb55-3" tabindex="-1"></a><span class="st">           COUNT(*)     AS n,        -- how many rows per group</span></span>
+<span id="cb55-4"><a href="remote-data.html#cb55-4" tabindex="-1"></a><span class="st">           AVG(price)   AS mean_price</span></span>
+<span id="cb55-5"><a href="remote-data.html#cb55-5" tabindex="-1"></a><span class="st">  FROM     diamonds                  -- the table</span></span>
+<span id="cb55-6"><a href="remote-data.html#cb55-6" tabindex="-1"></a><span class="st">  WHERE    carat &gt; 1                 -- rows first, groups afterwards</span></span>
+<span id="cb55-7"><a href="remote-data.html#cb55-7" tabindex="-1"></a><span class="st">  GROUP BY cut</span></span>
+<span id="cb55-8"><a href="remote-data.html#cb55-8" tabindex="-1"></a><span class="st">  ORDER BY mean_price DESC</span></span>
+<span id="cb55-9"><a href="remote-data.html#cb55-9" tabindex="-1"></a><span class="st">&quot;</span>)</span>
+<span id="cb55-10"><a href="remote-data.html#cb55-10" tabindex="-1"></a><span class="co">#&gt;         cut    n mean_price</span></span>
+<span id="cb55-11"><a href="remote-data.html#cb55-11" tabindex="-1"></a><span class="co">#&gt; 1     Ideal 5662   8674.227</span></span>
+<span id="cb55-12"><a href="remote-data.html#cb55-12" tabindex="-1"></a><span class="co">#&gt; 2   Premium 5729   8487.249</span></span>
+<span id="cb55-13"><a href="remote-data.html#cb55-13" tabindex="-1"></a><span class="co">#&gt; 3 Very Good 3881   8340.549</span></span>
+<span id="cb55-14"><a href="remote-data.html#cb55-14" tabindex="-1"></a><span class="co">#&gt; 4      Good 1579   7753.601</span></span>
+<span id="cb55-15"><a href="remote-data.html#cb55-15" tabindex="-1"></a><span class="co">#&gt; 5      Fair  651   7177.856</span></span></code></pre></div>
+<p>Two details are worth keeping. SQL is read in a different order than it is written — <code>FROM</code> first, then <code>WHERE</code>, then <code>GROUP BY</code>, and only at the end <code>SELECT</code>. And the answer arrived as a small summary table: the 54,000 rows never left the database.</p>
+</div>
+<div id="the-same-thing-in-dplyr" class="section level4 hasAnchor" number="2.4.1.2">
+<h4><span class="header-section-number">2.4.1.2</span> The same thing in dplyr<a href="remote-data.html#the-same-thing-in-dplyr" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Here is the part that surprises most R users. You already write SQL — you just spell it differently. The package <code>dbplyr</code> translates <code>dplyr</code> verbs into SQL, so a database table can be piped like any other data frame.</p>
+<p><code>tbl()</code> does not import anything. It creates a <strong>lazy</strong> reference: a promise of a table.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="remote-data.html#cb56-1" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
+<span id="cb56-2"><a href="remote-data.html#cb56-2" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="remote-data.html#cb56-3" tabindex="-1"></a>diamonds_db <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">&quot;diamonds&quot;</span>)</span>
+<span id="cb56-4"><a href="remote-data.html#cb56-4" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="remote-data.html#cb56-5" tabindex="-1"></a>big_stones <span class="ot">&lt;-</span> diamonds_db <span class="sc">%&gt;%</span></span>
+<span id="cb56-6"><a href="remote-data.html#cb56-6" tabindex="-1"></a>  <span class="fu">filter</span>(carat <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb56-7"><a href="remote-data.html#cb56-7" tabindex="-1"></a>  <span class="fu">group_by</span>(cut) <span class="sc">%&gt;%</span></span>
+<span id="cb56-8"><a href="remote-data.html#cb56-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean_price =</span> <span class="fu">mean</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb56-9"><a href="remote-data.html#cb56-9" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_price))</span>
+<span id="cb56-10"><a href="remote-data.html#cb56-10" tabindex="-1"></a></span>
+<span id="cb56-11"><a href="remote-data.html#cb56-11" tabindex="-1"></a><span class="co"># Nothing has been computed yet. This is the SQL that would be sent:</span></span>
+<span id="cb56-12"><a href="remote-data.html#cb56-12" tabindex="-1"></a>big_stones <span class="sc">%&gt;%</span> <span class="fu">show_query</span>()</span>
+<span id="cb56-13"><a href="remote-data.html#cb56-13" tabindex="-1"></a><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span id="cb56-14"><a href="remote-data.html#cb56-14" tabindex="-1"></a><span class="co">#&gt; SELECT `cut`, COUNT(*) AS `n`, AVG(`price`) AS `mean_price`</span></span>
+<span id="cb56-15"><a href="remote-data.html#cb56-15" tabindex="-1"></a><span class="co">#&gt; FROM `diamonds`</span></span>
+<span id="cb56-16"><a href="remote-data.html#cb56-16" tabindex="-1"></a><span class="co">#&gt; WHERE (`carat` &gt; 1.0)</span></span>
+<span id="cb56-17"><a href="remote-data.html#cb56-17" tabindex="-1"></a><span class="co">#&gt; GROUP BY `cut`</span></span>
+<span id="cb56-18"><a href="remote-data.html#cb56-18" tabindex="-1"></a><span class="co">#&gt; ORDER BY `mean_price` DESC</span></span></code></pre></div>
+<p>That is the query from the previous chunk, written by a machine — a little more verbose, with the <code>WHERE</code> step wrapped in a subquery, but identical in effect. The pipeline is still only a plan; the database has not been touched. <code>collect()</code> is the command that finally runs it and pulls the result into R.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="remote-data.html#cb57-1" tabindex="-1"></a>big_stones <span class="sc">%&gt;%</span> <span class="fu">collect</span>()</span>
+<span id="cb57-2"><a href="remote-data.html#cb57-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 3</span></span>
+<span id="cb57-3"><a href="remote-data.html#cb57-3" tabindex="-1"></a><span class="co">#&gt;   cut           n mean_price</span></span>
+<span id="cb57-4"><a href="remote-data.html#cb57-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb57-5"><a href="remote-data.html#cb57-5" tabindex="-1"></a><span class="co">#&gt; 1 Ideal      5662      8674.</span></span>
+<span id="cb57-6"><a href="remote-data.html#cb57-6" tabindex="-1"></a><span class="co">#&gt; 2 Premium    5729      8487.</span></span>
+<span id="cb57-7"><a href="remote-data.html#cb57-7" tabindex="-1"></a><span class="co">#&gt; 3 Very Good  3881      8341.</span></span>
+<span id="cb57-8"><a href="remote-data.html#cb57-8" tabindex="-1"></a><span class="co">#&gt; 4 Good       1579      7754.</span></span>
+<span id="cb57-9"><a href="remote-data.html#cb57-9" tabindex="-1"></a><span class="co">#&gt; 5 Fair        651      7178.</span></span></code></pre></div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Watch out
+</h2>
+</div>
+<p><code>collect()</code> is the moment where the data actually moves. Put it at the <strong>end</strong> of a pipeline, after filtering and summarising — never at the beginning. <code>tbl(con, "sales") %&gt;% collect() %&gt;% filter(...)</code> asks the database for all forty million rows and then throws most of them away, which is the single most common mistake with <code>dbplyr</code>.</p>
+</div>
+</div>
+<div id="joining-across-tables" class="section level4 hasAnchor" number="2.4.1.3">
+<h4><span class="header-section-number">2.4.1.3</span> Joining across tables<a href="remote-data.html#joining-across-tables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Databases are called <em>relational</em> because tables refer to each other through shared keys. Joins happen inside the database and translate exactly as you would expect.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="remote-data.html#cb58-1" tabindex="-1"></a><span class="fu">tbl</span>(con, <span class="st">&quot;diamonds&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-2"><a href="remote-data.html#cb58-2" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">tbl</span>(con, <span class="st">&quot;clarity_key&quot;</span>), <span class="at">by =</span> <span class="st">&quot;clarity&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="remote-data.html#cb58-3" tabindex="-1"></a>  <span class="fu">count</span>(meaning, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-4"><a href="remote-data.html#cb58-4" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb58-5"><a href="remote-data.html#cb58-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
+<span id="cb58-6"><a href="remote-data.html#cb58-6" tabindex="-1"></a><span class="co">#&gt;   meaning                         n</span></span>
+<span id="cb58-7"><a href="remote-data.html#cb58-7" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                       &lt;int&gt;</span></span>
+<span id="cb58-8"><a href="remote-data.html#cb58-8" tabindex="-1"></a><span class="co">#&gt; 1 slightly included           22259</span></span>
+<span id="cb58-9"><a href="remote-data.html#cb58-9" tabindex="-1"></a><span class="co">#&gt; 2 very slightly included      20429</span></span>
+<span id="cb58-10"><a href="remote-data.html#cb58-10" tabindex="-1"></a><span class="co">#&gt; 3 very very slightly included  8721</span></span>
+<span id="cb58-11"><a href="remote-data.html#cb58-11" tabindex="-1"></a><span class="co">#&gt; 4 internally flawless          1790</span></span>
+<span id="cb58-12"><a href="remote-data.html#cb58-12" tabindex="-1"></a><span class="co">#&gt; 5 included                      741</span></span></code></pre></div>
+<p>When the work is done, close the connection. With an in-memory database this also deletes it.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="remote-data.html#cb59-1" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div>
+<p>For a real project, only the first line changes: <code>RPostgres::Postgres()</code>, <code>RMariaDB::MariaDB()</code> or <code>duckdb::duckdb()</code> instead of <code>RSQLite::SQLite()</code>, plus host, user and password. Everything after <code>dbConnect()</code> stays the same. DuckDB deserves a special mention — it needs no server like SQLite, but is built for analysis and can query CSV or Parquet files directly, without importing them first.</p>
+</div>
+</div>
+<div id="web-apis" class="section level3 hasAnchor" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Web APIs<a href="remote-data.html#web-apis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Now change one thing. The table is still somewhere else, you still send a question and receive a subset — but you have no account on that machine, and the owner would never let a stranger run SQL on it. So they put a counter in front: a fixed set of questions you are allowed to ask, phrased as a URL.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>An <strong>application programming interface (API)</strong> is a way for two or more computer programs to communicate with each other. A <strong>web API</strong> is one you reach with a URL: parameters in the link are the question, and the answer usually comes back as <strong>JSON</strong>, a nested text format that R reads into lists and data frames.</p>
+</div>
+<p>The World Bank publishes the development indicators of every country this way — free, no registration, no key. The URL below reads: <em>give me indicator <code>NY.GDP.MKTP.CD</code> (gross domestic product in current US dollars) for country <code>MHL</code> (the Marshall Islands), as JSON, up to 100 observations.</em></p>
+<center>
+<strong><a href="https://api.worldbank.org/v2/country/MHL/indicator/NY.GDP.MKTP.CD?format=json&amp;per_page=100" class="uri">https://api.worldbank.org/v2/country/MHL/indicator/NY.GDP.MKTP.CD?format=json&amp;per_page=100</a></strong>
+</center>
+<p><br></p>
+<p>Open it in a browser. No design, no menu, no cookie banner — just data. And note which parts are variable: swap <code>MHL</code> for <code>DEU</code> and you get Germany; swap the indicator code and you get population, life expectancy or CO₂ emissions. <code>country</code>, <code>indicator</code>, <code>format</code> and <code>per_page</code> are this API's version of <code>FROM</code>, <code>SELECT</code> and <code>LIMIT</code>.</p>
+<p><code>jsonlite::fromJSON()</code> fetches the URL and translates JSON into R objects in one step. The World Bank wraps its answer in a list of two: metadata first, observations second.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="remote-data.html#cb60-1" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb60-2"><a href="remote-data.html#cb60-2" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="remote-data.html#cb60-3" tabindex="-1"></a>gdp_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb60-4"><a href="remote-data.html#cb60-4" tabindex="-1"></a>  <span class="st">&quot;https://api.worldbank.org/v2/country/MHL/&quot;</span>,</span>
+<span id="cb60-5"><a href="remote-data.html#cb60-5" tabindex="-1"></a>  <span class="st">&quot;indicator/NY.GDP.MKTP.CD?format=json&amp;per_page=100&quot;</span></span>
+<span id="cb60-6"><a href="remote-data.html#cb60-6" tabindex="-1"></a>)</span>
+<span id="cb60-7"><a href="remote-data.html#cb60-7" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="remote-data.html#cb60-8" tabindex="-1"></a>gdp_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;worldbank-marshall-islands-gdp.csv&quot;</span>)</span>
+<span id="cb60-9"><a href="remote-data.html#cb60-9" tabindex="-1"></a></span>
+<span id="cb60-10"><a href="remote-data.html#cb60-10" tabindex="-1"></a><span class="co"># Ask the server once, then work from the local copy. A book should still</span></span>
+<span id="cb60-11"><a href="remote-data.html#cb60-11" tabindex="-1"></a><span class="co"># build when a service is down, and nobody should hammer a free API.</span></span>
+<span id="cb60-12"><a href="remote-data.html#cb60-12" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(gdp_file)) {</span>
+<span id="cb60-13"><a href="remote-data.html#cb60-13" tabindex="-1"></a>  response <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(gdp_url)</span>
+<span id="cb60-14"><a href="remote-data.html#cb60-14" tabindex="-1"></a></span>
+<span id="cb60-15"><a href="remote-data.html#cb60-15" tabindex="-1"></a>  <span class="co"># response[[1]] is the metadata, response[[2]] the actual observations.</span></span>
+<span id="cb60-16"><a href="remote-data.html#cb60-16" tabindex="-1"></a>  response[[<span class="dv">2</span>]] <span class="sc">%&gt;%</span></span>
+<span id="cb60-17"><a href="remote-data.html#cb60-17" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
+<span id="cb60-18"><a href="remote-data.html#cb60-18" tabindex="-1"></a>      <span class="at">year    =</span> <span class="fu">as.integer</span>(date),</span>
+<span id="cb60-19"><a href="remote-data.html#cb60-19" tabindex="-1"></a>      <span class="at">gdp_usd =</span> value</span>
+<span id="cb60-20"><a href="remote-data.html#cb60-20" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb60-21"><a href="remote-data.html#cb60-21" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gdp_usd)) <span class="sc">%&gt;%</span></span>
+<span id="cb60-22"><a href="remote-data.html#cb60-22" tabindex="-1"></a>    <span class="fu">arrange</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb60-23"><a href="remote-data.html#cb60-23" tabindex="-1"></a>    <span class="fu">write_csv</span>(gdp_file)</span>
+<span id="cb60-24"><a href="remote-data.html#cb60-24" tabindex="-1"></a>}</span>
+<span id="cb60-25"><a href="remote-data.html#cb60-25" tabindex="-1"></a></span>
+<span id="cb60-26"><a href="remote-data.html#cb60-26" tabindex="-1"></a>gdp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb60-27"><a href="remote-data.html#cb60-27" tabindex="-1"></a>  gdp_file,</span>
+<span id="cb60-28"><a href="remote-data.html#cb60-28" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">cols</span>(<span class="at">year =</span> <span class="fu">col_integer</span>(), <span class="at">gdp_usd =</span> <span class="fu">col_double</span>())</span>
+<span id="cb60-29"><a href="remote-data.html#cb60-29" tabindex="-1"></a>)</span>
+<span id="cb60-30"><a href="remote-data.html#cb60-30" tabindex="-1"></a></span>
+<span id="cb60-31"><a href="remote-data.html#cb60-31" tabindex="-1"></a><span class="fu">glimpse</span>(gdp)</span>
+<span id="cb60-32"><a href="remote-data.html#cb60-32" tabindex="-1"></a><span class="co">#&gt; Rows: 56</span></span>
+<span id="cb60-33"><a href="remote-data.html#cb60-33" tabindex="-1"></a><span class="co">#&gt; Columns: 2</span></span>
+<span id="cb60-34"><a href="remote-data.html#cb60-34" tabindex="-1"></a><span class="co">#&gt; $ year    &lt;int&gt; 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 19…</span></span>
+<span id="cb60-35"><a href="remote-data.html#cb60-35" tabindex="-1"></a><span class="co">#&gt; $ gdp_usd &lt;dbl&gt; 8408486, 9116810, 9973652, 11607366, 15217532, 16691301, 18153…</span></span></code></pre></div>
+<p>Notice what did <em>not</em> happen. No footnote markers to strip, no thousands separators, no two spellings of the same label, no guessing which column is which. The provider promised a shape and delivered it. The only cosmetic step is the unit: dollars are hard to read at nine digits.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="remote-data.html#cb61-1" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span></span>
+<span id="cb61-2"><a href="remote-data.html#cb61-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_musd =</span> gdp_usd <span class="sc">/</span> <span class="fl">1e6</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb61-3"><a href="remote-data.html#cb61-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp_musd)) <span class="sc">+</span></span>
+<span id="cb61-4"><a href="remote-data.html#cb61-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">colour =</span> <span class="st">&quot;#2C5F8A&quot;</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb61-5"><a href="remote-data.html#cb61-5" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb61-6"><a href="remote-data.html#cb61-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb61-7"><a href="remote-data.html#cb61-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;A country the size of a painting&quot;</span>,</span>
+<span id="cb61-8"><a href="remote-data.html#cb61-8" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(</span>
+<span id="cb61-9"><a href="remote-data.html#cb61-9" tabindex="-1"></a>      <span class="st">&quot;Gross domestic product of the Marshall Islands, million USD.&quot;</span>,</span>
+<span id="cb61-10"><a href="remote-data.html#cb61-10" tabindex="-1"></a>      <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Salvator Mundi sold for 450.3 million USD in 2017.&quot;</span></span>
+<span id="cb61-11"><a href="remote-data.html#cb61-11" tabindex="-1"></a>    ),</span>
+<span id="cb61-12"><a href="remote-data.html#cb61-12" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb61-13"><a href="remote-data.html#cb61-13" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Source: World Bank API, indicator NY.GDP.MKTP.CD&quot;</span></span>
+<span id="cb61-14"><a href="remote-data.html#cb61-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb61-15"><a href="remote-data.html#cb61-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb61-16"><a href="remote-data.html#cb61-16" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb61-17"><a href="remote-data.html#cb61-17" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb61-18"><a href="remote-data.html#cb61-18" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb61-19"><a href="remote-data.html#cb61-19" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>)</span>
+<span id="cb61-20"><a href="remote-data.html#cb61-20" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/api-plot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>About 60,000 people live on the Marshall Islands, and in no year on record did the country produce as much value as a single painting fetched at a New York auction in 2017. We will meet that painting again in <a href="web-data.html#web-data">Web Data</a>, where a very different technique is needed to get at its price.</p>
+<div id="finding-and-using-an-api" class="section level4 hasAnchor" number="2.4.2.1">
+<h4><span class="header-section-number">2.4.2.1</span> Finding and using an API<a href="remote-data.html#finding-and-using-an-api" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Three habits cover most projects.</p>
+<ul>
+<li><strong>Look for the word.</strong> On the site of a statistical office, a ministry, a museum or a transport company, search for <em>API</em>, <em>developer</em>, <em>web service</em>, <em>open data</em> or <em>Schnittstelle</em>. Serious providers put it in the footer.</li>
+<li><strong>Read two things in the documentation.</strong> First the <strong>endpoint</strong>: the base URL and which parameters it accepts. Second the <strong>terms</strong>: is a key required, how many requests per minute are allowed, how may the data be used? Free and keyless, like the World Bank, is the exception rather than the rule.</li>
+<li><strong>Check whether R already wraps it.</strong> For many large providers somebody has written a package, so you never build a URL by hand: <code>WDI</code> for the World Bank, <code>eurostat</code> for Eurostat, <code>restatis</code> for Destatis, <code>osmdata</code> for OpenStreetMap. Search CRAN for the provider's name before writing your own request.</li>
+</ul>
+<p>An API key is a password. Never write it into a script and never commit it to Git — put it in your <code>.Renviron</code> file, which <code>usethis::edit_r_environ(scope = "project")</code> opens for you, and read it with <code>Sys.getenv("MY_API_KEY")</code>. Services such as <a href="https://www.gitguardian.com/">GitGuardian</a> exist because this rule is broken constantly.</p>
+</div>
+</div>
+<div id="the-same-idea-twice" class="section level3 hasAnchor" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> The same idea twice<a href="remote-data.html#the-same-idea-twice" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The two halves of this section were the same manoeuvre.</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Database</th>
+<th align="left">Web API</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Where the data is</td>
+<td align="left">a server you have an account on</td>
+<td align="left">a server you do not</td>
+</tr>
+<tr class="even">
+<td align="left">The question</td>
+<td align="left">SQL</td>
+<td align="left">parameters in a URL</td>
+</tr>
+<tr class="odd">
+<td align="left">The answer</td>
+<td align="left">a table</td>
+<td align="left">JSON, XML or CSV</td>
+</tr>
+<tr class="even">
+<td align="left">What travels</td>
+<td align="left">the subset</td>
+<td align="left">the subset</td>
+</tr>
+<tr class="odd">
+<td align="left">Who defines what is possible</td>
+<td align="left">you, within the schema</td>
+<td align="left">the provider</td>
+</tr>
+</tbody>
+</table>
+<p>The last row is the real difference. In a database you may ask anything the schema allows; through an API you may ask only what the owner anticipated. That is why an API is easier and more limited at the same time.</p>
+<p>The two even meet. Some open-data platforms accept SQL <em>through</em> the URL: the Socrata portals used by many public administrations take a <code>$query=SELECT ... WHERE ... GROUP BY ...</code> parameter, and PostgREST turns an entire PostgreSQL database into a web API without writing a line of server code. Once you see that, the distinction becomes a matter of packaging rather than of principle.</p>
+<p>And both share a discipline worth carrying into the next chapters: <strong>ask for little, ask rarely, keep a copy of the answer.</strong> Filter before you <code>collect()</code>. Save the result of an API call instead of repeating it at every render. Your future self, the server owner, and anyone rebuilding your analysis in three years will all be better off.</p>
+
+</div>
+</div>
+<!-- </div> -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="time-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="unstructured-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
