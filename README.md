@@ -64,20 +64,21 @@ You need [R](https://cloud.r-project.org/) and, for the PDF output, a LaTeX inst
 
 ```r
 # 1. install the toolchain
-install.packages(c("bookdown", "rmarkdown", "knitr", "webexercises", "tinytex"))
+install.packages(c("bookdown", "rmarkdown", "knitr", "remotes", "tinytex"))
 
-# 2. install the packages the chapters use
-install.packages(c(
-  "tidyverse", "modelsummary", "kableExtra", "gt", "DT", "knitr",
-  "haven", "readxl", "jsonlite", "rvest", "stringr", "stringi", "xml2",
-  "sf", "leaflet", "mapview", "rnaturalearth", "rworldmap", "maps",
-  "geosphere", "countrycode", "zoo", "chron", "lubridate", "forecast",
-  "lavaan", "psych", "mirt", "sirt", "mice", "synthpop", "moderndive",
-  "tidytext", "sentimentr", "ggpmisc", "ggimage", "patchwork", "cowplot",
-  "gridExtra", "scales", "showtext", "sjlabelled", "interactions",
-  "htmltools", "htmlwidgets", "webshot", "vembedr", "tippy", "tufte"
-))
+# 2. install every package the chapters use
+remotes::install_deps()
 ```
+
+The second command reads the `Imports:` field of the `DESCRIPTION` file in this repository. That file is the single machine-readable list of dependencies. Keeping the same list by hand in this README turned out to be a reliable way of forgetting a package until a render failed on a fresh machine.
+
+After adding a `library()` call to a chapter, check whether the list is still complete:
+
+```r
+source("scripts/update-dependencies.R")
+```
+
+It scans every `.Rmd` for `library()` and `package::function()` calls and prints what is missing from `DESCRIPTION`.
 
 Then render:
 
