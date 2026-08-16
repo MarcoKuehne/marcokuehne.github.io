@@ -321,28 +321,34 @@ glimpse(viadrina)
 
 One row per semester, nine columns, no manual typing. Note the `arrange()`: within one calendar year the summer semester comes first (*Sommersemester 2024*), the winter semester second (*Wintersemester 2024/25*).
 
-**Make the table talk.** Two derived columns turn a list of digits into a story: the share of international students and the change against the same semester one year earlier.
+**Make the table talk.** A scraped table is rarely the table you want to look at. Two derived columns turn a list of digits into a story: the share of international students, and the change against the same semester one year earlier.
 
-```{r viadrina-table}
-viadrina_display <- viadrina %>%
-  # Compare summer with summer and winter with winter, never across terms.
-  group_by(term) %>%
-  mutate(change = students / lag(students) - 1) %>%
-  ungroup() %>%
-  # Newest semester on top.
-  arrange(desc(year), desc(term)) %>%
-  transmute(
-    Semester = semester,
-    Students = students,
-    `vs. year before` = change,
-    German = german,
+A pipeline is easy to write and hard to read, because everything happens between the first line and the last. **Drag the slider** to add one verb at a time and watch what it does to the data.
+
+```{r viadrina-flipbook, echo=FALSE, results='asis'}
+source("scripts/pipeline-flipbook.R")
+
+viadrina_display <- pipeline_flipbook(c(
+  "viadrina",
+  "group_by(term)",
+  "mutate(change = students / lag(students) - 1)",
+  "ungroup()",
+  "arrange(desc(year), desc(term))",
+  "transmute(
+    Semester = semester, Students = students,
+    `vs. year before` = change, German = german,
     International = international,
     `International share` = international / students,
-    Women = women,
-    Men = men,
-    `First semester` = freshers
-  )
+    Women = women, Men = men, `First semester` = freshers
+  )"
+), note = "grouping by term compares summer with summer, winter with winter")
+```
 
+Three things are worth noticing while stepping through. `group_by()` changes nothing visible — it only changes what the *next* verb means. `lag()` produces an `NA` in the first row of each group, because there is no earlier semester to compare with. And `transmute()` is the moment the table stops being data and starts being a presentation: it renames, computes, and drops everything it was not asked to keep.
+
+The full table, searchable and sortable:
+
+```{r viadrina-table}
 datatable(
   viadrina_display,
   rownames = FALSE,

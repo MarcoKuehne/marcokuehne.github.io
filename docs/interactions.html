@@ -754,7 +754,7 @@ Show me all the data wrangling.
 <div id="throwback-parallel-slopes" class="section level3 hasAnchor" number="6.5.3">
 <h3><span class="header-section-number">6.5.3</span> Throwback Parallel Slopes<a href="interactions.html#throwback-parallel-slopes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Simple regression is very similar to the correlation between two variables. A multiple regression with one continuous and one dummy variable is called a <em>parallel slopes</em> model. The data looks like this:</p>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-480-1.png" alt="" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-483-1.png" alt="" width="576" /></p>
 <p>Conclusion from Parallel Slopes: The <em>fundamental truth</em> is that the effect of age on income is identical across gender (i.e. for males and females). Males and female are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?</p>
 </div>
 <div id="regression-with-moderators" class="section level3 hasAnchor" number="6.5.4">
@@ -999,7 +999,7 @@ Show me the coding.
 <p>We plot the interaction with via <code>cat_plot()</code> from the <code>interactions</code> package. This interaction dedicated package makes visualization easy.</p>
 <div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="interactions.html#cb176-1" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
 <span id="cb176-2"><a href="interactions.html#cb176-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact1, <span class="at">pred =</span> Kids, <span class="at">modx =</span> Female)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-484-1.png" alt="" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-487-1.png" alt="" width="576" /></p>
 <p>This graph suggests that men earn more than women. Men with kids earn more than men without kids. The kids-effect is reversed for women, which report higher incomes when they do not have kids.</p>
 </div>
 <div id="categorical-dummy" class="section level4 hasAnchor" number="6.5.4.2">
@@ -1111,7 +1111,7 @@ Show me the coding.
 <div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="interactions.html#cb178-1" tabindex="-1"></a><span class="co"># The function can be modified by ggplot commands.</span></span>
 <span id="cb178-2"><a href="interactions.html#cb178-2" tabindex="-1"></a><span class="fu">cat_plot</span>(interact2, <span class="at">pred =</span> Industry, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
 <span id="cb178-3"><a href="interactions.html#cb178-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-486-1.png" alt="" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-489-1.png" alt="" width="576" /></p>
 </div>
 <div id="continuous-dummy" class="section level4 hasAnchor" number="6.5.4.3">
 <h4><span class="header-section-number">6.5.4.3</span> Continuous * Dummy<a href="interactions.html#continuous-dummy" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -1224,7 +1224,7 @@ Show me the coding.
 <p>The visualization for non-parallel slopes looks like this:</p>
 <div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="interactions.html#cb180-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female,</span>
 <span id="cb180-2"><a href="interactions.html#cb180-2" tabindex="-1"></a>              <span class="at">main.title =</span> <span class="st">&quot;Each group has a different slope.&quot;</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-488-1.png" alt="" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-491-1.png" alt="" width="576" /></p>
 <div class="challenge">
 <div class="titelchallenge">
 <h2>
@@ -1239,7 +1239,7 @@ Conclusion
 <span id="cb181-3"><a href="interactions.html#cb181-3" tabindex="-1"></a><span class="fu">interact_plot</span>(interact3b, <span class="at">pred =</span> Age, <span class="at">modx =</span> Female) <span class="sc">+</span></span>
 <span id="cb181-4"><a href="interactions.html#cb181-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">65</span>)) <span class="sc">+</span></span>
 <span id="cb181-5"><a href="interactions.html#cb181-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">fullrange =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-489-1.png" alt="" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-492-1.png" alt="" width="576" /></p>
 <div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="interactions.html#cb182-1" tabindex="-1"></a></span>
 <span id="cb182-2"><a href="interactions.html#cb182-2" tabindex="-1"></a><span class="co"># modelsummary(title = &#39;Interaction Model 2.&#39;,</span></span>
 <span id="cb182-3"><a href="interactions.html#cb182-3" tabindex="-1"></a><span class="co">#              list(&quot;Income&quot; = interact3b,</span></span>
@@ -1262,7 +1262,7 @@ Conclusion
 <span id="cb183-9"><a href="interactions.html#cb183-9" tabindex="-1"></a><span class="co">#&gt;         20923.43             59.48           -378.77             62.08</span></span></code></pre></div>
 <p>The interaction of two continuous variables is harder to interpret. There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.</p>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="interactions.html#cb184-1" tabindex="-1"></a><span class="fu">interact_plot</span>(interact4, <span class="at">pred =</span> Age, <span class="at">modx =</span> Satisfaction)</span></code></pre></div>
-<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-491-1.png" alt="" width="576" /></p>
+<p><img src="Becoming-Fluent-In-Data_files/figure-html/unnamed-chunk-494-1.png" alt="" width="576" /></p>
 <p>This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.</p>
 <p>You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.</p>
 </div>
@@ -1734,7 +1734,7 @@ Conclusion
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <caption><span id="tab:unnamed-chunk-492">Table 6.1: </span>Comparison</caption>
+  <caption><span id="tab:unnamed-chunk-495">Table 6.1: </span>Comparison</caption>
   <thead>
     <tr class="gt_col_headings gt_spanner_row">
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="a-"> </th>

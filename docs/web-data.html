@@ -796,34 +796,1423 @@ This is the PDF-scraping part of the story, and it needs a different toolbox —
 <span id="cb70-32"><a href="web-data.html#cb70-32" tabindex="-1"></a><span class="co">#&gt; $ men           &lt;dbl&gt; 2413, 2197, 2301, 2054, 2164, 2004, 2012, 1817, 1786, 17…</span></span>
 <span id="cb70-33"><a href="web-data.html#cb70-33" tabindex="-1"></a><span class="co">#&gt; $ freshers      &lt;dbl&gt; 1353, 405, 1303, 394, 1138, 403, 915, 317, 847, 481, 743…</span></span></code></pre></div>
 <p>One row per semester, nine columns, no manual typing. Note the <code>arrange()</code>: within one calendar year the summer semester comes first (<em>Sommersemester 2024</em>), the winter semester second (<em>Wintersemester 2024/25</em>).</p>
-<p><strong>Make the table talk.</strong> Two derived columns turn a list of digits into a story: the share of international students and the change against the same semester one year earlier.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="web-data.html#cb71-1" tabindex="-1"></a>viadrina_display <span class="ot">&lt;-</span> viadrina <span class="sc">%&gt;%</span></span>
-<span id="cb71-2"><a href="web-data.html#cb71-2" tabindex="-1"></a>  <span class="co"># Compare summer with summer and winter with winter, never across terms.</span></span>
-<span id="cb71-3"><a href="web-data.html#cb71-3" tabindex="-1"></a>  <span class="fu">group_by</span>(term) <span class="sc">%&gt;%</span></span>
-<span id="cb71-4"><a href="web-data.html#cb71-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">change =</span> students <span class="sc">/</span> <span class="fu">lag</span>(students) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb71-5"><a href="web-data.html#cb71-5" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb71-6"><a href="web-data.html#cb71-6" tabindex="-1"></a>  <span class="co"># Newest semester on top.</span></span>
-<span id="cb71-7"><a href="web-data.html#cb71-7" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(year), <span class="fu">desc</span>(term)) <span class="sc">%&gt;%</span></span>
-<span id="cb71-8"><a href="web-data.html#cb71-8" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb71-9"><a href="web-data.html#cb71-9" tabindex="-1"></a>    <span class="at">Semester =</span> semester,</span>
-<span id="cb71-10"><a href="web-data.html#cb71-10" tabindex="-1"></a>    <span class="at">Students =</span> students,</span>
-<span id="cb71-11"><a href="web-data.html#cb71-11" tabindex="-1"></a>    <span class="st">`</span><span class="at">vs. year before</span><span class="st">`</span> <span class="ot">=</span> change,</span>
-<span id="cb71-12"><a href="web-data.html#cb71-12" tabindex="-1"></a>    <span class="at">German =</span> german,</span>
-<span id="cb71-13"><a href="web-data.html#cb71-13" tabindex="-1"></a>    <span class="at">International =</span> international,</span>
-<span id="cb71-14"><a href="web-data.html#cb71-14" tabindex="-1"></a>    <span class="st">`</span><span class="at">International share</span><span class="st">`</span> <span class="ot">=</span> international <span class="sc">/</span> students,</span>
-<span id="cb71-15"><a href="web-data.html#cb71-15" tabindex="-1"></a>    <span class="at">Women =</span> women,</span>
-<span id="cb71-16"><a href="web-data.html#cb71-16" tabindex="-1"></a>    <span class="at">Men =</span> men,</span>
-<span id="cb71-17"><a href="web-data.html#cb71-17" tabindex="-1"></a>    <span class="st">`</span><span class="at">First semester</span><span class="st">`</span> <span class="ot">=</span> freshers</span>
-<span id="cb71-18"><a href="web-data.html#cb71-18" tabindex="-1"></a>  )</span>
-<span id="cb71-19"><a href="web-data.html#cb71-19" tabindex="-1"></a></span>
-<span id="cb71-20"><a href="web-data.html#cb71-20" tabindex="-1"></a><span class="fu">datatable</span>(</span>
-<span id="cb71-21"><a href="web-data.html#cb71-21" tabindex="-1"></a>  viadrina_display,</span>
-<span id="cb71-22"><a href="web-data.html#cb71-22" tabindex="-1"></a>  <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb71-23"><a href="web-data.html#cb71-23" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">6</span>, <span class="at">dom =</span> <span class="st">&quot;tip&quot;</span>, <span class="at">ordering =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb71-24"><a href="web-data.html#cb71-24" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb71-25"><a href="web-data.html#cb71-25" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">&quot;Students&quot;</span>, <span class="st">&quot;German&quot;</span>, <span class="st">&quot;International&quot;</span>, <span class="st">&quot;Women&quot;</span>, <span class="st">&quot;Men&quot;</span>,</span>
-<span id="cb71-26"><a href="web-data.html#cb71-26" tabindex="-1"></a>                <span class="st">&quot;First semester&quot;</span>), <span class="at">digits =</span> <span class="dv">0</span>, <span class="at">mark =</span> <span class="st">&quot;,&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb71-27"><a href="web-data.html#cb71-27" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="fu">c</span>(<span class="st">&quot;vs. year before&quot;</span>, <span class="st">&quot;International share&quot;</span>), <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><strong>Make the table talk.</strong> A scraped table is rarely the table you want to look at. Two derived columns turn a list of digits into a story: the share of international students, and the change against the same semester one year earlier.</p>
+<p>A pipeline is easy to write and hard to read, because everything happens between the first line and the last. <strong>Drag the slider</strong> to add one verb at a time and watch what it does to the data.</p>
+<div id="flip30164" class="pipeline-flipbook">
+<div class="flip-pane" data-step="1">
+<pre class="flip-code"><code>viadrina</code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+semester
+</th>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+students
+</th>
+<th style="text-align:right;">
+german
+</th>
+<th style="text-align:right;">
+international
+</th>
+<th style="text-align:right;">
+women
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+freshers
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2019/20
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+6020
+</td>
+<td style="text-align:right;">
+4413
+</td>
+<td style="text-align:right;">
+1607
+</td>
+<td style="text-align:right;">
+3607
+</td>
+<td style="text-align:right;">
+2413
+</td>
+<td style="text-align:right;">
+1353
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2020
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5409
+</td>
+<td style="text-align:right;">
+4040
+</td>
+<td style="text-align:right;">
+1369
+</td>
+<td style="text-align:right;">
+3212
+</td>
+<td style="text-align:right;">
+2197
+</td>
+<td style="text-align:right;">
+405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2020/21
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5586
+</td>
+<td style="text-align:right;">
+4083
+</td>
+<td style="text-align:right;">
+1503
+</td>
+<td style="text-align:right;">
+3285
+</td>
+<td style="text-align:right;">
+2301
+</td>
+<td style="text-align:right;">
+1303
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2021
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5131
+</td>
+<td style="text-align:right;">
+3698
+</td>
+<td style="text-align:right;">
+1433
+</td>
+<td style="text-align:right;">
+3037
+</td>
+<td style="text-align:right;">
+2054
+</td>
+<td style="text-align:right;">
+394
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2021/22
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5209
+</td>
+<td style="text-align:right;">
+3682
+</td>
+<td style="text-align:right;">
+1527
+</td>
+<td style="text-align:right;">
+3045
+</td>
+<td style="text-align:right;">
+2164
+</td>
+<td style="text-align:right;">
+1138
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2022
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+4851
+</td>
+<td style="text-align:right;">
+3360
+</td>
+<td style="text-align:right;">
+1491
+</td>
+<td style="text-align:right;">
+2847
+</td>
+<td style="text-align:right;">
+2004
+</td>
+<td style="text-align:right;">
+403
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+14 rows × 9 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="2" hidden="">
+<pre class="flip-code"><code>viadrina %&gt;%
+<span class="flip-new">  group_by(term)</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+semester
+</th>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+students
+</th>
+<th style="text-align:right;">
+german
+</th>
+<th style="text-align:right;">
+international
+</th>
+<th style="text-align:right;">
+women
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+freshers
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2019/20
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+6020
+</td>
+<td style="text-align:right;">
+4413
+</td>
+<td style="text-align:right;">
+1607
+</td>
+<td style="text-align:right;">
+3607
+</td>
+<td style="text-align:right;">
+2413
+</td>
+<td style="text-align:right;">
+1353
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2020
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5409
+</td>
+<td style="text-align:right;">
+4040
+</td>
+<td style="text-align:right;">
+1369
+</td>
+<td style="text-align:right;">
+3212
+</td>
+<td style="text-align:right;">
+2197
+</td>
+<td style="text-align:right;">
+405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2020/21
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5586
+</td>
+<td style="text-align:right;">
+4083
+</td>
+<td style="text-align:right;">
+1503
+</td>
+<td style="text-align:right;">
+3285
+</td>
+<td style="text-align:right;">
+2301
+</td>
+<td style="text-align:right;">
+1303
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2021
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5131
+</td>
+<td style="text-align:right;">
+3698
+</td>
+<td style="text-align:right;">
+1433
+</td>
+<td style="text-align:right;">
+3037
+</td>
+<td style="text-align:right;">
+2054
+</td>
+<td style="text-align:right;">
+394
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2021/22
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5209
+</td>
+<td style="text-align:right;">
+3682
+</td>
+<td style="text-align:right;">
+1527
+</td>
+<td style="text-align:right;">
+3045
+</td>
+<td style="text-align:right;">
+2164
+</td>
+<td style="text-align:right;">
+1138
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2022
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+4851
+</td>
+<td style="text-align:right;">
+3360
+</td>
+<td style="text-align:right;">
+1491
+</td>
+<td style="text-align:right;">
+2847
+</td>
+<td style="text-align:right;">
+2004
+</td>
+<td style="text-align:right;">
+403
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+14 rows × 9 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="3" hidden="">
+<pre class="flip-code"><code>viadrina %&gt;%
+  group_by(term) %&gt;%
+<span class="flip-new">  mutate(change = students / lag(students) - 1)</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+semester
+</th>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+students
+</th>
+<th style="text-align:right;">
+german
+</th>
+<th style="text-align:right;">
+international
+</th>
+<th style="text-align:right;">
+women
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+freshers
+</th>
+<th style="text-align:right;">
+change
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2019/20
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+6020
+</td>
+<td style="text-align:right;">
+4413
+</td>
+<td style="text-align:right;">
+1607
+</td>
+<td style="text-align:right;">
+3607
+</td>
+<td style="text-align:right;">
+2413
+</td>
+<td style="text-align:right;">
+1353
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2020
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5409
+</td>
+<td style="text-align:right;">
+4040
+</td>
+<td style="text-align:right;">
+1369
+</td>
+<td style="text-align:right;">
+3212
+</td>
+<td style="text-align:right;">
+2197
+</td>
+<td style="text-align:right;">
+405
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2020/21
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5586
+</td>
+<td style="text-align:right;">
+4083
+</td>
+<td style="text-align:right;">
+1503
+</td>
+<td style="text-align:right;">
+3285
+</td>
+<td style="text-align:right;">
+2301
+</td>
+<td style="text-align:right;">
+1303
+</td>
+<td style="text-align:right;">
+-0.072
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2021
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5131
+</td>
+<td style="text-align:right;">
+3698
+</td>
+<td style="text-align:right;">
+1433
+</td>
+<td style="text-align:right;">
+3037
+</td>
+<td style="text-align:right;">
+2054
+</td>
+<td style="text-align:right;">
+394
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2021/22
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5209
+</td>
+<td style="text-align:right;">
+3682
+</td>
+<td style="text-align:right;">
+1527
+</td>
+<td style="text-align:right;">
+3045
+</td>
+<td style="text-align:right;">
+2164
+</td>
+<td style="text-align:right;">
+1138
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2022
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+4851
+</td>
+<td style="text-align:right;">
+3360
+</td>
+<td style="text-align:right;">
+1491
+</td>
+<td style="text-align:right;">
+2847
+</td>
+<td style="text-align:right;">
+2004
+</td>
+<td style="text-align:right;">
+403
+</td>
+<td style="text-align:right;">
+-0.055
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+14 rows × 10 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="4" hidden="">
+<pre class="flip-code"><code>viadrina %&gt;%
+  group_by(term) %&gt;%
+  mutate(change = students / lag(students) - 1) %&gt;%
+<span class="flip-new">  ungroup()</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+semester
+</th>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+students
+</th>
+<th style="text-align:right;">
+german
+</th>
+<th style="text-align:right;">
+international
+</th>
+<th style="text-align:right;">
+women
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+freshers
+</th>
+<th style="text-align:right;">
+change
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2019/20
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+6020
+</td>
+<td style="text-align:right;">
+4413
+</td>
+<td style="text-align:right;">
+1607
+</td>
+<td style="text-align:right;">
+3607
+</td>
+<td style="text-align:right;">
+2413
+</td>
+<td style="text-align:right;">
+1353
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2020
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5409
+</td>
+<td style="text-align:right;">
+4040
+</td>
+<td style="text-align:right;">
+1369
+</td>
+<td style="text-align:right;">
+3212
+</td>
+<td style="text-align:right;">
+2197
+</td>
+<td style="text-align:right;">
+405
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2020/21
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+5586
+</td>
+<td style="text-align:right;">
+4083
+</td>
+<td style="text-align:right;">
+1503
+</td>
+<td style="text-align:right;">
+3285
+</td>
+<td style="text-align:right;">
+2301
+</td>
+<td style="text-align:right;">
+1303
+</td>
+<td style="text-align:right;">
+-0.072
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2021
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5131
+</td>
+<td style="text-align:right;">
+3698
+</td>
+<td style="text-align:right;">
+1433
+</td>
+<td style="text-align:right;">
+3037
+</td>
+<td style="text-align:right;">
+2054
+</td>
+<td style="text-align:right;">
+394
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2021/22
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+5209
+</td>
+<td style="text-align:right;">
+3682
+</td>
+<td style="text-align:right;">
+1527
+</td>
+<td style="text-align:right;">
+3045
+</td>
+<td style="text-align:right;">
+2164
+</td>
+<td style="text-align:right;">
+1138
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2022
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+4851
+</td>
+<td style="text-align:right;">
+3360
+</td>
+<td style="text-align:right;">
+1491
+</td>
+<td style="text-align:right;">
+2847
+</td>
+<td style="text-align:right;">
+2004
+</td>
+<td style="text-align:right;">
+403
+</td>
+<td style="text-align:right;">
+-0.055
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+14 rows × 10 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="5" hidden="">
+<pre class="flip-code"><code>viadrina %&gt;%
+  group_by(term) %&gt;%
+  mutate(change = students / lag(students) - 1) %&gt;%
+  ungroup() %&gt;%
+<span class="flip-new">  arrange(desc(year), desc(term))</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+semester
+</th>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+students
+</th>
+<th style="text-align:right;">
+german
+</th>
+<th style="text-align:right;">
+international
+</th>
+<th style="text-align:right;">
+women
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+freshers
+</th>
+<th style="text-align:right;">
+change
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2026
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2026
+</td>
+<td style="text-align:right;">
+3651
+</td>
+<td style="text-align:right;">
+2050
+</td>
+<td style="text-align:right;">
+1601
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+1609
+</td>
+<td style="text-align:right;">
+324
+</td>
+<td style="text-align:right;">
+-0.033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2025/26
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2025
+</td>
+<td style="text-align:right;">
+3877
+</td>
+<td style="text-align:right;">
+2229
+</td>
+<td style="text-align:right;">
+1648
+</td>
+<td style="text-align:right;">
+2132
+</td>
+<td style="text-align:right;">
+1728
+</td>
+<td style="text-align:right;">
+875
+</td>
+<td style="text-align:right;">
+-0.014
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2025
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2025
+</td>
+<td style="text-align:right;">
+3774
+</td>
+<td style="text-align:right;">
+2215
+</td>
+<td style="text-align:right;">
+1559
+</td>
+<td style="text-align:right;">
+2145
+</td>
+<td style="text-align:right;">
+1616
+</td>
+<td style="text-align:right;">
+362
+</td>
+<td style="text-align:right;">
+-0.066
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2024/25
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2024
+</td>
+<td style="text-align:right;">
+3933
+</td>
+<td style="text-align:right;">
+2321
+</td>
+<td style="text-align:right;">
+1612
+</td>
+<td style="text-align:right;">
+2231
+</td>
+<td style="text-align:right;">
+1691
+</td>
+<td style="text-align:right;">
+743
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2024
+</td>
+<td style="text-align:left;">
+summer
+</td>
+<td style="text-align:right;">
+2024
+</td>
+<td style="text-align:right;">
+4039
+</td>
+<td style="text-align:right;">
+2448
+</td>
+<td style="text-align:right;">
+1591
+</td>
+<td style="text-align:right;">
+2301
+</td>
+<td style="text-align:right;">
+1738
+</td>
+<td style="text-align:right;">
+481
+</td>
+<td style="text-align:right;">
+-0.075
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2023/24
+</td>
+<td style="text-align:left;">
+winter
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+4242
+</td>
+<td style="text-align:right;">
+2711
+</td>
+<td style="text-align:right;">
+1531
+</td>
+<td style="text-align:right;">
+2456
+</td>
+<td style="text-align:right;">
+1786
+</td>
+<td style="text-align:right;">
+847
+</td>
+<td style="text-align:right;">
+-0.116
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+14 rows × 10 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="6" hidden="">
+<pre class="flip-code"><code>viadrina %&gt;%
+  group_by(term) %&gt;%
+  mutate(change = students / lag(students) - 1) %&gt;%
+  ungroup() %&gt;%
+  arrange(desc(year), desc(term)) %&gt;%
+<span class="flip-new">  transmute(
+    Semester = semester, Students = students,
+    `vs. year before` = change, German = german,
+    International = international,
+    `International share` = international / students,
+    Women = women, Men = men, `First semester` = freshers
+  )</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+Semester
+</th>
+<th style="text-align:right;">
+Students
+</th>
+<th style="text-align:right;">
+vs. year before
+</th>
+<th style="text-align:right;">
+German
+</th>
+<th style="text-align:right;">
+International
+</th>
+<th style="text-align:right;">
+International share
+</th>
+<th style="text-align:right;">
+Women
+</th>
+<th style="text-align:right;">
+Men
+</th>
+<th style="text-align:right;">
+First semester
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2026
+</td>
+<td style="text-align:right;">
+3651
+</td>
+<td style="text-align:right;">
+-0.033
+</td>
+<td style="text-align:right;">
+2050
+</td>
+<td style="text-align:right;">
+1601
+</td>
+<td style="text-align:right;">
+0.439
+</td>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+1609
+</td>
+<td style="text-align:right;">
+324
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2025/26
+</td>
+<td style="text-align:right;">
+3877
+</td>
+<td style="text-align:right;">
+-0.014
+</td>
+<td style="text-align:right;">
+2229
+</td>
+<td style="text-align:right;">
+1648
+</td>
+<td style="text-align:right;">
+0.425
+</td>
+<td style="text-align:right;">
+2132
+</td>
+<td style="text-align:right;">
+1728
+</td>
+<td style="text-align:right;">
+875
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2025
+</td>
+<td style="text-align:right;">
+3774
+</td>
+<td style="text-align:right;">
+-0.066
+</td>
+<td style="text-align:right;">
+2215
+</td>
+<td style="text-align:right;">
+1559
+</td>
+<td style="text-align:right;">
+0.413
+</td>
+<td style="text-align:right;">
+2145
+</td>
+<td style="text-align:right;">
+1616
+</td>
+<td style="text-align:right;">
+362
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2024/25
+</td>
+<td style="text-align:right;">
+3933
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+2321
+</td>
+<td style="text-align:right;">
+1612
+</td>
+<td style="text-align:right;">
+0.410
+</td>
+<td style="text-align:right;">
+2231
+</td>
+<td style="text-align:right;">
+1691
+</td>
+<td style="text-align:right;">
+743
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sommersemester 2024
+</td>
+<td style="text-align:right;">
+4039
+</td>
+<td style="text-align:right;">
+-0.075
+</td>
+<td style="text-align:right;">
+2448
+</td>
+<td style="text-align:right;">
+1591
+</td>
+<td style="text-align:right;">
+0.394
+</td>
+<td style="text-align:right;">
+2301
+</td>
+<td style="text-align:right;">
+1738
+</td>
+<td style="text-align:right;">
+481
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wintersemester 2023/24
+</td>
+<td style="text-align:right;">
+4242
+</td>
+<td style="text-align:right;">
+-0.116
+</td>
+<td style="text-align:right;">
+2711
+</td>
+<td style="text-align:right;">
+1531
+</td>
+<td style="text-align:right;">
+0.361
+</td>
+<td style="text-align:right;">
+2456
+</td>
+<td style="text-align:right;">
+1786
+</td>
+<td style="text-align:right;">
+847
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+14 rows × 9 columns
+</p>
+</div>
+</div>
+<input type="range" class="flip-slider" min="1" max="6" value="1" step="1" aria-label="pipeline step">
+<p class="flip-caption">
+Step <span class="flip-i">1</span> of 6 — grouping by term compares summer with summer, winter with winter
+</p>
+</div>
+<script>
+(function(){
+  var box = document.getElementById("flip30164");
+  var panes = box.querySelectorAll(".flip-pane");
+  var slider = box.querySelector(".flip-slider");
+  var label = box.querySelector(".flip-i");
+  slider.addEventListener("input", function(){
+    var n = +slider.value;
+    panes.forEach(function(p){ p.hidden = (+p.dataset.step !== n); });
+    label.textContent = n;
+  });
+})();
+</script>
+<p>Three things are worth noticing while stepping through. <code>group_by()</code> changes nothing visible — it only changes what the <em>next</em> verb means. <code>lag()</code> produces an <code>NA</code> in the first row of each group, because there is no earlier semester to compare with. And <code>transmute()</code> is the moment the table stops being data and starts being a presentation: it renames, computes, and drops everything it was not asked to keep.</p>
+<p>The full table, searchable and sortable:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="web-data.html#cb71-1" tabindex="-1"></a><span class="fu">datatable</span>(</span>
+<span id="cb71-2"><a href="web-data.html#cb71-2" tabindex="-1"></a>  viadrina_display,</span>
+<span id="cb71-3"><a href="web-data.html#cb71-3" tabindex="-1"></a>  <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb71-4"><a href="web-data.html#cb71-4" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">6</span>, <span class="at">dom =</span> <span class="st">&quot;tip&quot;</span>, <span class="at">ordering =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb71-5"><a href="web-data.html#cb71-5" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb71-6"><a href="web-data.html#cb71-6" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">&quot;Students&quot;</span>, <span class="st">&quot;German&quot;</span>, <span class="st">&quot;International&quot;</span>, <span class="st">&quot;Women&quot;</span>, <span class="st">&quot;Men&quot;</span>,</span>
+<span id="cb71-7"><a href="web-data.html#cb71-7" tabindex="-1"></a>                <span class="st">&quot;First semester&quot;</span>), <span class="at">digits =</span> <span class="dv">0</span>, <span class="at">mark =</span> <span class="st">&quot;,&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb71-8"><a href="web-data.html#cb71-8" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="fu">c</span>(<span class="st">&quot;vs. year before&quot;</span>, <span class="st">&quot;International share&quot;</span>), <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-5804aa2b6c161ceea369" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-5804aa2b6c161ceea369">{"x":{"filter":"none","vertical":false,"data":[["Sommersemester 2026","Wintersemester 2025/26","Sommersemester 2025","Wintersemester 2024/25","Sommersemester 2024","Wintersemester 2023/24","Sommersemester 2023","Wintersemester 2022/23","Sommersemester 2022","Wintersemester 2021/22","Sommersemester 2021","Wintersemester 2020/21","Sommersemester 2020","Wintersemester 2019/20"],[3651,3877,3774,3933,4039,4242,4366,4797,4851,5209,5131,5586,5409,6020],[-0.03259141494435613,-0.0142384947876939,-0.06561029957910369,-0.07284299858557286,-0.07489693082913418,-0.115697310819262,-0.09997938569367137,-0.07909387598387407,-0.05457025920873126,-0.06749015395631941,-0.05139582177851731,-0.0720930232558139,null,null],[2050,2229,2215,2321,2448,2711,2925,3201,3360,3682,3698,4083,4040,4413],[1601,1648,1559,1612,1591,1531,1441,1596,1491,1527,1433,1503,1369,1607],[0.4385099972610244,0.4250709311323188,0.4130895601483837,0.4098652428171879,0.39390938351077,0.3609146628948609,0.3300503893724233,0.33270794246404,0.3073593073593073,0.2931464772509119,0.279282790878971,0.2690655209452202,0.253096690700684,0.2669435215946844],[2016,2132,2145,2231,2301,2456,2549,2785,2847,3045,3037,3285,3212,3607],[1609,1728,1616,1691,1738,1786,1817,2012,2004,2164,2054,2301,2197,2413],[324,875,362,743,481,847,317,915,403,1138,394,1303,405,1353]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Semester<\/th>\n      <th>Students<\/th>\n      <th>vs. year before<\/th>\n      <th>German<\/th>\n      <th>International<\/th>\n      <th>International share<\/th>\n      <th>Women<\/th>\n      <th>Men<\/th>\n      <th>First semester<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"dom":"tip","ordering":false,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":8,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5,6,7,8]},{"name":"Semester","targets":0},{"name":"Students","targets":1},{"name":"vs. year before","targets":2},{"name":"German","targets":3},{"name":"International","targets":4},{"name":"International share","targets":5},{"name":"Women","targets":6},{"name":"Men","targets":7},{"name":"First semester","targets":8}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render","options.columnDefs.6.render","options.columnDefs.7.render"],"jsHooks":[]}</script>
 <p>Three things stand out. First, the university shrinks in almost every single semester — the <em>vs. year before</em> column is negative nearly all the way down. Second, it shrinks although the number of international students hardly moves at all (1,607 in winter 2019/20, 1,648 in winter 2025/26). The decline is a decline of German students, and the international share therefore climbs from 27 % to over 40 %. Third, the <em>first semester</em> column shows where the intake happens: 875 newcomers in winter 2025/26 against 324 in the following summer. Winter is the semester that decides the year.</p>

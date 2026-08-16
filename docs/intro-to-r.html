@@ -566,13 +566,116 @@ This book is <b>Work in Progress</b>. I appreciate your feedback to make the boo
 <!-- You can collapse sections in RStudio. -->
 <div id="r-is-a-calculator" class="section level3 unnumbered hasAnchor">
 <h3>R is a calculator<a href="intro-to-r.html#r-is-a-calculator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<!-- By default, `tutorial` will convert all R chunks. -->
-<!-- # ```{r, include=FALSE} -->
-<!-- # tutorial::go_interactive(greedy=FALSE) -->
-<!-- # ``` -->
-<p>R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the <strong>script.R</strong> tab are executed by the <strong>Run</strong> bottom. It runs the entire script and prints out results in the <strong>R Console</strong>. This setting is simplified but reflects the procedure in a more complex integrated developer environment (IDE) like RStudio. <u id='intro_r'>Test it.</u></p>
-<iframe src="DCL/playground1.html" frameborder="0" scrolling="no" style="width:100%;height:360px">
-</iframe>
+<p>R is a calculator. The box below is not a picture of R — it <strong>is</strong> R, running inside this page. Edit the code, press <strong>Run</strong>, and the result appears underneath, just as it would in the console of an integrated development environment (IDE) like RStudio. <u id='intro_r'>Test it.</u></p>
+<p>The first Run takes a moment, because R itself has to be downloaded first. Everything after that is instant, and nothing you type ever leaves your computer.</p>
+<div id="webr50882" class="webr-box" data-plot="false" data-packages="">
+<textarea class="webr-code" spellcheck="false" rows="5"># Anything after a hash is a comment, not code.
+2 + 2
+7 * 6
+2^10
+(3 + 5) / 2</textarea>
+<div class="webr-bar">
+<p><button class="webr-run" type="button">Run</button>
+<button class="webr-reset" type="button">Reset</button>
+<span class="webr-status">R is not loaded yet</span></p>
+</div>
+<pre class="webr-out" hidden></pre>
+<p class="webr-hint">
+Try deleting everything and typing 1:20 instead.
+</p>
+</div>
+<script>
+if (!window.bfidWebR) {
+  window.bfidWebR = (function () {
+    var ready = null;      // promise for the webR instance
+    var shelter = null;    // memory shelter, reused across runs
+    var listeners = [];
+
+    function announce(msg) { listeners.forEach(function (f) { f(msg); }); }
+
+    function boot() {
+      if (ready) return ready;
+      announce("downloading R, about 30 MB - this happens once per visit");
+      ready = import("https://webr.r-wasm.org/latest/webr.mjs")
+        .then(async function (mod) {
+          var webR = new mod.WebR();
+          await webR.init();
+          shelter = await new webR.Shelter();
+          announce("R is ready");
+          return webR;
+        })
+        .catch(function (e) {
+          announce("R could not be loaded: " + e);
+          ready = null;
+          throw e;
+        });
+      return ready;
+    }
+
+    return {
+      onStatus: function (f) { listeners.push(f); },
+      run: async function (code, packages) {
+        var webR = await boot();
+        if (packages && packages.length) {
+          announce("installing " + packages.join(", "));
+          await webR.installPackages(packages);
+          announce("R is ready");
+        }
+        var res = await shelter.captureR(code, {
+          withAutoprint: true,
+          captureStreams: true,
+          captureConditions: false
+        });
+        var text = res.output
+          .filter(function (o) { return o.type === "stdout" || o.type === "stderr"; })
+          .map(function (o) { return o.data; })
+          .join("\n");
+        return { text: text, images: res.images, purge: function () { shelter.purge(); } };
+      }
+    };
+  })();
+}
+
+(function () {
+  var box = document.getElementById("webr50882");
+  var area = box.querySelector(".webr-code");
+  var out = box.querySelector(".webr-out");
+  var canvas = box.querySelector(".webr-plot");
+  var status = box.querySelector(".webr-status");
+  var runBtn = box.querySelector(".webr-run");
+  var original = area.value;
+  var pkgs = box.dataset.packages ? box.dataset.packages.split(",").filter(Boolean) : [];
+
+  window.bfidWebR.onStatus(function (m) { status.textContent = m; });
+
+  runBtn.addEventListener("click", async function () {
+    runBtn.disabled = true;
+    out.hidden = false;
+    out.textContent = "running...";
+    try {
+      var r = await window.bfidWebR.run(area.value, pkgs);
+      out.textContent = r.text || "(no output)";
+      if (canvas && r.images && r.images.length) {
+        var img = r.images[r.images.length - 1];
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        canvas.hidden = false;
+      }
+      r.purge();
+    } catch (e) {
+      out.textContent = String(e && e.message ? e.message : e);
+    }
+    runBtn.disabled = false;
+  });
+
+  box.querySelector(".webr-reset").addEventListener("click", function () {
+    area.value = original;
+    out.hidden = true;
+    if (canvas) canvas.hidden = true;
+  });
+})();
+</script>
 <span class="tippy html-widget html-fill-item" height="480" id="htmlwidget-fe19687908160cbb164e" width="576"></span>
 <script type="application/json" data-for="htmlwidget-fe19687908160cbb164e">{"x":{"element":"intro_r","opts":{"content":"Delete all code, type 1:20 and hit Run."}},"evals":[],"jsHooks":[]}</script>
 <div class="defbox">
@@ -590,10 +693,6 @@ Definition
 <li><code>^</code> Exponent</li>
 </ul>
 </div>
-<!-- https://cdn.datacamp.com/dcl-react-prod/index.html -->
-<!-- <script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script> -->
-<!-- <script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script> -->
-<!-- <iframe src="DCL/intro_1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe> -->
 </div>
 <div id="r-is-more-than-a-calculator" class="section level3 unnumbered hasAnchor">
 <h3>R is more than a calculator<a href="intro-to-r.html#r-is-more-than-a-calculator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -605,8 +704,118 @@ Your Turn: Adjust the code.
 </div>
 <p>If you never saw R before, change the <code>main</code> title to what ever suits you or change the color option <code>col</code> from <code>lightblue</code> to <code>aliceblue</code>.</p>
 <p>If you have some experience, order the bars using the <code>sort()</code> command.</p>
-<iframe src="DCL/playground_graph.html" frameborder="0" scrolling="no" style="width:100%;height:360px">
-</iframe>
+<div id="webr31447" class="webr-box" data-plot="true" data-packages="">
+<textarea class="webr-code" spellcheck="false" rows="7">counts &lt;- c(Monday = 12, Tuesday = 19, Wednesday = 7,
+            Thursday = 15, Friday = 22)
+
+barplot(counts,
+        main = "Coffees per day",
+        ylab = "Cups",
+        col  = "lightblue")</textarea>
+<div class="webr-bar">
+<p><button class="webr-run" type="button">Run</button>
+<button class="webr-reset" type="button">Reset</button>
+<span class="webr-status">R is not loaded yet</span></p>
+</div>
+<pre class="webr-out" hidden></pre>
+<canvas class="webr-plot" hidden>
+</canvas>
+<p class="webr-hint">
+Wrap counts in sort() to order the bars.
+</p>
+</div>
+<script>
+if (!window.bfidWebR) {
+  window.bfidWebR = (function () {
+    var ready = null;      // promise for the webR instance
+    var shelter = null;    // memory shelter, reused across runs
+    var listeners = [];
+
+    function announce(msg) { listeners.forEach(function (f) { f(msg); }); }
+
+    function boot() {
+      if (ready) return ready;
+      announce("downloading R, about 30 MB - this happens once per visit");
+      ready = import("https://webr.r-wasm.org/latest/webr.mjs")
+        .then(async function (mod) {
+          var webR = new mod.WebR();
+          await webR.init();
+          shelter = await new webR.Shelter();
+          announce("R is ready");
+          return webR;
+        })
+        .catch(function (e) {
+          announce("R could not be loaded: " + e);
+          ready = null;
+          throw e;
+        });
+      return ready;
+    }
+
+    return {
+      onStatus: function (f) { listeners.push(f); },
+      run: async function (code, packages) {
+        var webR = await boot();
+        if (packages && packages.length) {
+          announce("installing " + packages.join(", "));
+          await webR.installPackages(packages);
+          announce("R is ready");
+        }
+        var res = await shelter.captureR(code, {
+          withAutoprint: true,
+          captureStreams: true,
+          captureConditions: false
+        });
+        var text = res.output
+          .filter(function (o) { return o.type === "stdout" || o.type === "stderr"; })
+          .map(function (o) { return o.data; })
+          .join("\n");
+        return { text: text, images: res.images, purge: function () { shelter.purge(); } };
+      }
+    };
+  })();
+}
+
+(function () {
+  var box = document.getElementById("webr31447");
+  var area = box.querySelector(".webr-code");
+  var out = box.querySelector(".webr-out");
+  var canvas = box.querySelector(".webr-plot");
+  var status = box.querySelector(".webr-status");
+  var runBtn = box.querySelector(".webr-run");
+  var original = area.value;
+  var pkgs = box.dataset.packages ? box.dataset.packages.split(",").filter(Boolean) : [];
+
+  window.bfidWebR.onStatus(function (m) { status.textContent = m; });
+
+  runBtn.addEventListener("click", async function () {
+    runBtn.disabled = true;
+    out.hidden = false;
+    out.textContent = "running...";
+    try {
+      var r = await window.bfidWebR.run(area.value, pkgs);
+      out.textContent = r.text || "(no output)";
+      if (canvas && r.images && r.images.length) {
+        var img = r.images[r.images.length - 1];
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        canvas.hidden = false;
+      }
+      r.purge();
+    } catch (e) {
+      out.textContent = String(e && e.message ? e.message : e);
+    }
+    runBtn.disabled = false;
+  });
+
+  box.querySelector(".webr-reset").addEventListener("click", function () {
+    area.value = original;
+    out.hidden = true;
+    if (canvas) canvas.hidden = true;
+  });
+})();
+</script>
 </div>
 <!-- rdrr.io is working but does not look nice -->
 <!-- <iframe width='100%' height='500' src='https://rdrr.io/snippets/embed/' frameborder='1'></iframe> -->

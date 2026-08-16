@@ -75,14 +75,22 @@ Using .R files or scripts offers efficiency, reproducibility, scalability, colla
 
 ### R is a calculator {-}
 
-<!-- By default, `tutorial` will convert all R chunks. -->
-<!-- # ```{r, include=FALSE} -->
-<!-- # tutorial::go_interactive(greedy=FALSE) -->
-<!-- # ``` -->
+R is a calculator. The box below is not a picture of R — it **is** R, running inside this page. Edit the code, press **Run**, and the result appears underneath, just as it would in the console of an integrated development environment (IDE) like RStudio. <u id='intro_r'>Test it.</u>
 
-R is a calculator. Use this R demo in the browser to explore basic features of R. Commands in the  **script.R** tab are executed by the **Run** bottom. It runs the entire script and prints out results in the **R Console**. This setting is simplified but reflects the procedure in a more complex integrated developer environment (IDE) like RStudio. <u id='intro_r'>Test it.</u> 
+The first Run takes a moment, because R itself has to be downloaded first. Everything after that is instant, and nothing you type ever leaves your computer.
 
-<iframe src="DCL/playground1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
+```{r webr-calculator, echo=FALSE, results='asis'}
+source("scripts/webr-console.R")
+
+webr_console(
+  "# Anything after a hash is a comment, not code.
+2 + 2
+7 * 6
+2^10
+(3 + 5) / 2",
+  hint = "Try deleting everything and typing 1:20 instead."
+)
+```
 
 ```{r, echo=FALSE}
 tippy::tippy_this(elementId = "intro_r", tooltip = "Delete all code, type 1:20 and hit Run.")
@@ -101,11 +109,6 @@ Basic **arithmetic operators** are:
 - `^` Exponent 
 ::::
 
-<!-- https://cdn.datacamp.com/dcl-react-prod/index.html -->
-<!-- <script src=https://cdn.datacamp.com/datacamp-light-latest.min.js></script> -->
-<!-- <script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script> -->
-<!-- <iframe src="DCL/intro_1.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe> -->
-
 ### R is more than a calculator {-}
 
 :::: {.challenge}
@@ -117,7 +120,19 @@ If you never saw R before, change the `main` title  to what ever suits you or ch
 
 If you have some experience, order the bars using the `sort()` command.
 
-<iframe src="DCL/playground_graph.html" frameborder="0" scrolling="no" style="width:100%;height:360px"></iframe>
+```{r webr-barplot, echo=FALSE, results='asis'}
+webr_console(
+  'counts <- c(Monday = 12, Tuesday = 19, Wednesday = 7,
+            Thursday = 15, Friday = 22)
+
+barplot(counts,
+        main = "Coffees per day",
+        ylab = "Cups",
+        col  = "lightblue")',
+  plot = TRUE,
+  hint = "Wrap counts in sort() to order the bars."
+)
+```
 ::::
 
 <!-- rdrr.io is working but does not look nice -->
