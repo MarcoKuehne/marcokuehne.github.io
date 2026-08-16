@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" role="img"
+     aria-labelledby="title desc" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title id="title">The four panes of RStudio</title>
+  <desc id="desc">A schematic RStudio window divided into four panes: Source top left, Console bottom left, Environment top right, and Files, Plots, Packages, Help and Viewer bottom right. An arrow marks that Ctrl and Enter send a line from the Source pane down to the Console.</desc>
+
+  <defs>
+    <style>
+      .pane      { fill: #ffffff; stroke: #dcdcdc; stroke-width: 1; }
+      .tabbar    { fill: #f5f6f7; }
+      .tab       { font-size: 12px; fill: #5b6570; }
+      .tab-on    { font-size: 12px; fill: #1d252d; font-weight: 600; }
+      .code      { font-family: Consolas, Monaco, "Courier New", monospace; font-size: 12.5px; fill: #3b4650; }
+      .comment   { font-family: Consolas, Monaco, "Courier New", monospace; font-size: 12.5px; fill: #96a0aa; }
+      .prompt    { font-family: Consolas, Monaco, "Courier New", monospace; font-size: 12.5px; fill: #2c5f8a; }
+      .badge     { fill: #2c5f8a; }
+      .badge-txt { font-size: 14px; font-weight: 700; fill: #ffffff; }
+      .name      { font-size: 13.5px; font-weight: 600; fill: #1d252d; }
+      .hint      { font-size: 12px; fill: #6b7580; }
+      .rowline   { stroke: #edeff1; stroke-width: 1; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2c5f8a"/>
+    </marker>
+  </defs>
+
+  <!-- window -->
+  <rect x="16" y="16" width="868" height="548" rx="10" fill="#ffffff" stroke="#c9ced3"/>
+  <path d="M16 26 a10 10 0 0 1 10 -10 h848 a10 10 0 0 1 10 10 v24 h-868 z" fill="#eceef0"/>
+  <circle cx="36" cy="34" r="5" fill="#d7dade"/>
+  <circle cx="54" cy="34" r="5" fill="#d7dade"/>
+  <circle cx="72" cy="34" r="5" fill="#d7dade"/>
+  <text x="96" y="39" font-size="12.5" fill="#6b7580">penguin-practice — RStudio</text>
+
+  <!-- ================= Source (top left) ================= -->
+  <g>
+    <rect class="pane" x="34" y="70" width="406" height="228" rx="6"/>
+    <path d="M34 76 a6 6 0 0 1 6 -6 h394 a6 6 0 0 1 6 6 v20 h-406 z" class="tabbar"/>
+    <text class="tab-on" x="46" y="90">01-explore.R</text>
+    <text class="tab" x="140" y="90">02-model.R</text>
+    <line class="rowline" x1="34" y1="96" x2="440" y2="96"/>
+    <text class="code"    x="48" y="122">library(tidyverse)</text>
+    <text class="code"    x="48" y="142">library(palmerpenguins)</text>
+    <text class="comment" x="48" y="170"># heaviest species?</text>
+    <text class="code"    x="48" y="190">penguins %&gt;%</text>
+    <text class="code"    x="62" y="210">group_by(species) %&gt;%</text>
+    <text class="code"    x="62" y="230">summarise(mass = mean(</text>
+    <text class="code"    x="76" y="250">body_mass_g, na.rm = TRUE))</text>
+    <text class="hint"    x="48" y="282">you write here</text>
+    <circle class="badge" cx="34" cy="70" r="15"/>
+    <text class="badge-txt" x="34" y="75" text-anchor="middle">1</text>
+    <text class="name" x="58" y="52">Source</text>
+  </g>
+
+  <!-- ================= Console (bottom left) ================= -->
+  <g>
+    <rect class="pane" x="34" y="322" width="406" height="228" rx="6"/>
+    <path d="M34 328 a6 6 0 0 1 6 -6 h394 a6 6 0 0 1 6 6 v20 h-406 z" class="tabbar"/>
+    <text class="tab-on" x="46" y="342">Console</text>
+    <text class="tab" x="112" y="342">Terminal</text>
+    <text class="tab" x="180" y="342">Background Jobs</text>
+    <line class="rowline" x1="34" y1="348" x2="440" y2="348"/>
+    <text class="prompt"  x="48" y="374">&gt; penguins %&gt;% group_by(species) %&gt;%</text>
+    <text class="prompt"  x="62" y="392">    summarise(mass = mean(body_mass_g,</text>
+    <text class="prompt"  x="62" y="410">    na.rm = TRUE))</text>
+    <text class="code"    x="48" y="436"># A tibble: 3 x 2</text>
+    <text class="code"    x="48" y="454">  species    mass</text>
+    <text class="code"    x="48" y="472">1 Adelie    3701.</text>
+    <text class="code"    x="48" y="490">2 Chinstrap 3733.</text>
+    <text class="code"    x="48" y="508">3 Gentoo    5076.</text>
+    <text class="hint"    x="48" y="534">R answers here</text>
+    <circle class="badge" cx="34" cy="322" r="15"/>
+    <text class="badge-txt" x="34" y="327" text-anchor="middle">2</text>
+    <text class="name" x="58" y="314">Console</text>
+  </g>
+
+  <!-- Ctrl+Enter arrow, Source -> Console -->
+  <path d="M244 300 C 244 310, 244 310, 244 318" stroke="#2c5f8a" stroke-width="2"
+        fill="none" marker-end="url(#arrow)"/>
+  <rect x="196" y="292" width="96" height="20" rx="10" fill="#ffffff" stroke="#c6d5e2"/>
+  <text x="244" y="306" text-anchor="middle" font-size="11.5" fill="#2c5f8a"
+        font-weight="600">Ctrl + Enter</text>
+
+  <!-- ================= Environment (top right) ================= -->
+  <g>
+    <rect class="pane" x="460" y="70" width="406" height="228" rx="6"/>
+    <path d="M460 76 a6 6 0 0 1 6 -6 h394 a6 6 0 0 1 6 6 v20 h-406 z" class="tabbar"/>
+    <text class="tab-on" x="472" y="90">Environment</text>
+    <text class="tab" x="558" y="90">History</text>
+    <text class="tab" x="614" y="90">Connections</text>
+    <text class="tab" x="700" y="90">Git</text>
+    <line class="rowline" x1="460" y1="96" x2="866" y2="96"/>
+    <text class="code" x="474" y="124">penguins</text>
+    <text class="code" x="640" y="124">344 obs. of 8 variables</text>
+    <line class="rowline" x1="474" y1="136" x2="852" y2="136"/>
+    <text class="code" x="474" y="158">by_species</text>
+    <text class="code" x="640" y="158">3 obs. of 2 variables</text>
+    <line class="rowline" x1="474" y1="170" x2="852" y2="170"/>
+    <text class="code" x="474" y="192">heavy</text>
+    <text class="code" x="640" y="192">num 6300</text>
+    <line class="rowline" x1="474" y1="204" x2="852" y2="204"/>
+    <text class="hint" x="474" y="240">everything that currently exists</text>
+    <text class="hint" x="474" y="262">— and nothing that does not</text>
+    <circle class="badge" cx="460" cy="70" r="15"/>
+    <text class="badge-txt" x="460" y="75" text-anchor="middle">3</text>
+    <text class="name" x="484" y="52">Environment</text>
+  </g>
+
+  <!-- ================= Files / Plots / Help (bottom right) ================= -->
+  <g>
+    <rect class="pane" x="460" y="322" width="406" height="228" rx="6"/>
+    <path d="M460 328 a6 6 0 0 1 6 -6 h394 a6 6 0 0 1 6 6 v20 h-406 z" class="tabbar"/>
+    <text class="tab" x="472" y="342">Files</text>
+    <text class="tab-on" x="512" y="342">Plots</text>
+    <text class="tab" x="558" y="342">Packages</text>
+    <text class="tab" x="628" y="342">Help</text>
+    <text class="tab" x="668" y="342">Viewer</text>
+    <line class="rowline" x1="460" y1="348" x2="866" y2="348"/>
+    <!-- tiny scatter -->
+    <line x1="512" y1="520" x2="828" y2="520" stroke="#c9ced3"/>
+    <line x1="512" y1="372" x2="512" y2="520" stroke="#c9ced3"/>
+    <g fill="#e8845a" opacity="0.85">
+      <circle cx="560" cy="492" r="4"/><circle cx="584" cy="480" r="4"/>
+      <circle cx="602" cy="486" r="4"/><circle cx="622" cy="470" r="4"/>
+      <circle cx="596" cy="466" r="4"/>
+    </g>
+    <g fill="#3f9b6d" opacity="0.85">
+      <circle cx="646" cy="462" r="4"/><circle cx="664" cy="452" r="4"/>
+      <circle cx="682" cy="458" r="4"/><circle cx="700" cy="444" r="4"/>
+    </g>
+    <g fill="#4f86c6" opacity="0.85">
+      <circle cx="726" cy="424" r="4"/><circle cx="748" cy="410" r="4"/>
+      <circle cx="770" cy="398" r="4"/><circle cx="792" cy="386" r="4"/>
+      <circle cx="756" cy="392" r="4"/>
+    </g>
+    <text class="hint" x="512" y="538">plots, files, help pages</text>
+    <circle class="badge" cx="460" cy="322" r="15"/>
+    <text class="badge-txt" x="460" y="327" text-anchor="middle">4</text>
+    <text class="name" x="484" y="314">Files, Plots, Packages, Help</text>
+  </g>
+</svg>

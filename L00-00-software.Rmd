@@ -36,7 +36,7 @@ penguin_art <- function(file) {
 }
 ```
 
-## Why code? {-}
+## Why code? {#why-code -}
 
 A table arrives by email. You sort it, delete a few odd rows, copy two columns into a fresh sheet, drag a formula down, and twenty minutes later a number appears: **4.7**. You paste it into your report and close the laptop.
 
@@ -90,7 +90,7 @@ But the tidyverse is not the boundary of the ocean.
 
 Base R appears whenever it is shorter or clearer. Model functions come with their own syntax, specialised packages have their own conventions, and mathematical notation says some things better than any code can. The aim is not loyalty to one dialect. The aim is an analysis that is understandable, reliable and useful.
 
-## Intro to R {-}
+## Intro to R {#intro-to-r -}
 
 R is a language you speak with a computer, and the conversation has two forms. In the **console** you say one thing and get one answer, like sending a message. In a **script** you write the whole conversation down, so it can be repeated, corrected and sent to someone else.
 
@@ -295,7 +295,7 @@ mean(weights, na.rm = TRUE)  # ... unless we say to drop it
 is.na(weights)
 ```
 
-`na.rm = TRUE` is a decision, not a formality. The chapter on imperfect data returns to what dropping those cases quietly assumes.
+`na.rm = TRUE` is a decision, not a formality. Chapter \@ref(missing-data) returns to what dropping those cases quietly assumes.
 
 ### Data frames {-}
 
@@ -426,7 +426,7 @@ A **warning** is different from an **error**. An error stops the code; a warning
 
 The most effective debugging habit is also the least glamorous: run your code one line at a time and look at the object after each step. Half of all bugs are simply an object that is not what you assumed it was.
 
-## Intro to the Tidyverse {-}
+## Intro to the Tidyverse {#intro-to-tidyverse -}
 
 The `tidyverse` is a collection of packages for data science that share a philosophy, a grammar and a set of data structures.^[See <https://www.tidyverse.org/>.] Install it once, load it once per session, and you have `readr` for reading data, `dplyr` for reshaping it, `ggplot2` for drawing it, and a dozen more.
 
@@ -773,20 +773,37 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g,
 [R for Data Science](https://r4ds.hadley.nz/) by Wickham, Çetinkaya-Rundel and Grolemund is the standard reference for everything in this section, free to read online. For graphics specifically, [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/) goes from the grammar to the details.
 ::::
 
-## RStudio and projects {-}
+## RStudio and projects {#rstudio-projects -}
 
-R is the engine. **RStudio** is the workshop built around it: an editor, a console, your objects, your plots and your files in one window. You can run R without it — from a terminal, from VS Code, from Positron or from a notebook — but for learning and for ordinary analysis it removes a lot of friction.^[RStudio is made by [Posit](https://posit.co/downloads/), formerly RStudio Inc. It is free in the open-source edition.]
+R is the engine. **RStudio** is the workshop built around it: an editor, a console, your objects, your plots and your files in one window. You can run R without it — from a terminal, from VS Code, or from a notebook — but for learning and for ordinary analysis it removes a lot of friction.
 
 This section is the part of the chapter that people skip and later wish they had not. Almost every "R cannot find my file" problem is solved here.
 
+:::: {.defbox}
+::: {.titeldefbox}
+<h2> Definition </h2>
+:::
+**Three names for two things.**
+
+- **RStudio** is the program — the window with the four panes. Free, open source, and still called RStudio.
+- **Posit** is the company that makes it. It was called RStudio, Inc. until [November 2022](https://posit.co/blog/rstudio-is-now-posit/), when it renamed itself to signal that it now builds for Python as well as R: *"not about pivoting from R to Python … about broadening and embracing the Python community as well as the R community"*. The IDE deliberately kept its old name.
+- **Positron** is a *different*, newer editor from the same company, built on VS Code.
+
+So you download RStudio from posit.co, your Start menu says RStudio, your project files still end in `.Rproj`, and a tutorial from 2019 that credits "RStudio, Inc." is talking about the same software.
+::::
+
 ### The four panes {-}
 
-- **Source** (top left) — where scripts are written. This is where you work.
-- **Console** (bottom left) — where R answers. Fine for trying things out, wrong for anything you want to keep.
-- **Environment** (top right) — the objects that currently exist. A quick way to check whether the thing you think you made is the thing you actually made.
-- **Files, Plots, Packages, Help, Viewer** (bottom right) — the rest.
+```{r rstudio-panes, echo=FALSE, out.width="100%", fig.align="center", fig.cap="The RStudio window. Schematic, because the real one moves its furniture with every release."}
+knitr::include_graphics("images/rstudio-panes.svg")
+```
 
-The single most useful habit: type in the Source pane, then send the line to the console with `Ctrl` + `Enter`. Your script stays complete, and it will still run tomorrow.
+1. **Source** (top left) — where scripts are written. This is where you work. Tabs across the top are your open files.
+2. **Console** (bottom left) — where R answers. Fine for trying things out, wrong for anything you want to keep.
+3. **Environment** (top right) — the objects that currently exist. A quick way to check whether the thing you think you made is the thing you actually made. Its neighbouring tabs hold your command history and, once a project uses Git, a **Git** tab.
+4. **Files, Plots, Packages, Help, Viewer** (bottom right) — the rest: your project folder, the last graph you drew, the help page you are ignoring.
+
+The arrow in the middle is the single most useful habit: type in the Source pane, then send the line down to the console with `Ctrl` + `Enter`. The answer appears below, and your script stays complete — so it will still run tomorrow.
 
 | Shortcut (Windows/Linux) | What it does |
 |---|---|
@@ -814,42 +831,92 @@ What that buys you:
 
 That last point is the whole idea: a project is self-contained. Everything it needs is inside it, and every path is written relative to its root.
 
-### Where am I? Paths {-}
+### Where is my data? {-}
 
-R always sits in some folder. Ask it which one:
-
-```r
-getwd()
-```
-
-An **absolute path** starts at the root of your disk and describes exactly one place on exactly one computer:
+This is the most common problem in every introductory course I have taught, and it does not go away with experience. Doctoral students meet it too. It always looks like this:
 
 ```r
-read_csv("C:/Users/Marco/Desktop/Thesis/data/penguins.csv")
+penguins <- read_csv("penguins.csv")
+#> Error: 'penguins.csv' does not exist in current working directory
+#> ('C:/Users/Marco/Documents').
 ```
 
-A **relative path** starts wherever R currently is:
+The file plainly exists. It is right there in the Downloads folder; you can see it. R still says no.
+
+The reason is a mismatch that nothing on screen makes visible: **R sits in one folder, your file sits in another, and where your script is saved has nothing to do with either.** A script on the Desktop does not make the Desktop the working directory. Opening a file in the editor does not move R to it. R was given a folder when the session started, and it stays there until told otherwise.
+
+So the first question is never "why is R broken" but **"where does R think it is?"**
+
+```r
+getwd()          # where am I?
+list.files()     # what can I see from here?
+```
+
+Those two lines diagnose nine out of ten cases. If `list.files()` does not show your file, R cannot read it, no matter how correct the file name looks.
+
+There are two ways out, and only one of them is any good.
+
+**The bad fix** is to give the full address of the file in Downloads. It works this afternoon. It breaks when you tidy up your folders, and it fails immediately on anyone else's computer — including the version of your computer that exists after a reinstall.
+
+**The good fix** takes ten seconds: move the file into your project. Put `penguins.csv` in the project's `data/` folder, then write the path relative to the project root.
+
+```r
+penguins <- read_csv("data/penguins.csv")
+```
+
+The Downloads folder is a waiting room, not an archive. Data that matters to a project lives in the project.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2> Your Turn: The thirty-second diagnosis </h2>
+:::
+Next time R cannot find a file, run these three lines before changing anything:
+
+```r
+getwd()                  # 1. where R is
+list.files()             # 2. what R can see there
+list.files("data")       # 3. what is in the data folder
+```
+
+Then move the file, rather than the path.
+::::
+
+### Absolute and relative paths {-}
+
+An **absolute path** starts at the root of your disk and describes exactly one place on exactly one computer. Every operating system spells this differently:
+
+| System | Looks like |
+|---|---|
+| Windows | `C:/Users/Marco/Documents/thesis/data/penguins.csv` |
+| macOS | `/Users/marco/Documents/thesis/data/penguins.csv` |
+| Linux | `/home/marco/documents/thesis/data/penguins.csv` |
+
+A **relative path** starts wherever R currently is, and is the same on all three:
 
 ```r
 read_csv("data/penguins.csv")
 ```
 
-The first line works on your machine, until you rename a folder. The second works on any machine that has the project folder — including yours, next year.
+That difference is not cosmetic. An absolute path is a promise only your machine can keep; a relative path is a promise the *project* keeps. Write the first into a script and you have quietly made it unshareable — including with your future self.
 
 :::: {.amazing}
 ::: {.titelamazing}
 <h2> Amazing Fact </h2>
 :::
-Copy a path from the Windows Explorer address bar and R refuses it outright:
+Copy a path out of the Windows Explorer address bar, paste it into R, and R refuses it outright:
 
 ```r
 read_csv("C:\Users\Marco\data\penguins.csv")
 #> Error: '\U' used without hex digits in character string
 ```
 
-The backslash is R's **escape character**: `\n` means a new line, `\t` a tab, and `\U` the start of a Unicode code point. Windows uses that same symbol as a folder separator, so a copied path is read as a string full of instructions.
+The backslash is R's **escape character**: `\n` means a new line, `\t` a tab, and `\U` opens a Unicode code point. Windows uses that same symbol to separate folders, so a copied Windows path arrives in R as a string full of instructions.
 
-Two fixes, both boring: write `/` instead, or double every backslash (`\\`). Forward slashes work on Windows, macOS and Linux alike, which is why they are the better habit.
+Two fixes, both boring: write `/` instead, or double every backslash (`\\`). Forward slashes work on Windows, macOS and Linux alike, which is why they are the better habit — and why R itself prints paths that way even on Windows.
+
+macOS and Linux never have this problem, because their separator is already `/`. What they do have instead: paths with spaces (`/Users/marco/My Thesis/`) and a case-sensitive file system, where `Penguins.csv` and `penguins.csv` are two different files. On Windows they are one.
+
+Getting a path without typing it: in the Windows Explorer, `Shift` + right-click a file offers **Copy as path** (then swap the backslashes). In the macOS Finder, right-click and hold `Option` to get **Copy … as Pathname**, which is already in R's format.
 ::::
 
 The `here` package removes the last of the guesswork. `here()` builds a path from the project root, whatever the current working directory happens to be — which matters as soon as an R Markdown file, which runs in its own folder, needs the same data as a script.
@@ -906,15 +973,66 @@ Instead, restart R regularly (`Ctrl` + `Shift` + `F10`) and re-run your script f
 Jenny Bryan's [Project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) is the short, sharp argument for everything in this section — including her memorable threat against scripts that begin with `setwd()`. [What They Forgot to Teach You About R](https://rstats.wtf/) covers the rest of the workshop.
 ::::
 
-## Version control, briefly {-}
+## Version control, briefly {#version-control -}
 
 Somewhere on most hard drives there is a file called `analysis_final.R`, and next to it `analysis_final_v2.R`, `analysis_final_v2_neu.R`, and `analysis_FINAL_really.R`. Nobody remembers which one produced the figure in the report.
 
 **Git** replaces that pile with one file and a history.
 
-A **commit** is a save point with a message attached: *"drop incomplete cases before the mass comparison"*. Git stores what changed, when, and why. You can read the history, compare any two moments, and go back to a working version without having kept a copy of it. It is not a backup — it is a camera pointed at your project.
+### The thing you already know from Wikipedia {-}
 
-**GitHub** (or GitLab, or Codeberg) is a copy of that history on someone else's server. It gives you an off-site copy, a way to work with others without emailing files, and a place to publish. This book lives on GitHub; the page you are reading was built from it.
+Every Wikipedia article has a **View history** tab, and almost nobody clicks it. Open it once and you find the article's whole life: one row per edit, each with an author, a timestamp, the size of the change, and a one-line summary of *why*. Tick any two rows and Wikipedia shows you exactly what changed between them, word by word. Nothing was ever overwritten. The article you normally read is simply the newest row.
+
+That is version control, and Git gives your analysis the same three things:
+
+| Wikipedia | Git |
+|---|---|
+| An edit, with a summary line | A **commit**, with a message |
+| The *View history* tab | `git log` — or the History button in RStudio's Git pane |
+| Comparing two revisions | A **diff** |
+| The article as it looks today | Your working folder |
+
+Two differences matter. Wikipedia records a revision every time somebody saves; in Git *you* decide when a batch of work becomes a commit, which is why the message can be meaningful — *"drop incomplete cases before the mass comparison"* rather than *"changes"*. And Wikipedia's history lives on one server, while a Git history lives inside your project folder, complete, in every copy of it.
+
+So Git is not a backup. It is a camera pointed at your project, and you decide when it clicks.
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2> Amazing Fact </h2>
+:::
+That history tab is also a research tool, and it comes back in Chapter \@ref(web-data), where we scrape a Wikipedia table of the most expensive paintings ever sold.
+
+A scraped table is a snapshot of **one revision**. The history tells you whether the number you just put in your analysis has stood unchanged for three years or was edited last Tuesday by an anonymous account, and whether the talk page shows a dispute about it. A figure with a stable history and a figure with a contested one are not equally good evidence, even though they look identical once they land in your data frame.
+
+Provenance is not a footnote. It is part of the measurement.
+::::
+
+### GitHub is also a library {-}
+
+**GitHub** (or GitLab, or Codeberg) is a copy of a Git history on someone else's server. It gives you an off-site copy, a way to work with others without emailing files, and a place to publish. This book lives on GitHub; the page you are reading was built from it, and every sentence in it has an author and a timestamp.
+
+But most people's first useful encounter with GitHub involves no programming at all. It is where researchers and instructors put their material, and you can simply take it.
+
+Here is a real example — a GESIS workshop on collecting and analysing YouTube comments, by Johannes Breuer, Julian Kohne and M. Rohangis Mohseni:
+
+<center><https://github.com/jobreu/youtube-workshop-gesis-2022></center>
+
+The repository holds slides, scripts, exercises and solutions, released under a Creative Commons licence. Nothing there needs to be written by you. Three ways to get it onto your machine, in increasing order of usefulness:
+
+1. **Download ZIP.** The green **Code** button on the repository page. No Git, no account, no command line. You get the folder; you do not get the history, and you will not notice when the author fixes an exercise.
+2. **Clone it into an RStudio project.** *File → New Project → Version Control → Git*, paste the repository address, choose a folder. This needs Git installed, and gives you a real project you can update later with one click on **Pull**.
+3. **From R**, if you use `usethis`:
+
+```r
+usethis::create_from_github("jobreu/youtube-workshop-gesis-2022",
+                            destdir = "~/courses")
+```
+
+Notice what you get in this particular case: the folder contains a `youtube-workshop-gesis-2022.Rproj` file. Open it and every relative path in every script works immediately, because the author organised the material as a project — the same habit from the previous section, arriving as a gift.
+
+One courtesy and one caution. The courtesy: material like this is usually licensed, so check the `LICENSE` file and cite the authors when you reuse a slide or a script. The caution: a repository is somebody's working folder, not a published article. Code you download is worth reading before it is worth running.
+
+### Your own history {-}
 
 The everyday loop is three steps, and RStudio has a **Git** pane with three buttons for exactly them:
 
@@ -935,6 +1053,8 @@ output/
 For social science this is not housekeeping, it is data protection. Survey micro-data, administrative records and anything with personal information belong in the ignore list, and a commit that once contained them is difficult to erase. Commit the *code* that produces results; publish the data only when you are allowed to.
 
 Is it worth it for a solo project? Sometimes not. For a single script written in an afternoon, an RStudio project and a sensible folder are already most of the benefit. Git pays from the moment a project has a future: a thesis, a paper you will revise, teaching material you reuse each year, or anything two people touch.
+
+And it closes the circle this chapter opened. [Why code?](#why-code) argued that a result is only as good as the trail that leads to it. Version control extends that trail backwards in time: not just *how* this number was produced, but *when the recipe changed, and why somebody thought that was a good idea*.
 
 :::: {.reading}
 ::: {.titelreading}
