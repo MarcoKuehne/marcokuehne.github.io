@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="en-GB" xml:lang="en-GB">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Intro to the Tidyverse | Becoming Fluent in Data</title>
+  <meta name="description" content="A guide to becoming fluent in data." />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Intro to the Tidyverse | Becoming Fluent in Data" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+  <meta property="og:description" content="A guide to becoming fluent in data." />
+  <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Intro to the Tidyverse | Becoming Fluent in Data" />
+  
+  <meta name="twitter:description" content="A guide to becoming fluent in data." />
+  <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
+
+<meta name="author" content="Marco Kühne" />
+
+
+<meta name="date" content="2026-08-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
+<link rel="prev" href="intro-to-r.html"/>
+<link rel="next" href="rstudio-and-projects.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/tippyjs-3.2.0/themes/google.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light-border.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/light.css" rel="stylesheet" />
+<link href="libs/tippyjs-3.2.0/themes/translucent.css" rel="stylesheet" />
+<script src="libs/tippyjs-3.2.0/tippy.all.min.js"></script>
+<script src="libs/tippy-binding-0.1.0/tippy.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<link href="libs/University-CSS-0.0.1/University_home-button.css" rel="stylesheet" />
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="application/json" class="js-hypothesis-config">
+{
+"showHighlights": false
+}
+</script>
+<script async defer src="https://hypothes.is/embed.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9BQG7T00K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9BQG7T00K');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="www/webex.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/boxes.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://becoming-fluent-in-data.com/">Becoming Fluent in Data</a></li>
+<li><p class="aligncenter"><img src="images/Logo.png" width="60%" height="60%"></p></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-like-a-dolphin-swims"><i class="fa fa-check"></i>Learning like a dolphin swims</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#teach-learn-repeat"><i class="fa fa-check"></i>Teach – Learn – Repeat</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#doing-something-meaningful-with-data"><i class="fa fa-check"></i>Doing something meaningful with data</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-book"><i class="fa fa-check"></i>About this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-the-author"><i class="fa fa-check"></i>About the author</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html"><i class="fa fa-check"></i>Why code?</a>
+<ul>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html#why-r"><i class="fa fa-check"></i>Why R?</a></li>
+<li class="chapter" data-level="" data-path="why-code.html"><a href="why-code.html#why-the-tidyverse"><i class="fa fa-check"></i>Why the tidyverse?</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html"><i class="fa fa-check"></i>Intro to R</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-a-calculator"><i class="fa fa-check"></i>R is a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#r-is-more-than-a-calculator"><i class="fa fa-check"></i>R is more than a calculator</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#objects-giving-things-a-name"><i class="fa fa-check"></i>Objects: giving things a name</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#types-of-values"><i class="fa fa-check"></i>Types of values</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#data-frames"><i class="fa fa-check"></i>Data frames</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#functions-and-their-arguments"><i class="fa fa-check"></i>Functions and their arguments</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#plots-in-base-r"><i class="fa fa-check"></i>Plots in base R</a></li>
+<li class="chapter" data-level="" data-path="intro-to-r.html"><a href="intro-to-r.html#when-something-goes-wrong"><i class="fa fa-check"></i>When something goes wrong</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro-to-the-tidyverse.html"><a href="intro-to-the-tidyverse.html"><i class="fa fa-check"></i>Intro to the Tidyverse</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro-to-the-tidyverse.html"><a href="intro-to-the-tidyverse.html#meet-the-penguins"><i class="fa fa-check"></i>Meet the penguins</a></li>
+<li class="chapter" data-level="" data-path="intro-to-the-tidyverse.html"><a href="intro-to-the-tidyverse.html#reading-data-with-readr"><i class="fa fa-check"></i>Reading data with readr</a></li>
+<li class="chapter" data-level="" data-path="intro-to-the-tidyverse.html"><a href="intro-to-the-tidyverse.html#the-verbs-of-dplyr"><i class="fa fa-check"></i>The verbs of dplyr</a></li>
+<li class="chapter" data-level="" data-path="intro-to-the-tidyverse.html"><a href="intro-to-the-tidyverse.html#graphs-with-ggplot2"><i class="fa fa-check"></i>Graphs with ggplot2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="rstudio-and-projects.html"><a href="rstudio-and-projects.html"><i class="fa fa-check"></i>RStudio and projects</a>
+<ul>
+<li class="chapter" data-level="" data-path="rstudio-and-projects.html"><a href="rstudio-and-projects.html#the-four-panes"><i class="fa fa-check"></i>The four panes</a></li>
+<li class="chapter" data-level="" data-path="rstudio-and-projects.html"><a href="rstudio-and-projects.html#the-project-is-the-unit-of-work"><i class="fa fa-check"></i>The project is the unit of work</a></li>
+<li class="chapter" data-level="" data-path="rstudio-and-projects.html"><a href="rstudio-and-projects.html#where-am-i-paths"><i class="fa fa-check"></i>Where am I? Paths</a></li>
+<li class="chapter" data-level="" data-path="rstudio-and-projects.html"><a href="rstudio-and-projects.html#a-folder-that-scales"><i class="fa fa-check"></i>A folder that scales</a></li>
+<li class="chapter" data-level="" data-path="rstudio-and-projects.html"><a href="rstudio-and-projects.html#restart-r-often"><i class="fa fa-check"></i>Restart R, often</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="version-control-briefly.html"><a href="version-control-briefly.html"><i class="fa fa-check"></i>Version control, briefly</a></li>
+<li class="chapter" data-level="" data-path="where-this-leaves-us.html"><a href="where-this-leaves-us.html"><i class="fa fa-check"></i>Where this leaves us</a></li>
+</ul></li>
+<li class="part"><span><b>II Data</b></span></li>
+<li class="chapter" data-level="1" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>1</b> Foundations</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html"><i class="fa fa-check"></i><b>1.1</b> Data is everywhere</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#why-we-measure"><i class="fa fa-check"></i><b>1.1.1</b> Why we measure</a></li>
+<li class="chapter" data-level="1.1.2" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#means-of-measuring"><i class="fa fa-check"></i><b>1.1.2</b> Means of measuring</a></li>
+<li class="chapter" data-level="1.1.3" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#types-of-data"><i class="fa fa-check"></i><b>1.1.3</b> Types of data</a></li>
+<li class="chapter" data-level="1.1.4" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#can-we-measure-everything"><i class="fa fa-check"></i><b>1.1.4</b> Can we measure everything?</a></li>
+<li class="chapter" data-level="1.1.5" data-path="data-is-everywhere.html"><a href="data-is-everywhere.html#the-reality-behind-the-data"><i class="fa fa-check"></i><b>1.1.5</b> The reality behind the data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html"><i class="fa fa-check"></i><b>1.2</b> Stories and Visuals</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#facts"><i class="fa fa-check"></i><b>1.2.1</b> Facts</a></li>
+<li class="chapter" data-level="1.2.2" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#visualization"><i class="fa fa-check"></i><b>1.2.2</b> Visualization</a></li>
+<li class="chapter" data-level="1.2.3" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#telling-a-story"><i class="fa fa-check"></i><b>1.2.3</b> Telling a story</a></li>
+<li class="chapter" data-level="1.2.4" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#mans-best-friend"><i class="fa fa-check"></i><b>1.2.4</b> Man's best friend</a></li>
+<li class="chapter" data-level="1.2.5" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#less-is-more"><i class="fa fa-check"></i><b>1.2.5</b> Less is more</a></li>
+<li class="chapter" data-level="1.2.6" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#never-use-pie-charts"><i class="fa fa-check"></i><b>1.2.6</b> Never use pie charts</a></li>
+<li class="chapter" data-level="1.2.7" data-path="stories-and-visuals.html"><a href="stories-and-visuals.html#stories-bars"><i class="fa fa-check"></i><b>1.2.7</b> Then why use bars at all?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="structured-data.html"><a href="structured-data.html"><i class="fa fa-check"></i><b>2</b> Structured Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tabular-data.html"><a href="tabular-data.html"><i class="fa fa-check"></i><b>2.1</b> Tabular Data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="tabular-data.html"><a href="tabular-data.html#types-of-tabular-data"><i class="fa fa-check"></i><b>2.1.1</b> Types of Tabular Data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="panel-data-1.html"><a href="panel-data-1.html"><i class="fa fa-check"></i><b>2.2</b> Panel Data</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="panel-data-1.html"><a href="panel-data-1.html#unemployment"><i class="fa fa-check"></i><b>2.2.1</b> Unemployment</a></li>
+<li class="chapter" data-level="2.2.2" data-path="panel-data-1.html"><a href="panel-data-1.html#application"><i class="fa fa-check"></i><b>2.2.2</b> Application</a></li>
+<li class="chapter" data-level="2.2.3" data-path="panel-data-1.html"><a href="panel-data-1.html#panel-studies"><i class="fa fa-check"></i><b>2.2.3</b> Panel Studies</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="time-data.html"><a href="time-data.html"><i class="fa fa-check"></i><b>2.3</b> Time data</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="time-data.html"><a href="time-data.html#measuring-time"><i class="fa fa-check"></i><b>2.3.1</b> Measuring Time</a></li>
+<li class="chapter" data-level="2.3.2" data-path="time-data.html"><a href="time-data.html#measuring-dates"><i class="fa fa-check"></i><b>2.3.2</b> Measuring Dates</a></li>
+<li class="chapter" data-level="2.3.3" data-path="time-data.html"><a href="time-data.html#your-first-time-in-r"><i class="fa fa-check"></i><b>2.3.3</b> Your First Time (in R)</a></li>
+<li class="chapter" data-level="2.3.4" data-path="time-data.html"><a href="time-data.html#time-zones"><i class="fa fa-check"></i><b>2.3.4</b> Time Zones</a></li>
+<li class="chapter" data-level="2.3.5" data-path="time-data.html"><a href="time-data.html#time-management-in-r"><i class="fa fa-check"></i><b>2.3.5</b> Time Management in R</a></li>
+<li class="chapter" data-level="2.3.6" data-path="time-data.html"><a href="time-data.html#coffee-spending"><i class="fa fa-check"></i><b>2.3.6</b> Coffee Spending</a></li>
+<li class="chapter" data-level="2.3.7" data-path="time-data.html"><a href="time-data.html#run-chart-grouped-cleaned"><i class="fa fa-check"></i><b>2.3.7</b> Run Chart Grouped Cleaned</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="remote-data.html"><a href="remote-data.html"><i class="fa fa-check"></i><b>2.4</b> Remote Data</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="remote-data.html"><a href="remote-data.html#databases"><i class="fa fa-check"></i><b>2.4.1</b> Databases</a></li>
+<li class="chapter" data-level="2.4.2" data-path="remote-data.html"><a href="remote-data.html#web-apis"><i class="fa fa-check"></i><b>2.4.2</b> Web APIs</a></li>
+<li class="chapter" data-level="2.4.3" data-path="remote-data.html"><a href="remote-data.html#the-same-idea-twice"><i class="fa fa-check"></i><b>2.4.3</b> The same idea twice</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="unstructured-data.html"><a href="unstructured-data.html"><i class="fa fa-check"></i><b>3</b> Unstructured Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="web-data.html"><a href="web-data.html"><i class="fa fa-check"></i><b>3.1</b> Web Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="web-data.html"><a href="web-data.html#most-expensive-paintings"><i class="fa fa-check"></i><b>3.1.1</b> Most expensive paintings</a></li>
+<li class="chapter" data-level="3.1.2" data-path="web-data.html"><a href="web-data.html#student-numbers-at-viadrina"><i class="fa fa-check"></i><b>3.1.2</b> Student numbers at Viadrina</a></li>
+<li class="chapter" data-level="3.1.3" data-path="web-data.html"><a href="web-data.html#what-scraping-is-good-for"><i class="fa fa-check"></i><b>3.1.3</b> What scraping is good for</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="text-data.html"><a href="text-data.html"><i class="fa fa-check"></i><b>3.2</b> Text Data</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="text-data.html"><a href="text-data.html#txt-question"><i class="fa fa-check"></i><b>3.2.1</b> Is Text Just a Long String in a Cell?</a></li>
+<li class="chapter" data-level="3.2.2" data-path="text-data.html"><a href="text-data.html#txt-cell"><i class="fa fa-check"></i><b>3.2.2</b> Rung 0: Text in a Cell</a></li>
+<li class="chapter" data-level="3.2.3" data-path="text-data.html"><a href="text-data.html#txt-tidy"><i class="fa fa-check"></i><b>3.2.3</b> Rung 1: One Token per Row</a></li>
+<li class="chapter" data-level="3.2.4" data-path="text-data.html"><a href="text-data.html#txt-dtm"><i class="fa fa-check"></i><b>3.2.4</b> Rung 2: The Document-Term Matrix</a></li>
+<li class="chapter" data-level="3.2.5" data-path="text-data.html"><a href="text-data.html#txt-embed"><i class="fa fa-check"></i><b>3.2.5</b> Rung 3: Embeddings</a></li>
+<li class="chapter" data-level="3.2.6" data-path="text-data.html"><a href="text-data.html#txt-sentiment"><i class="fa fa-check"></i><b>3.2.6</b> Sentiment: A Method Worth Distrusting</a></li>
+<li class="chapter" data-level="3.2.7" data-path="text-data.html"><a href="text-data.html#txt-llm"><i class="fa fa-check"></i><b>3.2.7</b> What About Language Models?</a></li>
+<li class="chapter" data-level="3.2.8" data-path="text-data.html"><a href="text-data.html#txt-principles"><i class="fa fa-check"></i><b>3.2.8</b> Four Principles</a></li>
+<li class="chapter" data-level="3.2.9" data-path="text-data.html"><a href="text-data.html#txt-limits"><i class="fa fa-check"></i><b>3.2.9</b> What the Numbers Do Not Say</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="geo-data.html"><a href="geo-data.html"><i class="fa fa-check"></i><b>3.3</b> Geo Data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="geo-data.html"><a href="geo-data.html#geo-coordinates"><i class="fa fa-check"></i><b>3.3.1</b> Geo coordinates</a></li>
+<li class="chapter" data-level="3.3.2" data-path="geo-data.html"><a href="geo-data.html#points-and-polygons"><i class="fa fa-check"></i><b>3.3.2</b> Points And Polygons</a></li>
+<li class="chapter" data-level="3.3.3" data-path="geo-data.html"><a href="geo-data.html#google-takeout"><i class="fa fa-check"></i><b>3.3.3</b> Google Takeout</a></li>
+<li class="chapter" data-level="3.3.4" data-path="geo-data.html"><a href="geo-data.html#blood-donation"><i class="fa fa-check"></i><b>3.3.4</b> Blood Donation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="imperfect-data.html"><a href="imperfect-data.html"><i class="fa fa-check"></i><b>4</b> Imperfect Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>4.1</b> Missing Data</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="missing-data.html"><a href="missing-data.html#md-why"><i class="fa fa-check"></i><b>4.1.1</b> What Is Missing, and What It Costs</a></li>
+<li class="chapter" data-level="4.1.2" data-path="missing-data.html"><a href="missing-data.html#md-codes"><i class="fa fa-check"></i><b>4.1.2</b> How Absence Gets Written Down</a></li>
+<li class="chapter" data-level="4.1.3" data-path="missing-data.html"><a href="missing-data.html#md-in-r"><i class="fa fa-check"></i><b>4.1.3</b> What R Does With <code>NA</code></a></li>
+<li class="chapter" data-level="4.1.4" data-path="missing-data.html"><a href="missing-data.html#md-listwise"><i class="fa fa-check"></i><b>4.1.4</b> Why Everyone Does Complete-Case Analysis</a></li>
+<li class="chapter" data-level="4.1.5" data-path="missing-data.html"><a href="missing-data.html#md-mechanisms"><i class="fa fa-check"></i><b>4.1.5</b> Three Mechanisms</a></li>
+<li class="chapter" data-level="4.1.6" data-path="missing-data.html"><a href="missing-data.html#md-pattern"><i class="fa fa-check"></i><b>4.1.6</b> Looking at the Pattern</a></li>
+<li class="chapter" data-level="4.1.7" data-path="missing-data.html"><a href="missing-data.html#md-remedies"><i class="fa fa-check"></i><b>4.1.7</b> What Can Be Done</a></li>
+<li class="chapter" data-level="4.1.8" data-path="missing-data.html"><a href="missing-data.html#md-models"><i class="fa fa-check"></i><b>4.1.8</b> Which Models Need Complete Data?</a></li>
+<li class="chapter" data-level="4.1.9" data-path="missing-data.html"><a href="missing-data.html#md-reporting"><i class="fa fa-check"></i><b>4.1.9</b> What Should Be Reported</a></li>
+<li class="chapter" data-level="4.1.10" data-path="missing-data.html"><a href="missing-data.html#md-people"><i class="fa fa-check"></i><b>4.1.10</b> The People Behind the Gaps</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="synthetic-data.html"><a href="synthetic-data.html"><i class="fa fa-check"></i><b>4.2</b> Synthetic Data</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-waves"><i class="fa fa-check"></i><b>4.2.1</b> Three Waves</a></li>
+<li class="chapter" data-level="4.2.2" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-rubin"><i class="fa fa-check"></i><b>4.2.2</b> Rubin's Inversion</a></li>
+<li class="chapter" data-level="4.2.3" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-byhand"><i class="fa fa-check"></i><b>4.2.3</b> Building One by Hand</a></li>
+<li class="chapter" data-level="4.2.4" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-evidence"><i class="fa fa-check"></i><b>4.2.4</b> Does It Actually Work?</a></li>
+<li class="chapter" data-level="4.2.5" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-privacy"><i class="fa fa-check"></i><b>4.2.5</b> The Privacy Illusion</a></li>
+<li class="chapter" data-level="4.2.6" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-moments"><i class="fa fa-check"></i><b>4.2.6</b> A Fourth Way: Share the Moments</a></li>
+<li class="chapter" data-level="4.2.7" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-silicon"><i class="fa fa-check"></i><b>4.2.7</b> The Second Wave Is Not the Third</a></li>
+<li class="chapter" data-level="4.2.8" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-breaks"><i class="fa fa-check"></i><b>4.2.8</b> Where It Breaks</a></li>
+<li class="chapter" data-level="4.2.9" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-conditions"><i class="fa fa-check"></i><b>4.2.9</b> What Would Have to Be True</a></li>
+<li class="chapter" data-level="4.2.10" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-uses"><i class="fa fa-check"></i><b>4.2.10</b> What It Is Good For</a></li>
+<li class="chapter" data-level="4.2.11" data-path="synthetic-data.html"><a href="synthetic-data.html#syn-map"><i class="fa fa-check"></i><b>4.2.11</b> The Map Is Not the Territory</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Analysis</b></span></li>
+<li class="chapter" data-level="5" data-path="compare.html"><a href="compare.html"><i class="fa fa-check"></i><b>5</b> Compare</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="relationships.html"><a href="relationships.html"><i class="fa fa-check"></i><b>5.1</b> Relationships</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="relationships.html"><a href="relationships.html#storks-deliver-babies"><i class="fa fa-check"></i><b>5.1.1</b> Storks Deliver Babies</a></li>
+<li class="chapter" data-level="5.1.2" data-path="relationships.html"><a href="relationships.html#statistics"><i class="fa fa-check"></i><b>5.1.2</b> Statistics</a></li>
+<li class="chapter" data-level="5.1.3" data-path="relationships.html"><a href="relationships.html#visualizations"><i class="fa fa-check"></i><b>5.1.3</b> Visualizations</a></li>
+<li class="chapter" data-level="5.1.4" data-path="relationships.html"><a href="relationships.html#spurious-relationships"><i class="fa fa-check"></i><b>5.1.4</b> Spurious Relationships</a></li>
+<li class="chapter" data-level="" data-path="relationships.html"><a href="relationships.html#readings"><i class="fa fa-check"></i>Readings</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="comparing-means.html"><a href="comparing-means.html"><i class="fa fa-check"></i><b>5.2</b> Comparing Means</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="comparing-means.html"><a href="comparing-means.html#cm-guinness"><i class="fa fa-check"></i><b>5.2.1</b> A brewer invents modern statistics</a></li>
+<li class="chapter" data-level="5.2.2" data-path="comparing-means.html"><a href="comparing-means.html#cm-data"><i class="fa fa-check"></i><b>5.2.2</b> The data: seven cohorts of students</a></li>
+<li class="chapter" data-level="5.2.3" data-path="comparing-means.html"><a href="comparing-means.html#cm-signal"><i class="fa fa-check"></i><b>5.2.3</b> Signal and noise</a></li>
+<li class="chapter" data-level="5.2.4" data-path="comparing-means.html"><a href="comparing-means.html#cm-one-sample"><i class="fa fa-check"></i><b>5.2.4</b> One mean against a benchmark</a></li>
+<li class="chapter" data-level="5.2.5" data-path="comparing-means.html"><a href="comparing-means.html#cm-two-sample"><i class="fa fa-check"></i><b>5.2.5</b> Two independent groups</a></li>
+<li class="chapter" data-level="5.2.6" data-path="comparing-means.html"><a href="comparing-means.html#cm-paired"><i class="fa fa-check"></i><b>5.2.6</b> Paired observations</a></li>
+<li class="chapter" data-level="5.2.7" data-path="comparing-means.html"><a href="comparing-means.html#cm-onwards"><i class="fa fa-check"></i><b>5.2.7</b> Where this is going</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html"><i class="fa fa-check"></i><b>5.3</b> Partitioning Variation</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-rothamsted"><i class="fa fa-check"></i><b>5.3.1</b> Muck and mathematics</a></li>
+<li class="chapter" data-level="5.3.2" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-idea"><i class="fa fa-check"></i><b>5.3.2</b> The idea: total = between + within</a></li>
+<li class="chapter" data-level="5.3.3" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-multiple"><i class="fa fa-check"></i><b>5.3.3</b> Why not just run many t-tests?</a></li>
+<li class="chapter" data-level="5.3.4" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-dogs"><i class="fa fa-check"></i><b>5.3.4</b> Do big dogs die younger, part two</a></li>
+<li class="chapter" data-level="5.3.5" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-regression"><i class="fa fa-check"></i><b>5.3.5</b> ANOVA is also a regression</a></li>
+<li class="chapter" data-level="5.3.6" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-ancova"><i class="fa fa-check"></i><b>5.3.6</b> ANCOVA: the control variable enters</a></li>
+<li class="chapter" data-level="5.3.7" data-path="partitioning-variation.html"><a href="partitioning-variation.html#pv-beyond"><i class="fa fa-check"></i><b>5.3.7</b> Beyond the mean</a></li>
+<li class="chapter" data-level="" data-path="partitioning-variation.html"><a href="partitioning-variation.html#readings-1"><i class="fa fa-check"></i>Readings</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="model.html"><a href="model.html"><i class="fa fa-check"></i><b>6</b> Model</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>6.1</b> Regression</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="regression.html"><a href="regression.html#old-but-gold"><i class="fa fa-check"></i><b>6.1.1</b> Old but Gold</a></li>
+<li class="chapter" data-level="6.1.2" data-path="regression.html"><a href="regression.html#data-is-everywhere-1"><i class="fa fa-check"></i><b>6.1.2</b> Data is everywhere</a></li>
+<li class="chapter" data-level="6.1.3" data-path="regression.html"><a href="regression.html#for-the-truly-dedicated"><i class="fa fa-check"></i><b>6.1.3</b> For the truly dedicated</a></li>
+<li class="chapter" data-level="6.1.4" data-path="regression.html"><a href="regression.html#survival-of-the-fittest-line"><i class="fa fa-check"></i><b>6.1.4</b> Survival of the Fittest Line</a></li>
+<li class="chapter" data-level="6.1.5" data-path="regression.html"><a href="regression.html#on-the-shoulders-of-giants"><i class="fa fa-check"></i><b>6.1.5</b> On the Shoulders of Giants</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="linear-models.html"><a href="linear-models.html"><i class="fa fa-check"></i><b>6.2</b> Linear Models</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="linear-models.html"><a href="linear-models.html#what-you-deserve-is-what-you-get"><i class="fa fa-check"></i><b>6.2.1</b> What You Deserve Is What You Get</a></li>
+<li class="chapter" data-level="6.2.2" data-path="linear-models.html"><a href="linear-models.html#data-sample"><i class="fa fa-check"></i><b>6.2.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="6.2.3" data-path="linear-models.html"><a href="linear-models.html#data-visualization-1"><i class="fa fa-check"></i><b>6.2.3</b> Data Visualization</a></li>
+<li class="chapter" data-level="6.2.4" data-path="linear-models.html"><a href="linear-models.html#simplest-regression"><i class="fa fa-check"></i><b>6.2.4</b> Simplest Regression</a></li>
+<li class="chapter" data-level="6.2.5" data-path="linear-models.html"><a href="linear-models.html#simple-regression"><i class="fa fa-check"></i><b>6.2.5</b> Simple Regression</a></li>
+<li class="chapter" data-level="6.2.6" data-path="linear-models.html"><a href="linear-models.html#parallel-slopes"><i class="fa fa-check"></i><b>6.2.6</b> Parallel Slopes</a></li>
+<li class="chapter" data-level="6.2.7" data-path="linear-models.html"><a href="linear-models.html#model-comparison"><i class="fa fa-check"></i><b>6.2.7</b> Model Comparison</a></li>
+<li class="chapter" data-level="6.2.8" data-path="linear-models.html"><a href="linear-models.html#transform-to-perform"><i class="fa fa-check"></i><b>6.2.8</b> Transform to Perform</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="decomposing-differences.html"><a href="decomposing-differences.html"><i class="fa fa-check"></i><b>6.3</b> Decomposing Differences</a></li>
+<li class="chapter" data-level="6.4" data-path="logistic-models.html"><a href="logistic-models.html"><i class="fa fa-check"></i><b>6.4</b> Logistic Models</a></li>
+<li class="chapter" data-level="6.5" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>6.5</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="interactions.html"><a href="interactions.html#motivation"><i class="fa fa-check"></i><b>6.5.1</b> Motivation</a></li>
+<li class="chapter" data-level="6.5.2" data-path="interactions.html"><a href="interactions.html#data-sample-1"><i class="fa fa-check"></i><b>6.5.2</b> Data &amp; Sample</a></li>
+<li class="chapter" data-level="6.5.3" data-path="interactions.html"><a href="interactions.html#throwback-parallel-slopes"><i class="fa fa-check"></i><b>6.5.3</b> Throwback Parallel Slopes</a></li>
+<li class="chapter" data-level="6.5.4" data-path="interactions.html"><a href="interactions.html#regression-with-moderators"><i class="fa fa-check"></i><b>6.5.4</b> Regression with Moderators</a></li>
+<li class="chapter" data-level="6.5.5" data-path="interactions.html"><a href="interactions.html#model-comparison-1"><i class="fa fa-check"></i><b>6.5.5</b> Model Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="marginal-effects.html"><a href="marginal-effects.html"><i class="fa fa-check"></i><b>6.6</b> Marginal Effects</a></li>
+<li class="chapter" data-level="6.7" data-path="generalized-models.html"><a href="generalized-models.html"><i class="fa fa-check"></i><b>6.7</b> Generalized Models</a></li>
+<li class="chapter" data-level="6.8" data-path="learning-from-data.html"><a href="learning-from-data.html"><i class="fa fa-check"></i><b>6.8</b> Learning from Data</a></li>
+<li class="chapter" data-level="6.9" data-path="tests-as-models.html"><a href="tests-as-models.html"><i class="fa fa-check"></i><b>6.9</b> Common Tests Are Linear Models</a>
+<ul>
+<li class="chapter" data-level="6.9.1" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-one-model"><i class="fa fa-check"></i><b>6.9.1</b> The one model</a></li>
+<li class="chapter" data-level="6.9.2" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-one-sample"><i class="fa fa-check"></i><b>6.9.2</b> One mean is an intercept</a></li>
+<li class="chapter" data-level="6.9.3" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-paired"><i class="fa fa-check"></i><b>6.9.3</b> A paired test is a one-sample test on differences</a></li>
+<li class="chapter" data-level="6.9.4" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-two-sample"><i class="fa fa-check"></i><b>6.9.4</b> Two groups is a dummy variable</a></li>
+<li class="chapter" data-level="6.9.5" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-correlation"><i class="fa fa-check"></i><b>6.9.5</b> Correlation is a slope</a></li>
+<li class="chapter" data-level="6.9.6" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-anova"><i class="fa fa-check"></i><b>6.9.6</b> Many groups is many dummies</a></li>
+<li class="chapter" data-level="6.9.7" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-repeated"><i class="fa fa-check"></i><b>6.9.7</b> Repeated measures: subjects are just another factor</a></li>
+<li class="chapter" data-level="6.9.8" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-levene"><i class="fa fa-check"></i><b>6.9.8</b> Even the assumption checks are models</a></li>
+<li class="chapter" data-level="6.9.9" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-glm"><i class="fa fa-check"></i><b>6.9.9</b> One step sideways: counts and proportions</a></li>
+<li class="chapter" data-level="6.9.10" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-nested"><i class="fa fa-check"></i><b>6.9.10</b> Comparing two models is also a test</a></li>
+<li class="chapter" data-level="6.9.11" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-list"><i class="fa fa-check"></i><b>6.9.11</b> The extended list</a></li>
+<li class="chapter" data-level="6.9.12" data-path="tests-as-models.html"><a href="tests-as-models.html#tm-why"><i class="fa fa-check"></i><b>6.9.12</b> Why this matters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="structure.html"><a href="structure.html"><i class="fa fa-check"></i><b>7</b> Structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="time.html"><a href="time.html"><i class="fa fa-check"></i><b>7.1</b> Time</a></li>
+<li class="chapter" data-level="7.2" data-path="longitudinal-data.html"><a href="longitudinal-data.html"><i class="fa fa-check"></i><b>7.2</b> Longitudinal Data</a></li>
+<li class="chapter" data-level="7.3" data-path="multilevel-models.html"><a href="multilevel-models.html"><i class="fa fa-check"></i><b>7.3</b> Multilevel Models</a></li>
+<li class="chapter" data-level="7.4" data-path="places.html"><a href="places.html"><i class="fa fa-check"></i><b>7.4</b> Places</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="reveal.html"><a href="reveal.html"><i class="fa fa-check"></i><b>8</b> Reveal</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>8.1</b> Components</a></li>
+<li class="chapter" data-level="8.2" data-path="clusters.html"><a href="clusters.html"><i class="fa fa-check"></i><b>8.2</b> Clusters</a></li>
+<li class="chapter" data-level="8.3" data-path="latent-variables.html"><a href="latent-variables.html"><i class="fa fa-check"></i><b>8.3</b> Latent Variables</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="latent-variables.html"><a href="latent-variables.html#lv-concept-to-data"><i class="fa fa-check"></i><b>8.3.1</b> How a Concept Becomes Data</a></li>
+<li class="chapter" data-level="8.3.2" data-path="latent-variables.html"><a href="latent-variables.html#lv-single-item"><i class="fa fa-check"></i><b>8.3.2</b> One Item Can Be Enough: Happiness and Risk</a></li>
+<li class="chapter" data-level="8.3.3" data-path="latent-variables.html"><a href="latent-variables.html#lv-composite"><i class="fa fa-check"></i><b>8.3.3</b> Several Items, One Score: The Big Five</a></li>
+<li class="chapter" data-level="8.3.4" data-path="latent-variables.html"><a href="latent-variables.html#lv-model-necessary"><i class="fa fa-check"></i><b>8.3.4</b> When a Model Is Necessary: Competence and Intelligence</a></li>
+<li class="chapter" data-level="8.3.5" data-path="latent-variables.html"><a href="latent-variables.html#lv-how-many"><i class="fa fa-check"></i><b>8.3.5</b> How Many Latent Variables?</a></li>
+<li class="chapter" data-level="8.3.6" data-path="latent-variables.html"><a href="latent-variables.html#lv-model-does"><i class="fa fa-check"></i><b>8.3.6</b> What a Latent Model Does</a></li>
+<li class="chapter" data-level="8.3.7" data-path="latent-variables.html"><a href="latent-variables.html#lv-first-map"><i class="fa fa-check"></i><b>8.3.7</b> A First Map of Latent-Variable Models</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html"><i class="fa fa-check"></i><b>8.4</b> Exploratory Factors</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-common-factor-idea"><i class="fa fa-check"></i><b>8.4.1</b> The Common-Factor Idea</a></li>
+<li class="chapter" data-level="8.4.2" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-common-vs-total"><i class="fa fa-check"></i><b>8.4.2</b> Common Variance Is Not Total Variance</a></li>
+<li class="chapter" data-level="8.4.3" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-four-decisions"><i class="fa fa-check"></i><b>8.4.3</b> The Four Main EFA Decisions</a></li>
+<li class="chapter" data-level="8.4.4" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-number-factors"><i class="fa fa-check"></i><b>8.4.4</b> How Many Factors?</a></li>
+<li class="chapter" data-level="8.4.5" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-extraction"><i class="fa fa-check"></i><b>8.4.5</b> Extracting the Factors</a></li>
+<li class="chapter" data-level="8.4.6" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-rotation"><i class="fa fa-check"></i><b>8.4.6</b> Why Rotation Is Necessary</a></li>
+<li class="chapter" data-level="8.4.7" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-reading-solution"><i class="fa fa-check"></i><b>8.4.7</b> Reading a Factor Solution</a></li>
+<li class="chapter" data-level="8.4.8" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-r-workflow"><i class="fa fa-check"></i><b>8.4.8</b> A Compact EFA Workflow in R</a></li>
+<li class="chapter" data-level="8.4.9" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-problems"><i class="fa fa-check"></i><b>8.4.9</b> What Can Go Wrong?</a></li>
+<li class="chapter" data-level="8.4.10" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-to-cfa"><i class="fa fa-check"></i><b>8.4.10</b> From Exploration to Confirmation</a></li>
+<li class="chapter" data-level="8.4.11" data-path="exploratory-factors.html"><a href="exploratory-factors.html#efa-reporting"><i class="fa fa-check"></i><b>8.4.11</b> Reporting an Exploratory Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html"><i class="fa fa-check"></i><b>8.5</b> Confirmatory Factors</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-measurement-claim"><i class="fa fa-check"></i><b>8.5.1</b> From a Pattern to a Measurement Claim</a></li>
+<li class="chapter" data-level="8.5.2" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-fixed-free"><i class="fa fa-check"></i><b>8.5.2</b> Fixed and Free Parameters</a></li>
+<li class="chapter" data-level="8.5.3" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-identification"><i class="fa fa-check"></i><b>8.5.3</b> Identification and Scaling</a></li>
+<li class="chapter" data-level="8.5.4" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-estimation"><i class="fa fa-check"></i><b>8.5.4</b> Estimation</a></li>
+<li class="chapter" data-level="8.5.5" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-reading-parameters"><i class="fa fa-check"></i><b>8.5.5</b> Reading the Parameters</a></li>
+<li class="chapter" data-level="8.5.6" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-common-models"><i class="fa fa-check"></i><b>8.5.6</b> Common Confirmatory Factor Models</a></li>
+<li class="chapter" data-level="8.5.7" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-evaluation"><i class="fa fa-check"></i><b>8.5.7</b> Evaluating a Confirmatory Model</a></li>
+<li class="chapter" data-level="8.5.8" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-beyond-cutoffs"><i class="fa fa-check"></i><b>8.5.8</b> Beyond Universal Cutoffs</a></li>
+<li class="chapter" data-level="8.5.9" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-r-workflow"><i class="fa fa-check"></i><b>8.5.9</b> A Compact CFA Workflow in R</a></li>
+<li class="chapter" data-level="8.5.10" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-reporting"><i class="fa fa-check"></i><b>8.5.10</b> What Should Be Reported?</a></li>
+<li class="chapter" data-level="8.5.11" data-path="confirmatory-factors.html"><a href="confirmatory-factors.html#cfa-to-sem"><i class="fa fa-check"></i><b>8.5.11</b> From Measurement to Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="structural-equations.html"><a href="structural-equations.html"><i class="fa fa-check"></i><b>8.6</b> Structural Equations</a>
+<ul>
+<li class="chapter" data-level="8.6.1" data-path="structural-equations.html"><a href="structural-equations.html#sem-path-models"><i class="fa fa-check"></i><b>8.6.1</b> Path Models as Systems of Regressions</a></li>
+<li class="chapter" data-level="8.6.2" data-path="structural-equations.html"><a href="structural-equations.html#sem-measurement-structural"><i class="fa fa-check"></i><b>8.6.2</b> Measurement Model Plus Structural Model</a></li>
+<li class="chapter" data-level="8.6.3" data-path="structural-equations.html"><a href="structural-equations.html#sem-latent-mediation"><i class="fa fa-check"></i><b>8.6.3</b> A Simple Latent Mediation Model</a></li>
+<li class="chapter" data-level="8.6.4" data-path="structural-equations.html"><a href="structural-equations.html#sem-measurement-first"><i class="fa fa-check"></i><b>8.6.4</b> Measurement Comes First</a></li>
+<li class="chapter" data-level="8.6.5" data-path="structural-equations.html"><a href="structural-equations.html#sem-not-causal"><i class="fa fa-check"></i><b>8.6.5</b> SEM Is Not Automatically Causal</a></li>
+<li class="chapter" data-level="8.6.6" data-path="structural-equations.html"><a href="structural-equations.html#sem-higher-order-clarification"><i class="fa fa-check"></i><b>8.6.6</b> Where Higher-Order and Bifactor Models Belong</a></li>
+<li class="chapter" data-level="8.6.7" data-path="structural-equations.html"><a href="structural-equations.html#sem-fit"><i class="fa fa-check"></i><b>8.6.7</b> Model Fit Continues, but the Questions Multiply</a></li>
+<li class="chapter" data-level="8.6.8" data-path="structural-equations.html"><a href="structural-equations.html#sem-future"><i class="fa fa-check"></i><b>8.6.8</b> What This Section Will Add Later</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="items.html"><a href="items.html"><i class="fa fa-check"></i><b>8.7</b> Items</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="items.html"><a href="items.html#irt-latent-map"><i class="fa fa-check"></i><b>8.7.1</b> Where IRT Sits among Latent Variable Models</a></li>
+<li class="chapter" data-level="8.7.2" data-path="items.html"><a href="items.html#irt-person-item-scale"><i class="fa fa-check"></i><b>8.7.2</b> Persons and Items on a Common Scale</a></li>
+<li class="chapter" data-level="8.7.3" data-path="items.html"><a href="items.html#why-rasch"><i class="fa fa-check"></i><b>8.7.3</b> Why Begin with Rasch?</a></li>
+<li class="chapter" data-level="8.7.4" data-path="items.html"><a href="items.html#irt-model-family"><i class="fa fa-check"></i><b>8.7.4</b> IRT Is a Family of Models</a></li>
+<li class="chapter" data-level="8.7.5" data-path="items.html"><a href="items.html#rasch-family"><i class="fa fa-check"></i><b>8.7.5</b> Models within the Rasch Family</a></li>
+<li class="chapter" data-level="8.7.6" data-path="items.html"><a href="items.html#irt-three-choices"><i class="fa fa-check"></i><b>8.7.6</b> Three Choices That Are Often Mixed Together</a></li>
+<li class="chapter" data-level="8.7.7" data-path="items.html"><a href="items.html#irt-person-posterior"><i class="fa fa-check"></i><b>8.7.7</b> From a Response Pattern to a Person Distribution</a></li>
+<li class="chapter" data-level="8.7.8" data-path="items.html"><a href="items.html#irt-score-options"><i class="fa fa-check"></i><b>8.7.8</b> Person-Score Options</a></li>
+<li class="chapter" data-level="8.7.9" data-path="items.html"><a href="items.html#irt-score-differences"><i class="fa fa-check"></i><b>8.7.9</b> Why the Methods Give Different Scores</a></li>
+<li class="chapter" data-level="8.7.10" data-path="items.html"><a href="items.html#irt-vera"><i class="fa fa-check"></i><b>8.7.10</b> VERA as an IRT Application</a></li>
+<li class="chapter" data-level="8.7.11" data-path="items.html"><a href="items.html#irt-vera-data"><i class="fa fa-check"></i><b>8.7.11</b> Are VERA Items and IQB Data Public?</a></li>
+<li class="chapter" data-level="8.7.12" data-path="items.html"><a href="items.html#irt-r-example"><i class="fa fa-check"></i><b>8.7.12</b> A Minimal Rasch Application in R</a></li>
+<li class="chapter" data-level="8.7.13" data-path="items.html"><a href="items.html#irt-own-data"><i class="fa fa-check"></i><b>8.7.13</b> What You Need for Your Own VERA-Style Analysis</a></li>
+<li class="chapter" data-level="8.7.14" data-path="items.html"><a href="items.html#irt-checks"><i class="fa fa-check"></i><b>8.7.14</b> What Must Be Checked before Scores Are Trusted?</a></li>
+<li class="chapter" data-level="8.7.15" data-path="items.html"><a href="items.html#irt-connections"><i class="fa fa-check"></i><b>8.7.15</b> The Main Connections</a></li>
+<li class="chapter" data-level="8.7.16" data-path="items.html"><a href="items.html#irt-sources"><i class="fa fa-check"></i><b>8.7.16</b> Sources and Data Access</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
+<li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
+<li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
+<li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>10</b> Extract</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>10.1</b> Text Mining</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="10.2" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i><b>10.2</b> Resources</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://marco-kuehne.com/" target="_blank">Visit my personal page</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Becoming Fluent in Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<br>
+<div class = infobox>
+This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
+</div>
+<div id="intro-to-the-tidyverse" class="section level2 unnumbered hasAnchor">
+<h2>Intro to the Tidyverse<a href="intro-to-the-tidyverse.html#intro-to-the-tidyverse" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>tidyverse</code> is a collection of packages for data science that share a philosophy, a grammar and a set of data structures.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Install it once, load it once per session, and you have <code>readr</code> for reading data, <code>dplyr</code> for reshaping it, <code>ggplot2</code> for drawing it, and a dozen more.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="intro-to-the-tidyverse.html#cb18-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)   <span class="co"># once per computer</span></span>
+<span id="cb18-2"><a href="intro-to-the-tidyverse.html#cb18-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)              <span class="co"># once per session</span></span></code></pre></div>
+<p>Loading it prints a short report of which packages came along and which base R functions they have replaced. That is not an error message; it is a receipt.</p>
+<div id="meet-the-penguins" class="section level3 unnumbered hasAnchor">
+<h3>Meet the penguins<a href="intro-to-the-tidyverse.html#meet-the-penguins" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Learning a grammar needs something to talk about, and for the rest of this section it will be 344 penguins.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:penguins-art"></span>
+<img src="images/penguins/lter_penguins.png" alt="The three species in the data. Artwork by \@allison_horst." width="85%" />
+<p class="caption">
+Figure 0.1: The three species in the data. Artwork by @allison_horst.
+</p>
+</div>
+<p>Between 2007 and 2009, Dr Kristen Gorman measured Adélie, Chinstrap and Gentoo penguins on three islands of the Palmer Archipelago in Antarctica — Biscoe, Dream and Torgersen — as part of the Palmer Station Long Term Ecological Research programme. For each bird she recorded the length and depth of the bill, the length of the flipper, body mass, sex and year.</p>
+<p>Allison Horst, Alison Hill and Kristen Gorman packaged those measurements as <code>palmerpenguins</code> so that people could learn data analysis on something real, small and charming.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro-to-the-tidyverse.html#cb19-1" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb19-2"><a href="intro-to-the-tidyverse.html#cb19-2" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="intro-to-the-tidyverse.html#cb19-3" tabindex="-1"></a>penguins</span>
+<span id="cb19-4"><a href="intro-to-the-tidyverse.html#cb19-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 344 × 8</span></span>
+<span id="cb19-5"><a href="intro-to-the-tidyverse.html#cb19-5" tabindex="-1"></a><span class="co">#&gt;    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g</span></span>
+<span id="cb19-6"><a href="intro-to-the-tidyverse.html#cb19-6" tabindex="-1"></a><span class="co">#&gt;    &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;</span></span>
+<span id="cb19-7"><a href="intro-to-the-tidyverse.html#cb19-7" tabindex="-1"></a><span class="co">#&gt;  1 Adelie  Torgersen           39.1          18.7               181        3750</span></span>
+<span id="cb19-8"><a href="intro-to-the-tidyverse.html#cb19-8" tabindex="-1"></a><span class="co">#&gt;  2 Adelie  Torgersen           39.5          17.4               186        3800</span></span>
+<span id="cb19-9"><a href="intro-to-the-tidyverse.html#cb19-9" tabindex="-1"></a><span class="co">#&gt;  3 Adelie  Torgersen           40.3          18                 195        3250</span></span>
+<span id="cb19-10"><a href="intro-to-the-tidyverse.html#cb19-10" tabindex="-1"></a><span class="co">#&gt;  4 Adelie  Torgersen           NA            NA                  NA          NA</span></span>
+<span id="cb19-11"><a href="intro-to-the-tidyverse.html#cb19-11" tabindex="-1"></a><span class="co">#&gt;  5 Adelie  Torgersen           36.7          19.3               193        3450</span></span>
+<span id="cb19-12"><a href="intro-to-the-tidyverse.html#cb19-12" tabindex="-1"></a><span class="co">#&gt;  6 Adelie  Torgersen           39.3          20.6               190        3650</span></span>
+<span id="cb19-13"><a href="intro-to-the-tidyverse.html#cb19-13" tabindex="-1"></a><span class="co">#&gt;  7 Adelie  Torgersen           38.9          17.8               181        3625</span></span>
+<span id="cb19-14"><a href="intro-to-the-tidyverse.html#cb19-14" tabindex="-1"></a><span class="co">#&gt;  8 Adelie  Torgersen           39.2          19.6               195        4675</span></span>
+<span id="cb19-15"><a href="intro-to-the-tidyverse.html#cb19-15" tabindex="-1"></a><span class="co">#&gt;  9 Adelie  Torgersen           34.1          18.1               193        3475</span></span>
+<span id="cb19-16"><a href="intro-to-the-tidyverse.html#cb19-16" tabindex="-1"></a><span class="co">#&gt; 10 Adelie  Torgersen           42            20.2               190        4250</span></span>
+<span id="cb19-17"><a href="intro-to-the-tidyverse.html#cb19-17" tabindex="-1"></a><span class="co">#&gt; # ℹ 334 more rows</span></span>
+<span id="cb19-18"><a href="intro-to-the-tidyverse.html#cb19-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</span></span></code></pre></div>
+<p>Two columns need a picture. The <strong>bill length</strong> runs along the bill; the <strong>bill depth</strong> is measured across it, at the base. In the original field data both are called <em>culmen</em> measurements, after the ridge along the top of a bird's bill.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:penguins-culmen"></span>
+<img src="images/penguins/culmen_depth.png" alt="Bill dimensions. Artwork by \@allison_horst." width="65%" />
+<p class="caption">
+Figure 0.2: Bill dimensions. Artwork by @allison_horst.
+</p>
+</div>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
+</div>
+<p>Since version 4.5.0, released in 2025, a version of the penguin data ships with <strong>R itself</strong> — no package required. It sits in the <code>datasets</code> package next to <code>iris</code> and <code>mtcars</code>, with slightly shorter column names (<code>bill_len</code> instead of <code>bill_length_mm</code>, and so on).</p>
+<p>Very few data sets are ever promoted into base R. Teaching material about penguins turned out to be more popular than the flowers a statistician measured in 1936.</p>
+</div>
+</div>
+<div id="reading-data-with-readr" class="section level3 unnumbered hasAnchor">
+<h3>Reading data with readr<a href="intro-to-the-tidyverse.html#reading-data-with-readr" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Data usually arrive as a file. <code>read_csv()</code> from <code>readr</code> reads one.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="intro-to-the-tidyverse.html#cb20-1" tabindex="-1"></a>csv_file <span class="ot">&lt;-</span> <span class="fu">path_to_file</span>(<span class="st">&quot;penguins.csv&quot;</span>)   <span class="co"># a real .csv shipped with the package</span></span>
+<span id="cb20-2"><a href="intro-to-the-tidyverse.html#cb20-2" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="intro-to-the-tidyverse.html#cb20-3" tabindex="-1"></a>penguins_csv <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(csv_file)</span>
+<span id="cb20-4"><a href="intro-to-the-tidyverse.html#cb20-4" tabindex="-1"></a>penguins_csv</span>
+<span id="cb20-5"><a href="intro-to-the-tidyverse.html#cb20-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 344 × 8</span></span>
+<span id="cb20-6"><a href="intro-to-the-tidyverse.html#cb20-6" tabindex="-1"></a><span class="co">#&gt;    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g</span></span>
+<span id="cb20-7"><a href="intro-to-the-tidyverse.html#cb20-7" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb20-8"><a href="intro-to-the-tidyverse.html#cb20-8" tabindex="-1"></a><span class="co">#&gt;  1 Adelie  Torgersen           39.1          18.7               181        3750</span></span>
+<span id="cb20-9"><a href="intro-to-the-tidyverse.html#cb20-9" tabindex="-1"></a><span class="co">#&gt;  2 Adelie  Torgersen           39.5          17.4               186        3800</span></span>
+<span id="cb20-10"><a href="intro-to-the-tidyverse.html#cb20-10" tabindex="-1"></a><span class="co">#&gt;  3 Adelie  Torgersen           40.3          18                 195        3250</span></span>
+<span id="cb20-11"><a href="intro-to-the-tidyverse.html#cb20-11" tabindex="-1"></a><span class="co">#&gt;  4 Adelie  Torgersen           NA            NA                  NA          NA</span></span>
+<span id="cb20-12"><a href="intro-to-the-tidyverse.html#cb20-12" tabindex="-1"></a><span class="co">#&gt;  5 Adelie  Torgersen           36.7          19.3               193        3450</span></span>
+<span id="cb20-13"><a href="intro-to-the-tidyverse.html#cb20-13" tabindex="-1"></a><span class="co">#&gt;  6 Adelie  Torgersen           39.3          20.6               190        3650</span></span>
+<span id="cb20-14"><a href="intro-to-the-tidyverse.html#cb20-14" tabindex="-1"></a><span class="co">#&gt;  7 Adelie  Torgersen           38.9          17.8               181        3625</span></span>
+<span id="cb20-15"><a href="intro-to-the-tidyverse.html#cb20-15" tabindex="-1"></a><span class="co">#&gt;  8 Adelie  Torgersen           39.2          19.6               195        4675</span></span>
+<span id="cb20-16"><a href="intro-to-the-tidyverse.html#cb20-16" tabindex="-1"></a><span class="co">#&gt;  9 Adelie  Torgersen           34.1          18.1               193        3475</span></span>
+<span id="cb20-17"><a href="intro-to-the-tidyverse.html#cb20-17" tabindex="-1"></a><span class="co">#&gt; 10 Adelie  Torgersen           42            20.2               190        4250</span></span>
+<span id="cb20-18"><a href="intro-to-the-tidyverse.html#cb20-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 334 more rows</span></span>
+<span id="cb20-19"><a href="intro-to-the-tidyverse.html#cb20-19" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</span></span></code></pre></div>
+<p>Two things happened. <code>read_csv()</code> guessed a type for every column and reported it, and the result printed as a <strong>tibble</strong>: the first ten rows, the columns that fit the screen, the dimensions on top, the type under each name.</p>
+<p>Base R's <code>read.csv()</code> does the same job and returns a plain data frame — which, printed, dumps all 344 rows into your console.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro-to-the-tidyverse.html#cb21-1" tabindex="-1"></a>penguins_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(csv_file)</span>
+<span id="cb21-2"><a href="intro-to-the-tidyverse.html#cb21-2" tabindex="-1"></a>penguins_df        <span class="co"># all 344 rows, no types, no mercy</span></span>
+<span id="cb21-3"><a href="intro-to-the-tidyverse.html#cb21-3" tabindex="-1"></a><span class="fu">head</span>(penguins_df)  <span class="co"># so you need head() to look</span></span></code></pre></div>
+<div class="reading">
+<div class="titelreading">
+<h2>
+Reading
+</h2>
+</div>
+<p>Tibbles differ from data frames in three ways: printing, subsetting and recycling rules. The <a href="https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html">tibble vignette</a> explains each of them with examples.</p>
+</div>
+</div>
+<div id="the-verbs-of-dplyr" class="section level3 unnumbered hasAnchor">
+<h3>The verbs of dplyr<a href="intro-to-the-tidyverse.html#the-verbs-of-dplyr" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>dplyr</code> gives you a small set of verbs. Each one takes a data frame, does exactly one thing, and returns a data frame. Most data preparation is these verbs in some order.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Verb</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>glimpse()</code></td>
+<td>What is in here?</td>
+</tr>
+<tr class="even">
+<td><code>select()</code></td>
+<td>Which <strong>columns</strong>?</td>
+</tr>
+<tr class="odd">
+<td><code>filter()</code></td>
+<td>Which <strong>rows</strong>?</td>
+</tr>
+<tr class="even">
+<td><code>arrange()</code></td>
+<td>In which <strong>order</strong>?</td>
+</tr>
+<tr class="odd">
+<td><code>mutate()</code></td>
+<td>What new column can I compute?</td>
+</tr>
+<tr class="even">
+<td><code>summarise()</code></td>
+<td>What is the summary number?</td>
+</tr>
+<tr class="odd">
+<td><code>group_by()</code></td>
+<td>... and per group?</td>
+</tr>
+</tbody>
+</table>
+<div id="glimpse" class="section level4 unnumbered hasAnchor">
+<h4>Glimpse<a href="intro-to-the-tidyverse.html#glimpse" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>glimpse()</code> turns the table on its side so that every variable gets one line: its name, its type, and its first values.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="intro-to-the-tidyverse.html#cb22-1" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
+<span id="cb22-2"><a href="intro-to-the-tidyverse.html#cb22-2" tabindex="-1"></a><span class="co">#&gt; Rows: 344</span></span>
+<span id="cb22-3"><a href="intro-to-the-tidyverse.html#cb22-3" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
+<span id="cb22-4"><a href="intro-to-the-tidyverse.html#cb22-4" tabindex="-1"></a><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…</span></span>
+<span id="cb22-5"><a href="intro-to-the-tidyverse.html#cb22-5" tabindex="-1"></a><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…</span></span>
+<span id="cb22-6"><a href="intro-to-the-tidyverse.html#cb22-6" tabindex="-1"></a><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …</span></span>
+<span id="cb22-7"><a href="intro-to-the-tidyverse.html#cb22-7" tabindex="-1"></a><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …</span></span>
+<span id="cb22-8"><a href="intro-to-the-tidyverse.html#cb22-8" tabindex="-1"></a><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…</span></span>
+<span id="cb22-9"><a href="intro-to-the-tidyverse.html#cb22-9" tabindex="-1"></a><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …</span></span>
+<span id="cb22-10"><a href="intro-to-the-tidyverse.html#cb22-10" tabindex="-1"></a><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male…</span></span>
+<span id="cb22-11"><a href="intro-to-the-tidyverse.html#cb22-11" tabindex="-1"></a><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</span></span></code></pre></div>
+<p>Types are abbreviated: <code>fct</code> factor, <code>dbl</code> double (a number with decimals), <code>int</code> integer — elsewhere you will also meet <code>chr</code> for text and <code>lgl</code> for <code>TRUE</code>/<code>FALSE</code>. Note the <code>NA</code>s in <code>sex</code> — real data has holes in it.</p>
+</div>
+<div id="select" class="section level4 unnumbered hasAnchor">
+<h4>Select<a href="intro-to-the-tidyverse.html#select" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Columns, by name.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro-to-the-tidyverse.html#cb23-1" tabindex="-1"></a><span class="fu">select</span>(penguins, species, island, body_mass_g)</span>
+<span id="cb23-2"><a href="intro-to-the-tidyverse.html#cb23-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 344 × 3</span></span>
+<span id="cb23-3"><a href="intro-to-the-tidyverse.html#cb23-3" tabindex="-1"></a><span class="co">#&gt;    species island    body_mass_g</span></span>
+<span id="cb23-4"><a href="intro-to-the-tidyverse.html#cb23-4" tabindex="-1"></a><span class="co">#&gt;    &lt;fct&gt;   &lt;fct&gt;           &lt;int&gt;</span></span>
+<span id="cb23-5"><a href="intro-to-the-tidyverse.html#cb23-5" tabindex="-1"></a><span class="co">#&gt;  1 Adelie  Torgersen        3750</span></span>
+<span id="cb23-6"><a href="intro-to-the-tidyverse.html#cb23-6" tabindex="-1"></a><span class="co">#&gt;  2 Adelie  Torgersen        3800</span></span>
+<span id="cb23-7"><a href="intro-to-the-tidyverse.html#cb23-7" tabindex="-1"></a><span class="co">#&gt;  3 Adelie  Torgersen        3250</span></span>
+<span id="cb23-8"><a href="intro-to-the-tidyverse.html#cb23-8" tabindex="-1"></a><span class="co">#&gt;  4 Adelie  Torgersen          NA</span></span>
+<span id="cb23-9"><a href="intro-to-the-tidyverse.html#cb23-9" tabindex="-1"></a><span class="co">#&gt;  5 Adelie  Torgersen        3450</span></span>
+<span id="cb23-10"><a href="intro-to-the-tidyverse.html#cb23-10" tabindex="-1"></a><span class="co">#&gt;  6 Adelie  Torgersen        3650</span></span>
+<span id="cb23-11"><a href="intro-to-the-tidyverse.html#cb23-11" tabindex="-1"></a><span class="co">#&gt;  7 Adelie  Torgersen        3625</span></span>
+<span id="cb23-12"><a href="intro-to-the-tidyverse.html#cb23-12" tabindex="-1"></a><span class="co">#&gt;  8 Adelie  Torgersen        4675</span></span>
+<span id="cb23-13"><a href="intro-to-the-tidyverse.html#cb23-13" tabindex="-1"></a><span class="co">#&gt;  9 Adelie  Torgersen        3475</span></span>
+<span id="cb23-14"><a href="intro-to-the-tidyverse.html#cb23-14" tabindex="-1"></a><span class="co">#&gt; 10 Adelie  Torgersen        4250</span></span>
+<span id="cb23-15"><a href="intro-to-the-tidyverse.html#cb23-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 334 more rows</span></span></code></pre></div>
+<p>A minus sign drops instead of keeps, and helpers such as <code>starts_with()</code> save typing.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="intro-to-the-tidyverse.html#cb24-1" tabindex="-1"></a><span class="fu">select</span>(penguins, <span class="sc">-</span>year)</span>
+<span id="cb24-2"><a href="intro-to-the-tidyverse.html#cb24-2" tabindex="-1"></a><span class="fu">select</span>(penguins, species, <span class="fu">starts_with</span>(<span class="st">&quot;bill&quot;</span>))</span></code></pre></div>
+</div>
+<div id="the-pipe" class="section level4 unnumbered hasAnchor">
+<h4>The pipe<a href="intro-to-the-tidyverse.html#the-pipe" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Verbs become useful when they are chained. Nesting them is possible, and quickly unreadable:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro-to-the-tidyverse.html#cb25-1" tabindex="-1"></a><span class="fu">arrange</span>(<span class="fu">select</span>(<span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>), species, body_mass_g), body_mass_g)</span></code></pre></div>
+<p>The <strong>pipe</strong> <code>%&gt;%</code> takes what is on its left and hands it to the function on its right as the first argument. Read it as <em>"and then"</em>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro-to-the-tidyverse.html#cb26-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span>                                 <span class="co"># take the penguins</span></span>
+<span id="cb26-2"><a href="intro-to-the-tidyverse.html#cb26-2" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>) <span class="sc">%&gt;%</span>            <span class="co"># and then keep the Gentoos</span></span>
+<span id="cb26-3"><a href="intro-to-the-tidyverse.html#cb26-3" tabindex="-1"></a>  <span class="fu">select</span>(species, body_mass_g) <span class="sc">%&gt;%</span>           <span class="co"># and then these two columns</span></span>
+<span id="cb26-4"><a href="intro-to-the-tidyverse.html#cb26-4" tabindex="-1"></a>  <span class="fu">arrange</span>(body_mass_g)                       <span class="co"># and then sort by mass</span></span>
+<span id="cb26-5"><a href="intro-to-the-tidyverse.html#cb26-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 124 × 2</span></span>
+<span id="cb26-6"><a href="intro-to-the-tidyverse.html#cb26-6" tabindex="-1"></a><span class="co">#&gt;    species body_mass_g</span></span>
+<span id="cb26-7"><a href="intro-to-the-tidyverse.html#cb26-7" tabindex="-1"></a><span class="co">#&gt;    &lt;fct&gt;         &lt;int&gt;</span></span>
+<span id="cb26-8"><a href="intro-to-the-tidyverse.html#cb26-8" tabindex="-1"></a><span class="co">#&gt;  1 Gentoo         3950</span></span>
+<span id="cb26-9"><a href="intro-to-the-tidyverse.html#cb26-9" tabindex="-1"></a><span class="co">#&gt;  2 Gentoo         4100</span></span>
+<span id="cb26-10"><a href="intro-to-the-tidyverse.html#cb26-10" tabindex="-1"></a><span class="co">#&gt;  3 Gentoo         4150</span></span>
+<span id="cb26-11"><a href="intro-to-the-tidyverse.html#cb26-11" tabindex="-1"></a><span class="co">#&gt;  4 Gentoo         4200</span></span>
+<span id="cb26-12"><a href="intro-to-the-tidyverse.html#cb26-12" tabindex="-1"></a><span class="co">#&gt;  5 Gentoo         4200</span></span>
+<span id="cb26-13"><a href="intro-to-the-tidyverse.html#cb26-13" tabindex="-1"></a><span class="co">#&gt;  6 Gentoo         4200</span></span>
+<span id="cb26-14"><a href="intro-to-the-tidyverse.html#cb26-14" tabindex="-1"></a><span class="co">#&gt;  7 Gentoo         4300</span></span>
+<span id="cb26-15"><a href="intro-to-the-tidyverse.html#cb26-15" tabindex="-1"></a><span class="co">#&gt;  8 Gentoo         4300</span></span>
+<span id="cb26-16"><a href="intro-to-the-tidyverse.html#cb26-16" tabindex="-1"></a><span class="co">#&gt;  9 Gentoo         4350</span></span>
+<span id="cb26-17"><a href="intro-to-the-tidyverse.html#cb26-17" tabindex="-1"></a><span class="co">#&gt; 10 Gentoo         4375</span></span>
+<span id="cb26-18"><a href="intro-to-the-tidyverse.html#cb26-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 114 more rows</span></span></code></pre></div>
+<p>Same result, and it reads in the order the work actually happens. In RStudio, <code>Ctrl</code> + <code>Shift</code> + <code>M</code> types the pipe.</p>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated
+</h2>
+</div>
+<p>Since R 4.1 the language has its own pipe, <code>|&gt;</code>, which needs no package at all:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro-to-the-tidyverse.html#cb27-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<p>The two behave the same in ordinary chains. <code>%&gt;%</code> (from <code>magrittr</code>, loaded with the tidyverse) can additionally place the incoming data anywhere with a dot, <code>.</code>, and it works in older versions of R. Books and courses are gradually moving to <code>|&gt;</code>. Either is fine; mixing them in the same script is not.</p>
+</div>
+</div>
+<div id="filter" class="section level4 unnumbered hasAnchor">
+<h4>Filter<a href="intro-to-the-tidyverse.html#filter" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>filter()</code> keeps rows for which a condition is <code>TRUE</code>. Conditions are built from relational operators.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>Relational operators</strong></p>
+<ul>
+<li><code>==</code> equal to, <code>!=</code> not equal to</li>
+<li><code>&gt;</code> greater than, <code>&lt;</code> less than, <code>&gt;=</code>, <code>&lt;=</code></li>
+<li><code>%in%</code> contained in a set</li>
+</ul>
+<p><strong>Logical operators</strong> combine them: <code>&amp;</code> and, <code>|</code> or, <code>!</code> not.</p>
+</div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro-to-the-tidyverse.html#cb28-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span> <span class="fu">filter</span>(body_mass_g <span class="sc">&gt;</span> <span class="dv">6000</span>)</span>
+<span id="cb28-2"><a href="intro-to-the-tidyverse.html#cb28-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 8</span></span>
+<span id="cb28-3"><a href="intro-to-the-tidyverse.html#cb28-3" tabindex="-1"></a><span class="co">#&gt;   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g</span></span>
+<span id="cb28-4"><a href="intro-to-the-tidyverse.html#cb28-4" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;</span></span>
+<span id="cb28-5"><a href="intro-to-the-tidyverse.html#cb28-5" tabindex="-1"></a><span class="co">#&gt; 1 Gentoo  Biscoe           49.2          15.2               221        6300</span></span>
+<span id="cb28-6"><a href="intro-to-the-tidyverse.html#cb28-6" tabindex="-1"></a><span class="co">#&gt; 2 Gentoo  Biscoe           59.6          17                 230        6050</span></span>
+<span id="cb28-7"><a href="intro-to-the-tidyverse.html#cb28-7" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="intro-to-the-tidyverse.html#cb29-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="intro-to-the-tidyverse.html#cb29-2" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">&quot;Adelie&quot;</span> <span class="sc">&amp;</span> island <span class="sc">==</span> <span class="st">&quot;Torgersen&quot;</span> <span class="sc">&amp;</span> sex <span class="sc">==</span> <span class="st">&quot;female&quot;</span>)</span>
+<span id="cb29-3"><a href="intro-to-the-tidyverse.html#cb29-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 24 × 8</span></span>
+<span id="cb29-4"><a href="intro-to-the-tidyverse.html#cb29-4" tabindex="-1"></a><span class="co">#&gt;    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g</span></span>
+<span id="cb29-5"><a href="intro-to-the-tidyverse.html#cb29-5" tabindex="-1"></a><span class="co">#&gt;    &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;</span></span>
+<span id="cb29-6"><a href="intro-to-the-tidyverse.html#cb29-6" tabindex="-1"></a><span class="co">#&gt;  1 Adelie  Torgersen           39.5          17.4               186        3800</span></span>
+<span id="cb29-7"><a href="intro-to-the-tidyverse.html#cb29-7" tabindex="-1"></a><span class="co">#&gt;  2 Adelie  Torgersen           40.3          18                 195        3250</span></span>
+<span id="cb29-8"><a href="intro-to-the-tidyverse.html#cb29-8" tabindex="-1"></a><span class="co">#&gt;  3 Adelie  Torgersen           36.7          19.3               193        3450</span></span>
+<span id="cb29-9"><a href="intro-to-the-tidyverse.html#cb29-9" tabindex="-1"></a><span class="co">#&gt;  4 Adelie  Torgersen           38.9          17.8               181        3625</span></span>
+<span id="cb29-10"><a href="intro-to-the-tidyverse.html#cb29-10" tabindex="-1"></a><span class="co">#&gt;  5 Adelie  Torgersen           41.1          17.6               182        3200</span></span>
+<span id="cb29-11"><a href="intro-to-the-tidyverse.html#cb29-11" tabindex="-1"></a><span class="co">#&gt;  6 Adelie  Torgersen           36.6          17.8               185        3700</span></span>
+<span id="cb29-12"><a href="intro-to-the-tidyverse.html#cb29-12" tabindex="-1"></a><span class="co">#&gt;  7 Adelie  Torgersen           38.7          19                 195        3450</span></span>
+<span id="cb29-13"><a href="intro-to-the-tidyverse.html#cb29-13" tabindex="-1"></a><span class="co">#&gt;  8 Adelie  Torgersen           34.4          18.4               184        3325</span></span>
+<span id="cb29-14"><a href="intro-to-the-tidyverse.html#cb29-14" tabindex="-1"></a><span class="co">#&gt;  9 Adelie  Torgersen           35.9          16.6               190        3050</span></span>
+<span id="cb29-15"><a href="intro-to-the-tidyverse.html#cb29-15" tabindex="-1"></a><span class="co">#&gt; 10 Adelie  Torgersen           33.5          19                 190        3600</span></span>
+<span id="cb29-16"><a href="intro-to-the-tidyverse.html#cb29-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 14 more rows</span></span>
+<span id="cb29-17"><a href="intro-to-the-tidyverse.html#cb29-17" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</span></span></code></pre></div>
+<p>The single <code>=</code> is assignment; the double <code>==</code> is a question. Confusing them is a rite of passage.</p>
+</div>
+<div id="mutate" class="section level4 unnumbered hasAnchor">
+<h4>Mutate<a href="intro-to-the-tidyverse.html#mutate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>mutate()</code> adds a column, computed from the ones already there.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="intro-to-the-tidyverse.html#cb30-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="intro-to-the-tidyverse.html#cb30-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span>,</span>
+<span id="cb30-3"><a href="intro-to-the-tidyverse.html#cb30-3" tabindex="-1"></a>         <span class="at">bill_ratio   =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="intro-to-the-tidyverse.html#cb30-4" tabindex="-1"></a>  <span class="fu">select</span>(species, body_mass_kg, bill_ratio)</span>
+<span id="cb30-5"><a href="intro-to-the-tidyverse.html#cb30-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 344 × 3</span></span>
+<span id="cb30-6"><a href="intro-to-the-tidyverse.html#cb30-6" tabindex="-1"></a><span class="co">#&gt;    species body_mass_kg bill_ratio</span></span>
+<span id="cb30-7"><a href="intro-to-the-tidyverse.html#cb30-7" tabindex="-1"></a><span class="co">#&gt;    &lt;fct&gt;          &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb30-8"><a href="intro-to-the-tidyverse.html#cb30-8" tabindex="-1"></a><span class="co">#&gt;  1 Adelie          3.75       2.09</span></span>
+<span id="cb30-9"><a href="intro-to-the-tidyverse.html#cb30-9" tabindex="-1"></a><span class="co">#&gt;  2 Adelie          3.8        2.27</span></span>
+<span id="cb30-10"><a href="intro-to-the-tidyverse.html#cb30-10" tabindex="-1"></a><span class="co">#&gt;  3 Adelie          3.25       2.24</span></span>
+<span id="cb30-11"><a href="intro-to-the-tidyverse.html#cb30-11" tabindex="-1"></a><span class="co">#&gt;  4 Adelie         NA         NA   </span></span>
+<span id="cb30-12"><a href="intro-to-the-tidyverse.html#cb30-12" tabindex="-1"></a><span class="co">#&gt;  5 Adelie          3.45       1.90</span></span>
+<span id="cb30-13"><a href="intro-to-the-tidyverse.html#cb30-13" tabindex="-1"></a><span class="co">#&gt;  6 Adelie          3.65       1.91</span></span>
+<span id="cb30-14"><a href="intro-to-the-tidyverse.html#cb30-14" tabindex="-1"></a><span class="co">#&gt;  7 Adelie          3.62       2.19</span></span>
+<span id="cb30-15"><a href="intro-to-the-tidyverse.html#cb30-15" tabindex="-1"></a><span class="co">#&gt;  8 Adelie          4.68       2   </span></span>
+<span id="cb30-16"><a href="intro-to-the-tidyverse.html#cb30-16" tabindex="-1"></a><span class="co">#&gt;  9 Adelie          3.48       1.88</span></span>
+<span id="cb30-17"><a href="intro-to-the-tidyverse.html#cb30-17" tabindex="-1"></a><span class="co">#&gt; 10 Adelie          4.25       2.08</span></span>
+<span id="cb30-18"><a href="intro-to-the-tidyverse.html#cb30-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 334 more rows</span></span></code></pre></div>
+<p>Changes are not saved unless you assign them. The line below overwrites the object; writing to a <em>new</em> name is often safer while you experiment.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro-to-the-tidyverse.html#cb31-1" tabindex="-1"></a>penguins_kg <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="intro-to-the-tidyverse.html#cb31-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span>)</span></code></pre></div>
+</div>
+<div id="summarise-and-group_by" class="section level4 unnumbered hasAnchor">
+<h4>Summarise and group_by<a href="intro-to-the-tidyverse.html#summarise-and-group_by" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>summarise()</code> collapses many rows into one number.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro-to-the-tidyverse.html#cb32-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="intro-to-the-tidyverse.html#cb32-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n           =</span> <span class="fu">n</span>(),</span>
+<span id="cb32-3"><a href="intro-to-the-tidyverse.html#cb32-3" tabindex="-1"></a>            <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb32-4"><a href="intro-to-the-tidyverse.html#cb32-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span id="cb32-5"><a href="intro-to-the-tidyverse.html#cb32-5" tabindex="-1"></a><span class="co">#&gt;       n mean_mass_g</span></span>
+<span id="cb32-6"><a href="intro-to-the-tidyverse.html#cb32-6" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt;       &lt;dbl&gt;</span></span>
+<span id="cb32-7"><a href="intro-to-the-tidyverse.html#cb32-7" tabindex="-1"></a><span class="co">#&gt; 1   344       4202.</span></span></code></pre></div>
+<p>On its own that is rarely what we want. Almost every substantive question is comparative — <em>heavier than what?</em> — and <code>group_by()</code> supplies the <em>what</em>.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro-to-the-tidyverse.html#cb33-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="intro-to-the-tidyverse.html#cb33-2" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="intro-to-the-tidyverse.html#cb33-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n           =</span> <span class="fu">n</span>(),</span>
+<span id="cb33-4"><a href="intro-to-the-tidyverse.html#cb33-4" tabindex="-1"></a>            <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-5"><a href="intro-to-the-tidyverse.html#cb33-5" tabindex="-1"></a>            <span class="at">mean_flipper =</span> <span class="fu">mean</span>(flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb33-6"><a href="intro-to-the-tidyverse.html#cb33-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span id="cb33-7"><a href="intro-to-the-tidyverse.html#cb33-7" tabindex="-1"></a><span class="co">#&gt;   species       n mean_mass_g mean_flipper</span></span>
+<span id="cb33-8"><a href="intro-to-the-tidyverse.html#cb33-8" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt;     &lt;int&gt;       &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb33-9"><a href="intro-to-the-tidyverse.html#cb33-9" tabindex="-1"></a><span class="co">#&gt; 1 Adelie      152       3701.         190.</span></span>
+<span id="cb33-10"><a href="intro-to-the-tidyverse.html#cb33-10" tabindex="-1"></a><span class="co">#&gt; 2 Chinstrap    68       3733.         196.</span></span>
+<span id="cb33-11"><a href="intro-to-the-tidyverse.html#cb33-11" tabindex="-1"></a><span class="co">#&gt; 3 Gentoo      124       5076.         217.</span></span></code></pre></div>
+<p>Three lines, and the table already tells a story: Gentoos are markedly heavier and longer-finned than the other two. Half of descriptive statistics is <code>group_by()</code> followed by <code>summarise()</code>.</p>
+<p>Note <code>na.rm = TRUE</code> doing quiet work again. Without it, two penguins with missing measurements would turn every mean into <code>NA</code>.</p>
+</div>
+<div id="all-of-it-at-once" class="section level4 unnumbered hasAnchor">
+<h4>All of it at once<a href="intro-to-the-tidyverse.html#all-of-it-at-once" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A pipeline is easy to write and hard to read, because everything happens between the first line and the last. <strong>Drag the slider</strong> to add one verb at a time and watch what it does to the data — 344 rows becoming six.</p>
+<div id="flip-penguins" class="pipeline-flipbook">
+<div class="flip-pane" data-step="1">
+<pre class="flip-code"><code>penguins</code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+species
+</th>
+<th style="text-align:left;">
+island
+</th>
+<th style="text-align:right;">
+bill_length_mm
+</th>
+<th style="text-align:right;">
+bill_depth_mm
+</th>
+<th style="text-align:right;">
+flipper_length_mm
+</th>
+<th style="text-align:right;">
+body_mass_g
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+year
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.1
+</td>
+<td style="text-align:right;">
+18.7
+</td>
+<td style="text-align:right;">
+181
+</td>
+<td style="text-align:right;">
+3750
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.5
+</td>
+<td style="text-align:right;">
+17.4
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:right;">
+3800
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+40.3
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+195
+</td>
+<td style="text-align:right;">
+3250
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+36.7
+</td>
+<td style="text-align:right;">
+19.3
+</td>
+<td style="text-align:right;">
+193
+</td>
+<td style="text-align:right;">
+3450
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.3
+</td>
+<td style="text-align:right;">
+20.6
+</td>
+<td style="text-align:right;">
+190
+</td>
+<td style="text-align:right;">
+3650
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+344 rows × 8 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="2" hidden="">
+<pre class="flip-code"><code>penguins %&gt;%
+<span class="flip-new">  filter(!is.na(sex))</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+species
+</th>
+<th style="text-align:left;">
+island
+</th>
+<th style="text-align:right;">
+bill_length_mm
+</th>
+<th style="text-align:right;">
+bill_depth_mm
+</th>
+<th style="text-align:right;">
+flipper_length_mm
+</th>
+<th style="text-align:right;">
+body_mass_g
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+year
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.1
+</td>
+<td style="text-align:right;">
+18.7
+</td>
+<td style="text-align:right;">
+181
+</td>
+<td style="text-align:right;">
+3750
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.5
+</td>
+<td style="text-align:right;">
+17.4
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:right;">
+3800
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+40.3
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+195
+</td>
+<td style="text-align:right;">
+3250
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+36.7
+</td>
+<td style="text-align:right;">
+19.3
+</td>
+<td style="text-align:right;">
+193
+</td>
+<td style="text-align:right;">
+3450
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.3
+</td>
+<td style="text-align:right;">
+20.6
+</td>
+<td style="text-align:right;">
+190
+</td>
+<td style="text-align:right;">
+3650
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+38.9
+</td>
+<td style="text-align:right;">
+17.8
+</td>
+<td style="text-align:right;">
+181
+</td>
+<td style="text-align:right;">
+3625
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+333 rows × 8 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="3" hidden="">
+<pre class="flip-code"><code>penguins %&gt;%
+  filter(!is.na(sex)) %&gt;%
+<span class="flip-new">  group_by(species, sex)</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+species
+</th>
+<th style="text-align:left;">
+island
+</th>
+<th style="text-align:right;">
+bill_length_mm
+</th>
+<th style="text-align:right;">
+bill_depth_mm
+</th>
+<th style="text-align:right;">
+flipper_length_mm
+</th>
+<th style="text-align:right;">
+body_mass_g
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+year
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.1
+</td>
+<td style="text-align:right;">
+18.7
+</td>
+<td style="text-align:right;">
+181
+</td>
+<td style="text-align:right;">
+3750
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.5
+</td>
+<td style="text-align:right;">
+17.4
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:right;">
+3800
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+40.3
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+195
+</td>
+<td style="text-align:right;">
+3250
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+36.7
+</td>
+<td style="text-align:right;">
+19.3
+</td>
+<td style="text-align:right;">
+193
+</td>
+<td style="text-align:right;">
+3450
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+39.3
+</td>
+<td style="text-align:right;">
+20.6
+</td>
+<td style="text-align:right;">
+190
+</td>
+<td style="text-align:right;">
+3650
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+Torgersen
+</td>
+<td style="text-align:right;">
+38.9
+</td>
+<td style="text-align:right;">
+17.8
+</td>
+<td style="text-align:right;">
+181
+</td>
+<td style="text-align:right;">
+3625
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+2007
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+333 rows × 8 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="4" hidden="">
+<pre class="flip-code"><code>penguins %&gt;%
+  filter(!is.na(sex)) %&gt;%
+  group_by(species, sex) %&gt;%
+<span class="flip-new">  summarise(n = n(), mean_mass_g = mean(body_mass_g))</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+species
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+mean_mass_g
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+3368.836
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+4043.493
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chinstrap
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+3527.206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chinstrap
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+3938.971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gentoo
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:right;">
+4679.741
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gentoo
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+5484.836
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+6 rows × 4 columns
+</p>
+</div>
+</div>
+<div class="flip-pane" data-step="5" hidden="">
+<pre class="flip-code"><code>penguins %&gt;%
+  filter(!is.na(sex)) %&gt;%
+  group_by(species, sex) %&gt;%
+  summarise(n = n(), mean_mass_g = mean(body_mass_g)) %&gt;%
+<span class="flip-new">  arrange(desc(mean_mass_g))</span></code></pre>
+<div class="flip-out">
+<table class="flip-table">
+<thead>
+<tr>
+<th style="text-align:left;">
+species
+</th>
+<th style="text-align:left;">
+sex
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+mean_mass_g
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Gentoo
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+5484.836
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gentoo
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:right;">
+4679.741
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+4043.493
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chinstrap
+</td>
+<td style="text-align:left;">
+male
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+3938.971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chinstrap
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+3527.206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Adelie
+</td>
+<td style="text-align:left;">
+female
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+3368.836
+</td>
+</tr>
+</tbody>
+</table>
+<p class="flip-dim">
+6 rows × 4 columns
+</p>
+</div>
+</div>
+<input type="range" class="flip-slider" min="1" max="5" value="1" step="1" aria-label="pipeline step">
+<p class="flip-caption">
+Step <span class="flip-i">1</span> of 5 — eleven penguins of unrecorded sex leave the table in step 2
+</p>
+</div>
+<script>
+(function(){
+  var box = document.getElementById("flip-penguins");
+  var panes = box.querySelectorAll(".flip-pane");
+  var slider = box.querySelector(".flip-slider");
+  var label = box.querySelector(".flip-i");
+  slider.addEventListener("input", function(){
+    var n = +slider.value;
+    panes.forEach(function(p){ p.hidden = (+p.dataset.step !== n); });
+    label.textContent = n;
+  });
+})();
+</script>
+<p>That is the shape of most analyses in this book. Restrict, group, summarise, order — and then look.</p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn: Ask the penguins a question
+</h2>
+</div>
+<p>This console installs <code>dplyr</code> and <code>palmerpenguins</code> in your browser before it runs, so the first Run takes longer than the earlier boxes — a minute or so on a normal connection. Everything after that is instant.</p>
+<div id="webr-dplyr-box" class="webr-box" data-plot="false" data-packages="dplyr,palmerpenguins">
+<textarea class="webr-code" spellcheck="false" rows="12">library(dplyr)
+library(palmerpenguins)
+
+penguins %&gt;%
+  group_by(species, sex) %&gt;%
+  summarise(n = n(),
+            mass = mean(body_mass_g, na.rm = TRUE))
+
+# 1. Group by island instead of species.
+# 2. Add filter(!is.na(sex)) before group_by(). What changes?
+# 3. Sort the result with arrange(desc(mass)).</textarea>
+<div class="webr-bar">
+<p><button class="webr-run" type="button">Run</button>
+<button class="webr-reset" type="button">Reset</button>
+<span class="webr-status">R is not loaded yet</span></p>
+</div>
+<pre class="webr-out" hidden></pre>
+<p class="webr-hint">
+Which island hosts all three species? Try count(island, species).
+</p>
+</div>
+<script>
+if (!window.bfidWebR) {
+  window.bfidWebR = (function () {
+    var ready = null;      // promise for the webR instance
+    var shelter = null;    // memory shelter, reused across runs
+    var listeners = [];
+
+    function announce(msg) { listeners.forEach(function (f) { f(msg); }); }
+
+    function boot() {
+      if (ready) return ready;
+      announce("downloading R, about 30 MB - this happens once per visit");
+      ready = import("https://webr.r-wasm.org/latest/webr.mjs")
+        .then(async function (mod) {
+          var webR = new mod.WebR();
+          await webR.init();
+          shelter = await new webR.Shelter();
+          announce("R is ready");
+          return webR;
+        })
+        .catch(function (e) {
+          announce("R could not be loaded: " + e);
+          ready = null;
+          throw e;
+        });
+      return ready;
+    }
+
+    return {
+      onStatus: function (f) { listeners.push(f); },
+      run: async function (code, packages) {
+        var webR = await boot();
+        if (packages && packages.length) {
+          announce("installing " + packages.join(", "));
+          await webR.installPackages(packages);
+          announce("R is ready");
+        }
+        var res = await shelter.captureR(code, {
+          withAutoprint: true,
+          captureStreams: true,
+          captureConditions: false
+        });
+        var text = res.output
+          .filter(function (o) { return o.type === "stdout" || o.type === "stderr"; })
+          .map(function (o) { return o.data; })
+          .join("\n");
+        return { text: text, images: res.images, purge: function () { shelter.purge(); } };
+      }
+    };
+  })();
+}
+
+(function () {
+  var box = document.getElementById("webr-dplyr-box");
+  var area = box.querySelector(".webr-code");
+  var out = box.querySelector(".webr-out");
+  var canvas = box.querySelector(".webr-plot");
+  var status = box.querySelector(".webr-status");
+  var runBtn = box.querySelector(".webr-run");
+  var original = area.value;
+  var pkgs = box.dataset.packages ? box.dataset.packages.split(",").filter(Boolean) : [];
+
+  window.bfidWebR.onStatus(function (m) { status.textContent = m; });
+
+  runBtn.addEventListener("click", async function () {
+    runBtn.disabled = true;
+    out.hidden = false;
+    out.textContent = "running...";
+    try {
+      var r = await window.bfidWebR.run(area.value, pkgs);
+      out.textContent = r.text || "(no output)";
+      if (canvas && r.images && r.images.length) {
+        var img = r.images[r.images.length - 1];
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        canvas.hidden = false;
+      }
+      r.purge();
+    } catch (e) {
+      out.textContent = String(e && e.message ? e.message : e);
+    }
+    runBtn.disabled = false;
+  });
+
+  box.querySelector(".webr-reset").addEventListener("click", function () {
+    area.value = original;
+    out.hidden = true;
+    if (canvas) canvas.hidden = true;
+  });
+})();
+</script>
+</div>
+</div>
+</div>
+<div id="graphs-with-ggplot2" class="section level3 unnumbered hasAnchor">
+<h3>Graphs with ggplot2<a href="intro-to-the-tidyverse.html#graphs-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>ggplot2</code> builds graphics from a <strong>grammar</strong>: data, a mapping from variables to visual properties, and layers that draw something. Say those three things and the plot follows.</p>
+<ul>
+<li><code>ggplot(data, aes(...))</code> — the data and the <u id='gg'>mapping</u>: which variable goes on x, on y, on colour, on size.</li>
+<li><code>+ geom_point()</code> — a layer. Points, lines, bars, boxes, densities.</li>
+<li><code>+ labs()</code>, <code>+ theme_minimal()</code> — labels and everything that is not data.</li>
+</ul>
+<span class="tippy html-widget html-fill-item" height="480" id="htmlwidget-57bd33b4cda77bcba722" width="576"></span>
+<script type="application/json" data-for="htmlwidget-57bd33b4cda77bcba722">{"x":{"element":"gg","opts":{"content":"aes() = aesthetics: the link between a variable and something you can see."}},"evals":[],"jsHooks":[]}</script>
+<p>Layers are added with <code>+</code>, not with the pipe. It is the one seam in the tidyverse where two grammars meet.</p>
+<p>A finished <code>ggplot()</code> call is six lines that arrived one at a time. <strong>Drag the slider</strong> to add them in that order and watch the picture assemble itself.</p>
+<div id="gg-penguins" class="pipeline-flipbook">
+<div class="flip-pane" data-step="1">
+<pre class="flip-code"><code>ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))</code></pre>
+<div class="flip-out">
+<img class="flip-img" loading="lazy" alt="Step 1 of the plot" src="data:image/png;base64,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">
+</div>
+</div>
+<div class="flip-pane" data-step="2" hidden="">
+<pre class="flip-code"><code>ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+<span class="flip-new">  geom_point()</span></code></pre>
+<div class="flip-out">
+<img class="flip-img" loading="lazy" alt="Step 2 of the plot" src="data:image/png;base64,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">
+</div>
+</div>
+<div class="flip-pane" data-step="3" hidden="">
+<pre class="flip-code"><code>ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+<span class="flip-new">  aes(colour = species)</span></code></pre>
+<div class="flip-out">
+<img class="flip-img" loading="lazy" alt="Step 3 of the plot" src="data:image/png;base64,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">
+</div>
+</div>
+<div class="flip-pane" data-step="4" hidden="">
+<pre class="flip-code"><code>ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  aes(colour = species) +
+<span class="flip-new">  geom_smooth(method = "lm", se = FALSE)</span></code></pre>
+<div class="flip-out">
+<img class="flip-img" loading="lazy" alt="Step 4 of the plot" src="data:image/png;base64,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">
+</div>
+</div>
+<div class="flip-pane" data-step="5" hidden="">
+<pre class="flip-code"><code>ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  aes(colour = species) +
+  geom_smooth(method = "lm", se = FALSE) +
+<span class="flip-new">  labs(title = "Bigger flippers, heavier penguins",
+       x = "Flipper length (mm)", y = "Body mass (g)", colour = "Species")</span></code></pre>
+<div class="flip-out">
+<img class="flip-img" loading="lazy" alt="Step 5 of the plot" src="data:image/png;base64,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">
+</div>
+</div>
+<div class="flip-pane" data-step="6" hidden="">
+<pre class="flip-code"><code>ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  aes(colour = species) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Bigger flippers, heavier penguins",
+       x = "Flipper length (mm)", y = "Body mass (g)", colour = "Species") +
+<span class="flip-new">  theme_minimal()</span></code></pre>
+<div class="flip-out">
+<img class="flip-img" loading="lazy" alt="Step 6 of the plot" src="data:image/png;base64,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">
+</div>
+</div>
+<input type="range" class="flip-slider" min="1" max="6" value="1" step="1" aria-label="plot layer">
+<p class="flip-caption">
+Layer <span class="flip-i">1</span> of 6 — each layer is drawn on top of the ones before it
+</p>
+</div>
+<script>
+(function(){
+  var box = document.getElementById("gg-penguins");
+  var panes = box.querySelectorAll(".flip-pane");
+  var slider = box.querySelector(".flip-slider");
+  var label = box.querySelector(".flip-i");
+  slider.addEventListener("input", function(){
+    var n = +slider.value;
+    panes.forEach(function(p){ p.hidden = (+p.dataset.step !== n); });
+    label.textContent = n;
+  });
+})();
+</script>
+<p>Three of those steps are worth pausing on.</p>
+<p><strong>Step 1</strong> draws nothing — and still draws something. The axes are there, scaled to the data, because <code>ggplot()</code> was told which variables go where. The canvas knows its dimensions before anything is painted on it.</p>
+<p><strong>Step 3</strong> adds no data and no geometry. It maps <code>species</code> to colour, and one cloud becomes three. Nothing about the penguins changed; we only asked the plot to show a variable it had been ignoring.</p>
+<p><strong>Step 4</strong> then fits a line <em>per colour</em>, because the grouping introduced in step 3 is still in force. Layers inherit what came before them, which is what makes the grammar compose — and, occasionally, what makes it surprising.</p>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Amazing Fact
+</h2>
+</div>
+<p>Now try the same trick on bill length and bill depth. Overall, penguins with longer bills have <em>shallower</em> bills — a clearly negative relationship. Within each species, the relationship is <em>positive</em>.</p>
+<div class="figure"><span style="display:block;" id="fig:ggplot-simpson"></span>
+<img src="Becoming-Fluent-In-Data_files/figure-html/ggplot-simpson-1.png" alt="One negative trend, three positive ones: Simpson's paradox in the wild." width="576" />
+<p class="caption">
+Figure 0.3: One negative trend, three positive ones: Simpson's paradox in the wild.
+</p>
+</div>
+<p>A grouping variable reversed the sign of a relationship. This is <strong>Simpson's paradox</strong>, and it is the reason a plot is not a decoration on top of an analysis. We meet it properly when we start comparing groups and building models.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn: Build a plot
+</h2>
+</div>
+<p>Again, the first Run installs <code>ggplot2</code> and the data in your browser and takes a moment.</p>
+<div id="webr-ggplot-box" class="webr-box" data-plot="true" data-packages="ggplot2,palmerpenguins">
+<textarea class="webr-code" spellcheck="false" rows="14">library(ggplot2)
+library(palmerpenguins)
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g,
+                     colour = species)) +
+  geom_point() +
+  theme_minimal()
+
+# 1. Map species to shape as well as colour.
+# 2. Replace geom_point() with geom_boxplot(aes(x = species, y = body_mass_g)).
+# 3. Add facet_wrap(~ island) as another layer.</textarea>
+<div class="webr-bar">
+<p><button class="webr-run" type="button">Run</button>
+<button class="webr-reset" type="button">Reset</button>
+<span class="webr-status">R is not loaded yet</span></p>
+</div>
+<pre class="webr-out" hidden></pre>
+<canvas class="webr-plot" hidden>
+</canvas>
+<p class="webr-hint">
+Every layer is added with +. Order matters: later layers are drawn on top.
+</p>
+</div>
+<script>
+if (!window.bfidWebR) {
+  window.bfidWebR = (function () {
+    var ready = null;      // promise for the webR instance
+    var shelter = null;    // memory shelter, reused across runs
+    var listeners = [];
+
+    function announce(msg) { listeners.forEach(function (f) { f(msg); }); }
+
+    function boot() {
+      if (ready) return ready;
+      announce("downloading R, about 30 MB - this happens once per visit");
+      ready = import("https://webr.r-wasm.org/latest/webr.mjs")
+        .then(async function (mod) {
+          var webR = new mod.WebR();
+          await webR.init();
+          shelter = await new webR.Shelter();
+          announce("R is ready");
+          return webR;
+        })
+        .catch(function (e) {
+          announce("R could not be loaded: " + e);
+          ready = null;
+          throw e;
+        });
+      return ready;
+    }
+
+    return {
+      onStatus: function (f) { listeners.push(f); },
+      run: async function (code, packages) {
+        var webR = await boot();
+        if (packages && packages.length) {
+          announce("installing " + packages.join(", "));
+          await webR.installPackages(packages);
+          announce("R is ready");
+        }
+        var res = await shelter.captureR(code, {
+          withAutoprint: true,
+          captureStreams: true,
+          captureConditions: false
+        });
+        var text = res.output
+          .filter(function (o) { return o.type === "stdout" || o.type === "stderr"; })
+          .map(function (o) { return o.data; })
+          .join("\n");
+        return { text: text, images: res.images, purge: function () { shelter.purge(); } };
+      }
+    };
+  })();
+}
+
+(function () {
+  var box = document.getElementById("webr-ggplot-box");
+  var area = box.querySelector(".webr-code");
+  var out = box.querySelector(".webr-out");
+  var canvas = box.querySelector(".webr-plot");
+  var status = box.querySelector(".webr-status");
+  var runBtn = box.querySelector(".webr-run");
+  var original = area.value;
+  var pkgs = box.dataset.packages ? box.dataset.packages.split(",").filter(Boolean) : [];
+
+  window.bfidWebR.onStatus(function (m) { status.textContent = m; });
+
+  runBtn.addEventListener("click", async function () {
+    runBtn.disabled = true;
+    out.hidden = false;
+    out.textContent = "running...";
+    try {
+      var r = await window.bfidWebR.run(area.value, pkgs);
+      out.textContent = r.text || "(no output)";
+      if (canvas && r.images && r.images.length) {
+        var img = r.images[r.images.length - 1];
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        canvas.hidden = false;
+      }
+      r.purge();
+    } catch (e) {
+      out.textContent = String(e && e.message ? e.message : e);
+    }
+    runBtn.disabled = false;
+  });
+
+  box.querySelector(".webr-reset").addEventListener("click", function () {
+    area.value = original;
+    out.hidden = true;
+    if (canvas) canvas.hidden = true;
+  });
+})();
+</script>
+</div>
+<div class="reading">
+<div class="titelreading">
+<h2>
+Reading
+</h2>
+</div>
+<p><a href="https://r4ds.hadley.nz/">R for Data Science</a> by Wickham, Çetinkaya-Rundel and Grolemund is the standard reference for everything in this section, free to read online. For graphics specifically, <a href="https://ggplot2-book.org/">ggplot2: Elegant Graphics for Data Analysis</a> goes from the grammar to the details.</p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>See <a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a>.<a href="intro-to-the-tidyverse.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Horst AM, Hill AP, Gorman KB (2020). <em>palmerpenguins: Palmer Archipelago (Antarctica) penguin data</em>. R package version 0.1.0. <a href="https://allisonhorst.github.io/palmerpenguins/" class="uri">https://allisonhorst.github.io/palmerpenguins/</a>. Data are released under CC-0 in accordance with the Palmer Station LTER data policy.<a href="intro-to-the-tidyverse.html#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro-to-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rstudio-and-projects.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": false
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
