@@ -675,12 +675,10 @@ Definition
 <span id="cb141-4"><a href="synthetic-data.html#cb141-4" tabindex="-1"></a></span>
 <span id="cb141-5"><a href="synthetic-data.html#cb141-5" tabindex="-1"></a><span class="fu">table</span>(course<span class="sc">$</span>Term)</span>
 <span id="cb141-6"><a href="synthetic-data.html#cb141-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb141-7"><a href="synthetic-data.html#cb141-7" tabindex="-1"></a><span class="co">#&gt;      SS 2020      SS 2021      SS 2022      SS 2023 WS 2020 2021 WS 2022 2023 </span></span>
-<span id="cb141-8"><a href="synthetic-data.html#cb141-8" tabindex="-1"></a><span class="co">#&gt;           25           30           57           44           32           18 </span></span>
-<span id="cb141-9"><a href="synthetic-data.html#cb141-9" tabindex="-1"></a><span class="co">#&gt; WS 2023 2024 </span></span>
-<span id="cb141-10"><a href="synthetic-data.html#cb141-10" tabindex="-1"></a><span class="co">#&gt;           28</span></span>
-<span id="cb141-11"><a href="synthetic-data.html#cb141-11" tabindex="-1"></a><span class="fu">range</span>(course<span class="sc">$</span>Age)</span>
-<span id="cb141-12"><a href="synthetic-data.html#cb141-12" tabindex="-1"></a><span class="co">#&gt; [1]  18 278</span></span></code></pre></div>
+<span id="cb141-7"><a href="synthetic-data.html#cb141-7" tabindex="-1"></a><span class="co">#&gt;      SS 2020      SS 2021      SS 2022      SS 2023 WS 2020 2021 WS 2022 2023 WS 2023 2024 </span></span>
+<span id="cb141-8"><a href="synthetic-data.html#cb141-8" tabindex="-1"></a><span class="co">#&gt;           25           30           57           44           32           18           28</span></span>
+<span id="cb141-9"><a href="synthetic-data.html#cb141-9" tabindex="-1"></a><span class="fu">range</span>(course<span class="sc">$</span>Age)</span>
+<span id="cb141-10"><a href="synthetic-data.html#cb141-10" tabindex="-1"></a><span class="co">#&gt; [1]  18 278</span></span></code></pre></div>
 <p>That upper bound is not a student. It is a typing error, and it is worth pausing on, because a synthesis model has no way of knowing that.</p>
 <p>Fitted to this file as it stands, the model would treat 278 as a legitimate observation, inflate the residual variance enormously, and scatter impossible ages through the synthetic file. Silently dropping it is not obviously better: the analyst downstream never learns that the original data contained an error.</p>
 <div class="analysis-note">

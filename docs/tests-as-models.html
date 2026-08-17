@@ -676,10 +676,8 @@ The complaint that motivated this section
 <span id="cb207-3"><a href="tests-as-models.html#cb207-3" tabindex="-1"></a><span class="co">#&gt; -20.70382</span></span>
 <span id="cb207-4"><a href="tests-as-models.html#cb207-4" tabindex="-1"></a></span>
 <span id="cb207-5"><a href="tests-as-models.html#cb207-5" tabindex="-1"></a><span class="fu">lm</span>(<span class="fu">I</span>(Background.in.R <span class="sc">-</span> <span class="dv">3</span>) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> coursedata) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
-<span id="cb207-6"><a href="tests-as-models.html#cb207-6" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error   t value</span></span>
-<span id="cb207-7"><a href="tests-as-models.html#cb207-7" tabindex="-1"></a><span class="co">#&gt; (Intercept) -1.253219 0.06053082 -20.70382</span></span>
-<span id="cb207-8"><a href="tests-as-models.html#cb207-8" tabindex="-1"></a><span class="co">#&gt;                                                                   Pr(&gt;|t|)</span></span>
-<span id="cb207-9"><a href="tests-as-models.html#cb207-9" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000000000000000000000000001235195</span></span></code></pre></div>
+<span id="cb207-6"><a href="tests-as-models.html#cb207-6" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error   t value                                                       Pr(&gt;|t|)</span></span>
+<span id="cb207-7"><a href="tests-as-models.html#cb207-7" tabindex="-1"></a><span class="co">#&gt; (Intercept) -1.253219 0.06053082 -20.70382 0.000000000000000000000000000000000000000000000000000001235195</span></span></code></pre></div>
 <p>Identical to four decimal places, because they are the same computation. The intercept of <code>y ~ 1</code> is the mean; its standard error is <span class="math inline">\(sd(y)/\sqrt{n}\)</span>; the ratio is Gosset's <span class="math inline">\(t\)</span>. What the t-test calls "testing against <span class="math inline">\(\mu_0\)</span>" the regression calls "is the intercept zero", and every regression table you will ever read tests exactly that for every coefficient it prints.</p>
 </div>
 <div id="tm-paired" class="section level3 hasAnchor" number="6.9.3">
@@ -693,10 +691,8 @@ The complaint that motivated this section
 <span id="cb208-6"><a href="tests-as-models.html#cb208-6" tabindex="-1"></a><span class="co">#&gt; 14.09961</span></span>
 <span id="cb208-7"><a href="tests-as-models.html#cb208-7" tabindex="-1"></a></span>
 <span id="cb208-8"><a href="tests-as-models.html#cb208-8" tabindex="-1"></a><span class="fu">lm</span>(differences <span class="sc">~</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">coef</span>()</span>
-<span id="cb208-9"><a href="tests-as-models.html#cb208-9" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error  t value</span></span>
-<span id="cb208-10"><a href="tests-as-models.html#cb208-10" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.9098712 0.06453166 14.09961</span></span>
-<span id="cb208-11"><a href="tests-as-models.html#cb208-11" tabindex="-1"></a><span class="co">#&gt;                                              Pr(&gt;|t|)</span></span>
-<span id="cb208-12"><a href="tests-as-models.html#cb208-12" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.000000000000000000000000000000005072945</span></span></code></pre></div>
+<span id="cb208-9"><a href="tests-as-models.html#cb208-9" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error  t value                                  Pr(&gt;|t|)</span></span>
+<span id="cb208-10"><a href="tests-as-models.html#cb208-10" tabindex="-1"></a><span class="co">#&gt; (Intercept) 0.9098712 0.06453166 14.09961 0.000000000000000000000000000000005072945</span></span></code></pre></div>
 <p>Both give <span class="math inline">\(t = 14.10\)</span>. The paired t-test was never a separate test — it is <code>y ~ 1</code> applied to a column you constructed.</p>
 </div>
 <div id="tm-two-sample" class="section level3 hasAnchor" number="6.9.4">
