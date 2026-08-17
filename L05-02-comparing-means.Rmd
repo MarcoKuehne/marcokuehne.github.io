@@ -41,7 +41,6 @@ Alongside term, gender, academic level, age and total semesters studied, three i
 A fourth, open-ended item asked *What do you expect to learn in this seminar?* — text rather than a number, and therefore material for the chapter on text data rather than for a t-test.
 
 ```{r cm-load, echo=TRUE, message=FALSE, warning=FALSE}
-library(tidyverse)
 
 coursedata <- read.csv("data/Course/GF_AllTime.csv", sep = ";") %>%
   filter(Age < 100)
@@ -63,11 +62,11 @@ The numerator is an estimate — a mean minus a benchmark, or one group mean min
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **standard error of the mean** is the standard deviation of the sampling distribution of the mean:
 
-$$se(\bar{x}) = \frac{sd(x)}{\sqrt{n}}$$
+$$\text{se}(\bar{x}) = \frac{\text{sd}(x)}{\sqrt{n}}$$
 
 It shrinks with $\sqrt{n}$: four times the data buys half the wobble.
 ::::
@@ -150,7 +149,7 @@ Because the two are linked by $\sqrt{n}$, the ratio between them is fixed by the
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Professionals get this wrong, in print </h2>
+<h2>Professionals get this wrong, in print</h2>
 :::
 This is not a beginner's slip. Peter Nagele went through all 860 research articles published in four anaesthesia journals in 2001 and found that **198 of them — 23%, nearly one in four — used the standard error of the mean where they should have used the standard deviation**, reporting the precision of an average as if it were the variability of patients.[^cm-nagele]
 
@@ -165,11 +164,11 @@ The standard error is a unit of wobble; on its own it is hard to interpret. What
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **95% confidence interval** for a mean is the estimate plus and minus a critical t-value times its standard error:
 
-$$\bar{x} \pm t_{0.975,\,n-1} \cdot se(\bar{x})$$
+$$\bar{x} \pm t_{0.975,\,n-1} \cdot \text{se}(\bar{x})$$
 
 For anything but a tiny sample the multiplier is close to 2, so the shorthand *"the estimate, give or take two standard errors"* is close enough for reading purposes.
 
@@ -184,7 +183,7 @@ That interval is the single most useful thing you can report. It contains the es
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: Do overlapping error bars mean "no difference"? </h2>
+<h2>Truly Dedicated: Do overlapping error bars mean "no difference"?</h2>
 :::
 This is the single most common way of misreading a figure, and our own data provides the counter-example. Women in this course average 24.50 years, men 25.62. Each group's own 95% confidence interval is [23.83, 25.17] and [24.94, 26.30] — **they overlap**, by 0.23 years. And yet the difference between the two means is statistically significant, $t = -2.33$, $p = 0.021$.
 
@@ -246,7 +245,7 @@ What the rule glosses over is that the exact cut-off depends on the degrees of f
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **degrees of freedom** of a statistic are the number of independent pieces of information that went into it, minus the number of quantities you had to estimate along the way:
 
@@ -271,7 +270,7 @@ data.frame(n = c(4, 5, 10, 30, 100, 233, 1000)) %>%
 
 Read the last column. With 100 observations, $|t| = 2$ gives $p = 0.048$ and the rule of thumb is honest. With 30 it gives $p = 0.055$ and the rule is very slightly too generous. With 4 observations — Gosset's brewery — $|t| = 2$ gives $p = 0.139$, nowhere near significance, and applying the rule of thumb there would be a real error. **From roughly $n = 30$ upwards, $|t| > 2$ is a safe shortcut; below that, look the number up.**
 
-::: {.analysis-important}
+::: {.analysis-warning}
 And one thing the rule never covers: importance. The 5% convention is a threshold on *evidence*, chosen by Fisher for convenience and hardened by eighty years of habit into something it was never meant to be. A $t$ of 2.1 and a $t$ of 1.9 are almost the same amount of evidence; only a publication system pretends otherwise. Report the estimate and its interval, and let $t$ be one piece of information rather than a verdict.
 :::
 
@@ -285,7 +284,7 @@ mean(coursedata$Background.in.R)
 
 The average is 1.75 — apparently far below 3. But "apparently" is exactly what a test is for. The one-sample t-test asks: *if the true average were 3, how surprising would a sample average of 1.75 be, given 233 students with this much spread?*
 
-$$t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{1.75 - 3}{0.92/\sqrt{233}} = \frac{-1.25}{0.060} = -20.7$$
+$$t = \frac{\bar{x} - \mu_0}{\text{sd}(x)/\sqrt{n}} = \frac{1.75 - 3}{0.92/\sqrt{233}} = \frac{-1.25}{0.060} = -20.7$$
 
 ```{r cm-one-sample, echo=TRUE}
 t.test(coursedata$Background.in.R, mu = 3)
@@ -318,7 +317,7 @@ A $t$ of −20.7 means the observed gap is about twenty times larger than its ow
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 The same students rate their *statistics* background at 2.66 on average and their *academic writing* at 2.86.
 
@@ -333,11 +332,11 @@ Here is the same lesson small enough for mental arithmetic. Three students rate 
 
 The mean is `r fitb(2)`, the deviations from it are −1, 0, +1, so the variance is $(1 + 0 + 1)/2 = 1$ and the standard deviation is 1. Put the general formula and the numbers on the same line:
 
-$$t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{2 - 3}{1/\sqrt{3}} = \frac{-1}{0.577} = -1.73 \qquad (p = 0.225)$$
+$$t = \frac{\bar{x} - \mu_0}{\text{sd}(x)/\sqrt{n}} = \frac{2 - 3}{1/\sqrt{3}} = \frac{-1}{0.577} = -1.73 \qquad (p = 0.225)$$
 
 A gap of a full point on the scale — and no evidence. Now suppose *twelve* students had produced the same pattern, the values 1, 2, 3 repeated four times. Same mean, nearly the same standard deviation, four times the data:
 
-$$t = \frac{\bar{x} - \mu_0}{sd(x)/\sqrt{n}} = \frac{2 - 3}{0.853/\sqrt{12}} = \frac{-1}{0.246} = -4.06 \qquad (p = 0.002)$$
+$$t = \frac{\bar{x} - \mu_0}{\text{sd}(x)/\sqrt{n}} = \frac{2 - 3}{0.853/\sqrt{12}} = \frac{-1}{0.246} = -4.06 \qquad (p = 0.002)$$
 
 ```{r cm-n12, echo=TRUE}
 t.test(rep(c(1, 2, 3), 4), mu = 3)$statistic
@@ -395,7 +394,7 @@ Be careful with what the null results do and do not say. "No significant differe
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: Student or Welch? </h2>
+<h2>Truly Dedicated: Student or Welch?</h2>
 :::
 Look at the degrees of freedom in the table: a decidedly un-whole 219.6, 230.3, 231.0, 230.0. Whole numbers would be 231 in every row.
 
@@ -412,7 +411,7 @@ Most textbooks introduce pairing as a *before and after* design, and many reader
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 Two measurements are **paired** when they are linked one-to-one by design rather than by chance, so that the difference between them can be computed for each unit individually. Common forms:
 
@@ -530,7 +529,7 @@ Nearly always — but "always" is too strong, and the exception is worth underst
 
 The variance of a difference is
 
-$$var(x - y) = var(x) + var(y) - 2\,cov(x, y)$$
+$$\text{var}(x - y) = \text{var}(x) + \text{var}(y) - 2\,\text{cov}(x, y)$$
 
 and everything hinges on that last term. Pairing pays off exactly when the two measurements are **positively correlated**, because only then does subtracting them remove more noise than it adds. Written in terms of the correlation $r$, the paired standard error is smaller than the unpaired one by a factor of $\sqrt{1 - r}$.
 
@@ -547,14 +546,14 @@ data.frame(
 
 Three regimes, then. When $r > 0$ — the normal case, because the same unit carries the same idiosyncrasies into both measurements — pairing wins, and wins more the stronger the link. When $r = 0$ the standard errors are identical, but the paired test has only $n - 1$ degrees of freedom instead of $n_1 + n_2 - 2$, so it is very slightly *worse*. When $r < 0$, pairing is actively harmful.
 
-::: {.analysis-important}
+::: {.analysis-warning}
 So the honest statement is not "pairing always helps" but something sharper and more useful: **pairing is not a choice you make at the analysis stage — it is a fact about your data that the analysis must respect.**
 
 If the observations *are* paired, analysing them as independent groups is not a missed opportunity, it is **wrong**: the two-sample formula assumes independence, and your observations are not independent. If they are *not* paired, you cannot pair them however much you would like the narrower interval. The efficiency gain is the reward for a good design, not a knob to turn afterwards.
 :::
 
 ::: {.analysis-takeaway}
-And notice what this implies for study design. Two measurements on the same unit are worth far more than two measurements on different units. That is the whole economic argument for **panel data** in chapter \@ref(panel-data): following the same people over many waves rather than surveying fresh people each year buys precision that fresh samples could only match at several times the cost.
+And notice what this implies for study design. Two measurements on the same unit are worth far more than two measurements on different units. That is the whole economic argument for **panel data** in section \@ref(panel-data): following the same people over many waves rather than surveying fresh people each year buys precision that fresh samples could only match at several times the cost.
 
 The paired t-test is the smallest possible panel — exactly two waves — and the "subtract each unit from itself to remove everything constant about the unit" move is the essence of the fixed-effects estimator. With $T$ waves instead of 2, the same logic sweeps out everything permanent about a person: their upbringing, their personality, their unmeasured ability. Everything you learn here about why pairing works is the intuition for why panel data is worth its cost.
 :::
@@ -591,7 +590,7 @@ The deeper one has to wait. Every test in this section can be rewritten as a **r
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 1. Master students report on average 1.95 more total semesters of study than Bachelor students ($t = 4.8$). Before calling that a discovery, state what the *boring* explanation is — what must be true of Master students by definition?
 
@@ -618,6 +617,6 @@ The deeper one has to wait. Every test in this section can be rewritten as a **r
 
 [^cm-correll]: Correll, S. J., *Gender and the Career Choice Process: The Role of Biased Self-Assessments*, *American Journal of Sociology* 106(6), 2001, 1691–1730, <https://doi.org/10.1086/321299>.
 
-[^cm-welch]: Welch, B. L., *The generalization of "Student's" problem when several different population variances are involved*, *Biometrika* 34(1–2), 1947, 28–35, <https://doi.org/10.1093/biomet/34.1-2.28>.
+[^cm-welch]: Welch, B. L., *The generalisation of "Student's" problem when several different population variances are involved*, *Biometrika* 34(1–2), 1947, 28–35, <https://doi.org/10.1093/biomet/34.1-2.28>.
 
 [^cm-data-note]: `data/Course/GF_AllTime.csv` in this book's repository, 234 responses in total. One respondent gave their age as 278 and is removed here by `filter(Age < 100)`; that case is discussed in the chapter on missing data. Note the semicolon separator.

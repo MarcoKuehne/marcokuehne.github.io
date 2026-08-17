@@ -1,4 +1,4 @@
-# Software {-}
+# Software {#software -}
 
 Every analysis in this book is carried out with code.
 
@@ -7,7 +7,6 @@ This chapter introduces the tools before the substantive parts begin: the langua
 You can read this chapter at the surface and come back later to dive.
 
 ```{r software-setup, include=FALSE}
-library(tidyverse)
 library(palmerpenguins)
 
 source("scripts/webr-console.R")
@@ -61,7 +60,7 @@ Code also fits the way this book tries to learn. A graph or a model summary is t
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 In 2010 the economists Carmen Reinhart and Kenneth Rogoff reported that countries with public debt above 90% of GDP suffer sharply lower growth. The finding travelled fast: it was cited in budget speeches across Europe and the United States during the austerity debates.
 
@@ -70,7 +69,7 @@ In 2013 Thomas Herndon, then a graduate student, asked for the original spreadsh
 Nobody had been able to check it before, because there had been nothing to check.
 ::::
 
-### Why R? {-}
+### Why R? {#why-r -}
 
 This book uses `R`.
 
@@ -80,7 +79,7 @@ R was built by statisticians for data analysis, and it shows. Vectors, data fram
 
 This eBook is one of them. It is written in R Markdown and built with Bookdown, which is why the exercises you are about to meet run inside the page.
 
-### Why the tidyverse? {-}
+### Why the tidyverse? {#why-the-tidyverse -}
 
 Most of the data work in this book uses the `tidyverse`, a family of packages that share one design.
 
@@ -98,7 +97,7 @@ An `.R` script is a plain **text document**. You can open it in a text editor, i
 
 Everything in this section runs in the page. You do not need to install anything yet.
 
-### R is a calculator {-}
+### R is a calculator {#r-is-a-calculator -}
 
 The box below is not a picture of R — it **is** R, running inside this page. Edit the code, press **Run**, and the answer appears underneath, exactly as it would in a console. <u id='intro_r'>Test it.</u>
 
@@ -122,7 +121,7 @@ tippy::tippy_this(elementId = "intro_r", tooltip = "Delete all code, type 1:20 a
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 Basic **arithmetic operators** are:
 
@@ -133,13 +132,13 @@ Basic **arithmetic operators** are:
 - `^` Exponent
 ::::
 
-### R is more than a calculator {-}
+### R is more than a calculator {#r-is-more-than-a-calculator -}
 
 A calculator returns a number. R returns *objects* — and it draws.
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: Adjust the code </h2>
+<h2>Your Turn: Adjust the code</h2>
 :::
 If you have never seen R before, change the `main` title to something that suits you, or change `col` from `"lightblue"` to `"aliceblue"`.
 
@@ -163,7 +162,7 @@ barplot(counts,
 
 Notice what happened in that example. The five numbers were given a name, `counts`, and then handed to a function, `barplot()`, together with a few instructions. Naming things and passing them to functions is essentially all of R.
 
-### Objects: giving things a name {-}
+### Objects: giving things a name {#objects-giving-things-a-name -}
 
 The standard assignment operator is `<-`. It stores a value under a name so you can use it later.
 
@@ -183,7 +182,7 @@ Assignment is silent by design: `a <- 2` stores, it does not print. Wrap the lin
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
+<h2>Truly Dedicated</h2>
 :::
 Why the arrow? R inherited `<-` from its ancestor S, which ran on terminals whose keyboards had a dedicated ← key. The key is gone; the arrow stayed.
 
@@ -198,7 +197,7 @@ mean(x <- 5)       # assignment inside a call: creates x, then computes
 The two meanings never collide as long as you use `<-` for assignment and `=` for arguments. In RStudio, `Alt` + `-` types the arrow for you.
 ::::
 
-### Vectors {-}
+### Vectors {#vectors -}
 
 A single value is rarely interesting. R's natural unit is the **vector**: several values of the same type, in order. Think of one column of a spreadsheet.
 
@@ -232,7 +231,7 @@ That last line is worth a second look: `temps > 21` produces `TRUE`/`FALSE` valu
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: Vectors </h2>
+<h2>Your Turn: Vectors</h2>
 :::
 ```{r webr-vectors, echo=FALSE, results='asis'}
 webr_console(
@@ -249,7 +248,7 @@ rainfall[rainfall > 0]
 ```
 ::::
 
-### Types of values {-}
+### Types of values {#types-of-values -}
 
 Every vector has a type, and R will tell you with `class()`.
 
@@ -295,9 +294,9 @@ mean(weights, na.rm = TRUE)  # ... unless we say to drop it
 is.na(weights)
 ```
 
-`na.rm = TRUE` is a decision, not a formality. Chapter \@ref(missing-data) returns to what dropping those cases quietly assumes.
+`na.rm = TRUE` is a decision, not a formality. Section \@ref(missing-data) returns to what dropping those cases quietly assumes.
 
-### Data frames {-}
+### Data frames {#data-frames -}
 
 Put several vectors of the same length side by side and you have a **data frame**: the rectangle that most of data analysis lives in. Rows are observations, columns are variables.
 
@@ -330,7 +329,7 @@ students[students$age > 22, ]   # every row that meets a condition
 
 The `$` and the brackets are base R. The tidyverse will soon offer a more readable way to say the same thing — but this is what runs underneath, and it is worth recognising when you meet it in someone else's code.
 
-### Functions and their arguments {-}
+### Functions and their arguments {#functions-and-their-arguments -}
 
 `mean()`, `barplot()` and `factor()` are functions: a name, a pair of parentheses, and arguments inside.
 
@@ -350,7 +349,7 @@ args(round)   # just the arguments
 
 Reading a help page is a skill in itself, and the fastest way to acquire it is to jump straight to the **Examples** at the bottom, run them, and work upwards from there.
 
-### Packages {-}
+### Packages {#packages -}
 
 Base R is the language. **Packages** are everything else people have built with it, and there are thousands of them on CRAN, the official archive.
 
@@ -365,16 +364,16 @@ Installing is like buying a book for your shelf. `library()` is taking it off th
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> Reading </h2>
+<h2>Reading</h2>
 :::
 Posit publishes one-page [cheat sheets](https://posit.co/resources/cheatsheets/) for dplyr, ggplot2, RStudio and many others. Printed and kept next to the keyboard, they replace a surprising amount of searching.
 ::::
 
-### Plots in base R {-}
+### Plots in base R {#plots-in-base-r -}
 
 R could draw before `ggplot2` existed, and base graphics remain excellent for a quick look. One function opens a plot, further functions add to it.
 
-```{r base-plot-lines}
+```{r base-plot-lines, fig.cap="Base graphics built in layers: plot() opens the frame with x squared in red, lines() adds twice that in blue."}
 x  <- 1:10
 y1 <- x * x
 y2 <- 2 * y1
@@ -390,7 +389,7 @@ Every argument here is an aesthetic decision written down: colour, symbol, line 
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: A plot in three lines </h2>
+<h2>Your Turn: A plot in three lines</h2>
 :::
 `iris` is a data set built into R: measurements of 150 flowers from three species. Run the code, then colour the points by something else, or change `pch` (the plotting symbol) to a number between 0 and 25.
 
@@ -410,7 +409,7 @@ legend("topleft", legend = levels(iris$Species),
 ```
 ::::
 
-### When something goes wrong {-}
+### When something goes wrong {#when-something-goes-wrong -}
 
 It will. Errors are not a verdict on your abilities; they are R's way of saying which line it could not carry out.
 
@@ -437,7 +436,7 @@ library(tidyverse)              # once per session
 
 Loading it prints a short report of which packages came along and which base R functions they have replaced. That is not an error message; it is a receipt.
 
-### Meet the penguins {-}
+### Meet the penguins {#meet-the-penguins -}
 
 Learning a grammar needs something to talk about, and for the rest of this section it will be 344 penguins.
 
@@ -450,7 +449,6 @@ Between 2007 and 2009, Dr Kristen Gorman measured Adélie, Chinstrap and Gentoo 
 Allison Horst, Alison Hill and Kristen Gorman packaged those measurements as `palmerpenguins` so that people could learn data analysis on something real, small and charming.^[Horst AM, Hill AP, Gorman KB (2020). *palmerpenguins: Palmer Archipelago (Antarctica) penguin data*. R package version 0.1.0. <https://allisonhorst.github.io/palmerpenguins/>. Data are released under CC-0 in accordance with the Palmer Station LTER data policy.]
 
 ```{r penguins-load}
-library(palmerpenguins)
 
 penguins
 ```
@@ -463,14 +461,14 @@ knitr::include_graphics(penguin_art("culmen_depth.png"))
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 Since version 4.5.0, released in 2025, a version of the penguin data ships with **R itself** — no package required. It sits in the `datasets` package next to `iris` and `mtcars`, with slightly shorter column names (`bill_len` instead of `bill_length_mm`, and so on).
 
 Very few data sets are ever promoted into base R. Teaching material about penguins turned out to be more popular than the flowers a statistician measured in 1936.
 ::::
 
-### Reading data with readr {-}
+### Reading data with readr {#reading-data-with-readr -}
 
 Data usually arrive as a file. `read_csv()` from `readr` reads one.
 
@@ -493,12 +491,12 @@ head(penguins_df)  # so you need head() to look
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> Reading </h2>
+<h2>Reading</h2>
 :::
 Tibbles differ from data frames in three ways: printing, subsetting and recycling rules. The [tibble vignette](https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html) explains each of them with examples.
 ::::
 
-### The verbs of dplyr {-}
+### The verbs of dplyr {#the-verbs-of-dplyr -}
 
 `dplyr` gives you a small set of verbs. Each one takes a data frame, does exactly one thing, and returns a data frame. Most data preparation is these verbs in some order.
 
@@ -558,7 +556,7 @@ Same result, and it reads in the order the work actually happens. In RStudio, `C
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
+<h2>Truly Dedicated</h2>
 :::
 Since R 4.1 the language has its own pipe, `|>`, which needs no package at all:
 
@@ -575,7 +573,7 @@ The two behave the same in ordinary chains. `%>%` (from `magrittr`, loaded with 
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Relational operators**
 
@@ -658,14 +656,13 @@ That is the shape of most analyses in this book. Restrict, group, summarise, ord
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: Ask the penguins a question </h2>
+<h2>Your Turn: Ask the penguins a question</h2>
 :::
 This console installs `dplyr` and `palmerpenguins` in your browser before it runs, so the first Run takes longer than the earlier boxes — a minute or so on a normal connection. Everything after that is instant.
 
 ```{r webr-dplyr, echo=FALSE, results='asis'}
 webr_console(
   'library(dplyr)
-library(palmerpenguins)
 
 penguins %>%
   group_by(species, sex) %>%
@@ -683,7 +680,7 @@ penguins %>%
 ```
 ::::
 
-### Graphs with ggplot2 {-}
+### Graphs with ggplot2 {#graphs-with-ggplot2 -}
 
 `ggplot2` builds graphics from a **grammar**: data, a mapping from variables to visual properties, and layers that draw something. Say those three things and the plot follows.
 
@@ -722,7 +719,7 @@ Three of those steps are worth pausing on.
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 Now try the same trick on bill length and bill depth. Overall, penguins with longer bills have *shallower* bills — a clearly negative relationship. Within each species, the relationship is *positive*.
 
@@ -740,14 +737,13 @@ A grouping variable reversed the sign of a relationship. This is **Simpson's par
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: Build a plot </h2>
+<h2>Your Turn: Build a plot</h2>
 :::
 Again, the first Run installs `ggplot2` and the data in your browser and takes a moment.
 
 ```{r webr-ggplot, echo=FALSE, results='asis'}
 webr_console(
   'library(ggplot2)
-library(palmerpenguins)
 
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g,
                      colour = species)) +
@@ -768,7 +764,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g,
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> Reading </h2>
+<h2>Reading</h2>
 :::
 [R for Data Science](https://r4ds.hadley.nz/) by Wickham, Çetinkaya-Rundel and Grolemund is the standard reference for everything in this section, free to read online. For graphics specifically, [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/) goes from the grammar to the details.
 ::::
@@ -781,7 +777,7 @@ This section is the part of the chapter that people skip and later wish they had
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Three names for two things.**
 
@@ -792,7 +788,7 @@ This section is the part of the chapter that people skip and later wish they had
 So you download RStudio from posit.co, your Start menu says RStudio, your project files still end in `.Rproj`, and a tutorial from 2019 that credits "RStudio, Inc." is talking about the same software.
 ::::
 
-### The four panes {-}
+### The four panes {#the-four-panes -}
 
 ```{r rstudio-panes, echo=FALSE, out.width="100%", fig.align="center", fig.cap="The RStudio window. Schematic, because the real one moves its furniture with every release."}
 knitr::include_graphics("images/rstudio-panes.svg")
@@ -817,7 +813,7 @@ The arrow in the middle is the single most useful habit: type in the Source pane
 
 On macOS, `Cmd` replaces `Ctrl`.
 
-### The project is the unit of work {-}
+### The project is the unit of work {#the-project-is-the-unit-of-work -}
 
 A project is not a script. It is a folder containing data, code, output and notes that belong together — and RStudio can treat it as one thing.
 
@@ -831,7 +827,7 @@ What that buys you:
 
 That last point is the whole idea: a project is self-contained. Everything it needs is inside it, and every path is written relative to its root.
 
-### Where is my data? {-}
+### Where is my data? {#where-is-my-data -}
 
 This is the most common problem in every introductory course I have taught, and it does not go away with experience. Doctoral students meet it too. It always looks like this:
 
@@ -868,7 +864,7 @@ The Downloads folder is a waiting room, not an archive. Data that matters to a p
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: The thirty-second diagnosis </h2>
+<h2>Your Turn: The thirty-second diagnosis</h2>
 :::
 Next time R cannot find a file, run these three lines before changing anything:
 
@@ -881,7 +877,7 @@ list.files("data")       # 3. what is in the data folder
 Then move the file, rather than the path.
 ::::
 
-### Absolute and relative paths {-}
+### Absolute and relative paths {#absolute-and-relative-paths -}
 
 An **absolute path** starts at the root of your disk and describes exactly one place on exactly one computer. Every operating system spells this differently:
 
@@ -901,7 +897,7 @@ That difference is not cosmetic. An absolute path is a promise only your machine
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 Copy a path out of the Windows Explorer address bar, paste it into R, and R refuses it outright:
 
@@ -926,7 +922,7 @@ library(here)
 penguins <- read_csv(here("data", "penguins.csv"))
 ```
 
-### A folder that scales {-}
+### A folder that scales {#a-folder-that-scales -}
 
 A layout that works for a term paper and still works for a dissertation:
 
@@ -945,7 +941,7 @@ my-project/
 
 The important rule is the comment on `data/raw`: treat it as read-only. If cleaning happens in code rather than in the file, you can always go back — and anyone can see what you changed.
 
-### Restart R, often {-}
+### Restart R, often {#restart-r-often -}
 
 RStudio offers to save your workspace when you quit and to restore it when you return. Turn both off: **Tools → Global Options → General**, uncheck *Restore .RData into workspace at startup*, and set *Save workspace to .RData on exit* to **Never**.
 
@@ -957,7 +953,7 @@ Instead, restart R regularly (`Ctrl` + `Shift` + `F10`) and re-run your script f
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn: Twenty minutes that pay for themselves </h2>
+<h2>Your Turn: Twenty minutes that pay for themselves</h2>
 :::
 1. Create a project: **File → New Project → New Directory**. Call it `penguin-practice`.
 2. Add the folders `data/`, `R/` and `output/`.
@@ -968,7 +964,7 @@ Instead, restart R regularly (`Ctrl` + `Shift` + `F10`) and re-run your script f
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> Reading </h2>
+<h2>Reading</h2>
 :::
 Jenny Bryan's [Project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) is the short, sharp argument for everything in this section — including her memorable threat against scripts that begin with `setwd()`. [What They Forgot to Teach You About R](https://rstats.wtf/) covers the rest of the workshop.
 ::::
@@ -979,7 +975,7 @@ Somewhere on most hard drives there is a file called `analysis_final.R`, and nex
 
 **Git** replaces that pile with one file and a history.
 
-### The thing you already know from Wikipedia {-}
+### The thing you already know from Wikipedia {#the-thing-you-already-know-from-wikipedia -}
 
 Every Wikipedia article has a **View history** tab, and almost nobody clicks it. Open it once and you find the article's whole life: one row per edit, each with an author, a timestamp, the size of the change, and a one-line summary of *why*. Tick any two rows and Wikipedia shows you exactly what changed between them, word by word. Nothing was ever overwritten. The article you normally read is simply the newest row.
 
@@ -998,16 +994,16 @@ So Git is not a backup. It is a camera pointed at your project, and you decide w
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
-That history tab is also a research tool, and it comes back in Chapter \@ref(web-data), where we scrape a Wikipedia table of the most expensive paintings ever sold.
+That history tab is also a research tool, and it comes back in Section \@ref(web-data), where we scrape a Wikipedia table of the most expensive paintings ever sold.
 
 A scraped table is a snapshot of **one revision**. The history tells you whether the number you just put in your analysis has stood unchanged for three years or was edited last Tuesday by an anonymous account, and whether the talk page shows a dispute about it. A figure with a stable history and a figure with a contested one are not equally good evidence, even though they look identical once they land in your data frame.
 
 Provenance is not a footnote. It is part of the measurement.
 ::::
 
-### GitHub is also a library {-}
+### GitHub is also a library {#github-is-also-a-library -}
 
 **GitHub** (or GitLab, or Codeberg) is a copy of a Git history on someone else's server. It gives you an off-site copy, a way to work with others without emailing files, and a place to publish. This book lives on GitHub; the page you are reading was built from it, and every sentence in it has an author and a timestamp.
 
@@ -1032,7 +1028,7 @@ Notice what you get in this particular case: the folder contains a `youtube-work
 
 One courtesy and one caution. The courtesy: material like this is usually licensed, so check the `LICENSE` file and cite the authors when you reuse a slide or a script. The caution: a repository is somebody's working folder, not a published article. Code you download is worth reading before it is worth running.
 
-### Your own history {-}
+### Your own history {#your-own-history -}
 
 The everyday loop is three steps, and RStudio has a **Git** pane with three buttons for exactly them:
 
@@ -1058,12 +1054,12 @@ And it closes the circle this chapter opened. [Why code?](#why-code) argued that
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> Reading </h2>
+<h2>Reading</h2>
 :::
 [Happy Git and GitHub for the useR](https://happygitwithr.com/) by Jenny Bryan is the gentlest path from zero to a working setup, including the part everyone gets stuck on — authentication.
 ::::
 
-## Where this leaves us {-}
+## Where this leaves us {#where-this-leaves-us -}
 
 You now have the four things the rest of the book assumes: a language, a way of asking questions of a table, a way of drawing what you found, and a folder that keeps it together.
 

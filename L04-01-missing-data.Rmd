@@ -12,7 +12,7 @@ The data set consisted entirely of survivors, and nothing in the data set said s
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> More data did not help </h2>
+<h2>More data did not help</h2>
 :::
 In 1936 the *Literary Digest* mailed about ten million mock ballots for the American presidential election and received roughly **2.4 million** replies — one of the largest polls ever conducted. It predicted Landon 57 %, Roosevelt 43 %. Roosevelt won with about 61 % of the popular vote.
 
@@ -29,7 +29,7 @@ This chapter is about what we can nevertheless say.
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Missing data** are values that a data set was designed to contain but does not.
 
@@ -77,7 +77,7 @@ With ten or twenty variables — an ordinary regression in social science — th
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 Twenty variables, each missing on exactly 5 % of cases, missing independently of one another. What share of rows is complete? Compute $0.95^{20}$ and give the result as a percentage, rounded to the nearest whole number: `r fitb(36, num = TRUE, tol = 1)` %
 
@@ -125,7 +125,7 @@ These are silent killers. Nothing about the number `99` announces itself as miss
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> SOEP missing conventions </h2>
+<h2>SOEP missing conventions</h2>
 :::
 The German Socio-Economic Panel does something more interesting than marking values as merely absent. It records **why** they are absent, using negative codes.[^md-soep]
 
@@ -232,7 +232,7 @@ A variable that is 40 % missing looks perfectly healthy in the first output. Mak
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 `v <- c(3, NA, 1, 2)`. What does `length(sort(v))` return? `r fitb(3, num = TRUE)`
 
@@ -276,7 +276,7 @@ Section \@ref(lv-single-item) makes the same point about measurement: a single s
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: when complete cases are actually fine </h2>
+<h2>Truly Dedicated: when complete cases are actually fine</h2>
 :::
 Complete-case analysis is not merely a fallback. In a regression, it gives unbiased coefficient estimates under a condition weaker than MCAR: it is enough that missingness does not depend on the **outcome**, once the predictors in the model are conditioned on. Missingness may depend freely on the predictors themselves.
 
@@ -325,7 +325,7 @@ Readers of Section \@ref(latent-variables) will recognise the shape of this argu
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: what can be tested? </h2>
+<h2>Truly Dedicated: what can be tested?</h2>
 :::
 **MCAR is partly testable.** If data are MCAR, cases with and without a missing value on $X$ should not differ systematically on any observed variable. Little's MCAR test formalises this. A rejection is informative; a non-rejection mostly reflects low power.
 
@@ -386,7 +386,6 @@ sapply(airquality, function(x) round(mean(is.na(x)), 3))
 A picture of the whole matrix shows structure that counts cannot:
 
 ```{r md-pattern-plot, fig.align='center', fig.height=4, fig.cap="Missing values in airquality. Each column is a variable, each row a day."}
-library(ggplot2)
 
 missmap <- data.frame(
   day      = rep(seq_len(nrow(airquality)), times = ncol(airquality)),
@@ -420,7 +419,7 @@ That single table changes the analysis. Any summer average computed from complet
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 Given that June is nearly absent, is the complete-case mean of `Ozone` more likely to be too high or too low? Think about which months are over-represented among the survivors. `r mcq(c(answer = "too high", "too low", "unbiased"))`
 ::::
@@ -604,7 +603,7 @@ The **standard errors** complete the indictment. Mean imputation claims the grea
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 Set `M <- 50` and rerun the loop. Does the pooled estimate change much? Does the standard error?
 

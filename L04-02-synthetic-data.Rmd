@@ -34,7 +34,7 @@ The trap is concrete. The R package for synthetic control is `Synth`; the one fo
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> The oldest trick is older still </h2>
+<h2>The oldest trick is older still</h2>
 :::
 The workhorse algorithm of synthetic-population building — **iterative proportional fitting** — was published by W. Edwards Deming and Frederick Stephan in **1940**, to adjust a sampled frequency table to known marginal totals.[^syn-ipf]
 
@@ -45,21 +45,21 @@ It is still the standard method. When the RTI team built a synthetic population 
 
 The second wave begins with a single audacious move, and it belongs to the previous chapter.
 
-Chapter \@ref(missing-data) ended with multiple imputation: some values are missing, so we build a model, draw plausible values several times, analyse each completed data set, and pool. In 1993 Donald Rubin asked what happens if you push that idea to its limit.[^syn-rubin-1993]
+Section \@ref(missing-data) ended with multiple imputation: some values are missing, so we build a model, draw plausible values several times, analyse each completed data set, and pool. In 1993 Donald Rubin asked what happens if you push that idea to its limit.[^syn-rubin-1993]
 
 A survey samples, say, 20,000 households out of forty million. From the point of view of the analysis, the other 39,980,000 households are simply **unobserved**. They are missing data — a great deal of it, but not a different kind of thing.
 
 So impute them. Build a model on the sample, use it to generate the entire population, then draw a fresh public-use sample from *that*. Not one real respondent is released, yet the released file supports the same analyses.
 
 ::: {.analysis-note}
-Rubin's proposal is not an analogy to multiple imputation. It is multiple imputation, applied to the people who were never sampled. The mathematics of Chapter \@ref(missing-data) is the mathematics of this chapter.
+Rubin's proposal is not an analogy to multiple imputation. It is multiple imputation, applied to the people who were never sampled. The mathematics of Section \@ref(missing-data) is the mathematics of this chapter.
 :::
 
 Roderick Little, in the same journal issue, proposed the more conservative variant: keep the real records, replace only the values that are sensitive or that could identify someone.[^syn-little]
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Fully synthetic data** contain no real records. Every value is generated from a model fitted to the confidential data.
 
@@ -72,7 +72,7 @@ The combining rules that make this operational arrived a decade later, and they 
 
 ### Building One by Hand {#syn-byhand}
 
-As in Chapter \@ref(missing-data), we build it before we install it. The method is **sequential regression synthesis**: order the variables, model each one on those already synthesised, and draw.
+As in Section \@ref(missing-data), we build it before we install it. The method is **sequential regression synthesis**: order the variables, model each one on those already synthesised, and draw.
 
 The data are real. Over seven consecutive terms, every student entering one of the author's courses filled in the same short questionnaire on arrival — degree programme, gender, age, semesters completed, and self-rated background in statistics, R and academic writing. The courses have ended; the 234 answers remain.[^syn-course]
 
@@ -150,7 +150,7 @@ synth <- data.frame(Term = syn_term, Gender = syn_gender,
 head(synth)
 ```
 
-Two hundred and thirty-three students who never enrolled. Note the residual draw in steps 4 and 5 — the same `rnorm()` that turned regression imputation into *stochastic* regression imputation in Chapter \@ref(missing-data), and for the same reason. Without it every synthetic student would sit exactly on a regression line.
+Two hundred and thirty-three students who never enrolled. Note the residual draw in steps 4 and 5 — the same `rnorm()` that turned regression imputation into *stochastic* regression imputation in Section \@ref(missing-data), and for the same reason. Without it every synthetic student would sit exactly on a regression line.
 
 #### What survived {#syn-utility}
 
@@ -192,13 +192,9 @@ The losses are not evenly distributed. They concentrate in the tails — which i
 
 This is the same failure that appears at every scale of this field. Bisbee and colleagues found LLM-simulated survey respondents reproduced group means while compressing variance (Section \@ref(syn-breaks)). Shumailov and colleagues found that models trained recursively on generated data suffer irreversible degradation in which "tails of the original content distribution disappear."[^syn-collapse] Three unrelated literatures, three methods, one symptom.
 
-::: {.analysis-warning}
-Synthetic data cannot be analysed for something the synthesis model did not know about. An analyst who discovers an interaction, a threshold, or an outlier in a synthetic file has discovered a property of somebody else's model.
-:::
-
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 Step 5 regresses semesters on age, gender and degree. Suppose the real relationship between age and semesters were *different for Bachelor and Master students* — an interaction.
 
@@ -225,7 +221,7 @@ utility.tab(syn_out, course)                   # utility measures
 summary(lm.synds(Total.Semesters ~ Age + Gender, data = syn_out))
 ```
 
-`lm.synds()` is the part people miss. Fitting an ordinary `lm()` to a synthetic file gives standard errors that ignore the synthesis — the same error as analysing one imputed data set in Chapter \@ref(missing-data). The combining rules must be applied.
+`lm.synds()` is the part people miss. Fitting an ordinary `lm()` to a synthetic file gives standard errors that ignore the synthesis — the same error as analysing one imputed data set in Section \@ref(missing-data). The combining rules must be applied.
 
 ### Does It Actually Work? {#syn-evidence}
 
@@ -247,7 +243,7 @@ Which is precisely why the validation server exists. In this wave, synthetic dat
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> Germany was second </h2>
+<h2>Germany was second</h2>
 :::
 The first synthetic-data deployment outside the United States was German. Jörg Drechsler and colleagues at the **IAB** synthesised the German establishment panel, comparing fully and partially synthetic designs.[^syn-iab]
 
@@ -323,7 +319,7 @@ Identical. Not approximately, not on average — the same numbers to machine pre
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Sufficient statistics </h2>
+<h2>Sufficient statistics</h2>
 :::
 This is not a trick. For a large family of methods the covariance matrix is a **sufficient statistic**: it contains everything about the data those methods can use. The individual observations are not being withheld — they are *irrelevant*.
 
@@ -367,7 +363,7 @@ Read that last comparison twice. It is the most important number in this literat
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> A German instrument </h2>
+<h2>A German instrument</h2>
 :::
 The American data dominate this field, which is a problem if you study Germany. One direct response is the **GGSS Personas** collection: 5,246 persona prompts built from the 2023 ALLBUS wave, one per respondent, designed to be dropped into any model's prompt.[^syn-ggss]
 
@@ -397,7 +393,7 @@ A survey measures what people think, including that they mostly do not think abo
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: but don't synthetic samples predict elections rather well? </h2>
+<h2>Truly Dedicated: but don't synthetic samples predict elections rather well?</h2>
 :::
 This claim circulates widely, and the results behind it do look impressive. They almost always turn out to be one of two things.
 
@@ -418,13 +414,13 @@ Set aside benchmark scores and ask the question directly. Under what conditions 
 
 **It would have to be right about the future.** SOEP's value lies substantially in the fact that it keeps running. A model's knowledge ends at its training cutoff. Asking it about an event after that date is asking it to guess.
 
-**It would have to represent the tail.** Our 57 synthetic students lost the 36-year-old. Social policy research is largely about people in the tails — the long-term unemployed, the severely ill, recent arrivals, the very poor. These are exactly the people underrepresented in text and hardest to survey.
+**It would have to represent the tail.** Our 233 synthetic students lost the 42-year-old. Social policy research is largely about people in the tails — the long-term unemployed, the severely ill, recent arrivals, the very poor. These are exactly the people underrepresented in text and hardest to survey.
 
 **It would have to avoid circularity.** Persona collections are built *from* surveys — ALLBUS for the GGSS personas, ANES for silicon samples, the GSS for validation. If simulated respondents replaced real ones, the source of calibration would dry up. The method consumes the thing it depends on.
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: what the test–retest benchmark really says </h2>
+<h2>Truly Dedicated: what the test–retest benchmark really says</h2>
 :::
 Normalising against participants' own two-week consistency is the right move — comparing an agent to a *perfect* respondent would be unfair, since people are not perfect respondents.
 
@@ -457,7 +453,7 @@ None of the three creates information. Each redistributes information that was a
 
 A final observation, and it belongs to this book's first chapter as much as to this one.
 
-The appeal of an AI society is not really speed or cost. It is the promise of a population that always answers, never refuses, never drops out of the panel, and costs nothing to ask again. Every difficulty in Chapter \@ref(missing-data) disappears at once, because there is no longer anyone who could fail to reply.
+The appeal of an AI society is not really speed or cost. It is the promise of a population that always answers, never refuses, never drops out of the panel, and costs nothing to ask again. Every difficulty in Section \@ref(missing-data) disappears at once, because there is no longer anyone who could fail to reply.
 
 That is the tell. Nonresponse is not a defect in survey research. It is information about people — about trust, time, precarity, and the willingness to be counted. A method that abolishes nonresponse has not solved the problem. It has stopped measuring the thing that produced it.
 

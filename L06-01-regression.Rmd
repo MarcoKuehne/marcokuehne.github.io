@@ -1,10 +1,10 @@
 ## Regression {#regression}
 
 ::: {.analysis-subtitle}
-Tests as statistical models
+Fitting a line, and why least squares
 :::
 
-```{r, echo=FALSE}
+```{r reg-regression, echo=FALSE}
 htmltools::img(src = knitr::image_uri("images/workhorse.jpg"), 
                alt = 'horse', 
                style = 'position:absolute; top:0; right:0; padding:10px;',
@@ -13,7 +13,7 @@ htmltools::img(src = knitr::image_uri("images/workhorse.jpg"),
 
 This chapter introduces the workhorse of empirical research in the social science: Regression. 
 
-> “As an undergraduate **I studied economics, which meant I studied a lot of regressions**. It was basically 90% of the curriculum (when we’re not discussing supply and demand curves, of course). The [effect of corruption on sumo wrestling](https://www.aeaweb.org/articles?id=10.1257/000282802762024665)? Regression. [Effect of minimum wage changes on a Wendy’s in NJ](https://www.nber.org/system/files/working_papers/w4509/w4509.pdf)? Regression. Or maybe [The Zombie Lawyer Apocalypse](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2550498) is more your speed (O.K., not a regression, but the title was cool).”</b>
+> “As an undergraduate **I studied economics, which meant I studied a lot of regressions**. It was basically 90% of the curriculum (when we’re not discussing supply and demand curves, of course). The [effect of corruption on sumo wrestling](https://www.aeaweb.org/articles?id=10.1257/000282802762024665)? Regression. [Effect of minimum wage changes on a Wendy’s in NJ](https://www.nber.org/system/files/working_papers/w4509/w4509.pdf)? Regression. Or maybe [The Zombie Lawyer Apocalypse](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2550498) is more your speed (O.K., not a regression, but the title was cool).”
 
 `r tufte::quote_footer('-- Amanda West (2020) -- [A Beginner’s Guide to Instrumental Variables](https://towardsdatascience.com/a-beginners-guide-to-using-instrumental-variables-635fd5a1b35f)')`
 
@@ -34,19 +34,19 @@ This chapter introduces the workhorse of empirical research in the social scienc
 
 <!-- :::: {.amazing} -->
 <!-- ::: {.titelamazing} -->
-<!-- <h2> Amazing Fact </h2> -->
+<!-- <h2>Amazing Fact</h2> -->
 <!-- ::: -->
 <!-- Linear regression was first introduced by **Sir Francis Galton** in the late 19th century, and he used it to study the relationship between the height of parents and their children.  -->
 <!-- :::: -->
 
-### Old but Gold
+### Old but Gold {#old-but-gold}
 
 <!-- Your favorite topic -->
 <!-- > “Every artist was first an amateur.” -->
 <!-- `r tufte::quote_footer('-- Ralph Waldo Emerson (1803--1882), US-American essayist, lecturer, philosopher, abolitionist and poet.')` -->
 <!-- This I speculate that the quote from Mr. Emerson is also true for social scientists.  -->
 
-Are older artists are better than younger artists? While experience and maturity can certainly contribute to an artist's skill and creativity, there are many factors that can influence the quality of an artist's work, such as natural talent, dedication, training, and access to resources. Is there an optimum age for artistic performance as compared to athletic performances which reaches a peak in youth? Do artists improve their skills and performance over an entire lifetime step-by-step such that the longer you live, the more you have time to practice? Does exceptional art happens randomly?  Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
+Are older artists better than younger artists? While experience and maturity can certainly contribute to an artist's skill and creativity, there are many factors that can influence the quality of an artist's work, such as natural talent, dedication, training, and access to resources. Is there an optimum age for artistic performance as compared to athletic performances which reaches a peak in youth? Do artists improve their skills and performance over an entire lifetime step-by-step such that the longer you live, the more you have time to practice? Does exceptional art happen randomly?  Perhaps it takes time to become more well-known. You need time to travel and show or sell your art in different places. Thus when you produce "more art" you increase the chance to be discovered by the public or a patron? Have you ever heard of an artist who exactly created one piece of art? 
 
 There seems to be something to the story.
 
@@ -58,7 +58,7 @@ There seems to be something to the story.
 
 What does *better* mean? In this chapter the research question is:
 
-```{r, echo=FALSE, eval=FALSE}
+```{r reg-old-but-gold, echo=FALSE, eval=FALSE}
 tippy::tippy_this(elementId = "AER", tooltip = "AER is a famous and reliable economic journal.")
 ```
 
@@ -70,7 +70,7 @@ tippy::tippy_this(elementId = "AER", tooltip = "AER is a famous and reliable eco
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **research question** is 
 
@@ -92,12 +92,12 @@ But what exactly is productivity and how can we measure it? To keep things simpl
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
-**Operationalization** is the process of defining the measurement of a phenomenon that is not directly measurable.
+**Operationalisation** is the process of defining the measurement of a phenomenon that is not directly measurable.
 ::::
 
-This is what we gonna explore:
+This is what we are going to explore:
 
 <center>
 **What is the relationship between the age of artists and auction price for their paintings?**
@@ -107,7 +107,7 @@ This is what we gonna explore:
 
 <!-- <sup>What is intelligence and how can we measure it? Perhaps with the intelligence quotient (IQ),<sup>  -->
 
-### Data is everywhere
+### Data is everywhere {#reg-data-is-everywhere}
 
 <!-- ```{r echo=FALSE, warning=FALSE} -->
 <!-- library("vembedr") -->
@@ -125,7 +125,7 @@ Researchers use auction price data for which they have to pay. We use free infor
 <!-- https://www.askart.com/Search_Artist_Auction_Records.aspx -->
 <!-- https://datatables.net/ -->
 
-```{r warning=FALSE, message=FALSE, echo=FALSE}
+```{r reg-data-table, warning=FALSE, message=FALSE, echo=FALSE}
 #setwd("C:\\Users\\Marco2020\\Dropbox\\Viadrina\\Regression")
 artists <- read.csv(file = 'data/Art/Artists.csv', sep=";", dec=",", encoding="UTF-8")
 names(artists)[1] <- "Artist"
@@ -136,13 +136,13 @@ names(artists)[1] <- "Artist"
 
 The table is created with the `DT` package in *datatable* format. This exploits the full potential of html documents, i.e. the data is searchable and sortable. The first rows are displayed, but in principle it can include the entire dataset. 
 
-```{r warning=FALSE, message=FALSE, echo=FALSE}
-DT::datatable(artists, rownames = FALSE)
+```{r reg-data-table-2, warning=FALSE, message=FALSE, echo=FALSE}
+DT::datatable(caption = "The most expensive paintings ever sold, with each artist's age at painting and at death; sortable and searchable.", artists, rownames = FALSE)
 ```
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Tabular data** is common in data analysis. You can create a table in Word or Excel. 
 ::::
@@ -151,12 +151,12 @@ DT::datatable(artists, rownames = FALSE)
 
 Two continuous variables are plotted in a **scatterplot**. The **x-axis** is called **<u id='age'>abscissa </u>** and the **y-axis** is called **<u id='price'>ordinate</u>**.
 
-```{r, echo=FALSE}
+```{r reg-data-graph, echo=FALSE}
 tippy::tippy_this(elementId = "price", tooltip = "here: price")
 tippy::tippy_this(elementId = "age", tooltip = "here: age")
 ```
 
-```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+```{r reg-data-graph-2, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
 images <- c("https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg/95px-Thomas_Eakins%2C_American_-_Portrait_of_Dr._Samuel_D._Gross_%28The_Gross_Clinic%29_-_Google_Art_Project.jpg",  # CLINIC 
             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Darmstadtmadonna.jpg/95px-Darmstadtmadonna.jpg", # Darmstadt Madonna
             "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg/95px-Rideau%2C_Cruchon_et_Compotier%2C_par_Paul_C%C3%A9zanne.jpg", # Rideau 
@@ -164,8 +164,7 @@ images <- c("https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Thomas_Ea
          )
 ```
 
-```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
-library(ggplot2)
+```{r reg-data-graph-3, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Auction price against the artist's age at death; each labelled point is one painting, and prices rise to the right."}
 ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
   geom_point(size=2) + 
   #geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
@@ -183,7 +182,7 @@ Note that the axis beginning is not zero. The decision where axes start was made
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> When It’s OK to NOT Start Your Axis at Zero. </h2>
+<h2>When It’s OK to NOT Start Your Axis at Zero.</h2>
 :::
 When the data really don’t fluctuate very much but a rise of small values like 1.4 or 1.4% is a big deal. With a graph that starts at zero, these changes can't be detected. The data scientist has to decide. 
 ::::
@@ -192,8 +191,7 @@ When the data really don’t fluctuate very much but a rise of small values like
 
 The graph suggests a **positive trend** between price and age. There is an **increase** in price for older artists. The older the artist, the higher the auction prices.
 
-```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
-library(ggplot2)
+```{r reg-trend, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="The same paintings with the trend sketched by hand: an arrow running up and to the right."}
 ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
   geom_point(size=2) + 
   #geom_line() + 
@@ -217,7 +215,7 @@ The mission is to find a mathematical function that describes the trend. In othe
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **mathematical function** is an expression, rule, or law that defines a relationship between one variable (the **independent variable**, on the x-axis) and another variable (the **dependent variable**, on the y-axis).
 ::::
@@ -231,13 +229,12 @@ $$\begin{align}
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **linear function** is defined by two components, **intercept** (with the y-axis) and **slope**.
 ::::
 
-```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
-library(ggplot2)
+```{r reg-blackbox, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Two candidate lines through the same paintings; both look plausible, so the eye alone cannot choose between them."}
 ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) + 
   geom_point(size=2) + 
   geom_abline(intercept = 80, slope = 0.5, color="lightgrey", linetype="dashed", size=1.5)+
@@ -266,14 +263,14 @@ The equation tells (or predicts) that for any artist at the age of 45 it expects
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
-A **residual** (or error) is the vertical distance between the actual and the predicted value.
+The **error** $\epsilon$ is the vertical distance between the actual value and the *unknown true* line; it can never be observed. The **residual** $e = y - \hat{y}$ is the vertical distance between the actual value and the line we *estimated*; it can be read off the plot. The residual is what we minimise, the error is what we would like to have minimised.
 ::::
 
 <!-- The regression estimator is ordinary least squares. The overall goal is to minimize the squared residuals. But what's that? It's the error or vertical distance. Sometimes the blue line lies below or above the real observations. It hardly ever goes through one of them.  -->
 
-```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+```{r reg-nobodys-perfect, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Grey segments join each painting to the guessed line; the redder the point, the further the guess misses."}
 fit <- lm(Price ~ Age.at.Death, data = artists)
 artists$predicted <- predict(fit)   # Save the predicted values
 artists$residuals <- residuals(fit) # Save the residual values
@@ -311,7 +308,7 @@ $$ \begin{align}
 
 A **regression model** is suggested by the researcher. A more concrete regression model looks like this:
 
-$$Y = \beta_1 + \beta_2 X + \epsilon$$
+$$Y = \beta_0 + \beta_1 X + \epsilon$$
 
 A model can be easy or complicated. It definitely contains variables and parameters. 
 
@@ -320,13 +317,13 @@ A model can be easy or complicated. It definitely contains variables and paramet
 
 The calculation is called an **estimation**. In textbooks the same equation can be found with hats:
 
-$$	 \widehat{Y}  = \widehat{\beta}_1 + \widehat{\beta}_2 \cdot X $$
-$\widehat{Y}$ are called the **fitted or predicted** values. $\widehat{\beta}$ are **regression coefficients** (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals $e = Y - \widehat{Y}$.
+$$\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 \cdot X$$
+$\hat{Y}$ are called the **fitted or predicted** values. $\hat{\beta}$ are **regression coefficients** (this is the estimate of the unknown population parameter). As we have seen in the graph before, the differences between the actual and the predicted values are the residuals $e = Y - \hat{Y}$.
 
 The fitting procedure is called **ordinary least squares** (OLS). 
 
 
-### For the truly dedicated 
+### The algebra behind lm() {#for-the-truly-dedicated}
 
 <!-- div { -->
 <!--   background-color: lightblue; -->
@@ -342,19 +339,19 @@ The fitting procedure is called **ordinary least squares** (OLS).
 <!-- </details> -->
 <!-- ::: -->
 
-The overall goal is to make as little as possible mistakes! What kind of mistake? The deviation from the observed values! What could come to your mind is to **minimize the sum of all errors**: 
+The overall goal is to make as few mistakes as possible! What kind of mistake? The deviation from the observed values! What could come to your mind is to **minimise the sum of all errors**: 
 
 $$\sum e \rightarrow \min$$
-But wait, there is more. Is it fair to say that the sum should be small? Compare **The Scream** and **Meules**, their deviations are $+17.5$ and $-13.6$ (very similar). So taken these two together, there's almost not mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story: 
+But wait, there is more. Is it fair to say that the sum should be small? Compare **The Scream** and **Meules**, their deviations are $+17.5$ and $-13.6$ (very similar). So taken these two together, there's almost no mistake! That is to say, positive and negative deviations cancel each other out. Thus we need one more twist in the story: 
 
 $$\sum e^2 \rightarrow \min$$
-The goal of OLS is to **minimize the residual sum of squares** or the **sum of squared residuals**.
+The goal of OLS is to **minimise the residual sum of squares** or the **sum of squared residuals**.
 
 #### Algebra 
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 Algebra comes from Arabic, meaning "reunion of broken parts".
 ::::
@@ -371,11 +368,11 @@ We turn this into:
 $$y = X \beta + \epsilon $$
 Capital letters like $X$ represent a matrix (a table with rows and column), and small letters like $y$ and $e$ represent vectors. Since there are 6 observations and two parameters in our model we get:
 
-$$ \begin{align}
-\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{11} \\ 1 & X_{12} \\ 1 & X_{13} \\ 1 & X_{14} \\ 1 & X_{15} \\ 1 & X_{16}   \end{pmatrix} \begin{pmatrix} \beta_1 \\ \beta_2 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix} 
-\end{align}$$
+$$ \begin{aligned}
+\begin{pmatrix} Y_1 \\ Y_2 \\ Y_3 \\ Y_4 \\ Y_5 \\ Y_6 \end{pmatrix} &= \begin{pmatrix} 1 & X_{1} \\ 1 & X_{2} \\ 1 & X_{3} \\ 1 & X_{4} \\ 1 & X_{5} \\ 1 & X_{6} \end{pmatrix} \begin{pmatrix} \beta_0 \\ \beta_1 \end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \\ \epsilon_6 \\ \end{pmatrix}
+\end{aligned}$$
 
-Let's turn to the goal, minizing the residual sum of squares (RSS). By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To *transpose* a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:
+Let's turn to the goal, minimising the residual sum of squares ($SS_{\text{res}}$). By convention, the *normal* version of a vector is a vertical list of numbers in big parentheses (i.e. a column vector). To *transpose* a vector means change between the row and column format. Squaring a vector thus means the row version of the vector times the column version of the vector:
 
 $$\sum e^2 = e^T \cdot e \rightarrow \min$$
 Notice that the sum operator is gone. [Matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication){target="_blank"} requires multiplying all elements pairwise with each other and summing them up. Plug in the residuals $e = y - X \beta$ in the equation:
@@ -383,40 +380,40 @@ Notice that the sum operator is gone. [Matrix multiplication](https://en.wikiped
 $$\begin{align}
 	\sum e^2 &= e^T \cdot e \\
 	&= (y - X \beta )^T (y - X \beta) \tag{$(A+B)^T = A^T + B^T$}\\
-	&= (y^T - X^T \beta^T) (y - X \beta) \\
-	&= y^T y - y^T X \beta - X^T \beta^T y + X^T \beta^T X \beta \\
-	&= y^2 \underbrace{- 2 \beta^T X^T y}_{??} + \beta^2 X^2  \\
+	&= (y^T - \beta^T X^T) (y - X \beta) \\
+	&= y^T y - y^T X \beta - \beta^T X^T y + \beta^T X^T X \beta \\
+	&= y^T y \underbrace{- 2 \beta^T X^T y}_{??} + \beta^T X^T X \beta \\
 \end{align}$$
 
 Did you notice what happened in the middle? The transpose of the first term is equal to the second: 
 
-$$\begin{align}
-	(y^T X \beta)^T = y X^T \beta^T
-\end{align}$$
+$$\begin{aligned}
+	(y^T X \beta)^T = \beta^T X^T y
+\end{aligned}$$
 
 #### Analysis 
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 From Medieval Latin, analysis means "resolution of anything complex into simple elements" (opposite of synthesis).
 ::::
 
 <!-- *Functions* are key to analysis. -->
 
-Next, we are ready to **optimize**. Optimization (in math and economics) is done by **differentiation**:
+Next, we are ready to **optimise**. Optimisation (in math and economics) is done by **differentiation**:
 
 <!-- (setting the first derivative equal to zero). What are the betas? -->
 
 $$\begin{align}
-	\frac{\partial RSS}{\partial \beta} &= -2 X^T y + 2 \beta X^T X = 0 \tag{first derivative = zero} \\
-	2 \beta X^T X &= 2 X^T y \tag{rearrange terms}\\
-	\beta X^T X &= X^T y \tag{the "normal equation"} \\
+	\frac{\partial SS_{\text{res}}}{\partial \beta} &= -2 X^T y + 2 X^T X \beta = 0 \tag{first derivative = zero} \\
+	2 X^T X \beta &= 2 X^T y \tag{rearrange terms}\\
+	X^T X \beta &= X^T y \tag{the "normal equation"} \\
 	\beta &= (X^T X)^{-1} X^T y \tag{Bam}\\
 \end{align}$$
 
-Those $\beta$ coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding as the same time.
+Those $\beta$ coefficients are the first and most important regression results. Retrieve them step by step to enhance your understanding of the math and coding at the same time.
 
 #### Take the Long Way Home 
 
@@ -429,44 +426,44 @@ Those $\beta$ coefficients are the first and most important regression results. 
 <!-- </details> -->
 <!-- ::: -->
 
-```{r echo=FALSE, warning=FALSE}
+```{r reg-take-long-way, echo=FALSE, warning=FALSE}
 y <- as.vector(artists$Price)
 X <- as.matrix(cbind(rep(1, nrow(artists)), artists$Age.at.Death))
 ```
 
 First, retrieve matrix $X$ from the data set:
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-take-long-way-2, echo=TRUE, warning=FALSE}
 X
 ```
 
 Second, the transpose of $X$ has two rows and six columns (use `t()`):
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-take-long-way-3, echo=TRUE, warning=FALSE}
 t(X)
 ```
 
 Next, calculate the square of the matrix (transpose times original):
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-take-long-way-4, echo=TRUE, warning=FALSE}
 t(X)%*%X
 ```
 
 The inverse of the matrix product can be calculated by `solve()`:
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-take-long-way-5, echo=TRUE, warning=FALSE}
 solve(t(X)%*%X)
 ```
 
 Next, multiply the inverse with the transpose from the right:
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-take-long-way-6, echo=TRUE, warning=FALSE}
 solve(t(X)%*%X) %*% t(X)
 ```
 
 Finally, multiply the vector $y$:
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-take-long-way-7, echo=TRUE, warning=FALSE}
 solve(t(X)%*%X) %*% t(X) %*% y
 ```
 
@@ -474,13 +471,13 @@ It's the $\beta$ vector! The first entry is the **intercept** and the second is 
 
 <!-- There are two numbers. -->
 
-### Survival of the Fittest Line 
+### Survival of the Fittest Line {#survival-of-the-fittest-line}
 
 The linear equation that best describes the data is this: 
 
 $$Price = 22.3452 + 1.1657 \cdot Age$$
 
-```{r warning=FALSE, message=FALSE, echo=FALSE, fig.align='center'}
+```{r reg-survival-fittest-line, warning=FALSE, message=FALSE, echo=FALSE, fig.align='center', fig.cap="Each grey segment is one residual from the least-squares line; no other line makes their squared sum smaller."}
 fit <- lm(Price ~ Age.at.Death, data = artists)
 artists$predicted <- predict(fit)   # Save the predicted values
 artists$residuals <- residuals(fit) # Save the residual values
@@ -504,16 +501,16 @@ ggplot(artists, aes(x = Age.at.Death, y = Price, label = Painting)) +
   geom_point(aes(y = predicted), shape = 1) 
 ```
 
-### On the Shoulders of Giants 
+### On the Shoulders of Giants {#on-the-shoulders-of-giants}
 
 Fortunately, we are [standing on the shoulders of giants](https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants). Clever people implemented the linear regression (command `lm()`) and all kinds of regressions and statistical tests in R. 
 
-```{r echo=TRUE, warning=FALSE}
+```{r reg-shoulders-giants, echo=TRUE, warning=FALSE}
 lm(Price ~ Age.at.Death, data = artists)
 ```
 
 The workhorse packs up work. 
 
-```{r echo=F, warning=FALSE, fig.align='center'}
+```{r reg-shoulders-giants-2, echo=FALSE, warning=FALSE, fig.align='center', fig.cap="The workhorse of empirical social science: lm() delivers in one line what the matrix algebra spelled out step by step."}
 knitr::include_graphics("images/workhorse.jpg")
 ```

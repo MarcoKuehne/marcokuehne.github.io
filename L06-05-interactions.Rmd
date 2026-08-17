@@ -4,7 +4,7 @@
 Conditional relationships and moderation
 :::
 
-### Motivation
+### Motivation {#motivation}
 
 <!-- https://www.researchgate.net/post/Is_there_any_different_between_control_variable_and_moderating_variable2 -->
 <!-- In many contexts, the effect of one variable on another might be allowed to vary. For example, the relationship between income and mortality is nonlinear, so the effect of an additional dollar of income on mortality is different for someone earning \$20,000/year than for someone earning $100,000/year. Or maybe the relationship between income and mortality differs depending on how many years of education you have. A marginal effects plot displays the effect of X on Y for different values of Z (or X).  -->
@@ -25,23 +25,20 @@ In mathematical terms an interaction is an additional multiplication term:
 
 $$ muscle = training + age + training*age  $$
 
-### Data & Sample
+### Data & Sample {#int-data-sample}
 
 <!-- <button type="button" class="btn btn-default">Show session info</button> -->
 
 In the following we further explore the aforementioned income-age relationship and how the relationship itself may be influenced by gender and other characteristics. 
 
 <div class="toggle"><button>Show me all the data wrangling.</button>
-```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
-library(haven)
+```{r int-data-sample, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 master <- read_dta("https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true")
 
 # The data comes with Stata labels that do not work with all tidyverse commands
-library(sjlabelled)
 soep <- remove_all_labels(master)
 
 # Rename German to English variable names
-library(tidyverse)
 soep <- soep %>% 
   rename("Age" = "alter",
          "Income" = "einkommenj1",
@@ -86,29 +83,27 @@ soep <- soep %>% filter(complete.cases(.))
 
 The `datasummary()` function from `modelsummary` package provides a good overview for clean, selected variables. 
 
-```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
-library(modelsummary)
+```{r int-data-sample-2, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 soep %>%
   dplyr::select(Income, Age, Kids, Female, Satisfaction) %>%
-  datasummary_skim()
+  datasummary_skim(title = "Income, age, children, gender and life satisfaction in the SOEP sample; income skews right, satisfaction skews left.")
 ```
 
-The average annual income in this sample is `r format(round(mean(soep$Income),0), scientific=FALSE)`. Notice that the  income is left skewed whereas life satisfaction is skewed to the right. As expected, most people earn a low or average income and there are several extreme high incomes at the right. On the other hand, most people are on average pretty satisfied with their lifes in general. The mean of a dummy variables is the share of people with the characteristic coded with 1, i.e. about `r round(mean(soep$Kids),1)*100` % of the people have kids. In the following, binary dummy variables are coded as factors. 
+The average annual income in this sample is `r format(round(mean(soep$Income),0), scientific=FALSE)`. Notice that income is skewed to the right whereas life satisfaction is skewed to the left. As expected, most people earn a low or average income and there are several extreme high incomes at the right. On the other hand, most people are on average pretty satisfied with their lives in general. The mean of a dummy variables is the share of people with the characteristic coded with 1, i.e. about `r round(mean(soep$Kids),1)*100` % of the people have kids. In the following, binary dummy variables are coded as factors. 
 
-```{r, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+```{r int-data-sample-3, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 # Explicitly code factor variables
 soep <- soep %>% 
   mutate(Female = factor(Female),
          Kids = factor(Kids))
 ```
 
-### Throwback Parallel Slopes 
+### Throwback Parallel Slopes {#throwback-parallel-slopes}
 
 Simple regression is very similar to the correlation between two variables. A multiple regression with one continuous and one dummy variable is called a *parallel slopes* model. The data looks like this:
 
-```{r message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
+```{r int-throwback-parallel-slopes, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE, fig.cap="Income against age by gender, forced into parallel slopes: one common age effect, two different starting levels."}
 options(scipen=10000)
-library(ggplot2)
 library(moderndive)
 ggplot(soep, aes(x=Age, y=Income, color=Female)) +
   geom_point() +
@@ -117,23 +112,23 @@ ggplot(soep, aes(x=Age, y=Income, color=Female)) +
   theme(legend.position = "none") + theme_minimal()
 ```
 
-```{r message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
+```{r int-throwback-parallel-slopes-2, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
 simple <- lm(Income ~ Age, data=soep)
 multiple <- lm(Income ~ Age + Female, data=soep)
 ```
 
-Conclusion from Parallel Slopes: The *fundamental truth* is that the effect of age on income is identical across gender (i.e. for males and females). Males and female are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?
+Conclusion from Parallel Slopes: The *fundamental truth* is that the effect of age on income is identical across gender (i.e. for males and females). Males and females are equipped (by nature, for some reason) with a different starting annual income on average. -- Convinced?
 
-### Regression with Moderators
+### Regression with Moderators {#regression-with-moderators}
 <!-- https://www.econometrics-with-r.org/8-3-interactions-between-independent-variables.html -->
 
-In the following we consider all possible kinds of two-way interactions (between two variables). Higher-order interaction might be useful under special conditions, e.g. in a study where the effect of a new drug depends on the patient's age and gender. 
+In the following we consider all possible kinds of two-way interactions (between two variables). Higher-order interactions might be useful under special conditions, e.g. in a study where the effect of a new drug depends on the patient's age and gender. 
 
 An interaction can be coded implicitly or explicitly in R.
 
 <div class="toggle"><button>Show me the coding.</button>
 
-```{r}
+```{r int-regression-moderators}
 # implicit coding, that automatically extends
 lm1 <- lm(mpg ~ vs*am, data=mtcars)
 # explicit coding, each single term and their interaction
@@ -158,16 +153,16 @@ The single terms `vs` and `am` are sometimes called the *main effects*.
 
 We estimate how income depends on having kids and being female.
 
-```{r}
+```{r int-dummy-dummy}
 interact1 <- lm(Income ~ Kids*Female, data=soep)
 modelsummary(title = 'Interaction Model 1.',
              list("Income" = interact1), 
              gof_omit = 'R2|AIC|BIC|RMSE|Log.Lik.|F')
 ```
 
-We plot the interaction with via `cat_plot()` from the `interactions` package. This interaction dedicated package makes visualization easy.
+We plot the interaction via `cat_plot()` from the `interactions` package. This interaction dedicated package makes visualisation easy.
 
-```{r}
+```{r int-dummy-dummy-2, fig.cap="Predicted income by having children, separately for women and men; the child effect changes sign between the two."}
 library(interactions)
 cat_plot(interact1, pred = Kids, modx = Female)
 ```
@@ -178,11 +173,10 @@ This graph suggests that men earn more than women. Men with kids earn more than 
 
 We estimate how income depends on working in different industries and being female.
 
-```{r}
+```{r int-categorical-dummy}
 interact2 <- lm(Income ~ Industry*Female, data=soep)
 
 library(broom)
-library(knitr)
 
 # tidy(interact2) %>% 
 #   select(term, estimate, std.error) %>% 
@@ -206,7 +200,7 @@ tidy(interact2) |>
   kable()
 ```
 
-```{r}
+```{r int-categorical-dummy-2, fig.cap="Predicted income by industry for women and men; the gender gap is far wider in some industries than others."}
 # The function can be modified by ggplot commands.
 cat_plot(interact2, pred = Industry, modx = Female) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
@@ -226,7 +220,7 @@ translates to
 
 $$ height + female + height*female $$
 
-```{r}
+```{r int-continuous-dummy}
 interact3 <- lm(Income ~ Age*Female, data=soep)
 modelsummary(title = 'Interaction Model 2.',
              list("Income" = interact3), 
@@ -234,23 +228,20 @@ modelsummary(title = 'Interaction Model 2.',
 ```
 
 <!-- https://cran.r-project.org/web/packages/interactions/vignettes/interactions.html -->
-The visualization for non-parallel slopes looks like this:
+The visualisation for non-parallel slopes looks like this:
 
-```{r warning=FALSE}
+```{r int-continuous-dummy-2, warning=FALSE, fig.cap="Income over age fitted separately for women and men; the slopes differ, so the gap widens with age."}
 interact_plot(interact3, pred = Age, modx = Female,
               main.title = "Each group has a different slope.")
 ```
 
-:::: {.challenge}
-::: {.titelchallenge}
-<h2> Conclusion </h2>
-:::
+::: {.analysis-takeaway}
 The **fundamental truth** is that the effect of age on income is positive but not identical between males and females. Men and women at the exact same age earn different annual incomes and the gap widens over time. There is **effect heterogeneity**.
-::::
+:::
 
 There are two more rather uncommon combination in which one of the main effects is dropped. Graphically, the result is two lines with same intercept and different slopes. 
 
-```{r}
+```{r int-continuous-dummy-3, fig.cap="Dropping the gender main effect ties both lines to one intercept, leaving only the slopes free to differ."}
 interact3b <- lm(Income ~ Age + Age:Female, data=soep)
 
 interact_plot(interact3b, pred = Age, modx = Female) +
@@ -269,26 +260,26 @@ interact_plot(interact3b, pred = Age, modx = Female) +
 <!-- https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous -->
 <!-- https://www.theanalysisfactor.com/3-tips-interpreting-moderation/ -->
 
-```{r}
+```{r int-continuous-continuous}
 interact4 <- lm(Income ~ Age*Satisfaction, data=soep)
 interact4
 ```
 
 The interaction of two continuous variables is harder to interpret. There are conventions to help you choose the best values of the continuous moderator for plotting predicted values. But these conventions don't always work in every situation. For example, one convention suggested by Cohen and Cohen and popularized by Aiken and West is to use three values of the moderator: the mean, the value one standard deviation above, and the value one standard deviation below the mean. This is what interact_plot() does by default.
 
-```{r}
+```{r int-continuous-continuous-2, fig.cap="Income over age at three levels of life satisfaction: the mean and one standard deviation either side."}
 interact_plot(interact4, pred = Age, modx = Satisfaction)
 ```
 
 This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.
 
-You can see that even with just two continuous variables, coming up with good visualizations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.
+You can see that even with just two continuous variables, coming up with good visualisations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.
 
-### Model Comparison 
+### Model Comparison {#int-model-comparison}
 
 How to decide if the model with interaction is better than the model without interaction?
 
-```{r}
+```{r int-model-comparison}
 library(gt)
 
 multiple3 <- lm(Income ~ Age + Female, data=soep)

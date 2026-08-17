@@ -137,7 +137,7 @@ Robust estimation changes standard errors and test statistics to better accommod
 
 ### Reading the Parameters {#cfa-reading-parameters}
 
-A standardized loading indicates how strongly an indicator is represented by a factor in the specified model. In a simple standardized one-factor model, a loading of \(0.70\) implies
+A standardised loading indicates how strongly an indicator is represented by a factor in the specified model. In a simple standardised one-factor model, a loading of \(0.70\) implies
 
 \[
 0.70^2=0.49,
@@ -246,15 +246,15 @@ Residuals may remain related because indicators share wording, response format, 
 
 For competence assessments, tasks based on the same reading text or audio passage may share variation beyond the intended competence. For questionnaires, positive and negative wording can create method effects.
 
-Residual correlations should represent a specific source of shared indicator variation. They should not become unexplained patches added until the fit indices turn favorable.
+Residual correlations should represent a specific source of shared indicator variation. They should not become unexplained patches added until the fit indices turn favourable.
 
 #### Method and response-style factors {#cfa-method-factors}
 
-A separate factor can represent systematic response behavior rather than the target construct, such as acquiescence or common wording direction. Such factors can be useful, but they require item designs that identify the method effect separately from the substantive factors.
+A separate factor can represent systematic response behaviour rather than the target construct, such as acquiescence or common wording direction. Such factors can be useful, but they require item designs that identify the method effect separately from the substantive factors.
 
 ### Evaluating a Confirmatory Model {#cfa-evaluation}
 
-Day 3 of the course begins after the model has been estimated. The output is on screen, and the uncomfortable question is:
+The real work begins after the model has been estimated. The output is on screen, and the uncomfortable question is:
 
 > Is this model good enough, and what does *good enough* mean?
 
@@ -262,7 +262,7 @@ A defensible evaluation follows a sequence rather than one cutoff.
 
 #### Step 1: Did the model converge? {#cfa-fit-convergence}
 
-Check whether the optimizer reached a solution and whether warnings occurred. Non-convergence can result from poor starting values, an underidentified model, extreme correlations, sparse categories, or an implausible specification.
+Check whether the optimiser reached a solution and whether warnings occurred. Non-convergence can result from poor starting values, an underidentified model, extreme correlations, sparse categories, or an implausible specification.
 
 A non-converged solution should not be interpreted as an ordinary fitted model.
 
@@ -285,14 +285,14 @@ Common global diagnostics include:
 
 | Measure | Main question | General direction |
 |---|---|---|
-| \(\chi^2\) test | Is exact fit tenable? | smaller relative to degrees of freedom; non-significance is favorable but strongly sample-size dependent |
+| \(\chi^2\) test | Is exact fit tenable? | smaller relative to degrees of freedom; non-significance is favourable but strongly sample-size dependent |
 | CFI | How much does the model improve over an independence baseline? | higher |
 | TLI | How much improvement remains after a complexity adjustment? | higher |
 | RMSEA | How much approximation error is estimated per degree of freedom? | lower; interpret with its confidence interval |
-| SRMR | How large are the average standardized residual discrepancies? | lower |
+| SRMR | How large are the average standardised residual discrepancies? | lower |
 | AIC and BIC | Which candidate balances fit and complexity better? | lower, only for comparable candidate models |
 
-Historically influential orientation points include CFI and TLI near or above .95, RMSEA near or below .06, and SRMR near or below .08. These values are not laws. Their behavior depends on sample size, model size, factor loadings, estimator, distributions, and the type of misspecification.
+Historically influential orientation points include CFI and TLI near or above .95, RMSEA near or below .06, and SRMR near or below .08. These values are not laws. Their behaviour depends on sample size, model size, factor loadings, estimator, distributions, and the type of misspecification.
 
 The chi-square test asks about exact fit. With large samples, small discrepancies can become statistically detectable. Approximate fit indices answer different questions, but none identifies the substantive source of misfit.
 
@@ -304,10 +304,10 @@ A fit index is evidence, not a verdict. CFI = .93 does not mean that 93% of the 
 
 #### Step 4: Where does the model misfit locally? {#cfa-local-fit}
 
-Global indices summarize discrepancies. Local diagnostics indicate where they occur:
+Global indices summarise discrepancies. Local diagnostics indicate where they occur:
 
 - residual covariance or correlation matrices;
-- standardized residuals;
+- standardised residuals;
 - modification indices;
 - expected parameter changes;
 - unusual loadings and residual variances;
@@ -348,7 +348,7 @@ Global fit is only one part of validity. A factor can fit statistically while om
 
 ### Beyond Universal Cutoffs {#cfa-beyond-cutoffs}
 
-The course introduced two newer approaches. They are useful because they make the limitations of universal thresholds visible, but they should be treated as advanced tools rather than automatic replacements for the full evaluation sequence.
+Two newer approaches are worth knowing. They are useful because they make the limitations of universal thresholds visible, but they should be treated as advanced tools rather than automatic replacements for the full evaluation sequence.
 
 #### Dynamic fit-index cutoffs {#cfa-dynamic-fit}
 
@@ -374,14 +374,13 @@ This approach can potentially distinguish patterns that a single CFI or RMSEA va
 
 Its validity is bounded by the training simulations. More computing power cannot compensate for missing or unrealistic training conditions. A classifier should therefore generate hypotheses for inspection, not replace theory or item-level diagnosis.
 
-::: {.analysis-advanced}
-**Course lesson:** two models can display nearly the same global fit index and still require different conclusions. The numerical value summarizes discrepancy; it does not diagnose its source.
+::: {.analysis-warning}
+Two models can display nearly the same global fit index and still require different conclusions. The numerical value summarises discrepancy; it does not diagnose its source.
 :::
 
 ### A Compact CFA Workflow in R {#cfa-r-workflow}
 
 ```{r cfa-workflow, eval=FALSE, message=FALSE, warning=FALSE}
-library(lavaan)
 
 dat <- HolzingerSwineford1939
 

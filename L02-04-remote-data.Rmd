@@ -10,13 +10,13 @@ The answer in all three cases is the same, and it is a change of habit rather th
 
 Two technologies do this, and they are far more similar than their reputations suggest. A **database** answers questions written in **SQL**. A **web API** answers questions written as a URL. This section treats them together, because once you have seen the first, the second is a variation.
 
-### Databases
+### Databases {#databases}
 
 A **database** is software whose only job is to store tables and answer questions about them. The tables look exactly like the rectangles of the previous sections — rows are observations, columns are variables — but they live in a system built for size, for simultaneous users, and for guaranteeing that a row is either written completely or not at all.
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **relational database** stores data in tables that are linked by shared key columns. **SQL** (Structured Query Language, pronounced "sequel" or spelled out) is the language used to ask such a database for data. A **query** is a single question; the answer is itself a table.
 ::::
@@ -24,7 +24,6 @@ A **relational database** stores data in tables that are linked by shared key co
 You do not need a server to practise. **SQLite** is a complete database that lives in a single file — or, as here, purely in memory. It ships with the R package `RSQLite`, and `DBI` provides the vocabulary that works the same way for every database engine.
 
 ```{r remote-connect, message=FALSE, warning=FALSE}
-library(tidyverse)
 library(DBI)
 
 # ":memory:" creates a temporary database that disappears with the session.
@@ -106,12 +105,9 @@ That is the query from the previous chunk, written by a machine — a little mor
 big_stones %>% collect()
 ```
 
-:::: {.challenge}
-::: {.titelchallenge}
-<h2> Watch out </h2>
+::: {.analysis-warning}
+**Watch out.** `collect()` is the moment where the data actually moves. Put it at the **end** of a pipeline, after filtering and summarising — never at the beginning. `tbl(con, "sales") %>% collect() %>% filter(...)` asks the database for all forty million rows and then throws most of them away, which is the single most common mistake with `dbplyr`.
 :::
-`collect()` is the moment where the data actually moves. Put it at the **end** of a pipeline, after filtering and summarising — never at the beginning. `tbl(con, "sales") %>% collect() %>% filter(...)` asks the database for all forty million rows and then throws most of them away, which is the single most common mistake with `dbplyr`.
-::::
 
 #### Joining across tables
 
@@ -132,13 +128,13 @@ dbDisconnect(con)
 
 For a real project, only the first line changes: `RPostgres::Postgres()`, `RMariaDB::MariaDB()` or `duckdb::duckdb()` instead of `RSQLite::SQLite()`, plus host, user and password. Everything after `dbConnect()` stays the same. DuckDB deserves a special mention — it needs no server like SQLite, but is built for analysis and can query CSV or Parquet files directly, without importing them first.
 
-### Web APIs
+### Web APIs {#web-apis}
 
 Now change one thing. The table is still somewhere else, you still send a question and receive a subset — but you have no account on that machine, and the owner would never let a stranger run SQL on it. So they put a counter in front: a fixed set of questions you are allowed to ask, phrased as a URL.
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 An **application programming interface (API)** is a way for two or more computer programs to communicate with each other. A **web API** is one you reach with a URL: parameters in the link are the question, and the answer usually comes back as **JSON**, a nested text format that R reads into lists and data frames.
 ::::
@@ -189,7 +185,7 @@ glimpse(gdp)
 
 Notice what did *not* happen. No footnote markers to strip, no thousands separators, no two spellings of the same label, no guessing which column is which. The provider promised a shape and delivered it. The only cosmetic step is the unit: dollars are hard to read at nine digits.
 
-```{r api-plot, fig.align='center', fig.width=7, fig.height=4.5, message=FALSE, warning=FALSE}
+```{r api-plot, fig.align='center', fig.width=7, fig.height=4.5, message=FALSE, warning=FALSE, fig.cap="Marshall Islands GDP fetched from the World Bank API: the whole economy has never matched one painting's auction price."}
 gdp %>%
   mutate(gdp_musd = gdp_usd / 1e6) %>%
   ggplot(aes(x = year, y = gdp_musd)) +
@@ -224,7 +220,7 @@ Three habits cover most projects.
 
 An API key is a password. Never write it into a script and never commit it to Git — put it in your `.Renviron` file, which `usethis::edit_r_environ(scope = "project")` opens for you, and read it with `Sys.getenv("MY_API_KEY")`. Services such as [GitGuardian](https://www.gitguardian.com/) exist because this rule is broken constantly.
 
-### The same idea twice
+### The same idea twice {#the-same-idea-twice}
 
 The two halves of this section were the same manoeuvre.
 

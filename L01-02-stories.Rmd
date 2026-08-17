@@ -1,8 +1,8 @@
-## Stories and Visuals
+## Stories and Visuals {#stories-and-visuals}
 
 Stories make data and numbers memorable. Stories are everywhere. When you think about the context of the data, stories evolve naturally. How does the data connect to you, your friends and family, the work environment or society as a whole. 
 
-### Facts 
+### Facts {#facts}
 
 A good story is based on facts and reliable sources. When evaluating facts, it's important to consider the source of the information and the evidence supporting it. According to OECD data on part-time employment rate (2021):^[Search OECD database <https://stats.oecd.org/index.aspx?queryid=54746#>]
 
@@ -12,11 +12,11 @@ A good story is based on facts and reliable sources. When evaluating facts, it's
 <!-- https://www.oecd.org/gender/data/part-time-employment-by-sex.htm -->
 <!-- > In 2021, the OECD total average part-time employment rate was 16.4 %. -->
 
-### Visualization
+### Visualisation {#visualization}
 
-Good data visualization helps to convey complex information in a way that is easily understandable and accessible to a wide range of people. By presenting data in a visually appealing and intuitive way, it can help people to identify patterns, trends, and relationships that might not be immediately apparent from a simple data table or text-based analysis. 
+Good data visualisation helps to convey complex information in a way that is easily understandable and accessible to a wide range of people. By presenting data in a visually appealing and intuitive way, it can help people to identify patterns, trends, and relationships that might not be immediately apparent from a simple data table or text-based analysis. 
 
-```{r, eval=T, echo=F, warning=FALSE, message=FALSE}
+```{r sto-visualisation, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Part-time employment in Germany in 2021 (OECD): the female bar is more than three times the male one."}
 library(readxl)
 parttime <- readxl::read_xlsx("./data/OECD/parttime_gender_easy.xlsx")
 
@@ -26,7 +26,6 @@ library(showtext)
 female = intToUtf8(9792)
 male = intToUtf8(9794)
 
-library(tidyverse)
 parttime %>% 
   filter(Year == 2021) %>% 
   #mutate(Sex = forcats::fct_infreq(Sex)) %>% 
@@ -53,7 +52,7 @@ parttime %>%
 
 Why not just tell the numbers as is? An important aspect of data science is to communicate information clearly and efficiently. Complex data is made more accessible. 
 
-Data visualization reveals the data.
+Data visualisation reveals the data.
 
 <!-- ```{r parttime, echo=FALSE, out.width="70%", fig.cap="\\label{fig:parttime}Possible gender difference in working parttime.", fig.align='center'} -->
 <!-- knitr::include_graphics("images/parttime.png") -->
@@ -61,7 +60,7 @@ Data visualization reveals the data.
 
 <!-- Figure \@ref(fig:parttime) illustrates a possible gender difference in working parttime. The iconic figures are simple. The coloring is decent. The gender icons are filled by color up to the percentage numbers.  -->
 
-### Telling a story
+### Telling a story {#telling-a-story}
 
 <!-- https://clauswilke.com/dataviz/telling-a-story.html -->
 <!-- https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/ -->
@@ -74,7 +73,7 @@ By weaving a compelling narrative around the data, we can help our audience to u
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Once upon a time ... </h2>
+<h2>Once upon a time ...</h2>
 :::
 in a land not too far away, there were two siblings named Alex and Jamie. Alex and Jamie were very close in age and grew up in the same household with the same parents, but they had very different personalities and interests.
 
@@ -86,28 +85,28 @@ Alex was also more likely to receive promotions and higher salaries, while Jamie
 
 It became clear to Alex and Jamie that there was a gendered expectation for men to pursue full-time, high-paying careers while women were expected to prioritize caregiving or creative pursuits over financial stability.
 
-Despite these societal expectations, Alex and Jamie continued to pursue their individual paths and support each other's choices. They hoped that someday, society would recognize the value and importance of all types of work and careers, regardless of gender or perceived societal norms.
+Despite these societal expectations, Alex and Jamie continued to pursue their individual paths and support each other's choices. They hoped that someday, society would recognise the value and importance of all types of work and careers, regardless of gender or perceived societal norms.
 ::::
 
-### Man's best friend
+### Man's best friend {#mans-best-friend}
 
-Humans love dogs. Dogs were domesticated by humans over 15,000 years ago. They can be perfect companions for singles, for couples for families. They differ in behavior, longevity and appetite. Figure \@ref(fig:dogs) combines 6 dog characteristics in a *dog score* and compares this with the popularity of different breeds. From this scatterplot the authors define four categories of dog breads, e.g. the hot dogs and overlooked treasures (similar to a [BCG matrix](https://en.wikipedia.org/wiki/Growth%E2%80%93share_matrix)). 
+Humans love dogs. Dogs were domesticated by humans over 15,000 years ago. They can be perfect companions for singles, for couples for families. They differ in behaviour, longevity and appetite. Figure \@ref(fig:dogs) combines 6 dog characteristics in a *dog score* and compares this with the popularity of different breeds. From this scatterplot the authors define four categories of dog breeds, e.g. the hot dogs and overlooked treasures (similar to a [BCG matrix](https://en.wikipedia.org/wiki/Growth%E2%80%93share_matrix)). 
 
 ```{r dogs, echo=FALSE, out.width="100%", fig.cap="The Ultimate Dog Data by [informationisbeautiful](https://informationisbeautiful.net/visualizations/best-in-show-whats-the-top-data-dog/).", fig.align='center'}
 knitr::include_graphics("https://infobeautiful4.s3.amazonaws.com/2014/11/IIB_Best-In-Show_1276x2.png")
 ```
 
-On the one hand, this is an awesome chart that transforms a huge data table in one graph, a scatter plot on two dimensions lightened by the individual dog icons for each data point. On the other hand, this graph is so complex and does not offer a major takeaway. Looking more closely to the graph, raises more questions then the graph answers, i.e. how was *grooming* and *appetite* measured? How are the 6 factors combined in the *data score*? When you look even more closely, you notice the easter egg.^[The frightened cat among all dogs.]
+On the one hand, this is an awesome chart that transforms a huge data table in one graph, a scatter plot on two dimensions lightened by the individual dog icons for each data point. On the other hand, this graph is so complex and does not offer a major takeaway. Looking more closely to the graph, raises more questions than the graph answers, i.e. how was *grooming* and *appetite* measured? How are the 6 factors combined in the *data score*? When you look even more closely, you notice the easter egg.^[The frightened cat among all dogs.]
 
-### Less is more
+### Less is more {#less-is-more}
 
-Figure \@ref(fig:dogs) is an awesome data aggregate. Still, "less is more" in data visualization, because visual clutter can overwhelm the audience and make it harder to see the key insight. The complex scatterplot demands a lot of attention.
+Figure \@ref(fig:dogs) is an awesome data aggregate. Still, "less is more" in data visualisation, because visual clutter can overwhelm the audience and make it harder to see the key insight. The complex scatterplot demands a lot of attention.
 
 Edward Tufte gave this intuition a name.[^stories-tufte]
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **data-ink ratio** is the proportion of the ink in a graphic that presents actual data, relative to the total ink used.
 
@@ -119,7 +118,6 @@ Most charts fail this test not because anybody decided to clutter them, but beca
 **Drag the slider, or click it and use the arrow keys.** Twenty-two steps. Nothing is ever added except at step 17.
 
 ```{r ink-slider, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-library(tidyverse)
 
 counts <- read.csv(paste0("https://raw.githubusercontent.com/MarcoKuehne/",
                           "marcokuehne.github.io/main/data/Course/GF_AllTime.csv"),
@@ -258,7 +256,7 @@ That reframing has a consequence, and it is the rule for the rest of this chapte
 
 > **Message before design. Design only where it helps understanding.**
 
-### Never use pie charts
+### Never use pie charts {#never-use-pie-charts}
 
 The data-ink argument is about what a graphic spends. There is a second question, and it is about what the human eye can actually do.
 
@@ -269,7 +267,7 @@ labels <- c("London", "New York", "Singapore", "Mumbai")
 
 **One question: is the share for Singapore larger or smaller than the share for London?**
 
-```{r pie-chart, echo=FALSE, fig.align='center', fig.width=5.2, fig.height=3.8}
+```{r pie-chart, echo=FALSE, fig.align='center', fig.width=5.2, fig.height=3.8, fig.cap="Four city shares drawn as a pie. Is Singapore's slice larger than London's? Angles make that hard to judge."}
 par(mar = c(0, 2, 0, 2), xpd = TRUE)
 pie(x, labels, radius = 1, col = grey(c(.85, .55, .75, .65)), border = "white")
 ```
@@ -279,7 +277,7 @@ Take a moment before you scroll.
 <details>
 <summary>**Can you tell now?**</summary>
 
-```{r pie-bar, echo=FALSE, fig.align='center', fig.width=5.2, fig.height=3.4}
+```{r pie-bar, echo=FALSE, fig.align='center', fig.width=5.2, fig.height=3.4, fig.cap="The same four numbers as bars. Singapore sits just above London, readable at a glance from a common baseline."}
 par(mar = c(3, 3.5, 1, 1), mgp = c(2, .6, 0))
 barplot(x, names.arg = labels, col = "grey65", border = NA, las = 1)
 ```
@@ -294,7 +292,7 @@ R's own documentation is blunter. The help page for `pie()` states: *"Pie charts
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> When a pie chart is defensible </h2>
+<h2>When a pie chart is defensible</h2>
 :::
 Two or three slices, one obviously dominant, and the point being *part of a whole* rather than a comparison between parts.
 
@@ -333,7 +331,7 @@ Three things are worth holding on to before deleting every bar you own.
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 Look back at step 22 of the slider. Would a dot plot be better than those bars for the seven terms? `r mcq(c("Yes, less ink is always better", answer = "No, the terms are separate categories and zero is meaningful", "It makes no difference"))`
 
@@ -346,7 +344,7 @@ Now change the chart's title from "Course participants per term" to whatever you
 
 [^stories-ranking]: Cleveland and McGill's own ranking leaves several tasks tied, including length, direction and angle. The familiar tie-free ordering (position, length, angle, slope, area, volume, colour) is Mackinlay's adaptation: Mackinlay, J. D., *Automating the Design of Graphical Presentations of Relational Information*, *ACM Transactions on Graphics* 5(2), 1986, 110--141.
 
-[^stories-hill]: Hill, A., *Are pie charts evil? An assessment of the value of pie and donut charts compared to bar charts*, *Information Visualization*, 2025, <https://doi.org/10.1177/14738716241259432>.
+[^stories-hill]: Hill, A., *Are pie charts evil? An assessment of the value of pie and donut charts compared to bar charts*, *Information Visualisation*, 2025, <https://doi.org/10.1177/14738716241259432>.
 
 [^stories-dotplot]: Cleveland, W. S., *Graphical Methods for Data Presentation: Full Scale Breaks, Dot Charts, and Multibased Logging*, *The American Statistician* 38(4), 1984, 270--280. Developed further in *The Elements of Graphing Data*, Wadsworth, 1985.
 
@@ -364,4 +362,4 @@ Now change the chart's title from "Course participants per term" to whatever you
 
 [^stories-typicality]: Reimann, D., Struwe, M., Ram, N., and Gaschler, R., *Typicality effect in data graphs*, *Visual Communication* 24(1), 2025, 114--128. Vertical bars were identified in about 720 ms, horizontal bars 757 ms, lines 773 ms.
 
-[^stories-usage]: Battle, L., Duan, P., Miranda, Z., Mukusheva, D., Chang, R., and Stonebraker, M., *Beagle: Automated Extraction and Interpretation of Visualizations from the Web*, *Proceedings of CHI 2018*. Over 42,000 charts; four types — bar, line, scatter and map — account for 65 % to 90 % of each collection.
+[^stories-usage]: Battle, L., Duan, P., Miranda, Z., Mukusheva, D., Chang, R., and Stonebraker, M., *Beagle: Automated Extraction and Interpretation of Visualisations from the Web*, *Proceedings of CHI 2018*. Over 42,000 charts; four types — bar, line, scatter and map — account for 65 % to 90 % of each collection.

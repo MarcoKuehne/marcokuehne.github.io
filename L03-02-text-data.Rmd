@@ -16,7 +16,7 @@ Hold on to the punchline, because this chapter is about to contradict it. **The 
 
 ### Is Text Just a Long String in a Cell? {#txt-question}
 
-This book has argued from Chapter \@ref(tabular-data) onwards that rectangular data — one row per observation, one column per variable — is the workhorse structure of empirical research. Text seems to fit fine. A review is a value; put it in a cell.
+This book has argued from Section \@ref(tabular-data) onwards that rectangular data — one row per observation, one column per variable — is the workhorse structure of empirical research. Text seems to fit fine. A review is a value; put it in a cell.
 
 So the honest question, before any technique: **when is that enough, and when is it not?**
 
@@ -37,7 +37,6 @@ Every one of those facts is part of the data. Who wrote the texts, why, for whom
 Start with the simplest thing that could possibly work.
 
 ```{r txt-load, warning=FALSE, message=FALSE}
-library(tidyverse)
 library(tidytext)
 
 trip <- read.csv("data/tripadvisor_berlin_global.csv")
@@ -59,7 +58,7 @@ Thirty-eight of forty-six reviews mention the colonial past; forty-two mention g
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Text data** is data whose values are sequences of characters carrying meaning in a natural language.
 
@@ -76,7 +75,7 @@ The move is to change the unit of observation. One row per *token*.
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **token** is a meaningful unit of text — most often a word, sometimes a sentence, a character, or a pair of adjacent words (a **bigram**).
 
@@ -92,7 +91,7 @@ nrow(tokens)
 n_distinct(tokens$word)
 ```
 
-Forty-six reviews have become **11,378 rows**, drawn from a vocabulary of **2,053 distinct words**. The table got much longer and much narrower, and — this is the whole point — **it is still a table**. Every verb from Chapter \@ref(software) works unchanged: `count()`, `group_by()`, `filter()`, `anti_join()`, and `ggplot()` on the result.[^txt-tidytext]
+Forty-six reviews have become **11,378 rows**, drawn from a vocabulary of **2,053 distinct words**. The table got much longer and much narrower, and — this is the whole point — **it is still a table**. Every verb from the [Software chapter](software.html#software) works unchanged: `count()`, `group_by()`, `filter()`, `anti_join()`, and `ggplot()` on the result.[^txt-tidytext]
 
 That is why this format belongs in this book. It buys word-level analysis without asking you to learn a new data structure.
 
@@ -133,7 +132,7 @@ There is a historical footnote here that ought to be uncomfortable. Mosteller an
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 The word *globality* appears in the cleaned top eight. It is not an everyday English word — it comes from the assignment prompt.
 
@@ -144,7 +143,7 @@ Now remove it, along with *berlin* and *exhibition*, and look at the next ten wo
 
 #### A second corpus, from the same students {#txt-expectations}
 
-The course questionnaire from Chapter \@ref(synthetic-data) had one column we ignored there. Alongside age, degree and semesters, every student wrote a free-text answer to a single question: *what do you expect from this course?*
+The course questionnaire from Section \@ref(synthetic-data) had one column we ignored there. Alongside age, degree and semesters, every student wrote a free-text answer to a single question: *what do you expect from this course?*
 
 ```{r txt-expect, warning=FALSE, message=FALSE}
 course <- read.csv(paste0("https://raw.githubusercontent.com/MarcoKuehne/",
@@ -163,7 +162,7 @@ expect %>% count(word, sort = TRUE) %>% head(10)
 
 Two hundred and thirty-three answers, and the ranking is almost poignant in its consistency: *data*, *learn*, *analysis*, *programming*, *knowledge*, *expect*, *skills*, *academic*, *improve*, *statistical*.
 
-Note what this is. The same file gave us a rectangular data set in Chapter \@ref(synthetic-data) and a corpus here. Text is often not a separate kind of study — it is the column everybody drops.
+Note what this is. The same file gave us a rectangular data set in Section \@ref(synthetic-data) and a corpus here. Text is often not a separate kind of study — it is the column everybody drops.
 
 ### Rung 2: The Document-Term Matrix {#txt-dtm}
 
@@ -175,7 +174,7 @@ The structure that does is a matrix with one row per document and one column per
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 A **document-term matrix (DTM)** has one row per document, one column per term in the vocabulary, and in each cell the count of that term in that document.
 
@@ -203,7 +202,7 @@ c(dense  = object.size(as.matrix(dtm)),
 Storing the zeros costs four times the memory of not storing them, and this is a toy corpus. At realistic scale — tens of thousands of documents, a vocabulary in the hundreds of thousands — a dense matrix is simply impossible. This is the moment where text stops fitting in a data frame and requires a **sparse matrix**, which records only the non-zero entries and their coordinates.
 
 ::: {.analysis-note}
-This is the same kind of moment as in Chapter \@ref(geo-data), where coordinates, projections and shapefiles arrived because points on a curved earth do not fit in two ordinary numeric columns.
+This is the same kind of moment as in Section \@ref(geo-data), where coordinates, projections and shapefiles arrived because points on a curved earth do not fit in two ordinary numeric columns.
 
 A new data structure is not a complication for its own sake. It is what happens when the question outgrows the table.
 :::
@@ -219,7 +218,7 @@ round(c(median = median(sim, na.rm = TRUE),
         max    = max(sim, na.rm = TRUE)), 3)
 ```
 
-Typical pairs of reviews share about a quarter of their direction; the most similar pair reaches 0.59. From here the methods of Chapter \@ref(components) and Chapter \@ref(clusters) apply directly — a DTM is just a very wide, very sparse data matrix, and principal components and cluster analysis do not care that its columns are words.
+Typical pairs of reviews share about a quarter of their direction; the most similar pair reaches 0.59. From here the methods of Section \@ref(components) and Section \@ref(clusters) apply directly — a DTM is just a very wide, very sparse data matrix, and principal components and cluster analysis do not care that its columns are words.
 
 **What it costs is word order.**
 
@@ -246,7 +245,7 @@ Notice where this leaves us. An embedding matrix is documents × dimensions: rec
 
 But its columns have no names and no interpretation. Dimension 47 does not mean anything.
 
-That should sound familiar. It is Chapter \@ref(latent-variables) again — observed indicators explained by a smaller set of unobserved dimensions — with one difference that matters: in factor analysis the researcher names the factors from the content of their strongest indicators. In an embedding, nobody does. The dimensions are estimated, useful, and mute.
+That should sound familiar. It is Section \@ref(latent-variables) again — observed indicators explained by a smaller set of unobserved dimensions — with one difference that matters: in factor analysis the researcher names the factors from the content of their strongest indicators. In an embedding, nobody does. The dimensions are estimated, useful, and mute.
 :::
 
 Because embeddings are learned from how people actually write, they absorb what people actually assume. Caliskan and colleagues showed this with unusual precision: the gender association a standard embedding assigns to an occupation term predicts the **actual percentage of women in that occupation at r = 0.90**, across 50 occupations, against official labour statistics.[^txt-caliskan]
@@ -259,7 +258,7 @@ With the ladder in place, one technique deserves close attention, because it is 
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Sentiment analysis** assigns a document a position on an evaluative scale — typically positive to negative — from its content.
 
@@ -329,7 +328,7 @@ And there is a statistical result that should govern all such work. If you feed 
 An annotation that is 90 % accurate is not "good enough." Without a human-coded validation sample, the confidence intervals around anything computed from those labels are simply wrong — and no increase in accuracy repairs them.
 :::
 
-A third option sidesteps some of this: use a language model to *generate training text*, then train an ordinary transparent classifier on it. A multilingual populism classifier trained entirely on synthetic text reached 0.87 accuracy against hand-annotated manifesto statements.[^txt-halterman] The model is used as a source of *data*, not as a source of *judgements* — which is the same distinction Chapter \@ref(synthetic-data) drew between synthesis and simulation.
+A third option sidesteps some of this: use a language model to *generate training text*, then train an ordinary transparent classifier on it. A multilingual populism classifier trained entirely on synthetic text reached 0.87 accuracy against hand-annotated manifesto statements.[^txt-halterman] The model is used as a source of *data*, not as a source of *judgements* — which is the same distinction Section \@ref(synthetic-data) drew between synthesis and simulation.
 
 ### Four Principles {#txt-principles}
 
@@ -378,7 +377,7 @@ That discarded remainder is often the finding.
 
 [^txt-atteveldt]: van Atteveldt, W., van der Velden, M. A. C. G., and Boukes, M., *The Validity of Sentiment Analysis: Comparing Manual Annotation, Crowd-Coding, Dictionary Approaches, and Machine Learning Algorithms*, *Communication Methods and Measures* 15(2), 2021, 121--140, <https://doi.org/10.1080/19312458.2020.1869198>.
 
-[^txt-boukes]: Boukes, M., van de Velde, B., Araujo, T., and Vliegenthart, R., *What's the Tone? Easy Doesn't Do It: Analyzing Performance and Agreement Between Off-the-Shelf Sentiment Analysis Tools*, *Communication Methods and Measures* 14(2), 2020, 83--104, <https://doi.org/10.1080/19312458.2019.1671966>. Their aggregate-level result is the constructive one: weekly averages correlate with human coding up to r = 0.63.
+[^txt-boukes]: Boukes, M., van de Velde, B., Araujo, T., and Vliegenthart, R., *What's the Tone? Easy Doesn't Do It: Analysing Performance and Agreement Between Off-the-Shelf Sentiment Analysis Tools*, *Communication Methods and Measures* 14(2), 2020, 83--104, <https://doi.org/10.1080/19312458.2019.1671966>. Their aggregate-level result is the constructive one: weekly averages correlate with human coding up to r = 0.63.
 
 [^txt-councill]: Councill, I. G., McDonald, R., and Velikovich, L., *What's Great and What's Not: Learning to Classify the Scope of Negation for Improved Sentiment Analysis*, *Proceedings of NeSp-NLP 2010*, 51--59, <https://aclanthology.org/W10-3110/>.
 

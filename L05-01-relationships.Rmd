@@ -27,9 +27,9 @@ A relationship is the way in which two or more concepts are connected. Consider 
   <figcaption>In this video I'll explain main parts of this chapter.</figcaption>
 </figure>
 
-### Storks Deliver Babies
+### Storks Deliver Babies {#storks-deliver-babies}
 
-```{r, echo=FALSE, out.width="100%", fig.cap="Stork bringing baby - Colmar, Alsace.", fig.align='center'}
+```{r rel-storks-deliver-babies, echo=FALSE, out.width="100%", fig.cap="Stork bringing baby - Colmar, Alsace.", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Stork_bringing_baby_-_Colmar%2C_Alsace%2C_2016.05.18_%2835%29.jpg/1920px-Stork_bringing_baby_-_Colmar%2C_Alsace%2C_2016.05.18_%2835%29.jpg") 
 ```
 
@@ -39,7 +39,7 @@ Although storks are not responsible for delivering babies, a careless interpreta
 
 :::: {.reading}
 ::: {.titelreading}
-<h2> International White Stork Census  </h2>
+<h2>International White Stork Census</h2>
 :::
 The first International White Stork Census was initiated by Prof. Ernst Schüz in 1934 and thus has a long history. Since 1974, it has taken place at ten-yearly intervals. So far, it has been possible to enthuse countless ornithologists and people interested in protecting White Storks to record their numbers at regular intervals.
 ::::
@@ -52,38 +52,34 @@ We have raw data on stork population from the [Results of the 6th International 
   </a>
 </div>
   
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r rel-storks-deliver-babies-2, echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
-library(tidyverse)
-library(countrycode)
 
 # Stork Data
 storks <- readxl::read_xlsx("./data/Storks/Storks_Clean.xlsx", sheet = 1)
 storks <- storks %>% filter(Year == 2005)
 
 # Tabular Data
-library(DT)
-datatable(storks, options = list(iDisplayLength = 5))
+datatable(caption = "The 2005 stork census for 28 countries: stork pairs, area, population, urban population and fertility rate.", storks, options = list(iDisplayLength = 5))
 ```
 
-`Storks` is the number of pairs of storks in that country. The `Area` is in square kilometers. `Population` is the total population in million whereas `UrbanPop` is the population living in urban areas. `Fertility` refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime. How many storks have been observed in Ukraine in 2005? Answer: `r fitb(30000)`. Which country has more storks? `r mcq(c("Germany", "Greece", answer = "Hungary"))`
+`Storks` is the number of pairs of storks in that country. The `Area` is in square kilometres. `Population` is the total population in million whereas `UrbanPop` is the population living in urban areas. `Fertility` refers to the total fertility rate, that is the average number of children that would be born to a female over their lifetime. How many storks have been observed in Ukraine in 2005? Answer: `r fitb(30000)`. Which country has more storks? `r mcq(c("Germany", "Greece", answer = "Hungary"))`
 
 The following table shows some key characteristics of the data, i.e. the minimum and maximum (which define the range) and average value of each numeric variable. It further provides a tiny histogram of the variables distribution. 
 
-```{r, echo=FALSE}
-library(modelsummary)
-datasummary(All(storks %>% select(-Year)) ~ Min + Mean + Max + Histogram, storks %>% select(-Year))
+```{r rel-storks-deliver-babies-3, echo=FALSE}
+datasummary(title = "Minimum, mean and maximum of each numeric stork variable, with a thumbnail histogram of its distribution.", All(storks %>% select(-Year)) ~ Min + Mean + Max + Histogram, storks %>% select(-Year))
 ```
 
-### Statistics 
+### Statistics {#statistics}
 
-Before venturing into specific inquiries, it is essential to establish a solid foundation by introducing key concepts such as *variance*, *covariance*, *correlation*, and *levels of measurement*. The understanding of variance is paramount as it provides valuable insights into the degree of variability within a variable. Covariance, the measure of how two variables change together, assumes a pivotal role in unveiling the direction of association between them. The standardized measure of association, correlation, plays a central role in quantifying the strength and direction of relationships.
+Before venturing into specific inquiries, it is essential to establish a solid foundation by introducing key concepts such as *variance*, *covariance*, *correlation*, and *levels of measurement*. The understanding of variance is paramount as it provides valuable insights into the degree of variability within a variable. Covariance, the measure of how two variables change together, assumes a pivotal role in unveiling the direction of association between them. The standardised measure of association, correlation, plays a central role in quantifying the strength and direction of relationships.
 
 #### Variance
 
 The map shows the number of stork pairs for the selected countries. Looks like storks like certain countries more than others. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+```{r rel-variance, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Stork pairs per country across Eurasia; darker countries hold more pairs, and that spread is what variance measures."}
 # Retrieve the map data for Participant Countries 
 # library("maps")
 # stork_map <- map_data("world", region = storks$code)
@@ -142,7 +138,7 @@ The range goes from 3 pairs in Albania to `r fitb(52500)` pairs of storks in Pol
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **variance** is defined as the **average quadratic deviation from the mean**.
 
@@ -150,15 +146,15 @@ The term variance was first introduced by Ronald Fisher in his 1918 paper *<a hr
 
 ::::
 
-$$var(x) = \frac{1}{n-1} \sum (x_i - \overline{x} )^2$$
+$$\text{var}(x) = \frac{1}{n-1} \sum (x_i - \bar{x} )^2$$
 
-To calculate the variance, we subtract each data point $x_i$ from the mean $\overline{x}$. Then square those deviations and add them up. Finally, there is a scaling factor, we divide by the number of observations minus 1. 
+To calculate the variance, we subtract each data point $x_i$ from the mean $\bar{x}$. Then square those deviations and add them up. Finally, there is a scaling factor, we divide by the number of observations minus 1. 
 
 The variance of `Storks` and can be calculated via `var()` in R. It is `r format(round(var(storks$Storks),0), scientific=FALSE)`. 150 million of what? The variance is in squared unit, i.e. *square storks* and thus hard to interpret.
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: Population vs. Sample </h2>
+<h2>Truly Dedicated: Population vs. Sample</h2>
 :::
 When you collect data from every member of the population that you’re interested in, you can get an exact value for *population variance*. When you collect data from a sample, the *sample variance* is used to make estimates or inferences about the population variance. Sample variance is divided by $n-1$. Population variance is divided by $n$. 
 ::::
@@ -180,12 +176,10 @@ Please try mental calculation. What is the variance of 3, 5, 7, 9 and 11? Answer
 
 The standard deviation is derived from variance and tells, on average, how far each value lies from the mean. Variance and standard deviation both measure the variability of a variable. The standard deviation is the square root of variance.
 
-$$sd(x) = \sqrt{var(x)} = \sqrt{ \frac{\sum (x_i - \overline{x} )^2}{n-1} } $$
-In R, the standard deviation is calculated by `sd()` like `sd(storks$Storks)` which yields `r format(round(sd(storks$Storks),0), scientific=FALSE)`. The mean of storks `mean(storks$Storks)` is approximately `r round(mean(storks$Storks),0)`. The one-dimensional variable `Storks` is visualized as points on the line.  
+$$\text{sd}(x) = \sqrt{\text{var}(x)} = \sqrt{ \frac{\sum (x_i - \bar{x} )^2}{n-1} } $$
+In R, the standard deviation is calculated by `sd()` like `sd(storks$Storks)` which yields `r format(round(sd(storks$Storks),0), scientific=FALSE)`. The mean of storks `mean(storks$Storks)` is approximately `r round(mean(storks$Storks),0)`. The one-dimensional variable `Storks` is visualised as points on the line.  
 
-```{r, echo=F, eval=TRUE, out.width = '80%', fig.align="center"}
-library(ggplot2)
-library(tidyverse)
+```{r rel-standard-deviation, echo=FALSE, eval=TRUE, out.width='80%', fig.align="center", fig.cap="Each country's stork count as a point on one line; the arrows mark one standard deviation either side of the mean."}
 
 # x=c(4,13,19,25,29)
 # y=c(10,12,28,32,38)
@@ -229,7 +223,7 @@ ggplot(aes(x=x, y=c(0)), data=data) +
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: Empirical Rule </h2>
+<h2>Truly Dedicated: Empirical Rule</h2>
 :::
 In statistics, the empirical rule states that 
 
@@ -246,7 +240,7 @@ Again, the standard deviation of storks is 12413. Given the graph and the table 
 
 The following scatterplot shows the number of storks and the population with their respective means as bold red lines. 
 
-```{r, echo=F, eval=TRUE, out.width = '80%', fig.align="center"}
+```{r rel-standard-deviation-2, echo=FALSE, eval=TRUE, out.width='80%', fig.align="center", fig.cap="Storks against population with each variable's mean in red; most countries fall in the lower-left or upper-right quadrant."}
 ggplot(aes(x=x, y=y), data=data) + 
   geom_point(size=3) +
   labs(title="Distribution of storks and population around their means.",
@@ -270,18 +264,18 @@ Covariance is a measure of the joint variability of two variables. The main idea
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **covariance** between two variables is the **product of the deviations of x and y from their respective means**. 
 ::::
 
-$$cov(x,y) = \frac{1}{n-1} \sum\limits (x_i - \bar{x})(y_i - \bar{y})$$ 
+$$\text{cov}(x,y) = \frac{1}{n-1} \sum\limits (x_i - \bar{x})(y_i - \bar{y})$$ 
 
 For each data point, we multiply the differences with the respective mean. Geometrically, this results in several rectangular areas starting at the intersection of means as a new origin. The covariance sums up all these areas. Finally, the covariance is adjusted by the number of observations. When both values are smaller or greater than the mean, the result will be positive. 
 
-In R, the covariance is calculated by `cov(storks$Storks, storks$Population)` and yields `r format(round(cov(storks$Storks, storks$Population),0), scientific=FALSE)`. The positive covariance confirms what we saw in the first scatterplot, the positive association between storks and population. Let's try to visualize the calculation procedure of the covariance. 
+In R, the covariance is calculated by `cov(storks$Storks, storks$Population)` and yields `r format(round(cov(storks$Storks, storks$Population),0), scientific=FALSE)`. The positive covariance confirms what we saw in the first scatterplot, the positive association between storks and population. Let's try to visualise the calculation procedure of the covariance. 
 
-```{r, echo=F, eval=TRUE, message=FALSE, warning=FALSE, out.width = '80%', fig.align="center"}
+```{r rel-covariance, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, out.width='80%', fig.align="center", fig.cap="Each rectangle spans one country's deviations from both means; covariance is the sum of these signed areas."}
 simple.arrow <- arrow(length = unit(0.2, "cm"))
 
 ggplot(aes(x=x, y=y), data=data) + 
@@ -309,22 +303,22 @@ ggplot(aes(x=x, y=y), data=data) +
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 Can you validate the covariance result from `cov(x,y)` from the sum of squares from the figure?
 ::::
 
-Covariance qualifies a relationship as positive or negative, i.e. the direction of the relationship. Covariance is expressed in units that vary with the data. Because the data are not standardized, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117.5 can be very low for one relationship and 0.23 very high for another relationship). 
+Covariance qualifies a relationship as positive or negative, i.e. the direction of the relationship. Covariance is expressed in units that vary with the data. Because the data are not standardised, you cannot use the covariance statistic to assess the strength of a linear relationship (a covariance of 117.5 can be very low for one relationship and 0.23 very high for another relationship). 
 
 We need a measure independent of units in a fixed range, the correlation coefficient. 
 
 #### Correlation 
 
-To assess the strength of a relationship between two variables a correlation coefficient is commonly used. It brings variation to a standardized scale between -1 to +1.
+To assess the strength of a relationship between two variables a correlation coefficient is commonly used. It brings variation to a standardised scale between -1 to +1.
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **correlation coefficient** is a statistical measure of the strength and direction of the relationship between two variables.
 ::::
@@ -333,16 +327,16 @@ $$r(x,y) = \frac{\sum\limits (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum\limits (
 
 Does the numerator and denominator remind you of something? The formula is made of the components variance and covariance. Thus, the correlation coefficient formula is often expressed in short as:
 
-$$r(x,y,) = \frac{Cov(x,y)}{\sqrt{Var(x) Var(y)}}$$
+$$r(x,y) = \frac{\text{cov}(x,y)}{\sqrt{\text{var}(x)\,\text{var}(y)}}$$
 
 `cor()` is a basic function to calculate the correlation coefficient. 
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
+```{r rel-correlation, echo=TRUE, message=FALSE, warning=FALSE}
 # Basic function 
 cor(storks$Storks, storks$Population)
 ```
 
-The correlation coefficients confirms ones more, there is a positive relationship. You will find thresholds for different fields of research that classify the magnitude of the correlation coefficient as *weak*, *moderate* and *strong*. Social science usually accept lower correlation values to be meaningful. One possible classification could be:
+The correlation coefficient confirms once more, there is a positive relationship. You will find thresholds for different fields of research that classify the magnitude of the correlation coefficient as *weak*, *moderate* and *strong*. Social science usually accept lower correlation values to be meaningful. One possible classification could be:
 
 - above 0.4 is strong
 - between 0.2 and 0.4 is moderate, 
@@ -350,7 +344,7 @@ The correlation coefficients confirms ones more, there is a positive relationshi
  
 Thus we may consider the stork-population-relationship as weak to moderate. Keep in mind that these thresholds are not set in stone. Now, let's turn to `cor.test()`, a more sophisticated version including a hypothesis test.
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
+```{r rel-correlation-2, echo=TRUE, message=FALSE, warning=FALSE}
 # Advanced function 
 cor.test(storks$Storks, storks$Population)
 ```
@@ -363,7 +357,7 @@ The correlation test is based on a t-value (t = `r cor.test(storks$Storks, stork
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 The **p value** is a statistical measure to determine whether the results of a statistical analysis are statistically significant or if they could have occurred due to random chance. 
 ::::
@@ -406,9 +400,9 @@ Now, there is another concept for measuring the connection between two variables
 
 $$\beta_{x \rightarrow y} = r_{x,y} \cdot \frac{\sigma_y}{\sigma_x} $$
 
-The correlation coefficient is the same value no matter the order of the variables. It is symmetric, i.e. the correlation between variables $x$ and $y$ is the same as the correlation between $y$ and $x$. However, the regression coefficient is a bit picky. It does care about the order of things. If you swap the roles of the dependent ($y$) and independent variables ($x$), the regression coefficient changes. So, it's like having a favorite direction – it matters which way you're looking when interpreting the relationship.
+The correlation coefficient is the same value no matter the order of the variables. It is symmetric, i.e. the correlation between variables $x$ and $y$ is the same as the correlation between $y$ and $x$. However, the regression coefficient is a bit picky. It does care about the order of things. If you swap the roles of the dependent ($y$) and independent variables ($x$), the regression coefficient changes. So, it's like having a favourite direction – it matters which way you're looking when interpreting the relationship.
 
-```{r, echo=FALSE}
+```{r rel-early-glimpse-into, echo=FALSE}
 # Provided data
 df <- data.frame(x = c(4, 13, 19, 25, 29), y = c(10, 12, 28, 32, 38))
 
@@ -445,7 +439,6 @@ df_wide <- data.frame(
 # Display the wide format data frame
 cols_2 <- c("Observation", "x", "y")
 
-library(modelsummary)
 
 # Set the column names as LaTeX formulas
 colnames(df_wide) <- c("Observation", "x", "y", "$\\text{var}(x)$", "$\\text{var}(y)$",
@@ -453,18 +446,19 @@ colnames(df_wide) <- c("Observation", "x", "y", "$\\text{var}(x)$", "$\\text{var
 
 df_wide %>% 
   #mutate(across(c(everything(), any_of(cols_2)),round, 0 )) %>% 
-  datasummary_df(fmt = fmt_significant(digits = 3))
+  datasummary_df(fmt = fmt_significant(digits = 3),
+                 title = "Five observations of x and y with their variances, covariance, correlation and regression slope; the last two differ.")
 ```
 
-Notably, if the standard deviations ($\sigma$) of the two variables are equal, the correlation coefficient and the simple regression coefficient coincide. We can achieve this when variables are on the same scale. The most common way of achieving this is through standardization.  
+Notably, if the standard deviations ($\sigma$) of the two variables are equal, the correlation coefficient and the simple regression coefficient coincide. We can achieve this when variables are on the same scale. The most common way of achieving this is through standardisation.  
 
-**Standardization** is a crucial process in statistics that harmonizes variables by centering them around a mean of 0 and scaling them to have a standard deviation of 1. This transformation ensures that variables operate on a uniform scale, facilitating meaningful comparisons. The standardization formula is expressed as:
+**Standardisation** is a crucial process in statistics that harmonizes variables by centring them around a mean of 0 and scaling them to have a standard deviation of 1. This transformation ensures that variables operate on a uniform scale, facilitating meaningful comparisons. The standardisation formula is expressed as:
 
 $$ z = \frac{x - \bar{x}}{\sigma} $$
 
-By subtracting each data point from the mean and dividing by the standard deviation, we create a standardized variable that simplifies the interpretation and comparison of different datasets. The same calculation based on scaled data: 
+By subtracting each data point from the mean and dividing by the standard deviation, we create a standardised variable that simplifies the interpretation and comparison of different datasets. The same calculation based on scaled data: 
 
-```{r, echo=FALSE}
+```{r rel-early-glimpse-into-2, echo=FALSE}
 # Standardize the data
 df_scaled <- as.data.frame(scale(df, center = TRUE, scale = TRUE))
 
@@ -497,20 +491,20 @@ colnames(df_scaled_wide) <- c("Observation", "$z_x$", "$z_y$", "$\\text{var}(z_x
 # Display the wide format data frame for standardized variables
 df_scaled_wide %>% 
   #mutate(across(c(everything(), any_of(cols_2)),round, 0 )) %>% 
-  datasummary_df(fmt = fmt_significant(digits = 3))
+  datasummary_df(fmt = fmt_significant(digits = 3),
+                 title = "The same five observations after standardisation: both variances are one, so correlation and regression slope now coincide.")
 ```
 
 
-### Visualizations 
+### Visualisations {#visualizations}
 
-```{r, message=FALSE, warning=FALSE, echo = F, eval = F}
+```{r rel-visualisations, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 storks <- storks %>% 
   mutate(UrbanShare = UrbanPop/Population)
 
 model1 <- lm(Population ~ Storks, data = storks)
 model2 <- lm(Population ~ Storks + log(Area), data = storks)
 
-library(modelsummary)
 modelsummary(list(model1, model2), stars = TRUE)
 ```
 
@@ -520,7 +514,7 @@ In our example, we explored the stork-baby relationship by measuring the number 
 
 The *scatterplot* is a two-dimensional instrument that shows the number of storks on the x-axis and the population on the y-axis. The blue line illustrates the linear trend between the variables. Since its slope is increasing, it suggests a positive connection between storks and population, i.e. countries with more pairs of storks also tend to have a higher population.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+```{r rel-storks-population-scatterplot, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Stork pairs against population for 28 countries; the fitted line slopes upwards, a positive but hardly causal association."}
 library(ggpmisc)
 
 ggplot(storks, aes(x = Storks, y = Population)) + 
@@ -538,7 +532,7 @@ A *barplot* is a graphical representation of categorical data where individual b
 
 To illustrate the relationship in a barplot, the number of storks is transformed from a continuous variable to a categorical ordered variable. Stork numbers are grouped into four equal parts (quartiles). For each part, the mean number of population is calculated. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+```{r rel-storks-population-barplot, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', fig.cap="Mean population within each quartile of stork numbers; the labels give the range of stork pairs behind each bar."}
 storks %>%
   mutate(Storks_Category = ntile(Storks, 4)) %>%
   group_by(Storks_Category) %>%
@@ -558,14 +552,12 @@ In the first quartile are countries with a range of stork numbers between 3 and 
 
 we should also consider area when talking about the stork population relationship. since Additionally, considerations of geographical area size reveal potential confounding factors, where larger areas might exhibit both more storks and higher human populations. 
 
-Logarithmic transformations are particularly useful for variables that exhibit skewed distributions, large ranges, or multiplicative relationships. Examples include income, where logarithmic transformation can help normalize the data, making it more symmetric. Population growth rates are often better visualized on a log scale due to their multiplicative nature. Stock prices, influenced by exponential growth or decay, benefit from log scales to highlight percentage changes and identify trends. 
+Logarithmic transformations are particularly useful for variables that exhibit skewed distributions, large ranges, or multiplicative relationships. Examples include income, where logarithmic transformation can help normalise the data, making it more symmetric. Population growth rates are often better visualised on a log scale due to their multiplicative nature. Stock prices, influenced by exponential growth or decay, benefit from log scales to highlight percentage changes and identify trends. 
 
-This compression can be particularly useful when you have extreme values that would otherwise make the visualization challenging.
+This compression can be particularly useful when you have extreme values that would otherwise make the visualisation challenging.
 
-```{r, message=FALSE, warning=FALSE, echo = F}
-library(ggplot2)
+```{r rel-storks-area, message=FALSE, warning=FALSE, echo=FALSE, fig.cap="Storks against country area on a linear (left) and logarithmic (right) scale; the log scale tames the extreme countries."}
 library(patchwork)
-library(scales)
 
 # Scatter plot with linear y-scale
 plot_linear <- ggplot(storks, aes(x = Storks, y = Area)) +
@@ -611,7 +603,7 @@ Integrating information on the share of urban population into the analysis of th
 
 Storks, being wild creatures, can be significantly affected by shifts in habitat resulting from urbanization. Evaluating the correlation between the share of urban population and stork populations aids in understanding the impact of changes in human habitat on stork habitats.
 
-```{r, message=FALSE, warning=FALSE, echo = F}
+```{r rel-storks-urban-population, message=FALSE, warning=FALSE, echo=FALSE, fig.cap="Stork pairs against the urban share of the population, one of the common causes behind the stork-baby correlation."}
 storks %>% 
   mutate(UrbanShare = UrbanPop/Population) %>% 
   ggplot(aes(x = Storks, y = UrbanShare)) +
@@ -624,9 +616,9 @@ storks %>%
 ```
 
 
-### Spurious Relationships
+### Spurious Relationships {#spurious-relationships}
 
-```{r, echo=FALSE, out.width="60%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
+```{r rel-spurious-relationships, echo=FALSE, out.width="60%", fig.cap="The first known pair in Finland (2015), representing a northward expansion compared to the species' historical breeding range.", fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg/1280px-Haikara_%28White_stork%29_%281%29_Koski_Tl._9.7.2015.jpg") 
 ```
 
@@ -652,7 +644,7 @@ Number of TVs per Household and Life Expectancy:
 - Correlation Explanation: Socioeconomic status is a confounding variable, affecting both the number of TVs owned and life expectancy.
 
 
-```{r, message=FALSE, warning=FALSE, echo=F, eval=FALSE}
+```{r rel-spurious-relationships-2, message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 library(RSelenium)
 
 # Start a Selenium server with Firefox
@@ -684,7 +676,7 @@ remote_driver$close()
 print(urls)
 ```
 
-### Readings {-}
+### Readings {#readings -}
 
 - Matthews, R. (2000). Storks deliver babies (p= 0.008). Teaching Statistics, 22(2), 36-38.
 

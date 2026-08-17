@@ -1,4 +1,4 @@
-## Time data
+## Time data {#time-data}
 
 Writing a short introduction about time and time data is a challenge.
 
@@ -8,18 +8,18 @@ In economics, time preference explores if people prefer the present over the fut
 
 Time is a measure of the duration between events or the intervals during which things happen.
 
-### Measuring Time
+### Measuring Time {#measuring-time}
 
 Measuring time data involves assessing durations, intervals, and sequences. Common units of measurement include seconds, minutes, hours, days, and beyond. The precision of time measurement varies based on the application, ranging from macro-level timeframes in months or years to micro-level measurements in milliseconds or nanoseconds.
 
 time stamps for point in time
 
 
-The time system in which 1 hour is divided into 60 minutes, and each minute is further divided into 60 seconds, is called the **sexagesimal** or **base-60** system. This system has been widely used in measuring time and angles (see chapter Geo Data).
+The time system in which 1 hour is divided into 60 minutes, and each minute is further divided into 60 seconds, is called the **sexagesimal** or **base-60** system. This system has been widely used in measuring time and angles (see Section \@ref(geo-data)).
 
 :::: {.amazing}
 ::: {.titelamazing}
-<h2> Amazing Fact </h2>
+<h2>Amazing Fact</h2>
 :::
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/ClockIcon.svg" alt="Clock Icon" style="float:left;width:60px;height:60px;padding:5px;">
@@ -27,41 +27,41 @@ In everyday conversation, we often use a combination of clock time and spatial m
 
 ::::
 
-### Measuring Dates
+### Measuring Dates {#measuring-dates}
 
 A calendar date is a specific day within a calendar system, typically identified by a combination of the day, month, and year.
 
-It is a standardized way of expressing and referencing points in time. Calendar dates are used globally for various purposes, including scheduling events, recording historical events, and organizing daily life.
+It is a standardised way of expressing and referencing points in time. Calendar dates are used globally for various purposes, including scheduling events, recording historical events, and organising daily life.
 
 The current date system used globally is the **Gregorian calendar**. The Gregorian calendar is a solar calendar introduced by Pope Gregory XIII in October 1582 to reform the earlier Julian calendar. It is the calendar system most widely used today for civil purposes.
 
 The Gregorian calendar is based on a 365-day year divided into 12 months. It includes leap years to account for the fact that a year is not precisely 365.25 days long.
 
-### Your First Time (in R) 
+### Your First Time (in R) {#your-first-time-in-r}
 
 `Sys.time()` and `Sys.Date()` return the time and date on your system and they come in date formats.
 
-```{r}
+```{r tim-your-first-time}
 Sys.time()
 ```
 
 The default format for dates and date-times in R is the *ISO 8601 format*. This format is widely used and unambiguous, representing the date in the format *YYYY-MM-DD* and the date-time in the format *YYYY-MM-DD HH:MM:SS*. It looks like a character, but is not. **CET** stands for **Central European Time**. CET is a time zone that is 1 hour ahead of **Coordinated Universal Time** (UTC+1).
 
-### Time Zones
+### Time Zones {#time-zones}
 
-There are 24 time zones, each representing 15 degrees of longitude (see chapter Geo Data). Time zones are centered around the Prime Meridian (0 degrees longitude).
+There are 24 time zones, each representing 15 degrees of longitude (see Section \@ref(geo-data)). Time zones are centred around the Prime Meridian (0 degrees longitude).
 
 ![Current time zones](https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/World_Time_Zones_Map.png/1920px-World_Time_Zones_Map.png)
 
-::: amazing
-::: titelamazing
+:::: {.amazing}
+::: {.titelamazing}
 <h2>Amazing Fact</h2>
 :::
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1920px-Flag_of_the_People%27s_Republic_of_China.svg.png" alt="Clock Icon" style="float:left;height:60px;padding:5px;">
 Historically, China used five time zones, corresponding to its geographical expanse. However, in 1949, after the establishment of the People's Republic of China, the government decided to unify the country under a single time zone. China's decision to use a single time zone is rooted in the desire for national unity and centralized governance. Adopting a single time zone simplifies administration and coordination across the country.
-:::
+::::
 
-In addition to the **standard time zones**, some regions may observe **daylight saving time (DST)**, which involves adjusting the clocks forward by one hour during the warmer months. This practice can result in an effective difference of two hours between neighboring time zones during the DST period.
+In addition to the **standard time zones**, some regions may observe **daylight saving time (DST)**, which involves adjusting the clocks forward by one hour during the warmer months. This practice can result in an effective difference of two hours between neighbouring time zones during the DST period.
 
 In summary, the relationship between CET, UTC, and DST is dynamic:
 
@@ -70,8 +70,7 @@ In summary, the relationship between CET, UTC, and DST is dynamic:
 
 Australia, positioned ahead of numerous countries in the global time zones, stands among the foremost nations to usher in the New Year. As the first place to celebrate the New Year is typically in the Pacific region, Australia's geographical location allows it to be among the early heralds of the new calendar year. Notably, the city of Sydney has gained international acclaim for its legendary New Year's Eve festivities. The iconic celebrations in Sydney feature a breathtaking fireworks display illuminating the night sky over the Sydney Harbour Bridge and the Sydney Opera House, creating a dazzling spectacle that marks the beginning of the New Year in grandeur.
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
-library(tidyverse)
+```{r tim-time-zones, echo=TRUE, warning=FALSE, message=FALSE}
 library(lubridate)
 
 new_year_berlin <- "2023-12-31 23:59:59" %>% with_tz("Europe/Berlin")
@@ -81,13 +80,13 @@ new_year_sydney <- new_year_berlin %>% with_tz("Australia/Sydney")
 new_year_sydney
 ```
 
-### Time Management in R
+### Time Management in R {#time-management-in-r}
 
 #### Decimal Time
 
 How can we code one hour in R? Well, we can put numbers in a `numeric` vector. Combinations of hours, minutes and seconds can be represented by decimals, e.g. one and a half hours are 1.5 and 1 hour and 10 min corresponds to 1.166 hours.
 
-```{r}
+```{r tim-decimal-time}
 # one hour
 time <- 1 
 
@@ -104,7 +103,7 @@ Well, fractions are a complicated way of representing minutes.
 
 In R, time formats are essential for handling and representing date and time information. Two commonly used time-related classes in R are `Date` and `POSIXct`.
 
-```{r, echo=FALSE, eval=FALSE}
+```{r tim-time-formats, echo=FALSE, eval=FALSE}
 # Creating a Date object
 my_date <- as.Date("2023-12-25")
 
@@ -114,7 +113,7 @@ my_datetime <- as.POSIXct("2023-12-25 14:30:00")
 
 In Germany, it is more common to have *DD-MM-YYYY*, e.g. `24.12.2023`. `format()` (or the `format` option in `as.Date()`) can change the internal representation:
 
-```{r, echo=TRUE}
+```{r tim-time-formats-2, echo=TRUE}
 German_Date <- c("24.12.2023")
 
 # This does not work without the format option 
@@ -127,19 +126,18 @@ Note that date variables often come as character and need to be converted to a t
 
 Well, what is the benefit of converting to a time and date format? For example *date arithmetic* such as calculating the difference between dates (e.g. `difftime()`), adding or subtracting days, months, or years, and other operations. This is more straightforward and accurate than performing such operations on raw character strings.
 
-```{r}
+```{r tim-time-formats-3}
 # Calculate the difference between two times
 time1 <- as.POSIXct("2023-12-25 14:30:00", format = "%Y-%m-%d %H:%M:%S")
 time2 <- as.POSIXct("2023-12-25 15:45:00", format = "%Y-%m-%d %H:%M:%S")
 difftime(time2, time1, units = "mins")
 ```
 
-### Coffee Spending
+### Coffee Spending {#coffee-spending}
 
 The coffee data comes from the app *Money Manager*. It allows to track your spendings and export data to `.xlsx` format. Variables and date information is German.
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
-library(tidyverse)
+```{r tim-coffee-spending, echo=TRUE, warning=FALSE, message=FALSE}
 
 Coffee <- read_csv("./data/Coffee/Coffee.csv") %>% 
   select(Date = Datum, 
@@ -152,14 +150,14 @@ glimpse(Coffee)
 
 Change the character to a date format:
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
+```{r tim-coffee-spending-2, echo=TRUE, warning=FALSE, message=FALSE}
 Coffee$Date <- as.POSIXct(Coffee$Date, format = "%d/%m/%Y %H:%M:%S")
 head(Coffee$Date)
 ```
 
 What is the time interval of available data:
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
+```{r tim-coffee-spending-3, echo=TRUE, warning=FALSE, message=FALSE}
 # First and Last Date
 range(Coffee$Date)
 
@@ -171,14 +169,14 @@ diff(range(Coffee$Date))
 
 To calculate the usual time of spendings, calculate the average of all observed times. First, extract the time of day of spending with `format()` to create `Coffee$time_of_day`.
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r tim-spending-time-day, echo=FALSE, warning=FALSE, message=FALSE}
 Coffee$time_of_day <- format(Coffee$Date, "%H:%M:%S")
 head(Coffee$time_of_day)
 ```
 
 Then, use the `chron` package to convert these times to the *times* format with `times()` function. Then apply `mean()` on the *times* object.
 
-```{r, echo=FALSE, eval = TRUE, warning=FALSE, message=FALSE}
+```{r tim-spending-time-day-2, echo=FALSE, eval=TRUE, warning=FALSE, message=FALSE}
 library(chron)
 
 # Convert time values to chron objects
@@ -192,7 +190,7 @@ mean(chron_times)
 
 Use `scale_x_datetime()` to show each month on the x-axis.
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE, fig.align='center'}
+```{r tim-run-chart, echo=TRUE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="Every purchase in the coffee app between November 2022 and June 2023, in euros. Flat stretches are days without spending."}
 ggplot(Coffee, aes(x = Date, y = Amount)) +
   geom_line() +
   labs(title = "Running Chart with Time on X-Axis and Spending on Y-Axis",
@@ -206,7 +204,7 @@ ggplot(Coffee, aes(x = Date, y = Amount)) +
 
 Colour different forms of spending from `Note`.
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
+```{r tim-run-chart-grouped, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="The same spending coloured by purchase type. Mensa appears twice, once misspelled Mensq, and drinks tower over coffee."}
 ggplot(Coffee, aes(x = Date, y = Amount, col = Note)) +
   geom_line() +
   labs(title = "Running Chart with Time on X-Axis and Spending on Y-Axis",
@@ -216,11 +214,11 @@ ggplot(Coffee, aes(x = Date, y = Amount, col = Note)) +
   scale_x_datetime(date_breaks = "1 month", date_labels = "%b %Y") 
 ```
 
-### Run Chart Grouped Cleaned
+### Run Chart Grouped Cleaned {#run-chart-grouped-cleaned}
 
 Filter other beverages and correct the `mensq` typo.
 
-```{r, echo=F, warning=FALSE, message=FALSE, fig.align='center'}
+```{r tim-run-chart-grouped-2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap="After dropping drinks and fixing the Mensq typo, horizontal lines mark the mean spend for Mensa and coffee."}
 Coffee_Clean <- Coffee %>% 
   filter(Note != "Getränke") %>% 
   mutate(Note = replace(Note, Note == "Mensq", "Mensa")) 

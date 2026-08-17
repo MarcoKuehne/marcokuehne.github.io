@@ -77,7 +77,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   collapse = TRUE,
-  cache = FALSE,        # <- add this
+  cache = FALSE,
   tut = FALSE,
   fig.width = 6
 )
@@ -91,23 +91,39 @@ if (!requireNamespace("webexercises")) {
   library("webexercises")
 }
 
-library("tidyverse")
-library("tippy")
-library("zoo")
-library("kableExtra")
-library("sjlabelled")
-library("tidytext")
-library("sentimentr")
-library("modelsummary")
+# ---------------------------------------------------------------------------
+#  BOOK-WIDE PACKAGES
+#  `new_session: no` in _bookdown.yml means every chapter is knitted in this
+#  same R session, so anything attached here stays attached for the whole book.
+#  Rule: a package belongs here when three or more chapters use it, or when it
+#  powers the book itself. Everything else is attached in the one chapter that
+#  needs it, so that a `library()` call inside a chapter always carries
+#  information. Keep this list in sync with Imports: in DESCRIPTION.
+# ---------------------------------------------------------------------------
+
+# The book itself
+library("tippy")          # tooltips
+
+# Data handling and graphics
+library("tidyverse")      # ggplot2, dplyr, tidyr, readr, purrr, tibble, stringr, forcats
+library("haven")          # SPSS/Stata/SAS import - the SOEP files
+library("sjlabelled")     # labelled survey variables
+library("scales")         # axis and label formatting
+
+# Tables
+library("knitr")          # kable(), include_graphics(), opts_chunk
+library("kableExtra")     # kable styling
+library("modelsummary")   # regression and summary tables
+library("DT")             # searchable HTML tables
 ```
 
-# (PART) Introduction {-}
+# (PART) Introduction {#part-introduction -}
 
-# Preface {-}
+# Preface {#preface -}
 
 <center><img src="images/Cover.png" width="80%"></center>
 
-### From Dust and dark {.unlisted .unnumbered}
+### From Dust and dark {#from-dust-and-dark -}
 
 A dusty lecture hall. Light cuts through the darkness from one side of the room. Only a few of the many seats are occupied, and the small groups of students have left generous distances between themselves and the lecturer.
 
@@ -125,7 +141,7 @@ The times were changing—and so was I.
 
 <br>
 
-### Learning like a dolphin swims {-}
+### Learning like a dolphin swims {#learning-like-a-dolphin-swims -}
 
 How can we learn statistical methods without either remaining at the surface or becoming lost in an ocean of formulas and technical details?
 
@@ -158,7 +174,7 @@ Resurfacing is not a failure to understand. It is part of understanding.
 
 > **Learn like a dolphin swims: move between the surface and the depths, breathe, look around, and dive again.**
 
-### Teach – Learn – Repeat {-}
+### Teach – Learn – Repeat {#teach-learn-repeat -}
 
 A second principle behind this book is *learning by teaching*.
 
@@ -188,7 +204,7 @@ This project has helped me learn more about R, RStudio, R Markdown, Bookdown, HT
 
 *Learning by teaching* is associated with Jean-Pol Martin. Who is it? `r mcq(c("Jimmy Wales", "Linus Torvalds", answer = "Jean-Pol Martin", "Richard E. Pattis"))`
 
-### Doing something meaningful with data {-}
+### Doing something meaningful with data {#doing-something-meaningful-with-data -}
 
 The dolphin metaphor and *learning by teaching* describe how I approach learning. A third idea is different: it is a personal aspiration for what we do with the things we learn.
 
@@ -214,7 +230,7 @@ These three ideas accompany the journey through this book:
 2. **Learn by explaining to others.**
 3. **Use data to do something meaningful.**
 
-### About this book {-}
+### About this book {#about-this-book -}
 
 *Becoming Fluent in Data* is an open and evolving introduction to working, thinking, and communicating with data.
 
@@ -252,7 +268,7 @@ It can accompany students encountering R and quantitative methods for the first 
 
 For instructors, *Becoming Fluent in Data* is an open educational resource. Chapters, explanations, examples, exercises, data, and visual materials can be selected and combined for different teaching and learning settings.
 
-No previous experience with R is required for the introductory material. Later sections gradually move toward more complex data structures, statistical models, mathematical notation, and methodological questions.
+No previous experience with R is required for the introductory material. Later sections gradually move towards more complex data structures, statistical models, mathematical notation, and methodological questions.
 
 #### How to read this book {-}
 
@@ -279,7 +295,7 @@ The book repeatedly connects four forms of understanding:
 3. **Models and formulas** describe those patterns more precisely.
 4. **Code** makes the analysis transparent, reproducible, and changeable.
 
-The chapters begin with foundational questions about data, measurement, data structures, and description. They then move toward comparison, variation, relationships, statistical models, uncertainty, and more advanced questions of measurement and explanation.
+The chapters begin with foundational questions about data, measurement, data structures, and description. They then move towards comparison, variation, relationships, statistical models, uncertainty, and more advanced questions of measurement and explanation.
 
 The exact route continues to evolve. The recurring aim, however, remains the same: do not treat methods as isolated islands. Look for the shared ideas, empirical comparisons, and mathematical structures that connect them.
 
@@ -349,7 +365,7 @@ A **Truly Dedicated** section descends further into derivations, qualifications,
 
 Underlined text may contain a tooltip. Move the cursor over <u id="tippy">this example</u>.
 
-```{r, echo=FALSE}
+```{r idx-structure-visual-language, echo=FALSE}
 tippy::tippy_this(
   elementId = "tippy",
   tooltip = "Underlined text can provide a short explanation without interrupting the main text."
@@ -364,12 +380,12 @@ The web annotation tool [Hypothes.is](https://web.hypothes.is/) can be used to h
 
 These elements are invitations, not obligations. Stay at the surface when you need orientation. Dive when curiosity or necessity takes you deeper. Then resurface, explain what you found, and connect it to the world beyond the book.
 
-### About the author {-}
+### About the author {#about-the-author -}
 
 :::::: {.columns}
 
 ::: {.column width="20%" data-latex="{0.20\textwidth}"}
-```{r, echo=FALSE, out.width="90%", fig.align="center"}
+```{r idx-about-author, echo=FALSE, out.width="90%", fig.align="center"}
 knitr::include_graphics(path = "images/Marco-scaled.jpg")
 ```
 :::

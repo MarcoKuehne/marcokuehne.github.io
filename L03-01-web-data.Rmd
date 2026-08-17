@@ -1,6 +1,6 @@
 ## Web Data {#web-data}
 
-> “Over the last two years alone, 90 percent of the data in the world was generated.”</b>
+> “Over the last two years alone, 90 percent of the data in the world was generated.”
 >
 > `r tufte::quote_footer('Bernard Marr (2018) *How Much Data Do We Create Every Day? The Mind-Blowing Stats Everyone Should Read* [Forbes.](https://www.forbes.com/sites/bernardmarr/2018/05/21/how-much-data-do-we-create-every-day-the-mind-blowing-stats-everyone-should-read/#4472289660ba){target="_blank"}')`
 
@@ -8,7 +8,7 @@ Volume was never the hard part. The quote is about *how much* data exists; this 
 
 Practically everything is on the web, and both data scientists and social scientists live off it: numerical, textual, spatial and relational data, used to train models, to study human behaviour and to test research questions. Most of it, though, comes in a civilised way — as a **file you download** or a **service you query**. Benchmark data sets from Kaggle, official numbers from Destatis or Eurostat, surveys from GESIS, digitised parliamentary records, weather and financial feeds.^[Good starting points: [Kaggle](https://www.kaggle.com/datasets) and the [UCI repository](https://archive.ics.uci.edu/) for machine-learning data, [Destatis](https://www.destatis.de/) and [Eurostat](https://ec.europa.eu/eurostat) for official statistics, [GESIS](https://www.gesis.org/) for social surveys.] None of that needs the techniques below.
 
-**Web data**, as we use the term here, is what the browser *builds* for a human reader: the content that a server delivers as **HTML** and dresses up with **CSS**. Two kinds of it interest us. **Numbers** — prices, student counts, rankings — sitting in tables, lists or plain sentences; that is this section. And **text** — articles, reviews, speeches, posts — which is its own craft and has its own section, [Text Data](#text-data). Other shapes exist and mostly leave the browser behind: spatial data comes as map files rather than as page content (see [Geo Data]), and relational data such as social networks is handed out, if at all, through the platform's own gate rather than through the page you see.
+**Web data**, as we use the term here, is what the browser *builds* for a human reader: the content that a server delivers as **HTML** and dresses up with **CSS**. Two kinds of it interest us. **Numbers** — prices, student counts, rankings — sitting in tables, lists or plain sentences; that is this section. And **text** — articles, reviews, speeches, posts — which is its own craft and has its own section, [Text Data](#text-data). Other shapes exist and mostly leave the browser behind: spatial data comes as map files rather than as page content (see Section \@ref(geo-data)), and relational data such as social networks is handed out, if at all, through the platform's own gate rather than through the page you see.
 
 **Data scraping** is the technique of letting a program extract data from output that was written for people, not for programs. On the web this is called **web scraping** (also crawling or spidering): read the page, find the values, build a table. The same idea applied to reports and documents is **PDF scraping**, or more generally **report mining** — a harder problem, because a PDF knows where a character sits on the page but not which column it belongs to. We stay with HTML and only borrow one PDF result later on.
 
@@ -21,7 +21,7 @@ When none of them exists, we scrape. Two examples follow, ordered by how much th
 
 Both follow the same four steps: **find the data, get it, clean it, look at it.**
 
-### Most expensive paintings
+### Most expensive paintings {#most-expensive-paintings}
 
 What does a painting of Christ have in common with a Pacific island state?
 
@@ -29,7 +29,7 @@ On 15 November 2017, *Salvator Mundi* — attributed to Leonardo da Vinci — wa
 
 The most expensive paintings play in the league of small national economies — and English Wikipedia keeps score.
 
-#### Finding the data
+#### Finding the data {#web-paintings-find}
 
 Before writing a single line of code, ask the question that decides everything else: **in what form does this data exist?** So let us look at the page first. This is the address we are going to work with:
 
@@ -39,14 +39,13 @@ Before writing a single line of code, ask the question that decides everything e
 
 The window below is not a screenshot. It is the **live page**, embedded into this book. Scroll down inside it until you reach the long ranking with the columns *Adjusted*, *Original*, *Name*, *Artist*. That also means the content changes without asking us: a new record sale, a renamed column, a restructured article — and code that worked today may need repair in a year or two. Keep that in mind while reading the rest of this section.
 
-```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
-library(webshot)
+```{r web-finding-data, echo=FALSE, eval=TRUE, out.width="100%", fig.align='center'}
 knitr::include_url("https://en.wikipedia.org/wiki/List_of_most_expensive_paintings#List_of_highest_prices_paid")
 ```
 
 That ranking is a real HTML **table**, and that is the best news a scraper can get. To see it yourself, use the keyboard shortcut `CTRL + U` in the browser (Chrome, Firefox, Edge, Opera) to view the source code of a page. Alternatively, right click and choose "show source code". A table in HTML always follows the same skeleton: `<table>` wraps rows `<tr>`, a row wraps header cells `<th>` and data cells `<td>`.
 
-```{r, echo=T, eval=F}
+```html
 <table class="wikitable">
   <tr>
     <th>Name</th>
@@ -63,12 +62,11 @@ That ranking is a real HTML **table**, and that is the best news a scraper can g
 
 This regular skeleton is the reason why table scraping is so comfortable. We do not have to describe where a value sits — we only have to point at the table. Wikipedia even labels its tables with the CSS class `wikitable`, which is the address we will use.
 
-#### Scraping
+#### Scraping {#web-paintings-scrape}
 
 Three steps, three functions from the `rvest` package. `read_html()` downloads the page, `html_element()` picks the node we want, and `html_table()` turns that node into a data frame. Wikipedia marks its tables with the CSS class `wikitable`, so the selector `"table.wikitable"` is all we need. `html_element()` in singular returns the *first* match.
 
 ```{r paintings-scrape, message=FALSE, warning=FALSE}
-library(tidyverse)
 library(rvest)
 
 paintings_url <- "https://en.wikipedia.org/wiki/List_of_most_expensive_paintings"
@@ -84,12 +82,11 @@ names(paintings_raw)
 
 Ninety-odd rows and eleven columns, in three lines of code. Everything after this point is cleaning.
 
-#### Cleaning
+#### Cleaning {#web-paintings-clean}
 
 The result is already rectangular, but the column names are long, one column holds nothing but images, and every cell still carries Wikipedia's footnote markers such as `[b]`. Three moves are enough: keep four columns under short names, delete everything in square brackets, and let `parse_number()` turn the rest into numbers. Then show the result right away.
 
 ```{r paintings-clean}
-library(DT)
 
 paintings <- paintings_raw %>%
   # 1. Keep four columns and rename them. starts_with() is safer than the
@@ -113,7 +110,7 @@ paintings <- paintings_raw %>%
   # 4. Rows without a price are separators or notes, not paintings.
   filter(!is.na(price_musd))
 
-datatable(
+datatable(caption = "The cleaned Wikipedia ranking: one row per painting, with artist, price in million USD and year of sale.", 
   paintings,
   rownames = FALSE,
   colnames = c("Painting", "Artist", "Price (million USD)", "Year of sale"),
@@ -124,11 +121,11 @@ datatable(
 
 Four clean columns, sortable and searchable. Ninety paintings that were text on a website a minute ago.
 
-#### Visualizing
+#### Visualising {#web-paintings-visualise}
 
 A ranking asks for a sorted bar chart. The plotting code is hidden here — this section is about getting data, not about `ggplot2` — but it is in the source file if you want it.
 
-```{r paintings-plot, echo=FALSE, fig.align='center', fig.width=7, fig.height=4.5}
+```{r paintings-plot, echo=FALSE, fig.align='center', fig.width=7, fig.height=4.5, fig.cap="The twelve highest prices in the scraped ranking, as paid on the day of sale and not inflation-adjusted."}
 paintings %>%
   slice_max(price_musd, n = 12) %>%
   mutate(painting = fct_reorder(painting, price_musd)) %>%
@@ -161,11 +158,11 @@ Three things could still go wrong, and it is worth naming them before they bite.
 
 The next example has exactly that problem, so we will have to describe *where* a value sits before we can read it.
 
-### Student numbers at Viadrina
+### Student numbers at Viadrina {#student-numbers-at-viadrina}
 
-Did you notice fewer and fewer fellow students sitting next to you? Let us check whether that feeling survives contact with data. *Dezernat 1* of the European University Viadrina publishes enrollment statistics for every semester. There is no download button, no API, and no `<table>` tag. This is what most real scraping looks like. We walk the same four steps as before — find, scrape, clean, visualize — and every one of them is harder.
+Did you notice fewer and fewer fellow students sitting next to you? Let us check whether that feeling survives contact with data. *Dezernat 1* of the European University Viadrina publishes enrolment statistics for every semester. There is no download button, no API, and no `<table>` tag. This is what most real scraping looks like. We walk the same four steps as before — find, scrape, clean, visualise — and every one of them is harder.
 
-#### Finding the data
+#### Finding the data {#web-viadrina-find}
 
 Again, the address first:
 
@@ -175,7 +172,7 @@ Again, the address first:
 
 And again the live page, embedded. Click one of the semester headings — the section folds open and reveals the numbers. That folding is the whole problem in one gesture: what looks like a list of semesters is one long page whose content is hidden inside collapsible boxes.^[If the frame stays empty, the university's web server refuses to be embedded. Open the link above in a new tab instead.]
 
-```{r, echo=F, eval=T, out.width="100%", fig.align='center'}
+```{r web-finding-data-3, echo=FALSE, eval=TRUE, out.width="100%", fig.align='center'}
 knitr::include_url("https://www.europa-uni.de/de/universitaet/einrichtungen/verwaltung/dezernat-1/studierendenstatistik/index.html")
 ```
 
@@ -195,7 +192,7 @@ The lesson of this list: the recent numbers and the long history are **two diffe
 
 **In what form?** Not as a table. Every semester lives in one `div` with the class `accordion-item`. Inside, the heading sits in a `<button>` and the numbers sit in a single `<p>` where `<br>` tags separate the lines. Label and value are one piece of running text.
 
-```{r, echo=T, eval=F}
+```html
 <div class="accordion-item">
   <h3 class="accordion-header">
     <button ...>Sommersemester 2026</button>
@@ -219,7 +216,7 @@ The lesson of this list: the recent numbers and the long history are **two diffe
 
 So the plan is: take all `accordion-item` nodes, read the heading from the button, read the text from the body — and only afterwards pull the numbers out of that text.
 
-#### Scraping
+#### Scraping {#web-viadrina-scrape}
 
 **Download once, parse often.** A book should still build when a website is down or has changed overnight. We therefore save the raw page in the repository and always parse the saved copy. The download only happens when we deliberately ask for it.
 
@@ -274,7 +271,7 @@ viadrina_raw %>%
 
 Fifteen rows of raw text: fourteen semesters plus one section called *Zeitreihe* that holds only the link to the long-run PDF. Nothing is a number yet.
 
-#### Cleaning
+#### Cleaning {#web-viadrina-clean}
 
 Two ingredients. First a helper that finds one label in a block of text and returns the number behind it. German thousands separators are dots, so `1.234` has to become `1234`. The colon is optional, because on some semesters it is simply missing (`Ausländer*innen 1441`).
 
@@ -349,7 +346,7 @@ Three things are worth noticing while stepping through. `group_by()` changes not
 The full table, searchable and sortable:
 
 ```{r viadrina-table}
-datatable(
+datatable(caption = "Viadrina enrolment semester by semester since winter 2019/20; the year-on-year column is negative almost all the way down.", 
   viadrina_display,
   rownames = FALSE,
   options = list(pageLength = 6, dom = "tip", ordering = FALSE)
@@ -400,7 +397,7 @@ viadrina_winter <- bind_rows(
   arrange(year)
 ```
 
-#### Visualizing
+#### Visualising {#web-viadrina-visualise}
 
 **Is it Viadrina?** A falling curve on its own proves nothing. Between 2019 and 2025 a pandemic happened, a demographic dip arrived, and every German university had to deal with both. The honest question is therefore not "does Viadrina shrink?" but "does Viadrina shrink *more than others*?".
 
@@ -441,7 +438,7 @@ round(gap)
 
 One graph, one message.
 
-```{r viadrina-long-run-plot, fig.align='center', fig.width=8, fig.height=5}
+```{r viadrina-long-run-plot, fig.align='center', fig.width=8, fig.height=5, fig.cap="Viadrina's winter enrolment since 1992, with the dashed line showing where the national trend would have left it."}
 peak <- viadrina_winter %>% slice_max(students, n = 1)
 
 ggplot(viadrina_winter, aes(x = year, y = students)) +
@@ -494,9 +491,9 @@ ggplot(viadrina_winter, aes(x = year, y = students)) +
 
 The curve rises for twenty years, peaks in 2012, drifts down slowly, and then falls off a cliff from 2019 onwards. The dashed line does something else entirely: German universities are today within half a percent of their 2019 level, while Viadrina lost 36 % of its students. Brandenburg as a federal state did not shrink at all — it grew from 50,304 students in winter 2021/22 to 54,608 in winter 2025/26.^[Amt für Statistik Berlin-Brandenburg, press releases [292/2021](https://www.statistik-berlin-brandenburg.de/292-2021/) and [173/2025](https://www.statistik-berlin-brandenburg.de/173-2025/).]
 
-So the pandemic and the demographic trend are not the explanation. Something specific to this university, or to its location and profile, is. That is where a scraping exercise ends and a real research question begins: enrollment by subject, the share of Polish students (which fell from 35 % in the 1990s to 6 % in 2020), programme closures, and competition from Berlin. All of those numbers are, again, one semester folder away.
+So the pandemic and the demographic trend are not the explanation. Something specific to this university, or to its location and profile, is. That is where a scraping exercise ends and a real research question begins: enrolment by subject, the share of Polish students (which fell from 35 % in the 1990s to 6 % in 2020), programme closures, and competition from Berlin. All of those numbers are, again, one semester folder away.
 
-### What scraping is good for
+### What scraping is good for {#what-scraping-is-good-for}
 
 Two pages, two techniques, one lesson. The Wikipedia ranking was structured by somebody who wanted it read; the university page was structured by somebody who wanted it *looked at*. In both cases we had to reconstruct, from the outside, a shape that already existed somewhere on the inside — in a spreadsheet in an office, in a database behind a web server.
 

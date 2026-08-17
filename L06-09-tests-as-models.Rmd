@@ -19,7 +19,6 @@ Now that you know what a linear model is, the honest summary can finally be give
 This observation is not new, but its clearest modern statement is a cheat sheet by Jonas Kristoffer Lindeløv, *Common statistical tests are linear models*, which lines up each classical test against its equivalent `lm()` formula.[^tm-lindeloev] This section works through that correspondence on our own data, so that you can check every claim rather than take it on faith — and then pushes the list further than the cheat sheet does, into repeated measures, variance tests, model comparison, and the counts and proportions that need one step sideways into `glm()`.
 
 ```{r tm-load, echo=TRUE, message=FALSE, warning=FALSE}
-library(tidyverse)
 
 coursedata <- read.csv("data/Course/GF_AllTime.csv", sep = ";") %>%
   filter(Age < 100)
@@ -198,7 +197,7 @@ And it matters enormously, exactly as pairing mattered in section \@ref(cm-paire
 anova(lm(Rating ~ Skill, data = long))["Skill", "F value"]   # ignoring the student
 ```
 
-$F = 73.1$ instead of $105.0$. Throwing away the student identifier throws away the fact that the same person produced three of the numbers, and the F-statistic drops by a third. This is the paired t-test's lesson generalised: **whenever the same unit appears more than once, its identity belongs in the model.** With two conditions we called it pairing; with three we call it repeated measures; with many periods and many units we call it panel data (chapter \@ref(panel-data)) and the term for `+ id` becomes *fixed effects*. Same move every time.
+$F = 73.1$ instead of $105.0$. Throwing away the student identifier throws away the fact that the same person produced three of the numbers, and the F-statistic drops by a third. This is the paired t-test's lesson generalised: **whenever the same unit appears more than once, its identity belongs in the model.** With two conditions we called it pairing; with three we call it repeated measures; with many periods and many units we call it panel data (section \@ref(panel-data)) and the term for `+ id` becomes *fixed effects*. Same move every time.
 
 ::: {.analysis-note}
 One honest limitation. `lm(y ~ C + id)` reproduces the F-test for the condition, which is what people usually want. It does not reproduce everything a dedicated repeated-measures routine offers — sphericity corrections such as Greenhouse-Geisser, or unbalanced designs with missing cells, which are better served by a mixed model (`lme4::lmer(y ~ C + (1|id))`). The mixed model is the honest generalisation; treating the subject as a fixed factor is the version that shows you what is going on.
@@ -221,7 +220,7 @@ $F = 0.37$, $p = 0.90$: no evidence that the seven cohorts differ in how spread 
 
 ### One step sideways: counts and proportions {#tm-glm}
 
-Two families genuinely sit outside `lm()`, because their outcomes are not continuous. But they sit only just outside: the linear predictor is the same, and only the link function and the error distribution change. This is the **generalized** linear model of section \@ref(generalized-models), and the classical tests for tables and proportions live there.
+Two families genuinely sit outside `lm()`, because their outcomes are not continuous. But they sit only just outside: the linear predictor is the same, and only the link function and the error distribution change. This is the **generalised** linear model of section \@ref(generalised-models), and the classical tests for tables and proportions live there.
 
 Take the chi-square test of independence. Are academic level and gender related in this course?
 
@@ -330,7 +329,7 @@ Three reasons, in rising order of importance.
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated: What the framework does not swallow </h2>
+<h2>Truly Dedicated: What the framework does not swallow</h2>
 :::
 Honesty requires the boundaries. "Everything is a linear model" is a claim about the tests in an introductory syllabus, not about all of statistics.
 
@@ -345,7 +344,7 @@ The right summary is therefore narrower than the slogan and more useful: *the cl
 
 :::: {.challenge}
 ::: {.titelchallenge}
-<h2> Your Turn </h2>
+<h2>Your Turn</h2>
 :::
 1. You want to compare mean income across four regions. Which call does the job? `r mcq(c("aov(income ~ region) - lm() only works for two groups", answer = "lm(income ~ region) - the number of levels does not matter", "lm(income ~ 1) with the regions filtered one at a time"))`
 

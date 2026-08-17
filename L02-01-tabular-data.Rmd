@@ -1,17 +1,17 @@
-## Tabular Data
+## Tabular Data {#tabular-data}
 
 <!-- https://hjalli.medium.com/data-tables-from-sumer-to-visicalc-7b4d7b5a2150 -->
 <!-- https://www.amazon.com/gp/product/0198508417/ -->
 
-Tabular data is the most common type of data. The ability to organize information systematically into rows and columns has been a cornerstone of data-driven decision-making for centuries. From handwritten ledgers to digital spreadsheets, tabular data has served as the foundation for understanding, managing, and extracting insights from a wide range of datasets.
+Tabular data is the most common type of data. The ability to organise information systematically into rows and columns has been a cornerstone of data-driven decision-making for centuries. From handwritten ledgers to digital spreadsheets, tabular data has served as the foundation for understanding, managing, and extracting insights from a wide range of datasets.
 
 Since tabular data is easy to understand and easy to handle, there are approaches to transform non-tabular data like text data into a tabular format. In the R realm this has been termed the **tidy data principle**. Each variable must have its own column. Each observation must have its own row. Each value must have its own cell.^[Read more about [tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html).]
 
-In this chapter, we embark on a journey through the world of tabular data, exploring its diverse facets and applications. We will delve into the art of manipulating, analyzing, and visualizing data in this familiar format, unlocking the potential it holds for uncovering hidden patterns and informing critical decisions. But our exploration goes further, as we introduce you to a special and dynamic subset of tabular data that adds an extra layer of complexity and depth to your analytical toolkit — panel data.
+In this chapter, we embark on a journey through the world of tabular data, exploring its diverse facets and applications. We will delve into the art of manipulating, analysing, and visualising data in this familiar format, unlocking the potential it holds for uncovering hidden patterns and informing critical decisions. But our exploration goes further, as we introduce you to a special and dynamic subset of tabular data that adds an extra layer of complexity and depth to your analytical toolkit — panel data.
 
 :::: {.defbox}
 ::: {.titeldefbox}
-<h2> Definition </h2>
+<h2>Definition</h2>
 :::
 **Tidy data** principles are: 
 
@@ -20,7 +20,7 @@ In this chapter, we embark on a journey through the world of tabular data, explo
 - Every cell is a single value.
 ::::
 
-### Types of Tabular Data 
+### Types of Tabular Data {#types-of-tabular-data}
 
 How can there be different types of tabular data when a table always consists of rows and columns? 
 
@@ -30,12 +30,9 @@ Look at the following example. This data is collected in `r format(Sys.Date(), "
 
 **Cross-sectional data** is a type of data collected by observing many subjects (such as individuals, firms, countries, or regions) at the one point or period of time. It can answer questions about *levels*: "How many people are poor in 2023 in Germany?" and questions about *differences*: "How are men and women affected by poverty?".
 
-```{r warning=FALSE, message=FALSE, eval = T, echo = F}
-library(tidyverse)
-library(haven)
+```{r tab-cross-section, warning=FALSE, message=FALSE, eval=TRUE, echo=FALSE}
 soep <- read_dta("https://github.com/MarcoKuehne/marcokuehne.github.io/blob/main/data/SOEP/practice_en/practice_dataset_eng.dta?raw=true")
 
-library(modelsummary)
 library(gt)
 #my_colors <- c("#FF5733", "#33FF57", "#5733FF", "#FF33AA", "#A433FF", "#33A7FF")
 
@@ -71,7 +68,7 @@ Cross-sectional survey data are data for a single point in time. Repeated cross-
 
 This type of data can answer questions about *trends*: "Has poverty increased or decreased?".
 
-```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+```{r tab-repeated-cross-section, warning=FALSE, message=FALSE, eval=TRUE, echo=FALSE}
 soep %>% 
   slice_head(n = 6) %>% 
   mutate(Id = seq(from=1, to=6, by=1)) %>% 
@@ -104,7 +101,7 @@ Time series is data on a single subject at multiple points in time. Most commonl
 
 Time series data can answer questions about *trends*: "Is there a seasonal component in unemployment?".
 
-```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+```{r tab-time-series, warning=FALSE, message=FALSE, eval=TRUE, echo=FALSE}
 # Load the zoo package
 library(zoo)
 
@@ -130,7 +127,7 @@ soep %>%
     colors = scales::col_factor("Oranges", domain = NULL)) 
 ```
 
-#### Panel data
+#### Panel data {#tab-panel-data}
 
 **Panel data** are observations for the same subjects over time. Subjects can be people, households, firms or countries. Panel data are a subset of longitudinal data. Key components are the panel identifier: person (id) and time (year). Every row is a person-year combination (so called *long format*).
 
@@ -140,7 +137,7 @@ soep %>%
 
 With panel data we know the time-ordering of events. Panel data allow to identify causal effects under weaker assumptions (compared to cross-sectional data). Panel data can answer questions about *change*: "How many people went in and out of poverty?".
 
-```{r warning=FALSE, message=FALSE, eval = T, echo = F}
+```{r tab-panel-data, warning=FALSE, message=FALSE, eval=TRUE, echo=FALSE}
 soep %>% 
   slice_head(n = 6) %>% 
   mutate(Id = c(rep(1,3), rep(2,3))) %>% 

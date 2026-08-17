@@ -8,7 +8,7 @@ Some variables are comparatively straightforward to measure. Age can be taken fr
 
 Other concepts are less tangible and less naturally represented by one value. Happiness, risk attitude, personality, intelligence, and mathematical competence are examples. Yet none of them is automatically latent. Researchers sometimes measure such concepts with one direct question, sometimes with a score built from several items, and sometimes with a latent-variable model.
 
-Every study must therefore make a **measurement decision**: how should a substantive concept become data? This process is called **operationalization**. A latent-variable model is one possible answer — an explicit model of how observed indicators relate to an unobserved quantity. It is not the only answer, and it is not automatically the best one.
+Every study must therefore make a **measurement decision**: how should a substantive concept become data? This process is called **operationalisation**. A latent-variable model is one possible answer — an explicit model of how observed indicators relate to an unobserved quantity. It is not the only answer, and it is not automatically the best one.
 
 The rest of this section builds that decision in four steps. First the vocabulary, once and in one place. Then three worked examples that form a ladder: a construct where **one item is enough**, a construct where **several items are averaged**, and a construct where **a model is unavoidable**. Only then the formal model and a map of the wider family.
 
@@ -23,7 +23,6 @@ for (pkg in c("ggplot2", "patchwork"))
   if (!requireNamespace(pkg, quietly = TRUE))
     stop("This chapter needs the '", pkg, "' package: install.packages(\"", pkg, "\")")
 
-library(ggplot2)
 
 ## ---- geometry helpers -------------------------------------------------------
 .ellipse <- function(x, y, rx, ry, id, n = 90) {
@@ -209,7 +208,7 @@ lv_intro <- function() {
 
 ### How a Concept Becomes Data {#lv-concept-to-data}
 
-Suppose you want to study happiness. You cannot put *happiness* into a regression. You can only put in a column of numbers, so something has to turn the concept into one. That step has a name — **operationalization** — and it is a decision, made by a researcher, that can be made well or badly.
+Suppose you want to study happiness. You cannot put *happiness* into a regression. You can only put in a column of numbers, so something has to turn the concept into one. That step has a name — **operationalisation** — and it is a decision, made by a researcher, that can be made well or badly.
 
 The most direct route is to ask. A survey question produces a recorded response, and anything recorded in the data is an **observed** variable, sometimes called **manifest**. In measurement contexts the same response is also called an **indicator**, because it is being used as evidence *about* something rather than as an interesting quantity in its own right. Nothing mysterious has happened yet: a question was asked, an answer was written down.
 
@@ -219,10 +218,10 @@ At this point a natural but wrong move is to call happiness *unobserved* and sto
 
 The difference is not availability. It is whether a model *represents* the quantity. A variable is **latent** when it is not measured directly but is explicitly written into a statistical model, estimated through the indicators that are observed. Happiness is unobserved in the data either way. It becomes latent only when you build a model that contains it.
 
-Which leaves one word for the thing itself, before any of these decisions: the **construct** — the substantive concept you are trying to study. A construct can be measured with one question, summarized by an average of several, or represented as a latent variable. All three are legitimate, and the choice is yours to justify.
+Which leaves one word for the thing itself, before any of these decisions: the **construct** — the substantive concept you are trying to study. A construct can be measured with one question, summarised by an average of several, or represented as a latent variable. All three are legitimate, and the choice is yours to justify.
 
 ::: {.analysis-note}
-Every latent variable is unobserved, but not every unobserved quantity is latent. **Latentness is a modeling role, not a property of a concept.**
+Every latent variable is unobserved, but not every unobserved quantity is latent. **Latentness is a modelling role, not a property of a concept.**
 :::
 
 This is why there is no fixed list of latent constructs. Happiness and personality are the textbook examples, and both are routinely measured with no latent variable anywhere in sight.
@@ -261,7 +260,7 @@ Three single questions. Each produces one ordinary observed variable, and betwee
 
 The same design appears for risk attitude. The SOEP asks whether respondents are generally willing to take risks or try to avoid them, from 0 to 10.[^lv-risk] At the 2026 SOEP User Conference, Thomas Dohmen gave a keynote titled *Twenty-Two Years of the General Risk Question*,[^lv-dohmen] which is the argument in one title: a single, carefully designed question can carry two decades of evidence when its target is clear, its wording is stable, and it is repeated across people, years, and countries.
 
-**Why one item is the right choice here.** The construct is defined as a *global self-assessment*, and the question asks for exactly that. The item is not an imperfect proxy for something deeper — it is the outcome of interest. Beyond that, single items are cheap in respondent burden, can be repeated frequently in a broad panel, support comparison over time through stable wording, and can be validated against retests, external outcomes, and behavior.
+**Why one item is the right choice here.** The construct is defined as a *global self-assessment*, and the question asks for exactly that. The item is not an imperfect proxy for something deeper — it is the outcome of interest. Beyond that, single items are cheap in respondent burden, can be repeated frequently in a broad panel, support comparison over time through stable wording, and can be validated against retests, external outcomes, and behaviour.
 
 **When one item is not enough.** A single response cannot separate the construct from item-specific measurement error, so its reliability cannot be estimated from itself. It cannot reveal whether the concept has several dimensions. And its interpretation depends on wording, response style, and the respondent's reading of the question.
 
@@ -314,7 +313,7 @@ The same three responses could instead be treated as indicators of a latent extr
 
 A fixed average assigns every item the same predetermined weight and treats the result as observed. A latent model estimates how strongly each item relates to the common factor and separates shared from item-specific variation.
 
-**More items make latent modeling possible; they do not make it mandatory.** The inventory is the instrument. A scale score or a latent factor is an analytical representation built from it.
+**More items make latent modelling possible; they do not make it mandatory.** The inventory is the instrument. A scale score or a latent factor is an analytical representation built from it.
 
 ### When a Model Is Necessary: Competence and Intelligence {#lv-model-necessary}
 
@@ -484,7 +483,7 @@ What the model estimates are the loadings, intercepts, residual variances, and f
 
 The circle in the path diagram is therefore exactly what it appears to be: **a quantity in the model, not a column in the data.**
 
-Factor scores can be *predicted* afterwards as a separate post-hoc step — `lavPredict()` in `lavaan` offers several methods for this. Such scores are estimates with their own uncertainty, and different methods give different values for the same person, so they are not simply "the" latent values. They are not required for anything in this chapter, and structural equation modeling in particular relates latent variables to one another *inside* the model, without ever scoring a person.
+Factor scores can be *predicted* afterwards as a separate post-hoc step — `lavPredict()` in `lavaan` offers several methods for this. Such scores are estimates with their own uncertainty, and different methods give different values for the same person, so they are not simply "the" latent values. They are not required for anything in this chapter, and structural equation modelling in particular relates latent variables to one another *inside* the model, without ever scoring a person.
 
 There is one setting where person-level values genuinely are produced, and it is worth naming here because it looks like a contradiction. Large-scale assessments such as PISA do report competence on a scale, and item response theory does place each student on it. Even there, however, a single point estimate is avoided: PISA reports **plausible values**, several random draws from each student's posterior distribution, precisely because the student's competence remains uncertain after the test. Section \@ref(items) takes this up.
 
@@ -503,7 +502,7 @@ Two questions give a useful first orientation: is the latent variable continuous
 
 The map is an orientation, not a taxonomy. Indicators may be ordinal, binary, counts, continuous, or mixed; models can combine continuous factors with latent classes, add repeated measurements or multiple levels, and use response distributions that fit no cell cleanly.
 
-Structural equation modeling is deliberately absent, because it answers a different question: **does the model only describe measurement, or does it also specify regressions and paths among variables?**
+Structural equation modelling is deliberately absent, because it answers a different question: **does the model only describe measurement, or does it also specify regressions and paths among variables?**
 
 The following sections follow one branch in depth:
 
@@ -517,13 +516,13 @@ The following sections follow one branch in depth:
 
 - **Exploratory factor analysis** asks what common dimensions may be present.
 - **Confirmatory factor analysis** states and evaluates an explicit measurement model.
-- **Structural equation modeling** adds regressions and paths to measurement models.
+- **Structural equation modelling** adds regressions and paths to measurement models.
 - **Item response theory** focuses on categorical task responses, person competence, and item properties.
 
-Two neighboring methods answer different questions. Principal component analysis builds weighted combinations of observed variables without positing latent causes or measurement error. Cluster analysis groups similar observations rather than measuring a continuous trait.
+Two neighbouring methods answer different questions. Principal component analysis builds weighted combinations of observed variables without positing latent causes or measurement error. Cluster analysis groups similar observations rather than measuring a continuous trait.
 
 ::: {.analysis-note}
-Latent-variable modeling is not one technique. It is a family of models distinguished by the observed evidence, the type of latent variable, and the relations imposed between them.
+Latent-variable modelling is not one technique. It is a family of models distinguished by the observed evidence, the type of latent variable, and the relations imposed between them.
 :::
 
 [^lv-ess-happy]: European Social Survey, core questionnaire, subjective well-being module (variable `happy`): <https://www.europeansocialsurvey.org/methodology/ess-methodology/source-questionnaire>.

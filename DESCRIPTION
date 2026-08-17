@@ -7,18 +7,22 @@ Description: Source of the bookdown project "Becoming Fluent in Data".
     This file is not a real R package. It exists so that every package the
     book needs can be installed with a single command on a fresh machine:
     remotes::install_deps() or pak::local_install_deps().
+    Imports: everything an evaluated chunk needs, so that a clean checkout
+    builds. Suggests: packages that appear only in prose, in commented-out
+    code, or in chunks marked eval = FALSE - the book builds without them.
+    The book-wide packages are attached once in the setup chunk of index.Rmd
+    (new_session: no, so they stay attached); everything else is attached in
+    the single chapter that uses it.
 License: file LICENSE
 Encoding: UTF-8
 Imports:
     bookdown,
     broom,
     chron,
-    countrycode,
     cowplot,
     DBI,
     dbplyr,
     DT,
-    forecast,
     geosphere,
     ggimage,
     ggplot2,
@@ -27,15 +31,14 @@ Imports:
     gridExtra,
     gt,
     haven,
+    here,
     htmltools,
-    htmlwidgets,
     interactions,
     jsonlite,
     kableExtra,
     knitr,
     lavaan,
     leaflet,
-    lme4,
     lubridate,
     maps,
     mapview,
@@ -44,7 +47,7 @@ Imports:
     mirt,
     modelsummary,
     moderndive,
-    nlme,
+    palmerpenguins,
     patchwork,
     psych,
     readxl,
@@ -53,28 +56,30 @@ Imports:
     rvest,
     rworldmap,
     scales,
-    sentimentr,
     sf,
     showtext,
     sirt,
     sjlabelled,
+    stringi,
     synthpop,
     tidytext,
     tidyverse,
     tippy,
     tufte,
-    vembedr,
     webexercises,
-    webshot,
-    wikifacts,
     xml2,
     zoo
 Suggests:
     car,
     duckdb,
+    forecast,
+    lme4,
+    nlme,
     RMariaDB,
     RPostgres,
     RSelenium,
-    usethis
+    usethis,
+    vembedr,
+    webshot
 Remotes:
     EvaMaeRey/flipbookr

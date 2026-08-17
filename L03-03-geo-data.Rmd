@@ -1,10 +1,10 @@
-## Geo Data
+## Geo Data {#geo-data}
 
 **Geo data**, short for geographic data, is a fundamental aspect of our digital world that captures information about locations on Earth. It encompasses a wide range of spatial data, including coordinates, addresses, and attributes tied to specific geographic points. Geo data plays a pivotal role in shaping our everyday experiences, influencing navigation, enhancing services, and providing valuable insights across various sectors.
 
 One of the most prevalent ways individuals interact with geo data is through the Global Positioning System (GPS) embedded in their mobile phones. When you use GPS on your smartphone, you're tapping into a vast network of satellites orbiting above. These satellites beam signals to your device, allowing it to pinpoint your exact location with remarkable accuracy.
 
-Analyzing and visualizing geospatial data is essential in various fields, including geography, environmental sciences, urban planning, epidemiology, and transportation not to mention social science.
+Analysing and visualising geospatial data is essential in various fields, including geography, environmental sciences, urban planning, epidemiology, and transportation not to mention social science.
 
 <center>
 <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2609864.353940201!2d9.931419285209337!3d50.29760870509319!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x47a84e373f035901%3A0x42120465b5e3b70!2sBerlin!3m2!1d52.520006599999995!2d13.404954!4m5!1s0x479e75f9a38c5fd9%3A0x10cb84a7db1987d!2zTcO8bmNoZW4!3m2!1d48.1351253!2d11.5819805!5e0!3m2!1sde!2sde!4v1704277715694!5m2!1sde!2sde" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -12,7 +12,7 @@ Analyzing and visualizing geospatial data is essential in various fields, includ
 
 Google Route from Berlin to Munich. 
 
-### Geo coordinates
+### Geo coordinates {#geo-coordinates}
 
 #### Where Are You?
 
@@ -20,7 +20,7 @@ Websites such as [GPS Coordinates](https://gps-coordinates.org/where-am-i.php) o
 
 Ask Google Maps for `Viadrina European University` returns two numbers `52.342977500409994`, *latitude* and `14.555877070488613` *latitude*.
 
-```{r, echo=F, message=FALSE, warning=FALSE}
+```{r geo-where-are-you, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Two points a few metres apart in Frankfurt (Oder): the Viadrina main building and the best coffee in town."}
 # Conventional data frame
 FFO.df <- data.frame(name = c("Viadrina Main Building", "Best Coffee In Town"),
                      address = c("Große Scharrnstr.", "Große Scharrnstr."),
@@ -47,7 +47,7 @@ mapview(FFO.spdf, zcol = "name", layer.name = "University", map = map)
 
 Latitude and longitude are geographic coordinates used to specify locations on the Earth's surface. They are used to precisely determine a point's position in terms of its north-south and east-west positions.
 
-```{r lon_lat, echo=FALSE, fig.cap="Longitude lines are perpendicular to and latitude lines are parallel to the Equator.", out.width = '80%', fig.align='center'}
+```{r lon_lat, echo=FALSE, fig.cap="Longitude lines are perpendicular to and latitude lines are parallel to the Equator.", out.width='80%', fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/FedStats_Lat_long.svg/1280px-FedStats_Lat_long.svg.png")
 ```
 
@@ -57,22 +57,22 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/e/
 
 Well, who invented latitude and longitude and why is latitude positive in the north and where is the North anyway?
 
-::: reading
-::: titelreading
-<h2>History</h2>
+:::: {.amazing}
+::: {.titelamazing}
+<h2>Amazing Fact</h2>
 :::
 
 The decision to have latitude positive in the north and negative in the south is essentially arbitrary. The convention was established to provide a consistent and universally accepted reference frame for geographic coordinates. It was likely influenced by the fact that most early civilizations and cartographers were based in the northern hemisphere.
 
-Regarding the choice of the prime meridian (0 degrees longitude) passing through Greenwich, England, it was largely due to historical reasons and the influence of the British Empire. The concept of establishing a prime meridian dates back to the 19th century when international cooperation in navigation and mapping was increasing. In 1884, at the International Meridian Conference held in Washington, D.C., representatives from various countries agreed to adopt the Greenwich Meridian as the Prime Meridian, mainly because the British Royal Observatory in Greenwich was already internationally recognized for its contributions to astronomy and navigation.
-:::
+Regarding the choice of the prime meridian (0 degrees longitude) passing through Greenwich, England, it was largely due to historical reasons and the influence of the British Empire. The concept of establishing a prime meridian dates back to the 19th century when international cooperation in navigation and mapping was increasing. In 1884, at the International Meridian Conference held in Washington, D.C., representatives from various countries agreed to adopt the Greenwich Meridian as the Prime Meridian, mainly because the British Royal Observatory in Greenwich was already internationally recognised for its contributions to astronomy and navigation.
+::::
 
 Europe is a continent located entirely in the Northern Hemisphere and mostly in the Eastern Hemisphere. It is situated to the west of Asia, separated by the Ural Mountains, the Ural River, the Caspian Sea, the Caucasus Mountains, and the Black Sea. Here are approximate latitude and longitude ranges for Europe:
 
 - Latitude Range: Approximately 35 degrees North to 71 degrees North.
 - Longitude Range: Approximately 25 degrees West to 45 degrees East.
     
-```{r europe_lat_long, echo=FALSE, fig.cap="Europe c. 650.", out.width = '80%', fig.align='center'}
+```{r europe_lat_long, echo=FALSE, fig.cap="Europe c. 650.", out.width='80%', fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Europe_around_650.jpg/1920px-Europe_around_650.jpg")
 ```
 
@@ -81,22 +81,20 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/f/
 
 The intuition is that latitude and longitude are **angles**. Angular measurements are commonly expressed in units of *degrees, minutes, and seconds (DMS)*. 1 degree equals 60 minutes, and one minute equals 60 seconds.
 
-Berlin, the capitol of Germany is located:
+Berlin, the capital of Germany, is located:
 
 - Latitude: 52° 31' 12" N
 - Longitude: 13° 24' 18" E
 
 in DMS. In *decimal degrees (DD)* we get: 
 
-$$\text{Decimal degree} = \text{Degree} + \frac{\text{Minute}}{60} + \frac{\text{Minute}}{3600}$$
+$$\text{Decimal degree} = \text{Degree} + \frac{\text{Minute}}{60} + \frac{\text{Second}}{3600}$$
 
 - Latitude: 52.5200° N
 - Longitude: 13.4050° E
    
-```{r, echo=F}
-library(sf)
+```{r geo-angles-degrees, echo=FALSE, fig.cap="The same outline of Germany twice, with Berlin labelled in degrees, minutes and seconds on the left and decimal degrees on the right."}
 library(rnaturalearth)
-library(ggplot2)
 
 # Load world map for context
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -137,13 +135,11 @@ plot_decimal <- ggplot() +
 gridExtra::grid.arrange(plot_angular, plot_decimal, ncol = 2)
 ```
 
-In general, coordinates with six decimal places (0.000001 degrees) can provide location accuracy to approximately within a few centimeters. Each additional decimal place adds further precision, narrowing down the location to smaller units of measurement.
+In general, coordinates with six decimal places (0.000001 degrees) can provide location accuracy to approximately within a few centimetres. Each additional decimal place adds further precision, narrowing down the location to smaller units of measurement.
 
 The entrance of Viadrina main building and the best coffee in town are about 40m away. 
 
-```{r, echo=F}
-library(sf)
-library(leaflet)
+```{r geo-angles-degrees-2, echo=FALSE, fig.cap="The same two addresses on a zoomable map, joined by a red line roughly 40 metres long."}
 
 # Conventional data frame
 FFO.df <- data.frame(
@@ -177,12 +173,10 @@ map
 
 Latitude is different in the 4th and longitude differs in the 3rd decimal.
 
-```{r, echo=F}
-library(knitr)
-library(kableExtra)
+```{r geo-angles-degrees-3, echo=FALSE}
 
 # Display the data frame as a styled HTML table
-kable(FFO.df, format = "html") %>%
+kable(caption = "The two Frankfurt (Oder) addresses as plain numbers: latitude differs in the fourth decimal, longitude in the third.", FFO.df, format = "html") %>%
   kable_styling("striped", full_width = FALSE)
 ```
 
@@ -197,8 +191,7 @@ Common CRS formats include:
 
 The European Petroleum Survey Group Geodesy (EPSG) is best known for its system of spatial reference IDs for coordinate systems. An EPSG code is a unique ID that can be a simple way to identify a CRS.
 
-```{r, echo = TRUE}
-library(rnaturalearth)
+```{r geo-coordinate-reference-system, echo=TRUE}
 
 # Get geometries of countries (default CRS is WGS 84)
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -211,7 +204,7 @@ The default CRS is WGS 84 (World Geodetic System 1984) which is a widely used gl
 
 Below there are two versions of Germany. The left version shows Germany from the WGS 84 (`st_transform(germany, crs = 4326)`). The right version shows Germany seen from Iceland (`st_transform(germany, crs = 5325)`).
  
-```{r, echo =FALSE}
+```{r geo-coordinate-reference-system-2, echo=FALSE, fig.cap="Germany in WGS 84 on the left and in a CRS made for Iceland on the right; the same country, differently bent."}
 # Extract Germany's geometry
 germany <- ne_countries(country = "germany", returnclass = "sf")
 
@@ -250,7 +243,7 @@ Distances are determined by the choice of a distance formula, and considerations
 - **Haversine distance** is the distance between two points on a *sphere* given their longitudes and latitudes (3D).
 - The earth is not perfectly round. **Vincenty distance** assumes an *ellipsoid* instead.
 
-```{r}
+```{r geo-distance-measurement}
 library(geosphere)
 
 # Define the coordinates of New York City and London
@@ -273,19 +266,17 @@ distance_data <- data.frame(
 )
 
 # Display the data frame as a styled HTML table
-kable(distance_data, format = "html") %>%
+kable(caption = "The same pair of coordinates measured three ways; only the Vincenty ellipsoid allows for the Earth being flattened at the poles.", distance_data, format = "html") %>%
   kable_styling("striped", full_width = FALSE) %>% 
   add_header_above(c("Distance between New York and London" = 2))
 ```
 
-###  Points And Polygons
+### Points And Polygons {#points-and-polygons}
 
-Polygon data and geographical coordinates work together to represent and visualize spatial areas on a map. In a geographical context, polygons are commonly used to define the boundaries of regions, countries, cities, or any other geographic entities.
+Polygon data and geographical coordinates work together to represent and visualise spatial areas on a map. In a geographical context, polygons are commonly used to define the boundaries of regions, countries, cities, or any other geographic entities.
 
-```{r}
+```{r geo-points-polygons, fig.cap="A rectangle running from 5 to 15 degrees east and 47 to 55 north, standing in for Germany."}
 # Load necessary libraries
-library(sf)
-library(ggplot2)
 
 # Define coordinates of a simple polygon representing Germany
 germany_polygon <- st_polygon(list(cbind(c(5, 15, 15, 5, 5), c(47, 47, 55, 55, 47))))
@@ -300,13 +291,12 @@ ggplot() +
   theme_minimal()
 ```
 
-Polygon data for countries typically comes from geospatial databases, GIS (Geographic Information System) data, or **shapefiles** maintained by government agencies, international organizations, or open-source initiatives.
+Polygon data for countries typically comes from geospatial databases, GIS (Geographic Information System) data, or **shapefiles** maintained by government agencies, international organisations, or open-source initiatives.
 
 <!-- Get shape image png/svg from Wikipedia https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Germany_shape.svg/512px-Germany_shape.svg.png -->
 <!-- Transform to number of dots with https://spotify.github.io/coordinator/ -->
 
-```{r, animation.hook="gifski", echo=F, fig.align='center', fig.width=4, fig.height=5.5, echo=F, warning=F, message=F}
-library(tidyverse)
+```{r geo-points-polygons-2, animation.hook="gifski", echo=FALSE, fig.align='center', fig.width=4, fig.height=5.5, warning=FALSE, message=FALSE, fig.cap="Germany's outline redrawn from ten dots up to a hundred; the country only becomes recognisable towards the end."}
 library(jsonlite)
 
 # Directory containing JSON files
@@ -343,7 +333,7 @@ for (i in seq(10, 100, by = 10)) {
 ```
 
 
-```{r ger_shape, echo=FALSE, fig.cap="Shape of Germany.", out.width = '80%', fig.align='center'}
+```{r ger_shape, echo=FALSE, fig.cap="Shape of Germany.", out.width='80%', fig.align='center'}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/c/cb/Germany_shape.svg")
 ```
 
@@ -353,12 +343,12 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/c/cb/Ger
 
 :::: {.dedicated}
 ::: {.titeldedicated}
-<h2> Truly Dedicated </h2>
+<h2>Truly Dedicated</h2>
 :::
 
 These files together make up a shapefile, a widely used format for storing geospatial vector data. The combination of geometric and attribute data, along with coordinate system information, allows for the representation of complex geographic features in a structured and interoperable manner.
 
-```{r, echo=F, warning=FALSE, message=FALSE}
+```{r geo-shapefiles, echo=FALSE, warning=FALSE, message=FALSE}
 library(htmltools)
 
 details_tag <- tags$details(
@@ -371,7 +361,7 @@ details_tag <- tags$details(
 details_tag
 ```
 
-```{r, echo=F}
+```{r geo-shapefiles-2, echo=FALSE}
 details_tag <- tags$details(
   tags$summary(".prj File"),
   tags$div(
@@ -382,7 +372,7 @@ details_tag <- tags$details(
 details_tag
 ```
 
-```{r, echo=F}
+```{r geo-shapefiles-3, echo=FALSE}
 details_tag <- tags$details(
   tags$summary(".shp File"),
   tags$div(
@@ -393,7 +383,7 @@ details_tag <- tags$details(
 details_tag
 ```
 
-```{r, echo=F}
+```{r geo-shapefiles-4, echo=FALSE}
 details_tag <- tags$details(
   tags$summary(".shx File"),
   tags$div(
@@ -412,10 +402,10 @@ In determining the unit and scale for spatial analysis, it is crucial to align c
 
 **Geographical Entities**
 
-Spatial or geographic entities, such as regions, countries, and cities, often refer to political boundaries. Shapefiles, typically sourced from official channels, primarily represent these boundaries. Political borders, administrative divisions, and state or province limits are commonly depicted. Additionally, shapefiles extend to transportation networks, capturing roads and railways for effective planning. These versatile files also cover topography, offering insights into elevation, land cover, and contour lines. Points of interest, like landmarks and businesses, are included, making shapefiles invaluable for applications in land management, urban planning, climate analysis, and demographic mapping. Overall, shapefiles serve as indispensable tools for visualizing and analyzing spatial data across diverse domains.
+Spatial or geographic entities, such as regions, countries, and cities, often refer to political boundaries. Shapefiles, typically sourced from official channels, primarily represent these boundaries. Political borders, administrative divisions, and state or province limits are commonly depicted. Additionally, shapefiles extend to transportation networks, capturing roads and railways for effective planning. These versatile files also cover topography, offering insights into elevation, land cover, and contour lines. Points of interest, like landmarks and businesses, are included, making shapefiles invaluable for applications in land management, urban planning, climate analysis, and demographic mapping. Overall, shapefiles serve as indispensable tools for visualising and analysing spatial data across diverse domains.
 
 
-### Google Takeout 
+### Google Takeout {#google-takeout}
 
 <!-- https://github.com/yashsakhuja/Cleaning-Google-Takeout-JSON-Data-to-check-places-visited -->
 
@@ -425,7 +415,7 @@ Google Takeout is a service provided by Google that allows users to export their
 
 The Google Takeout in JSON format comes with nest variables in R. The class of `takeout` is a data.frame. 
 
-```{r}
+```{r geo-google-takeout, fig.cap="One month of Google location history, January 2023, with every recorded place visit as a labelled marker."}
 # Load JSON data
 json_data <- fromJSON("https://raw.githubusercontent.com/yashsakhuja/Cleaning-Google-Takeout-JSON-Data-to-check-places-visited/main/2023_JANUARY.json")
 
@@ -441,7 +431,6 @@ takeout$longitude <- takeout$timelineObjects.placeVisit$location$longitudeE7 / 1
 takeout$name <- takeout$timelineObjects.placeVisit$location$name
 
 # Create a leaflet map
-library(htmlwidgets)
 
 leaflet(takeout) %>%
   addTiles() %>%  
@@ -450,19 +439,17 @@ leaflet(takeout) %>%
 
 ```
 
-### Blood Donation 
+### Blood Donation {#blood-donation}
 
-Blood donation is a vital contribution to healthcare, saving countless lives every day. In Germany, the German Red Cross (Deutsches Rotes Kreuz) plays a crucial role in organizing and facilitating blood donation events across the country. You can find information about blood donation venues on their official website:
+Blood donation is a vital contribution to healthcare, saving countless lives every day. In Germany, the German Red Cross (Deutsches Rotes Kreuz) plays a crucial role in organising and facilitating blood donation events across the country. You can find information about blood donation venues on their official website:
 
 <https://www.blutspenden.de/blutspendedienste/>
 
-The code fetches, processes, and extracts information about blood donation locations in Germany from a website, organizing the data into a tidy tibble for further analysis and mapping.
+The code fetches, processes, and extracts information about blood donation locations in Germany from a website, organising the data into a tidy tibble for further analysis and mapping.
 
-```{r, eval=FALSE}
+```{r geo-blood-donation, eval=FALSE}
 library('rvest')
-library('stringr')
 library('stringi')
-library('jsonlite')
 
 rubyhash <- "https://www.blutspenden.de/blutspendedienste/#" %>%
   read_html() %>% 
@@ -486,7 +473,6 @@ blood <- blood %>%
   mutate(lat = as.numeric(lat),
          lon = as.numeric(lon))
 
-library(DT)
 #blood %>% select(title, street, number, zip, city, lat, lon) %>% datatable()
 
 blood %>%
@@ -550,7 +536,7 @@ blood %>%
       )
     )
   ) %>%
-  DT::datatable(
+  DT::datatable(caption = "The 2023 snapshot of 248 German blood donation venues, with town, postcode and coordinates for each.", 
     rownames = FALSE,
     options = list(
       dom = "tip",
@@ -569,10 +555,10 @@ blood %>%
   )
 ```
 
-```{r}
+```{r geo-blood-donation-2, fig.cap="All 248 donation venues as red dots on an outline of Germany; they crowd around the larger cities."}
 library("maps")
 # Retrieve the map data for Participant Countries 
-Germany_map <- map_data("world", region = "German")
+Germany_map <- map_data("world", region = "Germany")
 
 ggplot(Germany_map, aes(x = long, y = lat, group = group)) +
   theme(plot.title = element_text(hjust = 0.5)) +
