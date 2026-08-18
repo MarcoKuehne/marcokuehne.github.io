@@ -1,0 +1,471 @@
+## Experiments {#experiments}
+
+::: {.analysis-subtitle}
+Randomisation, natural experiments, and identification strategies
+:::
+
+Section \@ref(partitioning-variation) left Ronald Fisher at Rothamsted with eight cups of tea and a promise: that the tea test was the smaller of the two things he built there. This is the larger one.
+
+Before Fisher, agricultural trials were laid out in tidy systematic patterns — manure on the left strips, mineral nitrogen on the right — because tidiness looked like rigour. Fisher's argument, made in *The Design of Experiments* in 1935, was that the allocation should instead be decided by a physical act of chance, and that this act is not a concession to sloppiness but the thing that licenses everything the statistician does afterwards. His own chapter headings put it plainly: the interpretation of an experiment has a *reasoned basis*, and randomisation is the *physical basis of the validity* of the test.[^exp-fisher] Randomisation does two jobs at once. It severs the link between the treatment and every property of the plot — the drainage, the weeds, the slope, the things nobody measured and nobody thought of. And it manufactures the probability distribution against which the observed difference is judged.
+
+That second point is worth pausing on, because it is the cleanest statement of what this whole chapter is about. In a randomised experiment, the p-value is not an assumption about nature. It is a fact about the coin.
+
+Economics almost never gets to flip the coin. The rest of this section is about what the discipline does instead — and about the vocabulary it invented for the problem, which is the vocabulary the following four sections take for granted.
+
+### What We Want and Cannot Have {#exp-potential-outcomes}
+
+Take one person and one treatment: a training programme, a scholarship, a job. There are two versions of that person's later earnings. One is what she earns having done the programme. The other is what she would have earned had she not. The effect of the programme *on her* is the difference between the two.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+For unit $i$ and a binary treatment $D_i \in \{0, 1\}$, the two **potential outcomes** are $Y_i(1)$, the outcome under treatment, and $Y_i(0)$, the outcome without it. The **causal effect** for that unit is
+
+$$\delta_i = Y_i(1) - Y_i(0)$$
+
+What the data contain is only $Y_i = D_i \cdot Y_i(1) + (1 - D_i) \cdot Y_i(0)$ — one of the two, never both.
+
+Because individual effects are unknowable, causal work targets averages: the **average treatment effect** $\text{ATE} = E[Y(1) - Y(0)]$ over everybody, and the **average treatment effect on the treated** $\text{ATT} = E[Y(1) - Y(0) \mid D = 1]$ over the people who actually got it. These two are not the same number, and which one a study delivers is decided by its design.
+::::
+
+Paul Holland gave this its name in 1986: the **fundamental problem of causal inference**.[^exp-holland] It is worth seeing it for what it structurally is — a missing-data problem of the most severe kind. Half of every row is missing, and it is missing by construction, not by accident. Section \@ref(missing-data) spent a chapter on data that are missing because someone declined to answer; here the absent value never existed in the first place.
+
+The workaround is always the same: use *other* units as a stand-in for the counterfactual. And the whole discipline is the study of when that substitution is defensible. Write out the naive comparison — the difference in average outcomes between those who got the treatment and those who did not — and it splits into two pieces:
+
+$$\underbrace{E[Y \mid D = 1] - E[Y \mid D = 0]}_{\text{what we compute}} \; = \; \underbrace{E[Y(1) - Y(0) \mid D = 1]}_{\text{ATT, what we want}} \; + \; \underbrace{E[Y(0) \mid D = 1] - E[Y(0) \mid D = 0]}_{\text{selection bias}}$$
+
+The second term asks: would the two groups have differed anyway, without any treatment at all? Randomisation forces that term to zero, by construction, in expectation. Everything else in this chapter — matching, difference-in-differences, discontinuities, instruments — is an argument for why that term is zero, or small, or bounded, in some deliberately restricted comparison.
+
+::: {.analysis-takeaway}
+Learn the decomposition rather than the formulas that follow it. Every method in the rest of this chapter is a different answer to one question: *why should I believe the untreated group tells me what would have happened to the treated group?*
+:::
+
+### Paying People to Learn Their HIV Status {#exp-thornton}
+
+In 2004, rural Malawi had a puzzle worth money. Door-to-door HIV testing was free and widely accepted, but the results were only available at a testing centre a few kilometres away, and most people never collected them. An untested guess about your own status is a bad basis for any decision. Rebecca Thornton ran an experiment: everyone tested was given a voucher, randomly drawn, worth between nothing and about three dollars, averaging around a dollar — roughly a day's casual wage — and redeemable only if they walked to the centre and asked for their result.[^exp-thornton]
+
+The data below are the teaching extract of her replication file.[^exp-mixtape] One row is one person; `got` records whether they collected their result, `any` whether they received a voucher of any value, `tinc` the value in US dollars, `distvct` the distance to the centre in kilometres.
+
+```{r exp-thornton-load, echo=TRUE}
+hiv <- read.csv(file.path("data", "Causal", "thornton_hiv.csv")) %>%
+  rename(learned   = got,
+         incentive = any,
+         amount    = tinc,
+         distance  = distvct,
+         village   = villnum) %>%
+  filter(!is.na(learned), !is.na(incentive))
+
+nrow(hiv)
+```
+
+The analysis is a difference of two means.
+
+```{r exp-thornton-means, echo=TRUE}
+hiv %>%
+  group_by(incentive) %>%
+  summarise(n = n(), collected = mean(learned))
+```
+
+Without a voucher, 34% came back for their result. With one, 79%. The gap is 45 percentage points in this extract, and it is the largest single behavioural response in this book.[^exp-thornton-43]
+
+```{r exp-thornton-ttest, echo=TRUE}
+t.test(learned ~ incentive, data = hiv)
+```
+
+R subtracts the groups in label order, so it prints the difference as $-0.451$ and the statistic as $t = -21.6$; the sign is bookkeeping, the magnitude is the finding. Note what was *not* needed to get it: no control variables, no model specification, no robustness table. The estimator is the crudest tool in this book. All of the sophistication went into the design.
+
+```{r exp-thornton-dose, echo=FALSE, fig.align='center', fig.width=7, fig.height=3.6, fig.cap="Share collecting their HIV result, by the value of the randomly assigned voucher. The jump from nothing to a token amount is far larger than any further increase — most of the effect is bought by the first few cents."}
+hiv %>%
+  mutate(band = cut(amount,
+                    breaks = c(-0.01, 0.001, 0.5, 1.5, 3),
+                    labels = c("no voucher", "up to $0.50",
+                               "$0.51-$1.50", "$1.51-$3.00"))) %>%
+  group_by(band) %>%
+  summarise(n = n(), share = mean(learned)) %>%
+  ggplot(aes(band, share)) +
+  geom_col(fill = "#2c6e8e", width = .6) +
+  geom_text(aes(label = paste0(round(100 * share), "%\n(n = ", n, ")")),
+            vjust = -0.15, size = 3, colour = "grey25") +
+  scale_y_continuous(labels = percent, limits = c(0, 1)) +
+  labs(x = NULL, y = "Collected their result",
+       title = "Most of the effect is bought by the smallest voucher") +
+  theme_minimal(base_size = 10)
+```
+
+The dose-response pattern is the part economists find interesting, and it is only visible because the *amount* was randomised too. A voucher worth at most fifty cents already lifts collection from 34% to 67%; raising it to two dollars or more adds a further nineteen points. Thornton makes the same point in the paper: even the smallest amount, about a tenth of a day's wage, produced large gains. This does not look like people being paid for their time. It looks like a small nudge past a threshold — which is a hypothesis about mechanism, generated by the design rather than assumed by it.
+
+Now the sanity check that every experiment owes its reader. If assignment was truly random, the groups should look alike on everything measured *before* the voucher was handed out.
+
+```{r exp-thornton-balance, echo=TRUE}
+hiv %>%
+  mutate(hiv2004 = ifelse(hiv2004 < 0, NA, hiv2004)) %>%
+  group_by(incentive) %>%
+  summarise(n         = n(),
+            age       = mean(age, na.rm = TRUE),
+            distance  = mean(distance),
+            hiv_positive = mean(hiv2004, na.rm = TRUE))
+```
+
+Distance and HIV status match almost exactly. Age does not: the voucher group is 1.6 years older, and a t-test puts that at $p = 0.007$. This is not a scandal, and pretending otherwise would teach the wrong lesson. Randomisation balances groups *in expectation*, not in every realised sample; check ten pre-treatment variables and one will typically fail at the 5% level because that is what 5% means. The right response is not to abandon the experiment but to see whether the estimate cares.
+
+```{r exp-thornton-controls, echo=TRUE}
+lm(learned ~ incentive + age + distance, data = hiv) %>%
+  summary() %>% coef() %>% round(4)
+```
+
+The coefficient moves from 0.451 to 0.449. In an experiment, control variables buy precision, not identification — and here they barely buy even that. Compare this with what happens to control variables in the observational world, two subsections down.
+
+::: {.analysis-note}
+The file also stores a small number of unusable HIV results as `-1`, which is exactly the pattern Section \@ref(missing-data) warned about: a negative number that is not a quantity but a code, and that a mean will happily swallow. The `ifelse()` above is the two-second fix.
+
+A second caveat on precision: vouchers were drawn within `r n_distinct(hiv$village, na.rm = TRUE)` villages, and people in the same village talk to one another. Allowing for that widens the standard error from about 0.019 to 0.023 and leaves the estimate untouched. Clustered standard errors return in Section \@ref(longitudinal-data).
+:::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Collection rates were 33.9% without a voucher and 78.9% with one.
+
+The effect in percentage points is `r fitb(45, tol = 0.5)`.
+
+Suppose the vouchers had *not* been randomised — suppose instead that field workers handed them to whoever seemed least likely to come back. Would the naive difference then be too large or too small? `r mcq(c("too large", answer = "too small", "unchanged, because the outcome is binary"))`
+
+And the design question. Thornton randomised the voucher *amount* as well as its existence. What does that buy her that a simple treated-versus-untreated design would not? `r mcq(c("a larger sample", answer = "a dose-response curve, which speaks to the mechanism", "protection against selection bias, which randomising the existence alone does not give"))`
+::::
+
+### Why Economists Rarely Get to Randomise {#exp-selection}
+
+The obvious obstacles come first. Nobody can randomise a recession, an exchange-rate regime, a minimum wage, a currency union, or a person's parents. Where an experiment is conceivable it is often forbidden, unaffordable, or too slow: the interesting outcomes in labour economics arrive twenty years after the intervention.
+
+But there is a deeper reason, and it is specific to economics. In most sciences, selection into treatment is a nuisance that contaminates the data. In economics it *is* the subject. People enrol in training because they expect it to pay off. Firms adopt a technology because it suits their workforce. Countries deregulate because of the circumstances that made deregulation attractive. The assignment mechanism is optimising behaviour, which is the thing the discipline exists to study — and this is why selection bias in economics is rarely small and rarely random in sign. The people who take the treatment are systematically the ones for whom it is worth taking.
+
+::: {.analysis-warning}
+This is why "we controlled for the observable differences" is a weaker sentence in economics than it sounds. If people choose treatment on the basis of an expected gain that they can see and you cannot — a talent, a plan, a diagnosis, a family situation — then the variable that drives selection is by definition absent from your data set. No amount of controlling closes a gap you cannot measure.
+:::
+
+So the economics answer to selection is not a better estimator. It is a better *source of variation*: some part of the treatment that moved for reasons having nothing to do with the people it moved. Finding one is what the next four sections are about, and what the rest of this section names.
+
+### LaLonde's Challenge {#exp-lalonde}
+
+In 1986 Robert LaLonde had a data set nobody else could use the way he used it.[^exp-lalonde] The **National Supported Work Demonstration** was a mid-1970s American programme offering nine to eighteen months of subsidised work experience to people with severe employment barriers: former offenders, former drug users, long-term welfare recipients, school dropouts. Crucially, it had more applicants than places, and it allocated them by lottery. It was a genuine randomised experiment on a question at the centre of labour economics.
+
+LaLonde's move was not to analyse the experiment. It was to use the experiment as an answer key. Take the experimental estimate as the truth. Then throw away the randomised control group, replace it with a comparison group drawn from a national survey — the kind of comparison group econometricians actually had — and see whether the era's best methods could recover the known answer.
+
+```{r exp-lalonde-load, echo=TRUE}
+nsw <- read.csv(file.path("data", "Causal", "nsw_experimental.csv"))
+cps <- read.csv(file.path("data", "Causal", "cps_controls.csv"))
+
+c(treated = sum(nsw$treat == 1), randomised_controls = sum(nsw$treat == 0),
+  cps_controls = nrow(cps))
+```
+
+`re78` is earnings in 1978, after the programme; `re74` and `re75` are earnings before it. The experimental estimate is the difference in 1978 earnings between the 185 people admitted and the 260 turned away by the lottery. Then the same 185 treated men are compared with 15,992 survey respondents instead.
+
+```{r exp-lalonde-models, echo=TRUE}
+obs <- bind_rows(nsw %>% filter(treat == 1), cps)
+
+models <- list(
+  "Experiment"     = lm(re78 ~ treat, data = nsw),
+  "Survey controls" = lm(re78 ~ treat, data = obs),
+  "Survey + controls" = lm(re78 ~ treat + age + educ + black + hisp +
+                             marr + nodegree + re74 + re75, data = obs)
+)
+
+modelsummary(models,
+             coef_map = c("treat" = "Training programme"),
+             gof_map  = c("nobs", "r.squared"),
+             title = "The same 185 trained men, three comparison groups. Only the first column comes from a lottery.")
+```
+
+The experiment says the programme raised annual earnings by about **\$1,794**. Swap the randomised controls for the survey sample and the same programme appears to have *cost* its participants **\$8,498** a year. The sign is wrong, the magnitude is wrong, and the difference between the two numbers — over \$10,000 — is pure selection bias. It could hardly be otherwise: the programme deliberately recruited the least employable people in America, and the survey sample is America.
+
+```{r exp-lalonde-fig, echo=FALSE, fig.align='center', fig.width=7, fig.height=3.8, fig.cap="Earnings in 1975, before the programme, as cumulative shares. The two randomised groups lie almost on top of one another; the survey comparison group is a different population. Read off where each curve leaves the vertical axis: that is the share with no earnings at all. The blue curve's jump to one just below \\$26,000 is not behaviour, it is topcoding."}
+bind_rows(
+  nsw %>% filter(treat == 1) %>% mutate(group = "NSW treated (185)"),
+  nsw %>% filter(treat == 0) %>% mutate(group = "NSW randomised controls (260)"),
+  cps %>% mutate(group = "Survey comparison group (15,992)")
+) %>%
+  mutate(group = factor(group, levels = c("NSW treated (185)",
+                                          "NSW randomised controls (260)",
+                                          "Survey comparison group (15,992)"))) %>%
+  ggplot(aes(re75, colour = group)) +
+  stat_ecdf(linewidth = .8) +
+  coord_cartesian(xlim = c(0, 30000)) +
+  scale_x_continuous(labels = dollar) +
+  scale_colour_manual(values = c("#9b3f2d", "#c8925f", "#2c6e8e")) +
+  labs(x = "Earnings in 1975", y = "Cumulative share of group", colour = NULL,
+       title = "Randomisation is visible in the data") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "bottom")
+```
+
+The figure is the point of the whole section. A randomised control group is not merely *similar* to the treated group; it is drawn from the same population by construction, and the two curves are indistinguishable before the treatment ever happens. The survey group is a different country.
+
+```{r exp-lalonde-balance, echo=FALSE}
+vars <- c(age = "Age", educ = "Years of schooling", black = "Black",
+          hisp = "Hispanic", marr = "Married",
+          nodegree = "No high-school degree",
+          re74 = "Earnings 1974 (USD)", re75 = "Earnings 1975 (USD)")
+
+data.frame(
+  Variable      = unname(vars),
+  `NSW treated` = sapply(names(vars), function(v) mean(nsw[[v]][nsw$treat == 1])),
+  `NSW control` = sapply(names(vars), function(v) mean(nsw[[v]][nsw$treat == 0])),
+  `Survey control` = sapply(names(vars), function(v) mean(cps[[v]])),
+  check.names = FALSE, row.names = NULL
+) %>%
+  kable(digits = 2,
+        caption = "Pre-treatment characteristics. The first two columns were made comparable by a lottery; the third was not, and no column of numbers will make it so.")
+```
+
+::: {.analysis-warning}
+The wrong estimate is not the imprecise one. It has 16,177 observations, a standard error of \$712 and a t-statistic of nearly $-12$. It is wrong by more than \$10,000 and it is wrong with great confidence. **Precision is not credibility.** A large sample buys the first and none of the second — and the modern era of administrative data, with millions of rows, has made this failure mode cheaper than ever to produce.
+:::
+
+Now look at the third column of the table. Add the eight control variables — age, schooling, ethnicity, marital status, degree, and two years of prior earnings — and the estimate becomes **+\$699**. The sign is right. The magnitude is plausible. The standard error is respectable. A referee would not blink. And it is less than half the experimental answer, with nothing on the printout to say so.
+
+That was LaLonde's finding, and it landed hard: the econometric fixes of the day, applied honestly by a competent analyst, did not reliably recover an answer that was known. The literature has argued about it ever since. Rajeev Dehejia and Sadek Wahba showed in 1999 that propensity-score matching on a well-chosen subsample gets close to the experimental number, which is a large part of why matching became popular.[^exp-dehejia] Jeffrey Smith and Petra Todd then showed how much that success depends on which subsample, which covariates and which specification.[^exp-smith] The debate is the reason Section \@ref(matching-and-balancing) exists, and the reason it is the *first* of the four method sections rather than the most trusted.
+
+### Identification Is Not Estimation {#exp-identification}
+
+The LaLonde comparison separates two ideas that beginners tend to fuse.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+A parameter is **identified** if it could be recovered exactly from the data-generating process given an infinite sample, under the assumptions being made. **Estimation** is what remains after that: extracting the number from a finite sample, with sampling error attached.
+
+An **identification strategy** is the argument for why a particular comparison in the data corresponds to the causal quantity of interest. It is a claim about how the world assigned the treatment — not a property of the model, the software, or the sample size.
+::::
+
+No amount of data solves an identification problem. LaLonde's survey comparison had 16,177 observations and was wrong; the experiment had 445 and was right. More rows would have shrunk the standard error around the wrong number.
+
+This has a practical consequence that is worth stating bluntly. An identification strategy is stated in words, before it is stated in code, and it is checked by argument rather than by diagnostics. $R^2$, t-statistics, information criteria and robustness tables all take the comparison for granted; none of them can tell you that the comparison was never causal to begin with. When you read an empirical economics paper, the identification strategy is what the introduction spends its third and fourth paragraphs on, and it is the only part that cannot be fixed in revision.
+
+### The Catalogue of Designs {#exp-designs}
+
+There are not very many strategies. Almost everything in applied microeconomics is one of the following, or a combination of two.
+
+| Where the variation comes from | The claim you must defend | Design | Where in this book |
+|:---|:---|:---|:---|
+| A coin you flipped yourself | assignment is independent of the potential outcomes | randomised experiment | this section |
+| Everything that drove selection was measured | conditional independence, given the covariates | matching, weighting, controls | Section \@ref(matching-and-balancing) |
+| Repeated observation of the same unit | what is unobserved about a unit is fixed over time | fixed effects | Section \@ref(longitudinal-data) |
+| A date: something changed for one group only | the groups would have moved in parallel | difference-in-differences | Section \@ref(difference-in-differences) |
+| A threshold: a rule switches at a cut-off | everything else is continuous at the cut-off | regression discontinuity | Section \@ref(discontinuities) |
+| A lever that moves treatment and nothing else | relevance and exclusion | instrumental variables | Section \@ref(instruments) |
+
+The order is not arbitrary. The designs are ranked by how much they ask you to believe about things you cannot see. Randomisation asks for nothing. Selection on observables asks for the most — that every driver of selection is sitting in your data set, an assumption that is untestable in principle and, in LaLonde's case, demonstrably false. The designs in between each buy their credibility by narrowing the comparison: to a period, to a neighbourhood of a threshold, to the people a lever happens to move.
+
+::: {.analysis-note}
+A common misreading is that these are six ways of estimating the same number. They are not. A discontinuity design identifies an effect *at the cut-off*; an instrument identifies the effect *for the people the instrument moves*; difference-in-differences identifies it *for the treated group in the treated period*. Whose effect you end up with is a feature of the design, decided before the data are opened, and the honest write-up says so in the abstract.
+:::
+
+### Natural Experiments {#exp-natural}
+
+Between the coin flip and the survey comparison sits the design that gave economics its modern shape.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+A **natural experiment** is variation in treatment produced by nature, an institution or an administrative accident, which the researcher argues is as good as randomly assigned with respect to the outcome. The researcher does not assign anything. The researcher finds an assignment that somebody else, or something else, already made — and then argues that it was made for reasons unrelated to the outcome.
+
+A **quasi-experiment** is the same idea with the "as good as random" claim resting on a design feature rather than on chance: a threshold, a timing, an eligibility rule.
+::::
+
+A short catalogue from economics, each of which is now a section in some textbook:
+
+- **The draft lottery.** Birth dates were drawn from a drum to determine Vietnam draft eligibility. Joshua Angrist used the drawn numbers to isolate the effect of veteran status on later earnings — the lottery moved military service, and nothing else about a man depended on his birth date.[^exp-angrist-draft]
+- **Quarter of birth.** Compulsory schooling laws tie the leaving date to a birthday, so children born in different quarters were forced to complete different amounts of schooling. Angrist and Alan Krueger used this to estimate the returns to education.[^exp-angrist-krueger]
+- **The Mariel boatlift.** In 1980, 125,000 Cubans arrived in Miami within five months. David Card treated it as a labour-supply shock that no Miami employer or worker had chosen, and asked what it did to local wages.[^exp-card-mariel]
+- **A state border.** New Jersey raised its minimum wage in 1992; Pennsylvania did not. Card and Krueger surveyed fast-food restaurants on both sides.[^exp-card-krueger]
+- **An actual government lottery.** Oregon could not afford Medicaid places for everyone eligible in 2008, so it drew names. The result is a randomised experiment on health insurance that no researcher had to design.[^exp-oregon]
+- **A wall.** German reunification remains one of the most-used natural experiments in European economics, and much of that work runs on the household panel this book keeps returning to in Section \@ref(panel-data).
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2>The first natural experiment</h2>
+:::
+London, 1854. Two companies piped water into the same streets, sometimes into neighbouring houses. Some years earlier one of them had moved its intake upstream of the city's sewage; the other still drew from the tidal Thames. When cholera came, John Snow realised what he was looking at: households had been sorted between two water supplies by an accident of commercial history, in his words "without their choice, and, in most cases, without their knowledge".[^exp-snow]
+
+Snow counted deaths per 10,000 houses and found the rate roughly eight times higher among the customers of the polluted supply. He had no microscope evidence, no accepted theory of germs, and no statistics beyond a ratio. What he had was an assignment mechanism he could argue was unrelated to everything else about a household — three decades before the cholera bacterium was accepted. The design carried the claim, not the arithmetic.
+::::
+
+::: {.analysis-warning}
+The word *natural* flatters these designs. Nothing about the variation is automatic, and the credibility never comes from the data — it comes from an argument about institutional detail that the reader has to be able to check. Draft lottery numbers were genuinely drawn from a drum. Quarter of birth is not: season of birth correlates with family background, and that objection has been argued over for thirty years.
+
+A working test: if you cannot explain in two sentences why the assignment is unrelated to the outcome, you do not have a natural experiment. You have a control variable with a good story attached.
+:::
+
+The 2021 Nobel Memorial Prize went to David Card for his empirical work in labour economics — the boatlift and the minimum wage among it — and to Joshua Angrist and Guido Imbens for the methodological half of the same story: turning "as good as random" from a rhetorical flourish into a disciplined claim with stateable assumptions and testable implications. Two years earlier the prize had gone to Abhijit Banerjee, Esther Duflo and Michael Kremer for going the other way and simply running the experiments, of which Thornton's is one of thousands.[^exp-nobel] Both prizes are about the same sentence: the credibility of an estimate lives in its design.
+
+### Where Exogenous Variation Comes From {#exp-sources}
+
+The question that replaces *which method should I use?* is a stranger one: **who, or what, already randomised something for me?** It sounds like a question about luck. In practice it is a question about institutions, and the answer is learned by reading history, administrative rules and fine print rather than econometrics.
+
+There are only a handful of places to look. Here they are, with one famous *American Economic Review* paper each — chosen because every entry is a different **idea** about where variation comes from, not a different estimator.
+
+| Where the variation comes from | What was actually exogenous | The paper |
+|:---|:---|:---|
+| A lottery somebody else ran | draft numbers drawn by date of birth | Angrist (1990)[^exp-angrist-draft] |
+| The weather | year-to-year swings in temperature and rain in the same county | Deschênes and Greenstone (2007)[^exp-weather] |
+| A border between jurisdictions | New Jersey raised its minimum wage, Pennsylvania did not | Card and Krueger (1994)[^exp-card-krueger] |
+| A political rupture | Germany divided in 1945, reunited in 1990 | Alesina and Fuchs-Schündeln (2007)[^exp-lenin] |
+| A rule with a threshold | health insurance switches on at the 65th birthday | Card, Dobkin and Maestas (2008)[^exp-medicare] |
+| Biology | identical twins who ended up with different amounts of schooling | Ashenfelter and Krueger (1994)[^exp-twins] |
+
+**Lotteries.** The purest case, because somebody has already done the randomising and written down the result. Draft lotteries, visa lotteries, housing-voucher lotteries — the Moving to Opportunity experiment assigned vouchers by lottery among applicant families and is still being mined decades later[^exp-mto] — school-place lotteries wherever a school is oversubscribed, and the Colombian voucher programme that drew winners because the money ran out.[^exp-colombia] The practical skill is knowing that these lotteries exist and that the losing applicants were recorded.
+
+**Nature.** Weather is the workhorse: rainfall, temperature, storms, frost dates. It is genuinely outside anyone's control, it varies year to year around a stable local average, and it is measured everywhere and archived for a century. That is why you keep hearing about it in the social sciences.
+
+::: {.analysis-warning}
+Weather is also the most over-used instrument in economics, and for a precise reason. An instrument must move the treatment *and nothing else that touches the outcome*. Weather moves almost everything — harvests, moods, traffic, electricity prices, whether people leave the house, whether the interviewer got to the door. The moment your outcome plausibly responds to rain through a second channel, the exclusion restriction is gone, and no statistical test will tell you.
+
+Worth knowing too: the weather paper in the table above drew a published Comment showing that coding and data errors reversed key results, followed by a Reply.[^exp-weather-comment] That is not a reason to distrust the design. It is what a field looks like when identification claims are actually checked.
+:::
+
+**Federalism.** A country that lets its regions legislate separately is running experiments it never intended: sixteen Bundesländer, fifty American states, twenty-six Swiss cantons. One state introduces free childcare, tuition fees, a smoking ban, a school reform; its neighbours do not, and the difference is dated to the month. Bruno Frey and Alois Stutzer built much of the early happiness literature on exactly this, using the differing degrees of direct democracy across Swiss cantons.[^exp-cantons] This is the design most likely to be within reach of a student thesis in Germany — but see the parallel-trends warning that Section \@ref(difference-in-differences) is built around, because a state that reforms is not a random state.
+
+**Rupture.** History occasionally splits a population and then puts it back together. German division is the most-used case in European economics, and two of its best-known papers are AER articles running on the household panel of Section \@ref(panel-data): Alesina and Fuchs-Schündeln asked whether forty years of communism left East Germans with a durable taste for redistribution.[^exp-lenin] Frijters, Haisken-DeNew and Shields used the post-1990 income surge in the East to ask what money does to life satisfaction.[^exp-frijters] Ruptures of other kinds do the same work: the Allied bombing of Japanese cities as a shock to city size,[^exp-bones] the mortality rates faced by European settlers centuries ago as an instrument for the institutions they left behind.[^exp-ajr]
+
+**Rules and thresholds.** Administrations run on cut-offs, and every cut-off is a small experiment: an age of eligibility, a class-size cap, an income limit for a benefit, a grade needed for admission, the margin by which an election was won. These are the raw material of Section \@ref(discontinuities), and they are the most abundant source of all — every bureaucracy generates them and most of them are documented.
+
+**Biology and family.** Twins, siblings, the sex composition of a couple's first two children, the exact date of birth relative to a school-entry cut-off. Here the "randomisation" is nature's, and the assumption is usually the most demanding of the lot: that within a twin pair the difference in schooling is unrelated to ability.
+
+::: {.analysis-note}
+Notice what half these papers have in common: a published Comment attacking the identifying assumption, and a Reply. Deschênes and Greenstone drew one, Acemoglu, Johnson and Robinson drew one. This is the healthy version of the field. An identification strategy is a claim that can be argued with, which is exactly what distinguishes it from a specification that can only be preferred or not preferred.
+:::
+
+### The Data Strategy Behind the Identification Strategy {#exp-data-strategy}
+
+Here is the habit that distinguishes empirical economics from a methods course, and it is the reason this section sits before the four method sections rather than after them.
+
+Ask an applied economist what they are working on and the answer is usually not a method. It is a data set and a source of variation: *the universe of Danish tax records linked to the birth register*, *linked employer-employee data with the exact date of every plant closure*, *admissions files from an oversubscribed school that assigns places by lottery*. The design is chosen first, in words, and the data are then hunted down, requested, merged or digitised because they are what makes the design checkable.
+
+This turns the practical question around. Not *which model do I run on my data?* but *what has to be in the data set for my argument to be inspectable?* Each design has requirements that are not incidental:
+
+- **Difference-in-differences** needs at least two periods, correctly dated treatment, and — for the parallel-trends claim to be inspectable at all — several periods *before* the change.
+- **Regression discontinuity** needs the running variable raw and unrounded, plus enough observations near the cut-off. A sample of 2,000 is useless if only 60 sit close to the threshold, and no amount of statistical care recovers a variable that was banded into deciles before it reached you.
+- **Instrumental variables** needs a variable that is in the data for reasons unrelated to the study: a lottery number, a distance, a birth date, a rainfall record.
+- **Matching** needs the covariates that actually drove selection — which means knowing the assigning institution well enough to know what they were. That is fieldwork, not statistics.
+- **Fixed effects** needs the same unit observed more than once, which is a decision made years earlier by whoever designed the survey.
+
+Two things follow. First, the value of a data source is not its size but the comparisons it permits: a household panel like the one in Section \@ref(panel-data) is a *data strategy*, bought at enormous cost, whose entire purpose is to make within-person comparisons possible. Second, the identification strategy has to be settled before the data are collected or requested, because it determines what has to be in them.
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2>Truly Dedicated: is the credibility revolution a good thing?</h2>
+:::
+The design-based turn has serious critics, and a book that only reported the enthusiasm would be misleading.
+
+Angrist and Pischke called it the **credibility revolution** and argued that empirical economics had become dramatically more believable.[^exp-credibility] Angus Deaton replied that credibility about *what* is the question: a well-identified local effect can be less useful than a worse-identified parameter that answers the question a policymaker actually asked, and the mechanism — *why* the effect exists — is what transfers to a different country or decade.[^exp-deaton] James Heckman has pressed the same point from the structural side: models with explicit behaviour can simulate policies that have never been tried, which no design-based comparison can do.
+
+There is also a selection problem in the profession itself. If identifiable questions get published, the questions that admit a clean design will be studied and the others quietly will not — the streetlight problem, applied to a discipline. Exchange-rate regimes, industrial policy and the causes of growth do not come with thresholds and lotteries.
+
+And there is the parameter itself. An instrument generally identifies a **local average treatment effect**, the effect for the people whose treatment status the instrument actually moves. That is a real effect for a real subgroup, but it may not be the group any policy is about, and Imbens's defence of it — *better LATE than nothing* — concedes the point in its title.[^exp-imbens]
+
+None of this argues for going back to controlling for things and hoping. It argues that "what is your identification strategy?" and "whose effect is it, and does anyone want to know it?" are two separate questions, and that a good paper answers both.
+::::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Match each situation to the design that fits it best.
+
+A city gives free tablets to every pupil in schools whose deprivation index exceeds 40, and nothing to schools just below.
+`r mcq(c("difference-in-differences", answer = "regression discontinuity", "instrumental variables"))`
+
+From January 2024, one federal state makes childcare free; the other fifteen do not. You have annual survey data for all states since 2015.
+`r mcq(c(answer = "difference-in-differences", "regression discontinuity", "matching"))`
+
+You want the effect of attending a selective school. Places are allocated by lottery among applicants, but some winners decline the place.
+`r mcq(c("matching on applicant characteristics", answer = "instrumental variables, using the lottery outcome", "difference-in-differences"))`
+
+True or false: an estimate built on 16,177 observations deserves more trust than one built on 445, because more data means less error. `r torf(FALSE)`
+
+And one question with no formula behind it. A colleague has panel data on 40,000 firms and asks which method will "make the endogeneity go away". What is the honest answer? `r mcq(c("cluster the standard errors", "add firm and year fixed effects", answer = "none - a method cannot supply a source of variation the data do not contain"))`
+::::
+
+:::: {.reading}
+::: {.titelreading}
+<h2>Reading</h2>
+:::
+If you read one thing after this section, make it the first chapter of Angrist and Pischke's *Mastering 'Metrics*, which sets up the whole apparatus with an example about health insurance and no matrix algebra. If you want the same material with R and Stata code beside it, Scott Cunningham's *Causal Inference: The Mixtape* is the book the data in this section came from [@cunningham2021causal].
+::::
+
+::: {.analysis-takeaway}
+An estimate is only as good as the comparison behind it, and the comparison is decided by the design, not by the software. Randomisation is the benchmark because it makes the selection-bias term zero by construction; every other design in this chapter is an argument for why that term can be ignored in some deliberately narrowed comparison. Economics rarely gets to randomise, so it hunts for variation that somebody else randomised by accident — and then chooses its data accordingly.
+
+The four sections that follow are that catalogue in detail: comparability built from covariates in Section \@ref(matching-and-balancing), from timing in Section \@ref(difference-in-differences), from a threshold in Section \@ref(discontinuities), and from a lever in Section \@ref(instruments).
+:::
+
+### Readings {#exp-readings -}
+
+- Angrist, J. D., & Pischke, J.-S. (2015). *Mastering 'Metrics: The Path from Cause to Effect*. Princeton University Press. The gentlest serious introduction to the five designs.
+- Cunningham, S. (2021). *Causal Inference: The Mixtape*. Yale University Press [@cunningham2021causal]. Free online, with the NSW and Malawi data used here.
+- Huntington-Klein, N. (2022). *The Effect: An Introduction to Research Design and Causality*. Chapman & Hall. Design first, estimator second; free online.
+- Gerber, A. S., & Green, D. P. (2012). *Field Experiments: Design, Analysis, and Interpretation*. W. W. Norton. For when you do get to flip the coin.
+- Imbens, G. W., & Rubin, D. B. (2015). *Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction*. Cambridge University Press. The potential-outcomes framework at full length.
+
+[^exp-fisher]: Fisher, R. A., *The Design of Experiments*, Oliver & Boyd, 1935, chapter II, sections 6 to 10 — "Interpretation and its Reasoned Basis", "Randomisation; the Physical Basis of the Validity of the Test", "The Effectiveness of Randomisation". The often-quoted formulation that randomisation is "the reasoned basis for inference" is a later paraphrase, not Fisher's own sentence.
+
+[^exp-holland]: Holland, P. W. (1986). Statistics and Causal Inference. *Journal of the American Statistical Association* 81(396), 945-960, <https://doi.org/10.2307/2289064>. The notation is older. Jerzy Neyman introduced potential outcomes for randomised experiments in 1923 — in English as *On the Application of Probability Theory to Agricultural Experiments. Essay on Principles. Section 9*, translated by Dabrowska and Speed, *Statistical Science* 5(4), 1990, 465-472 — and Donald Rubin extended them to observational studies in *Estimating causal effects of treatments in randomized and nonrandomized studies*, *Journal of Educational Psychology* 66(5), 1974, 688-701.
+
+[^exp-thornton]: Thornton, R. L. (2008). The Demand for, and Impact of, Learning HIV Status. *American Economic Review* 98(5), 1829-1863, <https://doi.org/10.1257/aer.98.5.1829>.
+
+[^exp-thornton-43]: The published paper reports 43 percentage points on its own estimation sample; the small difference comes from how the teaching extract handles missing outcomes and the zero-value vouchers. The lesson survives either number.
+
+[^exp-mixtape]: The extract is `thornton_hiv` from the `causaldata` package accompanying Cunningham's *Causal Inference: The Mixtape*; `nsw_experimental` and `cps_controls` below are `nsw_mixtape` and `cps_mixtape` from the same source, which in turn follow the Dehejia-Wahba sample of LaLonde's data. Snapshots are stored in `data/Causal/` so that the book builds without a network connection.
+
+[^exp-lalonde]: LaLonde, R. J. (1986). Evaluating the Econometric Evaluations of Training Programs with Experimental Data. *American Economic Review* 76(4), 604-620.
+
+[^exp-dehejia]: Dehejia, R. H., & Wahba, S. (1999). Causal Effects in Nonexperimental Studies: Reevaluating the Evaluation of Training Programs. *Journal of the American Statistical Association* 94(448), 1053-1062, <https://doi.org/10.1080/01621459.1999.10473858>.
+
+[^exp-smith]: Smith, J. A., & Todd, P. E. (2005). Does matching overcome LaLonde's critique of nonexperimental estimators? *Journal of Econometrics* 125(1-2), 305-353, <https://doi.org/10.1016/j.jeconom.2004.04.011>.
+
+[^exp-angrist-draft]: Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. *American Economic Review* 80(3), 313-336.
+
+[^exp-angrist-krueger]: Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? *Quarterly Journal of Economics* 106(4), 979-1014, <https://doi.org/10.2307/2937954>.
+
+[^exp-card-mariel]: Card, D. (1990). The Impact of the Mariel Boatlift on the Miami Labor Market. *Industrial and Labor Relations Review* 43(2), 245-257, <https://doi.org/10.1177/001979399004300205>.
+
+[^exp-card-krueger]: Card, D., & Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. *American Economic Review* 84(4), 772-793.
+
+[^exp-weather]: Deschênes, O., & Greenstone, M. (2007). The Economic Impacts of Climate Change: Evidence from Agricultural Output and Random Fluctuations in Weather. *American Economic Review* 97(1), 354-385, <https://doi.org/10.1257/aer.97.1.354>.
+
+[^exp-weather-comment]: Fisher, A. C., Hanemann, W. M., Roberts, M. J., & Schlenker, W. (2012). Comment. *American Economic Review* 102(7), 3749-3760, <https://doi.org/10.1257/aer.102.7.3749>; Reply by Deschênes and Greenstone, same issue, 3761-3773, <https://doi.org/10.1257/aer.102.7.3761>.
+
+[^exp-lenin]: Alesina, A., & Fuchs-Schündeln, N. (2007). Good-bye Lenin (or Not?): The Effect of Communism on People's Preferences. *American Economic Review* 97(4), 1507-1528, <https://doi.org/10.1257/aer.97.4.1507>. The evidence comes from the 1997 and 2002 waves of the German Socio-Economic Panel.
+
+[^exp-medicare]: Card, D., Dobkin, C., & Maestas, N. (2008). The Impact of Nearly Universal Insurance Coverage on Health Care Utilization: Evidence from Medicare. *American Economic Review* 98(5), 2242-2258, <https://doi.org/10.1257/aer.98.5.2242>.
+
+[^exp-twins]: Ashenfelter, O., & Krueger, A. (1994). Estimates of the Economic Return to Schooling from a New Sample of Twins. *American Economic Review* 84(5), 1157-1173. The sample was collected at the annual Twins Festival in Twinsburg, Ohio.
+
+[^exp-mto]: Chetty, R., Hendren, N., & Katz, L. F. (2016). The Effects of Exposure to Better Neighborhoods on Children: New Evidence from the Moving to Opportunity Experiment. *American Economic Review* 106(4), 855-902, <https://doi.org/10.1257/aer.20150572>.
+
+[^exp-colombia]: Angrist, J., Bettinger, E., Bloom, E., King, E., & Kremer, M. (2002). Vouchers for Private Schooling in Colombia: Evidence from a Randomized Natural Experiment. *American Economic Review* 92(5), 1535-1558, <https://doi.org/10.1257/000282802762024629>.
+
+[^exp-cantons]: Frey, B. S., & Stutzer, A. (2000). Happiness, Economy and Institutions. *The Economic Journal* 110(466), 918-938, <https://doi.org/10.1111/1468-0297.00570>. Their SOEP-based work includes Stutzer, A., & Frey, B. S. (2008), *Stress that Doesn't Pay: The Commuting Paradox*, *Scandinavian Journal of Economics* 110(2), 339-366, <https://doi.org/10.1111/j.1467-9442.2008.00542.x> — a panel design rather than a natural experiment, and a good illustration of the difference.
+
+[^exp-frijters]: Frijters, P., Haisken-DeNew, J. P., & Shields, M. A. (2004). Money Does Matter! Evidence from Increasing Real Income and Life Satisfaction in East Germany Following Reunification. *American Economic Review* 94(3), 730-740, <https://doi.org/10.1257/0002828041464551>.
+
+[^exp-bones]: Davis, D. R., & Weinstein, D. E. (2002). Bones, Bombs, and Break Points: The Geography of Economic Activity. *American Economic Review* 92(5), 1269-1289, <https://doi.org/10.1257/000282802762024502>.
+
+[^exp-ajr]: Acemoglu, D., Johnson, S., & Robinson, J. A. (2001). The Colonial Origins of Comparative Development: An Empirical Investigation. *American Economic Review* 91(5), 1369-1401, <https://doi.org/10.1257/aer.91.5.1369>. The mortality data were disputed by Albouy, D. (2012), Comment, *American Economic Review* 102(6), 3059-3076, with a Reply at 3077-3110.
+
+[^exp-oregon]: Finkelstein, A., et al. (2012). The Oregon Health Insurance Experiment: Evidence from the First Year. *Quarterly Journal of Economics* 127(3), 1057-1106, <https://doi.org/10.1093/qje/qjs020>.
+
+[^exp-snow]: Snow, J., *On the Mode of Communication of Cholera*, 2nd edition, John Churchill, 1855. The comparison of the Southwark & Vauxhall and Lambeth supplies is in the section on the 1854 South London epidemic.
+
+[^exp-nobel]: The Royal Swedish Academy of Sciences, Prize in Economic Sciences 2021: one half to David Card "for his empirical contributions to labour economics", the other half jointly to Joshua D. Angrist and Guido W. Imbens "for their methodological contributions to the analysis of causal relationships". The 2019 prize went to Abhijit Banerjee, Esther Duflo and Michael Kremer "for their experimental approach to alleviating global poverty". <https://www.nobelprize.org/prizes/economic-sciences/>
+
+[^exp-credibility]: Angrist, J. D., & Pischke, J.-S. (2010). The Credibility Revolution in Empirical Economics: How Better Research Design Is Taking the Con out of Econometrics. *Journal of Economic Perspectives* 24(2), 3-30, <https://doi.org/10.1257/jep.24.2.3>.
+
+[^exp-deaton]: Deaton, A. (2010). Instruments, Randomization, and Learning about Development. *Journal of Economic Literature* 48(2), 424-455, <https://doi.org/10.1257/jel.48.2.424>.
+
+[^exp-imbens]: Imbens, G. W. (2010). Better LATE Than Nothing: Some Comments on Deaton (2009) and Heckman and Urzua (2009). *Journal of Economic Literature* 48(2), 399-423, <https://doi.org/10.1257/jel.48.2.399>.

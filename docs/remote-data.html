@@ -23,7 +23,7 @@
 <meta name="author" content="Marco Kühne" />
 
 
-<meta name="date" content="2026-08-17" />
+<meta name="date" content="2026-08-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -542,7 +542,19 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="9" data-path="identify.html"><a href="identify.html"><i class="fa fa-check"></i><b>9</b> Identify</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a></li>
+<li class="chapter" data-level="9.1" data-path="experiments.html"><a href="experiments.html"><i class="fa fa-check"></i><b>9.1</b> Experiments</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="experiments.html"><a href="experiments.html#exp-potential-outcomes"><i class="fa fa-check"></i><b>9.1.1</b> What We Want and Cannot Have</a></li>
+<li class="chapter" data-level="9.1.2" data-path="experiments.html"><a href="experiments.html#exp-thornton"><i class="fa fa-check"></i><b>9.1.2</b> Paying People to Learn Their HIV Status</a></li>
+<li class="chapter" data-level="9.1.3" data-path="experiments.html"><a href="experiments.html#exp-selection"><i class="fa fa-check"></i><b>9.1.3</b> Why Economists Rarely Get to Randomise</a></li>
+<li class="chapter" data-level="9.1.4" data-path="experiments.html"><a href="experiments.html#exp-lalonde"><i class="fa fa-check"></i><b>9.1.4</b> LaLonde's Challenge</a></li>
+<li class="chapter" data-level="9.1.5" data-path="experiments.html"><a href="experiments.html#exp-identification"><i class="fa fa-check"></i><b>9.1.5</b> Identification Is Not Estimation</a></li>
+<li class="chapter" data-level="9.1.6" data-path="experiments.html"><a href="experiments.html#exp-designs"><i class="fa fa-check"></i><b>9.1.6</b> The Catalogue of Designs</a></li>
+<li class="chapter" data-level="9.1.7" data-path="experiments.html"><a href="experiments.html#exp-natural"><i class="fa fa-check"></i><b>9.1.7</b> Natural Experiments</a></li>
+<li class="chapter" data-level="9.1.8" data-path="experiments.html"><a href="experiments.html#exp-sources"><i class="fa fa-check"></i><b>9.1.8</b> Where Exogenous Variation Comes From</a></li>
+<li class="chapter" data-level="9.1.9" data-path="experiments.html"><a href="experiments.html#exp-data-strategy"><i class="fa fa-check"></i><b>9.1.9</b> The Data Strategy Behind the Identification Strategy</a></li>
+<li class="chapter" data-level="" data-path="experiments.html"><a href="experiments.html#exp-readings"><i class="fa fa-check"></i>Readings</a></li>
+</ul></li>
 <li class="chapter" data-level="9.2" data-path="matching-and-balancing.html"><a href="matching-and-balancing.html"><i class="fa fa-check"></i><b>9.2</b> Matching and Balancing</a></li>
 <li class="chapter" data-level="9.3" data-path="difference-in-differences.html"><a href="difference-in-differences.html"><i class="fa fa-check"></i><b>9.3</b> Difference-in-Differences</a></li>
 <li class="chapter" data-level="9.4" data-path="discontinuities.html"><a href="discontinuities.html"><i class="fa fa-check"></i><b>9.4</b> Discontinuities</a></li>
@@ -791,8 +803,8 @@ Definition
 <span id="cb80-31"><a href="remote-data.html#cb80-31" tabindex="-1"></a><span class="fu">glimpse</span>(gdp)</span>
 <span id="cb80-32"><a href="remote-data.html#cb80-32" tabindex="-1"></a><span class="co">#&gt; Rows: 56</span></span>
 <span id="cb80-33"><a href="remote-data.html#cb80-33" tabindex="-1"></a><span class="co">#&gt; Columns: 2</span></span>
-<span id="cb80-34"><a href="remote-data.html#cb80-34" tabindex="-1"></a><span class="co">#&gt; $ year    &lt;int&gt; 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 20…</span></span>
-<span id="cb80-35"><a href="remote-data.html#cb80-35" tabindex="-1"></a><span class="co">#&gt; $ gdp_usd &lt;dbl&gt; 8408486, 9116810, 9973652, 11607366, 15217532, 16691301, 18153647, 20210069, 22209370, 25545346, 26710653, 31020000, 34918000, 41749000, 45144000, 43879000, 55989000, 62983000, 70688000, 7…</span></span></code></pre></div>
+<span id="cb80-34"><a href="remote-data.html#cb80-34" tabindex="-1"></a><span class="co">#&gt; $ year    &lt;int&gt; 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 19…</span></span>
+<span id="cb80-35"><a href="remote-data.html#cb80-35" tabindex="-1"></a><span class="co">#&gt; $ gdp_usd &lt;dbl&gt; 8408486, 9116810, 9973652, 11607366, 15217532, 16691301, 18153…</span></span></code></pre></div>
 <p>Notice what did <em>not</em> happen. No footnote markers to strip, no thousands separators, no two spellings of the same label, no guessing which column is which. The provider promised a shape and delivered it. The only cosmetic step is the unit: dollars are hard to read at nine digits.</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="remote-data.html#cb81-1" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span></span>
 <span id="cb81-2"><a href="remote-data.html#cb81-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_musd =</span> gdp_usd <span class="sc">/</span> <span class="fl">1e6</span>) <span class="sc">%&gt;%</span></span>
