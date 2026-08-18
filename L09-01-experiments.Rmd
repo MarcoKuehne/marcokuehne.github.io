@@ -243,6 +243,19 @@ An **identification strategy** is the argument for why a particular comparison i
 
 No amount of data solves an identification problem. LaLonde's survey comparison had 16,177 observations and was wrong; the experiment had 445 and was right. More rows would have shrunk the standard error around the wrong number.
 
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2>Truly Dedicated: two things economists call identification</h2>
+:::
+Behind that definition sits a phrase worth owning: the **data-generating process**, the mechanism in the world that actually produced the numbers in front of you. Every method in this book is an attempt to say something about that mechanism while only ever seeing its output. Identification is the question of which parts of the mechanism the output can pin down *at all*, before any question of sample size arises.
+
+Put that way, the word has a much older home in economics than treatment effects have. A market hands you a cloud of price-and-quantity pairs. Every point in it is the intersection of a supply curve and a demand curve, and both curves move. Fit a line through the cloud and you get neither of them — at best you trace out demand in the years when supply happened to do the moving. Elmer Working laid this out in 1927 in a paper whose title is still the best summary of the problem: *What do statistical "demand curves" show?*[^exp-working] Trygve Haavelmo turned it into probability theory in 1943 and 1944, and Tjalling Koopmans gave the problem its name and its order and rank conditions in 1949.[^exp-cowles] From that tradition come the words **under-identified**, **exactly identified** and **over-identified**, and the reflex of counting equations against unknowns. It is still the meaning you meet first in a structural econometrics course, and it is still alive — agricultural economists identify supply and demand this way today, occasionally by exotic routes such as exploiting changes in the variance of the shocks rather than in their level.[^exp-santeramo]
+
+The design-based meaning of this chapter is the same question asked of a different mechanism. Not *which curve produced this point*, but *which comparison recovers this effect*. Both ask what the observable distribution can and cannot pin down. Both are settled by assumptions rather than by data.
+
+And both are best learned the way you may already have met them in R: **write the data-generating process yourself, hide the formula, and see whether the method finds its way back to the numbers you chose.** That is exactly what Section \@ref(synthetic-data) does when it builds a data set by hand — and it is the only situation you will ever be in where the right answer is known.
+::::
+
 This has a practical consequence that is worth stating bluntly. An identification strategy is stated in words, before it is stated in code, and it is checked by argument rather than by diagnostics. $R^2$, t-statistics, information criteria and robustness tables all take the comparison for granted; none of them can tell you that the comparison was never causal to begin with. When you read an empirical economics paper, the identification strategy is what the introduction spends its third and fourth paragraphs on, and it is the only part that cannot be fixed in revision.
 
 ### The Catalogue of Designs {#exp-designs}
@@ -262,6 +275,22 @@ The order is not arbitrary. The designs are ranked by how much they ask you to b
 
 ::: {.analysis-note}
 A common misreading is that these are six ways of estimating the same number. They are not. A discontinuity design identifies an effect *at the cut-off*; an instrument identifies the effect *for the people the instrument moves*; difference-in-differences identifies it *for the treated group in the treated period*. Whose effect you end up with is a feature of the design, decided before the data are opened, and the honest write-up says so in the abstract.
+:::
+
+### When the Design Runs Out {#exp-limits}
+
+Four situations turn up constantly in economics and are not on the list above. Naming them is part of the vocabulary.
+
+**The policy that hit everybody.** A national reform, a currency changeover, a pandemic — there is no untreated group, because the treatment was the country. The usual answers are to build a comparison group rather than find one, which is what the **synthetic control** method does by weighting other regions into an artificial twin of the treated one,[^exp-synthetic] or to compare against the treated unit's own past, which turns the problem into a time-series question. Both work. Both buy identification with an assumption stronger than anything in the table above, and the honest paper says which.
+
+**The lever that barely moves.** An instrument that shifts the treatment only weakly is worse than no instrument at all: the estimate drifts back towards the biased comparison it was meant to fix, and the standard errors understate how little is known.[^exp-weak] The familiar guard is the first-stage F-statistic and the rule of thumb that it should clear 10 — a benchmark from Staiger and Stock, formalised by Stock and Yogo, and by now widely thought too generous.
+
+**The treatment that spreads.** Every design in the table assumes that one unit's treatment does not change another unit's outcome. Vaccination breaks that. So does a training programme large enough to move local wages, and so does anything involving classmates, colleagues or neighbours. The special case where the group's average causes the individual and the individual is part of the average has a name of its own — Charles Manski's **reflection problem** — and it is genuinely unidentified, not merely difficult: you cannot tell the mirror from the person.[^exp-reflection]
+
+**The question that was never causal.** Some of the most useful numbers in economics are accounting, not causation. How much of the gender wage gap corresponds to measured differences in occupation, hours and experience is an **Oaxaca-Blinder decomposition** — the subject of Section \@ref(decomposing-differences) — and it is an entirely respectable exercise as long as nobody calls the unexplained remainder "discrimination". A decomposition apportions a difference. It does not say what would happen if you changed something.
+
+::: {.analysis-takeaway}
+Two words worth separating for good. **Internal validity** asks whether the estimate is right for the people and the setting it was measured in. **External validity** asks whether it tells you anything about anywhere else. Designs buy internal validity by narrowing the comparison — to a threshold, a period, the people a lever moves — and every narrowing costs external validity. The trade is unavoidable; pretending it is not is the most common overreach in applied work.
 :::
 
 ### Natural Experiments {#exp-natural}
@@ -435,6 +464,18 @@ The four sections that follow are that catalogue in detail: comparability built 
 [^exp-card-mariel]: Card, D. (1990). The Impact of the Mariel Boatlift on the Miami Labor Market. *Industrial and Labor Relations Review* 43(2), 245-257, <https://doi.org/10.1177/001979399004300205>.
 
 [^exp-card-krueger]: Card, D., & Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. *American Economic Review* 84(4), 772-793.
+
+[^exp-working]: Working, E. J. (1927). What Do Statistical "Demand Curves" Show? *Quarterly Journal of Economics* 41(2), 212-235, <https://doi.org/10.2307/1883501>. Elmer J. Working, not his brother Holbrook.
+
+[^exp-cowles]: Haavelmo, T. (1943). The Statistical Implications of a System of Simultaneous Equations. *Econometrica* 11(1), 1-12, <https://doi.org/10.2307/1905714>; Haavelmo, T. (1944). The Probability Approach in Econometrics. *Econometrica* 12 (Supplement), 1-115; Koopmans, T. C. (1949). Identification Problems in Economic Model Construction. *Econometrica* 17(2), 125-144, <https://doi.org/10.2307/1905689>.
+
+[^exp-santeramo]: Santeramo, F. G. (2015). A cursory review of the identification strategies. *Agricultural and Food Economics* 3, article 24, <https://doi.org/10.1186/s40100-015-0042-5>. The variance route is Rigobon, R. (2003), *Identification Through Heteroskedasticity*, *Review of Economics and Statistics* 85(4), 777-792, <https://doi.org/10.1162/003465303772815727>.
+
+[^exp-synthetic]: Abadie, A., & Gardeazabal, J. (2003). The Economic Costs of Conflict: A Case Study of the Basque Country. *American Economic Review* 93(1), 113-132, <https://doi.org/10.1257/000282803321455188>; Abadie, A., Diamond, A., & Hainmueller, J. (2010). Synthetic Control Methods for Comparative Case Studies. *Journal of the American Statistical Association* 105(490), 493-505, <https://doi.org/10.1198/jasa.2009.ap08746>.
+
+[^exp-weak]: Bound, J., Jaeger, D. A., & Baker, R. M. (1995). Problems with Instrumental Variables Estimation When the Correlation Between the Instruments and the Endogenous Explanatory Variable Is Weak. *Journal of the American Statistical Association* 90(430), 443-450, <https://doi.org/10.1080/01621459.1995.10476536>. The rule of thumb is from Staiger, D., & Stock, J. H. (1997), *Econometrica* 65(3), 557-586; the critical values are Stock, J. H., & Yogo, M. (2005), *Testing for Weak Instruments in Linear IV Regression*, in *Identification and Inference for Econometric Models*, Cambridge University Press, 80-108.
+
+[^exp-reflection]: Manski, C. F. (1993). Identification of Endogenous Social Effects: The Reflection Problem. *Review of Economic Studies* 60(3), 531-542, <https://doi.org/10.2307/2298123>.
 
 [^exp-weather]: Deschênes, O., & Greenstone, M. (2007). The Economic Impacts of Climate Change: Evidence from Agricultural Output and Random Fluctuations in Weather. *American Economic Review* 97(1), 354-385, <https://doi.org/10.1257/aer.97.1.354>.
 
