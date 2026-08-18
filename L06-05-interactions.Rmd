@@ -275,6 +275,21 @@ This shows you that interaction between two continuous variables works basically
 
 You can see that even with just two continuous variables, coming up with good visualisations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.
 
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2>Truly Dedicated: why not just split the sample?</h2>
+:::
+Sooner or later somebody proposes the obvious shortcut. Instead of an interaction, run the regression twice — once for women, once for men — and compare the two coefficients. It looks simpler and it reads more naturally. It is also two different mistakes wearing one coat.
+
+The first is algebraic. Splitting the sample is not equivalent to the interaction you wanted; it is equivalent to a **fully interacted** model, in which the intercept *and every other coefficient* is free to differ between the groups.[^int-split] That may be what you meant, but usually it is not: you wanted to know whether the effect of age differs, while the rest of the model stays common. The split silently grants freedom you never asked for, and pays for it in precision, because each half is estimated on half the data.
+
+The second mistake is in how split results get read. "Significant for women, not significant for men" is not evidence that the two differ. The subsamples differ in size, in residual variance and in how strongly the regressors are correlated with each other, and any of those can flip significance without the underlying slopes differing at all. **A difference in significance is not a significant difference** — Gelman and Stern made the point once and for all, and it remains among the most common errors in applied work.[^int-gelman]
+
+The remedy is the model in this section. Put both groups in one regression, add the interaction term, and read its coefficient and its standard error: that coefficient *is* the difference, with a test already attached.
+
+When is a split the right thing after all? When you genuinely believe the two groups follow different processes and want to describe both — two labour markets, two regimes, two eras. Then the fully interacted model and the split produce identical numbers, and the split is simply easier to read. Just do not use it to smuggle in a comparison you never tested.
+::::
+
 ### Model Comparison {#int-model-comparison}
 
 How to decide if the model with interaction is better than the model without interaction?
@@ -303,3 +318,7 @@ modelsummary(title = 'Comparison',
     $(this).toggleClass("open");
   });
 </script>
+
+[^int-split]: Le, A., *Interaction Term vs Split Sample*, 2016, <https://anhqle.github.io/interaction-term/>. The same point is worked through in the Cross Validated thread *Interaction effect in a multiple regression vs. split sample*, <https://stats.stackexchange.com/questions/155895/>.
+
+[^int-gelman]: Gelman, A., & Stern, H. (2006). The Difference Between "Significant" and "Not Significant" Is Not Itself Statistically Significant. *The American Statistician* 60(4), 328-331, <https://doi.org/10.1198/000313006X152649>.

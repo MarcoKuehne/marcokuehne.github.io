@@ -570,10 +570,14 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html"><i class="fa fa-check"></i>Resources</a>
 <ul>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-start"><i class="fa fa-check"></i>Start Here</a></li>
+<li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-concepts"><i class="fa fa-check"></i>What Data Are</a></li>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-craft"><i class="fa fa-check"></i>Learning R and the Craft</a></li>
+<li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-bookdown"><i class="fa fa-check"></i>Books Built the Same Way</a></li>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-showing"><i class="fa fa-check"></i>Showing Data</a></li>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-modelling"><i class="fa fa-check"></i>Comparing and Modelling</a></li>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-causality"><i class="fa fa-check"></i>Causality and Identification</a></li>
+<li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-scraping"><i class="fa fa-check"></i>Getting Data Out of the Web</a></li>
+<li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-text"><i class="fa fa-check"></i>Text, Space and the Rest</a></li>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-measurement"><i class="fa fa-check"></i>Measurement and Latent Variables</a></li>
 <li class="chapter" data-level="" data-path="resources.html"><a href="resources.html#res-data"><i class="fa fa-check"></i>Where the Data Come From</a></li>
 </ul></li>
@@ -1333,6 +1337,18 @@ Figure 6.16: Income over age at three levels of life satisfaction: the mean and 
 </div>
 <p>This shows you that interaction between two continuous variables works basically the same way as for a categorical and continuous variable. An interaction says that there's not a fixed offset: you need to consider both values of x1 and x2 simultaneously in order to predict y.</p>
 <p>You can see that even with just two continuous variables, coming up with good visualisations are hard. But that's reasonable: you shouldn't expect it will be easy to understand how three or more variables simultaneously interact! But again, we're saved a little because we're using models for exploration, and you can gradually build up your model over time. The model doesn't have to be perfect, it just has to help you reveal a little more about your data.</p>
+<div class="dedicated">
+<div class="titeldedicated">
+<h2>
+Truly Dedicated: why not just split the sample?
+</h2>
+</div>
+<p>Sooner or later somebody proposes the obvious shortcut. Instead of an interaction, run the regression twice — once for women, once for men — and compare the two coefficients. It looks simpler and it reads more naturally. It is also two different mistakes wearing one coat.</p>
+<p>The first is algebraic. Splitting the sample is not equivalent to the interaction you wanted; it is equivalent to a <strong>fully interacted</strong> model, in which the intercept <em>and every other coefficient</em> is free to differ between the groups.<a href="#fn98" class="footnote-ref" id="fnref98"><sup>98</sup></a> That may be what you meant, but usually it is not: you wanted to know whether the effect of age differs, while the rest of the model stays common. The split silently grants freedom you never asked for, and pays for it in precision, because each half is estimated on half the data.</p>
+<p>The second mistake is in how split results get read. "Significant for women, not significant for men" is not evidence that the two differ. The subsamples differ in size, in residual variance and in how strongly the regressors are correlated with each other, and any of those can flip significance without the underlying slopes differing at all. <strong>A difference in significance is not a significant difference</strong> — Gelman and Stern made the point once and for all, and it remains among the most common errors in applied work.<a href="#fn99" class="footnote-ref" id="fnref99"><sup>99</sup></a></p>
+<p>The remedy is the model in this section. Put both groups in one regression, add the interaction term, and read its coefficient and its standard error: that coefficient <em>is</em> the difference, with a test already attached.</p>
+<p>When is a split the right thing after all? When you genuinely believe the two groups follow different processes and want to describe both — two labour markets, two regimes, two eras. Then the fully interacted model and the split produce identical numbers, and the split is simply easier to read. Just do not use it to smuggle in a comparison you never tested.</p>
+</div>
 </div>
 </div>
 <div id="int-model-comparison" class="section level3 hasAnchor" number="6.5.5">
@@ -1898,6 +1914,13 @@ Figure 6.16: Income over age at three levels of life satisfaction: the mean and 
   });
 </script>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="98">
+<li id="fn98"><p>Le, A., <em>Interaction Term vs Split Sample</em>, 2016, <a href="https://anhqle.github.io/interaction-term/" class="uri">https://anhqle.github.io/interaction-term/</a>. The same point is worked through in the Cross Validated thread <em>Interaction effect in a multiple regression vs. split sample</em>, <a href="https://stats.stackexchange.com/questions/155895/" class="uri">https://stats.stackexchange.com/questions/155895/</a>.<a href="interactions.html#fnref98" class="footnote-back">↩︎</a></p></li>
+<li id="fn99"><p>Gelman, A., &amp; Stern, H. (2006). The Difference Between "Significant" and "Not Significant" Is Not Itself Statistically Significant. <em>The American Statistician</em> 60(4), 328-331, <a href="https://doi.org/10.1198/000313006X152649" class="uri">https://doi.org/10.1198/000313006X152649</a>.<a href="interactions.html#fnref99" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 <script>
 
