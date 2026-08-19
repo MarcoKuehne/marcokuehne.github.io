@@ -6,39 +6,88 @@ Randomisation, natural experiments, and identification strategies
 
 Section \@ref(partitioning-variation) left Ronald Fisher at Rothamsted with eight cups of tea and a promise: that the tea test was the smaller of the two things he built there. This is the larger one.
 
-Before Fisher, agricultural trials were laid out in tidy systematic patterns — manure on the left strips, mineral nitrogen on the right — because tidiness looked like rigour. Fisher's argument, made in *The Design of Experiments* in 1935, was that the allocation should instead be decided by a physical act of chance, and that this act is not a concession to sloppiness but the thing that licenses everything the statistician does afterwards. His own chapter headings put it plainly: the interpretation of an experiment has a *reasoned basis*, and randomisation is the *physical basis of the validity* of the test.[^exp-fisher] Randomisation does two jobs at once. It severs the link between the treatment and every property of the plot — the drainage, the weeds, the slope, the things nobody measured and nobody thought of. And it manufactures the probability distribution against which the observed difference is judged.
+Before Fisher, agricultural trials were laid out in tidy systematic patterns — manure on the left strips, mineral nitrogen on the right — because tidiness looked like rigour. Fisher's argument was that the allocation should instead be decided by a physical act of chance, and that this act is not a concession to sloppiness but the thing that licenses everything the statistician does afterwards. His own chapter headings put it plainly: the interpretation of an experiment has a *reasoned basis*, and randomisation is the *physical basis of the validity* of the test.[^exp-fisher] Randomisation does two jobs at once. It severs the link between the treatment and every property of the plot — the drainage, the weeds, the slope, the things nobody measured and nobody thought of. And it manufactures the probability distribution against which the observed difference is judged.
 
 That second point is worth pausing on, because it is the cleanest statement of what this whole chapter is about. In a randomised experiment, the p-value is not an assumption about nature. It is a fact about the coin.
-
-Economics almost never gets to flip the coin. The rest of this section is about what the discipline does instead — and about the vocabulary it invented for the problem, which is the vocabulary the following four sections take for granted.
-
-### What We Want and Cannot Have {#exp-potential-outcomes}
-
-Take one person and one treatment: a training programme, a scholarship, a job. There are two versions of that person's later earnings. One is what she earns having done the programme. The other is what she would have earned had she not. The effect of the programme *on her* is the difference between the two.
 
 :::: {.defbox}
 ::: {.titeldefbox}
 <h2>Definition</h2>
 :::
-For unit $i$ and a binary treatment $D_i \in \{0, 1\}$, the two **potential outcomes** are $Y_i(1)$, the outcome under treatment, and $Y_i(0)$, the outcome without it. The **causal effect** for that unit is
+**Randomisation** is the allocation of units to treatment and control by a chance device — a coin, a shuffled deck, a table of random numbers — rather than by the judgement of the researcher, the preference of the participant, or any rule connected to the units themselves.
 
-$$\delta_i = Y_i(1) - Y_i(0)$$
+Its power is not fairness. It is that chance is independent of *everything*: of the characteristics you measured, of the ones you did not, and of the ones nobody has yet thought to name. That independence is what lets a difference in outcomes be read as an effect. It is also what supplies the reference distribution against which the p-value is computed.
 
-What the data contain is only $Y_i = D_i \cdot Y_i(1) + (1 - D_i) \cdot Y_i(0)$ — one of the two, never both.
-
-Because individual effects are unknowable, causal work targets averages: the **average treatment effect** $\text{ATE} = E[Y(1) - Y(0)]$ over everybody, and the **average treatment effect on the treated** $\text{ATT} = E[Y(1) - Y(0) \mid D = 1]$ over the people who actually got it. These two are not the same number, and which one a study delivers is decided by its design.
+Note what randomisation is not. It is not a large sample, it is not a representative sample, and it is not haphazard allocation. Alternating patients by day of admission, or letting the field worker decide, produces something that looks arbitrary and is not random at all.
 ::::
 
-Paul Holland gave this its name in 1986: the **fundamental problem of causal inference**.[^exp-holland] It is worth seeing it for what it structurally is — a missing-data problem of the most severe kind. Half of every row is missing, and it is missing by construction, not by accident. Section \@ref(missing-data) spent a chapter on data that are missing because someone declined to answer; here the absent value never existed in the first place.
+Most social scientists almost never get to use it. Economics has it worst, but sociology, political science, demography and any psychology that leaves the laboratory are all in the same position: the interesting causes are not ours to assign. The rest of this section is about what is done instead — and about the vocabulary invented for the problem, which is the vocabulary the following four sections take for granted.
 
-The workaround is always the same: use *other* units as a stand-in for the counterfactual. And the whole discipline is the study of when that substitution is defensible. Write out the naive comparison — the difference in average outcomes between those who got the treatment and those who did not — and it splits into two pieces:
+### The Problem Every Causal Question Has {#exp-problem}
 
-$$\underbrace{E[Y \mid D = 1] - E[Y \mid D = 0]}_{\text{what we compute}} \; = \; \underbrace{E[Y(1) - Y(0) \mid D = 1]}_{\text{ATT, what we want}} \; + \; \underbrace{E[Y(0) \mid D = 1] - E[Y(0) \mid D = 0]}_{\text{selection bias}}$$
+Start with one person and one question. She completed a training programme and now earns €2,400 a month. Did the programme do that?
 
-The second term asks: would the two groups have differed anyway, without any treatment at all? Randomisation forces that term to zero, by construction, in expectation. Everything else in this chapter — matching, difference-in-differences, discontinuities, instruments — is an argument for why that term is zero, or small, or bounded, in some deliberately restricted comparison.
+To answer it you would need one number that does not exist: what she would be earning today had she *not* enrolled. That world was never run. Every causal claim ever made is a comparison with a world that did not happen, and the missing half of the comparison is missing not by carelessness but by the structure of reality.
+
+Paul Holland named this in 1986: the **fundamental problem of causal inference**.[^exp-holland] Seen from this book's angle it is a missing-data problem of the most extreme kind. Section \@ref(missing-data) dealt with values that are absent because somebody declined to answer; here the absent value never existed at all, and no amount of care in the fieldwork would have produced it. Half of every row is missing, always, by construction.
+
+So we substitute. We find *other* people — who did not enrol — and let their earnings stand in for the world she did not live. That single move is the whole of causal inference, and everything that follows in this chapter is an argument about when the substitution is defensible.
 
 ::: {.analysis-takeaway}
-Learn the decomposition rather than the formulas that follow it. Every method in the rest of this chapter is a different answer to one question: *why should I believe the untreated group tells me what would have happened to the treated group?*
+Every method in this chapter answers one question, and it is worth memorising in this form: **why should I believe that the untreated group shows me what would have happened to the treated group?**
+
+If you can state the answer in two sentences that a sceptical colleague would accept, you have a research design. If you cannot, you have a table of correlations with causal words attached.
+:::
+
+### The Gold Standard, and Who Built It {#exp-gold-standard}
+
+There is exactly one construction in which the substitution needs no defence: decide who is treated by chance. Then the treated and untreated groups differ only by the accidents of the draw, so the untreated group is, in expectation, precisely the world the treated group did not live.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+In a **randomised controlled trial (RCT)** the researcher allocates units to treatment and control by a chance device, measures the outcome in both arms, and reports the difference. A **field experiment** does this outside the laboratory, in the setting where the behaviour actually occurs; a **laboratory experiment** does it under controlled conditions; a **survey experiment** randomises something inside a questionnaire, such as the wording of a question or the description of a person.
+
+It is called the gold standard because it is the only design that requires no argument about *why* the groups are comparable. That is a large claim, and it is narrower than it sounds: it holds for the people the trial was run on, in the place and period it was run. Whether the number means anything anywhere else is a separate question, and one no amount of randomising can answer.
+::::
+
+The idea is younger than statistics and older than econometrics, and it did not begin in agriculture.
+
+**Psychology got there first.** In 1885 Charles Sanders Peirce and Joseph Jastrow published a psychophysics memoir on whether people can perceive very small differences in pressure.[^exp-peirce] To keep the subject from anticipating anything, they took a pack of 25 cards, half red and half black, shuffled it, and let the colour decide the *order* in which the two pressure changes were applied; a screen prevented the subject from seeing the operator's movements at all. Stephen Stigler calls this the first experiment carried out under a precise and mathematically sound randomisation scheme, half a century before Fisher.[^exp-stigler] Read the fine print, though: Peirce and Jastrow randomised the *order of conditions within one person*, not the *assignment of people to groups*. Random group composition is a separate and later invention — the historian Trudy Dehue traces it to educational research in the 1920s — and the step between the two is bigger than it looks.[^exp-dehue]
+
+**Fisher made it a principle.** The requirement appears in *Statistical Methods for Research Workers* in 1925 and is argued at length in the 1926 field-experiments paper, where the instruction is to arrange the plots deliberately at random so that no distinction can creep in between plots treated alike and plots treated differently.[^exp-fisher1926] *The Design of Experiments* (1935) is where it becomes a book.
+
+**Medicine made it a rule.** In 1931 Amberson, McMahon and Pinner split 24 tuberculosis patients into two matched groups of twelve and tossed a single coin to decide which group got the drug — one flip, two clusters, which is randomisation in spirit rather than in force.[^exp-amberson] The trial usually called the first modern one is the Medical Research Council's streptomycin study of 1948, designed with Austin Bradford Hill: allocation was individual, drawn from random-number series prepared per sex and per hospital, and — the decisive innovation — sealed in envelopes so that no investigator could see what came next.[^exp-mrc] Concealment, not arithmetic, is what made it credible.
+
+**Social science followed slowly.** The first large-scale randomised social experiment was the New Jersey Graduated Work Incentive Experiment, which between 1968 and 1972 offered 1,216 families a guaranteed income to find out whether it would stop them working.[^exp-nj] Development economics arrived last and loudest: the Poverty Action Lab was founded at MIT in 2003, and the field experiment in the next subsection is one of thousands that followed.[^exp-jpal]
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2>The gold standard was coined by a sceptic</h2>
+:::
+The phrase itself is remarkably recent. Historians of medicine trace its first application to randomised trials to a 1982 article in the *New England Journal of Medicine* by Alvan Feinstein and Ralph Horwitz — who used it to complain.[^exp-goldstandard] Their argument was that the trial is "an elusive ideal" invoked to dismiss observational evidence that is often all anyone has, and that the label had begun to do the work of an argument.
+
+Forty years later the phrase is repeated in every methods course as though it settled something. It settles exactly one thing — that the comparison is fair — and leaves open everything else: whether the right question was asked, whether the right people were in the room, and whether the answer travels.
+::::
+
+### The Catalogue of Designs {#exp-designs}
+
+When the coin is not yours to flip, there are not very many alternatives. Almost everything in applied social science is one of the following, or a combination of two, and it is worth seeing the whole list before meeting any of them in detail.
+
+| Where the variation comes from | The claim you must defend | Design | Where in this book |
+|:---|:---|:---|:---|
+| A coin you flipped yourself | assignment is independent of the potential outcomes | randomised experiment | this section |
+| Everything that drove selection was measured | conditional independence, given the covariates | matching, weighting, controls | Section \@ref(matching-and-balancing) |
+| Repeated observation of the same unit | what is unobserved about a unit is fixed over time | fixed effects | Section \@ref(longitudinal-data) |
+| A date: something changed for one group only | the groups would have moved in parallel | difference-in-differences | Section \@ref(difference-in-differences) |
+| A threshold: a rule switches at a cut-off | everything else is continuous at the cut-off | regression discontinuity | Section \@ref(discontinuities) |
+| A lever that moves treatment and nothing else | relevance and exclusion | instrumental variables | Section \@ref(instruments) |
+
+The order is not arbitrary. The designs are ranked by how much they ask you to believe about things you cannot see. Randomisation asks for nothing. Selection on observables asks for the most — that every driver of selection is sitting in your data set, an assumption that is untestable in principle and, as Section \@ref(exp-lalonde) will show on real data, sometimes spectacularly false. The designs in between buy their credibility by narrowing the comparison: to a period, to a neighbourhood of a threshold, to the people a lever happens to move.
+
+::: {.analysis-note}
+A common misreading is that these are six ways of estimating the same number. They are not. A discontinuity design identifies an effect *at the cut-off*; an instrument identifies the effect *for the people the instrument moves*; difference-in-differences identifies it *for the treated group in the treated period*. Whose effect you end up with is a feature of the design, decided before the data are opened, and the honest write-up says so in the abstract.
 :::
 
 ### Paying People to Learn Their HIV Status {#exp-thornton}
@@ -59,7 +108,7 @@ hiv <- read.csv(file.path("data", "Causal", "thornton_hiv.csv")) %>%
 nrow(hiv)
 ```
 
-The analysis is a difference of two means.
+The analysis is a difference of two means — the comparison of Section \@ref(comparing-means), unchanged and unadorned.
 
 ```{r exp-thornton-means, echo=TRUE}
 hiv %>%
@@ -73,7 +122,18 @@ Without a voucher, 34% came back for their result. With one, 79%. The gap is 45 
 t.test(learned ~ incentive, data = hiv)
 ```
 
-R subtracts the groups in label order, so it prints the difference as $-0.451$ and the statistic as $t = -21.6$; the sign is bookkeeping, the magnitude is the finding. Note what was *not* needed to get it: no control variables, no model specification, no robustness table. The estimator is the crudest tool in this book. All of the sophistication went into the design.
+R subtracts the groups in label order, so it prints the difference as $-0.451$ and the statistic as $t = -21.6$; the sign is bookkeeping, the magnitude is the finding.
+
+:::: {.amazing}
+::: {.titelamazing}
+<h2>The crudest tool in the book</h2>
+:::
+Look at what produced that number: `t.test()`, from Section \@ref(comparing-means), four chapters before any econometrics. No control variables, no specification search, no robustness appendix. The estimator is the crudest tool in this book, and it is sufficient, because all of the sophistication went into the design rather than into the analysis.
+
+There is a general rule hiding in that, and it is worth carrying into every paper you read: **the cleaner the source of variation, the simpler the analysis can be.** A well-run experiment needs a difference in means. A sharp discontinuity needs a local comparison around a cut-off. A murky observational comparison needs matching, weighting, controls, fixed effects, clustering and a battery of specifications — and needs them precisely because the design cannot carry the claim on its own.
+
+The inverse is a useful reading habit rather than a law. Methodological machinery is sometimes a sign of care and sometimes a sign that no single comparison was convincing enough to stand alone. When a paper's appendix is three times the length of its identification argument, it is worth asking which of the two is doing the persuading.
+::::
 
 ```{r exp-thornton-dose, echo=FALSE, fig.align='center', fig.width=7, fig.height=3.6, fig.cap="Share collecting their HIV result, by the value of the randomly assigned voucher. The jump from nothing to a token amount is far larger than any further increase — most of the effect is bought by the first few cents."}
 hiv %>%
@@ -114,7 +174,7 @@ lm(learned ~ incentive + age + distance, data = hiv) %>%
   summary() %>% coef() %>% round(4)
 ```
 
-The coefficient moves from 0.451 to 0.449. In an experiment, control variables buy precision, not identification — and here they barely buy even that. Compare this with what happens to control variables in the observational world, two subsections down.
+The coefficient moves from 0.451 to 0.449. In an experiment, control variables buy precision, not identification — and here they barely buy even that. Hold that number next to what control variables do in Section \@ref(exp-lalonde), where the design is not there to carry them.
 
 ::: {.analysis-note}
 The file also stores a small number of unusable HIV results as `-1`, which is exactly the pattern Section \@ref(missing-data) warned about: a negative number that is not a quantity but a code, and that a mean will happily swallow. The `ifelse()` above is the two-second fix.
@@ -135,17 +195,66 @@ Suppose the vouchers had *not* been randomised — suppose instead that field wo
 And the design question. Thornton randomised the voucher *amount* as well as its existence. What does that buy her that a simple treated-versus-untreated design would not? `r mcq(c("a larger sample", answer = "a dose-response curve, which speaks to the mechanism", "protection against selection bias, which randomising the existence alone does not give"))`
 ::::
 
+### What We Want and Cannot Have {#exp-potential-outcomes}
+
+Having seen one work, it is worth writing the logic down properly. The notation below is the common language of the whole field; it takes ten minutes to learn and it makes every later section shorter.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+For unit $i$ and a binary treatment $D_i \in \{0, 1\}$, the two **potential outcomes** are $Y_i(1)$, the outcome under treatment, and $Y_i(0)$, the outcome without it. The **causal effect** for that unit is
+
+$$\delta_i = Y_i(1) - Y_i(0)$$
+
+What the data contain is only $Y_i = D_i \cdot Y_i(1) + (1 - D_i) \cdot Y_i(0)$ — one of the two, never both. That is the fundamental problem of the previous subsection, written in four symbols.
+::::
+
+Because individual effects are unknowable, causal work reports averages, and the naive comparison between the treated and the untreated splits cleanly into two pieces:
+
+$$\underbrace{E[Y \mid D = 1] - E[Y \mid D = 0]}_{\text{what we compute}} \; = \; \underbrace{E[Y(1) - Y(0) \mid D = 1]}_{\text{the effect on the treated}} \; + \; \underbrace{E[Y(0) \mid D = 1] - E[Y(0) \mid D = 0]}_{\text{selection bias}}$$
+
+The second term asks one question: would the two groups have differed anyway, with no treatment at all? Randomisation forces it to zero by construction. Every other design in this chapter is an argument for why it is zero, or small, or bounded, inside some deliberately narrowed comparison.
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2>Truly Dedicated: whose average is it?</h2>
+:::
+"The average effect" is three different quantities that routinely get confused, and the difference between them is not pedantry — policy conclusions turn on it.
+
+The **average treatment effect**, $\text{ATE} = E[Y(1) - Y(0)]$, is the effect if everybody were treated. It is what a minister usually has in mind when asking whether a programme works.
+
+The **average treatment effect on the treated**, $\text{ATT} = E[Y(1) - Y(0) \mid D = 1]$, is the effect for the people who actually took it. If people select into treatment because they expect to gain, the ATT is larger than the ATE, sometimes much larger — and it is the honest answer to "did this programme help its participants", not to "should we scale it up".
+
+The **local average treatment effect**, LATE, is the effect for whoever a particular instrument or threshold happens to move. It returns in Section \@ref(instruments) and in the discussion of the credibility revolution at the end of this section.
+
+Which of the three a study delivers is decided by its design, before any estimation. Randomising the whole eligible population gives the ATE. A voluntary programme evaluated against a comparison group gives the ATT. A discontinuity gives an effect at the cut-off and nowhere else.
+::::
+
 ### Why Economists Rarely Get to Randomise {#exp-selection}
 
 The obvious obstacles come first. Nobody can randomise a recession, an exchange-rate regime, a minimum wage, a currency union, or a person's parents. Where an experiment is conceivable it is often forbidden, unaffordable, or too slow: the interesting outcomes in labour economics arrive twenty years after the intervention.
 
-But there is a deeper reason, and it is specific to economics. In most sciences, selection into treatment is a nuisance that contaminates the data. In economics it *is* the subject. People enrol in training because they expect it to pay off. Firms adopt a technology because it suits their workforce. Countries deregulate because of the circumstances that made deregulation attractive. The assignment mechanism is optimising behaviour, which is the thing the discipline exists to study — and this is why selection bias in economics is rarely small and rarely random in sign. The people who take the treatment are systematically the ones for whom it is worth taking.
+But there is a deeper reason, and it is close to the identity of the discipline. In most sciences, selection into treatment is a nuisance that contaminates the data. In economics it *is* the subject. People enrol in training because they expect it to pay off. Firms adopt a technology because it suits their workforce. Countries deregulate because of the circumstances that made deregulation attractive. The assignment mechanism is optimising behaviour, which is the thing the discipline exists to study — and this is why selection bias in economics is rarely small and rarely random in sign. The people who take the treatment are systematically the ones for whom it is worth taking.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+**Selection into treatment** is the process by which units come to be treated at all. It is a fact about the world, and in an experiment it is a coin.
+
+**Self-selection** is the particular case in which the units decide for themselves, on the basis of something they know about their own likely gain — a talent, a plan, a diagnosis, a family situation. It is the normal case outside the laboratory.
+
+**Selection bias** is what these do to your estimate: the difference the two groups would have shown *even with no treatment at all*. It is the second term of the decomposition above, and it has a sign you can usually reason about in advance. If the people who enrol are the ones who expected to do well anyway, the naive comparison overstates the effect. If a programme deliberately recruits the people doing worst, it understates it — and can reverse it, as the next subsection shows on real data.
+
+The three words are worth keeping apart. The first is a mechanism, the second is one form of it, and the third is the damage.
+::::
 
 ::: {.analysis-warning}
-This is why "we controlled for the observable differences" is a weaker sentence in economics than it sounds. If people choose treatment on the basis of an expected gain that they can see and you cannot — a talent, a plan, a diagnosis, a family situation — then the variable that drives selection is by definition absent from your data set. No amount of controlling closes a gap you cannot measure.
+This is why "we controlled for the observable differences" is a weaker sentence than it sounds. If people choose treatment on the basis of an expected gain that they can see and you cannot, then the variable driving selection is by definition absent from your data set. No amount of controlling closes a gap you cannot measure.
 :::
 
-So the economics answer to selection is not a better estimator. It is a better *source of variation*: some part of the treatment that moved for reasons having nothing to do with the people it moved. Finding one is what the next four sections are about, and what the rest of this section names.
+So the answer to selection is not a better estimator. It is a better *source of variation*: some part of the treatment that moved for reasons having nothing to do with the people it moved. Finding one is what the next four sections are about, and what the rest of this section names.
 
 ### LaLonde's Challenge {#exp-lalonde}
 
@@ -163,12 +272,15 @@ c(treated = sum(nsw$treat == 1), randomised_controls = sum(nsw$treat == 0),
 
 `re78` is earnings in 1978, after the programme; `re74` and `re75` are earnings before it. The experimental estimate is the difference in 1978 earnings between the 185 people admitted and the 260 turned away by the lottery. Then the same 185 treated men are compared with 15,992 survey respondents instead.
 
-```{r exp-lalonde-models, echo=TRUE}
+<details>
+<summary>Show the code that builds the table below.</summary>
+
+```{r exp-lalonde-models, eval=FALSE, echo=TRUE}
 obs <- bind_rows(nsw %>% filter(treat == 1), cps)
 
 models <- list(
-  "Experiment"     = lm(re78 ~ treat, data = nsw),
-  "Survey controls" = lm(re78 ~ treat, data = obs),
+  "Experiment"        = lm(re78 ~ treat, data = nsw),
+  "Survey controls"   = lm(re78 ~ treat, data = obs),
   "Survey + controls" = lm(re78 ~ treat + age + educ + black + hisp +
                              marr + nodegree + re74 + re75, data = obs)
 )
@@ -179,7 +291,12 @@ modelsummary(models,
              title = "The same 185 trained men, three comparison groups. Only the first column comes from a lottery.")
 ```
 
-The experiment says the programme raised annual earnings by about **\$1,794**. Swap the randomised controls for the survey sample and the same programme appears to have *cost* its participants **\$8,498** a year. The sign is wrong, the magnitude is wrong, and the difference between the two numbers — over \$10,000 — is pure selection bias. It could hardly be otherwise: the programme deliberately recruited the least employable people in America, and the survey sample is America.
+</details>
+
+```{r exp-lalonde-run, ref.label='exp-lalonde-models', echo=FALSE}
+```
+
+The experiment says the programme raised annual earnings by about **\$1,794**. Swap the randomised controls for the survey sample and the same programme appears to have *cost* its participants **\$8,498** a year. The sign is wrong, the magnitude is wrong, and the difference between the two numbers — over \$10,000 — is pure selection bias, with exactly the sign the previous subsection predicted: the programme deliberately recruited the least employable people in America, and the survey sample is America.
 
 ```{r exp-lalonde-fig, echo=FALSE, fig.align='center', fig.width=7, fig.height=3.8, fig.cap="Earnings in 1975, before the programme, as cumulative shares. The two randomised groups lie almost on top of one another; the survey comparison group is a different population. Read off where each curve leaves the vertical axis: that is the share with no earnings at all. The blue curve's jump to one just below \\$26,000 is not behaviour, it is topcoding."}
 bind_rows(
@@ -256,41 +373,22 @@ The design-based meaning of this chapter is the same question asked of a differe
 And both are best learned the way you may already have met them in R: **write the data-generating process yourself, hide the formula, and see whether the method finds its way back to the numbers you chose.** That is exactly what Section \@ref(synthetic-data) does when it builds a data set by hand — and it is the only situation you will ever be in where the right answer is known.
 ::::
 
-This has a practical consequence that is worth stating bluntly. An identification strategy is stated in words, before it is stated in code, and it is checked by argument rather than by diagnostics. $R^2$, t-statistics, information criteria and robustness tables all take the comparison for granted; none of them can tell you that the comparison was never causal to begin with. When you read an empirical economics paper, the identification strategy is what the introduction spends its third and fourth paragraphs on, and it is the only part that cannot be fixed in revision.
-
-### The Catalogue of Designs {#exp-designs}
-
-There are not very many strategies. Almost everything in applied microeconomics is one of the following, or a combination of two.
-
-| Where the variation comes from | The claim you must defend | Design | Where in this book |
-|:---|:---|:---|:---|
-| A coin you flipped yourself | assignment is independent of the potential outcomes | randomised experiment | this section |
-| Everything that drove selection was measured | conditional independence, given the covariates | matching, weighting, controls | Section \@ref(matching-and-balancing) |
-| Repeated observation of the same unit | what is unobserved about a unit is fixed over time | fixed effects | Section \@ref(longitudinal-data) |
-| A date: something changed for one group only | the groups would have moved in parallel | difference-in-differences | Section \@ref(difference-in-differences) |
-| A threshold: a rule switches at a cut-off | everything else is continuous at the cut-off | regression discontinuity | Section \@ref(discontinuities) |
-| A lever that moves treatment and nothing else | relevance and exclusion | instrumental variables | Section \@ref(instruments) |
-
-The order is not arbitrary. The designs are ranked by how much they ask you to believe about things you cannot see. Randomisation asks for nothing. Selection on observables asks for the most — that every driver of selection is sitting in your data set, an assumption that is untestable in principle and, in LaLonde's case, demonstrably false. The designs in between each buy their credibility by narrowing the comparison: to a period, to a neighbourhood of a threshold, to the people a lever happens to move.
-
-::: {.analysis-note}
-A common misreading is that these are six ways of estimating the same number. They are not. A discontinuity design identifies an effect *at the cut-off*; an instrument identifies the effect *for the people the instrument moves*; difference-in-differences identifies it *for the treated group in the treated period*. Whose effect you end up with is a feature of the design, decided before the data are opened, and the honest write-up says so in the abstract.
-:::
+This has a practical consequence that is worth stating bluntly. An identification strategy is stated in words, before it is stated in code, and it is checked by argument rather than by diagnostics. $R^2$, t-statistics, information criteria and robustness tables all take the comparison for granted; none of them can tell you that the comparison was never causal to begin with. When you read an empirical paper, the identification strategy is what the introduction spends its third and fourth paragraphs on, and it is the only part that cannot be fixed in revision.
 
 ### When the Design Runs Out {#exp-limits}
 
-Four situations turn up constantly in economics and are not on the list above. Naming them is part of the vocabulary.
+Four situations turn up constantly and are not on the catalogue's list. Naming them is part of the vocabulary.
 
-**The policy that hit everybody.** A national reform, a currency changeover, a pandemic — there is no untreated group, because the treatment was the country. The usual answers are to build a comparison group rather than find one, which is what the **synthetic control** method does by weighting other regions into an artificial twin of the treated one,[^exp-synthetic] or to compare against the treated unit's own past, which turns the problem into a time-series question. Both work. Both buy identification with an assumption stronger than anything in the table above, and the honest paper says which.
+**The policy that hit everybody.** A national reform, a currency changeover, a pandemic — there is no untreated group, because the treatment was the country. The usual answers are to build a comparison group rather than find one, which is what the **synthetic control** method does by weighting other regions into an artificial twin of the treated one,[^exp-synthetic] or to compare against the treated unit's own past, which turns the problem into a time-series question. Both work. Both buy identification with an assumption stronger than anything in the catalogue, and the honest paper says which.
 
 **The lever that barely moves.** An instrument that shifts the treatment only weakly is worse than no instrument at all: the estimate drifts back towards the biased comparison it was meant to fix, and the standard errors understate how little is known.[^exp-weak] The familiar guard is the first-stage F-statistic and the rule of thumb that it should clear 10 — a benchmark from Staiger and Stock, formalised by Stock and Yogo, and by now widely thought too generous.
 
-**The treatment that spreads.** Every design in the table assumes that one unit's treatment does not change another unit's outcome. Vaccination breaks that. So does a training programme large enough to move local wages, and so does anything involving classmates, colleagues or neighbours. The special case where the group's average causes the individual and the individual is part of the average has a name of its own — Charles Manski's **reflection problem** — and it is genuinely unidentified, not merely difficult: you cannot tell the mirror from the person.[^exp-reflection]
+**The treatment that spreads.** Every design in the catalogue assumes that one unit's treatment does not change another unit's outcome. Vaccination breaks that. So does a training programme large enough to move local wages, and so does anything involving classmates, colleagues or neighbours. The special case where the group's average causes the individual and the individual is part of the average has a name of its own — Charles Manski's **reflection problem** — and it is genuinely unidentified, not merely difficult: you cannot tell the mirror from the person.[^exp-reflection]
 
-**The question that was never causal.** Some of the most useful numbers in economics are accounting, not causation. How much of the gender wage gap corresponds to measured differences in occupation, hours and experience is an **Oaxaca-Blinder decomposition** — the subject of Section \@ref(decomposing-differences) — and it is an entirely respectable exercise as long as nobody calls the unexplained remainder "discrimination". A decomposition apportions a difference. It does not say what would happen if you changed something.
+**The question that was never causal.** Some of the most useful numbers in the social sciences are accounting, not causation. How much of the gender wage gap corresponds to measured differences in occupation, hours and experience is an **Oaxaca-Blinder decomposition** — the subject of Section \@ref(decomposing-differences) — and it is an entirely respectable exercise as long as nobody calls the unexplained remainder "discrimination". A decomposition apportions a difference. It does not say what would happen if you changed something.
 
 ::: {.analysis-takeaway}
-Two words worth separating for good. **Internal validity** asks whether the estimate is right for the people and the setting it was measured in. **External validity** asks whether it tells you anything about anywhere else. Designs buy internal validity by narrowing the comparison — to a threshold, a period, the people a lever moves — and every narrowing costs external validity. The trade is unavoidable; pretending it is not is the most common overreach in applied work.
+Two words worth separating for good. **Internal validity** asks whether the estimate is right for the people and the setting it was measured in. **External validity** asks whether it tells you anything about anywhere else. Designs buy internal validity by narrowing the comparison — to a threshold, a period, the people a lever moves — and every narrowing costs external validity. The trade is unavoidable; pretending it is not is the most common overreach in applied work, and it is the reason the gold standard of Section \@ref(exp-gold-standard) is a narrower claim than the phrase suggests.
 :::
 
 ### Natural Experiments {#exp-natural}
@@ -417,6 +515,8 @@ You want the effect of attending a selective school. Places are allocated by lot
 
 True or false: an estimate built on 16,177 observations deserves more trust than one built on 445, because more data means less error. `r torf(FALSE)`
 
+A voluntary programme is evaluated against a well-matched comparison group. Which quantity does that deliver? `r mcq(c("the average treatment effect, ATE", answer = "the average treatment effect on the treated, ATT", "neither, because matching is never causal"))`
+
 And one question with no formula behind it. A colleague has panel data on 40,000 firms and asks which method will "make the endogeneity go away". What is the honest answer? `r mcq(c("cluster the standard errors", "add firm and year fixed effects", answer = "none - a method cannot supply a source of variation the data do not contain"))`
 ::::
 
@@ -428,9 +528,9 @@ If you read one thing after this section, make it the first chapter of Angrist a
 ::::
 
 ::: {.analysis-takeaway}
-An estimate is only as good as the comparison behind it, and the comparison is decided by the design, not by the software. Randomisation is the benchmark because it makes the selection-bias term zero by construction; every other design in this chapter is an argument for why that term can be ignored in some deliberately narrowed comparison. Economics rarely gets to randomise, so it hunts for variation that somebody else randomised by accident — and then chooses its data accordingly.
+An estimate is only as good as the comparison behind it, and the comparison is decided by the design, not by the software. Randomisation is the benchmark because it makes the selection-bias term zero by construction; every other design in this chapter is an argument for why that term can be ignored in some deliberately narrowed comparison. Most social scientists rarely get to randomise, so they hunt for variation that somebody else randomised by accident — and then choose their data accordingly.
 
-The four sections that follow are that catalogue in detail: comparability built from covariates in Section \@ref(matching-and-balancing), from timing in Section \@ref(difference-in-differences), from a threshold in Section \@ref(discontinuities), and from a lever in Section \@ref(instruments).
+The four sections that follow are the catalogue in detail: comparability built from covariates in Section \@ref(matching-and-balancing), from timing in Section \@ref(difference-in-differences), from a threshold in Section \@ref(discontinuities), and from a lever in Section \@ref(instruments).
 :::
 
 ### Readings {#exp-readings -}
@@ -445,6 +545,24 @@ The four sections that follow are that catalogue in detail: comparability built 
 
 [^exp-holland]: Holland, P. W. (1986). Statistics and Causal Inference. *Journal of the American Statistical Association* 81(396), 945-960, <https://doi.org/10.2307/2289064>. The notation is older. Jerzy Neyman introduced potential outcomes for randomised experiments in 1923 — in English as *On the Application of Probability Theory to Agricultural Experiments. Essay on Principles. Section 9*, translated by Dabrowska and Speed, *Statistical Science* 5(4), 1990, 465-472 — and Donald Rubin extended them to observational studies in *Estimating causal effects of treatments in randomized and nonrandomized studies*, *Journal of Educational Psychology* 66(5), 1974, 688-701.
 
+[^exp-peirce]: Peirce, C. S., & Jastrow, J. (1885). On Small Differences of Sensation. *Memoirs of the National Academy of Sciences* 3, 73-83. Presented 17 October 1884, published 1885; the reprint that most psychologists know carries the title "…Differences *in* Sensation".
+
+[^exp-stigler]: Stigler, S. M. (1978). Mathematical Statistics in the Early States. *Annals of Statistics* 6(2), 239-265, <https://doi.org/10.1214/aos/1176344123>; the assessment of Peirce and Jastrow is on page 248. Ian Hacking tells a wider story about where randomisation came from in *Telepathy: Origins of Randomization in Experimental Design*, *Isis* 79(3), 1988, 427-451.
+
+[^exp-dehue]: Dehue, T. (1997). Deception, Efficiency, and Random Groups: Psychology and the Gradual Origination of the Random Group Design. *Isis* 88(4), 653-673, <https://doi.org/10.1086/383850>. She credits William A. McCall's *How to Experiment in Education* (Macmillan, 1923) with random group composition, before Fisher and in education rather than agriculture.
+
+[^exp-fisher1926]: Fisher, R. A. (1926). The Arrangement of Field Experiments. *Journal of the Ministry of Agriculture of Great Britain* 33, 503-513. On whether 1925 or 1926 counts as the first published statement, see Hall, N. S. (2007), *R. A. Fisher and his advocacy of randomization*, *Journal of the History of Biology* 40(2), 295-325 — the requirement is already in the first edition of *Statistical Methods for Research Workers* (1925).
+
+[^exp-amberson]: Amberson, J. B., McMahon, B. T., & Pinner, M. (1931). A Clinical Trial of Sanocrysin in Pulmonary Tuberculosis. *American Review of Tuberculosis* 24(4), 401-435. Twenty-four patients, two matched groups of twelve, one coin toss.
+
+[^exp-mrc]: Medical Research Council (1948). Streptomycin Treatment of Pulmonary Tuberculosis. *British Medical Journal* 2(4582), 769-782, <https://doi.org/10.1136/bmj.2.4582.769>. The random-number series were drawn up by Austin Bradford Hill, with Marc Daniels and Philip D'Arcy Hart on the design; the trial was not placebo-controlled, the control arm was bed rest alone. Iain Chalmers argues the decisive innovation was concealment rather than statistical theory.
+
+[^exp-nj]: The New Jersey Graduated Work Incentive Experiment, 1968-1972, funded by the Office of Economic Opportunity and run jointly by the Institute for Research on Poverty at Wisconsin and Mathematica: Kershaw, D., & Fair, J. (1976). *The New Jersey Income-Maintenance Experiment, Vol. I*. Academic Press. A short overview of the labour-supply findings is Rees, A. (1974), *Journal of Human Resources* 9(2), 158-180.
+
+[^exp-jpal]: The Poverty Action Lab was founded at MIT in 2003 by Abhijit Banerjee, Esther Duflo and Sendhil Mullainathan, and renamed the Abdul Latif Jameel Poverty Action Lab in 2005. Michael Kremer, who shared the 2019 Nobel with Banerjee and Duflo, was not among the founders.
+
+[^exp-goldstandard]: Jones, D. S., & Podolsky, S. H. (2015). The history and fate of the gold standard. *The Lancet* 385(9977), 1502-1503, <https://doi.org/10.1016/S0140-6736(15)60742-5>. The 1982 article is Feinstein, A. R., & Horwitz, R. I., *Double Standards, Scientific Methods, and Epidemiologic Research*, *New England Journal of Medicine* 307(26), 1611-1617.
+
 [^exp-thornton]: Thornton, R. L. (2008). The Demand for, and Impact of, Learning HIV Status. *American Economic Review* 98(5), 1829-1863, <https://doi.org/10.1257/aer.98.5.1829>.
 
 [^exp-thornton-43]: The published paper reports 43 percentage points on its own estimation sample; the small difference comes from how the teaching extract handles missing outcomes and the zero-value vouchers. The lesson survives either number.
@@ -457,14 +575,6 @@ The four sections that follow are that catalogue in detail: comparability built 
 
 [^exp-smith]: Smith, J. A., & Todd, P. E. (2005). Does matching overcome LaLonde's critique of nonexperimental estimators? *Journal of Econometrics* 125(1-2), 305-353, <https://doi.org/10.1016/j.jeconom.2004.04.011>.
 
-[^exp-angrist-draft]: Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. *American Economic Review* 80(3), 313-336.
-
-[^exp-angrist-krueger]: Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? *Quarterly Journal of Economics* 106(4), 979-1014, <https://doi.org/10.2307/2937954>.
-
-[^exp-card-mariel]: Card, D. (1990). The Impact of the Mariel Boatlift on the Miami Labor Market. *Industrial and Labor Relations Review* 43(2), 245-257, <https://doi.org/10.1177/001979399004300205>.
-
-[^exp-card-krueger]: Card, D., & Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. *American Economic Review* 84(4), 772-793.
-
 [^exp-working]: Working, E. J. (1927). What Do Statistical "Demand Curves" Show? *Quarterly Journal of Economics* 41(2), 212-235, <https://doi.org/10.2307/1883501>. Elmer J. Working, not his brother Holbrook.
 
 [^exp-cowles]: Haavelmo, T. (1943). The Statistical Implications of a System of Simultaneous Equations. *Econometrica* 11(1), 1-12, <https://doi.org/10.2307/1905714>; Haavelmo, T. (1944). The Probability Approach in Econometrics. *Econometrica* 12 (Supplement), 1-115; Koopmans, T. C. (1949). Identification Problems in Economic Model Construction. *Econometrica* 17(2), 125-144, <https://doi.org/10.2307/1905689>.
@@ -476,6 +586,20 @@ The four sections that follow are that catalogue in detail: comparability built 
 [^exp-weak]: Bound, J., Jaeger, D. A., & Baker, R. M. (1995). Problems with Instrumental Variables Estimation When the Correlation Between the Instruments and the Endogenous Explanatory Variable Is Weak. *Journal of the American Statistical Association* 90(430), 443-450, <https://doi.org/10.1080/01621459.1995.10476536>. The rule of thumb is from Staiger, D., & Stock, J. H. (1997), *Econometrica* 65(3), 557-586; the critical values are Stock, J. H., & Yogo, M. (2005), *Testing for Weak Instruments in Linear IV Regression*, in *Identification and Inference for Econometric Models*, Cambridge University Press, 80-108.
 
 [^exp-reflection]: Manski, C. F. (1993). Identification of Endogenous Social Effects: The Reflection Problem. *Review of Economic Studies* 60(3), 531-542, <https://doi.org/10.2307/2298123>.
+
+[^exp-angrist-draft]: Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. *American Economic Review* 80(3), 313-336.
+
+[^exp-angrist-krueger]: Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? *Quarterly Journal of Economics* 106(4), 979-1014, <https://doi.org/10.2307/2937954>.
+
+[^exp-card-mariel]: Card, D. (1990). The Impact of the Mariel Boatlift on the Miami Labor Market. *Industrial and Labor Relations Review* 43(2), 245-257, <https://doi.org/10.1177/001979399004300205>.
+
+[^exp-card-krueger]: Card, D., & Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. *American Economic Review* 84(4), 772-793. The comparison group is fast-food outlets in eastern Pennsylvania, so this is a state-level difference-in-differences rather than a matched border-pair design.
+
+[^exp-oregon]: Finkelstein, A., et al. (2012). The Oregon Health Insurance Experiment: Evidence from the First Year. *Quarterly Journal of Economics* 127(3), 1057-1106, <https://doi.org/10.1093/qje/qjs020>.
+
+[^exp-snow]: Snow, J., *On the Mode of Communication of Cholera*, 2nd edition, John Churchill, 1855. The comparison of the Southwark & Vauxhall and Lambeth supplies is in the section on the 1854 South London epidemic; Snow's own count gives roughly 315 against 37 deaths per 10,000 houses.
+
+[^exp-nobel]: The Royal Swedish Academy of Sciences, Prize in Economic Sciences 2021: one half to David Card "for his empirical contributions to labour economics", the other half jointly to Joshua D. Angrist and Guido W. Imbens "for their methodological contributions to the analysis of causal relationships". The 2019 prize went to Abhijit Banerjee, Esther Duflo and Michael Kremer "for their experimental approach to alleviating global poverty". <https://www.nobelprize.org/prizes/economic-sciences/>
 
 [^exp-weather]: Deschênes, O., & Greenstone, M. (2007). The Economic Impacts of Climate Change: Evidence from Agricultural Output and Random Fluctuations in Weather. *American Economic Review* 97(1), 354-385, <https://doi.org/10.1257/aer.97.1.354>.
 
@@ -498,12 +622,6 @@ The four sections that follow are that catalogue in detail: comparability built 
 [^exp-bones]: Davis, D. R., & Weinstein, D. E. (2002). Bones, Bombs, and Break Points: The Geography of Economic Activity. *American Economic Review* 92(5), 1269-1289, <https://doi.org/10.1257/000282802762024502>.
 
 [^exp-ajr]: Acemoglu, D., Johnson, S., & Robinson, J. A. (2001). The Colonial Origins of Comparative Development: An Empirical Investigation. *American Economic Review* 91(5), 1369-1401, <https://doi.org/10.1257/aer.91.5.1369>. The mortality data were disputed by Albouy, D. (2012), Comment, *American Economic Review* 102(6), 3059-3076, with a Reply at 3077-3110.
-
-[^exp-oregon]: Finkelstein, A., et al. (2012). The Oregon Health Insurance Experiment: Evidence from the First Year. *Quarterly Journal of Economics* 127(3), 1057-1106, <https://doi.org/10.1093/qje/qjs020>.
-
-[^exp-snow]: Snow, J., *On the Mode of Communication of Cholera*, 2nd edition, John Churchill, 1855. The comparison of the Southwark & Vauxhall and Lambeth supplies is in the section on the 1854 South London epidemic.
-
-[^exp-nobel]: The Royal Swedish Academy of Sciences, Prize in Economic Sciences 2021: one half to David Card "for his empirical contributions to labour economics", the other half jointly to Joshua D. Angrist and Guido W. Imbens "for their methodological contributions to the analysis of causal relationships". The 2019 prize went to Abhijit Banerjee, Esther Duflo and Michael Kremer "for their experimental approach to alleviating global poverty". <https://www.nobelprize.org/prizes/economic-sciences/>
 
 [^exp-credibility]: Angrist, J. D., & Pischke, J.-S. (2010). The Credibility Revolution in Empirical Economics: How Better Research Design Is Taking the Con out of Econometrics. *Journal of Economic Perspectives* 24(2), 3-30, <https://doi.org/10.1257/jep.24.2.3>.
 
