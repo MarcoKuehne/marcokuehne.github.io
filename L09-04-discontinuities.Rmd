@@ -4,4 +4,1441 @@
 Regression discontinuity designs
 :::
 
-<!-- Content will be developed here. -->
+```{r rdd-setup, echo=FALSE}
+library(rdrobust)
+library(rddensity)
+library(rdlocrand)
+library(estimatr)
+```
+
+### A Line Drawn Through a List of Schools {#rdd-a-line}
+
+In the spring of 2024 the school ministry of North Rhine-Westphalia sorted every
+one of its schools by a single number. The number is the *Schulsozialindex*, a
+factor score built at the Ruhr-Universität Bochum out of four administrative
+indicators: the share of under-eighteens in the school's catchment area living
+in households on basic income support, the share of pupils whose family language
+is not German, the share who moved to Germany themselves, and the share with a
+diagnosed need for support in learning, language or emotional and social
+development — this last one entering as an interaction with the poverty
+indicator rather than on its own. The score is then pressed into nine steps.
+Step 9 holds the most disadvantaged five per cent of schools; steps 1 to 8 split
+the remaining ninety-five.^[Schräpler and Jeworutzki (2025) document the
+construction and the 2023 rescaling. The four indicators are combined by a
+confirmatory factor analysis of the kind you met in the Reveal chapter.]
+
+Then the ministry drew a line. Primary schools in steps 6 to 9 and secondary
+schools in steps 7 to 9 were invited to join the *Startchancen* programme —
+twenty billion euros over ten years, which the federal ministry calls the
+largest education programme in the history of the Federal Republic. Schools
+below the line were not invited. In North Rhine-Westphalia 923 schools
+eventually took part.
+
+Consider two primary schools in the same city. One has an index score that puts
+it barely inside step 6. The other is a fraction of a point below and lands in
+step 5. Everything we can measure about them is nearly identical: the same kind
+of neighbourhood, the same share of families on benefits, the same staffroom
+problems. One gets a decade of money, staff and support. The other gets a letter
+saying it was not selected.
+
+In 2030 somebody will have to say whether the money worked. Section
+\@ref(difference-in-differences) showed one way to answer that: compare the
+change over time in funded schools with the change over time in unfunded ones,
+and defend the parallel-trends assumption. This section shows the other way, and
+it is a way that needs no assumption about trends at all. It needs only the two
+schools above — and the observation that whatever separates them, it cannot be
+much.
+
+::: {.analysis-takeaway}
+When a programme is handed out by a rule, and the rule has a threshold, the
+threshold itself is the experiment. The people on either side of it are as good
+as randomised, and the rule tells you so.
+:::
+
+### What Thistlethwaite and Campbell Were Trying to Fix {#rdd-what-thistlethwaite-and-campbell-were-trying-to-fix}
+
+The method was invented in 1958 and published in 1960, by Donald L.
+Thistlethwaite and Donald T. Campbell, in the *Journal of Educational
+Psychology*. The title tells you what problem they had in mind: *Regression-Discontinuity
+Analysis: An Alternative to the Ex Post Facto Experiment*.
+
+The ex post facto experiment was the dominant design in mid-century American
+sociology, associated above all with F. Stuart Chapin's *Experimental Designs in
+Sociological Research* (1947) and Ernest Greenwood's *Experimental Sociology*
+(1945). The recipe: wait until a programme has run, then find, for every person
+who received it, a person who did not but who looks the same on a list of
+measured background variables, and compare the pairs. You will recognise it. It
+is matching, done before anyone had worked out what matching can and cannot
+promise — the subject of Section \@ref(matching-and-balancing). Campbell's
+objection was not that matching is useless. It was that matching on a handful of
+fallible measurements buys the appearance of comparability without the substance,
+and that regression to the mean will then manufacture an effect out of nothing.
+
+Thistlethwaite and Campbell had in front of them a setting where the selection
+rule was not a mystery to be reconstructed but a published number. The National
+Merit Scholarship programme gave two grades of public recognition to American
+high-school students on the strength of a qualifying test: a *Certificate of
+Merit* to those above a state-specific cut-off, a *Letter of Commendation* to
+those below it. The two groups were treated differently by their schools, their
+teachers and their own self-image — and the only thing that separated a student
+at the bottom of the certificate group from one at the top of the commendation
+group was a point or two on a test.
+
+So they plotted the outcomes against the test score and looked for a step in the
+line at the cut-off. That is the whole idea. There is no matching, no covariate
+list, no assumption that treated and untreated units are alike overall. There is
+only the claim that a curve which is smooth everywhere else has no business
+jumping at exactly the point where the rule changes.
+
+Campbell went on to make this the centrepiece of a much larger argument. In the
+chapter he wrote with Julian Stanley for the *Handbook of Research on Teaching*
+(1963), later reprinted as *Experimental and Quasi-Experimental Designs for
+Research*, the method appears as Design 16. In *Reforms as Experiments*
+(*American Psychologist*, 1969) it becomes a proposal for how governments should
+work: administer scarce benefits by an explicit rule, record the rule, and the
+evaluation writes itself.
+
+> If there is no significant difference for these at the decision-point
+> intercept, then the tie-breaking experiment should show no difference. In
+> cases where the tie breakers would show an effect, there should be an abrupt
+> discontinuity in the regression line.
+>
+> --- Campbell (1969, p. 420)
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+A **regression discontinuity design** exploits a treatment whose assignment — or
+whose *eligibility* — is a known function of an observed, continuous variable — the **running variable** or
+**score** — crossing a fixed **cut-off**. The causal quantity of interest is the
+vertical gap between the two regression functions at the cut-off:
+
+$$\tau = \lim_{x \downarrow c} E[y \mid x] - \lim_{x \uparrow c} E[y \mid x]$$
+
+Everything in the design turns on that limit being taken from data near $c$, and
+on there being no reason other than the treatment for the two limits to differ.
+::::
+
+### Waiting for Life to Arrive {#rdd-waiting-for-life-to-arrive}
+
+And then, for thirty-five years, almost nothing happened.
+
+Thomas Cook told this story in a paper whose title is a nod to Beckett:
+*Waiting for Life to Arrive: A history of the
+regression-discontinuity design in Psychology, Statistics and Economics*
+(*Journal of Econometrics*, 2008). Cook counts the citations and finds an
+invention that nobody used.
+
+Part of the reason is that the inventor talked it down. Campbell and Stanley
+described the design as "very limited in its range of applications", and Cook
+notes drily that this is "not a ringing endorsement, particularly when coming
+from the method's own developer". Statisticians found the problem uninteresting
+for a different reason: once you know the assignment rule completely, where is
+the difficulty? And economists, Cook writes, had the design "off the radarscope"
+by 1980, "not to re-emerge for another 15 years or so".
+
+The most interesting part of Cook's history is that the design kept being
+invented from scratch, in fields that did not read each other. Psychology got it
+in 1960. Economics got it in 1972, from Arthur Goldberger. Statistics got it
+again in 1977, from Donald Rubin. And public health rediscovered it in 1996
+under the name *risk-based allocation*. Goldberger, the economist,
+did not cite Campbell and did not think he was writing about regression
+discontinuity at all. Goldberger was asking a different question: what happens
+to a treatment-effect estimate when people are selected on a *measured*
+pre-test rather than on their true, unmeasured ability? His answer was that
+selection on the observed score produces no bias — the distinction that we now
+call selection on observables versus selection on unobservables. Regression
+discontinuity is the limiting case of his argument.
+
+Goldberger also computed the price. For a cut-off at the median, he found the
+design roughly 2.75 times less efficient than an experiment with the same number
+of units. Keep that number. It is the single most useful fact about regression
+discontinuity in practice, and it explains most of the disappointments.
+
+::: {.analysis-note}
+Two and three-quarter times less efficient means you need nearly three times the
+sample to reach the same precision. A threshold study with 500 units on each
+side — a thousand in all — has roughly the power of a randomised trial with 360
+units in total. Regression
+discontinuity is not a cheap experiment; it is an expensive one that somebody
+else already paid for.
+:::
+
+Economics came back to the design in the late 1990s, and it came back fast:
+Wilbert van der Klaauw on financial aid offers (circulated from the
+mid-1990s, published in 2002), Joshua Angrist and Victor Lavy
+on Israeli class sizes, Sandra Black on school-district boundaries. The
+theoretical account arrived in 2001, when Jinyong Hahn, Petra Todd and van der
+Klaauw published nine pages in *Econometrica* that set out what the design
+actually assumes. Their three results organise everything that follows in this
+section: identification rests on *continuity*, not on unconfoundedness; the
+estimand is a local effect at the cut-off and nowhere else; and when the rule is
+obeyed only partly, the estimator is a ratio — an instrumental-variables
+estimator in disguise.
+
+:::: {.amazing}
+::: {.titeldefbox}
+<h2>Amazing Fact</h2>
+:::
+The 2021 Nobel Memorial Prize went to David Card, Joshua Angrist and Guido
+Imbens, and it is often reported as a prize for regression discontinuity. It was
+not. The citations read "for his empirical contributions to labour economics"
+and "for their methodological contributions to the analysis of causal
+relationships", and the words *regression discontinuity* do not appear in the
+press release at all.
+
+They do appear twice in the committee's *Scientific Background*, and both times
+the credit goes elsewhere. Once to name Donald Campbell as the man who
+"developed one of the main empirical methods --- the regression discontinuity
+(RD) design" for natural experiments. And once to note that the framework
+Angrist and Imbens built was later used to work out "the conditions under which
+a causal effect can be identified when using other methods for causal inference,
+including the regression discontinuity design (Hahn, Todd, and van der Klaauw,
+2001)".
+
+That second sentence is the real connection, and it is worth more than the
+misattribution. The language in which Hahn, Todd and van der Klaauw stated what
+a fuzzy discontinuity identifies --- compliers, monotonicity, a local average
+treatment effect --- is exactly the language Angrist and Imbens had invented for
+instrumental variables a decade earlier. A prize for a vocabulary is still a
+prize for the sentences you can write in it.
+::::
+
+### A Catalogue of Thresholds {#rdd-a-catalogue-of-thresholds}
+
+Before the machinery, the payoff. The following studies all answer a question
+that had resisted every other design, and they do it because somebody once wrote
+a rule with a number in it.
+
+```{r rdd-catalogue, echo=FALSE}
+katalog <- tibble::tribble(
+  ~Study, ~`Running variable`, ~`Cut-off`, ~Finding,
+  "Ludwig & Miller (2007), *QJE*",
+  "county poverty rate, 1960 census", "59.20%",
+  "Head Start grant-writing help cut child mortality from Head-Start-treatable causes by a third to a half of the control mean of 3.2 per 100,000",
+  "Carpenter & Dobkin (2009), *AEJ: Applied*",
+  "age in days", "21st birthday",
+  "all-cause mortality jumps 9%, about 10 extra deaths per 100,000 person-years; alcohol overdoses and alcohol-related deaths +30%, motor vehicle +14%, suicide +15%",
+  "Card, Dobkin & Maestas (2009), *QJE*",
+  "age in days at admission", "65th birthday",
+  "Medicare eligibility cuts 7-day mortality of emergency patients by nearly one percentage point on a base of about 5%, a 20% reduction",
+  "Almond, Doyle, Kowalski & Williams (2010), *QJE*",
+  "birth weight in grams", "1,500 g",
+  "the 'very low birth weight' label buys about 4,000 USD more care and cuts one-year mortality by roughly one percentage point",
+  "Angrist & Lavy (1999), *QJE*",
+  "grade enrolment", "40, 80, 120 …",
+  "Maimonides' rule splits classes; ten fewer pupils raise fifth-grade reading by about 0.3 standard deviations",
+  "Lee (2008), *J. Econometrics*",
+  "margin of victory", "0",
+  "winning a US House seat by a hair is worth 7.7–8.1 percentage points at the next election",
+  "Hoekstra (2009), *REStat*",
+  "SAT score minus the GPA-specific admission cut-off", "0",
+  "attending the flagship state university raises later earnings of white men by about 20%",
+  "Dell (2010), *Econometrica*",
+  "location relative to a colonial boundary", "the mita border",
+  "districts inside Peru's colonial mining draft have 25% lower household consumption today",
+  "Bor, Moscoe, Mutevedzi, Newell & Bärnighausen (2014), *Epidemiology*",
+  "first CD4 count", "200 cells/µl",
+  "eligibility for antiretroviral therapy cut mortality, hazard ratio 0.65 (95% CI 0.45–0.94)"
+)
+knitr::kable(katalog,
+  caption = "Nine thresholds and what they bought. Read the third column first: every one of these numbers is an administrative rule that somebody wrote down, and every finding in the fourth column exists because of it.")
+```
+
+Look at what these have in common. Not one of them is a variable a researcher
+chose. A county poverty rate taken from the 1960 census and used once, in 1965;
+a birthday; a gram on a hospital scale; a rabbinical ruling from the twelfth century about how many children one
+teacher may instruct. The design does not find natural experiments; it finds
+*bureaucracies*, and bureaucracies leave thresholds behind them the way glaciers
+leave moraines.
+
+::: {.analysis-note}
+Two of the entries deserve a second look because of what the naive comparison
+says. Sicker newborns get more intensive care, so the raw association between
+treatment intensity and infant mortality is *positive*: more care, more death.
+And in Israel, small classes are concentrated in schools that need them, so the
+raw association between class size and achievement is also positive: bigger
+classes, better results. In both cases the threshold reverses the sign.
+:::
+
+:::: {.reading}
+::: {.titeldefbox}
+<h2>Reading</h2>
+:::
+The two Cambridge Elements volumes by Matias Cattaneo, Nicolás Idrobo and Rocío
+Titiunik — *A Practical Introduction to Regression Discontinuity Designs:
+Foundations* (2020) and *Extensions* (2024) — are the current standard, they are
+written around R and Stata code, and the working-paper versions are free on
+arXiv. For the older canon, Imbens and Lemieux (2008) and Lee and Lemieux (2010)
+are still the papers everyone cites. Cattaneo and Titiunik (2022) in the *Annual
+Review of Economics* is the best short overview.
+::::
+
+### Sharp and Fuzzy {#rdd-sharp-and-fuzzy}
+
+The design comes in two versions, and the difference is whether the rule is
+obeyed.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+In a **sharp** design, treatment is a deterministic step function of the score:
+everyone above the cut-off is treated, everyone below is not.
+
+$$d_i = \mathbb{1}\{x_i \geq c\}$$
+
+In a **fuzzy** design, crossing the cut-off changes the *probability* of
+treatment but does not settle it:
+
+$$\lim_{x \downarrow c} P(d = 1 \mid x) \neq \lim_{x \uparrow c} P(d = 1 \mid x)$$
+
+The sharp estimand is the jump in the outcome. The fuzzy estimand is the ratio
+of the jump in the outcome to the jump in the treatment probability:
+
+$$\tau_{\text{fuzzy}} = \frac{\lim_{x \downarrow c} E[y \mid x] - \lim_{x \uparrow c} E[y \mid x]}{\lim_{x \downarrow c} E[d \mid x] - \lim_{x \uparrow c} E[d \mid x]}$$
+::::
+
+The Startchancen case is fuzzy, and for a mundane reason. In North
+Rhine-Westphalia the index governed who was *eligible*; it did not settle who
+ended up in. The ministry reports both a pre-selection step by the school
+inspectorate within the eligible steps, and that "the decision to take part lay
+with the schools themselves, in consultation with their local authority". So the
+score determines eligibility sharply, and eligibility determines participation
+only partly.^[In the first cohort all four hundred invited schools did say yes,
+which is a useful reminder that whether a design is sharp or fuzzy is a fact
+about an administration, not a property of the method.]
+
+That is exactly the structure of an instrumental variable, and the fuzzy
+estimator is a Wald ratio. If this feels familiar, it should: it is the
+same algebra as Section \@ref(instruments), applied inside a narrow window
+around a number. The assumptions travel too. There must be no *defiers* — no
+school that would have joined had it not been invited and refused once it was —
+and under that monotonicity condition the ratio identifies the average effect
+for **compliers at the cut-off**: schools that took part because they were
+invited, and that sit right on the line. Continuity identifies the sharp
+estimand; continuity *plus* monotonicity identifies the fuzzy one.
+
+::: {.analysis-warning}
+Not "the effect of the programme". Not even "the effect of the programme at the
+cut-off". The effect *for the schools that respond to the invitation*, *at the
+cut-off*. We will measure the distance between those three quantities later in
+this section, once we have a world where all three are known.
+:::
+
+### The Identifying Assumption {#rdd-the-identifying-assumption}
+
+Section \@ref(experiments) decomposed every naive comparison into a treatment
+effect plus a selection bias term, and every design in this chapter is an
+argument for why the second term vanishes. Matching argues that it vanishes once
+you condition on enough covariates. Difference-in-differences argues that it is
+constant over time and cancels. Regression discontinuity argues something
+narrower and, on the face of it, much weaker.
+
+:::: {.defbox}
+::: {.titeldefbox}
+<h2>Definition</h2>
+:::
+**Continuity.** The conditional expectations of both potential outcomes are
+continuous in the running variable at the cut-off:
+
+$$E[y_i(0) \mid x_i = x] \quad \text{and} \quad E[y_i(1) \mid x_i = x]
+  \quad \text{are continuous at } x = c$$
+
+Under continuity, the sharp design identifies
+
+$$\tau_{\text{SRD}} = E[y_i(1) - y_i(0) \mid x_i = c]$$
+
+the average treatment effect **for units exactly at the cut-off** (Hahn, Todd
+and van der Klaauw, 2001).
+::::
+
+Read the assumption carefully, because two things about it are unusual.
+
+First, it says nothing about units away from the cut-off, and it therefore
+permits arbitrarily severe confounding everywhere else. Schools with a high
+social index really are different from schools with a low one, in every way you
+can imagine and several you cannot. Continuity does not deny that. It only says
+that the difference does not arrive all at once, at 60.
+
+Second — and this is what makes the design worth having — continuity is a
+statement about a *limit*, and limits are things the data can speak to. You
+cannot test whether treated and untreated units are comparable after
+conditioning on covariates; that is the whole trouble with matching. But you
+*can* look at whether things which should be smooth actually are: the density of
+the score, the pre-programme outcomes, covariates that no programme could have
+touched. None of those checks proves continuity. Together they make a case that
+a reader can inspect, which is more than most designs offer.
+
+### A Programme We Can Check {#rdd-a-programme-we-can-check}
+
+The Startchancen evaluation reports for the first time at the end of 2026 or the
+beginning of 2027 and concludes in 2030, so nobody yet knows what the answer is. We will therefore
+build a world in which we do.
+
+The simulation below has 4,200 schools in one federal state. Each has a social
+index score between 2 and 98, known to the ministry. Schools at 60 or above are
+invited. Invited schools join with a probability that depends on something we
+will never observe — call it the leadership's capacity to take on a
+ten-year project — and a handful of schools below the line join through a
+hardship route — about one school in twenty below the line. The outcome is the
+share of Year-4 pupils below the minimum
+standard in mathematics, measured in 2029. Nationally that share was about 22
+per cent in the 2021 IQB survey; in the schools this programme addresses it runs
+far higher.
+
+The effect of participation is negative — fewer children below the standard —
+and it is deliberately heterogeneous: larger for schools further above the
+threshold, and larger for schools with more capacity. That last choice is what
+will separate the three estimands we warned about.
+
+```{r rdd-dgp}
+simulate_startchancen <- function(n = 4200, seed = 4, world = "clean",
+                                  staerke = 2.5) {
+  set.seed(seed)
+
+  # The published social index: 0-100, higher means more disadvantage.
+  index <- pmin(pmax(rnorm(n, mean = 50, sd = 15), 2), 98)
+
+  # Unobserved: how much room to manoeuvre the school leadership has.
+  kapazitaet <- rnorm(n)
+
+  # A world in which schools just below the line get themselves moved above it.
+  if (world == "manipulated") {
+    geschoben <- (index >= 58 & index < 60) & (kapazitaet > 0.5)
+    index[geschoben] <- 60 + runif(sum(geschoben), 0, 1)
+  }
+
+  einladung <- as.integer(index >= 60)
+
+  # Take-up. One latent draw, two thresholds: nobody is a defier.
+  u <- runif(n)
+  teilnahme <- as.integer(ifelse(einladung == 1,
+                                 u < plogis( 0.7 + 0.9 * kapazitaet),
+                                 u < plogis(-3.2 + 0.9 * kapazitaet)))
+
+  # Share of Year-4 pupils below the minimum standard, as a percentage.
+  mittel <- function(x) 5 + 50 * plogis((x - 58) / 14)
+  y0  <- mittel(index) - staerke * kapazitaet + rnorm(n, 0, 1.5)
+  tau <- -3.2 - 0.11 * (index - 60) - 1.3 * kapazitaet
+
+  tibble(
+    schule     = seq_len(n),
+    index      = index,
+    stufe      = as.integer(as.character(cut(index,
+                   breaks = c(-Inf, 20, 30, 40, 50, 60, 70, 80, 90, Inf),
+                   labels = 1:9, right = FALSE))),
+    einladung  = einladung,
+    teilnahme  = teilnahme,
+    sgb2       = 4 + 0.55 * index + rnorm(n, 0, 6),
+    vorher     = mittel(index) - 1.0 - 0.8 * staerke * kapazitaet + rnorm(n, 0, 1.5),
+    kapazitaet = kapazitaet,
+    tau        = tau,
+    mindest    = y0 + teilnahme * tau
+  )
+}
+
+sc <- simulate_startchancen()
+```
+
+Three quantities are true in this world at once, and they are not the same
+number.
+
+```{r rdd-truth}
+set.seed(99)
+kap    <- rnorm(8e6)
+anteil <- plogis(0.7 + 0.9 * kap) - plogis(-3.2 + 0.9 * kap)  # complier weight
+
+wahrheit <- tibble(
+  Quantity = c("effect at the cut-off, all schools",
+              "effect at the cut-off, compliers only",
+              "intention to treat at the cut-off",
+              "effect on all participating schools",
+              "effect on every school in the state"),
+  Value = c(-3.2,
+           -3.2 - 1.3 * sum(kap * anteil) / sum(anteil),
+           mean(anteil) * (-3.2 - 1.3 * sum(kap * anteil) / sum(anteil)),
+           mean(sc$tau[sc$teilnahme == 1]),
+           mean(sc$tau)))
+
+knitr::kable(wahrheit, digits = 3,
+  caption = "Five true answers to five different questions, in percentage points of pupils below the minimum standard. Note that the second and the fourth differ by more than half a point, and the fifth is only three fifths of the second.")
+```
+
+```{r rdd-first-look, fig.cap="Binned means of the outcome and of the participation rate against the social index, with local linear fits on each side. The upper panel drops by about two points at the threshold; the lower panel shows why the design is fuzzy — participation jumps from near zero to about 0.6, not to one."}
+korb <- function(d, yvar, breite = 2, lo = 30, hi = 90) {
+  d %>%
+    filter(index >= lo, index <= hi) %>%
+    mutate(mitte = floor((index - 60) / breite) * breite + breite / 2 + 60) %>%
+    group_by(mitte) %>%
+    summarise(y = mean(.data[[yvar]]), .groups = "drop") %>%
+    mutate(seite = ifelse(mitte < 60, "unten", "oben"))
+}
+
+lokal <- function(d, yvar, h = 7) {
+  b <- d %>%
+    filter(abs(index - 60) <= h) %>%
+    mutate(z = index - 60, g = 1 - abs(z) / h, oben = as.integer(index >= 60))
+  m <- lm(reformulate("z * oben", yvar), data = b, weights = b$g)
+  tibble(z = c(seq(-h, 0, length.out = 50), seq(0, h, length.out = 50)),
+         oben = rep(0:1, each = 50)) %>%
+    mutate(fit = predict(m, newdata = .),
+           index = z + 60,
+           seite = ifelse(oben == 1, "oben", "unten"))
+}
+
+farben <- c(unten = "grey35", oben = "#C1440E")
+
+punkte <- bind_rows(
+  korb(sc, "mindest")   %>% mutate(panel = "below minimum standard (%), 2029"),
+  korb(sc, "teilnahme") %>% mutate(panel = "participation rate"))
+
+linien <- bind_rows(
+  lokal(sc, "mindest")   %>% mutate(panel = "below minimum standard (%), 2029"),
+  lokal(sc, "teilnahme") %>% mutate(panel = "participation rate"))
+
+ggplot(punkte, aes(mitte, y)) +
+  geom_vline(xintercept = 60, linetype = "dashed", colour = "grey40") +
+  geom_point(aes(colour = seite), size = 1.6) +
+  geom_line(data = linien, aes(index, fit, colour = seite), linewidth = 0.9) +
+  scale_colour_manual(values = farben, guide = "none") +
+  facet_wrap(~panel, ncol = 1, scales = "free_y") +
+  labs(x = "social index score", y = NULL) +
+  theme_minimal(base_size = 11)
+```
+
+### What the Naive Comparison Says {#rdd-what-the-naive-comparison-says}
+
+Start with the answer a competent analyst would produce if the threshold had
+never occurred to anyone.
+
+```{r rdd-naive}
+sc %>%
+  group_by(teilnahme) %>%
+  summarise(n = n(),
+            `below standard` = mean(mindest),
+            `social index`   = mean(index), .groups = "drop") %>%
+  knitr::kable(digits = 2,
+    caption = "Participating and non-participating schools, compared directly. The programme schools look about eight points worse.")
+
+modelle <- list(
+  "raw"                = lm(mindest ~ teilnahme, data = sc),
+  "+ index"            = lm(mindest ~ teilnahme + index, data = sc),
+  "+ index, covariates" = lm(mindest ~ teilnahme + index + sgb2 + vorher, data = sc))
+
+purrr::imap_dfr(modelle, ~tibble(
+  Model = .y,
+  Estimate = coef(.x)["teilnahme"],
+  SE = summary(.x)$coefficients["teilnahme", 2],
+  `CI low`  = confint(.x)["teilnahme", 1],
+  `CI high` = confint(.x)["teilnahme", 2])) %>%
+  knitr::kable(digits = 3,
+    caption = "Three regressions, three stories. The raw comparison has the wrong sign; adding the index flips it; adding covariates shrinks the standard error to a tenth of a point.")
+```
+
+The raw comparison says the programme made things markedly worse. Nobody would
+publish that, so the analyst controls for the index, and the sign flips to about
+$-3.7$. Add the covariates and the estimate is $-3.9$ with a standard error of
+one tenth of a percentage point. The true effect for compliers at the cut-off is
+$-3.49$. So the controlled regression is *nearly right* — and that is the most
+dangerous outcome of all, because there is no way to know it from the output.
+
+Here is the demonstration. Everything in the world stays fixed except how much
+the unobserved leadership capacity matters for the outcome. That parameter
+changes no treatment effect at all: the effect for compliers at the cut-off is
+$-3.49$ in every row below. It changes only how much of the difference between
+participants and non-participants is confounding.
+
+```{r rdd-drift, cache=TRUE}
+drift <- purrr::map_dfr(c(0, 1, 2.5, 5), function(st) {
+  v <- vapply(1:100, function(i) {
+    d <- simulate_startchancen(seed = 2000 + i, staerke = st)
+    c(coef(lm(mindest ~ teilnahme + index + sgb2 + vorher, data = d))["teilnahme"],
+      rdrobust(d$mindest, d$index, c = 60, fuzzy = d$teilnahme)$coef[1, 1])
+  }, numeric(2))
+  tibble(`unobserved factor` = st,
+         OLS = mean(v[1, ]), `OLS sd` = sd(v[1, ]),
+         RD = mean(v[2, ]), `RD sd` = sd(v[2, ]))
+})
+
+knitr::kable(drift, digits = 3,
+  caption = "One hundred simulated studies for each row. The regression estimate walks from -3.08 to -4.31 as the unobserved factor grows; the discontinuity estimate stays put and only loses precision. The truth is -3.49 in every row.")
+```
+
+Even in the first row, where capacity does not touch the outcome at all, the
+regression sits at $-3.08$ rather than $-3.49$. That last gap is not
+confounding: with heterogeneous effects, a regression on everybody is aiming at
+a different average than the compliers at the threshold. It never was going to
+land on $-3.49$.
+
+::: {.analysis-takeaway}
+The controlled regression is not wrong by a lot. It is wrong by an amount that
+depends on something you cannot see, and its standard error does not know that.
+The discontinuity estimate is noisier and honest about it: it drifts by a sixth
+of a point across the four rows and carries a small smoothing bias of its own,
+but nothing like the regression's march.
+:::
+
+### The Jump, by Hand {#rdd-the-jump-by-hand}
+
+Before reaching for a package, do it with `lm()`. Three decisions have to be
+made, and the code makes all three visible.
+
+*How wide a window?* Take schools within seven index points of the threshold.
+*What shape inside it?* A straight line on each side. *Which observations
+count most?* Those closest to the cut-off, through a triangular weight that
+falls linearly to zero at the edge of the window.
+
+```{r rdd-by-hand}
+h <- 7
+
+fenster <- sc %>%
+  filter(abs(index - 60) <= h) %>%
+  mutate(z = index - 60, gewicht = 1 - abs(z) / h)
+
+nrow(fenster)
+
+# The wrong way first: just compare the two group means inside the window.
+mean(fenster$mindest[fenster$einladung == 1]) -
+  mean(fenster$mindest[fenster$einladung == 0])
+
+# The right way: let each side have its own intercept and its own slope.
+lokal_linear <- lm(mindest ~ z * einladung, data = fenster, weights = gewicht)
+summary(lokal_linear)$coefficients
+```
+
+The difference of means inside the window is $+3.55$: still the wrong sign, even
+after throwing away seven of every ten schools. The window is narrow, but the
+outcome climbs steeply across it, and the invited schools sit systematically on
+the upper half. The `einladung` coefficient — the vertical gap between two
+fitted lines evaluated at $z = 0$ — is $-1.99$.
+
+That coefficient estimates the intention-to-treat effect: the consequence of being
+*invited*, not of taking part. It is a sharp regression discontinuity on
+eligibility, and it is the numerator of everything that follows.
+
+::: {.analysis-note}
+Why a straight line rather than a curve? Because at a cut-off you are always
+extrapolating to a boundary, and boundary estimates from a local *constant* fit
+carry a bias of order $h$, while a local *linear* fit reduces it to order $h^2$.
+Fitting the mean of a window is the one thing you should never do — as the
+$+3.55$ above demonstrates.
+:::
+
+### The Picture Is a Choice Too {#rdd-the-picture-is-a-choice-too}
+
+Before the estimate, a word about the figure, because in practice the figure is
+what readers judge. Every binned scatter plot in this section was built by hand,
+and the bin width was a number we made up: two index points above, one and a
+half in the polynomial comparison. Widen the bins and any jump looks smoother;
+narrow them and noise starts to look like structure. That is exactly the kind of
+invisible researcher choice the rest of this section is about.
+
+There is a selector for it. Calonico, Cattaneo and Titiunik (2015) worked out
+how many bins to use — either to mimic the underlying variability of the data or
+to give an integrated-mean-squared-error-optimal picture — and `rdplot()`
+implements it.
+
+```{r rdd-rdplot, fig.cap="The same discontinuity, binned by rdplot's own selector rather than by hand. The number of bins on each side is chosen to trace the variability of the data instead of being picked by the analyst; the smooth line through them is a global fourth-order polynomial, drawn for the eye."}
+rdplot(y = sc$mindest, x = sc$index, c = 60,
+       x.label = "social index score",
+       y.label = "below minimum standard (%)",
+       title = "")
+```
+
+One warning about that picture, which we will earn in Section
+\@ref(rdd-why-not-just-fit-a-polynomial): the smooth curve `rdplot()` draws
+through the bins is a global fourth-order polynomial. It is there to show the
+shape of the data, not to produce the estimate, and the jump you think you see
+in it is not the number anyone should report.
+
+### Doing It Properly: rdrobust {#rdd-doing-it-properly}
+
+Every choice we made by hand has a literature behind it. `rdrobust`, from
+Sebastián Calonico, Matias Cattaneo, Max Farrell and Rocío Titiunik, makes those
+choices for you and reports what it chose.
+
+```{r rdd-rdrobust-sharp}
+itt <- rdrobust(y = sc$mindest, x = sc$index, c = 60)
+summary(itt, all = TRUE)
+```
+
+Three lines of output deserve attention.
+
+The **bandwidth**, `h`, was chosen to minimise mean squared error, following
+Imbens and Kalyanaraman (2012) as refined by Calonico, Cattaneo and Titiunik
+(2014). It came out at 6.6 index points, which leaves 687 schools below the line
+and 530 above.
+
+The **three estimates**, printed because we asked for `all = TRUE`; the default
+output shows only the last of them. `Conventional` is the local linear fit — the
+same estimator we computed by hand, at the bandwidth the package chose. `Bias-Corrected` subtracts an estimate of the
+smoothing bias, using a second, wider bandwidth `b` and a quadratic fit.
+`Robust` reports the bias-corrected point estimate with a standard error that
+accounts for the fact that the bias correction was itself estimated. This last
+point is the contribution of Calonico, Cattaneo and Titiunik (2014), and it is
+why the robust interval is wider than the conventional one rather than narrower.
+
+::: {.analysis-warning}
+The robust confidence interval is centred on the bias-corrected estimate, not on
+the conventional one. In awkward samples it can therefore fail to contain the
+conventional point estimate. That is not a bug; it means the two are answering
+slightly different questions. Report the conventional estimate with the robust
+interval, and say that you are doing so. That is the convention the `rdrobust`
+output itself invites: the point estimate stays on the MSE-optimal bandwidth,
+and the interval carries the bias correction.
+:::
+
+### How Wide Should the Window Be? {#rdd-how-wide-should-the-window-be}
+
+The bandwidth is the one choice in a regression discontinuity that a sceptical
+reader will always attack, and rightly: it trades bias against variance, and the
+optimum depends on curvature you cannot see.
+
+```{r rdd-bandwidth, cache=TRUE, fig.cap="The intention-to-treat estimate and its robust interval as a function of the bandwidth. The estimate is flat between about six and twenty index points; below six the interval explodes, above twenty it drifts back towards zero as the window swallows schools that resemble nothing near the threshold."}
+gitter <- purrr::map_dfr(seq(2, 30, by = 0.5), function(b) {
+  f <- rdrobust(sc$mindest, sc$index, c = 60, h = b)
+  tibble(h = b, est = f$coef[1, 1], lo = f$ci[3, 1], hi = f$ci[3, 2])
+})
+
+h_opt <- rdrobust(sc$mindest, sc$index, c = 60)$bws[1, 1]
+
+ggplot(gitter, aes(h, est)) +
+  geom_hline(yintercept = -2.064, linetype = "dotted",
+             colour = "#1B7837", linewidth = 0.8) +
+  geom_ribbon(aes(ymin = lo, ymax = hi), fill = "grey80", alpha = 0.6) +
+  geom_line(colour = "#C1440E", linewidth = 0.9) +
+  geom_vline(xintercept = h_opt, linetype = "dashed", colour = "grey30") +
+  annotate("text", x = h_opt + 0.6, y = 4.5, hjust = 0, size = 3,
+           label = paste0("MSE-optimal: h = ", round(h_opt, 1))) +
+  annotate("text", x = 29, y = -2.064, vjust = -0.7, hjust = 1, size = 3,
+           colour = "#1B7837", label = "truth") +
+  coord_cartesian(ylim = c(-6, 6)) +
+  labs(x = "bandwidth h (index points)", y = "sharp RD estimate (ITT)") +
+  theme_minimal(base_size = 11)
+```
+
+`rdrobust` offers several selectors, and they do not agree.
+
+```{r rdd-bwselect}
+purrr::map_dfr(c("mserd", "msetwo", "cerrd"), function(b) {
+  rr <- rdrobust(sc$mindest, sc$index, c = 60, bwselect = b)
+  tibble(selector = b, `h left` = rr$bws[1, 1], `h right` = rr$bws[1, 2],
+         estimate = rr$coef[1, 1])
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "Three bandwidth selectors on the same data. `mserd` uses one bandwidth for both sides, `msetwo` allows them to differ, `cerrd` optimises coverage error rather than mean squared error and is therefore deliberately narrower.")
+```
+
+The honest way to present this is not to pick one. It is to show the picture
+above, state which selector produced the headline number, and let the reader see
+that nothing important turns on it.
+
+:::: {.challenge}
+::: {.titeldefbox}
+<h2>Your Turn</h2>
+:::
+Re-run the bandwidth grid with `p = 2` inside `rdrobust()`, so that each side is
+fitted with a local *quadratic* rather than a local line. Does the MSE-optimal
+bandwidth get wider or narrower, and can you say why before you look?
+::::
+
+### Why Not Just Fit a Polynomial? {#rdd-why-not-just-fit-a-polynomial}
+
+There is an older way to do this, and you will still meet it. Fit one regression
+to all the data, with a dummy for being above the cut-off and a polynomial in
+the score, and read off the dummy.
+
+```{r rdd-polynomials}
+sc$z <- sc$index - 60
+
+purrr::map_dfr(1:8, function(p) {
+  m <- lm(mindest ~ einladung * poly(z, p, raw = TRUE), data = sc)
+  tibble(Order = p,
+         Estimate = coef(m)["einladung"],
+         SE = summary(m)$coefficients["einladung", 2])
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "The same data, eight polynomial orders. The estimate wanders from +1.17 to -2.63 and back to -0.99, and the standard error triples. The truth is -2.06.")
+```
+
+Order one gets the sign wrong. Orders two to four land within half a point of the
+truth. Orders five upwards drift back towards zero while the standard error
+triples.
+Nothing in the output tells you which row to believe.
+
+```{r rdd-polynomial-figure, fig.cap="The same fitted values around the threshold under three global polynomials and under the local linear fit. Watch the gap at 60: the straight line puts a small step upwards where the data have a step downwards, because it is spending its slope on the curvature of the whole range."}
+kurven <- purrr::map_dfr(c(1, 2, 6), function(p) {
+  m <- lm(mindest ~ einladung * poly(z, p, raw = TRUE), data = sc)
+  tibble(z = c(seq(-58, -0.01, length.out = 300), seq(0, 38, length.out = 300)),
+         einladung = rep(0:1, each = 300)) %>%
+    mutate(fit = predict(m, newdata = .), index = z + 60,
+           ordnung = paste("global polynomial, order", p), seite = einladung)
+}) %>%
+  bind_rows(lokal(sc, "mindest") %>%
+              transmute(index, fit, ordnung = "local linear, h = 7", seite = oben))
+
+kurven$ordnung <- factor(kurven$ordnung,
+  levels = c("global polynomial, order 1", "global polynomial, order 2",
+             "global polynomial, order 6", "local linear, h = 7"))
+
+ggplot(korb(sc, "mindest", breite = 1.5, lo = 42, hi = 78), aes(mitte, y)) +
+  geom_vline(xintercept = 60, linetype = "dashed", colour = "grey50") +
+  geom_point(colour = "grey65", size = 1.2) +
+  geom_line(data = kurven, aes(index, fit, group = seite),
+            colour = "#C1440E", linewidth = 0.9) +
+  facet_wrap(~ordnung, nrow = 1) +
+  coord_cartesian(xlim = c(45, 75), ylim = c(20, 45)) +
+  labs(x = "social index score", y = "below minimum standard (%)") +
+  theme_minimal(base_size = 10)
+```
+
+One draw proves nothing, so run three hundred. Each draw is a fresh cohort of
+4,200 schools from the same world; each estimator gets the same data; and we
+record whether its 95 per cent interval contains the true intention-to-treat
+effect of $-2.06$.
+
+```{r rdd-polynomial-study, cache=TRUE}
+itt_wahr <- mean(anteil) * (-3.2 - 1.3 * sum(kap * anteil) / sum(anteil))
+
+studie <- purrr::map_dfr(1:300, function(i) {
+  d <- simulate_startchancen(seed = 1000 + i)
+  d$z <- d$index - 60
+
+  global <- purrr::map_dfr(c(1, 2, 4, 6), function(p) {
+    m <- lm(mindest ~ einladung * poly(z, p, raw = TRUE), data = d)
+    e <- coef(m)["einladung"]
+    s <- summary(m)$coefficients["einladung", 2]
+    tibble(estimator = paste("global, order", p), est = e,
+           covers = abs(e - itt_wahr) <= 1.96 * s)
+  })
+
+  rr <- rdrobust(d$mindest, d$index, c = 60)
+  bind_rows(global, tibble(
+    estimator = "local linear (rdrobust)", est = rr$coef[1, 1],
+    covers = itt_wahr >= rr$ci[3, 1] & itt_wahr <= rr$ci[3, 2]))
+})
+
+studie %>%
+  group_by(estimator) %>%
+  summarise(mean = mean(est),
+            bias = mean(est) - itt_wahr,
+            sd   = sd(est),
+            rmse = sqrt(mean((est - itt_wahr)^2)),
+            coverage = mean(covers), .groups = "drop") %>%
+  knitr::kable(digits = 3,
+    caption = "Three hundred simulated studies. The global linear specification never once covers the truth; the local linear estimator covers it 95 times in a hundred, which is what a 95 per cent interval is supposed to do.")
+```
+
+The global linear model has the smallest standard deviation of any estimator in
+the table and a coverage rate of exactly zero. It is precise, stable, replicable
+and wrong — a combination that no diagnostic in a regression table will ever
+flag.
+
+This is the argument Andrew Gelman and Guido Imbens made in *Why High-Order
+Polynomials Should Not Be Used in Regression Discontinuity Designs* (*JBES*,
+2019): a global polynomial gives large and arbitrary weights to observations far
+from the cut-off, and the resulting estimate is noisy in a way that its own
+standard error understates.^[Their recommendation is not uncontested. Melle Albada (2025) published a
+comment in the *Journal of Comments and Replications in Economics* arguing that
+the pathologies Gelman and Imbens blame on high-order polynomials also appear
+with local linear and local quadratic fits. Gelman and Imbens replied in the same
+volume that this misses the point: adjusting for the running variable alone,
+whatever the functional form, does not correct for imbalance in other
+pre-treatment variables.]
+
+::: {.analysis-takeaway}
+Fit locally, and let the bandwidth do the work of the polynomial order. If you
+must show a global fit, show it as a picture, not as a coefficient.
+:::
+
+### The First Stage and the Fuzzy Estimate {#rdd-the-first-stage-and-the-fuzzy-estimate}
+
+Everything so far has estimated the effect of the *invitation*. To get the
+effect of *participation* we need the denominator: how much the invitation
+actually changed participation.
+
+```{r rdd-first-stage}
+erste_stufe <- rdrobust(y = sc$teilnahme, x = sc$index, c = 60)
+
+c(jump = erste_stufe$coef[1, 1],
+  se   = erste_stufe$se[3, 1],
+  lo   = erste_stufe$ci[3, 1],
+  hi   = erste_stufe$ci[3, 2])
+```
+
+Crossing the threshold raises the participation probability by 0.55. It is a
+strong first stage — nothing like the weak instruments of Section
+\@ref(instruments) — but it is not a jump all the way to one, and that gap is
+the whole reason the design is fuzzy.^[The 0.553 here comes from a sharp
+regression on `teilnahme` with its own MSE-optimal bandwidth of 5.8. The fuzzy
+call below reports 0.563, because it uses the bandwidth that is optimal for the
+ratio. Neither is more correct than the other.]
+
+```{r rdd-fuzzy}
+fuzzy <- rdrobust(y = sc$mindest, x = sc$index, c = 60, fuzzy = sc$teilnahme)
+summary(fuzzy, all = TRUE)
+```
+
+And by hand, to show that there is no magic in it: the fuzzy estimate is one
+local linear regression divided by another.
+
+```{r rdd-fuzzy-by-hand}
+hh <- fuzzy$bws[1, 1]
+
+f2 <- sc %>%
+  filter(abs(index - 60) <= hh) %>%
+  mutate(z = index - 60, gewicht = 1 - abs(z) / hh)
+
+numerator   <- coef(lm(mindest   ~ z * einladung, data = f2, weights = gewicht))["einladung"]
+denominator <- coef(lm(teilnahme ~ z * einladung, data = f2, weights = gewicht))["einladung"]
+
+c(numerator = numerator, denominator = denominator,
+  wald = numerator / denominator)
+
+# The same number as two-stage least squares, with eligibility as the instrument.
+iv <- iv_robust(mindest ~ teilnahme + z + z:einladung |
+                  einladung + z + z:einladung,
+                data = f2, weights = gewicht)
+
+c(coef(iv)["teilnahme"], se = iv$std.error[["teilnahme"]])
+```
+
+Now open the envelope.
+
+```{r rdd-envelope}
+tibble(
+  Quantity = c("effect at the cut-off, compliers (the estimand)",
+               "fuzzy RD, conventional",
+               "fuzzy RD, bias-corrected",
+               "Wald ratio by hand",
+               "two-stage least squares",
+               "OLS with index and covariates"),
+  Value = c(-3.2 - 1.3 * sum(kap * anteil) / sum(anteil),
+            fuzzy$coef[1, 1],
+            fuzzy$coef[2, 1],
+            numerator / denominator,
+            coef(iv)["teilnahme"],
+            coef(lm(mindest ~ teilnahme + index + sgb2 + vorher, data = sc))["teilnahme"])) %>%
+  knitr::kable(digits = 3,
+    caption = "The fuzzy estimate against the truth. Three different routes to the same number, and one confident alternative that is off by four tenths of a point in a direction no output could have revealed.")
+```
+
+::: {.analysis-note}
+The fuzzy estimator inherits every warning from the instruments section. A weak
+first stage makes the ratio explode; the monotonicity assumption is untestable;
+and the estimand is defined by who complies, so two studies of the same
+programme with different take-up patterns are estimating different things even
+if both are correct.
+:::
+
+### Can the Score Be Gamed? {#rdd-can-the-score-be-gamed}
+
+Continuity is an assumption about potential outcomes, and we cannot see those.
+But there is one thing we can see, and it is the single most informative check
+in the whole design.
+
+If people can move themselves across the threshold — a headteacher who knows the
+formula and gets a pupil reclassified, a doctor who records 1,499 grams rather
+than 1,501, an official who rounds a poverty rate the helpful way — then the
+units just above the line will not be like the units just below. And there will
+be a tell: too many of them.
+
+```{r rdd-manipulated}
+scm <- simulate_startchancen(world = "manipulated")
+
+# In this world, schools just under the line with capable leadership
+# get themselves moved just over it.
+c(unter_59 = sum(sc$index >= 57 & sc$index < 60),
+  ueber_60 = sum(sc$index >= 60 & sc$index < 63),
+  unter_59_manipuliert = sum(scm$index >= 57 & scm$index < 60),
+  ueber_60_manipuliert = sum(scm$index >= 60 & scm$index < 63))
+```
+
+```{r rdd-density-figure, fig.cap="The distribution of the social index around the threshold in the two worlds. On the left the histogram runs smoothly across 60; on the right there is a hole immediately below the line and a spike immediately above it, which is what manipulation looks like."}
+bind_rows(sc  %>% transmute(index, welt = "as recorded"),
+          scm %>% transmute(index, welt = "with renegotiation")) %>%
+  mutate(welt = factor(welt, levels = c("as recorded", "with renegotiation"))) %>%
+  filter(index >= 45, index <= 75) %>%
+  ggplot(aes(index)) +
+  geom_histogram(binwidth = 1, fill = "grey60", colour = "white",
+                 linewidth = 0.2) +
+  geom_vline(xintercept = 60, linetype = "dashed", colour = "#C1440E",
+             linewidth = 0.8) +
+  facet_wrap(~welt) +
+  labs(x = "social index score", y = "number of schools") +
+  theme_minimal(base_size = 11)
+```
+
+The formal version is a test of whether the density of the running variable is
+continuous at the cut-off. Justin McCrary proposed it in 2008; the current
+implementation, `rddensity`, uses the local polynomial density estimator of
+Cattaneo, Jansson and Ma (2020) and needs no pre-binning.
+
+```{r rdd-density-test}
+rddensity(X = sc$index,  c = 60)$test$p_jk
+rddensity(X = scm$index, c = 60)$test$p_jk
+```
+
+A p-value of 0.49 in the clean world, and $2.8 \times 10^{-8}$ in the
+manipulated one. Sixty-one schools moved, out of 4,200, and the test found what
+the histogram only hints at.
+
+The second check is continuity of things the programme cannot have caused:
+covariates fixed before assignment, and outcomes measured before the programme
+started. If those jump at the cut-off, the design is telling you that the two
+sides of the line differ for reasons other than treatment.
+
+```{r rdd-balance}
+pruefe <- function(dat, welt) {
+  purrr::map_dfr(c("sgb2", "vorher", "kapazitaet"), function(v) {
+    r <- rdrobust(dat[[v]], dat$index, c = 60)
+    tibble(World = welt, Variable = v, Jump = r$coef[1, 1],
+           `CI low` = r$ci[3, 1], `CI high` = r$ci[3, 2], p = r$pv[3, 1])
+  })
+}
+
+bind_rows(pruefe(sc, "as recorded"), pruefe(scm, "with renegotiation")) %>%
+  knitr::kable(digits = 3,
+    caption = "Continuity checks in both worlds. In the clean world nothing jumps. In the manipulated world the pre-programme outcome and the unobserved capacity both do, and the capacity jump is the one no real analyst would ever see.")
+```
+
+Notice which line matters most. In the manipulated world, the share of pupils in
+benefit households — the covariate an analyst would naturally check — passes the
+test. The pre-programme outcome fails it. And the variable that actually drives
+the manipulation is the one we included in this table only because we built the
+world and can therefore look at it.
+
+::: {.analysis-warning}
+Balance tests can only fail informatively. Passing them is not evidence that the
+design is sound; it is evidence that the particular sorting you tested for is
+not the sorting that happened.
+:::
+
+The standard repair is the **donut**: drop observations in a small band on both
+sides of the cut-off, on the theory that manipulation is local, and re-estimate
+from what is left. It was popularised by Barreca, Guldi, Lindo and Waddell
+(2011), whose comment on Almond and co-authors showed that recorded birth
+weights heap at round numbers throughout — and that the babies recorded at
+exactly 1,500 grams have markedly higher mortality than those on either side,
+unlike the heaps at 1,400 and 1,600.
+
+```{r rdd-donut, cache=TRUE}
+purrr::map_dfr(0:2, function(d) {
+  dat <- scm %>% filter(abs(index - 60) >= d)
+  rr <- rdrobust(dat$mindest, dat$index, c = 60, fuzzy = dat$teilnahme)
+  pv <- rdrobust(dat$vorher,  dat$index, c = 60)
+  tibble(Donut = d, `fuzzy estimate` = rr$coef[1, 1],
+         `CI low` = rr$ci[3, 1], `CI high` = rr$ci[3, 2],
+         `placebo p` = pv$pv[3, 1],
+         `density p` = rddensity(X = dat$index, c = 60)$test$p_jk)
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "Widening the donut in the manipulated world. At a hole of two index points the density test and the placebo outcome both stop rejecting, and the estimate moves from -5.97 to -2.82 — past the true -3.49, and into an interval nearly four times as wide that now includes zero.")
+```
+
+The manipulation is gone. So is the precision, and the point estimate has
+overshot. Nothing here says the repaired number is the right one; it says the
+unrepaired number was the wrong one.
+
+::: {.analysis-takeaway}
+The donut is a diagnostic dressed as an estimator. If the answer moves a lot as
+the hole widens, the design has a problem; if it does not, you have learned
+something. Either way, report the whole sequence, not the row you liked.
+:::
+
+### Placebo Cut-offs {#rdd-placebo-cut-offs}
+
+The last check is the cheapest. Pretend the threshold was somewhere else, and
+estimate again. Fit the placebo cut-offs using only data from one side of the
+real threshold, so that no genuine treatment effect can contaminate them.
+
+Be clear about what this tests. A density test looks for manipulation; a placebo
+cut-off looks for **functional form**. If a local linear fit produces jumps at 45
+and at 70 as readily as at 60, then what you are reading at 60 is curvature that
+the straight lines could not absorb, and the design has told you nothing. A
+clean row of nulls does not make the real estimate causal — it only removes one
+way of being fooled.
+
+```{r rdd-placebo, cache=TRUE}
+purrr::map_dfr(c(40, 45, 50, 55, 60, 65, 70, 75), function(cc) {
+  dat <- if (cc < 60) filter(sc, index < 60)
+         else if (cc > 60) filter(sc, index >= 60)
+         else sc
+  rr <- rdrobust(dat$mindest, dat$index, c = cc)
+  tibble(`pretend cut-off` = cc, estimate = rr$coef[1, 1],
+         `CI low` = rr$ci[3, 1], `CI high` = rr$ci[3, 2], p = rr$pv[3, 1])
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "Seven false thresholds and the real one. Only 60 produces a discontinuity, which is what a genuine design looks like and what a mis-specified functional form does not.")
+```
+
+### When the Score Is Published in Nine Steps {#rdd-when-the-score-is-published-in-nine-steps}
+
+Now the bad news, and it is the reason the section opened with a real programme
+rather than an invented one.
+
+The North Rhine-Westphalian social index exists as a continuous factor score
+inside the ministry. What is published is the *step*: an integer from one to
+nine. Our simulated world has the same feature, so we can find out what the
+design is worth when the running variable arrives with nine values instead of
+four thousand.
+
+```{r rdd-discrete}
+sc %>%
+  group_by(stufe) %>%
+  summarise(schulen = n(),
+            `below standard` = mean(mindest),
+            `participation` = mean(teilnahme), .groups = "drop") %>%
+  knitr::kable(digits = 3,
+    caption = "The same schools, grouped into the nine published steps. Participation jumps between step 5 and step 6 exactly as it should — and the outcome climbs monotonically across every step, which is the problem.")
+```
+
+(Our nine steps are equal-width bins rather than the ministry's quantiles, which
+makes no difference to the point.) There is no window left to narrow. The nearest thing to a local comparison is
+step 5 against step 6, and those two groups differ by ten index points on
+average, not by a fraction of one. So the estimate becomes entirely a matter of
+what functional form you assume for the trend across steps.
+
+```{r rdd-discrete-estimates}
+d <- sc %>% mutate(oben = as.integer(stufe >= 6), s = stufe - 6)
+
+purrr::map_dfr(0:3, function(p) {
+  formel <- switch(as.character(p),
+    "0" = mindest ~ oben,
+    "1" = mindest ~ oben + s,
+    "2" = mindest ~ oben + s + I(s^2),
+    "3" = mindest ~ oben + s + I(s^2) + I(s^3))
+  my <- lm(formel, data = d)
+  mt <- lm(update(formel, teilnahme ~ .), data = d)
+  tibble(`trend order` = p,
+         ITT = coef(my)["oben"],
+         `first stage` = coef(mt)["oben"],
+         Wald = coef(my)["oben"] / coef(mt)["oben"])
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "The nine-step index, four assumptions about the trend, four answers. The truth is -2.06 for the intention to treat and -3.49 for the Wald ratio; the four rows span +27.0 to -2.8.")
+```
+
+Four defensible specifications, four answers ranging from $+27$ to $-2.8$. The
+first stage is essentially unchanged from row to row — it really does jump by
+about 0.59 — but the numerator is a guess. That asymmetry is a property of this
+programme rather than a general law: take-up here is flat within each side of the
+line, so any trend specification recovers it. Where take-up trends across the
+steps, the denominator is guessed too.
+
+There are two honest responses. One is the inference procedure of Kolesár and
+Rothe (2018), which builds confidence intervals that are valid under an explicit
+bound on how much the trend can curve, rather than pretending the bound is
+zero.^[Their paper also shows that the common fix of clustering standard errors
+on the values of the running variable does not work.] The other is to change
+framework entirely.
+
+:::: {.dedicated}
+::: {.titeldefbox}
+<h2>Truly Dedicated</h2>
+:::
+Everything in this section rests on the *continuity* framework: smooth
+conditional expectations, a limit at the cut-off, a bandwidth that shrinks. There
+is a second framework, developed by Cattaneo, Frandsen and Titiunik (2015), that
+assumes something stronger and more concrete — that within some window around
+the cut-off, treatment is *as if randomly assigned*, so that the analysis can be
+a randomisation test of the kind Fisher ran at Rothamsted (Section
+\@ref(experiments)).
+
+The `rdlocrand` package selects that window by widening it until a covariate
+balance test fails. On our data it selects a window of a tenth of an index
+point.
+
+```{r rdd-locrand}
+fenster_lr <- rdwinselect(R = sc$index - 60,
+                          X = as.matrix(sc[, c("sgb2", "vorher")]),
+                          seed = 11, reps = 1000, quietly = TRUE)
+
+c(links = fenster_lr$w_left, rechts = fenster_lr$w_right)
+```
+
+That answer is not a failure of the package; it is the package being right. Our
+outcome climbs by nearly a point per index point, so a window of even one point
+already contains a real trend, and "as if randomised" is simply false there. The
+local randomisation framework earns its keep where the score has few distinct
+values and the continuity framework has no window to shrink into — which is
+precisely the nine-step case above. The two frameworks are not rivals; they
+answer different failures of the same design.
+::::
+
+:::: {.challenge}
+::: {.titeldefbox}
+<h2>Your Turn</h2>
+:::
+Run `simulate_startchancen(staerke = 8)` and estimate the effect twice: once with
+the covariate-adjusted regression and once with `rdrobust(..., fuzzy = ...)`.
+Which of the two gives up first, and in which direction? Then move the cut-off in
+the simulation from 60 to 50 and estimate again. The effect parameters have not
+changed at all — so why has the answer?
+::::
+
+::: {.analysis-takeaway}
+A published threshold is not enough. You need the score the threshold was
+applied to. If a ministry publishes the step and keeps the number, the
+discontinuity design goes with the number.
+:::
+
+### The Design in the Wild {#rdd-the-design-in-the-wild}
+
+Enough of a world we invented. The canonical teaching data set for this design
+is real, small enough to ship, and comes from Cattaneo, Frandsen and Titiunik
+(2015): every US Senate race from 1914 to 2010, with the Democratic margin of
+victory in *that* race as the running variable and the Democratic vote share in
+the next election for the same seat, six years later, as the outcome.
+
+```{r rdd-senate}
+senat <- readr::read_csv(file.path("data", "Causal", "rdrobust_senate.csv"),
+                         show_col_types = FALSE)
+
+nrow(senat)
+range(senat$year)
+```
+
+The cut-off is zero: a margin of $+0.1$ means the Democrats took the seat by a
+whisker, a margin of $-0.1$ means they lost it by the same whisker. Nobody can
+decide which side of zero they land on, and that is the point Lee (2008) made in
+the paper that turned close elections into the standard illustration of the
+design.
+
+```{r rdd-senate-fit}
+senat_rd <- rdrobust(y = senat$vote, x = senat$margin, c = 0)
+summary(senat_rd)
+```
+
+Winning a seat is worth about 7.4 percentage points to the party at the next
+election for that seat, with a robust interval from 4.1 to 10.9. Lee's House
+data gave 7.7 to 8.1.
+
+```{r rdd-senate-figure, fig.cap="US Senate elections, 1914 to 2010: binned means of the Democratic vote share six years later against the party's margin in the current race for the same seat, with local linear fits. The step at zero is the incumbency advantage; point size is the number of races in each bin."}
+senat_korb <- senat %>%
+  filter(!is.na(margin), !is.na(vote)) %>%
+  mutate(mitte = floor(margin / 4) * 4 + 2) %>%
+  group_by(mitte) %>%
+  summarise(y = mean(vote), n = n(), .groups = "drop") %>%
+  filter(abs(mitte) <= 60)
+
+senat_fit <- purrr::map_dfr(c(-1, 1), function(s) {
+  dd <- senat %>%
+    filter(sign(margin) == s, abs(margin) <= 17.75) %>%
+    mutate(g = 1 - abs(margin) / 17.75)
+  m <- lm(vote ~ margin, data = dd, weights = dd$g)
+  tibble(margin = seq(min(dd$margin), max(dd$margin), length.out = 50)) %>%
+    mutate(fit = predict(m, newdata = .), seite = s)
+})
+
+ggplot(senat_korb, aes(mitte, y)) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey40") +
+  geom_point(aes(size = n), colour = "grey45", alpha = 0.8) +
+  geom_line(data = senat_fit, aes(margin, fit, group = seite),
+            colour = "#C1440E", linewidth = 1) +
+  scale_size_area(max_size = 3.5, guide = "none") +
+  labs(x = "Democratic margin in this election (percentage points)",
+       y = "Democratic vote share six years later (%)") +
+  theme_minimal(base_size = 11)
+```
+
+Run the same checks we ran on the simulation.
+
+```{r rdd-senate-checks}
+# Is the density of the margin continuous at zero?
+rddensity(X = senat$margin[!is.na(senat$margin)], c = 0)$test$p_jk
+
+# Do variables that cannot have been caused by the win jump at zero?
+purrr::map_dfr(c("termshouse", "termssenate", "population", "class"), function(v) {
+  rr <- suppressWarnings(rdrobust(senat[[v]], senat$margin, c = 0))
+  tibble(Variable = v, Jump = rr$coef[1, 1], p = rr$pv[3, 1])
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "Placebo outcomes in the Senate data. None of the four jumps at zero, which is the pattern a credible design produces.")
+```
+
+```{r rdd-senate-robustness}
+purrr::map_dfr(c(5, 10, 20, 50), function(b) {
+  rr <- rdrobust(senat$vote, senat$margin, c = 0, h = b)
+  tibble(h = b, estimate = rr$coef[1, 1],
+         `CI low` = rr$ci[3, 1], `CI high` = rr$ci[3, 2], n = sum(rr$N_h))
+}) %>%
+  knitr::kable(digits = 3,
+    caption = "The Senate estimate at four fixed bandwidths. Above about ten percentage points of margin the answer settles between six and eight; at five it doubles, on a fifth of the data.")
+
+# The global alternative, for comparison.
+global4 <- lm(vote ~ I(margin >= 0) * poly(margin, 4, raw = TRUE), data = senat)
+coef(summary(global4))[2, 1:2]
+```
+
+The density test passes, all four placebo outcomes pass, and the estimate is
+stable for bandwidths above about ten. Fit a global fourth-order polynomial
+instead and you get 9.4 — two points higher, from the same data, for no reason a
+reader could check.
+
+:::: {.amazing}
+::: {.titeldefbox}
+<h2>Amazing Fact</h2>
+:::
+The close-election design has itself been the subject of one of the most useful
+methodological arguments in the field. If elections that are nearly tied are
+essentially coin flips, each side should win half of them. Caughey and Sekhon
+(2011) showed that in US House races between 1942 and 2008 the bare winners and
+the bare losers differ markedly on things measured *before* the vote — money,
+experience, forecasts — and that the imbalance gets worse in the closest races.
+
+Two replies followed. Eggers and co-authors (2015) looked at more than forty
+thousand close races across other US offices and nine other countries and found
+the imbalance essentially nowhere else, concluding that the postwar House is the
+exception rather than the rule. De la Cuesta and Imai (2016) argued that much of
+the dispute rested on a confusion: the design requires continuity, not as-if
+randomisation inside a window, and once the multiple-testing problem is handled
+the evidence for sorting is considerably weaker than it looked.
+
+What matters here is not who was right. It is that the argument was *possible*.
+The design publishes a running variable, and a published running variable can be
+audited by anyone with the data. No matching study has ever been contested at
+that level of detail, because there is nothing comparable to point at.
+::::
+
+### What Regression Discontinuity Cannot Do {#rdd-what-regression-discontinuity-cannot-do}
+
+Four limits, in increasing order of how often they are ignored.
+
+#### The estimate is local, and "local" means local
+
+Our fuzzy estimate was $-3.44$ against a truth of $-3.49$ — a good answer to the
+question it asks. But look back at the table of true values. The effect on all
+participating schools is $-4.08$, and the effect if every school in the state
+were funded would be $-2.07$. The state-wide figure is barely three fifths of
+what we estimated, and the effect on the schools that actually took part is half
+a point larger again.
+
+That is not an error. It is the estimand. Schools at the threshold are, by
+construction, the least disadvantaged of the funded schools, and in this world
+the effect grows with disadvantage. A minister who reads $-3.4$ as "what we
+would get by doubling the programme" is reading a number that was never about
+that.
+
+#### The threshold may switch on more than one thing
+
+In North Rhine-Westphalia the same social index that decides Startchancen
+eligibility also governs the distribution of some seven thousand teaching posts:
+roughly 1,645 for language support, 1,250 for social pedagogues in the
+early-years phase, 818 for school social work, and over a thousand allocated
+school by school to steps 6 to 9. A school that
+crosses from step 5 to step 6 does not only receive an invitation to one
+programme; it moves into a different administrative category.
+
+Everything estimated at that threshold is then the effect of the *bundle*.
+Nothing in the output will say so, and no balance test will catch it, because
+the second treatment is as discontinuous as the first. This is the reason to
+read the administrative rules before the data, and it is the most common way a
+discontinuity study goes quietly wrong.
+
+#### It is expensive
+
+Recall Goldberger's factor of 2.75. Our simulation had 4,200 schools, of which
+886 lie within five index points of the cut-off, and it still produced a robust
+confidence interval on the fuzzy estimate running from $-5.0$ to $-1.7$. Take a
+quarter of the state and that interval covers zero.
+
+The official Startchancen evaluation plans repeated competence measurements at
+300 schools *nationally*, spread across sixteen states with sixteen different
+selection rules. Whatever else that design can support, it cannot support a
+discontinuity estimate at any one state's threshold.
+
+There is one legitimate way to buy some of that precision back. Calonico,
+Cattaneo, Farrell and Titiunik (2019) show that pre-treatment covariates may be
+added to the local polynomial — `rdrobust(..., covs = ...)` — without disturbing
+identification, provided they enter additively and are themselves continuous at
+the cut-off. Note what has changed since the naive comparison at the start of
+this section: there, the covariates were carrying the identification and
+failing; here they are carrying nothing but variance reduction.
+
+#### The rule has to be a rule
+
+The design needs assignment to be a function of a score, and many programmes are
+not like that. Where a committee has discretion, where quotas by region or school
+type cut across the ranking, where a waiting list reshuffles the order — the
+threshold stops being a threshold. Of the sixteen German states, some rank
+schools on one index and cut. Saxony layers a second, purely pedagogical index
+on top of the social one, so that two schools with identical social conditions
+can end up on opposite sides of the line for reasons that have nothing to do
+with the score you can see.
+
+:::: {.dedicated}
+::: {.titeldefbox}
+<h2>Truly Dedicated</h2>
+:::
+Three extensions, each a full literature.
+
+**Regression kink.** Sometimes a rule changes a *slope* rather than a level —
+unemployment benefit that replaces 60 per cent of earnings up to a ceiling and
+nothing above it. The identifying object is then a kink in the outcome, not a
+jump, and the estimator is a ratio of changes in derivatives. It is strictly
+harder: derivatives are estimated less precisely than levels, so kink designs
+need more data than jump designs, which already need 2.75 times an experiment.
+
+**Geographic discontinuities.** When the running variable is a location and the
+cut-off is a border, the score is two-dimensional. Black (1999) compared houses
+on either side of school-attendance boundaries; Dell (2010) compared Peruvian
+districts on either side of a colonial mining boundary drawn in 1573. The
+difficulty is that a border separates units in every dimension at once, so
+"everything else is continuous" is a much stronger claim than it is for a test
+score.
+
+**Multiple cut-offs.** Angrist and Lavy's Maimonides rule bites at 40, 80 and
+120 pupils; the German states each set their own threshold on their own index.
+Pooling several cut-offs buys precision, but the pooled estimate is a weighted
+average of several local effects at several different points of the score
+distribution, and the weights are rarely the ones you would have chosen.
+::::
+
+### Readings {#rdd-readings}
+
+Cattaneo, M. D., Idrobo, N., & Titiunik, R. (2020, 2024). *A Practical
+Introduction to Regression Discontinuity Designs*, volumes I and II. Cambridge
+University Press.
+
+Cattaneo, M. D., & Titiunik, R. (2022). Regression discontinuity designs.
+*Annual Review of Economics*, 14, 821–851.
+
+Calonico, S., Cattaneo, M. D., & Titiunik, R. (2014). Robust nonparametric
+confidence intervals for regression-discontinuity designs. *Econometrica*,
+82(6), 2295–2326.
+
+Cattaneo, M. D., Frandsen, B. R., & Titiunik, R. (2015). Randomization inference
+in the regression discontinuity design: An application to party advantages in
+the U.S. Senate. *Journal of Causal Inference*, 3(1), 1–24.
+
+Cook, T. D. (2008). "Waiting for Life to Arrive": A history of the
+regression-discontinuity design in Psychology, Statistics and Economics.
+*Journal of Econometrics*, 142(2), 636–654.
+
+Hahn, J., Todd, P., & van der Klaauw, W. (2001). Identification and estimation of
+treatment effects with a regression-discontinuity design. *Econometrica*, 69(1),
+201–209.
+
+Gelman, A., & Imbens, G. (2019). Why high-order polynomials should not be used
+in regression discontinuity designs. *Journal of Business & Economic
+Statistics*, 37(3), 447–456.
+
+Lee, D. S., & Lemieux, T. (2010). Regression discontinuity designs in economics.
+*Journal of Economic Literature*, 48(2), 281–355.
+
+Thistlethwaite, D. L., & Campbell, D. T. (1960). Regression-discontinuity
+analysis: An alternative to the ex post facto experiment. *Journal of
+Educational Psychology*, 51(6), 309–317.
+
+---
+
+A threshold is the cheapest experiment a society ever runs, and it runs one every
+time it writes a rule with a number in it. The price is that the answer belongs
+to the people standing on the line, and to nobody else — which is why the
+discontinuity in this section sits between the difference-in-differences of
+Section \@ref(difference-in-differences), which buys a wider population with an
+assumption about time, and the instrumental variables of Section
+\@ref(instruments), which buys it with an assumption about exclusion.
