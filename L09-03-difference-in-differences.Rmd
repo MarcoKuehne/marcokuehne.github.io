@@ -4,15 +4,15 @@
 Comparing changes across groups and time
 :::
 
-In August 2024 Germany began spending twenty billion euros on about four thousand schools. The **Startchancen-Programm** runs for ten years, splits the money evenly between the federal government and the Länder, and is aimed squarely at schools in the hardest circumstances: money for buildings, a discretionary *Chancenbudget* for each school, and staff for multi-professional teams.[^did-startchancen] The stated target is arithmetic rather than rhetorical — halve the share of pupils who fail to reach the minimum standard in reading and mathematics. In the last national assessments that share was 18.8% in reading and 21.8% in mathematics at the end of primary school, and 22.7% and 23.6% at the end of year nine.[^did-iqb]
+In August 2024 Germany began spending twenty billion euros on about four thousand schools. The **Startchancen-Programm** runs for ten years, splits the money evenly between the federal government and the Länder, and is aimed squarely at schools in the hardest circumstances: money for buildings, a discretionary *Chancenbudget* for each school, and staff for multi-professional teams.[^did-startchancen] The stated target is arithmetic rather than rhetorical — halve, *at the programme's own schools*, the share of pupils who fail to reach the minimum standard in German and mathematics. Nationally that share was 18.8% in reading and 21.8% in mathematics at the end of primary school. At the end of year nine the number depends on which school-leaving standard you measure against, and the two are not comparable: 15.2% missed the minimum standard for the *erster Schulabschluss* in reading in 2022, while roughly a third missed the more demanding *mittlerer Schulabschluss* standard in mathematics in 2024.[^did-iqb]
 
 Now the question this section is about. In 2032, someone will have to say whether it worked. How?
 
 You cannot compare Startchancen schools with other schools, because they were selected for being different — that is the entire point of the programme. You cannot compare the schools with their own past, because German competence scores have been falling for a decade and a school that merely stops falling has done something. And you certainly cannot randomise: no ministry is going to draw lots for a billion euros a year.
 
-What the evaluation consortium — led by infas, with the Leibniz Institute for Educational Trajectories, IEA Hamburg, Tübingen, Potsdam and others — proposes instead is the design in this section.[^did-infas] Measure the treated schools now and again in 2029 and 2032. Build a comparison group of schools that were not selected. Then compare not the *levels* but the *changes*. Whatever made Startchancen schools different in 2026 is allowed to keep making them different, as long as it does not change over the six years in between.
+What the evaluation consortium — led by infas, with the Leibniz Institute for Educational Trajectories, IEA Hamburg, Tübingen, Potsdam and others — has set up is the raw material for the design in this section.[^did-infas] Measure the treated schools in 2026 and again in 2029. Build a comparison group out of the national assessments. Then compare not the *levels* but the *changes*. Whatever made Startchancen schools different in 2026 is allowed to keep making them different, as long as it does not change over the six years in between.
 
-That single move — subtract twice instead of once — is the most-used identification strategy in policy evaluation, and it is old. John Snow used it in 1855 on the London water supply.[^did-snow] Its modern fame dates from 1994, when David Card and Alan Krueger asked what happened to fast-food employment when New Jersey raised its minimum wage and Pennsylvania did not: employment per store went from 20.4 to 21.0 in New Jersey and from 23.3 to 21.0 across the river, a relative gain of 2.76 full-time-equivalent employees, or 13%.[^did-cardkrueger] Germany ran the same experiment on itself in January 2015, when a national minimum wage of €8.50 arrived in a country that had never had one, and the design has been carrying that literature ever since.[^did-milog] It reaches well beyond labour economics: the staggered arrival of high-yielding wheat and rice varieties across countries is what lets economists put a number on the Green Revolution, and by extension on the work for which Norman Borlaug was given the Nobel Peace Prize in 1970.[^did-greenrev]
+That single move — subtract twice instead of once — is the most-used identification strategy in policy evaluation, and it is old. John Snow used it in 1855 on the London water supply.[^did-snow] Its modern fame dates from 1994, when David Card and Alan Krueger asked what happened to fast-food employment when New Jersey raised its minimum wage and Pennsylvania did not: employment per store went from 20.4 to 21.0 in New Jersey and from 23.3 to 21.2 across the river, a relative gain of 2.76 full-time-equivalent employees, or 13%.[^did-cardkrueger] Germany ran the same experiment on itself in January 2015, when a national minimum wage of €8.50 arrived in a country that had never had one, and the design has been carrying that literature ever since.[^did-milog] It reaches well beyond labour economics: the staggered arrival of high-yielding wheat and rice varieties across countries is what lets economists put a number on the Green Revolution, and by extension on the work for which Norman Borlaug was given the Nobel Peace Prize in 1970.[^did-greenrev]
 
 This section builds the design from four numbers in a table, and then spends most of its length on the two things that have happened to it recently. The first is that its central assumption turned out to be less testable than everyone believed. The second is that the standard way of estimating it turned out to be wrong whenever a programme is rolled out in waves — which is exactly how Startchancen was rolled out.[^did-rollout]
 
@@ -34,6 +34,27 @@ The first difference removes everything that is fixed about a unit — a school'
 ::: {.analysis-takeaway}
 This is why level differences are not a problem. Startchancen schools score lower than other schools and always did; the design does not care. What it cannot survive is a difference in *trajectories*. Section \@ref(matching-and-balancing) needed the two groups to be comparable; this design needs only their trends to be.
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Two groups, two periods, four averages, and the whole design is one subtraction.
+
+Suppose the treated group goes from 40 to 46 and the comparison group from 50 to
+53. The difference in differences is `r fitb(3, num = TRUE)`.
+
+Now the same treated numbers, but the comparison group goes from 50 to 58. The
+difference in differences is `r fitb(-2, num = TRUE)`.
+
+In the second case the treated group still improved by six points. Would you
+report that the programme worked?
+`r mcq(c("yes, six points is six points", answer = "no - everyone improved by more, so the programme is associated with falling behind", "impossible to say without a standard error"))`
+
+Which of the two groups' *levels* matters to the estimate?
+`r mcq(c("the treated group's", "the comparison group's", answer = "neither - only the two changes enter"))`
+::::
+
 
 The same estimate comes out of a regression, and it is worth seeing why, because every extension in this section is an extension of the regression rather than of the table.
 
@@ -62,9 +83,29 @@ Read the left-hand side again. It contains $Y_{i1}(0)$ for the treated group: wh
 Parallel trends is not scale-free. If two groups have parallel trends in levels they generally do *not* have parallel trends in logs, and vice versa. Taking a log of the outcome is not a neutral presentational choice here; it changes the assumption you are making. Susan Athey and Guido Imbens made this the motivation for an entire alternative model, *changes-in-changes*, which asks for something invariant to monotone transformations instead.[^did-athey]
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Two towns. Town A's wage goes from 10 to 12, town B's from 20 to 24.
+
+In levels the changes are `r fitb(2, num = TRUE)` and `r fitb(4, num = TRUE)` —
+not parallel.
+
+In logs both changed by the same proportion, so in logs they are
+`r mcq(c("still not parallel", answer = "parallel", "impossible to compare"))`.
+
+Which of the two is the right specification?
+`r mcq(c("logs, because wages are always modelled in logs", "levels, because the outcome is measured in euros", answer = "neither is right in general - the choice is an assumption about the counterfactual and has to be argued"))`
+
+True or false: taking a log of the outcome is a presentational choice with no
+consequences for identification. `r torf(FALSE)`
+::::
+
+
 ### A Programme We Can Check {#did-data}
 
-Section \@ref(matching-and-balancing) built its own data so that the right answer would be available at the end. The same trick is worth more here, because this section has to show two estimators disagreeing about a number, and there is no way to referee that without knowing the number.
+Section \@ref(matching-and-balancing) built its own data so that the right answer would be available at the end, and Sections \@ref(rdd-a-programme-we-can-check) and \@ref(iv-a-programme-we-can-check) will do it again. The trick is worth more here than anywhere, because this section has to show two estimators disagreeing about a number, and there is no way to referee that without knowing the number.
 
 ```{r did-packages, echo=TRUE}
 library("fixest")   # fast fixed-effects regression, event studies, Sun-Abraham
@@ -129,6 +170,27 @@ Four features are deliberate.
 
 **Effects that differ by wave.** The first wave gains 1.10 points per year of exposure, the second 0.45, the third 0.08. Real programmes are not equally effective everywhere, and the early adopters are rarely a random sample.
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Four design decisions went into that generator. Match each to what it is there to
+break.
+
+Funded schools start four points below the rest. That is
+`r mcq(c("a violation of parallel trends", answer = "selection on levels, which the design tolerates", "a violation of SUTVA"))`.
+
+Everyone loses 0.30 points a year. That is there so that
+`r mcq(c("the effects grow", answer = "a funded school which merely holds still is already doing well, and only a comparison group can reveal it", "the standard errors are correct"))`.
+
+Effects grow with exposure. That is the ingredient which will later break
+`r mcq(c("the parallel-trends assumption", answer = "the two-way fixed effects estimator", "the clustering"))`.
+
+And the `divergent` argument, used later, switches on
+`r mcq(c("a treatment effect", answer = "a violation of parallel trends", "a spillover"))`.
+::::
+
+
 ```{r did-raw, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="Average score by funding wave. The dotted vertical lines mark when each wave starts receiving money. Everyone drifts downwards; the funded schools bend away from that drift at their own start year, and the first wave bends hardest. This one figure contains everything the rest of the section argues about."}
 schools %>%
   mutate(wave = factor(cohort, c(0, 4, 6, 8),
@@ -186,6 +248,27 @@ Read the three coefficients as the table. `funded_school` is $-2.57$: the perman
 ::: {.analysis-note}
 The comparison group earns its keep in the middle coefficient. Look at the funded schools alone and you see a gain of 1.50 points; a before-and-after study would report that. The comparison group says the year was worth $-0.30$ to everybody, so the programme is credited with 1.80 rather than 1.50. Here the correction is small and upward. In a year with a curriculum reform or a pandemic it can be larger than the effect itself, and of either sign.
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The regression printed three coefficients: $-2.57$, $-0.30$ and $+1.80$.
+
+Which one is the estimate? `r fitb(1.8, tol = 0.05)`
+
+The $-2.57$ on `funded_school` is `r mcq(c("the effect of the programme before it started", answer = "the permanent gap between the two groups, and not an effect of anything", "a sign that the randomisation failed"))`.
+
+A colleague reports the $-0.30$ on `after` as "the effect of the year on the
+comparison group". Is that right?
+`r mcq(c(answer = "yes - it is what happened to everyone, and it is the whole reason the design works", "no, it is the effect on the treated group", "no, it is a nuisance parameter with no interpretation"))`
+
+And a small arithmetic check on the note above. The funded schools gained 1.50
+and were credited with 1.80. If the year had been worth $+0.60$ to everybody
+instead of $-0.30$, the programme would have been credited with
+`r fitb(0.9, tol = 0.05)`.
+::::
+
 
 ### Event Studies {#did-event-study}
 
@@ -252,6 +335,26 @@ An event study does three jobs at once, and they are worth separating. It shows 
 ::: {.analysis-warning}
 A flat pre-period is evidence, not proof, and it is evidence about the pre-period only. Parallel trends is a claim about what the treated group would have done *after* the treatment. Nothing in the data speaks to that directly. Two groups can move together for five years and part company in the sixth for reasons that have nothing to do with the programme — and then the design attributes the parting to the programme.
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The event study dropped one relative period as the reference. Which, and why?
+
+The dropped period is $k =$ `r fitb(-1, num = TRUE)`, the year before the money
+arrives, because
+`r mcq(c("it has the most observations", answer = "the coefficients are only ever differences from some baseline, and one has to be fixed at zero", "it is the least noisy"))`.
+
+An event study does three jobs at once. Which of these is **not** one of them?
+`r mcq(c("it shows whether the effect grows, plateaus or fades", "it shows whether anything happened before the treatment", answer = "it tests whether parallel trends holds after the treatment", "it shows the reader the whole shape rather than one number"))`
+
+In the divergent world the first post-period estimate was 0.86 against a truth of
+1.1, and the ninth 6.38 against 9.9. So the bias
+`r mcq(c("is constant", answer = "grows the further from the start you look", "shrinks"))`,
+which is exactly what an ongoing divergence does when you keep subtracting it.
+::::
+
 
 ### When Trends Are Not Parallel {#did-violations}
 
@@ -321,6 +424,41 @@ In the world where parallel trends fails, the test rejects roughly a third of th
 This is Jonathan Roth's result, and it is the most useful thing to have learned about DiD in the last decade.[^did-roth] A pre-trend test is underpowered against exactly the violations that matter, and conditioning the analysis on having passed one distorts the estimate that follows. "We checked for parallel trends and found none" is a much weaker sentence than it sounds, and the honest version of it reports the power of the check, not just its p-value.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Read the two simulation results together. In the world where trends really are
+parallel, the test rejected about `r fitb(0.06, tol = 0.02)` of the time — which
+is what a 5% test should do.
+
+In the world where trends are not parallel, it rejected about
+`r mcq(c("nineteen times in twenty", answer = "a third of the time", "never"))`.
+
+Now the part that matters. Among the studies that *passed* the test, the average
+estimate was 3.6 against a true 5.5. Why is that worse than simply being
+underpowered?
+`r mcq(c("it is not worse, it is the same thing", answer = "passing selects the samples in which pre-period noise happened to hide the drift, and those are disproportionately the samples whose post-period estimate is off", "the test statistic is computed incorrectly"))`
+
+True or false: reporting the p-value of a pre-trend test is enough.
+`r torf(FALSE)`
+
+`r hide("What to report instead")`
+
+Report the power. A pre-trend test that rejects a third of the time against the
+violation you are worried about is telling you almost nothing when it fails to
+reject, and the honest write-up says how large a violation it *could* have
+caught. Rambachan and Roth's approach goes one step further and drops the
+hypothesis test altogether: assume the post-period violation is no more than
+$\bar{M}$ times what is visible in the pre-period, and report the range of
+effects that survives. Same move as the E-value in Section
+\@ref(matching-and-balancing) — turn an untestable assumption into a magnitude a
+reader can argue with.
+
+`r unhide()`
+::::
+
+
 The constructive response is not to abandon the design. It is to stop treating parallel trends as a binary that data can settle, and start treating the possible violation as a quantity with a size. Ashesh Rambachan and Roth's approach asks: if the post-period violation were no larger than what is visible in the pre-period — or at most $\bar{M}$ times as large — what range of effects would remain consistent with the data?[^did-rambachan] That produces a set rather than a point, and it makes the argument about magnitudes, which is where it belongs. It is the same move as the E-value in Section \@ref(matching-and-balancing): turn an untestable assumption into a quantity a reader can dispute.
 
 ### Standard Errors {#did-standard-errors}
@@ -335,9 +473,29 @@ Clustering on the unit of treatment fixes it, provided there are enough clusters
 Cluster at the level at which the treatment varies, not at the level at which the data were collected. If a policy switches on for a whole Bundesland, the effective number of independent observations is the number of Länder, however many pupils are in the file. This is the mistake that most often turns a null result into a published one.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Bertrand, Duflo and Mullainathan invented laws that never happened and found an
+"effect" significant at the 5% level in up to
+`r fitb(45, num = TRUE)` per cent of their placebo runs.
+
+The cause was `r mcq(c("a coding error", answer = "serial correlation - outcomes within a unit are correlated over time, so twelve years is not twelve independent observations", "too small a sample"))`.
+
+A free-childcare reform switches on for one Bundesland. Your file has 40,000
+pupils. Cluster on
+`r mcq(c("the pupil", "the school", answer = "the Bundesland", "the year"))`,
+which leaves you with `r fitb(16, num = TRUE)` clusters.
+
+With that few clusters, cluster-robust errors are themselves unreliable. The
+standard remedy is the `r fitb("wild cluster bootstrap", ignore_case = TRUE, width = "24")`.
+::::
+
+
 ### Everyone Starts at a Different Time {#did-staggered}
 
-Real programmes do not switch on everywhere at once. Startchancen began with 2,125 schools in the 2024/25 school year and grows towards four thousand over the following years; the Länder legislate at different times; firms adopt technologies in waves.[^did-rollout] The natural generalisation of the regression is to replace *Treated × After* with a single indicator that is one whenever a unit is currently treated, and to absorb everything else in unit and year fixed effects:
+Real programmes do not switch on everywhere at once. Startchancen began with 2,125 schools in the 2024/25 school year and had passed four thousand by 2026; the Länder legislate at different times; firms adopt technologies in waves.[^did-rollout] The natural generalisation of the regression is to replace *Treated × After* with a single indicator that is one whenever a unit is currently treated, and to absorb everything else in unit and year fixed effects:
 
 $$Y_{it} = \alpha_i + \lambda_t + \delta\, D_{it} + \varepsilon_{it}$$
 
@@ -347,9 +505,26 @@ This is the **two-way fixed effects** (TWFE) estimator. For twenty years it was 
 feols(score ~ funded | school + year, data = schools, cluster = ~ school)
 ```
 
-The estimate is $-0.006$, with a standard error of 0.153 and a p-value of 0.97.
+The estimate is $-0.006$, with a standard error of 0.146 and a p-value of 0.96.
 
 A programme that lifted every wave it touched, in a data set we built ourselves, comes back as a precisely estimated zero. Not a wide confidence interval — a tight one, centred on nothing. Any evaluator would report that the programme had no effect, and the reporting would be careful and the referee would nod.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Before reading on, commit to an explanation.
+
+The estimate is $-0.006$ with a standard error of 0.146. Which of these is it?
+`r mcq(c("the programme really had no effect in this data set", "the sample is too small to detect the effect", answer = "the estimator is averaging over comparisons that should never have been made"))`
+
+If you had seen only this output, what would have told you something was wrong?
+`r mcq(c("the standard error", "the p-value", "the R-squared", answer = "nothing in the output at all"))`
+
+True or false: adding more years of data would have revealed the problem.
+`r torf(FALSE)`
+::::
+
 
 ### The Forbidden Comparison {#did-forbidden}
 
@@ -384,6 +559,31 @@ Nothing is wrong with the arithmetic. Wave 3's score rose by 0.24 points between
 ::: {.analysis-note}
 A common misreading is that the Goodman-Bacon weights are negative. They are not — they are products of variances and sample shares, and they are non-negative. What is negative is the *estimand* of the forbidden 2×2 itself, because it differences out a growing treatment effect. Negative weights on the underlying treatment effects are a related but distinct result, due to Clément de Chaisemartin and Xavier D'Haultfœuille, and they can make TWFE report a negative number when every single unit-level effect is positive.[^did-chaisemartin]
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The same programme, the same two years: $+4.21$ against the never-funded schools,
+$-4.39$ against wave 1.
+
+Wave 3's score rose by 0.24 points between year 6 and year 10; wave 1's rose by
+`r fitb(4.4, tol = 0.3)`. Subtract, and you get the second number.
+
+What is wrong with using wave 1 as a control for wave 3?
+`r mcq(c("wave 1 is too small", answer = "wave 1 is being treated over exactly the period in question, and its ongoing gains are subtracted from wave 3's", "wave 1 started from a different level"))`
+
+Now the sentence that saves twenty years of applied work. Two-way fixed effects
+is unbiased when treatment effects are
+`r mcq(c("large", "positive", answer = "the same for every unit and at every duration"))`.
+
+And the precision. Which of the two is the Goodman-Bacon result and which the de
+Chaisemartin-D'Haultfœuille one? Negative *weights on treatment effects* are
+`r mcq(c("Goodman-Bacon", answer = "de Chaisemartin and D'Haultfœuille"))`;
+a decomposition into 2×2 comparisons with non-negative weights is
+`r mcq(c(answer = "Goodman-Bacon", "de Chaisemartin and D'Haultfœuille"))`.
+::::
+
 
 The condition under which none of this matters is worth stating plainly, because it is the condition under which twenty years of applied work was fine: **TWFE is unbiased when treatment effects are constant** — the same for every unit and, crucially, the same at every duration. The moment effects grow with exposure, which is the normal case for anything educational or organisational, the forbidden comparisons start pulling the average towards zero and past it.
 
@@ -431,10 +631,10 @@ aggte(cs, type = "group",  bstrap = FALSE, cband = FALSE)
 Liyang Sun and Sarah Abraham attack the same problem from the event-study side: in the ordinary specification each lead and lag coefficient is contaminated by effects from *other* relative periods, so an event study can show a spurious pre-trend that is nothing but treatment-effect heterogeneity.[^did-sunab] Their interaction-weighted estimator is one function call inside `feols` — with the opposite coding convention, which is a genuine trap.
 
 ```{r did-sunab, echo=TRUE}
-# fixest wants never-treated coded OUTSIDE the range of periods,
-# so that every relative period for them is negative. `did` wants 0.
+# fixest reads any cohort value that does not appear among the periods as
+# never-treated. Its own examples use 1000; `did` insists on 0.
 staggered <- schools %>%
-  mutate(cohort_sa = ifelse(cohort == 0, 10000L, cohort))
+  mutate(cohort_sa = ifelse(cohort == 0, 1000L, cohort))
 
 feols(score ~ sunab(cohort_sa, year) | school + year,
       data = staggered, cluster = ~ school) %>%
@@ -442,7 +642,9 @@ feols(score ~ sunab(cohort_sa, year) | school + year,
 ```
 
 ::: {.analysis-warning}
-Two packages, two opposite conventions for the same thing. `did::att_gt()` requires never-treated units to have a group value of **0**; `fixest::sunab()` requires a value **larger than the last period** — the shipped examples use 10000 — because it identifies the never-treated as the cohort whose relative periods are all negative. Code them as 0 for `sunab()` and every relative period becomes positive, so the package reads them as *always* treated and silently drops them. The estimate that comes back is wrong and nothing warns you.
+Two packages, two conventions, and the trap is not the one you would guess. `did::att_gt()` requires never-treated units to carry a group value of **0**. `fixest::sunab()` asks instead for a cohort value that lies **outside the range of the periods** — its own examples use 1000 — and it identifies the never-treated as *any cohort that does not appear among the period values*.
+
+Read that rule twice, because it cuts both ways. In this data set the periods run from 1 to 12, so a value of 0 is outside the range too, and coding the never-treated as 0 happens to give exactly the same 6,300 observations and the same estimate. What the rule cannot survive is a cohort that is genuinely **always** treated — a school funded before the panel begins, coded 1990 in a panel that starts in 1995. That cohort also fails to appear among the periods, so `sunab()` files it under *never treated* and uses it as a control. The package's own documentation says so, and nothing in the output warns you. Check `nobs()` whenever you change the coding, and check the cohort values against the period range whenever you do not.
 :::
 
 ### Opening the Envelope {#did-truth}
@@ -509,6 +711,79 @@ group_time %>%
   theme(legend.position = "bottom")
 ```
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn: five variations on one generator</h2>
+:::
+This is the section's longer exercise, and it is worth an hour. Everything runs
+on `simulate_schools()`, which is already defined, and on `feols()`, which is
+already loaded. The point is not to learn the syntax; it is to find out *when*
+the broken estimator is broken and when it is not.
+
+Define one helper and reuse it:
+
+```{r did-exercise-helper, eval=FALSE, echo=TRUE}
+twfe <- function(d) coef(feols(score ~ funded | school + year, data = d))[["funded"]]
+truth <- function(d) mean(d$effect[d$funded == 1])
+```
+
+**Variation 1 — one wave only.** Keep the never-funded schools and wave 1, drop
+the other two. Run `twfe()`. Is it still wrong?
+
+The estimate comes out at about `r fitb(5.4, tol = 0.3)` against a truth of 5.5,
+so with one wave two-way fixed effects is
+`r mcq(c("still badly biased", answer = "essentially right", "impossible to compute"))`.
+
+**Variation 2 — a constant effect.** Modify the generator so that the effect is a
+flat 3 points from the first funded year onwards, instead of growing with
+exposure, and rerun on all three waves.
+
+The estimate is about `r fitb(2.9, tol = 0.25)` against a truth of 3.0. So the
+staggering is not the problem on its own; the problem is
+`r mcq(c("staggering", "the number of waves", answer = "staggering combined with effects that change with duration"))`.
+
+**Variation 3 — starve it of controls.** Set `n_never = 0`, so that the only
+available comparisons are between waves.
+
+The estimate moves to about `r fitb(-1.5, tol = 0.4)` — *further* from the truth
+than the baseline $-0.006$, because now every comparison is a forbidden one.
+
+**Variation 4 — feed it.** Set `n_never` to 300 and then 900 and watch. The
+estimates go to roughly 1.3 and 1.8. Does two-way fixed effects ever reach the
+truth of 3.01?
+`r mcq(c("yes, at n_never = 900", answer = "no - it converges towards a variance-weighted blend that is not the quantity you asked for, however many controls you add", "yes, in the limit"))`
+
+**Variation 5 — write the sentence.** In two lines, and without using the word
+"bias", say what two-way fixed effects estimates in this data set. Then check it
+against the takeaway below.
+
+`r hide("The code")`
+
+```{r did-exercise-solution, eval=FALSE, echo=TRUE}
+# 1 -- one wave
+one_wave <- schools %>% filter(cohort %in% c(0, 4))
+c(twfe = twfe(one_wave), truth = truth(one_wave))
+
+# 2 -- a constant effect: edit the generator's `effect` line to
+#      d$effect <- 3 * (d$exposure > 0)
+#      and rerun on all three waves.
+
+# 3 and 4 -- vary the size of the never-funded group
+purrr::map_dfr(c(0, 25, 75, 300, 900), function(nn) {
+  d <- simulate_schools(n_never = nn)
+  tibble(n_never = nn, twfe = twfe(d), truth = truth(d))
+})
+```
+
+The five rows come out at $-1.46$, $-0.55$, $-0.01$, $+1.28$, $+1.81$ against a
+truth of 3.01 throughout. The never-funded schools are the only clean controls in
+the data set, and the more weight they carry the closer the blend gets — but the
+forbidden comparisons never disappear, so the sequence approaches something that
+is not the answer.
+
+`r unhide()`
+::::
+
 ::: {.analysis-takeaway}
 The lesson is not that two-way fixed effects is broken. It is that it answers a question nobody asked: a variance-weighted blend of every available comparison, including comparisons that should never have been made. The modern estimators are not more sophisticated. They are more *literal* — they compute the thing you meant, one wave and one year at a time, and let you choose the average afterwards.
 
@@ -523,7 +798,7 @@ The design is cheap, transparent and widely applicable, which is precisely why i
 
 **Spillovers.** Comparison schools in the same city may hire the teachers that funded schools trained, or lose pupils to them. SUTVA fails, the comparison group is treated, and the estimate shrinks towards zero — or grows, if the spillover is negative.
 
-**Composition change.** This one is specific to the Startchancen design and is easy to miss. The evaluation compares repeated cross-sections: year 4 in 2026, a *different* year 4 in 2029.[^did-infas] If the programme changes who attends those schools — and a visibly improving school in a deprived area very plausibly does — then the two cohorts are not drawn from the same population, and part of the measured gain is a change in the intake rather than in the teaching. Panel data on the same pupils would not have this problem, and would have attrition instead.
+**Composition change.** This one is specific to the Startchancen design and is easy to miss. The evaluation compares repeated cross-sections: year 4 in 2026, a *different* year 4 in 2029. If the programme changes who attends those schools — and a visibly improving school in a deprived area very plausibly does — then the two cohorts are not drawn from the same population, and part of the measured gain is a change in the intake rather than in the teaching. Panel data on the same pupils would not have this problem, and would have attrition instead.
 
 **Scale.** Parallel in levels is not parallel in logs, as noted above. Report which one you assumed and why.
 
@@ -558,7 +833,7 @@ Three waves of schools are funded in different years and the effect grows with e
 
 True or false: if the treatment effect were identical for every unit and every duration, two-way fixed effects would be fine. `r torf(TRUE)`
 
-And the coding trap. You pass `cohort = 0` for never-treated units to `fixest::sunab()`. What happens? `r mcq(c("nothing, that is the required coding", "the function throws an error", answer = "they are read as always-treated and silently dropped"))`
+And the coding trap, which is subtler than it looks. `fixest::sunab()` treats any cohort value that does not appear among the periods as never-treated. Which of these is the dangerous case? `r mcq(c("never-treated units coded 0 in a panel running from 1 to 12", "never-treated units coded 1000", answer = "units treated before the panel begins, coded with a year that falls outside it"))`
 ::::
 
 :::: {.reading}
@@ -573,32 +848,32 @@ Difference-in-differences buys comparability out of timing. It tolerates any amo
 
 Where treatment arrives in waves, the estimator matters as much as the design: the standard two-way fixed effects regression silently uses already-treated units as controls, and this section's simulated programme shows it converting a three-point gain into a precisely estimated zero. Estimate wave by wave and year by year, then choose the average yourself.
 
-Section \@ref(discontinuities) narrows the comparison differently again: instead of a date, a threshold — which is how the same Startchancen evaluation intends to check its own difference-in-differences answer.[^did-infas]
+Section \@ref(discontinuities) narrows the comparison differently again: instead of a date, a threshold — and the same Startchancen programme supplies one, because the schools were selected by a published social index with a line drawn through it.
 :::
 
 ### Readings {#did-readings -}
 
-- Roth, J., Sant'Anna, P. H. C., Bilinski, A., & Poe, J. (2023). What's Trending in Difference-in-Differences? *Journal of Econometrics* 235(2), 2218-2244. The one-stop survey, with recommendations.
+- Roth, J., Sant'Anna, P. H. C., Bilinski, A., & Poe, J. (2023). What's Trending in Difference-in-Differences? A Synthesis of the Recent Econometrics Literature. *Journal of Econometrics* 235(2), 2218-2244. The one-stop survey, with recommendations.
 - Angrist, J. D., & Pischke, J.-S. (2009). *Mostly Harmless Econometrics*, chapter 5. The classical treatment, before the staggered-adoption literature.
 - Cunningham, S. (2021). *Causal Inference: The Mixtape*, chapter 9 [@cunningham2021causal]. Free online, with the Bacon decomposition worked through by hand.
-- Huntington-Klein, N. (2022). *The Effect*, chapters 16 and 18. The most patient explanation of why the forbidden comparison is forbidden.
+- Huntington-Klein, N. (2022). *The Effect: An Introduction to Research Design and Causality*. Chapman & Hall/CRC, chapters 17 and 18 — event studies and difference-in-differences. The most patient explanation of why the forbidden comparison is forbidden.
 - Callaway, B., & Sant'Anna, P. H. C. `did` package vignettes. The reference implementation, written by the authors of the method.
 
-[^did-startchancen]: The Bund-Länder agreement was reached on 2 February 2024 and the programme started on 1 August 2024, running to 2034. The federal government contributes up to €1 billion a year and the Länder match it, giving €20 billion over ten years for around 4,000 schools and well over a million pupils. The three pillars are an investment programme for learning environments, a discretionary *Chancenbudget* for school development, and staff for multi-professional teams. Note that the widely quoted 40 / 40 / 20 key — child poverty, migration background, and inverse economic strength — governs how the federal investment funds are distributed *across the sixteen Länder*, not which schools are selected; individual schools are chosen by each Land using its own social index, and those indices differ. <https://www.bmbfsfj.bund.de/>
+[^did-startchancen]: Bund and Länder announced their agreement on 2 February 2024 and signed the *Bund-Länder-Vereinbarung* on 4 June 2024; the programme started on 1 August 2024 and runs to 2034. The federal government contributes up to €1 billion a year and the Länder match it, giving €20 billion over ten years for around 4,000 schools and well over a million pupils. The three pillars are an investment programme for learning environments, a discretionary *Chancenbudget* for school development, and staff for multi-professional teams. Note that the widely quoted 40 / 40 / 20 key — child poverty, migration background, and inverse economic strength — governs how the federal investment funds are distributed *across the sixteen Länder*, not which schools are selected; individual schools are chosen by each Land using its own social index, and those indices differ. <https://www.bmbfsfj.bund.de/>
 
-[^did-iqb]: Shares failing the minimum standard for Germany as a whole, from the IQB *Bildungstrend* reports: reading and mathematics at the end of year 4 in 2021, reading at the end of year 9 in 2022, mathematics at the end of year 9 in 2024. Stanat, P., et al. (Eds.), *IQB-Bildungstrend*, Waxmann.
+[^did-iqb]: Shares failing the minimum standard for Germany as a whole, from the IQB *Bildungstrend* reports: reading and mathematics at the end of year 4 in 2021, reading at the end of year 9 in 2022, mathematics at the end of year 9 in 2024. Stanat, P., et al. (Eds.), *IQB-Bildungstrend*, Waxmann. The year-9 reports publish two thresholds — the minimum standard for the *erster Schulabschluss* and the one for the *mittlerer Schulabschluss* — and a figure quoted without saying which is meaningless. It is worth knowing that the programme's own target is stated for its own schools rather than for the national figure, so these numbers are the backdrop, not the baseline.
 
-[^did-infas]: The evaluation was commissioned by the federal education ministry after an EU-wide tender and is led by the infas Institut für angewandte Sozialwissenschaft, with the Hector Institute (Tübingen), LIfBi, IEA Hamburg, the chair of empirical economics at Potsdam, Evaluation Office Caliendo & Partner and the BiB, with the IQB advising; the contract is worth close to €50 million. The design presented at the *Startchancen-Konferenz* in June 2026 is a repeated cross-section of year 4 and year 9 pupils at 300 programme schools in 2026, 2029 and 2032, using IQB *Bildungstrend* test items so that comparison values come from the national assessments, with difference-in-differences as the main design and a fuzzy regression discontinuity at the social-index admission threshold as a second. A pleasing detail for readers of Section \@ref(matching-and-balancing): the Potsdam chair and the evaluation office belong to Marco Caliendo, whose implementation guide is the standard reference for propensity-score matching cited there.
+[^did-infas]: The evaluation was commissioned by the federal education ministry after an EU-wide tender and is led by the infas Institut für angewandte Sozialwissenschaft, with the Hector Institute (Tübingen), LIfBi, IEA Hamburg, the chair of empirical economics at Potsdam, Evaluation Office Caliendo & Partner and the BiB, with the IQB advising; the contract is worth close to €50 million. The published design is a repeated cross-section of year 4 and year 9 pupils at 300 randomly selected programme schools, with a baseline in early 2026 and a repeat in early 2029, using IQB *Bildungstrend* test items so that comparison values come from the national assessments; monitoring surveys go to every programme school roughly every eighteen months, and the project runs to 2030. Note what the public documentation does *not* say: it names no identification strategy at all. Reading the design as a difference-in-differences, with a threshold design available alongside it, is this book's inference from the data being collected — not a claim the consortium has made. A pleasing detail for readers of Section \@ref(matching-and-balancing): the Potsdam chair and the evaluation office belong to Marco Caliendo, whose implementation guide is the standard reference for propensity-score matching cited there. <https://evaluation-startchancen.de>
 
-[^did-snow]: Snow, J., *On the Mode of Communication of Cholera*, 2nd edition, John Churchill, 1855. See the box in Section \@ref(experiments); the Lambeth company moved its intake upstream between the 1849 and 1854 epidemics while its competitor did not, which is a difference in differences in everything but name.
+[^did-snow]: Snow, J., *On the Mode of Communication of Cholera*, 2nd edition, John Churchill, 1855. See the box in Section \@ref(experiments); the Lambeth company moved its intake upstream between the 1849 and 1854 epidemics while its competitor did not, which is a difference in differences in everything but name. Coleman's re-analysis is worth knowing about: once over-dispersion is allowed for, the effect is only modestly significant, which is a fair reminder that a famous design and a decisive test are two different things.
 
-[^did-cardkrueger]: Card, D., & Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. *American Economic Review* 84(4), 772-793. New Jersey raised its minimum wage from $4.25 to $5.05 on 1 April 1992; the study surveyed 410 restaurants on both sides of the border. Full-time-equivalent employment per store went from 20.4 to 21.0 in New Jersey and from 23.3 to 21.0 in Pennsylvania, a relative gain of 2.76 employees, or 13%, with a t-statistic of 2.03.
+[^did-cardkrueger]: Card, D., & Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. *American Economic Review* 84(4), 772-793. New Jersey raised its minimum wage from $4.25 to $5.05 on 1 April 1992; the study surveyed 410 restaurants on both sides of the border. Full-time-equivalent employment per store went from 20.44 to 21.03 in New Jersey and from 23.33 to 21.17 in Pennsylvania, a relative gain of 2.76 employees, or 13%, with a t-statistic of 2.03.
 
-[^did-milog]: The *Mindestlohngesetz* introduced a national minimum wage of €8.50 an hour on 1 January 2015. Two careful evaluations reaching different conclusions: Caliendo, M., Fedorets, A., Preuss, M., Schröder, C., & Wittbrodt, L. (2018), *The short-run employment effects of the German minimum wage reform*, *Labour Economics* 53, 46-62, <https://doi.org/10.1016/j.labeco.2018.07.002>, which finds moderate employment losses concentrated in marginal employment; and Bossler, M., & Gerner, H.-D. (2020), *Employment Effects of the New German Minimum Wage*, *ILR Review* 73(5), 1070-1094, <https://doi.org/10.1177/0019793919889635>.
+[^did-milog]: The *Mindestlohngesetz* introduced a national minimum wage of €8.50 an hour on 1 January 2015. Two careful evaluations reaching different conclusions: Caliendo, M., Fedorets, A., Preuss, M., Schröder, C., & Wittbrodt, L. (2018), *The short-run employment effects of the German minimum wage reform*, *Labour Economics* 53, 46-62, <https://doi.org/10.1016/j.labeco.2018.07.002>, which finds moderate employment losses concentrated in marginal employment; and Bossler, M., & Gerner, H.-D. (2020), *Employment Effects of the New German Minimum Wage: Evidence from Establishment-Level Microdata*, *ILR Review* 73(5), 1070-1094, <https://doi.org/10.1177/0019793919889635>.
 
 [^did-greenrev]: Gollin, D., Hansen, C. W., & Wingender, A. M. (2021). Two Blades of Grass: The Impact of the Green Revolution. *Journal of Political Economy* 129(8), 2344-2384, <https://doi.org/10.1086/714444>. Identification comes from the staggered arrival of high-yielding varieties across countries and crops; the headline counterfactual is that a ten-year delay would have left GDP per capita in the developing world about 17% lower in 2010. Norman Borlaug received the Nobel Peace Prize in 1970 for the plant breeding behind it.
 
-[^did-rollout]: 2,125 schools took part in the first school year, 2024/25; the target of roughly 4,000 is reached over the following years. A programme that arrives in waves is not an inconvenience for the evaluator — it is the situation Sections \@ref(did-staggered) to \@ref(did-modern) are about.
+[^did-rollout]: 2,125 schools took part in the first school year, 2024/25; the target of roughly 4,000 was reached by 2026. A programme that arrives in waves is not an inconvenience for the evaluator — it is the situation Sections \@ref(did-staggered) to \@ref(did-modern) are about.
 
 [^did-athey]: Athey, S., & Imbens, G. W. (2006). Identification and Inference in Nonlinear Difference-in-Differences Models. *Econometrica* 74(2), 431-497, <https://doi.org/10.1111/j.1468-0262.2006.00668.x>.
 
@@ -606,7 +881,7 @@ Section \@ref(discontinuities) narrows the comparison differently again: instead
 
 [^did-roth]: Roth, J. (2022). Pretest with Caution: Event-Study Estimates after Testing for Parallel Trends. *American Economic Review: Insights* 4(3), 305-322, <https://doi.org/10.1257/aeri.20210236>.
 
-[^did-rambachan]: Rambachan, A., & Roth, J. (2023). A More Credible Approach to Parallel Trends. *Review of Economic Studies* 90(5), 2555-2591, <https://doi.org/10.1093/restud/rdad018>. Implemented in the `HonestDiD` package, which lives on GitHub rather than CRAN.
+[^did-rambachan]: Rambachan, A., & Roth, J. (2023). A More Credible Approach to Parallel Trends. *Review of Economic Studies* 90(5), 2555-2591, <https://doi.org/10.1093/restud/rdad018>. Implemented in the `HonestDiD` package, on CRAN, with a development version on GitHub.
 
 [^did-bdm]: Bertrand, M., Duflo, E., & Mullainathan, S. (2004). How Much Should We Trust Differences-in-Differences Estimates? *Quarterly Journal of Economics* 119(1), 249-275, <https://doi.org/10.1162/003355304772839588>. The 45% is an upper bound across their specifications: "we find an 'effect' significant at the 5 percent level for up to 45 percent of the placebo interventions".
 
@@ -618,10 +893,10 @@ Section \@ref(discontinuities) narrows the comparison differently again: instead
 
 [^did-cs]: Callaway, B., & Sant'Anna, P. H. C. (2021). Difference-in-Differences with multiple time periods. *Journal of Econometrics* 225(2), 200-230, <https://doi.org/10.1016/j.jeconom.2020.12.001>. The `did` package aggregates group-time effects with `type = "simple"`, `"dynamic"`, `"group"` or `"calendar"`.
 
-[^did-sunab]: Sun, L., & Abraham, S. (2021). Estimating dynamic treatment effects in event studies with heterogeneous treatment effects. *Journal of Econometrics* 225(2), 175-199, <https://doi.org/10.1016/j.jeconom.2020.09.006>. Implemented as `sunab()` in `fixest` by Laurent Bergé. A third robust estimator, imputation-based, is Borusyak, K., Jaravel, X., & Spiess, J. (2024), *Revisiting Event-Study Designs*, *Review of Economic Studies* 91(6), 3253-3285, <https://doi.org/10.1093/restud/rdae007>.
+[^did-sunab]: Sun, L., & Abraham, S. (2021). Estimating dynamic treatment effects in event studies with heterogeneous treatment effects. *Journal of Econometrics* 225(2), 175-199, <https://doi.org/10.1016/j.jeconom.2020.09.006>. Implemented as `sunab()` in `fixest` by Laurent Bergé. A third robust estimator, imputation-based, is Borusyak, K., Jaravel, X., & Spiess, J. (2024), *Revisiting Event-Study Designs: Robust and Efficient Estimation*, *Review of Economic Studies* 91(6), 3253-3285, <https://doi.org/10.1093/restud/rdae007>.
 
 [^did-abadie]: Abadie, A. (2005). Semiparametric Difference-in-Differences Estimators. *Review of Economic Studies* 72(1), 1-19, <https://doi.org/10.1111/0034-6527.00321>.
 
 [^did-synthesis]: Roth, J., Sant'Anna, P. H. C., Bilinski, A., & Poe, J. (2023). What's trending in difference-in-differences? A synthesis of the recent econometrics literature. *Journal of Econometrics* 235(2), 2218-2244, <https://doi.org/10.1016/j.jeconom.2023.03.008>.
 
-[^did-dustmann]: Dustmann, C., Lindner, A., Schönberg, U., Umkehrer, M., & vom Berge, P. (2022). Reallocation Effects of the Minimum Wage. *Quarterly Journal of Economics* 137(1), 267-328, <https://doi.org/10.1093/qje/qjab028>. The reform raised wages without lowering employment, and moved low-wage workers towards larger and more productive firms - a reallocation that accounts for roughly 17% of the wage gain.
+[^did-dustmann]: Dustmann, C., Lindner, A., Schönberg, U., Umkehrer, M., & vom Berge, P. (2022). Reallocation Effects of the Minimum Wage. *Quarterly Journal of Economics* 137(1), 267-328, <https://doi.org/10.1093/qje/qjab028>. The reform raised wages without lowering employment, and moved low-wage workers towards larger and more productive firms - a reallocation that accounts for up to 17% of the wage gain.

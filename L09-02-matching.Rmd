@@ -10,7 +10,7 @@ Everything here rests on one sentence. **Whatever made people take the treatment
 
 That is worth stating at the outset, because matching is unusually good at looking like it worked. It produces a table in which every difference has been driven to zero, and a figure in which two distributions lie on top of one another. Both are true. Neither is evidence for the sentence above.
 
-So this section does something the rest of the book cannot afford to do very often: it works on data we built ourselves, with an effect we chose. The answer is written down before we start. We will not look at it until the very end — and then we will look at it twice, once in a world where the assumption holds and once in a world where it quietly does not.
+So this section does something the rest of the book cannot afford to do very often: it works on data we built ourselves, with an effect we chose. The answer is written down before we start. We will not look at it until the very end — and then we will look at it twice, once in a world where the assumption holds and once in a world where it quietly does not. Sections \@ref(did-data), \@ref(rdd-a-programme-we-can-check) and \@ref(iv-a-programme-we-can-check) do the same thing for the same reason; between them the four simulated worlds are the only places in this book where a causal answer can be marked right or wrong.
 
 ### The Assumption You Cannot Test {#mat-cia}
 
@@ -38,6 +38,27 @@ The three fail in different ways and are worth keeping apart. Overlap is a prope
 ::: {.analysis-warning}
 A balance table is not a test of conditional independence. It shows that the groups now agree on the variables you matched on. Conditional independence is a claim about the variables you did *not* match on, including the ones nobody wrote down. The one thing a balance table cannot do is speak about them.
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Three assumptions, three different kinds of thing. Sort them.
+
+Overlap is `r mcq(c(answer = "a property of the data, which you can look at", "a claim about the world, argued rather than tested", "untestable in principle"))`.
+
+SUTVA is `r mcq(c("a property of the data", answer = "a claim about the world, usually argued rather than tested", "untestable in principle"))`.
+
+Conditional independence is `r mcq(c("a property of the data", "a claim about the world you can probe with a balance table", answer = "untestable in principle - no diagnostic and no sample size speaks to it"))`.
+
+A training programme large enough to move local wages violates
+`r mcq(c("overlap", answer = "SUTVA", "conditional independence"))`.
+
+And the sentence everything rests on. Write it in five words:
+whatever made people take the treatment was
+`r fitb("measured", ignore_case = TRUE)`.
+::::
+
 
 ### A Wage Premium We Built Ourselves {#mat-data}
 
@@ -114,6 +135,32 @@ Read the function once, then set it aside. Five features of it are the reason it
 
 **A hidden confounder, switched off.** `drive` is generated but never returned. With `hidden = 0` its coefficient is zero and it does nothing, so conditional independence genuinely holds given the eight measured covariates. Setting `hidden = 1` turns it into an unmeasured common cause of enrolment and wages. We will do that once, at the end.
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Three variables were built into the generator as traps. Name what each one is.
+
+`commute` predicts neither enrolment nor wages. It is
+`r mcq(c("a confounder", "an instrument", "a mediator", answer = "a pure decoy"))`.
+
+`siblings` lowers the chance of university and has no effect on wages at all. It
+is `r mcq(c("a confounder", answer = "an instrument", "a mediator", "a decoy"))`.
+
+`training` happens after the degree and partly because of it. It is
+`r mcq(c("a confounder", "an instrument", answer = "a mediator", "a decoy"))`.
+
+Which of the three does its damage in the *outcome* model rather than in the
+propensity score?
+`r mcq(c("commute", "siblings", answer = "training"))`
+
+And the one you cannot see. `drive` is
+`r mcq(c("a decoy", "a mediator", answer = "an unmeasured common cause of enrolment and wages"))`,
+and the entire section turns on the fact that you cannot tell the `hidden = 0`
+world from the `hidden = 1` world by looking at any output.
+::::
+
+
 ```{r mat-naive, echo=TRUE}
 wages %>%
   group_by(college) %>%
@@ -159,6 +206,30 @@ summary(ps_model)$coefficients %>% round(3)
 The estimated coefficients are close to the ones written into `simulate_wages()`, which is reassuring and beside the point. This is the hardest habit to acquire here, so it is worth saying plainly: the propensity-score model is not a model of anything. Nobody will interpret its coefficients, nobody will report its pseudo-$R^2$, and a variable does not earn its place in it by being significant. It earns its place by being a plausible driver of selection that was measured *before* the treatment. A logit here is a machine for producing one number per person, and it is judged only by whether that number balances the covariates.
 
 Two variables in `wages` are there to make that concrete, and both mistakes are common in practice.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Rosenbaum and Rubin's result, in your own words.
+
+Conditional on the propensity score, the covariates $X$ are distributed
+`r mcq(c("more favourably in the treated group", answer = "identically in the two groups", "with smaller variance"))`.
+
+So an eight-dimensional matching problem collapses to a
+`r fitb(1, num = TRUE)`-dimensional one.
+
+What is the price of that collapse?
+`r mcq(c("the covariates are no longer balanced", answer = "the score has to be estimated", "the estimand changes"))`
+
+Now the habit that is hardest to acquire. A variable earns its place in the
+propensity-score model by
+`r mcq(c("being statistically significant", "raising the pseudo-R-squared", answer = "being a plausible driver of selection that was measured before the treatment"))`.
+
+True or false: you should report the coefficients of the propensity-score model.
+`r torf(FALSE)`
+::::
+
 
 ```{r mat-traps, echo=TRUE}
 set.seed(12345)
@@ -268,6 +339,28 @@ The standard remedy is a **caliper**: refuse any match worse than some distance,
 A caliper drops treated units that find no acceptable partner — and the moment it does, the estimate stops being the ATT. It becomes the average effect for the treated units that happened to have company, usually called the **ATO**, the average treatment effect in the overlap. That may be the more honest number, since it refuses to extrapolate. It is not the number you set out to estimate, and the change of estimand happens silently: `matchit()` reports it as a count of unmatched units and nothing else complains.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Above a score of 0.5 there are 386 graduates and 232 non-graduates.
+
+That is about `r fitb(1.7, tol = 0.2)` treated cases chasing every available
+partner, which is where the reuse comes from.
+
+Of 2,898 non-graduates, `r fitb(670, num = TRUE, tol = 5)` were ever chosen, and
+one stood in for `r fitb(15, num = TRUE)` graduates.
+
+A caliper of 0.2 standard deviations of the *logit* of the score changes nothing
+here. Why?
+`r mcq(c("the caliper is too wide to matter in any data set", answer = "every match is already far closer than that", "matchit ignores calipers when replace = TRUE"))`
+
+And the silent change. When a caliper does bite, the estimand quietly becomes the
+`r fitb("ATO", ignore_case = TRUE)`, and the only thing in the output that says so
+is a count of unmatched units.
+::::
+
+
 ### Balance Is the Diagnostic {#mat-balance}
 
 Since the propensity-score model is not judged by its coefficients, it has to be judged by something. That something is balance: after matching, do the two groups agree on the covariates?
@@ -324,8 +417,32 @@ Now the orange series in the figure. It comes from a propensity score built on a
 Balance is a necessary condition, not a sufficient one, and it is checkable only on the variables you have. A perfect balance table proves that you matched on what you matched on. This is the same sentence as *conditional independence is untestable*, written in a form you can see.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The orange series in the figure is the lesson. It comes from a score built on age
+and sex alone.
+
+On age and sex its standardised differences are
+`r mcq(c("about 0.09", answer = "exactly zero - prettier than anything the full model produced", "worse than before matching"))`.
+
+On the father's education it is $-0.65$, against $-0.52$ before matching. So
+matching on the wrong variables
+`r mcq(c("leaves unused covariates untouched", answer = "can make an unused covariate worse while perfecting the ones it was handed", "always improves every covariate a little"))`.
+
+Its estimate is €7.77 — close enough to the full model's €7.94 that nobody would
+notice — and it arrives with a diagnostic table that looks
+`r mcq(c("worse", answer = "better", "identical"))` than the real one.
+
+Now the fourth column. eCDF statistics compare whole distributions rather than
+means. Why bother, when the means agree?
+`r mcq(c("because eCDF statistics are more powerful", answer = "because two groups can agree on a mean and disagree everywhere else - a bimodal covariate is the standard example", "because means are biased"))`
+::::
+
+
 ::: {.analysis-note}
-The rules of thumb are worth quoting with their real provenance, because they get passed around detached from it. The familiar pair — absolute standardised difference below 0.25, variance ratios between 0.5 and 2 — is Elizabeth Stuart's 2010 review.[^mat-stuart] Donald Rubin's own 2001 recommendations were stricter: propensity-score means less than half a standard deviation apart, and variance ratios *close to one*, with 0.5 and 2 described as "far too extreme".[^mat-rubin] The 0.1 line used in most software, including the figure above, has no derivation at all. It is a convention, and a defensible one.
+The rules of thumb are worth quoting with their real provenance, because they get passed around detached from it. The familiar pair — absolute standardised difference below 0.25, variance ratios between 0.5 and 2 — is Elizabeth Stuart's 2010 review, which attributes it to Rubin.[^mat-stuart] Rubin's own 2001 wording is not quite that rule, and it goes in both directions at once. On the means he is *looser*: they should be "less than half a standard deviation apart", which is twice Stuart's 0.25. On the variances he is much stricter, asking for a ratio close to one and calling 1/2 or 2 "far too extreme".[^mat-rubin] The 0.1 line used in most software, including the figure above, is tighter than either, and it is a convention rather than a derivation — a defensible one.
 :::
 
 ### Whose Effect Is It? {#mat-estimands}
@@ -371,6 +488,28 @@ c(men = catt(0), women = catt(1)) %>% round(2)
 ::: {.analysis-warning}
 A conditional effect estimated this way is a subgroup analysis, with all the usual hazards. The split has to be decided before the data are opened, on a pre-treatment variable, and it has to be one split rather than the best of twenty. Sex qualifies. "Respondents in the Eastern states aged over 45 whose fathers were skilled workers" does not.
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Three numbers from the same 4,000 rows: €8.94 raw, €7.94 for the treated, €5.91
+for the untreated.
+
+The ATT exceeds the ATC by `r fitb(2.03, tol = 0.12)` euros.
+
+What does that ordering say about the world?
+`r mcq(c("the untreated were badly matched", answer = "the people who went to university appear to gain more from it than the others would have", "the estimator is biased"))`
+
+Which of the three answers the question "should we send more people to
+university?" `r mcq(c("the raw gap", "the ATT", answer = "neither - that question is about the ATE or the ATC, not about the people who already went"))`
+
+By sex the estimates are €9.82 and €5.43. Doing it this way rather than with an
+interaction term buys you
+`r mcq(c("a smaller standard error", answer = "every covariate is allowed to matter differently by sex", "a different estimand"))`
+and costs you `r mcq(c("nothing", answer = "sample", "interpretability"))`.
+::::
+
 
 ### Weighting Instead of Discarding {#mat-weighting}
 
@@ -422,6 +561,28 @@ Under ATT weights, 2,898 non-graduates carry the information of about 1,098. Tha
 Watch the extremes. The largest ATE weight in this data set is 45 — one person counting for forty-five. As a score approaches zero or one the weight explodes, and a single observation can move the estimate. The usual responses are to **trim** at the 1st and 99th percentiles, to **stabilise** the weights by multiplying by the marginal treatment probability, or to switch to **overlap weights**, $e(X)(1-e(X))$, which are bounded by construction and estimate the effect in the region where the groups actually meet. Whichever you choose, report the weight distribution. An estimate resting on one person with a weight of forty-five is a fact about that person.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Under ATT weights, 2,898 non-graduates carry the information of about
+`r fitb(1098, num = TRUE, tol = 30)` — more than the
+`r fitb(670, num = TRUE, tol = 5)` that matching used.
+
+So weighting `r mcq(c("creates information out of nothing", answer = "spreads the same scarcity more smoothly", "discards more data than matching"))`.
+
+Which weight formula belongs to which estimand? A treated case keeps a weight of
+one and the untreated are reweighted into the treated distribution — that is the
+`r mcq(c("ATE", answer = "ATT", "ATO"))` weight.
+
+Overlap weights $e(X)\,(1-e(X))$ are attractive because
+`r mcq(c("they are unbiased for the ATE", answer = "they are bounded by construction, so no single observation can dominate", "they require no propensity score"))`.
+
+And the reporting rule. An estimate resting on one person with a weight of
+forty-five is `r mcq(c("still unbiased", answer = "a fact about that person", "an argument for trimming at the median"))`.
+::::
+
+
 ### Two Chances to Be Right {#mat-doubly-robust}
 
 So far the propensity-score model has done all the work. There is a second model available — one for the outcome — and using both is better than using either.
@@ -472,7 +633,31 @@ Nearest-neighbour matching is the standard counterexample, and it is in every se
 What to do instead: the analytic variance estimator of Abadie and Imbens, implemented in Stata's `teffects` and in R's `Matching` package; subsampling; or the $m$-out-of-$n$ bootstrap. Or, for propensity-score weighting rather than matching, ordinary robust standard errors, which is one more argument for weighting.
 ::::
 
-The cluster-robust errors used throughout this section — clustering on the pair and on the unit — are the pragmatic choice for matching with replacement, and they are conservative in the right direction.[^mat-greifer] They are not exact. Nobody's are.
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Double robustness first. A doubly robust estimator is consistent if
+`r mcq(c("both models are correct", answer = "either model is correct", "neither model is correct"))`.
+
+Kang and Schafer showed the failure mode. When *both* models are slightly wrong —
+the realistic case — several doubly robust estimators did
+`r mcq(c("better than plain regression", answer = "worse than plain regression, especially with propensity scores near zero", "exactly as well as plain regression"))`.
+
+So what does double robustness actually buy?
+`r mcq(c("insurance against being wrong in general", answer = "insurance against one specific mistake", "nothing at all"))`
+
+Now the bootstrap. Why does it fail for nearest-neighbour matching?
+`r mcq(c("because the sample is too small", answer = "because the estimator depends on the data through a discrete operation - which unit is nearest - so a small perturbation of the sample produces a jump in the statistic", "because the weights are non-integer"))`
+
+Does it also fail for propensity-score *weighting*? `r torf(FALSE)`
+
+And the direction of the error. Abadie and Imbens showed the bootstrap variance
+can be `r mcq(c("too small", "too large", answer = "either, depending on the ratio of treated to control units"))`.
+::::
+
+
+The cluster-robust errors used throughout this section — clustering on the pair and on the unit — are the pragmatic choice for matching with replacement: they are the alternative the `MatchIt` documentation presents as at least accounting for the reuse of controls.[^mat-greifer] How they behave in general is not settled, and the evidence behind them was collected for survival outcomes. They are not exact. Nobody's are.
 
 ### Nine Answers to the Same Question {#mat-comparison}
 
@@ -526,6 +711,25 @@ estimates %>%
 Two things to read off it. The five estimators that target the treated span barely ten cents, and even OLS is within a euro — while the raw comparison sits a euro above every one of them and the ATC two euros below the ATT. Under selection on observables, the choice of algorithm is a second-order decision, and the choice of estimand is not.
 
 That is reassuring, and it is also the trap. Agreement among methods that share an assumption is not evidence for the assumption. All nine would agree just as amicably if it were false — which is exactly what the next section demonstrates.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Read the table twice.
+
+The five estimators that target the treated span about
+`r mcq(c("two euros", "one euro", answer = "ten cents"))`,
+while the raw comparison sits a euro above all of them and the ATC two euros
+below the ATT.
+
+What follows for practice?
+`r mcq(c("the choice of algorithm matters more than the choice of estimand", answer = "the choice of algorithm is a second-order decision and the choice of estimand is not", "both choices are second-order"))`
+
+And the trap in one sentence. Nine methods agreeing is evidence about
+`r mcq(c("the assumption they share", answer = "the arithmetic they share, and nothing about the assumption they share"))`.
+::::
+
 
 ### Opening the Envelope {#mat-truth}
 
@@ -620,6 +824,88 @@ c(without_siblings = coef(lm(wage ~ college, data = get_matches(m_shadow),
 
 Adding a variable that predicts enrolment and nothing else pushes the estimate from €10.10 to €10.56 — further from the truth, not closer. This is **bias amplification**: conditioning on a strong predictor of treatment squeezes out the variation in enrolment that was unrelated to `drive`, so what remains is a comparison driven more purely by the confounder.[^mat-instrument] The variable looked like a good control. It made things worse, and it improved the balance table while doing so.
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn: turn the confounder up slowly</h2>
+:::
+The section has shown two worlds, `hidden = 0` and `hidden = 1`. There is nothing
+special about those two values, and the interesting thing is what happens in
+between. This exercise takes about twenty minutes and produces the single most
+useful table in the section.
+
+**Step 1 — sweep.** Run the whole matching exercise for
+`hidden = 0, 0.25, 0.5, 0.75, 1, 1.5`. For each, record the estimate, the true
+ATT, the error, and the worst absolute standardised mean difference after
+matching.
+
+**Step 2 — read the two columns that matter.** The error runs
+$-0.18$, $+0.25$, $+0.47$, $+0.93$, $+2.20$, $+4.85$. The worst standardised mean
+difference runs 0.093, 0.091, 0.078, 0.090, 0.092, 0.105.
+
+Over that whole sweep, the balance diagnostic
+`r mcq(c("deteriorates steadily", answer = "barely moves - it stays around 0.09 while the error grows by a factor of twenty-five", "improves"))`.
+
+At `hidden = 1.5` the estimate is out by nearly `r fitb(5, tol = 0.6)` euros, and
+the worst standardised difference is still
+`r mcq(c("above the conventional 0.25 threshold", answer = "inside the conventional 0.1 line", "undefined"))`.
+
+**Step 3 — the diagnostic that does move.** Compute the E-value at each step. In
+the baseline world it is 4.49. Does it rise or fall as `hidden` grows?
+
+`r mcq(c(answer = "it rises, because the estimate itself grows - which is exactly why an E-value is not a test", "it falls, correctly warning you", "it stays constant"))`
+
+**Step 4 — say what an E-value is for.** One sentence. It is not a test; nothing
+here can be. What is it?
+
+**Step 5 — the honest report.** You are writing up a real study with these data
+and no answer key. List the five things you would report, in order.
+
+`r hide("The code, and the point")`
+
+```{r mat-sweep-exercise, eval=FALSE, echo=TRUE}
+sweep_one <- function(h) {
+  d <- simulate_wages(hidden = h)
+  m <- matchit(update(X, college ~ .), data = d, method = "nearest",
+               replace = TRUE, estimand = "ATT")
+  g <- get_matches(m)
+  est <- coef(lm(wage ~ college, data = g, weights = weights))[[2]]
+  tibble(hidden    = h,
+         estimate  = est,
+         truth     = mean((d$y1 - d$y0)[d$college == 1]),
+         error     = est - mean((d$y1 - d$y0)[d$college == 1]),
+         worst_smd = max(abs(summary(m)$sum.matched[-1, "Std. Mean Diff."])))
+}
+
+set.seed(12345)
+purrr::map_dfr(c(0, 0.25, 0.5, 0.75, 1, 1.5), sweep_one)
+```
+
+| `hidden` | estimate | truth | error | worst SMD |
+|---:|---:|---:|---:|---:|
+| 0.00 | 7.94 | 8.12 | −0.18 | 0.093 |
+| 0.25 | 8.41 | 8.16 | +0.25 | 0.091 |
+| 0.50 | 8.53 | 8.07 | +0.47 | 0.078 |
+| 0.75 | 8.93 | 8.00 | +0.93 | 0.090 |
+| 1.00 | 10.10 | 7.91 | +2.20 | 0.092 |
+| 1.50 | 12.55 | 7.71 | +4.85 | 0.105 |
+
+**Step 3 and 4.** The E-value rises with `hidden`, because it is computed from the
+*estimate*, and the estimate is growing. That is not a defect: an E-value is not a
+warning light. It is a translation. It converts "there might be an unmeasured
+confounder" into "a confounder would have to be associated with both enrolment
+and wages at a risk ratio of at least this much" — a claim a reader can weigh
+against what they know about the world. It cannot tell you whether such a
+confounder exists, because no data can.
+
+**Step 5.** Report the overlap, report the balance, report several algorithms, say
+which estimand you chose, and say how strong the unmeasured confounder would have
+to be. Then say plainly that the last of those is a judgement rather than a test —
+and go looking for a design that does not need it. Section
+\@ref(difference-in-differences) is the first of those.
+
+`r unhide()`
+::::
+
 :::: {.dedicated}
 ::: {.titeldedicated}
 <h2>Truly Dedicated: how strong would the confounder have to be?</h2>
@@ -684,7 +970,7 @@ True or false: bootstrapping is a safe way to get standard errors for nearest-ne
 ::: {.titelreading}
 <h2>Reading</h2>
 :::
-Two practical papers, both free. Marco Caliendo and Sabine Kopeinig's implementation guide walks through every decision in this section in the order you meet it, with the economics literature attached.[^mat-caliendo] Elizabeth Stuart's review does the same from the statistics side and is the clearest source on balance diagnostics.[^mat-stuart] For the code, the `MatchIt` vignettes by Noah Greifer are the current reference; chapter 5 of Cunningham's *Mixtape* covers the same ground with the LaLonde data of Section \@ref(experiments) [@cunningham2021causal].
+Two practical papers. Marco Caliendo and Sabine Kopeinig's implementation guide walks through every decision in this section in the order you meet it, with the economics literature attached; the journal version is paywalled but it circulates freely as IZA Discussion Paper 1588.[^mat-caliendo] Elizabeth Stuart's review is open access and does the same from the statistics side, and it is the clearest source on balance diagnostics.[^mat-stuart] For the code, the `MatchIt` vignettes by Noah Greifer are the current reference; *Matching and Subclassification*, chapter 5 of the printed *Mixtape*, covers the same ground with the LaLonde data of Section \@ref(experiments) [@cunningham2021causal].
 ::::
 
 ::: {.analysis-takeaway}
@@ -697,19 +983,19 @@ Do it anyway when nothing better is available — but report the overlap, report
 
 - Caliendo, M., & Kopeinig, S. (2008). Some Practical Guidance for the Implementation of Propensity Score Matching. *Journal of Economic Surveys* 22(1), 31-72. The applied economist's checklist.
 - Stuart, E. A. (2010). Matching Methods for Causal Inference: A Review and a Look Forward. *Statistical Science* 25(1), 1-21. The statistician's version, and the source of the balance rules of thumb.
-- Imbens, G. W., & Rubin, D. B. (2015). *Causal Inference for Statistics, Social, and Biomedical Sciences*. Cambridge University Press. Part III is matching at full length.
+- Imbens, G. W., & Rubin, D. B. (2015). *Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction*. Cambridge University Press. Parts III and IV are matching at full length — design in III, estimation in IV.
 - Guo, S., & Fraser, M. W. (2014). *Propensity Score Analysis: Statistical Methods and Applications*, 2nd ed. Sage. Long on worked examples.
 - Greifer, N. `MatchIt`, `WeightIt` and `cobalt` package documentation. The three R packages that cover this section and the balance plots it draws by hand.
 
-[^mat-rosenbaum-rubin]: Rosenbaum, P. R., & Rubin, D. B. (1983). The Central Role of the Propensity Score in Observational Studies for Causal Effects. *Biometrika* 70(1), 41-55, <https://doi.org/10.1093/biomet/70.1.41>. Theorems 1 to 4 establish that the propensity score is a balancing score and the coarsest one.
+[^mat-rosenbaum-rubin]: Rosenbaum, P. R., & Rubin, D. B. (1983). The Central Role of the Propensity Score in Observational Studies for Causal Effects. *Biometrika* 70(1), 41-55, <https://doi.org/10.1093/biomet/70.1.41>. Theorem 1 establishes that the propensity score is a balancing score, Theorem 2 that it is the coarsest one, and Theorem 3 that strong ignorability given $X$ transfers to any balancing score.
 
 [^mat-instrument]: Wooldridge, J. M. (2016). Should Instrumental Variables Be Used as Matching Variables? *Research in Economics* 70(2), 232-237, <https://doi.org/10.1016/j.rie.2016.01.001>. The short answer is no: adding such a variable increases the inconsistency of the estimate, and Wooldridge shows that a propensity score built on instruments maximises it among regression-type estimators. See also Bhattacharya, J., & Vogt, W. B. (2007), *Do Instrumental Variables Belong in Propensity Scores?*, NBER Technical Working Paper 343, and Brookhart, M. A., et al. (2006), *Variable Selection for Propensity Score Models*, *American Journal of Epidemiology* 163(12), 1149-1156, <https://doi.org/10.1093/aje/kwj149>, for the variance cost.
 
-[^mat-austin]: Austin, P. C. (2011). Optimal Caliper Widths for Propensity-Score Matching When Estimating Differences in Means and Differences in Proportions in Observational Studies. *Pharmaceutical Statistics* 10(2), 150-161, <https://doi.org/10.1002/pst.433>. The recommendation is a caliper of 0.2 standard deviations of the logit of the propensity score, which removed at least 98% of the bias in his simulations.
+[^mat-austin]: Austin, P. C. (2011). Optimal Caliper Widths for Propensity-Score Matching When Estimating Differences in Means and Differences in Proportions in Observational Studies. *Pharmaceutical Statistics* 10(2), 150-161, <https://doi.org/10.1002/pst.433>. The recommendation is a caliper of 0.2 standard deviations of the logit of the propensity score, which eliminated at least 98% of the bias in his simulations when covariates were continuous; with only binary covariates the caliper width mattered much less.
 
-[^mat-stuart]: Stuart, E. A. (2010). Matching Methods for Causal Inference: A Review and a Look Forward. *Statistical Science* 25(1), 1-21, <https://doi.org/10.1214/09-STS313>. The 0.25 and 0.5-to-2 thresholds are stated on page 11, citing Rubin (2001).
+[^mat-stuart]: Stuart, E. A. (2010). Matching Methods for Causal Inference: A Review and a Look Forward. *Statistical Science* 25(1), 1-21, <https://doi.org/10.1214/09-STS313>. The 0.25 and 0.5-to-2 thresholds are in Section 4.1, "Numerical Diagnostics", which begins on page 11; the sentence itself is on page 12, and it cites Rubin (2001).
 
-[^mat-rubin]: Rubin, D. B. (2001). Using Propensity Scores to Help Design Observational Studies: Application to the Tobacco Litigation. *Health Services and Outcomes Research Methodology* 2, 169-188, <https://doi.org/10.1023/A:1020363010465>.
+[^mat-rubin]: Rubin, D. B. (2001). Using Propensity Scores to Help Design Observational Studies: Application to the Tobacco Litigation. *Health Services and Outcomes Research Methodology* 2(3-4), 169-188, <https://doi.org/10.1023/A:1020363010465>. The two criteria are on pages 174-175: "the means must be less than half a standard deviation apart" and "the ratio of the variances of the propensity score in the two groups must be close to one (e.g., 1/2 or 2 are far too extreme)".
 
 [^mat-aipw]: Robins, J. M., Rotnitzky, A., & Zhao, L. P. (1994). Estimation of Regression Coefficients When Some Regressors Are Not Always Observed. *Journal of the American Statistical Association* 89(427), 846-866, <https://doi.org/10.1080/01621459.1994.10476818>. The augmented estimator originates here; the property was first noted explicitly in the rejoinder of Scharfstein, D. O., Rotnitzky, A., & Robins, J. M. (1999), *Journal of the American Statistical Association* 94(448), 1096-1120 with rejoinder at 1135-1146, <https://doi.org/10.1080/01621459.1999.10473862>, and the label *doubly robust* was popularised by Bang, H., & Robins, J. M. (2005), *Doubly Robust Estimation in Missing Data and Causal Inference Models*, *Biometrics* 61(4), 962-973, <https://doi.org/10.1111/j.1541-0420.2005.00377.x>.
 
@@ -723,7 +1009,7 @@ Do it anyway when nothing better is available — but report the overlap, report
 
 [^mat-ai2008]: Abadie, A., & Imbens, G. W. (2008). On the Failure of the Bootstrap for Matching Estimators. *Econometrica* 76(6), 1537-1557, <https://doi.org/10.3982/ECTA6474>. Worked out for one match per treated unit; the bootstrap variance can be too large or too small depending on the ratio of treated to control units.
 
-[^mat-greifer]: Greifer, N. *Estimating Effects After Matching*, `MatchIt` package vignette. Its default recommendation is ordinary robust (HC3) standard errors on the output of `match.data()`, following Hill, J., & Reiter, J. P. (2006), *Interval Estimation for Treatment Effects Using Propensity Score Matching*, *Statistics in Medicine* 25(13), 2230-2256, <https://doi.org/10.1002/sim.2277>. The two-way clustering used here - on `get_matches()` output, clustering on pair and unit - is presented there as an alternative that adjusts for the reuse of controls, with the caveat that the supporting evidence, Austin, P. C., & Cafri, G. (2020), *Statistics in Medicine* 39(11), 1623-1640, is for survival outcomes.
+[^mat-greifer]: Greifer, N. *Estimating Effects After Matching*, `MatchIt` package vignette. Its general recommendation is cluster-robust errors on the pair; for matching *with replacement*, which is what this section does, it recommends ordinary robust (HC3) standard errors on the output of `match.data()`, following Hill, J., & Reiter, J. P. (2006), *Interval Estimation for Treatment Effects Using Propensity Score Matching*, *Statistics in Medicine* 25(13), 2230-2256, <https://doi.org/10.1002/sim.2277>. The two-way clustering used here - on `get_matches()` output, clustering on pair and unit - is presented there as an alternative that adjusts for the reuse of controls, with the caveat that the supporting evidence, Austin, P. C., & Cafri, G. (2020), *Variance Estimation When Using Propensity-Score Matching with Replacement with Survival or Time-to-Event Outcomes*, *Statistics in Medicine* 39(11), 1623-1640, <https://doi.org/10.1002/sim.8502>, is for survival outcomes.
 
 [^mat-dehejia]: Dehejia, R. H., & Wahba, S. (1999). Causal Effects in Nonexperimental Studies: Reevaluating the Evaluation of Training Programs. *Journal of the American Statistical Association* 94(448), 1053-1062, <https://doi.org/10.1080/01621459.1999.10473858>; and Dehejia, R. H., & Wahba, S. (2002). Propensity Score-Matching Methods for Nonexperimental Causal Studies. *Review of Economics and Statistics* 84(1), 151-161, <https://doi.org/10.1162/003465302317331982>.
 
@@ -737,8 +1023,8 @@ Do it anyway when nothing better is available — but report the overlap, report
 
 [^mat-evalue]: VanderWeele, T. J., & Ding, P. (2017). Sensitivity Analysis in Observational Research: Introducing the E-Value. *Annals of Internal Medicine* 167(4), 268-274, <https://doi.org/10.7326/M16-2607>. The formula assumes a risk ratio above one; for a protective effect one takes the reciprocal first. The conversion from a standardised mean difference rests on the logistic effect-size result that $\text{OR} \approx \exp(1.81\,d)$ - Chinn, S. (2000), *Statistics in Medicine* 19(22), 3127-3131, where $1.81 = \pi/\sqrt{3}$ - combined with the square-root approximation of a risk ratio from an odds ratio for a common outcome, VanderWeele, T. J. (2017), *Epidemiology* 28(6), e58. Halving 1.81 is where the 0.91 comes from. It is implemented in the `EValue` package.
 
-[^mat-rosenbaum]: Rosenbaum, P. R. (2002). *Observational Studies*, 2nd edition, Springer, chapter 4. The method itself is older: Rosenbaum, P. R., & Rubin, D. B. (1983), *Assessing Sensitivity to an Unobserved Binary Covariate in an Observational Study with Binary Outcome*, *Journal of the Royal Statistical Society B* 45(2), 212-218.
+[^mat-rosenbaum]: Rosenbaum, P. R. (2002). *Observational Studies*, 2nd edition, Springer, chapter 4. The idea is older: Rosenbaum, P. R., & Rubin, D. B. (1983), *Assessing Sensitivity to an Unobserved Binary Covariate in an Observational Study with Binary Outcome*, *Journal of the Royal Statistical Society B* 45(2), 212-218 — though that is a fully parametric analysis for one binary covariate and a binary outcome. The distribution-free $\Gamma$ bounds for matched pairs described here are Rosenbaum's own later development, in *Biometrika* 74(1), 1987, 13-26.
 
-[^mat-caliendo]: Caliendo, M., & Kopeinig, S. (2008). Some Practical Guidance for the Implementation of Propensity Score Matching. *Journal of Economic Surveys* 22(1), 31-72, <https://doi.org/10.1111/j.1467-6419.2007.00527.x>.
+[^mat-caliendo]: Caliendo, M., & Kopeinig, S. (2008). Some Practical Guidance for the Implementation of Propensity Score Matching. *Journal of Economic Surveys* 22(1), 31-72, <https://doi.org/10.1111/j.1467-6419.2007.00527.x>. Not open access; the working-paper version is IZA Discussion Paper 1588 (2005), <https://docs.iza.org/dp1588.pdf>.
 
-[^mat-mhe]: Angrist, J. D., & Pischke, J.-S. (2009). *Mostly Harmless Econometrics*. Princeton University Press, section 3.3.1. The regression estimand is a weighted average of covariate-cell contrasts with weights proportional to the conditional variance of treatment; the matching estimand weights by the covariate distribution among the treated. Same data, same covariates, different weighting - and only one of them prints the weights.
+[^mat-mhe]: Angrist, J. D., & Pischke, J.-S. (2009). *Mostly Harmless Econometrics: An Empiricist's Companion*. Princeton University Press, section 3.3.1, "Regression Meets Matching". The regression estimand is a weighted average of covariate-cell contrasts with weights proportional to the conditional variance of treatment; the matching estimand weights by the covariate distribution among the treated. Same data, same covariates, different weighting - and only one of them prints the weights.

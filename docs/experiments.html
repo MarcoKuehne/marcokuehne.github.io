@@ -84,6 +84,10 @@
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
 <script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize-0.12.0/selectize.min.js"></script>
 <script type="application/json" class="js-hypothesis-config">
 {
 "showHighlights": false
@@ -613,7 +617,7 @@ div.csl-indent {
 <li class="chapter" data-level="9.4.17" data-path="discontinuities.html"><a href="discontinuities.html#rdd-when-the-score-is-published-in-nine-steps"><i class="fa fa-check"></i><b>9.4.17</b> When the Score Is Published in Nine Steps</a></li>
 <li class="chapter" data-level="9.4.18" data-path="discontinuities.html"><a href="discontinuities.html#rdd-the-design-in-the-wild"><i class="fa fa-check"></i><b>9.4.18</b> The Design in the Wild</a></li>
 <li class="chapter" data-level="9.4.19" data-path="discontinuities.html"><a href="discontinuities.html#rdd-what-regression-discontinuity-cannot-do"><i class="fa fa-check"></i><b>9.4.19</b> What Regression Discontinuity Cannot Do</a></li>
-<li class="chapter" data-level="9.4.20" data-path="discontinuities.html"><a href="discontinuities.html#rdd-readings"><i class="fa fa-check"></i><b>9.4.20</b> Readings</a></li>
+<li class="chapter" data-level="" data-path="discontinuities.html"><a href="discontinuities.html#rdd-readings"><i class="fa fa-check"></i>Readings</a></li>
 </ul></li>
 <li class="chapter" data-level="9.5" data-path="instruments.html"><a href="instruments.html"><i class="fa fa-check"></i><b>9.5</b> Instruments</a>
 <ul>
@@ -711,6 +715,23 @@ Definition
 <p>Every method in this chapter answers one question, and it is worth memorising in this form: <strong>why should I believe that the untreated group shows me what would have happened to the treated group?</strong></p>
 <p>If you can state the answer in two sentences that a sceptical colleague would accept, you have a research design. If you cannot, you have a table of correlations with causal words attached.</p>
 </div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Holland's fundamental problem, in your own words first.</p>
+<p>For a person who enrolled, which of the two potential outcomes is observed?
+<select class='webex-select'><option value='blank'></option><option value='answer'><span class="math inline">\(Y(1)\)</span>, the outcome under treatment</option><option value=''><span class="math inline">\(Y(0)\)</span>, the outcome without it</option><option value=''>both</option><option value=''>neither</option></select></p>
+<p>Seen as a missing-data problem, what share of the potential-outcome table is
+missing, always? <input class='webex-solveme nospaces' size='2' data-answer='["50"]'/> per cent.</p>
+<p>Section <a href="missing-data.html#missing-data">4.1</a> distinguished missing values that could in principle
+have been recorded from ones that could not. Which kind is a counterfactual?
+<select class='webex-select'><option value='blank'></option><option value=''>MCAR</option><option value=''>MAR</option><option value='answer'>neither - it was never a value that any fieldwork could have collected</option></select></p>
+<p>And the sentence to memorise. Every method in this chapter answers one question.
+Which? <select class='webex-select'><option value='blank'></option><option value=''>which estimator is most efficient?</option><option value='answer'>why should I believe the untreated group shows what would have happened to the treated group?</option><option value=''>how large is the sample?</option></select></p>
+</div>
 </div>
 <div id="exp-gold-standard" class="section level3 hasAnchor" number="9.1.2">
 <h3><span class="header-section-number">9.1.2</span> The Gold Standard, and Who Built It<a href="experiments.html#exp-gold-standard" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -725,18 +746,36 @@ Definition
 <p>It is called the gold standard because it is the only design that requires no argument about <em>why</em> the groups are comparable. That is a large claim, and it is narrower than it sounds: it holds for the people the trial was run on, in the place and period it was run. Whether the number means anything anywhere else is a separate question, and one no amount of randomising can answer.</p>
 </div>
 <p>The idea is younger than statistics and older than econometrics, and it did not begin in agriculture.</p>
-<p><strong>Psychology got there first.</strong> In 1885 Charles Sanders Peirce and Joseph Jastrow published a psychophysics memoir on whether people can perceive very small differences in pressure.<a href="#fn112" class="footnote-ref" id="fnref112"><sup>112</sup></a> To keep the subject from anticipating anything, they took a pack of 25 cards, half red and half black, shuffled it, and let the colour decide the <em>order</em> in which the two pressure changes were applied; a screen prevented the subject from seeing the operator's movements at all. Stephen Stigler calls this the first experiment carried out under a precise and mathematically sound randomisation scheme, half a century before Fisher.<a href="#fn113" class="footnote-ref" id="fnref113"><sup>113</sup></a> Read the fine print, though: Peirce and Jastrow randomised the <em>order of conditions within one person</em>, not the <em>assignment of people to groups</em>. Random group composition is a separate and later invention — the historian Trudy Dehue traces it to educational research in the 1920s — and the step between the two is bigger than it looks.<a href="#fn114" class="footnote-ref" id="fnref114"><sup>114</sup></a></p>
+<p><strong>Psychology got there first.</strong> In 1885 Charles Sanders Peirce and Joseph Jastrow published a psychophysics memoir on whether people can perceive very small differences in pressure.<a href="#fn112" class="footnote-ref" id="fnref112"><sup>112</sup></a> To keep the subject from anticipating anything, they took a pack of 25 cards — twelve red and thirteen black, reversed at the next sitting so that each colour was used 25 times across the 50 trials — shuffled it, and let the colour decide the <em>order</em> in which the two pressure changes were applied; a screen prevented the subject from seeing the operator's movements at all. Stephen Stigler judges it one of the earliest explicit endorsements of mathematical randomisation as a basis for inference — half a century before Fisher, and, in Stigler's own words, with the same <em>what</em> and <em>why</em>.<a href="#fn113" class="footnote-ref" id="fnref113"><sup>113</sup></a> Read the fine print, though: Peirce and Jastrow randomised the <em>order of conditions within one person</em>, not the <em>assignment of people to groups</em>. Random group composition is a separate and later invention — the historian Trudy Dehue traces it to educational research in the 1920s — and the step between the two is bigger than it looks.<a href="#fn114" class="footnote-ref" id="fnref114"><sup>114</sup></a></p>
 <p><strong>Fisher made it a principle.</strong> The requirement appears in <em>Statistical Methods for Research Workers</em> in 1925 and is argued at length in the 1926 field-experiments paper, where the instruction is to arrange the plots deliberately at random so that no distinction can creep in between plots treated alike and plots treated differently.<a href="#fn115" class="footnote-ref" id="fnref115"><sup>115</sup></a> <em>The Design of Experiments</em> (1935) is where it becomes a book.</p>
 <p><strong>Medicine made it a rule.</strong> In 1931 Amberson, McMahon and Pinner split 24 tuberculosis patients into two matched groups of twelve and tossed a single coin to decide which group got the drug — one flip, two clusters, which is randomisation in spirit rather than in force.<a href="#fn116" class="footnote-ref" id="fnref116"><sup>116</sup></a> The trial usually called the first modern one is the Medical Research Council's streptomycin study of 1948, designed with Austin Bradford Hill: allocation was individual, drawn from random-number series prepared per sex and per hospital, and — the decisive innovation — sealed in envelopes so that no investigator could see what came next.<a href="#fn117" class="footnote-ref" id="fnref117"><sup>117</sup></a> Concealment, not arithmetic, is what made it credible.</p>
-<p><strong>Social science followed slowly.</strong> The first large-scale randomised social experiment was the New Jersey Graduated Work Incentive Experiment, which between 1968 and 1972 offered 1,216 families a guaranteed income to find out whether it would stop them working.<a href="#fn118" class="footnote-ref" id="fnref118"><sup>118</sup></a> Development economics arrived last and loudest: the Poverty Action Lab was founded at MIT in 2003, and the field experiment in the next subsection is one of thousands that followed.<a href="#fn119" class="footnote-ref" id="fnref119"><sup>119</sup></a></p>
+<p><strong>Social science followed slowly.</strong> The first large-scale randomised social experiment was the New Jersey Graduated Work Incentive Experiment, which between 1968 and 1972 enrolled about 1,357 families and offered the treatment arms a guaranteed income, to find out whether it would stop them working.<a href="#fn118" class="footnote-ref" id="fnref118"><sup>118</sup></a> Development economics arrived last and loudest: the Poverty Action Lab was founded at MIT in 2003, and the field experiment in the next subsection is one of thousands that followed.<a href="#fn119" class="footnote-ref" id="fnref119"><sup>119</sup></a></p>
 <div class="amazing">
 <div class="titelamazing">
 <h2>
 The gold standard was coined by a sceptic
 </h2>
 </div>
-<p>The phrase itself is remarkably recent. Historians of medicine trace its first application to randomised trials to a 1982 article in the <em>New England Journal of Medicine</em> by Alvan Feinstein and Ralph Horwitz — who used it to complain.<a href="#fn120" class="footnote-ref" id="fnref120"><sup>120</sup></a> Their argument was that the trial is "an elusive ideal" invoked to dismiss observational evidence that is often all anyone has, and that the label had begun to do the work of an argument.</p>
+<p>The phrase itself is remarkably recent. Historians of medicine trace its first application to randomised trials to a 1982 article in the <em>New England Journal of Medicine</em> by Alvan Feinstein and Ralph Horwitz — who used it to complain.<a href="#fn120" class="footnote-ref" id="fnref120"><sup>120</sup></a> Their sentence was that epidemiological research matters precisely because it "offers a substitute for the <em>unattainable</em> scientific gold standard of a randomized experimental trial" — an elusive ideal, as the historians who dug the phrase out of the archive put it, invoked to dismiss observational evidence that is often all anyone has. The label had begun to do the work of an argument.</p>
 <p>Forty years later the phrase is repeated in every methods course as though it settled something. It settles exactly one thing — that the comparison is fair — and leaves open everything else: whether the right question was asked, whether the right people were in the room, and whether the answer travels.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Four allocation schemes. Only one is randomisation.</p>
+<p><select class='webex-select'><option value='blank'></option><option value=''>patients are alternated by day of admission</option><option value=''>the field worker decides who looks most in need</option><option value='answer'>a random-number series is drawn in advance and sealed in envelopes</option><option value=''>the first hundred volunteers are treated</option></select></p>
+<p>The MRC streptomycin trial of 1948 is usually called the first modern randomised
+trial. Its decisive innovation was
+<select class='webex-select'><option value='blank'></option><option value=''>the statistical analysis</option><option value='answer'>concealment - nobody could see what came next</option><option value=''>the sample size</option><option value=''>the placebo</option></select>.</p>
+<p>Amberson and co-authors tossed <strong>one</strong> coin to allocate <strong>two</strong> matched groups of
+twelve. How many independent randomisations is that?
+<input class='webex-solveme nospaces' size='1' data-answer='["1"]'/></p>
+<p>True or false: randomisation guarantees that the treated and untreated groups are
+balanced on every measured covariate in the sample you actually drew.
+<select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select></p>
 </div>
 </div>
 <div id="exp-designs" class="section level3 hasAnchor" number="9.1.3">
@@ -878,6 +917,7 @@ Figure 9.1: Share collecting their HIV result, by the value of the randomly assi
 <span id="cb229-7"><a href="experiments.html#cb229-7" tabindex="-1"></a><span class="co">#&gt; distance     -0.0291     0.0062 -4.6516   0.0000</span></span></code></pre></div>
 <p>The coefficient moves from 0.451 to 0.449. In an experiment, control variables buy precision, not identification — and here they barely buy even that. Hold that number next to what control variables do in Section <a href="experiments.html#exp-lalonde">9.1.7</a>, where the design is not there to carry them.</p>
 <div class="analysis-note">
+<p>One thing the balance table quietly understates. <code>distance</code> is not merely a background variable that happened to come out even: Thornton randomised the <em>location</em> of the results centres as well as the voucher, so distance is a second randomised arm. The design is richer than a single coin flip, and that is why the two columns agree on it to two decimal places.</p>
 <p>The file also stores a small number of unusable HIV results as <code>-1</code>, which is exactly the pattern Section <a href="missing-data.html#missing-data">4.1</a> warned about: a negative number that is not a quantity but a code, and that a mean will happily swallow. The <code>ifelse()</code> above is the two-second fix.</p>
 <p>A second caveat on precision: vouchers were drawn within 119 villages, and people in the same village talk to one another. Allowing for that widens the standard error from about 0.019 to 0.023 and leaves the estimate untouched. Clustered standard errors return in Section <a href="longitudinal-data.html#longitudinal-data">7.2</a>.</p>
 </div>
@@ -920,6 +960,26 @@ Truly Dedicated: whose average is it?
 <p>The <strong>average treatment effect on the treated</strong>, <span class="math inline">\(\text{ATT} = E[Y(1) - Y(0) \mid D = 1]\)</span>, is the effect for the people who actually took it. If people select into treatment because they expect to gain, the ATT is larger than the ATE, sometimes much larger — and it is the honest answer to "did this programme help its participants", not to "should we scale it up".</p>
 <p>The <strong>local average treatment effect</strong>, LATE, is the effect for whoever a particular instrument or threshold happens to move. It returns in Section <a href="instruments.html#instruments">9.5</a> and in the discussion of the credibility revolution at the end of this section.</p>
 <p>Which of the three a study delivers is decided by its design, before any estimation. Randomising the whole eligible population gives the ATE. A voluntary programme evaluated against a comparison group gives the ATT. A discontinuity gives an effect at the cut-off and nowhere else.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Three quantities, three questions, and policy conclusions turn on the difference.</p>
+<p>A minister asks "would this work if we rolled it out to everybody?" She wants the
+<select class='webex-select'><option value='blank'></option><option value='answer'>ATE</option><option value=''>ATT</option><option value=''>LATE</option></select>.</p>
+<p>An evaluator asks "did this programme help the people who took it?" That is the
+<select class='webex-select'><option value='blank'></option><option value=''>ATE</option><option value='answer'>ATT</option><option value=''>LATE</option></select>.</p>
+<p>If people select into treatment because they expect to gain, then the ATT is
+<select class='webex-select'><option value='blank'></option><option value=''>smaller than</option><option value='answer'>larger than</option><option value=''>equal to</option></select> the ATE.</p>
+<p>Now the decomposition. The naive difference equals the effect on the treated plus
+selection bias. Randomisation forces the second term to
+<input class='webex-solveme nospaces' size='1' data-answer='["0"]'/> by construction.</p>
+<p>And the harder one. If a programme deliberately recruits the people doing worst,
+the naive comparison
+<select class='webex-select'><option value='blank'></option><option value=''>overstates the effect</option><option value='answer'>understates it, and can reverse its sign</option><option value=''>is unaffected</option></select>.</p>
 </div>
 </div>
 <div id="exp-selection" class="section level3 hasAnchor" number="9.1.6">
@@ -1127,6 +1187,24 @@ Figure 9.2: Earnings in 1975, before the programme, as cumulative shares. The tw
 <div class="analysis-warning">
 <p>The wrong estimate is not the imprecise one. It has 16,177 observations, a standard error of $712 and a t-statistic of nearly <span class="math inline">\(-12\)</span>. It is wrong by more than $10,000 and it is wrong with great confidence. <strong>Precision is not credibility.</strong> A large sample buys the first and none of the second — and the modern era of administrative data, with millions of rows, has made this failure mode cheaper than ever to produce.</p>
 </div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>The experiment says <span class="math inline">\(+\$1{,}794\)</span>. The survey comparison says <span class="math inline">\(-\$8{,}498\)</span>.</p>
+<p>The gap between them is <input class='webex-solveme nospaces' data-tol='60' size='5' data-answer='["10292"]'/> dollars, and every
+cent of it is selection bias.</p>
+<p>Its sign was predictable in advance. Why?
+<select class='webex-select'><option value='blank'></option><option value=''>because the programme was expensive</option><option value='answer'>because the programme deliberately recruited the least employable people in America, and the survey sample is America</option><option value=''>because 1978 earnings are noisy</option></select></p>
+<p>Add the eight controls and the estimate becomes <span class="math inline">\(+\$699\)</span>: right sign, plausible
+magnitude, respectable standard error. Why is that the <em>worst</em> of the three
+outcomes?
+<select class='webex-select'><option value='blank'></option><option value=''>it is not - it is the best of the three</option><option value='answer'>because a referee would not blink, and nothing on the printout says it is less than half the right answer</option><option value=''>because the standard error is too large</option></select></p>
+<p>True or false: an estimate built on 16,177 observations deserves more trust than
+one built on 445. <select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select></p>
+</div>
 <p>Now look at the third column of the table. Add the eight control variables — age, schooling, ethnicity, marital status, degree, and two years of prior earnings — and the estimate becomes <strong>+$699</strong>. The sign is right. The magnitude is plausible. The standard error is respectable. A referee would not blink. And it is less than half the experimental answer, with nothing on the printout to say so.</p>
 <p>That was LaLonde's finding, and it landed hard: the econometric fixes of the day, applied honestly by a competent analyst, did not reliably recover an answer that was known. The literature has argued about it ever since. Rajeev Dehejia and Sadek Wahba showed in 1999 that propensity-score matching on a well-chosen subsample gets close to the experimental number, which is a large part of why matching became popular.<a href="#fn125" class="footnote-ref" id="fnref125"><sup>125</sup></a> Jeffrey Smith and Petra Todd then showed how much that success depends on which subsample, which covariates and which specification.<a href="#fn126" class="footnote-ref" id="fnref126"><sup>126</sup></a> The debate is the reason Section <a href="matching-and-balancing.html#matching-and-balancing">9.2</a> exists, and the reason it is the <em>first</em> of the four method sections rather than the most trusted.</p>
 </div>
@@ -1155,6 +1233,28 @@ Truly Dedicated: two things economists call identification
 <p>And both are best learned the way you may already have met them in R: <strong>write the data-generating process yourself, hide the formula, and see whether the method finds its way back to the numbers you chose.</strong> That is exactly what Section <a href="synthetic-data.html#synthetic-data">4.2</a> does when it builds a data set by hand — and it is the only situation you will ever be in where the right answer is known.</p>
 </div>
 <p>This has a practical consequence that is worth stating bluntly. An identification strategy is stated in words, before it is stated in code, and it is checked by argument rather than by diagnostics. <span class="math inline">\(R^2\)</span>, t-statistics, information criteria and robustness tables all take the comparison for granted; none of them can tell you that the comparison was never causal to begin with. When you read an empirical paper, the identification strategy is what the introduction spends its third and fourth paragraphs on, and it is the only part that cannot be fixed in revision.</p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Sort each of these into <em>identification</em> or <em>estimation</em>.</p>
+<p>"Given an infinite sample from this data-generating process, could the parameter
+be recovered exactly?" — that is
+<select class='webex-select'><option value='blank'></option><option value='answer'>identification</option><option value=''>estimation</option></select>.</p>
+<p>"How much sampling error does my 4,000-row sample leave around the number?" — that
+is <select class='webex-select'><option value='blank'></option><option value=''>identification</option><option value='answer'>estimation</option></select>.</p>
+<p>"Should I cluster the standard errors?" — that is
+<select class='webex-select'><option value='blank'></option><option value=''>identification</option><option value='answer'>estimation</option></select>.</p>
+<p>"Is the untreated group a fair stand-in for the treated group's counterfactual?" —
+that is <select class='webex-select'><option value='blank'></option><option value='answer'>identification</option><option value=''>estimation</option></select>.</p>
+<p>Which of the four can be fixed by collecting more data?
+<select class='webex-select'><option value='blank'></option><option value=''>all of them</option><option value='answer'>only the estimation ones</option><option value=''>none of them</option></select></p>
+<p>And the older meaning, from the box above. A cloud of price-and-quantity pairs
+traces out a demand curve only when
+<select class='webex-select'><option value='blank'></option><option value=''>demand is doing the moving</option><option value='answer'>supply is doing the moving</option><option value=''>both are moving</option></select>.</p>
+</div>
 </div>
 <div id="exp-limits" class="section level3 hasAnchor" number="9.1.9">
 <h3><span class="header-section-number">9.1.9</span> When the Design Runs Out<a href="experiments.html#exp-limits" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1165,6 +1265,27 @@ Truly Dedicated: two things economists call identification
 <p><strong>The question that was never causal.</strong> Some of the most useful numbers in the social sciences are accounting, not causation. How much of the gender wage gap corresponds to measured differences in occupation, hours and experience is an <strong>Oaxaca-Blinder decomposition</strong> — the subject of Section <a href="decomposing-differences.html#decomposing-differences">6.3</a> — and it is an entirely respectable exercise as long as nobody calls the unexplained remainder "discrimination". A decomposition apportions a difference. It does not say what would happen if you changed something.</p>
 <div class="analysis-takeaway">
 <p>Two words worth separating for good. <strong>Internal validity</strong> asks whether the estimate is right for the people and the setting it was measured in. <strong>External validity</strong> asks whether it tells you anything about anywhere else. Designs buy internal validity by narrowing the comparison — to a threshold, a period, the people a lever moves — and every narrowing costs external validity. The trade is unavoidable; pretending it is not is the most common overreach in applied work, and it is the reason the gold standard of Section <a href="experiments.html#exp-gold-standard">9.1.2</a> is a narrower claim than the phrase suggests.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Four situations, four names. Match them.</p>
+<p>A national currency changeover, with no untreated group anywhere:
+<select class='webex-select'><option value='blank'></option><option value=''>the reflection problem</option><option value='answer'>no comparison group - the usual escape is a synthetic control</option><option value=''>a weak instrument</option><option value=''>an accounting exercise</option></select></p>
+<p>A vaccination programme large enough that the untreated benefit too:
+<select class='webex-select'><option value='blank'></option><option value=''>no comparison group</option><option value=''>the reflection problem</option><option value='answer'>a SUTVA violation - the treatment spreads</option><option value=''>a weak instrument</option></select></p>
+<p>A classroom in which the group average causes the individual and the individual is
+part of the average:
+<select class='webex-select'><option value='blank'></option><option value=''>a SUTVA violation</option><option value='answer'>the reflection problem, which is genuinely unidentified</option><option value=''>selection bias</option></select></p>
+<p>The share of the gender wage gap that corresponds to measured differences in
+occupation and hours:
+<select class='webex-select'><option value='blank'></option><option value=''>a causal effect</option><option value='answer'>an accounting exercise - a decomposition apportions a difference, it does not say what would change</option><option value=''>a weak instrument</option></select></p>
+<p>And the pair that gets confused most. A study of one oversubscribed school's
+lottery has high <select class='webex-select'><option value='blank'></option><option value='answer'>internal</option><option value=''>external</option></select> validity and low
+<select class='webex-select'><option value='blank'></option><option value=''>internal</option><option value='answer'>external</option></select> validity.</p>
 </div>
 </div>
 <div id="exp-natural" class="section level3 hasAnchor" number="9.1.10">
@@ -1200,6 +1321,34 @@ The first natural experiment
 <div class="analysis-warning">
 <p>The word <em>natural</em> flatters these designs. Nothing about the variation is automatic, and the credibility never comes from the data — it comes from an argument about institutional detail that the reader has to be able to check. Draft lottery numbers were genuinely drawn from a drum. Quarter of birth is not: season of birth correlates with family background, and that objection has been argued over for thirty years.</p>
 <p>A working test: if you cannot explain in two sentences why the assignment is unrelated to the outcome, you do not have a natural experiment. You have a control variable with a good story attached.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Two of the entries in the catalogue above have survived thirty years of argument
+better than the other. Which claim is easier to defend?</p>
+<p><select class='webex-select'><option value='blank'></option><option value='answer'>draft lottery numbers were genuinely drawn from a drum</option><option value=''>season of birth is unrelated to family background</option></select></p>
+<p>Snow had no microscope evidence, no germ theory and no statistics beyond a ratio.
+What did he have?
+<select class='webex-select'><option value='blank'></option><option value=''>a very large sample</option><option value='answer'>an assignment mechanism he could argue was unrelated to everything else about a household</option><option value=''>a randomised trial</option></select></p>
+<p>Snow's own words are that households were sorted between two water supplies
+"without their choice, and, in most cases, without their
+<input class='webex-solveme nospaces ignorecase' size='9' data-answer='["knowledge"]'/>".</p>
+<p>True or false: the word <em>natural</em> in "natural experiment" means that no argument
+is required. <select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select></p>
+<div class="webex-solution">
+<button>
+A two-sentence test you can apply to any paper
+</button>
+<p>Write down (1) who or what did the assigning, and (2) why that assigner could not
+have known or cared about the outcome. If sentence (2) needs a hedge, a control
+variable or the phrase "we assume", the design is doing less work than the
+abstract implies — and the honest papers say so in the introduction rather than
+in the appendix.</p>
+</div>
 </div>
 <p>The 2021 Nobel Memorial Prize went to David Card for his empirical work in labour economics — the boatlift and the minimum wage among it — and to Joshua Angrist and Guido Imbens for the methodological half of the same story: turning "as good as random" from a rhetorical flourish into a disciplined claim with stateable assumptions and testable implications. Two years earlier the prize had gone to Abhijit Banerjee, Esther Duflo and Michael Kremer for going the other way and simply running the experiments, of which Thornton's is one of thousands.<a href="#fn139" class="footnote-ref" id="fnref139"><sup>139</sup></a> Both prizes are about the same sentence: the credibility of an estimate lives in its design.</p>
 </div>
@@ -1266,6 +1415,28 @@ The first natural experiment
 <div class="analysis-note">
 <p>Notice what half these papers have in common: a published Comment attacking the identifying assumption, and a Reply. Deschênes and Greenstone drew one, Acemoglu, Johnson and Robinson drew one. This is the healthy version of the field. An identification strategy is a claim that can be argued with, which is exactly what distinguishes it from a specification that can only be preferred or not preferred.</p>
 </div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Six sources of exogenous variation. For each situation, name the one it belongs to.</p>
+<p>Sixteen Bundesländer legislate childcare fees separately:
+<select class='webex-select'><option value='blank'></option><option value=''>lotteries</option><option value=''>nature</option><option value='answer'>federalism</option><option value=''>rupture</option><option value=''>rules and thresholds</option><option value=''>biology</option></select></p>
+<p>Identical twins who ended up with different amounts of schooling:
+<select class='webex-select'><option value='blank'></option><option value=''>lotteries</option><option value=''>nature</option><option value=''>federalism</option><option value=''>rupture</option><option value=''>rules and thresholds</option><option value='answer'>biology and family</option></select></p>
+<p>Health insurance switches on at the 65th birthday:
+<select class='webex-select'><option value='blank'></option><option value=''>lotteries</option><option value=''>nature</option><option value=''>federalism</option><option value=''>rupture</option><option value='answer'>rules and thresholds</option><option value=''>biology</option></select></p>
+<p>Germany divided in 1945 and reunited in 1990:
+<select class='webex-select'><option value='blank'></option><option value=''>lotteries</option><option value=''>nature</option><option value=''>federalism</option><option value='answer'>rupture</option><option value=''>rules and thresholds</option><option value=''>biology</option></select></p>
+<p>Now the warning that goes with the second of these. Weather is the most over-used
+instrument in economics, and for a precise reason:
+<select class='webex-select'><option value='blank'></option><option value=''>it is measured badly</option><option value='answer'>it moves almost everything, so a second channel to the outcome is nearly always available</option><option value=''>it does not vary enough</option></select></p>
+<p>And a habit worth acquiring. Half these papers drew a published Comment. Is that
+a reason to distrust the design?
+<select class='webex-select'><option value='blank'></option><option value=''>yes</option><option value='answer'>no - it is what a field looks like when identification claims are actually checkable</option></select></p>
+</div>
 </div>
 <div id="exp-data-strategy" class="section level3 hasAnchor" number="9.1.12">
 <h3><span class="header-section-number">9.1.12</span> The Data Strategy Behind the Identification Strategy<a href="experiments.html#exp-data-strategy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1291,6 +1462,102 @@ Truly Dedicated: is the credibility revolution a good thing?
 <p>There is also a selection problem in the profession itself. If identifiable questions get published, the questions that admit a clean design will be studied and the others quietly will not — the streetlight problem, applied to a discipline. Exchange-rate regimes, industrial policy and the causes of growth do not come with thresholds and lotteries.</p>
 <p>And there is the parameter itself. An instrument generally identifies a <strong>local average treatment effect</strong>, the effect for the people whose treatment status the instrument actually moves. That is a real effect for a real subgroup, but it may not be the group any policy is about, and Imbens's defence of it — <em>better LATE than nothing</em> — concedes the point in its title.<a href="#fn156" class="footnote-ref" id="fnref156"><sup>156</sup></a></p>
 <p>None of this argues for going back to controlling for things and hoping. It argues that "what is your identification strategy?" and "whose effect is it, and does anyone want to know it?" are two separate questions, and that a good paper answers both.</p>
+</div>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn: rerun LaLonde's challenge yourself
+</h2>
+</div>
+<p>This is the section's longer exercise, and it is the one that made a literature.
+The two data frames are already loaded: <code>nsw</code> (445 people, allocated by lottery)
+and <code>cps</code> (15,992 survey respondents). The experimental benchmark is
+<strong>$1,794</strong>, and you are going to try to recover it without the lottery.</p>
+<p><strong>Step 1 — build the observational sample.</strong> Keep the 185 treated men from <code>nsw</code>
+and stack the whole of <code>cps</code> under them. Regress <code>re78</code> on <code>treat</code> alone.</p>
+<p>You should get about <span class="math inline">\(-\$8{,}498\)</span>. Now add controls in three stages and watch:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">what you add</th>
+<th align="right">estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">nothing</td>
+<td align="right">−8,498</td>
+</tr>
+<tr class="even">
+<td align="left">age, education, ethnicity, marital status, degree</td>
+<td align="right"><input class='webex-solveme nospaces' data-tol='120' size='5' data-answer='["-2974"]'/></td>
+</tr>
+<tr class="odd">
+<td align="left">the above plus 1975 earnings</td>
+<td align="right">about +632</td>
+</tr>
+<tr class="even">
+<td align="left">the above plus 1974 and 1975 earnings</td>
+<td align="right">about +699</td>
+</tr>
+</tbody>
+</table>
+<p>Which single control does most of the work?
+<select class='webex-select'><option value='blank'></option><option value=''>age</option><option value=''>years of education</option><option value='answer'>pre-treatment earnings</option><option value=''>marital status</option></select></p>
+<p>Why should that be unsurprising?
+<select class='webex-select'><option value='blank'></option><option value=''>earnings are measured most accurately</option><option value='answer'>what somebody earned before the programme is the best available proxy for whatever made them enrol</option><option value=''>it has the largest coefficient</option></select></p>
+<p><strong>Step 2 — throw data away on purpose.</strong> The survey sample is America; the treated
+men are not. Trim <code>cps</code> to respondents whose 1975 earnings were below $20,000,
+then $5,000, then $1,000, and rerun the fully controlled regression each time.</p>
+<p>The four estimates run 699, 986, 939 and <input class='webex-solveme nospaces' data-tol='120' size='4' data-answer='["2002"]'/>.
+The last one, on <input class='webex-solveme nospaces' data-tol='60' size='4' data-answer='["2595"]'/> observations, is the closest
+anything here comes to the experimental $1,794.</p>
+<p><strong>Step 3 — now be suspicious of what you just did.</strong> You improved the answer by
+choosing a subsample. Which two literatures have you just reproduced?
+<select class='webex-select'><option value='blank'></option><option value=''>Fisher and Neyman</option><option value='answer'>Dehejia and Wahba, who showed a well-chosen subsample gets close - and Smith and Todd, who showed how much depends on which subsample</option><option value=''>Angrist and Imbens</option></select></p>
+<p>Had you not known the experimental answer, would anything in the output have told
+you which of the four trims to report? <select class='webex-select'><option value='blank'></option><option value=''>TRUE</option><option value='answer'>FALSE</option></select></p>
+<p><strong>Step 4 — one paragraph.</strong> Write what you would have concluded in 1985, with
+none of the four numbers marked as correct.</p>
+<div class="webex-solution">
+<button>
+The code
+</button>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="experiments.html#cb232-1" tabindex="-1"></a>obs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(nsw <span class="sc">%&gt;%</span> <span class="fu">filter</span>(treat <span class="sc">==</span> <span class="dv">1</span>), cps)</span>
+<span id="cb232-2"><a href="experiments.html#cb232-2" tabindex="-1"></a></span>
+<span id="cb232-3"><a href="experiments.html#cb232-3" tabindex="-1"></a>specs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb232-4"><a href="experiments.html#cb232-4" tabindex="-1"></a>  <span class="st">&quot;treat only&quot;</span>               <span class="ot">=</span> <span class="st">&quot;treat&quot;</span>,</span>
+<span id="cb232-5"><a href="experiments.html#cb232-5" tabindex="-1"></a>  <span class="st">&quot;+ demographics&quot;</span>           <span class="ot">=</span> <span class="st">&quot;treat + age + educ + black + hisp + marr + nodegree&quot;</span>,</span>
+<span id="cb232-6"><a href="experiments.html#cb232-6" tabindex="-1"></a>  <span class="st">&quot;+ 1975 earnings&quot;</span>          <span class="ot">=</span> <span class="st">&quot;treat + age + educ + black + hisp + marr + nodegree + re75&quot;</span>,</span>
+<span id="cb232-7"><a href="experiments.html#cb232-7" tabindex="-1"></a>  <span class="st">&quot;+ 1974 and 1975 earnings&quot;</span> <span class="ot">=</span> <span class="st">&quot;treat + age + educ + black + hisp + marr + nodegree + re74 + re75&quot;</span>)</span>
+<span id="cb232-8"><a href="experiments.html#cb232-8" tabindex="-1"></a></span>
+<span id="cb232-9"><a href="experiments.html#cb232-9" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">imap_dfr</span>(specs, <span class="sc">~</span>{</span>
+<span id="cb232-10"><a href="experiments.html#cb232-10" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;re78 ~&quot;</span>, .x)), <span class="at">data =</span> obs)</span>
+<span id="cb232-11"><a href="experiments.html#cb232-11" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">specification =</span> .y, <span class="at">estimate =</span> <span class="fu">coef</span>(m)[[<span class="st">&quot;treat&quot;</span>]],</span>
+<span id="cb232-12"><a href="experiments.html#cb232-12" tabindex="-1"></a>         <span class="st">`</span><span class="at">std. error</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coefficients[<span class="st">&quot;treat&quot;</span>, <span class="dv">2</span>])</span>
+<span id="cb232-13"><a href="experiments.html#cb232-13" tabindex="-1"></a>})</span>
+<span id="cb232-14"><a href="experiments.html#cb232-14" tabindex="-1"></a></span>
+<span id="cb232-15"><a href="experiments.html#cb232-15" tabindex="-1"></a><span class="co"># Step 2: trim the comparison group towards the treated population</span></span>
+<span id="cb232-16"><a href="experiments.html#cb232-16" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_dfr</span>(<span class="fu">c</span>(<span class="cn">Inf</span>, <span class="dv">20000</span>, <span class="dv">5000</span>, <span class="dv">1000</span>), <span class="cf">function</span>(cut) {</span>
+<span id="cb232-17"><a href="experiments.html#cb232-17" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(nsw <span class="sc">%&gt;%</span> <span class="fu">filter</span>(treat <span class="sc">==</span> <span class="dv">1</span>), cps <span class="sc">%&gt;%</span> <span class="fu">filter</span>(re75 <span class="sc">&lt;=</span> cut))</span>
+<span id="cb232-18"><a href="experiments.html#cb232-18" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">lm</span>(re78 <span class="sc">~</span> treat <span class="sc">+</span> age <span class="sc">+</span> educ <span class="sc">+</span> black <span class="sc">+</span> hisp <span class="sc">+</span> marr <span class="sc">+</span></span>
+<span id="cb232-19"><a href="experiments.html#cb232-19" tabindex="-1"></a>            nodegree <span class="sc">+</span> re74 <span class="sc">+</span> re75, <span class="at">data =</span> d)</span>
+<span id="cb232-20"><a href="experiments.html#cb232-20" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="st">`</span><span class="at">re75 cut-off</span><span class="st">`</span> <span class="ot">=</span> cut, <span class="at">n =</span> <span class="fu">nrow</span>(d), <span class="at">estimate =</span> <span class="fu">coef</span>(m)[[<span class="st">&quot;treat&quot;</span>]],</span>
+<span id="cb232-21"><a href="experiments.html#cb232-21" tabindex="-1"></a>         <span class="st">`</span><span class="at">std. error</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">summary</span>(m)<span class="sc">$</span>coefficients[<span class="st">&quot;treat&quot;</span>, <span class="dv">2</span>])</span>
+<span id="cb232-22"><a href="experiments.html#cb232-22" tabindex="-1"></a>})</span></code></pre></div>
+<p><strong>What it gives.</strong> −8,498 · −2,974 · +632 · +699 for the four specifications, and
+699 · 986 · 939 · 2,002 for the four trims, on 16,177 · 10,781 · 4,416 · 2,595
+observations. The last row is within one standard error of the experimental
+answer. It is also the row with the fewest observations, the largest standard
+error, and no justification whatever except that we knew what we were aiming at.</p>
+<p>That is LaLonde's challenge in one table, and it is why Section
+<a href="matching-and-balancing.html#matching-and-balancing">9.2</a> is the first of the four method sections rather than
+the most trusted one.</p>
+</div>
 </div>
 <div class="challenge">
 <div class="titelchallenge">
@@ -1326,8 +1593,8 @@ Reading
 <h3>Readings<a href="experiments.html#exp-readings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Angrist, J. D., &amp; Pischke, J.-S. (2015). <em>Mastering 'Metrics: The Path from Cause to Effect</em>. Princeton University Press. The gentlest serious introduction to the five designs.</li>
-<li>Cunningham, S. (2021). <em>Causal Inference: The Mixtape</em>. Yale University Press <span class="citation">(<a href="references.html#ref-cunningham2021causal">Cunningham, 2021</a>)</span>. Free online, with the NSW and Malawi data used here.</li>
-<li>Huntington-Klein, N. (2022). <em>The Effect: An Introduction to Research Design and Causality</em>. Chapman &amp; Hall. Design first, estimator second; free online.</li>
+<li>Cunningham, S. (2021). <em>Causal Inference: The Mixtape</em>. Yale University Press <span class="citation">(<a href="references.html#ref-cunningham2021causal">Cunningham, 2021</a>)</span>. The source of the NSW and Malawi data used here. A free online edition is maintained by the author, currently as a restructured second edition, so cite chapters of the printed book by title as well as number.</li>
+<li>Huntington-Klein, N. (2022). <em>The Effect: An Introduction to Research Design and Causality</em>. Chapman &amp; Hall/CRC. Design first, estimator second, and the author maintains a free online edition.</li>
 <li>Gerber, A. S., &amp; Green, D. P. (2012). <em>Field Experiments: Design, Analysis, and Interpretation</em>. W. W. Norton. For when you do get to flip the coin.</li>
 <li>Imbens, G. W., &amp; Rubin, D. B. (2015). <em>Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction</em>. Cambridge University Press. The potential-outcomes framework at full length.</li>
 </ul>
@@ -1337,16 +1604,16 @@ Reading
 <hr />
 <ol start="110">
 <li id="fn110"><p>Fisher, R. A., <em>The Design of Experiments</em>, Oliver &amp; Boyd, 1935, chapter II, sections 6 to 10 — "Interpretation and its Reasoned Basis", "Randomisation; the Physical Basis of the Validity of the Test", "The Effectiveness of Randomisation". The often-quoted formulation that randomisation is "the reasoned basis for inference" is a later paraphrase, not Fisher's own sentence.<a href="experiments.html#fnref110" class="footnote-back">↩︎</a></p></li>
-<li id="fn111"><p>Holland, P. W. (1986). Statistics and Causal Inference. <em>Journal of the American Statistical Association</em> 81(396), 945-960, <a href="https://doi.org/10.2307/2289064" class="uri">https://doi.org/10.2307/2289064</a>. The notation is older. Jerzy Neyman introduced potential outcomes for randomised experiments in 1923 — in English as <em>On the Application of Probability Theory to Agricultural Experiments. Essay on Principles. Section 9</em>, translated by Dabrowska and Speed, <em>Statistical Science</em> 5(4), 1990, 465-472 — and Donald Rubin extended them to observational studies in <em>Estimating causal effects of treatments in randomized and nonrandomized studies</em>, <em>Journal of Educational Psychology</em> 66(5), 1974, 688-701.<a href="experiments.html#fnref111" class="footnote-back">↩︎</a></p></li>
+<li id="fn111"><p>Holland, P. W. (1986). Statistics and Causal Inference. <em>Journal of the American Statistical Association</em> 81(396), 945-960, <a href="https://doi.org/10.2307/2289064" class="uri">https://doi.org/10.2307/2289064</a>. The notation is older. Jerzy Neyman introduced potential outcomes for randomised experiments in 1923 — in English as <em>On the Application of Probability Theory to Agricultural Experiments. Essay on Principles. Section 9</em>, translated by Dabrowska and Speed, <em>Statistical Science</em> 5(4), 1990, 465-472, <a href="https://doi.org/10.1214/ss/1177012031" class="uri">https://doi.org/10.1214/ss/1177012031</a> — and Donald Rubin extended them to observational studies in <em>Estimating causal effects of treatments in randomized and nonrandomized studies</em>, <em>Journal of Educational Psychology</em> 66(5), 1974, 688-701, <a href="https://doi.org/10.1037/h0037350" class="uri">https://doi.org/10.1037/h0037350</a>.<a href="experiments.html#fnref111" class="footnote-back">↩︎</a></p></li>
 <li id="fn112"><p>Peirce, C. S., &amp; Jastrow, J. (1885). On Small Differences of Sensation. <em>Memoirs of the National Academy of Sciences</em> 3, 73-83. Presented 17 October 1884, published 1885; the reprint that most psychologists know carries the title "…Differences <em>in</em> Sensation".<a href="experiments.html#fnref112" class="footnote-back">↩︎</a></p></li>
-<li id="fn113"><p>Stigler, S. M. (1978). Mathematical Statistics in the Early States. <em>Annals of Statistics</em> 6(2), 239-265, <a href="https://doi.org/10.1214/aos/1176344123" class="uri">https://doi.org/10.1214/aos/1176344123</a>; the assessment of Peirce and Jastrow is on page 248. Ian Hacking tells a wider story about where randomisation came from in <em>Telepathy: Origins of Randomization in Experimental Design</em>, <em>Isis</em> 79(3), 1988, 427-451.<a href="experiments.html#fnref113" class="footnote-back">↩︎</a></p></li>
+<li id="fn113"><p>Stigler, S. M. (1978). Mathematical Statistics in the Early States. <em>Annals of Statistics</em> 6(2), 239-265, <a href="https://doi.org/10.1214/aos/1176344123" class="uri">https://doi.org/10.1214/aos/1176344123</a>: Peirce's work "contains one of the earliest explicit endorsements of mathematical randomization as a basis for inference of which I am aware". Stigler returns to the design at length in <em>Statistical Concepts in Psychology</em>, <em>American Journal of Education</em> 101(1), 1992, 60-70, where he explicitly declines the priority claim and settles for the stronger one: "there is no question that Peirce was clear on what he was doing and why, and his 'what and why' were the same as Fisher's." The historian who does argue priority is Hacking. Ian Hacking tells a wider story about where randomisation came from — and does argue priority — in <em>Telepathy: Origins of Randomization in Experimental Design</em>, <em>Isis</em> 79(3), 1988, 427-451, <a href="https://doi.org/10.1086/354775" class="uri">https://doi.org/10.1086/354775</a>.<a href="experiments.html#fnref113" class="footnote-back">↩︎</a></p></li>
 <li id="fn114"><p>Dehue, T. (1997). Deception, Efficiency, and Random Groups: Psychology and the Gradual Origination of the Random Group Design. <em>Isis</em> 88(4), 653-673, <a href="https://doi.org/10.1086/383850" class="uri">https://doi.org/10.1086/383850</a>. She credits William A. McCall's <em>How to Experiment in Education</em> (Macmillan, 1923) with random group composition, before Fisher and in education rather than agriculture.<a href="experiments.html#fnref114" class="footnote-back">↩︎</a></p></li>
-<li id="fn115"><p>Fisher, R. A. (1926). The Arrangement of Field Experiments. <em>Journal of the Ministry of Agriculture of Great Britain</em> 33, 503-513. On whether 1925 or 1926 counts as the first published statement, see Hall, N. S. (2007), <em>R. A. Fisher and his advocacy of randomization</em>, <em>Journal of the History of Biology</em> 40(2), 295-325 — the requirement is already in the first edition of <em>Statistical Methods for Research Workers</em> (1925).<a href="experiments.html#fnref115" class="footnote-back">↩︎</a></p></li>
-<li id="fn116"><p>Amberson, J. B., McMahon, B. T., &amp; Pinner, M. (1931). A Clinical Trial of Sanocrysin in Pulmonary Tuberculosis. <em>American Review of Tuberculosis</em> 24(4), 401-435. Twenty-four patients, two matched groups of twelve, one coin toss.<a href="experiments.html#fnref116" class="footnote-back">↩︎</a></p></li>
-<li id="fn117"><p>Medical Research Council (1948). Streptomycin Treatment of Pulmonary Tuberculosis. <em>British Medical Journal</em> 2(4582), 769-782, <a href="https://doi.org/10.1136/bmj.2.4582.769" class="uri">https://doi.org/10.1136/bmj.2.4582.769</a>. The random-number series were drawn up by Austin Bradford Hill, with Marc Daniels and Philip D'Arcy Hart on the design; the trial was not placebo-controlled, the control arm was bed rest alone. Iain Chalmers argues the decisive innovation was concealment rather than statistical theory.<a href="experiments.html#fnref117" class="footnote-back">↩︎</a></p></li>
-<li id="fn118"><p>The New Jersey Graduated Work Incentive Experiment, 1968-1972, funded by the Office of Economic Opportunity and run jointly by the Institute for Research on Poverty at Wisconsin and Mathematica: Kershaw, D., &amp; Fair, J. (1976). <em>The New Jersey Income-Maintenance Experiment, Vol. I</em>. Academic Press. A short overview of the labour-supply findings is Rees, A. (1974), <em>Journal of Human Resources</em> 9(2), 158-180.<a href="experiments.html#fnref118" class="footnote-back">↩︎</a></p></li>
+<li id="fn115"><p>Fisher, R. A. (1926). The Arrangement of Field Experiments. <em>Journal of the Ministry of Agriculture of Great Britain</em> 33, 503-515, <a href="https://doi.org/10.23637/rothamsted.8v61q" class="uri">https://doi.org/10.23637/rothamsted.8v61q</a>. Many secondary sources give 503-513; the Rothamsted repository, which holds the paper, and Hall (2007) both give 503-515. On whether 1925 or 1926 counts as the first published statement, see Hall, N. S. (2007), <em>R. A. Fisher and his advocacy of randomization</em>, <em>Journal of the History of Biology</em> 40(2), 295-325, <a href="https://doi.org/10.1007/s10739-006-9119-z" class="uri">https://doi.org/10.1007/s10739-006-9119-z</a> — the requirement is already in the first edition of <em>Statistical Methods for Research Workers</em> (1925).<a href="experiments.html#fnref115" class="footnote-back">↩︎</a></p></li>
+<li id="fn116"><p>Amberson, J. B., McMahon, B. T., &amp; Pinner, M. (1931). A Clinical Trial of Sanocrysin in Pulmonary Tuberculosis. <em>American Review of Tuberculosis</em> 24(4), 401-435, <a href="https://doi.org/10.1164/art.1931.24.4.401" class="uri">https://doi.org/10.1164/art.1931.24.4.401</a>. Twenty-four patients, two matched groups of twelve, one coin toss.<a href="experiments.html#fnref116" class="footnote-back">↩︎</a></p></li>
+<li id="fn117"><p>Medical Research Council (1948). Streptomycin Treatment of Pulmonary Tuberculosis: A Medical Research Council Investigation. <em>British Medical Journal</em> 2(4582), 769-782, <a href="https://doi.org/10.1136/bmj.2.4582.769" class="uri">https://doi.org/10.1136/bmj.2.4582.769</a>. The random-number series were drawn up by Austin Bradford Hill, with Marc Daniels and Philip D'Arcy Hart on the design; the trial was not placebo-controlled, the control arm was bed rest alone. Iain Chalmers argues the decisive innovation was concealment rather than statistical theory.<a href="experiments.html#fnref117" class="footnote-back">↩︎</a></p></li>
+<li id="fn118"><p>The New Jersey Graduated Work Incentive Experiment, 1968-1972, funded by the Office of Economic Opportunity and run jointly by the Institute for Research on Poverty at Wisconsin and Mathematica: Kershaw, D., &amp; Fair, J. (1976). <em>The New Jersey Income-Maintenance Experiment, Vol. I</em>. Academic Press. A short overview of the labour-supply findings is Rees, A. (1974), <em>An Overview of the Labor-Supply Results</em>, <em>Journal of Human Resources</em> 9(2), 158-180. Enrolment figures vary between secondary sources; 1,357 is the number the research literature reports, and 1,216 appears to be an analysis sample rather than the enrolled total.<a href="experiments.html#fnref118" class="footnote-back">↩︎</a></p></li>
 <li id="fn119"><p>The Poverty Action Lab was founded at MIT in 2003 by Abhijit Banerjee, Esther Duflo and Sendhil Mullainathan, and renamed the Abdul Latif Jameel Poverty Action Lab in 2005. Michael Kremer, who shared the 2019 Nobel with Banerjee and Duflo, was not among the founders.<a href="experiments.html#fnref119" class="footnote-back">↩︎</a></p></li>
-<li id="fn120"><p>Jones, D. S., &amp; Podolsky, S. H. (2015). The history and fate of the gold standard. <em>The Lancet</em> 385(9977), 1502-1503, <a href="https://doi.org/10.1016/S0140-6736(15)60742-5" class="uri">https://doi.org/10.1016/S0140-6736(15)60742-5</a>. The 1982 article is Feinstein, A. R., &amp; Horwitz, R. I., <em>Double Standards, Scientific Methods, and Epidemiologic Research</em>, <em>New England Journal of Medicine</em> 307(26), 1611-1617.<a href="experiments.html#fnref120" class="footnote-back">↩︎</a></p></li>
+<li id="fn120"><p>Jones, D. S., &amp; Podolsky, S. H. (2015). The history and fate of the gold standard. <em>The Lancet</em> 385(9977), 1502-1503, <a href="https://doi.org/10.1016/S0140-6736(15)60742-5" class="uri">https://doi.org/10.1016/S0140-6736(15)60742-5</a>. The 1982 article is Feinstein, A. R., &amp; Horwitz, R. I., <em>Double Standards, Scientific Methods, and Epidemiologic Research</em>, <em>New England Journal of Medicine</em> 307(26), 1611-1617, <a href="https://doi.org/10.1056/NEJM198212233072604" class="uri">https://doi.org/10.1056/NEJM198212233072604</a>. "An elusive ideal" is Jones and Podolsky's characterisation, not Feinstein and Horwitz's phrase; theirs is "the unattainable scientific gold standard of a randomized experimental trial".<a href="experiments.html#fnref120" class="footnote-back">↩︎</a></p></li>
 <li id="fn121"><p>Thornton, R. L. (2008). The Demand for, and Impact of, Learning HIV Status. <em>American Economic Review</em> 98(5), 1829-1863, <a href="https://doi.org/10.1257/aer.98.5.1829" class="uri">https://doi.org/10.1257/aer.98.5.1829</a>.<a href="experiments.html#fnref121" class="footnote-back">↩︎</a></p></li>
 <li id="fn122"><p>The extract is <code>thornton_hiv</code> from the <code>causaldata</code> package accompanying Cunningham's <em>Causal Inference: The Mixtape</em>; <code>nsw_experimental</code> and <code>cps_controls</code> below are <code>nsw_mixtape</code> and <code>cps_mixtape</code> from the same source, which in turn follow the Dehejia-Wahba sample of LaLonde's data. Snapshots are stored in <code>data/Causal/</code> so that the book builds without a network connection.<a href="experiments.html#fnref122" class="footnote-back">↩︎</a></p></li>
 <li id="fn123"><p>The published paper reports 43 percentage points on its own estimation sample; the small difference comes from how the teaching extract handles missing outcomes and the zero-value vouchers. The lesson survives either number.<a href="experiments.html#fnref123" class="footnote-back">↩︎</a></p></li>
@@ -1354,17 +1621,17 @@ Reading
 <li id="fn125"><p>Dehejia, R. H., &amp; Wahba, S. (1999). Causal Effects in Nonexperimental Studies: Reevaluating the Evaluation of Training Programs. <em>Journal of the American Statistical Association</em> 94(448), 1053-1062, <a href="https://doi.org/10.1080/01621459.1999.10473858" class="uri">https://doi.org/10.1080/01621459.1999.10473858</a>.<a href="experiments.html#fnref125" class="footnote-back">↩︎</a></p></li>
 <li id="fn126"><p>Smith, J. A., &amp; Todd, P. E. (2005). Does matching overcome LaLonde's critique of nonexperimental estimators? <em>Journal of Econometrics</em> 125(1-2), 305-353, <a href="https://doi.org/10.1016/j.jeconom.2004.04.011" class="uri">https://doi.org/10.1016/j.jeconom.2004.04.011</a>.<a href="experiments.html#fnref126" class="footnote-back">↩︎</a></p></li>
 <li id="fn127"><p>Working, E. J. (1927). What Do Statistical "Demand Curves" Show? <em>Quarterly Journal of Economics</em> 41(2), 212-235, <a href="https://doi.org/10.2307/1883501" class="uri">https://doi.org/10.2307/1883501</a>. Elmer J. Working, not his brother Holbrook.<a href="experiments.html#fnref127" class="footnote-back">↩︎</a></p></li>
-<li id="fn128"><p>Haavelmo, T. (1943). The Statistical Implications of a System of Simultaneous Equations. <em>Econometrica</em> 11(1), 1-12, <a href="https://doi.org/10.2307/1905714" class="uri">https://doi.org/10.2307/1905714</a>; Haavelmo, T. (1944). The Probability Approach in Econometrics. <em>Econometrica</em> 12 (Supplement), 1-115; Koopmans, T. C. (1949). Identification Problems in Economic Model Construction. <em>Econometrica</em> 17(2), 125-144, <a href="https://doi.org/10.2307/1905689" class="uri">https://doi.org/10.2307/1905689</a>.<a href="experiments.html#fnref128" class="footnote-back">↩︎</a></p></li>
+<li id="fn128"><p>Haavelmo, T. (1943). The Statistical Implications of a System of Simultaneous Equations. <em>Econometrica</em> 11(1), 1-12, <a href="https://doi.org/10.2307/1905714" class="uri">https://doi.org/10.2307/1905714</a>; Haavelmo, T. (1944). The Probability Approach in Econometrics. <em>Econometrica</em> 12 (Supplement), 1-115, <a href="https://doi.org/10.2307/1906935" class="uri">https://doi.org/10.2307/1906935</a>; Koopmans, T. C. (1949). Identification Problems in Economic Model Construction. <em>Econometrica</em> 17(2), 125-144, <a href="https://doi.org/10.2307/1905689" class="uri">https://doi.org/10.2307/1905689</a>.<a href="experiments.html#fnref128" class="footnote-back">↩︎</a></p></li>
 <li id="fn129"><p>Santeramo, F. G. (2015). A cursory review of the identification strategies. <em>Agricultural and Food Economics</em> 3, article 24, <a href="https://doi.org/10.1186/s40100-015-0042-5" class="uri">https://doi.org/10.1186/s40100-015-0042-5</a>. The variance route is Rigobon, R. (2003), <em>Identification Through Heteroskedasticity</em>, <em>Review of Economics and Statistics</em> 85(4), 777-792, <a href="https://doi.org/10.1162/003465303772815727" class="uri">https://doi.org/10.1162/003465303772815727</a>.<a href="experiments.html#fnref129" class="footnote-back">↩︎</a></p></li>
-<li id="fn130"><p>Abadie, A., &amp; Gardeazabal, J. (2003). The Economic Costs of Conflict: A Case Study of the Basque Country. <em>American Economic Review</em> 93(1), 113-132, <a href="https://doi.org/10.1257/000282803321455188" class="uri">https://doi.org/10.1257/000282803321455188</a>; Abadie, A., Diamond, A., &amp; Hainmueller, J. (2010). Synthetic Control Methods for Comparative Case Studies. <em>Journal of the American Statistical Association</em> 105(490), 493-505, <a href="https://doi.org/10.1198/jasa.2009.ap08746" class="uri">https://doi.org/10.1198/jasa.2009.ap08746</a>.<a href="experiments.html#fnref130" class="footnote-back">↩︎</a></p></li>
-<li id="fn131"><p>Bound, J., Jaeger, D. A., &amp; Baker, R. M. (1995). Problems with Instrumental Variables Estimation When the Correlation Between the Instruments and the Endogenous Explanatory Variable Is Weak. <em>Journal of the American Statistical Association</em> 90(430), 443-450, <a href="https://doi.org/10.1080/01621459.1995.10476536" class="uri">https://doi.org/10.1080/01621459.1995.10476536</a>. The rule of thumb is from Staiger, D., &amp; Stock, J. H. (1997), <em>Econometrica</em> 65(3), 557-586; the critical values are Stock, J. H., &amp; Yogo, M. (2005), <em>Testing for Weak Instruments in Linear IV Regression</em>, in <em>Identification and Inference for Econometric Models</em>, Cambridge University Press, 80-108.<a href="experiments.html#fnref131" class="footnote-back">↩︎</a></p></li>
+<li id="fn130"><p>Abadie, A., &amp; Gardeazabal, J. (2003). The Economic Costs of Conflict: A Case Study of the Basque Country. <em>American Economic Review</em> 93(1), 113-132, <a href="https://doi.org/10.1257/000282803321455188" class="uri">https://doi.org/10.1257/000282803321455188</a>; Abadie, A., Diamond, A., &amp; Hainmueller, J. (2010). Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program. <em>Journal of the American Statistical Association</em> 105(490), 493-505, <a href="https://doi.org/10.1198/jasa.2009.ap08746" class="uri">https://doi.org/10.1198/jasa.2009.ap08746</a>.<a href="experiments.html#fnref130" class="footnote-back">↩︎</a></p></li>
+<li id="fn131"><p>Bound, J., Jaeger, D. A., &amp; Baker, R. M. (1995). Problems with Instrumental Variables Estimation When the Correlation Between the Instruments and the Endogenous Explanatory Variable Is Weak. <em>Journal of the American Statistical Association</em> 90(430), 443-450, <a href="https://doi.org/10.1080/01621459.1995.10476536" class="uri">https://doi.org/10.1080/01621459.1995.10476536</a>. The rule of thumb is from Staiger, D., &amp; Stock, J. H. (1997), <em>Instrumental Variables Regression with Weak Instruments</em>, <em>Econometrica</em> 65(3), 557-586, <a href="https://doi.org/10.2307/2171753" class="uri">https://doi.org/10.2307/2171753</a>; the critical values are Stock, J. H., &amp; Yogo, M. (2005), <em>Testing for Weak Instruments in Linear IV Regression</em>, in <em>Identification and Inference for Econometric Models: Essays in Honor of Thomas Rothenberg</em>, Cambridge University Press, 80-108, <a href="https://doi.org/10.1017/CBO9780511614491.006" class="uri">https://doi.org/10.1017/CBO9780511614491.006</a>.<a href="experiments.html#fnref131" class="footnote-back">↩︎</a></p></li>
 <li id="fn132"><p>Manski, C. F. (1993). Identification of Endogenous Social Effects: The Reflection Problem. <em>Review of Economic Studies</em> 60(3), 531-542, <a href="https://doi.org/10.2307/2298123" class="uri">https://doi.org/10.2307/2298123</a>.<a href="experiments.html#fnref132" class="footnote-back">↩︎</a></p></li>
 <li id="fn133"><p>Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. <em>American Economic Review</em> 80(3), 313-336.<a href="experiments.html#fnref133" class="footnote-back">↩︎</a></p></li>
 <li id="fn134"><p>Angrist, J. D., &amp; Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? <em>Quarterly Journal of Economics</em> 106(4), 979-1014, <a href="https://doi.org/10.2307/2937954" class="uri">https://doi.org/10.2307/2937954</a>.<a href="experiments.html#fnref134" class="footnote-back">↩︎</a></p></li>
 <li id="fn135"><p>Card, D. (1990). The Impact of the Mariel Boatlift on the Miami Labor Market. <em>Industrial and Labor Relations Review</em> 43(2), 245-257, <a href="https://doi.org/10.1177/001979399004300205" class="uri">https://doi.org/10.1177/001979399004300205</a>.<a href="experiments.html#fnref135" class="footnote-back">↩︎</a></p></li>
 <li id="fn136"><p>Card, D., &amp; Krueger, A. B. (1994). Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania. <em>American Economic Review</em> 84(4), 772-793. The comparison group is fast-food outlets in eastern Pennsylvania, so this is a state-level difference-in-differences rather than a matched border-pair design.<a href="experiments.html#fnref136" class="footnote-back">↩︎</a></p></li>
 <li id="fn137"><p>Finkelstein, A., et al. (2012). The Oregon Health Insurance Experiment: Evidence from the First Year. <em>Quarterly Journal of Economics</em> 127(3), 1057-1106, <a href="https://doi.org/10.1093/qje/qjs020" class="uri">https://doi.org/10.1093/qje/qjs020</a>.<a href="experiments.html#fnref137" class="footnote-back">↩︎</a></p></li>
-<li id="fn138"><p>Snow, J., <em>On the Mode of Communication of Cholera</em>, 2nd edition, John Churchill, 1855. The comparison of the Southwark &amp; Vauxhall and Lambeth supplies is in the section on the 1854 South London epidemic; Snow's own count gives roughly 315 against 37 deaths per 10,000 houses.<a href="experiments.html#fnref138" class="footnote-back">↩︎</a></p></li>
+<li id="fn138"><p>Snow, J., <em>On the Mode of Communication of Cholera</em>, 2nd edition, John Churchill, 1855. The comparison of the Southwark &amp; Vauxhall and Lambeth supplies is in the section on the 1854 South London epidemic; Snow's tables for the 1854 South London epidemic are on pages 84 and 85 of that edition. The ratio he reports depends on the period tabulated: his seven-week comparison gives 71 against 5 deaths per 10,000 houses, a fourteenfold difference, while the longer accounting gives roughly 315 against 37, about eightfold. Both are Snow's; a citation should say which table it means.<a href="experiments.html#fnref138" class="footnote-back">↩︎</a></p></li>
 <li id="fn139"><p>The Royal Swedish Academy of Sciences, Prize in Economic Sciences 2021: one half to David Card "for his empirical contributions to labour economics", the other half jointly to Joshua D. Angrist and Guido W. Imbens "for their methodological contributions to the analysis of causal relationships". The 2019 prize went to Abhijit Banerjee, Esther Duflo and Michael Kremer "for their experimental approach to alleviating global poverty". <a href="https://www.nobelprize.org/prizes/economic-sciences/" class="uri">https://www.nobelprize.org/prizes/economic-sciences/</a><a href="experiments.html#fnref139" class="footnote-back">↩︎</a></p></li>
 <li id="fn140"><p>Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. <em>American Economic Review</em> 80(3), 313-336.<a href="experiments.html#fnref140" class="footnote-back">↩︎</a></p></li>
 <li id="fn141"><p>Deschênes, O., &amp; Greenstone, M. (2007). The Economic Impacts of Climate Change: Evidence from Agricultural Output and Random Fluctuations in Weather. <em>American Economic Review</em> 97(1), 354-385, <a href="https://doi.org/10.1257/aer.97.1.354" class="uri">https://doi.org/10.1257/aer.97.1.354</a>.<a href="experiments.html#fnref141" class="footnote-back">↩︎</a></p></li>
@@ -1379,7 +1646,7 @@ Reading
 <li id="fn150"><p>Alesina, A., &amp; Fuchs-Schündeln, N. (2007). Good-bye Lenin (or Not?): The Effect of Communism on People's Preferences. <em>American Economic Review</em> 97(4), 1507-1528, <a href="https://doi.org/10.1257/aer.97.4.1507" class="uri">https://doi.org/10.1257/aer.97.4.1507</a>. The evidence comes from the 1997 and 2002 waves of the German Socio-Economic Panel.<a href="experiments.html#fnref150" class="footnote-back">↩︎</a></p></li>
 <li id="fn151"><p>Frijters, P., Haisken-DeNew, J. P., &amp; Shields, M. A. (2004). Money Does Matter! Evidence from Increasing Real Income and Life Satisfaction in East Germany Following Reunification. <em>American Economic Review</em> 94(3), 730-740, <a href="https://doi.org/10.1257/0002828041464551" class="uri">https://doi.org/10.1257/0002828041464551</a>.<a href="experiments.html#fnref151" class="footnote-back">↩︎</a></p></li>
 <li id="fn152"><p>Davis, D. R., &amp; Weinstein, D. E. (2002). Bones, Bombs, and Break Points: The Geography of Economic Activity. <em>American Economic Review</em> 92(5), 1269-1289, <a href="https://doi.org/10.1257/000282802762024502" class="uri">https://doi.org/10.1257/000282802762024502</a>.<a href="experiments.html#fnref152" class="footnote-back">↩︎</a></p></li>
-<li id="fn153"><p>Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2001). The Colonial Origins of Comparative Development: An Empirical Investigation. <em>American Economic Review</em> 91(5), 1369-1401, <a href="https://doi.org/10.1257/aer.91.5.1369" class="uri">https://doi.org/10.1257/aer.91.5.1369</a>. The mortality data were disputed by Albouy, D. (2012), Comment, <em>American Economic Review</em> 102(6), 3059-3076, with a Reply at 3077-3110.<a href="experiments.html#fnref153" class="footnote-back">↩︎</a></p></li>
+<li id="fn153"><p>Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2001). The Colonial Origins of Comparative Development: An Empirical Investigation. <em>American Economic Review</em> 91(5), 1369-1401, <a href="https://doi.org/10.1257/aer.91.5.1369" class="uri">https://doi.org/10.1257/aer.91.5.1369</a>. The mortality data were disputed by Albouy, D. (2012), Comment, <em>American Economic Review</em> 102(6), 3059-3076, <a href="https://doi.org/10.1257/aer.102.6.3059" class="uri">https://doi.org/10.1257/aer.102.6.3059</a>, with a Reply at 3077-3110, <a href="https://doi.org/10.1257/aer.102.6.3077" class="uri">https://doi.org/10.1257/aer.102.6.3077</a>.<a href="experiments.html#fnref153" class="footnote-back">↩︎</a></p></li>
 <li id="fn154"><p>Angrist, J. D., &amp; Pischke, J.-S. (2010). The Credibility Revolution in Empirical Economics: How Better Research Design Is Taking the Con out of Econometrics. <em>Journal of Economic Perspectives</em> 24(2), 3-30, <a href="https://doi.org/10.1257/jep.24.2.3" class="uri">https://doi.org/10.1257/jep.24.2.3</a>.<a href="experiments.html#fnref154" class="footnote-back">↩︎</a></p></li>
 <li id="fn155"><p>Deaton, A. (2010). Instruments, Randomization, and Learning about Development. <em>Journal of Economic Literature</em> 48(2), 424-455, <a href="https://doi.org/10.1257/jel.48.2.424" class="uri">https://doi.org/10.1257/jel.48.2.424</a>.<a href="experiments.html#fnref155" class="footnote-back">↩︎</a></p></li>
 <li id="fn156"><p>Imbens, G. W. (2010). Better LATE Than Nothing: Some Comments on Deaton (2009) and Heckman and Urzua (2009). <em>Journal of Economic Literature</em> 48(2), 399-423, <a href="https://doi.org/10.1257/jel.48.2.399" class="uri">https://doi.org/10.1257/jel.48.2.399</a>.<a href="experiments.html#fnref156" class="footnote-back">↩︎</a></p></li>

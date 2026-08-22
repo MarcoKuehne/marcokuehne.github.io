@@ -80,7 +80,7 @@ estimate of anything.
 
 ```{r iv-supply-demand, echo=FALSE, fig.align='center', fig.width=7.4, fig.height=3.6, fig.cap="Two markets, one estimator, two opposite answers. The dashed lines are the true demand and supply curves, identical in both panels; the solid line is a regression of price on quantity through the observed pairs. Where demand does the moving the regression recovers supply, and where supply does the moving it recovers demand. Nothing in the scatter says which world you are in."}
 set.seed(4)
-markt <- function(sd_demand, sd_supply, n = 70) {
+market <- function(sd_demand, sd_supply, n = 70) {
   a <- 10 + rnorm(n, 0, sd_demand)       # demand intercept, shifting
   b <-  2 + rnorm(n, 0, sd_supply)       # supply intercept, shifting
   p <- (a - b) / 2                       # market clearing: 10-1.2p = 2+0.8p
@@ -88,31 +88,25 @@ markt <- function(sd_demand, sd_supply, n = 70) {
   tibble(p = p, q = q)
 }
 
-kurven <- tibble(q = seq(2.5, 7.5, length.out = 50)) %>%
+curves <- tibble(q = seq(2.5, 7.5, length.out = 50)) %>%
   mutate(supply = (q - 2) / 0.8, demand = (10 - q) / 1.2) %>%
   tidyr::pivot_longer(c(supply, demand), names_to = "curve", values_to = "p")
 
-bind_rows(markt(1.6, 0.3) %>% mutate(welt = "only demand shifts"),
-          markt(0.3, 1.6) %>% mutate(welt = "only supply shifts")) %>%
+bind_rows(market(1.6, 0.3) %>% mutate(world_label = "only demand shifts"),
+          market(0.3, 1.6) %>% mutate(world_label = "only supply shifts")) %>%
   ggplot(aes(q, p)) +
-  geom_line(data = kurven, aes(group = curve), linetype = "dashed",
+  geom_line(data = curves, aes(group = curve), linetype = "dashed",
             colour = "grey65", linewidth = .4) +
   geom_point(colour = "#2c6e8e", alpha = .7, size = 1.5) +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE,
               colour = "grey25", linewidth = .6) +
   coord_cartesian(xlim = c(2.5, 7.5), ylim = c(0, 7)) +
-  facet_wrap(~ welt) +
+  facet_wrap(~ world_label) +
   labs(x = "Quantity", y = "Price") +
   theme_minimal(base_size = 10)
 ```
 
-Wright's answer is in Appendix B, pages 286 to 319.^[In the book's own table of
-contents the appendix is "Effects of a Duty on Price, Output, and Imports", in
-three parts: formulae for estimating the effect of a duty, explanations and
-qualifications, and the handling of data. It was reprinted almost a century
-later, as "Effects of a duty on price and output with special reference to butter
-and flaxseed", in *The Econometrics Journal* 28(1), 2025, pages 21–40, with an
-editorial introduction — a rare honour for an appendix.] He calls the
+Wright's answer is in Appendix B, pages 286 to 319.[^iv-appendix-b] He calls the
 method *introducing external factors*, and the sentence in which he states it is
 worth reading slowly:
 
@@ -127,11 +121,7 @@ anybody called it that. A factor of type (B) — something that shifts the suppl
 curve and nothing else — pins supply down and lets the demand curve be traced.
 For flaxseed the natural candidate is *yield per acre*, which is mostly weather:
 a good harvest pushes the supply curve out and has no business in anyone's
-demand for linseed oil.^[Wright does not actually name his instruments in the
-appendix. Stock and Trebbi (2003) reconstruct them from context as the price of a
-substitute, which shifts demand, and yield per acre, which shifts supply. The
-story you sometimes read, that Wright used regional rainfall for butter, is not
-in the text.]
+demand for linseed oil.[^iv-wright-instruments]
 
 :::: {.defbox}
 ::: {.titeldefbox}
@@ -165,9 +155,31 @@ detail, by knowing where the variation came from. It is never defended by a
 p-value. Almost everything that goes wrong with instrumental variables in
 practice goes wrong there.
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Three conditions, three very different epistemic statuses. Match each to what
+the data can say about it.
+
+Relevance is `r mcq(c(answer = "testable", "testable only for what you measured", "never testable"))`.
+
+Independence is `r mcq(c("testable", answer = "testable only for what you measured", "never testable"))`.
+
+Exclusion is `r mcq(c("testable", "testable only for what you measured", answer = "never testable"))`.
+
+Which of the three does a first-stage F statistic speak to?
+`r mcq(c(answer = "relevance, and only relevance", "relevance and exclusion", "all three"))`
+
+And the sentence to carry through the section. An instrument that is exactly
+valid can afford to be weak; an instrument that is *almost* valid
+`r mcq(c("can also afford to be weak", answer = "cannot", "is not an instrument at all"))`.
+::::
+
+
 :::: {.amazing}
 ::: {.titelamazing}
-<h2>Amazing Fact</h2>
+<h2>The son who did not write it</h2>
 :::
 For decades the credit for Appendix B went to the wrong Wright.
 
@@ -212,10 +224,7 @@ That is algebraically identical to instrumental variables with a binary
 instrument, which is why the ratio in the definition box above is called the
 **Wald estimator**. And Olav Reiersøl, in a 1945 dissertation titled *Confluence
 Analysis by Means of Instrumental Sets of Variables*, gave the thing its
-name.^[Reiersøl had the idea earlier — see his *Econometrica* paper of 1941 on
-lag moments — and R. C. Geary arrived at something similar independently in the
-1940s. Aldrich (1993) argues that Geary's conception is closer to the modern one
-than Reiersøl's is.]
+name.[^iv-reiersol]
 
 Meanwhile Trygve Haavelmo was making Wright's problem respectable. His 1943
 *Econometrica* paper *The Statistical Implications of a System of Simultaneous
@@ -266,12 +275,7 @@ eligible men were never drafted, some ineligible men volunteered — but it shif
 the probability sharply, and it was drawn from a drum on television. Angrist
 matched the lottery to Social Security earnings records and divided. White
 veterans, he found, were earning about 15% less in the early 1980s than
-comparable non-veterans.^[Angrist (1990), *AER* 80(3), 313–336. The paper has an
-erratum: two figures were transposed, and a sampling-variance formula in footnote
-7 was wrong in a way that raises the standard errors in Table 3 by about ten per
-cent. The corrected headline is a loss of \$2,384 with a standard error of \$778,
-in 1978 dollars. Angrist and Chen (2011) return to the same lottery with data
-through 2000 and find the penalty has gone to roughly zero.]
+comparable non-veterans.[^iv-angrist-draft]
 
 Nothing about that is a system of equations. The instrument is not a supply
 shifter; it is a *lottery*, and the identification comes from the institution
@@ -284,42 +288,46 @@ The studies below are the catalogue. Read the middle column first — the
 instrument is the paper.
 
 ```{r iv-catalogue, echo=FALSE}
-katalog <- tibble::tribble(
-  ~Study, ~Instrument, ~Treatment, ~Finding,
-  "Angrist (1990), *AER*",
+catalogue <- tibble::tribble(
+  ~Study, ~Year, ~Field, ~Instrument, ~Treatment, ~Finding,
+  "Angrist, AER", 1990L, "Labour",
   "draft lottery number", "military service in Vietnam",
   "white veterans earned about 15% less in the early 1980s; by 2000 the gap has gone",
-  "Angrist & Krueger (1991), *QJE*",
+  "Angrist & Krueger, QJE", 1991L, "Labour",
   "quarter of birth", "years of schooling",
-  "compulsory-attendance laws keep roughly a quarter of would-be dropouts in school; the return is 8.9-9.3%, slightly above OLS",
-  "Card (1995)",
+  "compulsory-attendance laws keep as many as a quarter of would-be dropouts in school; the return is 8.9-9.3%, remarkably close to OLS",
+  "Card", 1995L, "Labour",
   "grew up near a four-year college", "years of schooling",
-  "the return to schooling is 13.2%, nearly twice the OLS figure of 7.5% - and the gap between them is the finding",
-  "Angrist & Evans (1998), *AER*",
+  "the return to schooling is 13.2%, well above the OLS figure of about 7.5% - and the gap between them is the finding",
+  "Angrist & Evans, AER", 1998L, "Labour",
   "first two children of the same sex", "having a third child",
-  "a third child cuts the probability that the mother works by roughly eight percentage points; fathers are unaffected",
-  "Acemoglu, Johnson & Robinson (2001), *AER*",
+  "a third child lowers the probability that the mother works; fathers are unaffected",
+  "Acemoglu, Johnson & Robinson, AER", 2001L, "Growth",
   "settler mortality in the colonial period", "quality of institutions today",
   "the institutional gap between Nigeria and Chile is worth a sevenfold difference in income",
-  "Miguel, Satyanath & Sergenti (2004), *JPE*",
+  "Miguel, Satyanath & Sergenti, JPE", 2004L, "Conflict",
   "rainfall growth", "GDP growth in Africa",
   "a negative growth shock of five percentage points raises the chance of civil conflict by one half",
-  "Kling (2006), *AER*",
+  "Kling, AER", 2006L, "Crime",
   "which judge you drew", "length of prison sentence",
   "no consistent evidence that longer sentences damage later employment or earnings",
-  "Maestas, Mullen & Strand (2013), *AER*",
+  "Maestas, Mullen & Strand, AER", 2013L, "Public finance",
   "which disability examiner you drew", "receiving disability insurance",
   "for the 23% of applicants on the margin of entry, employment would have been 28 points higher without benefits",
-  "Davey Smith & Ebrahim (2003), *IJE*",
+  "Davey Smith & Ebrahim, IJE", 2003L, "Epidemiology",
   "a genetic variant", "the exposure that variant governs",
   "Mendelian randomisation: a variant such as ALDH2, which makes alcohol unpleasant, is dealt out at conception and so instruments for the exposure it governs",
-  "Goldsmith-Pinkham, Sorkin & Swift (2020), *AER*",
+  "Goldsmith-Pinkham, Sorkin & Swift, AER", 2020L, "Labour",
   "local industry shares x national shocks", "local labour demand",
   "the Bartik instrument, and a proof that its identification lives in the shares rather than the shocks")
 
-knitr::kable(katalog,
-  caption = "Ten instruments. In every row the middle column is a variable that moves the treatment and has no plausible business in the outcome equation - and in every row that second claim is an argument rather than a test.") %>%
-  kableExtra::kable_styling(font_size = 11)
+DT::datatable(
+  catalogue,
+  rownames = FALSE,
+  filter   = "top",
+  options  = list(pageLength = 5, scrollX = TRUE, dom = "ftip",
+                  columnDefs = list(list(width = "35%", targets = 5))),
+  caption  = "Ten instruments, sortable and searchable. In every row the instrument column holds a variable that moves the treatment and has no plausible business in the outcome equation - and in every row that second claim is an argument rather than a test.")
 ```
 
 Two things about that table. The first is that no two instruments are alike: a
@@ -329,6 +337,30 @@ the lottery, the judge, the examiner, the genetic variant — are all things tha
 were *randomised by somebody*, whether a government or meiosis. That is not a
 coincidence, and Section \@ref(iv-an-instrument-designed-on-purpose) comes back
 to it.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The table above is sortable and searchable. Sort by **Year**.
+
+The earliest study in the catalogue is from `r fitb(1990, num = TRUE)`, the
+latest from `r fitb(2020, num = TRUE)`.
+
+Now sort by **Field**. Four of the ten are labour economics. Type `judge` and
+then `examiner` into the search box: two studies use the same trick, the random
+assignment of a case to an official. What makes that a good instrument?
+`r mcq(c("officials are chosen at random from the population", answer = "which official you draw is unrelated to your case, but strongly predicts how it is decided", "officials are interchangeable, so the treatment is homogeneous"))`
+
+One row has an instrument that nobody designed, nobody legislated and nobody
+drew from a drum. Which?
+`r mcq(c("draft lottery number", "which judge you drew", answer = "a genetic variant", "local industry shares"))`
+
+And a reading question about the middle column. In how many of the ten rows is
+the instrument itself something a *policy-maker could change*?
+`r mcq(c("all ten", "about half", answer = "almost none - which is the point: an instrument is a lever on the treatment, not a policy"))`
+::::
+
 
 ### The Idea in Four Numbers {#iv-the-idea-in-four-numbers}
 
@@ -366,7 +398,7 @@ standard error does not reveal.
 As in Sections \@ref(mat-data) and \@ref(did-data), the honest way to see what an
 estimator does is to build a world in which the answer is already known. The
 function below is that world. Twelve thousand people on the register; a coin
-decides who gets a letter; each person has an unobserved `ehrgeiz` — drive,
+decides who gets a letter; each person has an unobserved `drive` — drive,
 ambition, whatever you want to call it — which raises their wage, raises their
 chance of taking a course, *and* raises how much the course is worth to them.
 
@@ -377,49 +409,49 @@ called "the effect of the course", and the choice of estimator becomes a choice
 of *whose* effect to estimate.
 
 ```{r iv-simulate, echo=TRUE}
-simulate_weiterbildung <- function(n = 12000, seed = 1848, arme = 2,
-                                   staerke = 1, verletzung = 0) {
+simulate_pilot <- function(n = 12000, seed = 1848, arms = 2,
+                                   strength = 1, violation = 0) {
   set.seed(seed)
 
-  ehrgeiz <- rnorm(n)                                  # unobserved, and decisive
-  alter   <- round(runif(n, 25, 58))
-  frau    <- rbinom(n, 1, 0.48)
-  schule  <- pmin(pmax(round(11 + 1.8 * rnorm(n) + 0.7 * ehrgeiz), 8), 18)
-  lohn0   <- 2.55 + 0.045 * schule + 0.004 * (alter - 40) -
-             0.09 * frau + 0.07 * ehrgeiz + rnorm(n, 0, 0.16)
+  drive <- rnorm(n)                                  # unobserved, and decisive
+  age   <- round(runif(n, 25, 58))
+  female    <- rbinom(n, 1, 0.48)
+  schooling  <- pmin(pmax(round(11 + 1.8 * rnorm(n) + 0.7 * drive), 8), 18)
+  wage0   <- 2.55 + 0.045 * schooling + 0.004 * (age - 40) -
+             0.09 * female + 0.07 * drive + rnorm(n, 0, 0.16)
 
-  arm       <- sample(0:(arme - 1), n, replace = TRUE)  # the lottery
-  einladung <- as.integer(arm >= 1)                     # letter, or no letter
-  beratung  <- as.integer(arm == 2)                     # letter plus a phone call
+  arm       <- sample(0:(arms - 1), n, replace = TRUE)  # the lottery
+  letter <- as.integer(arm >= 1)                     # letter, or no letter
+  call  <- as.integer(arm == 2)                     # letter plus a phone call
 
   # what each person would do under each arm, monotone in one index
-  index <- 0.80 * ehrgeiz + 0.10 * (schule - 11) - 0.20 * frau
+  index <- 0.80 * drive + 0.10 * (schooling - 11) - 0.20 * female
   d0 <- as.integer(index > 1.00)                        # goes with no letter
-  d1 <- as.integer(index > 1.00 - 0.90 * staerke)       # goes with a letter
-  d2 <- as.integer(index > 1.00 - 1.30 * staerke)       # goes with letter and call
-  teilnahme <- ifelse(arm == 0, d0, ifelse(arm == 1, d1, d2))
+  d1 <- as.integer(index > 1.00 - 0.90 * strength)       # goes with a letter
+  d2 <- as.integer(index > 1.00 - 1.30 * strength)       # goes with letter and call
+  attends <- ifelse(arm == 0, d0, ifelse(arm == 1, d1, d2))
 
-  typ <- ifelse(d0 == 1, "always-taker",
+  type <- ifelse(d0 == 1, "always-taker",
          ifelse(d1 == 1, "complier",
          ifelse(d2 == 1, "late complier", "never-taker")))
 
   # the return to the course, rising in the same drive that drives take-up
-  tau <- 0.030 + 0.075 * pnorm(ehrgeiz) + 0.010 * (schule - 11) / 4
+  tau <- 0.030 + 0.075 * pnorm(drive) + 0.010 * (schooling - 11) / 4
 
-  lohn <- lohn0 + tau * teilnahme + 0.055 * ehrgeiz +
-          verletzung * einladung + rnorm(n, 0, 0.13)
+  wage <- wage0 + tau * attends + 0.055 * drive +
+          violation * letter + rnorm(n, 0, 0.13)
 
-  tibble(id = seq_len(n), arm, einladung, beratung, teilnahme, typ,
-         tau, ehrgeiz, alter, frau, schule, lohn0, lohn)
+  tibble(id = seq_len(n), arm, letter, call, attends, type,
+         tau, drive, age, female, schooling, wage0, wage)
 }
 
-kurs <- simulate_weiterbildung()
+pilot <- simulate_pilot()
 ```
 
-`lohn` is a log hourly wage, so a coefficient of 0.09 means roughly nine per
-cent. `staerke` is a dial for how hard the letter pushes, `verletzung` a dial for
+`wage` is a log hourly wage, so a coefficient of 0.09 means roughly nine per
+cent. `strength` is a dial for how hard the letter pushes, `violation` a dial for
 the letter having a direct effect on wages; both are switched off for now and
-both come back later. The `arme` argument adds a third treatment arm, used once,
+both come back later. The `arms` argument adds a third treatment arm, used once,
 in Section \@ref(iv-testing-what-can-be-tested).
 
 Here is the world in two pictures. The left panel is the design: a threshold on
@@ -427,10 +459,10 @@ an index nobody observes, and a letter that moves the threshold. The right panel
 is why the design matters.
 
 ```{r iv-world, echo=FALSE, fig.align='center', fig.width=8, fig.height=3.6, fig.cap="Left: the unobserved index that decides participation, with the two thresholds the letter moves between. Everyone to the right of the solid line goes anyway, everyone between the lines goes only if the letter arrives, everyone to the left never goes. Right: the true return to the course by type. The three groups are not interchangeable, which is the whole difficulty of this section."}
-kurs2 <- kurs %>%
-  mutate(index = 0.80 * ehrgeiz + 0.10 * (schule - 11) - 0.20 * frau)
+pilot2 <- pilot %>%
+  mutate(index = 0.80 * drive + 0.10 * (schooling - 11) - 0.20 * female)
 
-p1 <- ggplot(kurs2, aes(index)) +
+p1 <- ggplot(pilot2, aes(index)) +
   geom_density(fill = "grey85", colour = "grey50") +
   geom_vline(xintercept = 1.00, linewidth = .6) +
   geom_vline(xintercept = 0.10, linewidth = .6, linetype = "dashed") +
@@ -444,13 +476,13 @@ p1 <- ggplot(kurs2, aes(index)) +
        y = "density", title = "The letter moves one threshold") +
   theme_minimal(base_size = 10)
 
-p2 <- kurs %>%
-  filter(typ != "late complier") %>%
-  group_by(typ) %>%
+p2 <- pilot %>%
+  filter(type != "late complier") %>%
+  group_by(type) %>%
   summarise(tau = mean(tau)) %>%
-  mutate(typ = factor(typ,
+  mutate(type = factor(type,
                       levels = c("never-taker", "complier", "always-taker"))) %>%
-  ggplot(aes(typ, tau)) +
+  ggplot(aes(type, tau)) +
   geom_col(fill = "#2c6e8e", width = .55) +
   geom_text(aes(label = sprintf("%.3f", tau)), vjust = -0.4,
             size = 3, colour = "grey25") +
@@ -472,30 +504,51 @@ tibble(
                "ATT --- those who actually took a course",
                "ATU --- those who did not",
                "LATE --- those the letter moved (compliers)"),
-  Truth = c(mean(kurs$tau),
-            mean(kurs$tau[kurs$teilnahme == 1]),
-            mean(kurs$tau[kurs$teilnahme == 0]),
-            mean(kurs$tau[kurs$typ == "complier"]))) %>%
+  Truth = c(mean(pilot$tau),
+            mean(pilot$tau[pilot$attends == 1]),
+            mean(pilot$tau[pilot$attends == 0]),
+            mean(pilot$tau[pilot$type == "complier"]))) %>%
   knitr::kable(digits = 4,
     caption = "Four honest answers to the question 'what is the effect of the course', in a world where we are allowed to look. Nothing in the data will tell you which one an estimator has produced; only the design will.")
 ```
 
 ::: {.analysis-note}
-The register splits into `r sprintf("%.1f%%", 100 * mean(kurs$typ == "always-taker"))`
-always-takers, `r sprintf("%.1f%%", 100 * mean(kurs$typ == "complier"))` compliers
-and `r sprintf("%.1f%%", 100 * mean(kurs$typ == "never-taker"))` never-takers.
+The register splits into `r sprintf("%.1f%%", 100 * mean(pilot$type == "always-taker"))`
+always-takers, `r sprintf("%.1f%%", 100 * mean(pilot$type == "complier"))` compliers
+and `r sprintf("%.1f%%", 100 * mean(pilot$type == "never-taker"))` never-takers.
 You will never see this table in a real study. Which type a given person belongs
 to is unknowable — we observe what they did under the arm they were given, never
 under the other one — and Section \@ref(iv-who-is-the-answer-about) shows how
 much of it can be recovered anyway.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Four numbers, four questions, one data set.
+
+Which of the four will the letter identify?
+`r mcq(c("ATE", "ATT", "ATU", answer = "LATE"))`
+
+The ATT (0.0942) is larger than the ATU (0.0583). What does that ordering tell
+you about who enrols?
+`r mcq(c("nothing, it is sampling noise", answer = "the people who take a course are disproportionately the people it is worth most to", "the course is more effective when more people take it"))`
+
+The LATE (0.0863) sits between the two. Is that a coincidence?
+`r mcq(c("yes", answer = "no - compliers are, by construction, the people on the margin between taking and not taking", "no, LATE is always the midpoint of ATT and ATU"))`
+
+True or false: with a different instrument, the same data would give a different
+LATE, and neither estimate would be wrong. `r torf(TRUE)`
+::::
+
+
 ### What the Naive Comparison Says {#iv-what-the-naive-comparison-says}
 
 Start where a competent analyst without an identification strategy would start.
 
 ```{r iv-naive, echo=TRUE}
-lm(lohn ~ teilnahme, data = kurs) %>% summary() %>% coef() %>% round(4)
+lm(wage ~ attends, data = pilot) %>% summary() %>% coef() %>% round(4)
 ```
 
 Thirty-five log points. Now add everything the agency's files contain — age, sex,
@@ -503,18 +556,18 @@ years of schooling — and then, going well beyond what any real file offers, th
 person's own baseline wage.
 
 ```{r iv-naive-controls, echo=TRUE}
-kontrollen <- list(
-  "raw difference"        = lm(lohn ~ teilnahme, data = kurs),
-  "+ age, sex, schooling" = lm(lohn ~ teilnahme + alter + frau + schule,
-                               data = kurs),
-  "+ baseline wage"       = lm(lohn ~ teilnahme + alter + frau + schule + lohn0,
-                               data = kurs))
+control_sets <- list(
+  "raw difference"        = lm(wage ~ attends, data = pilot),
+  "+ age, sex, schooling" = lm(wage ~ attends + age + female + schooling,
+                               data = pilot),
+  "+ baseline wage"       = lm(wage ~ attends + age + female + schooling + wage0,
+                               data = pilot))
 
-tibble(Specification = names(kontrollen),
-       Estimate     = sapply(kontrollen, function(m) coef(m)["teilnahme"]),
-       `Std. error` = sapply(kontrollen,
-                             function(m) sqrt(diag(vcov(m)))["teilnahme"]),
-       `True LATE`  = mean(kurs$tau[kurs$typ == "complier"])) %>%
+tibble(Specification = names(control_sets),
+       Estimate     = sapply(control_sets, function(m) coef(m)["attends"]),
+       `Std. error` = sapply(control_sets,
+                             function(m) sqrt(diag(vcov(m)))["attends"]),
+       `True LATE`  = mean(pilot$tau[pilot$type == "complier"])) %>%
   knitr::kable(digits = 4, row.names = FALSE,
     caption = "Three regressions, each better controlled than the last, converging on the wrong answer. The truth for the group an instrument will identify is in the final column; every specification sits above it, and the standard errors are so small that no interval comes close.")
 ```
@@ -533,20 +586,39 @@ estimate falls by ten log points. There is no diagnostic in the output that says
 "and it should fall by another seven".
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The three specifications gave 0.3463, 0.2604 and 0.1561. The truth for compliers
+is 0.0863, and the best-controlled standard error is 0.0031.
+
+The best specification is off by `r fitb(0.07, tol = 0.008)` log points, which is
+about `r fitb(22, tol = 3)` standard errors.
+
+The controls did help — a great deal. Why is that the *dangerous* part?
+`r mcq(c("because the estimate is still biased", answer = "because a specification that visibly improves as controls are added invites you to believe the next one would have been enough", "because the standard errors shrank"))`
+
+The third specification adds the person's own baseline wage, which no real
+administrative file contains. If you removed it, the estimate would move
+`r mcq(c("closer to the truth", answer = "further from it", "not at all"))`.
+::::
+
+
 ### The Wald Ratio by Hand {#iv-the-wald-ratio-by-hand}
 
 Now use the lottery. Four numbers, computed with `group_by()`.
 
 ```{r iv-four-numbers, echo=TRUE}
-vier <- kurs %>%
-  group_by(einladung) %>%
-  summarise(n = n(), participation = mean(teilnahme), wage = mean(lohn))
-vier
+four_numbers <- pilot %>%
+  group_by(letter) %>%
+  summarise(n = n(), participation = mean(attends), wage = mean(wage))
+four_numbers
 ```
 
 ```{r iv-wald, echo=TRUE}
-itt         <- diff(vier$wage)             # intention to treat
-first_stage <- diff(vier$participation)    # the first stage
+itt         <- diff(four_numbers$wage)             # intention to treat
+first_stage <- diff(four_numbers$participation)    # the first stage
 
 c(itt = itt, first_stage = first_stage, wald = itt / first_stage)
 ```
@@ -562,6 +634,34 @@ letters wants the first; a person deciding whether to enrol wants the second.
 Reporting only one of them is a decision about whose question you are answering.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The letter raised participation from 0.113 to 0.414 and mean log wages by 0.027.
+
+The first stage is `r fitb(0.30, tol = 0.015)` and the Wald ratio
+`r fitb(0.09, tol = 0.008)`.
+
+Which of the two numbers — the intention-to-treat effect or the Wald ratio —
+would you put in a briefing note for the minister who has to decide whether to
+send the letters?
+`r mcq(c(answer = "the intention-to-treat effect, because sending letters is what the minister can decide", "the Wald ratio, because it is the causal effect", "neither, the pilot is too small"))`
+
+True or false: the intention-to-treat effect is biased downwards because most
+recipients ignored the letter. `r torf(FALSE)`
+
+`r hide("Why false?")`
+
+It is not biased at all. It is an unbiased estimate of a *different* quantity —
+the effect of sending letters to everybody, ignorers included. Calling it
+"attenuated" imports the assumption that the effect of the course is the question,
+when the effect of the policy is a perfectly good question of its own.
+
+`r unhide()`
+::::
+
+
 ### Two Stages, and Why the Second One Lies {#iv-two-stages}
 
 The Wald ratio works only when the instrument is binary and nothing else is in
@@ -571,9 +671,9 @@ lottery explains, and therefore the part that cannot be contaminated by drive �
 then put those fitted values into the outcome equation in place of the treatment.
 
 ```{r iv-manual-2sls, echo=TRUE}
-stufe1 <- lm(teilnahme ~ einladung, data = kurs)
-stufe2 <- lm(kurs$lohn ~ fitted(stufe1))
-coef(summary(stufe2)) %>% round(4)
+stage1 <- lm(attends ~ letter, data = pilot)
+stage2 <- lm(pilot$wage ~ fitted(stage1))
+coef(summary(stage2)) %>% round(4)
 ```
 
 The point estimate is exactly the Wald ratio. The standard error is wrong.
@@ -586,7 +686,7 @@ The two differ, and there is no rule about which direction the error goes. Do it
 properly and the software takes care of it:
 
 ```{r iv-ivreg, echo=TRUE}
-iv <- ivreg(lohn ~ teilnahme | einladung, data = kurs)
+iv <- ivreg(wage ~ attends | letter, data = pilot)
 summary(iv, diagnostics = TRUE)
 ```
 
@@ -596,8 +696,8 @@ allowed to be exogenous. Exogenous controls therefore appear on *both* sides,
 which trips up everybody exactly once:
 
 ```{r iv-ivreg-controls, echo=TRUE}
-ivreg(lohn ~ teilnahme + alter + frau + schule |
-             einladung + alter + frau + schule, data = kurs) %>%
+ivreg(wage ~ attends + age + female + schooling |
+             letter + age + female + schooling, data = pilot) %>%
   summary() %>% coef() %>% head(2) %>% round(4)
 ```
 
@@ -633,8 +733,8 @@ small direct effect of the letter on wages?
 
 ### Who Is the Answer About? {#iv-who-is-the-answer-about}
 
-The estimate is `r sprintf("%.4f", coef(iv)["teilnahme"])`. The average treatment
-effect in this population is `r sprintf("%.4f", mean(kurs$tau))`. These are not
+The estimate is `r sprintf("%.4f", coef(iv)["attends"])`. The average treatment
+effect in this population is `r sprintf("%.4f", mean(pilot$tau))`. These are not
 the same number, and the estimator is not making a mistake.
 
 Imbens and Angrist worked out what the ratio identifies in a 1994 *Econometrica*
@@ -673,7 +773,7 @@ complier share.
 
 ```{r iv-complier-share, echo=TRUE}
 c(estimated = unname(first_stage),
-  truth     = mean(kurs$typ == "complier"))
+  truth     = mean(pilot$type == "complier"))
 ```
 
 Averages of covariates among compliers come from a difference of the same shape.
@@ -682,21 +782,21 @@ group, divide by the first stage.
 
 ```{r iv-complier-profile, echo=TRUE}
 complier_mean <- function(x) {
-  z <- kurs$einladung
-  d <- kurs$teilnahme
+  z <- pilot$letter
+  d <- pilot$attends
   (mean(x * d * z) / mean(z) -
    mean(x * d * (1 - z)) / mean(1 - z)) / first_stage
 }
 
 tibble(Variable = c("years of schooling", "age", "share women"),
-       `Compliers (estimated)` = c(complier_mean(kurs$schule),
-                                   complier_mean(kurs$alter),
-                                   complier_mean(kurs$frau)),
-       `Compliers (truth)` = c(mean(kurs$schule[kurs$typ == "complier"]),
-                               mean(kurs$alter[kurs$typ == "complier"]),
-                               mean(kurs$frau[kurs$typ == "complier"])),
-       `Whole register` = c(mean(kurs$schule), mean(kurs$alter),
-                            mean(kurs$frau))) %>%
+       `Compliers (estimated)` = c(complier_mean(pilot$schooling),
+                                   complier_mean(pilot$age),
+                                   complier_mean(pilot$female)),
+       `Compliers (truth)` = c(mean(pilot$schooling[pilot$type == "complier"]),
+                               mean(pilot$age[pilot$type == "complier"]),
+                               mean(pilot$female[pilot$type == "complier"])),
+       `Whole register` = c(mean(pilot$schooling), mean(pilot$age),
+                            mean(pilot$female))) %>%
   knitr::kable(digits = 3,
     caption = "Who the compliers are, estimated from observable data and checked against the truth. They have more schooling than the register as a whole, which is exactly the group a letter about a training voucher would be expected to move.")
 ```
@@ -705,27 +805,50 @@ That table is the most under-used diagnostic in applied work. It costs three
 lines, and it turns an abstract complaint — "LATE is only for compliers" — into a
 concrete description of a group the reader can picture.
 
-```{r iv-estimands, echo=FALSE, fig.align='center', fig.width=7.2, fig.height=3.2, fig.cap="Every estimand in this world, with the instrumental-variables estimate and its interval laid over them. The estimator lands on the local average treatment effect and misses the population average by a third; the fully controlled regression misses everything."}
-ci <- coef(iv)["teilnahme"] + c(-1.96, 1.96) * sqrt(diag(vcov(iv)))["teilnahme"]
-ols_voll <- coef(lm(lohn ~ teilnahme + alter + frau + schule + lohn0,
-                    data = kurs))["teilnahme"]
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+The estimated complier share was 0.3006 against a truth of 0.3046, and the
+estimated complier schooling 11.70 against a truth of 11.75. The register as a
+whole averages 11.07 years.
 
-tibble(was = factor(c("ATU", "ATE", "LATE (compliers)", "ATT"),
+So the compliers have about `r fitb(0.6, tol = 0.15)` more years of schooling
+than the register.
+
+Where did the estimate of the complier share come from? It is not a new
+calculation.
+`r mcq(c("the intention-to-treat effect", answer = "the first stage - the jump in participation is the complier share", "the ratio of the two"))`
+
+Can you point at an individual complier in the data?
+`r mcq(c("yes, anyone who took a course after receiving a letter", answer = "no - such a person is either a complier or an always-taker, and no data separate them", "yes, but only in a randomised experiment"))`
+
+True or false: the complier profile can be computed for any covariate measured
+before the instrument was assigned. `r torf(TRUE)`
+::::
+
+
+```{r iv-estimands, echo=FALSE, fig.align='center', fig.width=7.2, fig.height=3.2, fig.cap="Every estimand in this world, with the instrumental-variables estimate and its interval laid over them. The estimator lands on the local average treatment effect and misses the population average by a third; the fully controlled regression misses everything."}
+ci <- coef(iv)["attends"] + c(-1.96, 1.96) * sqrt(diag(vcov(iv)))["attends"]
+ols_full <- coef(lm(wage ~ attends + age + female + schooling + wage0,
+                    data = pilot))["attends"]
+
+tibble(quantity = factor(c("ATU", "ATE", "LATE (compliers)", "ATT"),
                     levels = c("ATU", "ATE", "LATE (compliers)", "ATT")),
-       wert = c(mean(kurs$tau[kurs$teilnahme == 0]), mean(kurs$tau),
-                mean(kurs$tau[kurs$typ == "complier"]),
-                mean(kurs$tau[kurs$teilnahme == 1]))) %>%
-  ggplot(aes(wert, was)) +
+       value = c(mean(pilot$tau[pilot$attends == 0]), mean(pilot$tau),
+                mean(pilot$tau[pilot$type == "complier"]),
+                mean(pilot$tau[pilot$attends == 1]))) %>%
+  ggplot(aes(value, quantity)) +
   annotate("rect", xmin = ci[1], xmax = ci[2], ymin = -Inf, ymax = Inf,
            fill = "#2c6e8e", alpha = .15) +
-  geom_vline(xintercept = coef(iv)["teilnahme"], colour = "#2c6e8e",
+  geom_vline(xintercept = coef(iv)["attends"], colour = "#2c6e8e",
              linewidth = .7) +
-  geom_vline(xintercept = ols_voll, colour = "grey40",
+  geom_vline(xintercept = ols_full, colour = "grey40",
              linetype = "dashed", linewidth = .6) +
   geom_point(size = 3, colour = "grey20") +
-  annotate("text", x = coef(iv)["teilnahme"], y = 4.4, label = "2SLS",
+  annotate("text", x = coef(iv)["attends"], y = 4.4, label = "2SLS",
            size = 3, colour = "#2c6e8e", hjust = -0.15) +
-  annotate("text", x = ols_voll, y = 4.4, label = "OLS, fully controlled",
+  annotate("text", x = ols_full, y = 4.4, label = "OLS, fully controlled",
            size = 3, colour = "grey40", hjust = 1.05) +
   labs(x = "effect on log hourly wage", y = NULL) +
   theme_minimal(base_size = 10)
@@ -751,7 +874,7 @@ James Heckman and Sergio Urzúa make a related argument in the *Journal of
 Econometrics* the same year: an instrument answers the question it happens to
 pose, and the question a policy-maker asked is generally a different one.
 
-The reply, which is Angrist and Imbens's, is that a well-defined local answer is
+The reply, which is Imbens's in the same issue, is that a well-defined local answer is
 worth more than an ill-defined global one, and that the complier population can
 be described — see the table above — rather than left as a mystery. Both sides
 are right about something. Neither side disputes the empirical fact: change the
@@ -761,29 +884,29 @@ instrument and the number changes, because the compliers changed.
 ### When the Instrument Is Weak {#iv-when-the-instrument-is-weak}
 
 Everything above assumed a letter that moved thirty per cent of the register.
-Most instruments in the literature move far less. Turn the `staerke` dial down
+Most instruments in the literature move far less. Turn the `strength` dial down
 and watch.
 
 ```{r iv-weak-study, echo=TRUE, cache=TRUE}
-weak_study <- function(staerke, draws = 400) {
+weak_study <- function(strength, draws = 400) {
   out <- lapply(seq_len(draws), function(i) {
-    d  <- simulate_weiterbildung(n = 4000, seed = 20000 + i, staerke = staerke)
-    fs <- lm(teilnahme ~ einladung, data = d)
-    m  <- ivreg(lohn ~ teilnahme | einladung, data = d)
+    d  <- simulate_pilot(n = 4000, seed = 20000 + i, strength = strength)
+    fs <- lm(attends ~ letter, data = d)
+    m  <- ivreg(wage ~ attends | letter, data = d)
     tibble(F    = unname(summary(fs)$fstatistic[1]),
-           iv   = unname(coef(m)["teilnahme"]),
-           se   = unname(sqrt(diag(vcov(m)))["teilnahme"]),
-           late = mean(d$tau[d$typ == "complier"]))
+           iv   = unname(coef(m)["attends"]),
+           se   = unname(sqrt(diag(vcov(m)))["attends"]),
+           late = mean(d$tau[d$type == "complier"]))
   })
-  bind_rows(out) %>% mutate(staerke = staerke)
+  bind_rows(out) %>% mutate(strength = strength)
 }
 
-schwach <- bind_rows(lapply(c(1, 0.35, 0.15, 0.07), weak_study))
+weak_draws <- bind_rows(lapply(c(1, 0.35, 0.15, 0.07), weak_study))
 ```
 
 ```{r iv-weak-table, echo=FALSE}
-schwach %>%
-  group_by(staerke) %>%
+weak_draws %>%
+  group_by(strength) %>%
   summarise(`median F`        = median(F),
             `true LATE`       = mean(late),
             `median estimate` = median(iv),
@@ -791,8 +914,8 @@ schwach %>%
             `90th pct`        = quantile(iv, .90),
             `share absurd`    = mean(iv < 0 | iv > 0.3),
             coverage          = mean(abs(iv - late) < 1.96 * se)) %>%
-  arrange(desc(staerke)) %>%
-  rename(`letter strength` = staerke) %>%
+  arrange(desc(strength)) %>%
+  rename(`letter strength` = strength) %>%
   knitr::kable(digits = 3,
     caption = "Four hundred studies at each of four instrument strengths, strongest first. The median estimate stays near the truth almost all the way down; the tenth and ninetieth percentiles do not, and by the last row five studies in six report a negative or implausibly large return. Coverage looks fine throughout, which is the trap.")
 ```
@@ -805,18 +928,38 @@ has happened is that the intervals have grown so wide that they cover everything
 become biased so much as *uninformative*, and an uninformative answer that
 arrives with stars beside it is worse than no answer at all.
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Read the last row of the table: median F of 1.8, and the share of studies
+reporting a negative or absurd return is `r fitb(0.83, tol = 0.05)`.
+
+Read the coverage column instead. It goes 0.945, 0.955, 0.960, 0.980. A referee
+who checks only coverage would conclude
+`r mcq(c("that the weak instrument is badly biased", answer = "that nothing is wrong - which is exactly the trap", "that the simulation is broken"))`
+
+Coverage *rises* as the instrument weakens. Why?
+`r mcq(c("because the point estimates get better", answer = "because the intervals get so wide that they cover almost anything, including the truth", "because the sample grows"))`
+
+And a question worth sitting with. Between the first row and the last, which has
+changed more: the location of the sampling distribution, or its spread?
+`r mcq(c("the location", answer = "the spread", "both equally"))`
+::::
+
+
 ```{r iv-weak-picture, echo=FALSE, fig.align='center', fig.width=7.6, fig.height=3.2, fig.cap="The sampling distribution of the two-stage least squares estimate at four instrument strengths, truncated to a readable range. The vertical line is the truth. As the first stage weakens the distribution does not shift so much as spread, growing tails far beyond anything the reported standard error suggests."}
-schwach %>%
-  group_by(staerke) %>%
+weak_draws %>%
+  group_by(strength) %>%
   mutate(label = sprintf("median F = %.0f", median(F))) %>%
   ungroup() %>%
   mutate(label = factor(label,
-                        levels = unique(label[order(-staerke)]))) %>%
+                        levels = unique(label[order(-strength)]))) %>%
   filter(iv > -0.3, iv < 0.5) %>%
   ggplot(aes(iv)) +
   geom_histogram(bins = 40, fill = "#2c6e8e", colour = "white",
                  linewidth = .15) +
-  geom_vline(xintercept = mean(schwach$late), colour = "grey20",
+  geom_vline(xintercept = mean(weak_draws$late), colour = "grey20",
              linewidth = .5) +
   facet_wrap(~ label, nrow = 1, scales = "free_y") +
   labs(x = "2SLS estimate", y = NULL) +
@@ -831,19 +974,22 @@ what gets said about it in seminars is a little bit wrong.
 
 The number everybody quotes is ten, and it comes from a remark rather than a
 theorem. Douglas Staiger and James Stock, in *Econometrica* in 1997, wrote that
-"it is our impression that, in applications of two-stage least squares, it is
-common for the first stage F statistic … to take on a value less than 10." The
+"it is our impression that, in applications of two-stage least squares (TSLS),
+it is common for the first stage F statistic … to take on a value less than 10." The
 profession turned an observation about what is common into a threshold for what
 is acceptable.
 
 Stock and Yogo (2005) did the work properly and produced tables of critical
 values, and those tables say two different things depending on what you are
 afraid of. If you are afraid of *bias* — of two-stage least squares drifting back
-towards ordinary least squares — the critical values sit in the low teens and ten
-is a fair approximation. If you are afraid of *size* — of a nominal 5% test
-rejecting far more often than five per cent of the time — the numbers are much
-larger. With one endogenous regressor and one instrument, the value that keeps
-the true size of a 5% test below 10% is 16.38.
+towards ordinary least squares — the critical values sit around nine to fourteen
+and ten is a fair approximation. Note what that concedes: the relative-bias
+tables exist only for three instruments or more, so the familiar rule has nothing
+to say about the just-identified case this section is mostly about. If you are
+afraid of *size* — of a nominal 5% test rejecting far more often than five per
+cent of the time — the numbers are larger, and they are tabulated for one
+instrument. With one endogenous regressor and one instrument, the value that
+keeps the true size of a 5% test below 10% is 16.38.
 
 Then Lee, McCrary, Moreira and Porter, in the *American Economic Review* in 2022,
 showed that even that is optimistic. In the just-identified case, the conventional
@@ -877,6 +1023,28 @@ threshold, and is an order of magnitude below what Lee and co-authors require. I
 is one of the most cited instruments in economics.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Three thresholds for one statistic. Match each to what it promises.
+
+The value 10 promises something about `r mcq(c(answer = "bias in the point estimate", "the size of a 5% test", "the validity of the t-statistic you printed"))`.
+
+The value 16.38 promises something about `r mcq(c("bias in the point estimate", answer = "the size of a 5% test", "the exclusion restriction"))`.
+
+The value 104.7 promises something about `r mcq(c("bias in the point estimate", "the size of a 5% test", answer = "whether the conventional t-test with the 1.96 cut-off means what it says"))`.
+
+Card's instrument has an F of `r fitb(13.3, tol = 0.4)`. It clears the first
+threshold and fails the other two.
+
+And the awkward one. The relative-bias tables that give rise to the "10" are
+computed for three instruments or more. What follows for a study with exactly one
+instrument?
+`r mcq(c("nothing, ten still applies", answer = "the familiar rule has no formal basis in precisely the case where it is quoted most", "the study should use two instruments"))`
+::::
+
+
 ### Inference That Survives a Weak Instrument {#iv-inference-that-survives}
 
 If the F statistic is a diagnostic that arrives too late, the alternative is not
@@ -892,20 +1060,20 @@ the data cannot reject.
 
 ```{r iv-ar, echo=TRUE}
 ar_statistic <- function(data, b) {
-  rest <- data$lohn - b * data$teilnahme
-  summary(lm(rest ~ data$einladung))$coefficients[2, 3]^2   # squared t
+  rest <- data$wage - b * data$attends
+  summary(lm(rest ~ data$letter))$coefficients[2, 3]^2   # squared t
 }
 
-gitter   <- seq(-0.2, 0.5, by = 0.0005)
-stark    <- vapply(gitter, function(b) ar_statistic(kurs, b), numeric(1))
-behalten <- gitter[stark < qchisq(0.95, df = 1)]
-range(behalten)
+b_grid   <- seq(-0.2, 0.5, by = 0.0005)
+ar_strong    <- vapply(b_grid, function(b) ar_statistic(pilot, b), numeric(1))
+kept <- b_grid[ar_strong < qchisq(0.95, df = 1)]
+range(kept)
 ```
 
 Compare that with the interval `ivreg()` implies:
 
 ```{r iv-ar-compare, echo=TRUE}
-coef(iv)["teilnahme"] + c(-1.96, 1.96) * sqrt(diag(vcov(iv)))["teilnahme"]
+coef(iv)["attends"] + c(-1.96, 1.96) * sqrt(diag(vcov(iv)))["attends"]
 ```
 
 Practically identical, and they should be: with a first stage this strong the
@@ -913,17 +1081,17 @@ conventional approximation is excellent. Now run the same two calculations in a
 world where the letter barely works.
 
 ```{r iv-ar-weak, echo=TRUE}
-kurs_schwach <- simulate_weiterbildung(staerke = 0.05)
-iv_schwach   <- ivreg(lohn ~ teilnahme | einladung, data = kurs_schwach)
+pilot_weak <- simulate_pilot(strength = 0.05)
+iv_weak   <- ivreg(wage ~ attends | letter, data = pilot_weak)
 
-schwach_stat <- vapply(gitter,
-                       function(b) ar_statistic(kurs_schwach, b), numeric(1))
+ar_weak <- vapply(b_grid,
+                       function(b) ar_statistic(pilot_weak, b), numeric(1))
 
-c(anteil_des_gitters  = mean(schwach_stat < qchisq(0.95, df = 1)),
-  konventionell_unten = unname(coef(iv_schwach)["teilnahme"] -
-                          1.96 * sqrt(diag(vcov(iv_schwach)))["teilnahme"]),
-  konventionell_oben  = unname(coef(iv_schwach)["teilnahme"] +
-                          1.96 * sqrt(diag(vcov(iv_schwach)))["teilnahme"]))
+c(share_of_grid  = mean(ar_weak < qchisq(0.95, df = 1)),
+  conventional_lower = unname(coef(iv_weak)["attends"] -
+                          1.96 * sqrt(diag(vcov(iv_weak)))["attends"]),
+  conventional_upper  = unname(coef(iv_weak)["attends"] +
+                          1.96 * sqrt(diag(vcov(iv_weak)))["attends"]))
 ```
 
 The Anderson-Rubin set is the entire grid. Every value of the treatment effect we
@@ -933,16 +1101,16 @@ nothing. The conventional interval, meanwhile, is finite and prints a
 respectable-looking pair of numbers.
 
 ```{r iv-ar-picture, echo=FALSE, fig.align='center', fig.width=7.4, fig.height=3.2, fig.cap="The Anderson-Rubin statistic against the hypothesised treatment effect, for a strong and a weak instrument. Where the curve dips below the dashed critical value the effect cannot be rejected. On the left the curve rises steeply on both sides and the set is a short interval; on the right it never rises at all, and the honest confidence set is unbounded."}
-tibble(b    = rep(gitter, 2),
-       stat = pmin(c(stark, schwach_stat), 40),
-       welt = rep(c("strong first stage (30 points)",
+tibble(b    = rep(b_grid, 2),
+       stat = pmin(c(ar_strong, ar_weak), 40),
+       world_label = rep(c("strong first stage (30 points)",
                     "weak first stage (about one point)"),
-                  each = length(gitter))) %>%
+                  each = length(b_grid))) %>%
   ggplot(aes(b, stat)) +
   geom_line(colour = "#2c6e8e", linewidth = .6) +
   geom_hline(yintercept = qchisq(0.95, 1), linetype = "dashed",
              colour = "grey40") +
-  facet_wrap(~ welt) +
+  facet_wrap(~ world_label) +
   labs(x = "hypothesised effect on log wage",
        y = "Anderson-Rubin statistic") +
   theme_minimal(base_size = 10)
@@ -953,6 +1121,26 @@ An unbounded confidence set is not a failure of the method. It is the method
 telling you the truth about how much the data know. A procedure that always
 returns a tidy interval is not being more informative; it is being less honest.
 :::
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+With the strong instrument the Anderson-Rubin set ran from 0.057 to 0.122 and
+the conventional interval from 0.057 to 0.123. With the weak one, the
+Anderson-Rubin set was `r mcq(c("empty", answer = "the entire grid", "a single point"))`
+while `ivreg()` printed a finite interval from $-0.72$ to $1.13$.
+
+The Anderson-Rubin test works by refusing to do one thing. What?
+`r mcq(c("refusing to use the instrument", answer = "refusing to estimate the coefficient at all - it tests each candidate value instead", "refusing to compute a standard error"))`
+
+Why does that make it immune to a weak first stage?
+`r mcq(c("because it uses a different instrument", answer = "because nothing is ever divided by the first stage", "because it uses a chi-square rather than a normal distribution"))`
+
+True or false: an Anderson-Rubin set that covers the whole grid means the
+instrument is invalid. `r torf(FALSE)`
+::::
+
 
 Andrews, Stock and Sun surveyed the practice in the *Annual Review of Economics*
 in 2019, and their recommendation for the single-instrument case is exactly this:
@@ -968,17 +1156,17 @@ get the letter, some get the letter and a phone call from an adviser, some get
 nothing.
 
 ```{r iv-three-arms, echo=TRUE}
-kurs3 <- simulate_weiterbildung(arme = 3)
+pilot3 <- simulate_pilot(arms = 3)
 
-kurs3 %>%
+pilot3 %>%
   group_by(arm) %>%
-  summarise(n = n(), participation = mean(teilnahme), wage = mean(lohn))
+  summarise(n = n(), participation = mean(attends), wage = mean(wage))
 ```
 
 Each arm gives its own Wald ratio against the control group:
 
 ```{r iv-arm-walds, echo=TRUE}
-a <- kurs3 %>% group_by(arm) %>% summarise(w = mean(lohn), d = mean(teilnahme))
+a <- pilot3 %>% group_by(arm) %>% summarise(w = mean(wage), d = mean(attends))
 
 c(`letter only`      = (a$w[2] - a$w[1]) / (a$d[2] - a$d[1]),
   `letter plus call` = (a$w[3] - a$w[1]) / (a$d[3] - a$d[1]))
@@ -988,15 +1176,15 @@ Two-stage least squares with both instruments combines them, and Sargan's test
 asks whether the combination was reasonable:
 
 ```{r iv-overid, echo=TRUE}
-iv3 <- ivreg(lohn ~ teilnahme | einladung + beratung, data = kurs3)
+iv3 <- ivreg(wage ~ attends | letter + call, data = pilot3)
 summary(iv3, diagnostics = TRUE)$diagnostics %>% round(4)
 ```
 
 Sargan is comfortable. Here is what that comfort is worth. In this world the two
 instruments identify **different** local effects — the phone call reaches a group
 with lower returns, and the true LATEs are
-`r sprintf("%.4f", mean(kurs3$tau[kurs3$typ == "complier"]))` and
-`r sprintf("%.4f", mean(kurs3$tau[kurs3$typ %in% c("complier", "late complier")]))`
+`r sprintf("%.4f", mean(pilot3$tau[pilot3$type == "complier"]))` and
+`r sprintf("%.4f", mean(pilot3$tau[pilot3$type %in% c("complier", "late complier")]))`
 respectively — and the test cannot see it, because sampling noise in the two
 ratios is larger than the gap between them.
 
@@ -1008,30 +1196,48 @@ valid instruments identifying two genuinely different local effects will fail it
 A passed Sargan test is a weak piece of evidence dressed as a strong one.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+In the three-arm world the two instruments identify genuinely different local
+effects, and Sargan is comfortable anyway.
+
+Sargan's null hypothesis is that
+`r mcq(c("the instruments are valid", answer = "the instruments agree with one another", "the treatment is exogenous"))`.
+
+A failed Sargan test tells you `r mcq(c("that at least one instrument is invalid", answer = "that at least one of: an instrument is invalid, or the instruments identify different effects", "that the first stage is weak"))`.
+
+With one instrument and one endogenous regressor, the Sargan row of
+`summary(iv, diagnostics = TRUE)` is blank. Why?
+`r mcq(c("the test is not implemented for that case", answer = "there is nothing left over to test - the model is exactly identified", "the sample is too small"))`
+::::
+
+
 ### The Exclusion Restriction Is an Argument {#iv-the-exclusion-restriction}
 
 In our world the letter has no effect on wages except through the course. Turn
-the `verletzung` dial and it does — imagine the letter also carries a page of
+the `violation` dial and it does — imagine the letter also carries a page of
 job-search advice, or simply reminds the recipient that the agency is watching.
 
 ```{r iv-exclusion, echo=TRUE, cache=TRUE}
-verletzt <- lapply(c(0, 0.002, 0.005, 0.010, 0.020), function(v) {
-  stark   <- simulate_weiterbildung(verletzung = v)
-  schwach <- simulate_weiterbildung(verletzung = v, staerke = 0.15)
+violation_table <- lapply(c(0, 0.002, 0.005, 0.010, 0.020), function(v) {
+  strong <- simulate_pilot(violation = v)
+  weak   <- simulate_pilot(violation = v, strength = 0.15)
   tibble(`direct effect`   = v,
-         `first stage (strong)` = unname(coef(lm(teilnahme ~ einladung,
-                                                 stark))[2]),
-         `2SLS (strong)` = unname(coef(ivreg(lohn ~ teilnahme | einladung,
-                                             data = stark))[2]),
-         `first stage (weak)`   = unname(coef(lm(teilnahme ~ einladung,
-                                                 schwach))[2]),
-         `2SLS (weak)`   = unname(coef(ivreg(lohn ~ teilnahme | einladung,
-                                             data = schwach))[2]))
+         `first stage (strong)` = unname(coef(lm(attends ~ letter,
+                                                 strong))[2]),
+         `2SLS (strong)` = unname(coef(ivreg(wage ~ attends | letter,
+                                             data = strong))[2]),
+         `first stage (weak)`   = unname(coef(lm(attends ~ letter,
+                                                 weak))[2]),
+         `2SLS (weak)`   = unname(coef(ivreg(wage ~ attends | letter,
+                                             data = weak))[2]))
 }) %>% bind_rows()
 ```
 
 ```{r iv-exclusion-table, echo=FALSE}
-knitr::kable(verletzt, digits = 4, row.names = FALSE,
+knitr::kable(violation_table, digits = 4, row.names = FALSE,
   caption = "The same small violation of the exclusion restriction, run through a strong instrument and a weak one. The true local effect is 0.086 in every row. A direct effect of two log points --- a rounding error in any real setting --- moves the strong estimate by seven log points and the weak one by sixty-three.")
 ```
 
@@ -1049,6 +1255,28 @@ Weakness and invalidity multiply. An instrument that is exactly valid can afford
 to be weak; an instrument that is *almost* valid cannot.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+A direct effect $\gamma$ of the instrument on the outcome adds $\gamma / \pi$ to
+the estimate, where $\pi$ is the first stage.
+
+With $\gamma = 0.020$ and $\pi = 0.30$, the bias is `r fitb(0.067, tol = 0.006)`.
+
+With the same $\gamma$ and $\pi = 0.03$, it is `r fitb(0.67, tol = 0.06)` — ten
+times as large, from an identical violation.
+
+Now the three cautionary tales. For each, name the channel that breaks exclusion.
+Season of birth reaches adult earnings through
+`r mcq(c("the weather at birth", answer = "who the mother is - winter births are disproportionately to teenage and unmarried mothers", "school starting age alone"))`.
+Rainfall reaches conflict through
+`r mcq(c("income, as intended", answer = "some route other than income - riots respond to rain even where irrigation makes income rain-insensitive", "nothing; rainfall is a valid instrument"))`.
+And Hoxby's streams failed for a different kind of reason:
+`r mcq(c("streams affect school quality directly", answer = "the instrument itself could not be reproduced from the stated sources", "streams are correlated with rainfall"))`.
+::::
+
+
 Three cautionary tales, all of them instruments that once looked obvious.
 
 **Quarter of birth.** Angrist and Krueger's compulsory-schooling instrument
@@ -1058,7 +1286,7 @@ and Statistics* in 2013, documented that mothers who give birth in winter differ
 systematically from mothers who give birth in summer — they are
 disproportionately teenagers and disproportionately unmarried — and that family
 background can explain up to half of the relationship between season of birth and
-adult outcomes.
+adult outcomes.[^iv-quarter]
 
 **Rainfall.** Rain shocks have been used as instruments for income, for conflict,
 for agricultural output, for migration. Heather Sarsons studied Indian districts
@@ -1067,14 +1295,16 @@ and found that rain shocks predicted riots there just as strongly — direct
 evidence that rain reaches conflict by some route other than income. Jonathan
 Mellon has since catalogued 194 separate variables that the literature links to
 weather, each of them a potential exclusion violation, across a review of 289
-studies.
+studies.[^iv-rain]
 
 **Streams.** Caroline Hoxby instrumented the amount of school choice in an
 American metropolitan area with the number of streams running through it, on the
 theory that rivers historically fragmented school districts. Jesse Rothstein
 could not reproduce the sample or the hand-counted stream variable, and found the
-estimates sensitive to both the instrument list and the sample definition. The
-exchange ran in the *AER* in 2007 and is worth reading in full.
+estimates sensitive to both the instrument list and the sample definition — the
+choice coefficient shrinks by 45 to 85 per cent and stops being significant once
+the larger streams variable is dropped. The exchange ran in the *AER* in 2007 and
+is worth reading in full.[^iv-streams]
 
 :::: {.reading}
 ::: {.titelreading}
@@ -1109,12 +1339,12 @@ c(observations = nrow(card), near_a_college = mean(card$nearc4))
 Before any estimator, the same four numbers as before.
 
 ```{r iv-card-wald, echo=TRUE}
-roh <- card %>%
+raw_means <- card %>%
   group_by(nearc4) %>%
   summarise(n = n(), schooling = mean(educ), log_wage = mean(lwage))
-roh
+raw_means
 
-diff(roh$log_wage) / diff(roh$schooling)
+diff(raw_means$log_wage) / diff(raw_means$schooling)
 ```
 
 Nineteen per cent per year of schooling, which is implausible, and it is
@@ -1138,14 +1368,14 @@ a great deal of work. This is Card's specification: experience and its square,
 race, region, urban status now and in 1966.
 
 ```{r iv-card-models, echo=TRUE}
-kontr <- paste("exper + expersq + black + south + smsa +",
+card_controls <- paste("exper + expersq + black + south + smsa +",
                "reg661 + reg662 + reg663 + reg664 + reg665 +",
                "reg666 + reg667 + reg668 + smsa66")
 
-card_ols <- lm(as.formula(paste("lwage ~ educ +", kontr)), data = card)
-card_fs  <- lm(as.formula(paste("educ  ~ nearc4 +", kontr)), data = card)
-card_iv  <- ivreg(as.formula(paste("lwage ~ educ +", kontr,
-                                   "| nearc4 +", kontr)), data = card)
+card_ols <- lm(as.formula(paste("lwage ~ educ +", card_controls)), data = card)
+card_fs  <- lm(as.formula(paste("educ  ~ nearc4 +", card_controls)), data = card)
+card_iv  <- ivreg(as.formula(paste("lwage ~ educ +", card_controls,
+                                   "| nearc4 +", card_controls)), data = card)
 ```
 
 ```{r iv-card-table, echo=FALSE}
@@ -1176,16 +1406,16 @@ interval that does not depend on the first stage being strong.
 ```{r iv-card-ar, echo=TRUE, cache=TRUE}
 ar_card <- function(b) {
   d <- transform(card, rest = card$lwage - b * card$educ)
-  voll <- lm(as.formula(paste("rest ~ nearc4 +", kontr)), data = d)
-  ohne <- lm(as.formula(paste("rest ~", kontr)), data = d)
-  anova(ohne, voll)$F[2]
+  with_instrument <- lm(as.formula(paste("rest ~ nearc4 +", card_controls)), data = d)
+  without_instrument <- lm(as.formula(paste("rest ~", card_controls)), data = d)
+  anova(without_instrument, with_instrument)$F[2]
 }
 
-gitter_card   <- seq(-0.2, 0.6, by = 0.002)
-stat_card     <- vapply(gitter_card, ar_card, numeric(1))
-behalten_card <- gitter_card[stat_card < qf(0.95, 1, nrow(card) - 17)]
+card_grid   <- seq(-0.2, 0.6, by = 0.002)
+ar_stat_card     <- vapply(card_grid, ar_card, numeric(1))
+kept_card <- card_grid[ar_stat_card < qf(0.95, 1, nrow(card) - 17)]
 
-c(ar_lower = min(behalten_card), ar_upper = max(behalten_card),
+c(ar_lower = min(kept_card), ar_upper = max(kept_card),
   conventional_lower = unname(coef(card_iv)["educ"] -
     1.96 * sqrt(diag(vcov(card_iv)))["educ"]),
   conventional_upper = unname(coef(card_iv)["educ"] +
@@ -1210,16 +1440,16 @@ complier population is not the population, and Card says so in the abstract: the
 gains "are concentrated among men with poorly-educated parents".
 
 ```{r iv-card-sensitivity, echo=TRUE}
-varianten <- c("Card's controls"           = "",
+variants <- c("Card's controls"           = "",
                "+ parental education"      = "+ fatheduc + motheduc",
                "+ parental education, IQ"  = "+ fatheduc + motheduc + IQ")
 
-lapply(names(varianten), function(nm) {
-  zusatz <- varianten[[nm]]
+lapply(names(variants), function(nm) {
+  extra <- variants[[nm]]
   d <- card
-  if (grepl("fatheduc", zusatz)) d <- d[!is.na(d$fatheduc) & !is.na(d$motheduc), ]
-  if (grepl("IQ", zusatz))       d <- d[!is.na(d$IQ), ]
-  cc <- paste(kontr, zusatz)
+  if (grepl("fatheduc", extra)) d <- d[!is.na(d$fatheduc) & !is.na(d$motheduc), ]
+  if (grepl("IQ", extra))       d <- d[!is.na(d$IQ), ]
+  cc <- paste(card_controls, extra)
   m  <- ivreg(as.formula(paste("lwage ~ educ +", cc, "| nearc4 +", cc)),
               data = d)
   fs <- lm(as.formula(paste("educ ~ nearc4 +", cc)), data = d)
@@ -1244,6 +1474,111 @@ excludes any of the three point estimates. The data are consistent with a great
 many stories, and the instrument is not strong enough to choose between them.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn: an afternoon with Card's data</h2>
+:::
+Everything in this box runs on `data/Causal/card.csv`, which is already loaded,
+and on `AER`, which is already attached. It is the size of a problem set rather
+than a quiz, and every step is a decision a real paper has to make.
+
+**Step 1 — a second instrument.** The file carries `nearc2` as well as `nearc4`:
+whether the respondent grew up near a *two*-year college. Estimate the first
+stage for `nearc2` with Card's control set, report its coefficient and its F, and
+then use it on its own as an instrument.
+
+The `nearc2` first stage is about `r fitb(0.12, tol = 0.02)` years of schooling,
+against 0.32 for `nearc4`, and its F is about `r fitb(2.5, tol = 0.5)`.
+
+Would you publish the resulting estimate?
+`r mcq(c("yes, it is larger than Card's and therefore more interesting", answer = "no - an F of 2.5 means the estimate is uninformative, whatever it happens to equal", "yes, provided the standard error is reported"))`
+
+**Step 2 — both at once, and a test.** Put `nearc4` and `nearc2` in together.
+The estimate lands at 0.157 with a standard error of 0.053, and Sargan returns
+$p = 0.26$.
+
+Sargan does not reject. What have you learned?
+`r mcq(c("that both instruments are valid", answer = "that the two estimates are not far enough apart, relative to their noise, for the data to object - which with an F of 2.5 on one of them is close to no information", "that the exclusion restriction holds for nearc4"))`
+
+**Step 3 — the diagnostic that shouts.** Define a binary treatment,
+`college <- as.integer(educ >= 13)`, and compute the complier profile of Section
+\@ref(iv-who-is-the-answer-about) for `nearc4` — *without* any controls, exactly
+as the simulated example did it. Do it for `black`, `fatheduc` and `smsa66`.
+
+One of the three answers is impossible. Which?
+`r mcq(c("the complier share of black respondents", "the complier mean of father's education", answer = "the complier share who grew up in a city, which comes out above one"))`
+
+**Step 4 — say why.** The formula is not wrong and the arithmetic is not wrong.
+Something else is. Write one sentence.
+
+**Step 5 — decide.** You now have four estimates of the return to a year of
+schooling from one data set: 0.075, 0.132, 0.157, 0.293. Which would you report,
+and what would you have to say about it in the same breath?
+
+`r hide("The code, and what it gives")`
+
+```{r iv-card-exercise, eval=FALSE, echo=TRUE}
+# Step 1 and 2 --------------------------------------------------------------
+one <- function(instruments) {
+  fs <- lm(as.formula(paste("educ ~", instruments, "+", card_controls)), data = card)
+  m  <- ivreg(as.formula(paste("lwage ~ educ +", card_controls,
+                               "|", instruments, "+", card_controls)), data = card)
+  tibble(instruments = instruments,
+         `first stage` = coef(fs)[2],
+         F = summary(fs)$coefficients[2, "t value"]^2,
+         `2SLS` = coef(m)[["educ"]],
+         `Std. error` = sqrt(diag(vcov(m)))[["educ"]])
+}
+
+bind_rows(one("nearc4"), one("nearc2"), one("nearc4 + nearc2"))
+
+summary(ivreg(as.formula(paste("lwage ~ educ +", card_controls,
+                               "| nearc4 + nearc2 +", card_controls)),
+              data = card), diagnostics = TRUE)$diagnostics
+
+# Step 3 --------------------------------------------------------------------
+card$college <- as.integer(card$educ >= 13)
+z  <- card$nearc4
+d  <- card$college
+fs <- mean(d[z == 1]) - mean(d[z == 0])
+
+complier_mean <- function(x)
+  (mean(x * d * z) / mean(z) - mean(x * d * (1 - z)) / mean(1 - z)) / fs
+
+sapply(list(black = card$black, smsa66 = card$smsa66), complier_mean)
+```
+
+**Step 1.** `nearc2` moves schooling by 0.122 years with an F of 2.46, and used
+alone it returns 0.293 with a standard error of 0.185. That interval runs from
+below zero to above sixty per cent per year of schooling. It is not a finding.
+
+**Step 2.** Sargan compares the two instruments with each other. One of them
+carries essentially no information, so there is very little for the test to
+compare — and a test that cannot reject is not the same as a test that has
+checked something. Note also that the *combined* first-stage F, 7.9, is lower
+than `nearc4`'s alone: adding a weak instrument to a marginal one makes the pair
+weaker, not stronger.
+
+**Step 3 and 4.** The complier share who grew up in a city comes out at
+**2.38** — a share above one, which no population can have. The formula assumes
+the instrument is *unconditionally* independent of the potential outcomes. Card's
+is not: four-year colleges are in cities, and the balance table earlier in this
+section showed `smsa66` running 0.33 against 0.80 across the instrument. When the
+assumption fails badly enough, the complier calculation returns a number that
+cannot exist — which makes it, for once, a diagnostic that cannot be quietly
+misread. The repaired version conditions on the same controls the 2SLS uses, and
+that is a small research project in itself.
+
+**Step 5.** Something like: *0.132, Card's specification, with the
+identification-robust interval $[0.026,\ 0.284]$ rather than the conventional one
+— and with the sentence that the instrument's F is 13, which is above the number
+people quote and an order of magnitude below the number the econometrics
+requires.* The point of the exercise is that the honest report is longer than the
+number.
+
+`r unhide()`
+::::
+
 ### An Instrument Somebody Designed on Purpose {#iv-an-instrument-designed-on-purpose}
 
 Return to the Malawi experiment of Section \@ref(exp-thornton). Rebecca Thornton
@@ -1264,10 +1599,10 @@ hiv <- read.csv(file.path("data", "Causal", "thornton_hiv.csv")) %>%
   rename(learned = got, incentive = any, distance = distvct) %>%
   filter(!is.na(learned), !is.na(incentive))
 
-erste_stufe <- lm(learned ~ incentive, data = hiv)
+thornton_fs <- lm(learned ~ incentive, data = hiv)
 
-c(first_stage = unname(coef(erste_stufe)["incentive"]),
-  F           = unname(summary(erste_stufe)$fstatistic[1]))
+c(first_stage = unname(coef(thornton_fs)["incentive"]),
+  F           = unname(summary(thornton_fs)$fstatistic[1]))
 ```
 
 Forty-five percentage points, and an F statistic of about 550. Set that beside
@@ -1281,12 +1616,39 @@ strong, can be documented, and can have its exclusion restriction argued from th
 protocol. A found instrument takes the strength the world happens to give it.
 :::
 
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Thornton's voucher moves collection by 0.45 with an F of about
+`r fitb(550, tol = 60)`. Card's proximity moves schooling by 0.32 with an F of
+13.
+
+The ratio of the two F statistics is roughly `r fitb(42, tol = 8)`.
+
+What produced the difference?
+`r mcq(c("a larger sample", "a better estimator", answer = "one instrument was built for the purpose and the other was found in the world"))`
+
+Thornton's design has a name that this chapter has already used for it.
+`r mcq(c("a natural experiment", answer = "an encouragement design", "a regression discontinuity"))`
+
+True or false: because the voucher was randomised, its exclusion restriction is
+guaranteed. `r torf(FALSE)`
+
+`r hide("Why false?")`
+
+Randomisation buys *independence* — the voucher is unrelated to everything about
+the person. Exclusion is a separate claim: that the voucher reaches later
+behaviour only through the knowledge it bought. A voucher is money, and money can
+change behaviour on its own. Thornton's is a good instrument because that second
+channel is implausible at a dollar, not because the first was randomised.
+
+`r unhide()`
+::::
+
+
 The teaching extract distributed with this book carries the first stage but not
-the behavioural outcome, so the second stage cannot be run here.^[In the paper it
-can. Thornton reports that among sexually active HIV-positive individuals,
-learning one's result raised condom purchases by 1.69 condoms, with a standard
-error of 0.784 — an effect that is real, statistically detectable and small in
-absolute terms. There was no detectable effect among HIV-negative individuals.]
+the behavioural outcome, so the second stage cannot be run here.[^iv-thornton-second-stage]
 What the extract does show is the shape of a well-built encouragement design: a
 strong first stage, a randomised nudge, and a treatment nobody was forced into.
 
@@ -1317,31 +1679,31 @@ Back to the world where the answer is known, and this time not for one data set
 but for three hundred.
 
 ```{r iv-envelope, echo=TRUE, cache=TRUE}
-ziehungen <- lapply(1:300, function(i) {
-  d <- simulate_weiterbildung(n = 4000, seed = 30000 + i)
-  m <- ivreg(lohn ~ teilnahme | einladung, data = d)
-  o <- lm(lohn ~ teilnahme + alter + frau + schule + lohn0, data = d)
-  tibble(late   = mean(d$tau[d$typ == "complier"]),
-         iv     = unname(coef(m)["teilnahme"]),
-         iv_se  = unname(sqrt(diag(vcov(m)))["teilnahme"]),
-         ols    = unname(coef(o)["teilnahme"]),
-         ols_se = unname(sqrt(diag(vcov(o)))["teilnahme"]))
+draws <- lapply(1:300, function(i) {
+  d <- simulate_pilot(n = 4000, seed = 30000 + i)
+  m <- ivreg(wage ~ attends | letter, data = d)
+  o <- lm(wage ~ attends + age + female + schooling + wage0, data = d)
+  tibble(late   = mean(d$tau[d$type == "complier"]),
+         iv     = unname(coef(m)["attends"]),
+         iv_se  = unname(sqrt(diag(vcov(m)))["attends"]),
+         ols    = unname(coef(o)["attends"]),
+         ols_se = unname(sqrt(diag(vcov(o)))["attends"]))
 }) %>% bind_rows()
 ```
 
 ```{r iv-envelope-table, echo=FALSE}
 tibble(
   Estimator = c("OLS, fully controlled", "2SLS with the letter"),
-  `Mean estimate`  = c(mean(ziehungen$ols), mean(ziehungen$iv)),
-  `Std. deviation` = c(sd(ziehungen$ols), sd(ziehungen$iv)),
-  `Bias vs LATE`   = c(mean(ziehungen$ols - ziehungen$late),
-                       mean(ziehungen$iv  - ziehungen$late)),
-  `RMSE vs LATE`   = c(sqrt(mean((ziehungen$ols - ziehungen$late)^2)),
-                       sqrt(mean((ziehungen$iv  - ziehungen$late)^2))),
-  `Coverage`       = c(mean(abs(ziehungen$ols - ziehungen$late) <
-                              1.96 * ziehungen$ols_se),
-                       mean(abs(ziehungen$iv - ziehungen$late) <
-                              1.96 * ziehungen$iv_se))) %>%
+  `Mean estimate`  = c(mean(draws$ols), mean(draws$iv)),
+  `Std. deviation` = c(sd(draws$ols), sd(draws$iv)),
+  `Bias vs LATE`   = c(mean(draws$ols - draws$late),
+                       mean(draws$iv  - draws$late)),
+  `RMSE vs LATE`   = c(sqrt(mean((draws$ols - draws$late)^2)),
+                       sqrt(mean((draws$iv  - draws$late)^2))),
+  `Coverage`       = c(mean(abs(draws$ols - draws$late) <
+                              1.96 * draws$ols_se),
+                       mean(abs(draws$iv - draws$late) <
+                              1.96 * draws$iv_se))) %>%
   knitr::kable(digits = 4,
     caption = "Three hundred studies of the same programme. The controlled regression is about six times more precise than two-stage least squares and covers the truth in none of the three hundred; the instrument is noisy and covers it in ninety-four per cent of them. Precision about the wrong quantity is not an asset.")
 ```
@@ -1352,8 +1714,45 @@ those extra units of imprecision buys nothing except the right to be unbiased.
 And the regression's coverage is zero — not low, zero — because a tight interval
 around a wrong number never contains the right one.
 
+That is the third appearance of the same table in this chapter, and the
+resemblance is the point. Section \@ref(exp-lalonde) had a survey comparison with
+16,177 observations, a standard error of \$712 and the wrong sign. Section
+\@ref(rdd-why-not-just-fit-a-polynomial) had a global linear fit with the
+smallest standard deviation in its table and a coverage rate of zero. Precision
+is a property of the arithmetic; credibility is a property of the design, and no
+amount of the first buys any of the second.
+
+:::: {.challenge}
+::: {.titelchallenge}
+<h2>Your Turn</h2>
+:::
+Three hundred studies. The regression has a standard deviation of 0.0050 and the
+instrument 0.0292.
+
+So the instrument is about `r fitb(6, tol = 1)` times as noisy.
+
+The regression's coverage is `r fitb(0, num = TRUE)` and the instrument's
+`r fitb(0.94, tol = 0.03)`.
+
+Now the trade in one sentence. Which of these is the better description?
+`r mcq(c("the instrument is better because it has lower RMSE", answer = "the instrument pays six times the standard error for the right to be aimed at the right quantity", "the regression is better because it is more precise"))`
+
+True or false: with ten times the sample, the regression's coverage would improve.
+`r torf(FALSE)`
+
+`r hide("Why false?")`
+
+It would get worse. Coverage is already zero because the interval is tight around
+the wrong number; making the interval tighter cannot help. Bias from a violated
+identifying assumption is inconsistency, not imprecision, and $n$ has no purchase
+on it. That is the last of this section's four limits, arriving as a number.
+
+`r unhide()`
+::::
+
+
 ```{r iv-envelope-picture, echo=FALSE, fig.align='center', fig.width=7.4, fig.height=3.2, fig.cap="Three hundred estimates from each of two estimators, against the local average treatment effect both are aimed at. The regression is a narrow spike in the wrong place; the instrumental-variables estimator is a wide cloud in the right one."}
-ziehungen %>%
+draws %>%
   select(iv, ols) %>%
   tidyr::pivot_longer(everything(), names_to = "estimator",
                       values_to = "estimate") %>%
@@ -1362,7 +1761,7 @@ ziehungen %>%
                                        "2SLS with the letter"))) %>%
   ggplot(aes(estimate, fill = estimator)) +
   geom_histogram(bins = 40, colour = "white", linewidth = .15, alpha = .9) +
-  geom_vline(xintercept = mean(ziehungen$late), colour = "grey20",
+  geom_vline(xintercept = mean(draws$late), colour = "grey20",
              linewidth = .6) +
   scale_fill_manual(values = c("grey55", "#2c6e8e"), guide = "none") +
   facet_wrap(~ estimator, scales = "free_y") +
@@ -1396,10 +1795,10 @@ Section \@ref(iv-who-is-the-answer-about) — should be routine and is not.
 The envelope table above is the general result. Instrumental variables throws away
 all the variation in the treatment that the instrument does not explain, which is
 usually most of it, and pays for the discarding in standard errors. Alwyn Young
-re-ran 1,309 instrumental-variables regressions from thirty published papers and
-found that two-stage least squares "rarely rejects the OLS point estimate", that
-weak-instrument pre-tests were "largely uninformative of both size and bias", and
-that a substantial share of significant results do not survive a bootstrap.
+re-ran 1,309 instrumental-variables regressions from thirty papers published in
+the journals of the American Economic Association and found that two-stage least
+squares "rarely rejects the OLS point estimate" and that weak-instrument
+pre-tests are "largely uninformative of both size and bias".[^iv-young]
 
 #### It cannot be rescued with more data
 
@@ -1409,34 +1808,46 @@ ever-tighter intervals, on the wrong number. This is the failure mode no
 robustness table catches, and it is why the honest sequence is always the same:
 first ask where the variation came from, then choose the estimator.
 
-### Readings {#iv-readings -}
-
-Joshua D. Angrist and Jörn-Steffen Pischke, *Mostly Harmless Econometrics*
-(Princeton, 2009), chapter 4 — still the clearest exposition of the local average
-treatment effect, and the source of most of the vocabulary used above.
-
-Guido W. Imbens and Joshua D. Angrist, "Identification and Estimation of Local
-Average Treatment Effects", *Econometrica* 62(2), 1994, 467–475 — nine pages that
-changed what the estimator was understood to be estimating.
-
-Joshua D. Angrist, Guido W. Imbens and Donald B. Rubin, "Identification of Causal
-Effects Using Instrumental Variables", *Journal of the American Statistical
-Association* 91(434), 1996, 444–455, with discussion — where compliers,
-always-takers, never-takers and defiers get their names, and where the discussion
-by Robins, Greenland, Rosenbaum and others is worth as much as the paper.
-
-John Bound, David A. Jaeger and Regina M. Baker, "Problems with Instrumental
-Variables Estimation When the Correlation Between the Instruments and the
-Endogenous Explanatory Variable Is Weak", *JASA* 90(430), 1995, 443–450 — the
-paper that started the weak-instrument literature by replacing a real instrument
-with random numbers and getting results that looked perfectly reasonable.
-
-Scott Cunningham, *Causal Inference: The Mixtape* (Yale, 2021), chapter 7
-[@cunningham2021causal] — the same material with more code and a lighter touch.
-
+::: {.analysis-takeaway}
 This section closes the catalogue of designs that began in Section
 \@ref(experiments). Randomisation severs the link between treatment and
 confounders directly; matching rebuilds comparability out of covariates; timing
 and thresholds borrow it from institutions; an instrument borrows it from a
-variable with no business in the outcome equation. Chapter \@ref(extract) turns
-from what the data can identify to what can be pulled out of them.
+variable with no business in the outcome equation.
+
+Four sections, four assumptions, and they are not interchangeable. Section
+\@ref(matching-and-balancing) asks you to have measured everything that drove
+selection. Section \@ref(difference-in-differences) asks you to believe two
+groups would have moved together. Section \@ref(discontinuities) asks you to
+believe that nothing else changes at one number. This section asks you to believe
+that one variable reaches the outcome by one route only — and unlike the other
+three, it also hands you an estimand you did not choose. Chapter \@ref(extract)
+turns from what the data can identify to what can be pulled out of them.
+:::
+
+### Readings {#iv-readings -}
+
+- Angrist, J. D., & Pischke, J.-S. (2009). *Mostly Harmless Econometrics: An Empiricist's Companion*. Princeton University Press, chapter 4. Still the clearest exposition of the local average treatment effect, and the source of most of the vocabulary used above.
+- Imbens, G. W., & Angrist, J. D. (1994). Identification and Estimation of Local Average Treatment Effects. *Econometrica* 62(2), 467-475. Nine pages that changed what the estimator was understood to be estimating.
+- Angrist, J. D., Imbens, G. W., & Rubin, D. B. (1996). Identification of Causal Effects Using Instrumental Variables. *Journal of the American Statistical Association* 91(434), 444-455, with discussion. Where compliers, always-takers, never-takers and defiers get their names; the discussion by Robins and Greenland, Heckman, Moffitt and Rosenbaum is worth as much as the paper, and Heckman's objection is the one the box above returns to.
+- Bound, J., Jaeger, D. A., & Baker, R. M. (1995). Problems with Instrumental Variables Estimation When the Correlation Between the Instruments and the Endogenous Explanatory Variable Is Weak. *JASA* 90(430), 443-450. The paper that started the weak-instrument literature, by replacing a real instrument with random numbers and getting results that looked perfectly reasonable.
+- Andrews, I., Stock, J. H., & Sun, L. (2019). Weak Instruments in Instrumental Variables Regression: Theory and Practice. *Annual Review of Economics* 11, 727-753. What to report, and why.
+- Cunningham, S. (2021). *Causal Inference: The Mixtape*. Yale University Press, chapter 7 [@cunningham2021causal]. The same material with more code and a lighter touch. (The author's free online edition has since been restructured; instruments are still chapter 7 there.)
+
+[^iv-appendix-b]: In the book's own table of contents the appendix is "Effects of a Duty on Price, Output, and Imports with Special Reference to Butter and Flaxseed", in three parts: formulae for estimating the effect of a duty (286), explanations and qualifications (297), and the handling of data (304). It was reprinted almost a century later, as "Effects of a duty on price and output with special reference to butter and flaxseed", in *The Econometrics Journal* 28(1), 2025, 21-40, <https://doi.org/10.1093/ectj/utae018>, with an editorial introduction — a rare honour for an appendix.
+
+[^iv-wright-instruments]: Wright does not name his instruments in the appendix. Stock and Trebbi (2003, p. 180) reconstruct them from context as the price of a substitute, which shifts demand, and yield per acre, which shifts supply. The story you sometimes read, that Wright used regional rainfall as his butter instrument, is not supported by the appendix — though weather is discussed there as the archetypal supply shifter, which is presumably where the story comes from.
+
+[^iv-reiersol]: Reiersøl, O. (1945). *Confluence Analysis by Means of Instrumental Sets of Variables*. Almqvist & Wiksell, Uppsala. He had the idea earlier — see Reiersøl, O. (1941), *Confluence Analysis by Means of Lag Moments and Other Methods of Confluence Analysis*, *Econometrica* 9(1), 1-24 — and R. C. Geary arrived at something similar independently in the 1940s. Aldrich, J. (1993), *Reiersøl, Geary and the Idea of Instrumental Variables*, *Economic and Social Review* 24(3), 247-273, argues that Geary's conception is closer to the modern one than Reiersøl's is: "Geary presents something resembling this but Reiersøl does not."
+
+[^iv-angrist-draft]: Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. *American Economic Review* 80(3), 313-336. The paper carries an erratum at *AER* 80(5), 1284-1286: two figures were transposed — the one labelled Figure 1 on page 316 is Figure 3, and vice versa — and a sampling-variance formula in footnote 7 was wrong in a way that raises the standard errors in Table 3 by about ten per cent. No point estimate changes; the correctly-labelled Figure 3 puts the loss at \$2,384 with a standard error of \$778, in 1978 dollars. Angrist, J. D., & Chen, S. H. (2011), *Long-Term Consequences of Vietnam-Era Conscription: New Estimates Using Social Security Data*, *AEJ: Applied* 3(2), 96-118, return to the same lottery with data through 2000 and find the penalty has gone to roughly zero.
+
+[^iv-quarter]: Buckles, K. S., & Hungerman, D. M. (2013). Season of Birth and Later Outcomes: Old Questions, New Answers. *Review of Economics and Statistics* 95(3), 711-724, <https://doi.org/10.1162/REST_a_00314>. Their wording is that family background "can explain up to half" of the relationship — an upper bound across outcomes, not a central estimate.
+
+[^iv-rain]: Sarsons, H. (2015). Rainfall and Conflict: A Cautionary Tale. *Journal of Development Economics* 115, 62-72, <https://doi.org/10.1016/j.jdeveco.2015.02.007>. Mellon, J. (2025). Rain, Rain, Go Away: 194 Potential Exclusion-Restriction Violations for Studies Using Weather as an Instrumental Variable. *American Journal of Political Science*, <https://doi.org/10.1111/ajps.12894>. The 194 variables come out of a review of 289 studies.
+
+[^iv-streams]: Hoxby, C. M. (2000). Does Competition Among Public Schools Benefit Students and Taxpayers? *American Economic Review* 90(5), 1209-1238. Rothstein, J. (2007). Comment. *American Economic Review* 97(5), 2026-2037, with Hoxby's Reply at 2038-2055. Rothstein reports that the choice coefficient shrinks by 45 to 85 per cent and stops being significant once the larger streams variable is excluded.
+
+[^iv-young]: Young, A. (2022). Consistency Without Inference: Instrumental Variables in Practical Application. *European Economic Review* 147, 104112, <https://doi.org/10.1016/j.euroecorev.2022.104112>. The 1,309 regressions come from thirty papers published in the journals of the American Economic Association.
+
+[^iv-thornton-second-stage]: In the paper it can be run. Thornton reports that among sexually active HIV-positive individuals, learning one's result raised condom purchases by 1.69 condoms, with a standard error of 0.784 — an effect that is real, statistically detectable and small in absolute terms. There was no significant effect of learning an HIV-negative result on condom purchases.
