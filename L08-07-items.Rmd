@@ -93,71 +93,74 @@ enter only through their difference.
 The idea did not arrive fully formed. It was assembled over sixty years, twice
 independently, in two intellectual traditions that still argue with each other.
 
-**1925 — Thurstone puts persons and items on one line.** Louis Leon Thurstone
-scales the Binet–Simon tasks by "absolute scaling": he places children of
-different ages and the tasks themselves on a single continuum, and notes that the
-unit of that continuum has to be defined by the spread of a reference
-population.[^irt-thurstone] The ambition — one scale, persons and items together
-— is already complete. The probability model is not.
+```{r irt-history-table, echo=FALSE}
+knitr::kable(
+  data.frame(
+    Year = c(1925, 1952, 1960, 1968, 1969, 1972, 1973, 1978, 1979, 1981, 1982, 1989, 1991, 2000, 2015),
+    Who = c("Thurstone", "Lord", "Rasch", "Birnbaum", "Samejima", "Bock", "Fischer / Andersen",
+            "Andrich", "Wright & Stone", "Bock & Aitkin", "Masters", "Warm", "Mislevy",
+            "OECD", "OECD"),
+    `What arrived` = c(
+      "persons and items scaled onto one continuum",
+      "the item characteristic curve as the object of a theory of testing",
+      "the one-parameter model, and specific objectivity as a requirement",
+      "discrimination and guessing parameters: the 2PL and 3PL",
+      "the graded response model, for ordered categories",
+      "the nominal response model, for unordered ones",
+      "item difficulty explained by item features; a conditional test of the model",
+      "the rating scale model",
+      "the person-item map, and Rasch measurement as a movement",
+      "marginal maximum likelihood made practical by an EM algorithm",
+      "the partial credit model",
+      "weighted likelihood estimation",
+      "plausible values, so a survey can report a population correctly",
+      "PISA scales its items with a Rasch and partial credit model",
+      "PISA switches to a 2PL and generalised partial credit model"
+    ),
+    check.names = FALSE
+  ),
+  caption = "Sixty years of item response theory in fifteen lines. The left half of the table is a disagreement about what a measurement model is for; the right half is the machinery that made large-scale assessment possible."
+)
+```
 
-**1943–1952 — the item characteristic curve gets a name.** D. N. Lawley works
-out maximum-likelihood estimation for the normal-ogive test model; Ledyard Tucker
-coins the term *item characteristic curve*; and Frederic Lord's monograph *A
-theory of test scores* makes the curve the central object of a theory of
-testing.[^irt-lord] This is the beginning of the American tradition, and its
-motive is practical: the Educational Testing Service needs to equate test forms
-that are not identical.
+**Two traditions, two problems.** The American line begins with Louis Leon
+Thurstone's absolute scaling of the Binet-Simon tasks[^irt-thurstone] and matures
+in Frederic Lord's monograph and Ledyard Tucker's *item characteristic
+curve*.[^irt-lord] Its motive is practical: the Educational Testing Service has to
+equate test forms that are not identical. Allan Birnbaum then replaces the normal
+ogive with the logistic function and adds a discrimination parameter, and after it
+a lower asymptote for guessing.[^irt-birnbaum] More parameters, better description.
 
-**1960 — Rasch, from a completely different direction.** Georg Rasch was a Danish
-mathematician who had spent 1935 in London with R. A. Fisher and had absorbed
-Fisher's ideas about sufficiency. After the war he was asked to do two very
-concrete jobs: analyse the Danish military's intelligence tests, and evaluate
-reading tests for children whose schooling had been interrupted. Those children
-had been tested at different ages with different tests, and Rasch needed to
-compare them anyway. Out of that need came *Probabilistic Models for Some
-Intelligence and Attainment Tests*.[^irt-rasch] Rasch's motivation was not
-curve-fitting. It was a philosophical requirement he later called **specific
-objectivity**: a comparison between two persons should not depend on which items
-were used, and a comparison between two items should not depend on which persons
-answered them.[^irt-berkeley]
+**Rasch came the other way round.** Georg Rasch was a Danish mathematician who had
+spent 1935 in London with R. A. Fisher and absorbed Fisher's ideas about
+sufficiency. After the war he was handed two very concrete jobs: analyse the Danish
+military's intelligence tests, and evaluate reading tests for children whose
+schooling had been interrupted. Those children had been tested at different ages
+with different tests, and he had to compare them anyway. Out of that came
+*Probabilistic Models for Some Intelligence and Attainment Tests*.[^irt-rasch] His
+motive was not fit but a philosophical requirement he later called **specific
+objectivity**: a comparison between two persons must not depend on which items were
+used, and a comparison between two items must not depend on which persons answered
+them.[^irt-berkeley] The whole disagreement in this section grows from that one
+sentence.
 
-**1968 — Birnbaum generalises.** Allan Birnbaum's chapters in Lord and Novick's
-*Statistical Theories of Mental Test Scores* replace the normal ogive with the
-logistic function and add a discrimination parameter, then a lower asymptote for
-guessing.[^irt-birnbaum] The 2PL and 3PL models are born, and with them a
-permanent tension: Birnbaum's models describe more data, Rasch's model demands
-more of the data.
+**Then the machinery.** Erling Andersen showed how to eliminate the person
+parameters by conditioning on the raw score, and turned the resulting conditional
+likelihood into a formal test of the model; Gerhard Fischer decomposed item
+difficulty into item features.[^irt-andersen] [^irt-fischer] Benjamin Wright turned
+Rasch measurement into a movement, a software package and a picture — the
+person-item map this section draws in Figure
+\@ref(fig:irt-wright-map).[^irt-wright] Fumiko Samejima[^irt-samejima] and Darrell
+Bock[^irt-bock] handled ordered and unordered categories, and David
+Andrich[^irt-andrich] and Geoff Masters[^irt-masters] extended the Rasch model
+itself to items worth 0, 1 or 2 points — where Section \@ref(rasch-family) picks it
+up. Bock and Aitkin made marginal maximum likelihood practical;[^irt-bockaitkin]
+Thomas Warm removed the bias from likelihood scoring;[^irt-warm] and Robert
+Mislevy, working on the American NAEP survey, invented **plausible values**, without
+which PISA could not exist.[^irt-mislevy] The models went to school from 2000
+onwards[^irt-pisa] — and in Germany, VERA was developed at Koblenz-Landau in 2002,
+first written in 2003, and extended to all sixteen *Länder* by 2007/08.[^irt-vera]
 
-**1970s — the two traditions build their machinery.** Erling Andersen shows how
-to eliminate the person parameters by conditioning on the raw score, and turns
-the resulting conditional likelihood into a formal test of the
-model.[^irt-andersen] Gerhard Fischer decomposes item difficulty into item
-features (the linear logistic test model).[^irt-fischer] In Chicago, Benjamin
-Wright turns Rasch measurement into a movement, a software package and a picture
-— the person–item map that this section will draw in Figure
-\@ref(fig:irt-wright-map).[^irt-wright]
-
-**1969–1982 — beyond right and wrong.** Fumiko Samejima's graded response
-model[^irt-samejima] and Darrell Bock's nominal response model[^irt-bock] handle
-ordered and unordered categories. Then David Andrich's rating scale
-model[^irt-andrich] and Geoff Masters' partial credit model[^irt-masters] extend
-the Rasch model itself to items that award 0, 1 or 2 points. This is where the
-partial credit model enters the story, and Section \@ref(rasch-family) picks it
-up.
-
-**1981–1991 — estimation catches up with ambition.** Bock and Aitkin's EM
-algorithm makes marginal maximum likelihood practical.[^irt-bockaitkin] Robert
-Mislevy, working on the American NAEP survey, introduces **plausible values** —
-the trick that lets a survey report population statistics correctly even though
-every individual score is uncertain.[^irt-mislevy] Without it, PISA as we know it
-could not exist.
-
-**2000 onwards — the models go to school.** PISA scales its cognitive items with
-a Rasch model (partial credit for the polytomous ones) from 2000 to 2012, then
-switches to a 2PL and generalised partial credit model in 2015.[^irt-pisa] In
-Germany, VERA is developed at Koblenz-Landau in 2002, first written in
-Rhineland-Palatinate in 2003, and extended to all sixteen *Länder* by 2007/08;
-the IQB, founded in 2004, has produced the material ever since.[^irt-vera]
 
 :::: {.amazing}
 ::: {.titelamazing}
@@ -233,50 +236,212 @@ them. Unlike a percentage, a logit means the same thing everywhere on the scale:
 the step from $.10$ to $.21$ and the step from $.50$ to $.67$ are both one logit.
 ::::
 
-#### The model is also a recipe {#irt-build-the-class}
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2>Truly Dedicated: probability, odds and log-odds</h2>
+:::
+The whole of it is one ladder with three rungs, and the misreadings all come from
+stepping over a rung.
+
+**Rung one: probability into odds.** A probability is trapped between 0 and 1,
+which makes it a bad thing to add to. Odds are not:
+
+$$
+\text{odds} = \frac{p}{1-p}.
+$$
+
+Odds compare the chance of *right* with the chance of *wrong*. They run from 0 to
+infinity and they *multiply* rather than add. A probability of $.5$ is odds of 1
+— evens; $.75$ is 3, read "three to one"; $.90$ is 9; $.20$ is $0.25$, read "one to
+four". Odds of 2:1 are **not** 200 per cent — they are $2/(2+1) = 66.7$ per cent.
+
+**Rung two: the logarithm turns multiplying into adding.** That is the only thing
+a logarithm does, and it is the entire reason it appears here:
+
+$$
+\ln(a \cdot b) = \ln a + \ln b.
+$$
+
+The natural logarithm is used because its inverse, $e^{x}$, undoes it exactly:
+$\ln(e^{x}) = x$. In R, `log()` already means $\ln$.
+
+**Rung three: the logit is the log of the odds** — not the log of the probability.
+
+$$
+\operatorname{logit}(p) = \ln\frac{p}{1-p}.
+$$
+
+Now the Rasch formula rearranges in four lines. Write $x = \theta_p - b_i$:
+
+$$
+\begin{aligned}
+p &= \frac{e^{x}}{1 + e^{x}} && \text{the model} \\
+p\,(1 + e^{x}) &= e^{x} && \text{clear the denominator} \\
+p &= e^{x}(1 - p) && \text{collect the } e^{x} \text{ terms} \\
+\frac{p}{1-p} &= e^{x} && \text{divide by } (1-p)
+\end{aligned}
+$$
+
+The left-hand side is the odds. Take $\ln$ of both sides and $\ln(e^{x}) = x$
+leaves
+
+$$
+\operatorname{logit}(p) = \theta_p - b_i .
+$$
+
+**Person minus item equals the log-odds of a correct answer.** That is the sentence
+the whole model reduces to.
+
+```{r irt-logit-ladder, echo=TRUE}
+p <- c(0.01, 0.10, 0.20, 0.25, 0.50, 0.667, 0.75, 0.90, 0.99)
+
+knitr::kable(
+  data.frame(
+    probability = p,
+    odds        = round(p / (1 - p), 3),
+    logit       = round(qlogis(p), 3),
+    back        = round(plogis(qlogis(p)), 3)
+  ),
+  caption = "The ladder, in both directions. Notice the symmetry the probability scale hides: .25 and .75 sit at -1.10 and +1.10, .10 and .90 at -2.20 and +2.20. In R, qlogis() is the logit and plogis() is its inverse."
+)
+```
+
+**What one logit is worth.** From $\text{odds} = e^{\,\theta - b}$:
+
+- $\theta - b = 0 \Rightarrow$ odds $1$, $p = 50.0\%$;
+- $\theta - b = 1 \Rightarrow$ odds $e = 2.72$, $p = 73.1\%$;
+- $\theta - b = -1 \Rightarrow$ odds $0.37$, $p = 26.9\%$;
+- $\theta - b = 2 \Rightarrow$ odds $7.39$, $p = 88.1\%$.
+
+So one logit **multiplies the odds by $e \approx 2.72$** — it does not double them.
+Doubling the odds is $\ln 2 = 0.693$ logits, which corresponds to $p = 66.7\%$.
+
+**A complete numerical example.** A person at $\theta = 1.2$ meets an item at
+$b = 0.7$:
+
+```{r irt-logit-example, echo=TRUE}
+theta <- 1.2; b <- 0.7
+
+round(c(logit       = theta - b,
+        odds        = exp(theta - b),
+        probability = plogis(theta - b)), 3)
+```
+
+Half a logit above the item, odds of about 1.65 to 1, a solution probability of
+62.2 per cent.
+
+**And the five misreadings**, which are worth more than the algebra:
+
+```{r irt-logit-mistakes, echo=FALSE}
+knitr::kable(
+  data.frame(
+    `Said` = c(
+      "\"the logit is just $\\log(p)$\"",
+      "\"$\\theta = 2$ is twice as able as $\\theta = 1$\"",
+      "\"$\\theta - b = 2$ means odds of 2 to 1\"",
+      "\"$p = .75$ means odds of 0.75\"",
+      "\"b is the percentage of people who solve the item\""
+    ),
+    `Should be` = c(
+      "the logit is $\\ln\\{p/(1-p)\\}$, the log of the *odds*",
+      "the logit scale has no natural zero and is not a ratio scale; only distances mean anything",
+      "odds of $e^2 = 7.39$ to 1; odds of 2 to 1 is $\\ln 2 = 0.693$ logits",
+      "odds are $.75/.25 = 3$ to 1",
+      "b is a position on the shared logit scale; the percentage also depends on who took the test"
+    ),
+    check.names = FALSE
+  ),
+  caption = "Five things that get said about logits, and what each of them should be. The second is the one that causes real damage in reporting."
+)
+```
+
+The second row is worth dwelling on, because the rest of this section depends on
+it. In the Rasch model the probability depends only on the **difference**
+$\theta - b$, so $\theta = 2$ with $b = 1$ and $\theta = 12$ with $b = 11$ describe
+exactly the same situation. The scale therefore needs a convention fixing where
+zero is — see [somebody has to choose where zero is](items.html#irt-origin) — and
+that zero is a reference point, not an origin of ability. Distances are meaningful;
+positions are meaningful only relative to the convention.
+
+Finally, why this is elegant rather than merely clever. On the probability scale
+the relation between ability and difficulty is S-shaped and non-linear; after the
+logit transformation it is a subtraction. That is what puts persons and items on
+one metric, and why a step of one logit means the same thing at the bottom of the
+scale as at the top.
+::::
+
+#### The model is also a recipe {#irt-build-the-class -}
 
 A response model says how the data would have arisen. That means it can be run
-forwards as well as backwards, and the fastest way to understand a model is to
-use it to build a world you already know the answer to. So let us hire a teacher,
-write fourteen tasks, and enrol twenty-four children.
+forwards as well as backwards, and the fastest way to understand a model is to use
+it to build a world you already know the answer to. So let us hire a teacher, write
+fourteen tasks, and enrol twenty-four children.
+
+Here is the test the children will sit. The right-hand column is the only thing the
+model needs: where each task sits on the logit scale of the previous page.
+
+```{r irt-task-table, echo=FALSE}
+task_sheet <- data.frame(
+  task = c("count_back", "number_line", "place_value", "add_2digit", "sub_2digit",
+           "times_table", "half_of", "word_problem", "shape_names", "symmetry",
+           "clock_read", "measure_cm", "data_table", "estimate_sum"),
+  `what the child is asked to do` = c(
+    "count backwards from 30 in steps of one",
+    "mark 40 on a number line running from 0 to 100",
+    "say how many tens are in 342",
+    "add 27 and 46 in writing",
+    "subtract 38 from 71 in writing",
+    "give 7 x 8 from memory",
+    "work out half of 18",
+    "a two-sentence word problem with one operation",
+    "name a rectangle, a triangle and a circle",
+    "draw the mirror image of a shape across a line",
+    "read 07:45 from an analogue clock",
+    "measure a line to the nearest centimetre",
+    "pull one value out of a small table",
+    "estimate 198 + 403 without calculating it"
+  ),
+  difficulty = c(-2.4, -1.9, -1.5, -1.1, -0.8, -0.4, -0.1,
+                  0.3,  0.6,  1.0,  1.4,  1.8,  2.2,  2.7),
+  check.names = FALSE
+)
+
+knitr::kable(
+  task_sheet,
+  caption = "The fourteen tasks, ordered from easy to hard. A child at competence 0.3 - the average of the class we are about to build - solves the first task with probability .94 and the last with probability .08. These numbers are the truth in this section, because the data are about to be invented from them."
+)
+```
+
+Three lines of R turn that column into a class. There is no library call and no
+model fitting here — this is the formula from the top of the section, run forwards.
 
 ```{r irt-simulate-class, echo=TRUE}
 set.seed(2026)
 
-# Fourteen tasks, from easy to hard, on the logit scale.
-difficulty <- c(
-  count_back   = -2.4, number_line  = -1.9, place_value  = -1.5,
-  add_2digit   = -1.1, sub_2digit   = -0.8, times_table  = -0.4,
-  half_of      = -0.1, word_problem =  0.3, shape_names  =  0.6,
-  symmetry     =  1.0, clock_read   =  1.4, measure_cm   =  1.8,
-  data_table   =  2.2, estimate_sum =  2.7
-)
+difficulty <- setNames(task_sheet$difficulty, task_sheet$task)
 
 # Twenty-four children, competence drawn from a normal distribution.
 competence <- rnorm(24, mean = 0.3, sd = 1.1)
 
 # The Rasch model itself: one subtraction and one coin flip per cell.
-prob <- plogis(outer(competence, difficulty, "-"))
+prob      <- plogis(outer(competence, difficulty, "-"))
+responses <- matrix(rbinom(length(prob), size = 1, prob = prob), nrow = 24,
+                    dimnames = list(sprintf("P%02d", 1:24), names(difficulty)))
+```
 
-responses <- matrix(
-  rbinom(length(prob), size = 1, prob = prob),
-  nrow     = 24,
-  dimnames = list(sprintf("P%02d", 1:24), names(difficulty))
+```{r irt-first-rows, echo=FALSE}
+knitr::kable(
+  cbind(responses[1:6, 1:8], total = rowSums(responses)[1:6]),
+  caption = "The first six children and the first eight of the fourteen tasks, with each child's total out of fourteen in the last column. This is the entire raw material of every analysis in this section: one row per child, one column per task, 1 for correct."
 )
-
-responses[1:5, 1:6]
 ```
 
 Two things about this class are worth saying out loud, because the rest of the
-section leans on both. First, we know the truth: the fourteen difficulties and
-the twenty-four competences are written down above, so every estimate can be
-checked against the answer. Second, the data were generated by a *perfect* Rasch
-model — no misfitting item, no guessing, no second dimension. Whatever goes wrong
-from here is not the model's fault. It is the sample size.
-
-```{r irt-raw-scores, echo=TRUE}
-rowSums(responses)
-```
+section leans on both. First, we know the truth: the fourteen difficulties and the
+twenty-four competences are written down above, so every estimate can be checked
+against the answer. Second, the data were generated by a *perfect* Rasch model — no
+misfitting item, no guessing, no second dimension. Whatever goes wrong from here is
+not the model's fault. It is the sample size.
 
 Nobody scored 0 and nobody scored 14, which is lucky and will matter in Section
 \@ref(irt-score-options).
@@ -330,14 +495,14 @@ Its defining restrictions are:
 
 Those four restrictions buy four consequences.
 
-#### One additive comparison
+#### One additive comparison {-}
 
 The response probability depends only on $\theta_p - b_i$. A difference of one
 logit means the same thing at the bottom of the scale and at the top. This is
 what makes it legitimate to say that a child *moved* half a logit between two
 measurements.
 
-#### A raw score can be sufficient
+#### A raw score can be sufficient {-}
 
 For a complete response vector to the same set of binary Rasch items, **the
 number of correct answers is a sufficient statistic** for the person parameter.
@@ -377,7 +542,7 @@ distribution of competence in the sample — and why it exists only inside the R
 family, because no other model lets the person parameter cancel like that.
 ::::
 
-#### Item and person comparisons can be separated
+#### Item and person comparisons can be separated {-}
 
 Under model fit, comparisons among persons do not depend on which items were
 used, and comparisons among items do not depend on which persons answered them —
@@ -385,7 +550,7 @@ apart from the uncertainty that finite data always introduce. Rasch called this
 **specific objectivity**, and it is the property that makes item banking, booklet
 designs and trend comparison possible at all.
 
-#### The model can be tested rather than merely fitted
+#### The model can be tested rather than merely fitted {-}
 
 Rasch measurement treats equal discrimination and invariance as substantive
 requirements. When an item misbehaves, the first question is not "which model has
@@ -497,14 +662,48 @@ estimated, while a 1PL parameterisation estimates one common slope and fixes the
 latent variance to 1. After rescaling, the fitted probabilities are identical.
 The names carry a cultural difference, not a mathematical one.
 
-**Partial credit versus graded response.** Both handle an item scored 0, 1, 2.
-They differ in what the parameters mean. The partial credit model asks, at each
-boundary, "given that you are at 1 or 2, how likely are you to be at 2?" — a
-sequence of *adjacent* comparisons. The graded response model asks "how likely
-are you to be at least 1?" and "how likely are you to be at least 2?" —
-*cumulative* comparisons. They usually give very similar person orderings and
-genuinely different parameters, and only the partial credit model keeps the raw
-score sufficient.
+**Partial credit versus graded response.** These two look interchangeable and are
+not, and the difference is worth ten minutes once rather than a decade of vague
+unease. Both take an item scored 0, 1, 2. Both produce thresholds. Both usually
+rank people almost identically. What differs is the question each threshold
+answers.
+
+```{r irt-pcm-grm-table, echo=FALSE}
+knitr::kable(
+  data.frame(
+    ` ` = c("The question a threshold answers", "Kind of comparison",
+            "Discrimination", "Is the raw score sufficient?",
+            "Can a category be 'squeezed out'?", "Estimated by"),
+    `Partial credit model` = c(
+      "given that you scored 1 or 2, how likely is 2?",
+      "adjacent categories, one step at a time",
+      "equal for all items, by construction",
+      "yes - it is a Rasch model",
+      "yes: disordered thresholds are possible and informative",
+      "eRm, TAM, mirt"
+    ),
+    `Graded response model` = c(
+      "how likely are you to score at least 2?",
+      "cumulative: everything at or above a category",
+      "one per item, freely estimated",
+      "no",
+      "no: the thresholds are ordered by construction",
+      "mirt, ltm"
+    ),
+    check.names = FALSE
+  ),
+  caption = "The two standard models for an item scored 0, 1, 2. The first row is the whole difference; everything below it follows from that one choice."
+)
+```
+
+The last two rows are where it becomes practical. Because the partial credit model
+compares *adjacent* categories, it can report a threshold ordering that runs
+backwards — the second threshold below the first — and that is not a failure but a
+message: hardly anybody ever lands in the middle category, so "partial credit" is
+not doing any work on this item. The verbal-aggression data of the next section
+contains exactly one such item. A graded response model cannot say this, because its cumulative thresholds
+are ordered by construction, so the same problem simply disappears into the
+parameters.
 
 ::: {.analysis-note}
 A useful way to read the catalogue: everything in the *Rasch* family keeps the
@@ -546,12 +745,12 @@ and that is precisely what the Rasch tradition refuses to give up.
 The binary Rasch model is only the beginning. Five extensions cover almost
 everything a school assessment needs.
 
-#### Dichotomous Rasch model {#irt-rasch-dichotomous}
+#### Dichotomous Rasch model {#irt-rasch-dichotomous -}
 
 Each item is scored 0 or 1, each item has one difficulty. This is the model of
 the classroom test in this section.
 
-#### Partial credit model {#irt-pcm}
+#### Partial credit model {#irt-pcm -}
 
 An item awards ordered scores such as 0, 1, 2 — no credit, partial credit, full
 credit. Masters' insight was that you do not need a new idea, only a repeated
@@ -588,6 +787,23 @@ at 0.86 and 1.35 logits, so the middle category *perhaps* occupies a narrow stri
 of the scale less than half a logit wide. Figure \@ref(fig:irt-pcm-figure) draws
 that strip.
 
+When that strip closes entirely, the thresholds come out **disordered** — the
+second below the first — and the model is telling you that the middle category is
+never the most likely answer for anybody:
+
+```{r irt-pcm-disordered, echo=TRUE}
+all_thresholds <- thresholds(PCM(aggression))$threshtable[[1]]
+disordered     <- all_thresholds[, "Threshold 2"] < all_thresholds[, "Threshold 1"]
+
+round(all_thresholds[disordered, ], 2)
+```
+
+One item of the twenty-four: *"A clerk gives me faulty information and I miss my
+train - I would shout."* It offers three answers and effectively uses two. People
+say no or they say yes; *perhaps* is a door nobody walks through. That is a finding about the
+response format, not a violation of the model — and it is a finding only a
+partial credit model can report.
+
 ```{r irt-pcm-figure, echo=FALSE, fig.cap="Category probabilities for the item 'I would shout at the bus driver'. The middle category never becomes the most likely answer by much: between the two dotted thresholds it peaks at only .39, because the two thresholds are close together.", fig.align='center', out.width="90%"}
 tau <- as.numeric(thresholds(pcm_fit)$threshtable[[1]]["S1DoShout", c("Threshold 1", "Threshold 2")])
 grid_theta <- seq(-4, 4, length.out = 300)
@@ -608,7 +824,7 @@ data.frame(
   theme(legend.position = "top")
 ```
 
-#### Rating scale model {#irt-rsm}
+#### Rating scale model {#irt-rsm -}
 
 Andrich's rating scale model is the partial credit model with one restriction
 added: the *spacing* of the thresholds is the same for every item, and items
@@ -639,7 +855,7 @@ buy a likelihood improvement of 5.43, which is exactly what chance would give
 ($p = 0.37$). The shared category structure is a reasonable description, so the
 simpler model can be kept.
 
-#### Many-facet Rasch model {#irt-mfrm}
+#### Many-facet Rasch model {#irt-mfrm -}
 
 When a human being marks the answer, the mark depends on three things, not two:
 the child, the task, and the rater. The many-facet model adds them additively,
@@ -652,7 +868,7 @@ with $s_r$ the severity of rater $r$. Further facets — occasion, test mode,
 interviewer — enter the same way. This is how essay marking, diving competitions
 and clinical assessments are put onto one scale.
 
-#### Multidimensional and explanatory Rasch models {#irt-lltm}
+#### Multidimensional and explanatory Rasch models {#irt-lltm -}
 
 Two more directions. *Multidimensional* models give the person several
 competences at once — reading and listening, say — and let each item load on the
@@ -689,13 +905,13 @@ larger than the gap between "1 and 2" for one item and smaller for another.
 Three decisions get compressed into the sentence "we used a Rasch model", and
 separating them removes most of the confusion in this field.
 
-#### 1. The response model {#irt-choice-model}
+#### First: the response model {#irt-choice-model -}
 
 How does the probability of each answer depend on person and item? Rasch, 2PL,
 partial credit, graded response, multidimensional — the catalogue in Section
 \@ref(irt-model-family).
 
-#### 2. Estimation of the parameters {#irt-choice-estimation}
+#### Second: estimation of the parameters {#irt-choice-estimation -}
 
 How are the item parameters calibrated from the data?
 
@@ -723,7 +939,7 @@ knitr::kable(
 )
 ```
 
-#### 3. Person scoring after calibration {#irt-choice-scoring}
+#### Third: person scoring after calibration {#irt-choice-scoring -}
 
 Once the items are calibrated, how is a person's uncertain competence summarised?
 EAP, MAP, WLE and plausible values are alternatives at this **third** stage. They
@@ -834,7 +1050,7 @@ knitr::kable(
 )
 ```
 
-#### EAP: the centre of gravity {#irt-eap}
+#### EAP: the centre of gravity {#irt-eap -}
 
 $$
 \hat\theta_p^{\,\text{EAP}} = E(\theta_p \mid \mathbf{x}_p)
@@ -844,7 +1060,7 @@ The posterior mean. Stable for short tests and extreme patterns, because the
 population distribution supplies information the answers do not. The price is
 shrinkage.
 
-#### MAP: the highest point {#irt-map}
+#### MAP: the highest point {#irt-map -}
 
 $$
 \hat\theta_p^{\,\text{MAP}} = \operatorname*{arg\,max}_{\theta_p} p(\theta_p \mid \mathbf{x}_p)
@@ -854,14 +1070,14 @@ The posterior mode. If the posterior is symmetric, MAP and EAP nearly coincide;
 if it is skewed, they separate. MAP is often cheaper to compute in
 high-dimensional models because it maximises rather than integrates.
 
-#### WLE: a likelihood score with a bias correction {#irt-wle}
+#### WLE: a likelihood score with a bias correction {#irt-wle -}
 
 Warm's weighted likelihood estimate solves a modified likelihood
 equation.[^irt-warm] It uses no population prior, so it shrinks far less than EAP
 or MAP, and unlike ML it stays finite for a perfect or an empty score. When a
 single number has to be handed to a teacher or a parent, this is usually the one.
 
-#### Plausible values: several completed versions of the latent variable {#irt-pv}
+#### Plausible values: several completed versions of the latent variable {#irt-pv -}
 
 $$
 \theta_p^{(m)} \sim p(\theta_p \mid \mathbf{x}_p, \mathbf{z}_p),
@@ -911,7 +1127,7 @@ score and therefore the one that delivers specific objectivity. Section
 \@ref(irt-own-data) shows the same analysis in `TAM` and `mirt`, which is what a
 large-scale assessment would use.
 
-#### Step 1: estimate the model {#irt-step-estimate}
+#### Step 1: estimate the model {#irt-step-estimate -}
 
 ```{r irt-fit, echo=TRUE}
 rasch_fit <- RM(responses)
@@ -931,7 +1147,7 @@ conversion is skipped. The check takes two seconds: the item everybody solved
 must end up with the *lowest* number.
 :::
 
-#### Step 2: read the item table {#irt-step-items}
+#### Step 2: read the item table {#irt-step-items -}
 
 ```{r irt-item-table, echo=TRUE}
 item_table <- data.frame(
@@ -963,6 +1179,64 @@ And `count_back`, which was generated as the second-easiest task, came out third
 while `place_value` came out easiest by a full logit. Nothing is wrong with the
 model, the items or the children. There are simply twenty-four of them.
 
+#### What range do these numbers have? {#irt-ranges -}
+
+The first thing anyone wants after a fit is a sense of what counts as a big number,
+and logits give no help until you have one. The answer follows from the ladder of
+Section \@ref(irt-person-item-scale) and it is worth pinning down once.
+
+```{r irt-range-table, echo=TRUE}
+distance <- 0:4
+
+knitr::kable(
+  data.frame(
+    `theta - b`               = distance,
+    `P(correct)`              = round(plogis(distance), 3),
+    `information p(1-p)`      = round(plogis(distance) * (1 - plogis(distance)), 3),
+    `share of the maximum`    = round(plogis(distance) * (1 - plogis(distance)) / 0.25, 2),
+    check.names = FALSE
+  ),
+  caption = "How fast an item stops telling you anything. An item is most informative about a person standing exactly on it; two logits away it carries 42% of that, three logits away 18%, four logits away 7%."
+)
+```
+
+That decay is why logits do not run far in practice, and it sets three rules of
+thumb that carry through the rest of this section.
+
+**Item difficulties normally sit between about $-3$ and $+3$.** Beyond that an item
+is solved by almost everybody or almost nobody, so its difficulty is estimated from
+a handful of responses and its standard error explodes. In this class the range is
+$-3.70$ to $+3.56$, and the two items at the ends have standard errors of $0.99$
+against $0.47$ in the middle — the model is telling you it barely saw them. Real,
+carefully assembled tests are narrower: the thirteen Innsbruck exam items of
+Section \@ref(irt-real-data) span $-1.27$ to $+2.31$.
+
+**Person estimates normally sit between about $-4$ and $+4$.** A test cannot
+distinguish beyond the range its items cover, and above four logits every item is
+answered correctly with probability $.98$, so there is nothing left to measure with.
+This is also why perfect and empty score patterns are special: maximum likelihood
+sends them to $\pm\infty$, and WLE returns a finite value only because the bias
+correction pins them somewhere — $-5.16$ and $+4.91$ in
+Table \@ref(tab:irt-score-table-display), numbers produced by the *test*, not by the
+children.
+
+**A population has a standard deviation of about one logit — by construction.** In
+this class the twenty-four children were drawn with $\text{sd} = 1.1$, and a real
+reference population is *defined* to have a spread of about one (Section
+\@ref(irt-bista)). So a difference of one logit is roughly one standard deviation
+of the population: large. Half a logit is a substantial difference; a tenth of a
+logit is nothing. On the Bildungsstandards metric those become 90 points, 45 points
+and 9 points respectively.
+
+::: {.analysis-note}
+Put together, the three rules give a quick reading test for any IRT output. If item
+difficulties run from $-8$ to $+8$, something has gone wrong — usually an item that
+nobody or everybody solved, or a scale that was not centred. If person estimates
+cluster inside $\pm 0.5$, the test was far too easy or too hard for this group. And
+if a report describes a difference of $0.05$ logits as meaningful, it is describing
+noise.
+:::
+
 :::: {.amazing}
 ::: {.titelamazing}
 <h2>Rasch does not tell you which item is harder — you knew that already</h2>
@@ -979,7 +1253,7 @@ allowed to contradict. Measurement is not about finding out who is first. It is
 about knowing how far apart people are, and how sure you are.
 ::::
 
-#### Step 3: put children and tasks on one picture {#irt-step-wright}
+#### Step 3: put children and tasks on one picture {#irt-step-wright -}
 
 This is Ben Wright's picture, and it is the single most useful output of a Rasch
 analysis.
@@ -1019,11 +1293,20 @@ not, quite: `estimate_sum` was solved by one child in twenty-four and
 of the scale where nobody is standing. Section \@ref(irt-how-many) puts a number
 on what that costs.
 
-#### Step 4: score the children four ways {#irt-step-score}
+#### Step 4: score the children four ways {#irt-step-score -}
 
-The five scoring rules of Section \@ref(irt-score-options) are all summaries of
-the posterior curve. Here they are, written out from scratch, because a function
-call would hide exactly the thing worth seeing.
+The five scoring rules of Section \@ref(irt-score-options) are all summaries of the
+same posterior curve, so the interesting question is not how to compute them but
+how far apart they end up. Table \@ref(tab:irt-score-table-display) answers that for
+every score a child could have got on this test.
+
+:::: {.dedicated}
+::: {.titeldedicated}
+<h2>Truly Dedicated: the four scoring rules in twenty lines</h2>
+:::
+No package is needed for any of this, and writing it out once removes the mystery
+for good. The grid is the posterior of Section \@ref(irt-person-posterior),
+evaluated at 1,201 points; everything else is a different way of pointing at it.
 
 ```{r irt-score-function, echo=TRUE}
 score_pattern <- function(pattern, b, prior_sd = 1) {
@@ -1039,24 +1322,33 @@ score_pattern <- function(pattern, b, prior_sd = 1) {
   ml <- if (sum(pattern) %in% c(0, length(pattern))) NA_real_ else
     optimize(function(t) -sum(pattern * (t - b) - log1p(exp(t - b))), c(-8, 8))$minimum
 
-  # WLE: Warm's bias-corrected likelihood equation
+  # WLE: Warm's bias-corrected likelihood equation, solved for its root
   warm <- function(t) {
     p <- plogis(t - b)
     sum(pattern - p) + sum(p * (1 - p) * (1 - 2 * p)) / (2 * sum(p * (1 - p)))
   }
   wle <- uniroot(warm, c(-10, 10))$root
 
-  eap <- sum(grid * post)
+  eap <- sum(grid * post)                     # posterior mean
 
   c(raw    = sum(pattern),
     ML     = ml,
     WLE    = wle,
     SE_WLE = 1 / sqrt(sum(plogis(wle - b) * (1 - plogis(wle - b)))),
-    MAP    = grid[which.max(post)],
+    MAP    = grid[which.max(post)],           # posterior mode
     EAP    = eap,
     SD_EAP = sqrt(sum((grid - eap)^2 * post)))
 }
 ```
+
+Four lines carry the whole argument of Section \@ref(irt-score-options). `ml`
+returns `NA` when the pattern is all right or all wrong, because the likelihood
+never turns over. `wle` solves Warm's corrected equation instead and therefore
+always returns something. `post` is where the population distribution enters —
+delete the `dnorm()` factor and MAP and EAP stop shrinking. And `SE_WLE` is the
+test information at that point, which is the only line that depends on how many
+items there are.
+::::
 
 ```{r irt-score-table-class, echo=TRUE}
 easiest_first <- order(item_difficulty)
@@ -1066,11 +1358,25 @@ score_table <- t(sapply(0:14, function(r) {
   if (r > 0) pattern[easiest_first[1:r]] <- 1
   score_pattern(pattern, item_difficulty)
 }))
+```
+
+```{r irt-score-table-display, echo=FALSE}
+with_error <- function(value, error) {
+  ifelse(is.na(value), "--", sprintf("%.2f (%.2f)", value, error))
+}
 
 knitr::kable(
-  score_table,
-  digits  = 2,
-  caption = "Every possible raw score on the classroom test, scored five ways. ML has no answer at all for 0 and 14; WLE answers but with a standard error of 1.7 logits; MAP and EAP answer confidently because the population distribution, not the child, is doing the talking."
+  data.frame(
+    `correct out of 14`   = score_table[, "raw"],
+    `ML`                  = ifelse(is.na(score_table[, "ML"]), "--",
+                                   sprintf("%.2f", score_table[, "ML"])),
+    `WLE (standard error)` = with_error(score_table[, "WLE"], score_table[, "SE_WLE"]),
+    `MAP`                  = sprintf("%.2f", score_table[, "MAP"]),
+    `EAP (posterior SD)`   = with_error(score_table[, "EAP"], score_table[, "SD_EAP"]),
+    check.names = FALSE
+  ),
+  align   = c("r", "r", "r", "r", "r"),
+  caption = "Every score a child could have got on this test, summarised five ways, in logits. ML has no answer at all for 0 and 14. WLE always answers, but look at the standard error it answers with. MAP and EAP look confident at the edges because the population distribution, not the child, is doing the talking."
 )
 ```
 
@@ -1091,7 +1397,7 @@ Outside that band they diverge by more than two logits. The choice of scoring ru
 is irrelevant for the middle of the class and decisive for its edges — which is
 precisely where individual decisions about children tend to get made.
 
-#### Step 5: does the model fit? {#irt-step-fit}
+#### Step 5: does the model fit? {#irt-step-fit -}
 
 ```{r irt-itemfit, echo=TRUE}
 itemfit(person)
@@ -1158,7 +1464,7 @@ currency is *items*: every additional task sharpens that one child's estimate.
 Neither resource can be exchanged for the other.
 ::::
 
-#### Can one pupil be enough? {#irt-one-pupil}
+#### Can one pupil be enough? {#irt-one-pupil -}
 
 For calibration, no — and not for a subtle statistical reason. Ask the class data
 itself:
@@ -1198,7 +1504,7 @@ entire business model of educational assessment, and Section \@ref(irt-anchoring
 shows it in five lines of R.
 :::
 
-#### Are five items enough? {#irt-five-items}
+#### Are five items enough? {#irt-five-items -}
 
 Take the same twenty-four children and keep five tasks.
 
@@ -1266,7 +1572,7 @@ So: five items is not enough for anything you would want to do with a single
 child. Fourteen — the classroom test in this section — is enough to see the shape
 of a class and not enough to talk about Marie.
 
-#### How many children for the items? {#irt-how-many-children}
+#### How many children for the items? {#irt-how-many-children -}
 
 The other resource. This simulation repeats the whole calibration a hundred times
 for each sample size and records how precisely the items come out.
@@ -1310,7 +1616,7 @@ sense of an item's difficulty, **100–150** for $\pm 0.3$ logits, and
 tests.[^irt-linacre] A single class of twenty-four is a factor of ten short of
 the last of those.
 
-#### The experiment that settles it {#irt-two-resources}
+#### The experiment that settles it {#irt-two-resources -}
 
 Put both levers in one table. Same simulated world, same model; once with eight
 classes instead of one, once with twenty-eight tasks instead of fourteen.
@@ -1482,7 +1788,7 @@ established beforehand, on a large sample. By the time the sheet of paper reache
 Frau Berger's class, the number attached to each task has already been measured
 on thousands of other children.
 
-#### The study that produces the numbers {#irt-norming}
+#### The study that produces the numbers {#irt-norming -}
 
 Item development at the IQB runs over two to three years: drafting with teachers
 and subject-matter specialists, small pre-pilots in single classes, then
@@ -1522,10 +1828,10 @@ knitr::kable(
 ```
 
 Twenty-four children gave a mean item standard error of 0.59 logits. Three
-thousand give 0.047. That is the calibration lever of Section
-\@ref(irt-two-resources), pulled as far as it goes.
+thousand give 0.047. That is the calibration lever of
+Section \@ref(irt-how-many), pulled as far as it goes.
 
-#### Somebody has to choose where zero is {#irt-origin}
+#### Somebody has to choose where zero is {#irt-origin -}
 
 Now the part that trips everyone up, and that no amount of extra data fixes.
 
@@ -1568,7 +1874,7 @@ numbers can only be compared if they were placed against the same origin, and
 that, not the estimation, is what linking is about.
 :::
 
-#### Five ways onto an existing scale {#irt-linking-designs}
+#### Five ways onto an existing scale {#irt-linking-designs -}
 
 Once an official scale exists, every later test has to be attached to it. There
 are five standard ways, and they are the "so many variants" that make this
@@ -1619,7 +1925,7 @@ booklet mixes tasks whose difficulties are already known (the **anchors**) with
 tasks that are not. The anchors hold the scale in place while the new tasks are
 estimated onto it.
 
-#### What it costs to re-estimate {#irt-free-vs-fixed}
+#### What it costs to re-estimate {#irt-free-vs-fixed -}
 
 Suppose Frau Berger ignores the official table and calibrates on her own class.
 With all fourteen tasks the damage is modest:
@@ -1639,7 +1945,7 @@ round(c(own_calibration   = mean(own_scores[, "WLE"]),
         rank_correlation  = cor(own_scores[, "WLE"], fixed_scores[, "WLE"])), 3)
 ```
 
-The children are ranked identically ($r = .999$ — Section \@ref(irt-step-items)
+The children are ranked identically ($r = .999$ — the [item table](items.html#irt-step-items)
 explained why), and the whole class has drifted 0.22 logits upwards. Not a
 disaster, but already enough to turn "slightly below average" into "average".
 
@@ -1674,7 +1980,7 @@ the reliability is respectable, and the scale is simply somewhere else. If
 official parameters exist, fix them.
 :::
 
-#### Anchor items, and how to check them {#irt-anchor-items}
+#### Anchor items, and how to check them {#irt-anchor-items -}
 
 Now the case where re-estimating is not only allowed but required: the school has
 written four new tasks and wants them on the national scale. The design is a
@@ -1813,7 +2119,7 @@ $-0.26$, and nobody has ever been told anything useful by $-0.26$.
 So what exactly *does* come out of a Rasch model, and does the model work at all
 without a scale like the Bildungsstandards behind it?
 
-#### What the model hands you {#irt-what-comes-out}
+#### What the model hands you {#irt-what-comes-out -}
 
 Two things, and it is worth being precise about both.
 
@@ -1825,7 +2131,8 @@ that you chose; they are not what the model produced. The model produced the
 curve, and the standard error is the part of it people throw away first.
 
 Both live in logits, and both are identified only **up to a common additive
-constant** (Section \@ref(irt-origin)). So the honest description of the output is:
+constant** — see [somebody has to choose where zero is](items.html#irt-origin) below.
+So the honest description of the output is:
 *a set of distances along an axis whose zero has not yet been chosen*.
 
 ::: {.analysis-note}
@@ -1835,7 +2142,7 @@ perfectly well defined; the datum is a convention. A logit is the metre. The
 Bildungsstandards metric is the sea level.
 :::
 
-#### A difference means something; a value does not {#irt-logit-meaning}
+#### A difference means something; a value does not {#irt-logit-meaning -}
 
 This part is often skipped, and it matters, because it is not true that logits are
 meaningless. A logit *difference* has an exact and universal interpretation that
@@ -1878,7 +2185,7 @@ can be described by naming the tasks around it. A percentage-correct score canno
 do that: it is a property of a person *and* a test, and it has no location that a
 task could be placed next to.
 
-#### How VERA actually does it {#irt-bista-metric}
+#### How VERA actually does it {#irt-bista-metric -}
 
 This is not a thought experiment. The IQB publishes a technical report for every
 VERA-8 cycle and subject, and the report states the whole chain, formulas
@@ -1888,22 +2195,23 @@ has appeared somewhere in this section.
 **1. Pilot the tasks.** For VERA-8 mathematics 2026, 75 newly developed tasks
 (160 items) plus 35 older tasks (59 items) were piloted on **2,827 pupils** in 146
 classes across eight *Länder*, in a **multi-matrix design**: twenty booklets, each
-pupil seeing only a fraction of the pool — Section \@ref(irt-check-missing).
+pupil seeing only a fraction of the pool, which is the
+[booklet design](items.html#irt-check-missing) among the checks of Section \@ref(irt-checks).
 
 **2. Include an anchor booklet.** A twenty-first booklet contained *only* items
-already normed from the IQB pool. That is the anchor design of Section
-\@ref(irt-anchor-items), used for exactly the reason given there: to attach the
-new items to an existing metric and to link the booklets to each other.
+already normed from the IQB pool. That is the [anchor design](items.html#irt-anchor-items) from the previous
+section, used for exactly the reason given there: to attach the new items to an
+existing metric and to link the booklets to each other.
 
 **3. Calibrate freely.** One calibration run with the **one-dimensional Rasch
 model** in ConQuest, all item parameters estimated, missing and invalid responses
-scored as wrong, and the mean person ability fixed to zero — the origin convention
-of Section \@ref(irt-origin), chosen explicitly and stated in the report.
+scored as wrong, and the mean person ability fixed to zero — the
+[origin convention](items.html#irt-origin), chosen explicitly and stated in the report.
 
 **4. Link with mean/mean equating.** The anchor items' fresh difficulties are
 compared with their values from the 2007 norming study, and the constant that
-reconciles them is applied to everything else. Mean/mean, one constant, exactly as
-in Section \@ref(irt-anchor-items).
+reconciles them is applied to everything else. Mean/mean, one constant, exactly as in
+[anchor items and how to check them](items.html#irt-anchor-items).
 
 **5. Shift the items to a response probability of .625.**
 
@@ -1921,8 +2229,8 @@ $$
 $$
 
 $1.105$ is the standard deviation, in logits, of German ninth-graders in the
-2006/2007 norming — the latent standard deviation of Section
-\@ref(irt-bista-latent). Dividing by it and multiplying by 100 is what makes a
+2006/2007 norming — the [latent standard deviation](items.html#irt-bista-latent),
+cleaned of measurement error. Dividing by it and multiplying by 100 is what makes a
 standard deviation worth 100 points. The offset is 525 rather than 500 for a
 historical reason the report explains: until 2014 the scale was normed on pupils
 aiming for at least a *Mittlerer Schulabschluss*, and re-norming on the complete
@@ -1957,7 +2265,7 @@ numbers got bigger. A report that gives points without their standard error has 
 become more precise by rescaling; it has stopped saying how imprecise it is.
 :::
 
-#### The latent standard deviation {#irt-bista-latent}
+#### The latent standard deviation {#irt-bista-latent -}
 
 Step 6 needs the spread of the **latent** distribution, not of the estimates.
 Estimates are inflated by measurement error, so the variance has to be cleaned
@@ -1975,10 +2283,11 @@ round(c(observed_variance   = var(norming_wle, na.rm = TRUE),
 
 The observed spread of the estimates is 1.53; a third of it is measurement error;
 the latent standard deviation is 1.02 — correct, because the simulated norming
-population of Section \@ref(irt-norming) was drawn with a standard deviation of
+population of [the study that produces the numbers](items.html#irt-norming) was
+drawn with a standard deviation of
 exactly 1. Skip that correction and every reported point value is stretched.
 
-#### Item mapping: what a pupil at 500 can do {#irt-item-mapping}
+#### Item mapping: what a pupil at 500 can do {#irt-item-mapping -}
 
 Now the criterion-referenced half, and it is the two lines from step 5.
 
@@ -2031,12 +2340,12 @@ by naming the tasks that sit nearby*.
 The meaning does not come from the model and it does not come from the metric. It
 comes from the item pool. Which is why a scale is only interpretable where it has
 items: in a region with no tasks the number is still perfectly estimable and nobody
-can say what it means. That is targeting (Section \@ref(irt-step-wright)) seen from
+can say what it means. That is targeting — the [person-item map](items.html#irt-step-wright) — seen from
 the other end — and the reason a competence level model is a piece of subject
 didactics wearing a psychometric coat.
 ::::
 
-#### Mathematics: the class report {#irt-ksm-maths}
+#### Mathematics: the class report {#irt-ksm-maths -}
 
 The KMK and IQB divide the mathematics scale into six bands, which carry the
 standard names twice over — once for the *Erster Schulabschluss* and once for the
@@ -2112,7 +2421,7 @@ because it is the most honest paragraph in German educational assessment:
 
 Everything in Section \@ref(irt-how-many) is a long version of that sentence.
 
-#### English: the same machinery, European levels {#irt-ksm-english}
+#### English: the same machinery, European levels {#irt-ksm-english -}
 
 VERA-8 tests English reading and listening, and English shows the criterion half
 of this section especially clearly, because its bands were not invented for
@@ -2229,7 +2538,7 @@ Everything is now in place to do what a German primary school actually does in
 May. This is the minimal working example: **binary Rasch, fixed item parameters,
 one class**.
 
-#### Step 0: what arrives from the pilot study {#irt-vera-step-arrives}
+#### Step 0: what arrives from the pilot study {#irt-vera-step-arrives -}
 
 Not data. A table. The tasks and their difficulties, established beforehand on a
 large sample, exactly as in Section \@ref(irt-calibration):
@@ -2241,12 +2550,12 @@ round(sort(official), 2)
 Fourteen numbers on the national metric. Nothing in this section re-estimates
 them.
 
-#### Step 1: the class sits the test {#irt-vera-step-test}
+#### Step 1: the class sits the test {#irt-vera-step-test -}
 
 `responses` — twenty-four rows, fourteen columns, one 0 or 1 per cell. That is the
 entire input.
 
-#### Step 2: score against the fixed parameters {#irt-vera-step-score}
+#### Step 2: score against the fixed parameters {#irt-vera-step-score -}
 
 ```{r irt-vera-scoring, echo=TRUE}
 vera_scores <- t(apply(responses, 1, score_pattern, b = official))
@@ -2270,7 +2579,7 @@ That last sentence is the one worth sitting with. The estimates are perfectly
 usable, the ordering is right, and the individual intervals are enormous. Nothing
 went wrong; this is what fourteen items can do.
 
-#### Step 3: the class as a whole {#irt-vera-step-class}
+#### Step 3: the class as a whole {#irt-vera-step-class -}
 
 ```{r irt-vera-class-mean, echo=TRUE}
 round(c(class_mean   = mean(vera_scores[, "WLE"]),
@@ -2284,7 +2593,7 @@ measured far better than any individual in it, because twenty-four noisy estimat
 average out. This is why VERA is designed as feedback for schools and teaching and
 explicitly not as a ranking of children.
 
-#### Step 4: competence levels {#irt-vera-step-levels}
+#### Step 4: competence levels {#irt-vera-step-levels -}
 
 VERA does not report logits to teachers. It reports **Kompetenzstufen** — the
 continuous scale cut into five or six substantively described bands. Cutting is
@@ -2328,7 +2637,7 @@ child a teacher is most likely to act on. The honest report of a level is the
 level together with how sure it is, and almost no reporting system provides that.
 :::
 
-#### Step 5: one child, in March {#irt-vera-step-one-child}
+#### Step 5: one child, in March {#irt-vera-step-one-child -}
 
 A new pupil joins in March and sits the same fourteen tasks. No re-calibration, no
 class, no sample:
@@ -2347,12 +2656,14 @@ scale, standard error 0.66. **One row of data, a number on the national metric**
 because three thousand other children were measured first.
 
 That is the full answer to "would one pupil be enough?". One pupil cannot
-calibrate anything (Section \@ref(irt-one-pupil)), and one pupil can be measured
+calibrate anything, as [the minimum-children table](items.html#irt-one-pupil)
+showed, and one pupil can be measured
 perfectly well against a calibration somebody else paid for.
 
-#### Step 6: and if the booklet were longer? {#irt-vera-step-longer}
+#### Step 6: and if the booklet were longer? {#irt-vera-step-longer -}
 
-The lever from Section \@ref(irt-two-resources), applied to this class. The same
+The lever from [the two-resources experiment](items.html#irt-two-resources),
+applied to this class. The same
 twenty-four children, the same competences, a thirty-task booklet on the same
 official scale:
 
@@ -2429,7 +2740,8 @@ This is the whole section in one workflow. The item difficulties came from a
 Pilotierung on thousands of children, because that is the only way to get them
 (Section \@ref(irt-how-many)). They were fixed, not re-estimated, because
 re-estimating would move the origin and quietly change what the numbers mean
-(Section \@ref(irt-free-vs-fixed)). A single child could then be placed on the
+(see [what it costs to re-estimate](items.html#irt-free-vs-fixed)). A single
+child could then be placed on the
 national scale from one row of data. And how precisely that child was placed
 depended on one thing only: how many tasks were on the sheet.
 :::
@@ -2491,7 +2803,7 @@ to it are almost all wrong — including the two most common ones, that a bigger
 data set makes an individual result safer, and that the class a pupil sits in has
 nothing to do with it.
 
-#### Does the class have to be pooled with anybody? {#irt-pooling}
+#### Does the class have to be pooled with anybody? {#irt-pooling -}
 
 A real *Lerngruppe* can be one pupil. So: does scoring work only when many classes
 are analysed together?
@@ -2546,7 +2858,7 @@ number is the number of tasks the pupil answered, and nothing else can be
 substituted for it.
 ::::
 
-#### Where the group does enter {#irt-prior-dependence}
+#### Where the group does enter {#irt-prior-dependence -}
 
 That was WLE. Change the estimator and the answer changes, because EAP and MAP
 multiply the pupil's likelihood by a population distribution — and *somebody has to
@@ -2583,7 +2895,7 @@ point is to carry population information *into* the individual draw. Excellent f
 estimating a national gap; indefensible on a report that a family reads.
 :::
 
-#### The class is not in the model {#irt-clustering}
+#### The class is not in the model {#irt-clustering -}
 
 Now the structural question. A Rasch model has persons and items. It has no
 classes, no schools, no *Länder*. Pupils are treated as exchangeable draws, and
@@ -2643,7 +2955,7 @@ combinations must be entered as dummy variables in the background model of an MM
 scaling is the same problem in miniature: whenever a grouping is real and the model
 does not know about it, something gets underestimated.[^irt-techreport]
 
-#### Does the answer change with 100 or 10,000? {#irt-sample-stability}
+#### Does the answer change with 100 or 10,000? {#irt-sample-stability -}
 
 Two very different things can change, and conflating them is the source of most of
 the confusion.
@@ -2700,13 +3012,12 @@ The mean columns are the finding. Re-estimating on your own sample puts this pup
 at **543 points** whether you have fifty pupils or a thousand. The official
 calibration puts her at **484**. The gap is 59 points — three quarters of a
 Kompetenzstufe — and it is exactly as large at $n = 1000$ as at $n = 50$, because
-it is not an error at all. It is the origin of Section \@ref(irt-origin), silently
-redefined as "the average of the tasks in this booklet".
+it is not an error at all. It is the [origin](items.html#irt-origin), silently redefined as "the average of the tasks in this booklet".
 
 ::: {.analysis-takeaway}
 More data makes a wrong scale more precise, not more correct. Sample size fixes
-noise and cannot touch a definition. This is why Section \@ref(irt-free-vs-fixed)
-insists on fixing the published parameters: it is the one error in the whole
+noise and cannot touch a definition. This is why [what it costs to re-estimate](items.html#irt-free-vs-fixed)
+insisted on fixing the published parameters: it is the one error in the whole
 pipeline that no amount of testing will reveal or repair.
 :::
 
@@ -2730,7 +3041,7 @@ knitr::kable(
 )
 ```
 
-#### The same pupil, tested twice {#irt-retest}
+#### The same pupil, tested twice {#irt-retest -}
 
 Here is the number to give a parent, and it is the most honest summary of the
 whole section. Suppose a pupil sat an equivalent test a second time, on a different
@@ -2777,7 +3088,7 @@ random assignment to six levels would give, so the level does carry information.
 Landing two or more levels apart happens 7% of the time, so the result is rarely
 absurd. And doubling the test to 48 items lifts agreement to 61%.
 
-```{r irt-bands-figure, echo=FALSE, fig.cap="The Year 8 class from Section \\@ref(irt-ksm-maths), each pupil with a 95% interval, drawn against the competence bands. Twenty-two of the twenty-three intervals stretch across three bands. The point estimates are perfectly usable and the ordering is right; what no single pupil has is a level.", fig.align='center', out.width="95%"}
+```{r irt-bands-figure, echo=FALSE, fig.cap="The Year 8 class from [the class report](items.html#irt-ksm-maths), each pupil with a 95% interval, drawn against the competence bands. Twenty-two of the twenty-three intervals stretch across three bands. The point estimates are perfectly usable and the ordering is right; what no single pupil has is a level.", fig.align='center', out.width="95%"}
 band_frame <- data.frame(
   lo  = c(200, maths_cuts),
   hi  = c(maths_cuts, 760),
@@ -2807,7 +3118,7 @@ ggplot() +
   labs(x = "Bildungsstandards points", y = NULL)
 ```
 
-#### So: is it unambiguous? {#irt-verdict}
+#### So: is it unambiguous? {#irt-verdict -}
 
 ```{r irt-verdict-table, echo=FALSE}
 knitr::kable(
@@ -2925,7 +3236,7 @@ knitr::kable(
 ```
 
 The mean item standard error is 0.087 logits, against 0.59 in the class. That is
-the calibration lever from Section \@ref(irt-two-resources), pulled all the way.
+the calibration lever of Section \@ref(irt-how-many), pulled all the way.
 
 And now the model earns its keep. The exam was written in two sittings, and to
 stop the second group from being told the answers, eight of the thirteen items
@@ -2986,24 +3297,25 @@ An item with an outfit mean-square of 0.79 is `r mcq(c("misfitting because it is
 A fitted model is not automatically a valid measuring instrument. Seven questions,
 in the order they are usually worth asking.
 
-#### Dimensionality {#irt-check-dimensionality}
+#### Dimensionality {#irt-check-dimensionality -}
 
 Do the items mainly measure one competence, or are reading, listening, vocabulary
 and language form empirically distinct? A single total score can hide real
 multidimensionality, and the confirmatory tools of Section
 \@ref(confirmatory-factors) are the natural way to look.
 
-#### Local independence {#irt-check-independence}
+#### Local independence {#irt-check-independence -}
 
 After conditioning on competence, responses should be unrelated. Five questions
 about the same reading passage usually are not: they form a **testlet**, and
 treating them as five independent items overstates how much the test knows.
 
-#### Item fit {#irt-check-itemfit}
+#### Item fit {#irt-check-itemfit -}
 
 Do the observed patterns follow the curves the model implies? Outfit is sensitive
 to surprising responses far from an item's difficulty, infit to surprises near it.
-As Section \@ref(irt-step-fit) showed, both need a substantial sample before they
+As the [fit statistics in the classroom](items.html#irt-step-fit) showed, both
+need a substantial sample before they
 mean anything: a mean-square of 2.0 on twenty-four children is a coin flip, the
 same value on seven hundred is a finding.
 
@@ -3018,20 +3330,20 @@ trip a threshold are not dropped automatically — a summary index flags them an
 person decides, weighing didactic and motivational reasons against the statistics.
 Of the 219 mathematics items piloted in 2025, 27 went into the final modules.
 
-#### Differential item functioning {#irt-check-dif}
+#### Differential item functioning {#irt-check-dif -}
 
 Does an item have the same difficulty for different groups *at the same competence
 level*? Gender, home language, school type, test mode, federal state. The Andersen
 test of Section \@ref(irt-real-data) is the global version; a Wald test per item
 says which item is responsible.
 
-#### Targeting and information {#irt-check-targeting}
+#### Targeting and information {#irt-check-targeting -}
 
 Are the item difficulties spread across the range the persons occupy? Figure
 \@ref(fig:irt-wright-map) is this check. A test made mostly of easy items measures
 strong children badly no matter how many items it has.
 
-#### Missingness and booklet design {#irt-check-missing}
+#### Missingness and booklet design {#irt-check-missing -}
 
 *Not administered* is not the same as *wrong*. IRT handles missing-by-design
 elegantly — that is one of its main reasons for existing — but only if the
@@ -3039,7 +3351,7 @@ booklets are linked by common anchor items and the missingness really is by
 design. Missing because a child ran out of time is a different animal, and
 Section \@ref(missing-data) has the vocabulary for it.
 
-#### Consequences of reporting {#irt-check-reporting}
+#### Consequences of reporting {#irt-check-reporting -}
 
 An estimate with a standard error and a competence *level* are different objects.
 Cutting a continuous uncertain estimate into levels adds classification error, and
@@ -3058,20 +3370,20 @@ from them.
 
 It depends what is meant by *the data*.
 
-#### Published example tasks: yes {#irt-vera-tasks}
+#### Published example tasks: yes {#irt-vera-tasks -}
 
 The IQB task browser holds many VERA examples from earlier cycles with solutions
 and didactic commentary, filterable by subject, competence domain and level, and
 much of it released under a Creative Commons licence. Excellent for understanding
 task design; not an item-response data set. There is no row per pupil.
 
-#### The operational item pool: not fully open {#irt-vera-pool}
+#### The operational item pool: not fully open {#irt-vera-pool -}
 
 VERA develops new tasks and reuses tasks from earlier cycles, so the live pool
 cannot be an open bank. The released examples are the public face of a larger
 system.
 
-#### IQB research data: available on application {#irt-vera-fdz}
+#### IQB research data: available on application {#irt-vera-fdz -}
 
 The Research Data Centre at the IQB distributes anonymised Scientific Use Files
 and Campus Use Files for non-commercial research and teaching. Access is normally
@@ -3083,7 +3395,7 @@ No nationwide VERA pupil-by-item file appears to be offered as an unrestricted
 download. The closest German alternative is an IQB education-monitoring data set
 through the FDZ.
 
-#### Directly downloadable alternatives {#irt-vera-alternatives}
+#### Directly downloadable alternatives {#irt-vera-alternatives -}
 
 ```{r irt-data-access, echo=FALSE}
 knitr::kable(
@@ -3148,7 +3460,7 @@ knitr::kable(
 )
 ```
 
-#### The same analysis in TAM and mirt {#irt-tam-mirt}
+#### The same analysis in TAM and mirt {#irt-tam-mirt -}
 
 `eRm` was the right tool for this section because conditional maximum likelihood
 is the estimator that makes the Rasch logic visible. Operational large-scale
