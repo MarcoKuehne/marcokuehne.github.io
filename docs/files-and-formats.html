@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Compare | Becoming Fluent in Data</title>
+  <title>2.5 Files and Formats | Becoming Fluent in Data</title>
   <meta name="description" content="A guide to becoming fluent in data." />
   <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Compare | Becoming Fluent in Data" />
+  <meta property="og:title" content="2.5 Files and Formats | Becoming Fluent in Data" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
   <meta property="og:description" content="A guide to becoming fluent in data." />
   <meta name="github-repo" content="MarcoKuehne/marcokuehne.github.io" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Compare | Becoming Fluent in Data" />
+  <meta name="twitter:title" content="2.5 Files and Formats | Becoming Fluent in Data" />
   
   <meta name="twitter:description" content="A guide to becoming fluent in data." />
   <meta name="twitter:image" content="https://becoming-fluent-in-data.com/images/Cover.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/Logo.ico" type="image/x-icon" />
-<link rel="prev" href="synthetic-data.html"/>
-<link rel="next" href="relationships.html"/>
+<link rel="prev" href="remote-data.html"/>
+<link rel="next" href="unstructured-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -715,11 +715,604 @@ div.csl-indent {
 <div class = infobox>
 This book is <b>Work in Progress</b>. I appreciate your feedback to make the book better.
 </div>
-<div id="compare" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Compare<a href="compare.html#compare" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="analysis-subtitle">
-<p>Relationships, means, and variation</p>
+<div id="files-and-formats" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Files and Formats<a href="files-and-formats.html#files-and-formats" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<blockquote>
+<p>"Write programs to handle text streams, because that is a universal interface."</p>
+<footer class="blockquote-footer" style="text-align: right;">
+Doug McIlroy
+</footer>
+</blockquote>
+<p>The 1880 census of the United States took <strong>eight years</strong> to count. The constitution demands one every ten years, so the arithmetic was becoming absurd: by the time the country knew what it had been in 1880, it was nearly 1890 and the question had changed.</p>
+<p>A young engineer at the Census Office thought the problem was not the counting but the paper. Herman Hollerith proposed that each person be represented by a card with holes punched in it — one position for each answer — and that a machine, rather than a clerk, add them up. The Census Office ran a competition in 1888. Hollerith captured the data in <strong>72.5 hours</strong>; his two competitors needed 144.5 and 100.5.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a></p>
+<p>The machine is worth picturing, because it explains everything that follows. A card sat under a frame of spring-loaded wires, and beneath the card were small cups of mercury. Lower the frame: where the card was solid, the wire stopped; where a hole had been punched, the wire went through and dipped into the mercury, closing an electrical circuit. The circuit advanced a dial. Forty dials on the front of the machine, forty things counted at once.</p>
+<p><strong>The first machine-readable data set in history was a social survey.</strong> The holes recorded age, sex, state of residence, citizenship and race — the variables of any survey since. The 1890 census produced roughly a hundred million cards and finished months ahead of schedule. Hollerith's company later merged into what became IBM.</p>
+<div id="fmt-columns" class="section level3 hasAnchor" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> The tyranny of the column<a href="files-and-formats.html#fmt-columns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Now the part that matters for your own files. A card has no labels on it. Column 5 means <em>age</em> because a codebook somewhere says so, and for no other reason. The data and the meaning of the data travelled separately — the deck in one box, the codebook in a drawer, and every analysis depending on the two not being separated.</p>
+<p>The failure mode is the one to remember. Punch a value one column too far to the right and nothing breaks. The card is valid, the machine reads it, the dial turns, and an age of 34 has quietly become something else. There is no error message, because there is no way for a hole to be wrong.</p>
+<p>Programmers lived with the same discipline. On a Fortran card, columns 1 to 5 were reserved for a statement label, column 6 marked a continuation, and the program itself was allowed to occupy columns 7 to 72 — a variable named <code>xnew</code> that started too far to the right became <code>x</code>, silently, because everything past column 72 was ignored.</p>
+<p>And the last eight columns, 73 to 80, held nothing but a card number. They existed for one reason: <strong>so that the unlucky programmer who dropped the deck had some chance of putting it back in order.</strong><a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
 </div>
+<div id="fmt-codebook" class="section level3 hasAnchor" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> The codebook never went away<a href="files-and-formats.html#fmt-codebook" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It would be comfortable to file this under history. It is not history.</p>
+<p>Open any CSV of survey data today and you face precisely the questions the card faced. Does <code>0</code> mean male or does it mean the first category of something else entirely? Is <code>1</code> a yes, a Monday, or a satisfaction of one point on a scale that starts at zero? And what is <code>-7</code>?</p>
+<p>That last one is not hypothetical. The SOEP data used throughout this book code missing answers as negative numbers — <code>-1</code> for <em>no answer</em>, <code>-2</code> for <em>does not apply</em>, <code>-7</code> for <em>only available in the restricted edition</em> — which is why Section <a href="missing-data.html#missing-data">4.1</a> spends several pages on the difference between a value and the absence of one. Read those columns without the codebook and you compute an average life satisfaction somewhere below zero, on a scale from 0 to 10, and nothing anywhere objects.</p>
+<p>So the comma solved the problem of <em>position</em> and left the problem of <em>meaning</em> exactly where it was. Every format invented since is an attempt at the second one, and what separates them is a single question: <strong>does the codebook travel in the same box as the data, or does it stay in the drawer?</strong></p>
+<p>CSV leaves it in the drawer. Excel leaves it in the drawer and rewrites some of your values on the way. Stata and SPSS put it in the box. A Data Package straps it to the outside of the box. DDI publishes it as a book of its own. And modern software has added something the punched-card clerk would have envied: it shows you both at once, the code and its meaning in the same cell, because that is what a human needs to see. You will find that in the Stata section below — and it is the reason this book reads its SOEP data as <code>.dta</code> rather than as CSV.</p>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+Eighty columns, and you are still living in them
+</h2>
+</div>
+<p>The IBM card held eighty characters per line. The video terminals that replaced it — DEC's VT52 and VT100 — showed eighty characters per line. The original IBM PC text mode was 80 × 25. And the style guides of Python, Java and R still recommend that a line of code should not exceed eighty characters.</p>
+<p>The margin line in your RStudio editor is at column 80. It is the width of a punched card, and nobody has quite got round to changing it.<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a></p>
+</div>
+<p>Somebody's fix for the tyranny of the column was to put a comma between the values. Position stopped mattering, a mispunched digit became a visible mistake rather than a silent one, and the file could be read by a program that had never seen the codebook. The IBM Fortran compiler under OS/360 could read such lists in <strong>1972</strong>; the name <em>comma-separated values</em> appears in print by <strong>1983</strong>; a written specification followed in <strong>2005</strong>.<a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a></p>
+<p>Fifty-three years later it is still the first thing every statistical office, data portal and survey archive offers you — and, incidentally, the most common file in this book's own <code>data/</code> folder. The oldest format is also the most used one, which is the question this section is about. If CSV is enough, why does anyone build anything else?</p>
+</div>
+<div id="fmt-what-is-a-file" class="section level3 hasAnchor" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> What a file is, and what a format is<a href="files-and-formats.html#fmt-what-is-a-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>file</strong> is a sequence of bytes with a name. That is all the operating system guarantees.</p>
+<p>A <strong>file format</strong> is an agreement about what those bytes mean — which of them are a number, where one record ends, whether the first line is a header. The agreement lives in documentation and in software, never in the file's name.</p>
+<p>The <strong>extension</strong> (<code>.csv</code>, <code>.dta</code>) is a hint about which agreement applies. It is written by whoever saved the file and is checked by nobody.</p>
+</div>
+<p>Two consequences follow. The first: a file can lie about itself. An extension is a claim, not evidence — you can rename <code>data.csv</code> to <code>data.xlsx</code> in Windows Explorer or the Finder, and not one byte inside it changes. The file is still a CSV; only the label on the tin is now wrong, and the next program to open it will complain about something that has nothing to do with the real problem.</p>
+<div class="analysis-warning">
+<p><strong>Windows hides the extension by default.</strong> In Explorer, <em>Hide extensions for known file types</em> is switched on out of the box, which means a file displayed as <code>survey.csv</code> may actually be called <code>survey.csv.txt</code> — and a file displayed as <code>report</code> may be anything at all. Turn extensions on once (in Windows 11: <em>View → Show → File name extensions</em>) and leave them on. You cannot reason about a file whose name you are not being shown.</p>
+</div>
+<p>The second consequence: whatever the format does not record must be supplied by the reader — from an argument you pass, from a convention, or from a guess.</p>
+<p>Size is the one property you get for free, and it is more informative than it looks. Here is the same table — the same 23,522 rows, the same 15 columns, the same numbers in every cell — written six ways:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="files-and-formats.html#cb82-1" tabindex="-1"></a>soep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;SOEP&quot;</span>, <span class="st">&quot;practice_en&quot;</span>, <span class="st">&quot;practice_dataset_eng.dta&quot;</span>))</span>
+<span id="cb82-2"><a href="files-and-formats.html#cb82-2" tabindex="-1"></a></span>
+<span id="cb82-3"><a href="files-and-formats.html#cb82-3" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
+<span id="cb82-4"><a href="files-and-formats.html#cb82-4" tabindex="-1"></a><span class="fu">write_csv</span>(soep, <span class="fu">file.path</span>(tmp, <span class="st">&quot;soep.csv&quot;</span>))</span>
+<span id="cb82-5"><a href="files-and-formats.html#cb82-5" tabindex="-1"></a><span class="fu">write_csv</span>(soep, <span class="fu">file.path</span>(tmp, <span class="st">&quot;soep.csv.gz&quot;</span>))     <span class="co"># readr compresses by extension</span></span>
+<span id="cb82-6"><a href="files-and-formats.html#cb82-6" tabindex="-1"></a><span class="fu">saveRDS</span>(soep,   <span class="fu">file.path</span>(tmp, <span class="st">&quot;soep.rds&quot;</span>))</span>
+<span id="cb82-7"><a href="files-and-formats.html#cb82-7" tabindex="-1"></a><span class="fu">saveRDS</span>(soep,   <span class="fu">file.path</span>(tmp, <span class="st">&quot;soep_raw.rds&quot;</span>), <span class="at">compress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb82-8"><a href="files-and-formats.html#cb82-8" tabindex="-1"></a></span>
+<span id="cb82-9"><a href="files-and-formats.html#cb82-9" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb82-10"><a href="files-and-formats.html#cb82-10" tabindex="-1"></a>  <span class="at">Format =</span> <span class="fu">c</span>(<span class="st">&quot;`.rds` (R, no compression)&quot;</span>, <span class="st">&quot;`.csv`&quot;</span>, <span class="st">&quot;`.dta` (as delivered)&quot;</span>,</span>
+<span id="cb82-11"><a href="files-and-formats.html#cb82-11" tabindex="-1"></a>             <span class="st">&quot;`.csv.gz`&quot;</span>, <span class="st">&quot;`.rds` (R, compressed)&quot;</span>),</span>
+<span id="cb82-12"><a href="files-and-formats.html#cb82-12" tabindex="-1"></a>  <span class="at">KB =</span> <span class="fu">round</span>(<span class="fu">c</span>(</span>
+<span id="cb82-13"><a href="files-and-formats.html#cb82-13" tabindex="-1"></a>    <span class="fu">file.size</span>(<span class="fu">file.path</span>(tmp, <span class="st">&quot;soep_raw.rds&quot;</span>)),</span>
+<span id="cb82-14"><a href="files-and-formats.html#cb82-14" tabindex="-1"></a>    <span class="fu">file.size</span>(<span class="fu">file.path</span>(tmp, <span class="st">&quot;soep.csv&quot;</span>)),</span>
+<span id="cb82-15"><a href="files-and-formats.html#cb82-15" tabindex="-1"></a>    <span class="fu">file.size</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;SOEP&quot;</span>, <span class="st">&quot;practice_en&quot;</span>, <span class="st">&quot;practice_dataset_eng.dta&quot;</span>)),</span>
+<span id="cb82-16"><a href="files-and-formats.html#cb82-16" tabindex="-1"></a>    <span class="fu">file.size</span>(<span class="fu">file.path</span>(tmp, <span class="st">&quot;soep.csv.gz&quot;</span>)),</span>
+<span id="cb82-17"><a href="files-and-formats.html#cb82-17" tabindex="-1"></a>    <span class="fu">file.size</span>(<span class="fu">file.path</span>(tmp, <span class="st">&quot;soep.rds&quot;</span>))</span>
+<span id="cb82-18"><a href="files-and-formats.html#cb82-18" tabindex="-1"></a>  ) <span class="sc">/</span> <span class="dv">1024</span>),</span>
+<span id="cb82-19"><a href="files-and-formats.html#cb82-19" tabindex="-1"></a>  <span class="st">`</span><span class="at">Keeps the labels</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;yes&quot;</span>)</span>
+<span id="cb82-20"><a href="files-and-formats.html#cb82-20" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb82-21"><a href="files-and-formats.html#cb82-21" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&quot;One table, five files. Parquet would sit at about 426 KB.&quot;</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:fmt-size-table">Table 2.1: </span>One table, five files. Parquet would sit at about 426 KB.</caption>
+<thead>
+<tr class="header">
+<th align="left">Format</th>
+<th align="right">KB</th>
+<th align="left">Keeps the labels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>.rds</code> (R, no compression)</td>
+<td align="right">2767</td>
+<td align="left">yes</td>
+</tr>
+<tr class="even">
+<td align="left"><code>.csv</code></td>
+<td align="right">1339</td>
+<td align="left">no</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>.dta</code> (as delivered)</td>
+<td align="right">1152</td>
+<td align="left">yes</td>
+</tr>
+<tr class="even">
+<td align="left"><code>.csv.gz</code></td>
+<td align="right">386</td>
+<td align="left">no</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>.rds</code> (R, compressed)</td>
+<td align="right">286</td>
+<td align="left">yes</td>
+</tr>
+</tbody>
+</table>
+<p>Three things in that table are worth more than the numbers themselves.</p>
+<p><strong>Compression is its own dimension.</strong> The same <code>.rds</code> is 2,767 KB or 286 KB depending on one argument. Compression is not a property of a format but a decision inside it — and <code>.dta</code>, delivered uncompressed, is larger than a gzipped CSV holding the same data.</p>
+<p><strong>Text does not have to be big.</strong> <code>write_csv()</code> compresses automatically when the file name ends in <code>.gz</code>, and <code>read_csv()</code> decompresses it again without being asked. That single character sequence takes the most transparent format from 1,339 KB to 386 KB — smaller than Parquet — while the file remains a plain CSV the moment anyone unpacks it. For sending data by mail or committing it to a repository, <code>.csv.gz</code> is an underrated answer.</p>
+<p><strong>And size says nothing about content.</strong> Read the last column. The biggest file in the table is the one that carries the <em>least</em>: the CSV has lost every value label on the way out, and no amount of storage brings them back. The smallest file that keeps everything is the one only R can open. That trade-off — readable, complete, small: pick two — runs through everything below.</p>
+</div>
+<div id="fmt-overview" class="section level3 hasAnchor" number="2.5.4">
+<h3><span class="header-section-number">2.5.4</span> Tables are most of it<a href="files-and-formats.html#fmt-overview" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The four previous sections were all about rectangles — cross-sections, panels, time series, and rectangles living on a server. That emphasis is not an accident of this book. Most data that gets analysed is tabular, because most measurement produces one number per unit per variable, and a table is the smallest thing that holds it.</p>
+<p>But "most" is not "all", and the exceptions cluster. Rather than guess at proportions, we can ask the institutions whose job this is. The archives that social scientists deposit data with — and download it from — publish exactly which formats they want, and their lists are a fair map of what actually circulates in the field.</p>
+<table>
+<caption><span id="tab:fmt-archives">Table 2.2: </span>What the UK Data Service asks depositors for. Harvard's Dataverse ingests the same short list for tables: SPSS, Stata, R, .xlsx and CSV.</caption>
+<colgroup>
+<col width="19%" />
+<col width="51%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kind of data</th>
+<th align="left">Recommended</th>
+<th align="left">Accepted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Tabular, with extensive metadata</td>
+<td align="left">SPSS <code>.sav</code>, Stata <code>.dta</code>, SAS <code>.sas7bdat</code>; delimited text plus setup files and DDI XML</td>
+<td align="left">SPSS portable <code>.por</code>, MS Access</td>
+</tr>
+<tr class="even">
+<td align="left">Tabular, minimal metadata</td>
+<td align="left"><code>.csv</code>, tab-delimited <code>.tab</code>, with the character set stated</td>
+<td align="left"><code>.txt</code>, <code>.xls</code>/<code>.xlsx</code>, OpenDocument <code>.ods</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Qualitative text</td>
+<td align="left">XML against a schema, <code>.rtf</code>, plain <code>.txt</code></td>
+<td align="left">HTML, <code>.doc</code>/<code>.docx</code>, NVivo and ATLAS.ti formats</td>
+</tr>
+<tr class="even">
+<td align="left">Geospatial</td>
+<td align="left">ESRI Shapefile (<code>.shp</code>, <code>.shx</code>, <code>.dbf</code> essential, <code>.prj</code> optional), GeoTIFF</td>
+<td align="left">Geodatabase, MapInfo, KML</td>
+</tr>
+<tr class="odd">
+<td align="left">Images</td>
+<td align="left">TIFF v6, uncompressed</td>
+<td align="left">JPEG, PDF/A, PNG</td>
+</tr>
+</tbody>
+</table>
+<p>Two things in that table are worth noticing before we go on.</p>
+<p>The first is what is <em>not</em> in it. Five kinds of data cover an entire discipline's archive, and four of the five recommendations are formats you will meet in this section.</p>
+<p>The second is stranger, and it is the argument of this whole chapter in one row. An institution whose profession is long-term preservation — people who will tell you at length that open formats outlive proprietary ones — recommends <strong>SPSS and Stata files</strong> for tabular data with metadata.<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a> Proprietary formats, at the top of the list, from an archive. There is exactly one reason: they are the only ones that carry the codebook. The alternative offered in the same cell is telling — delimited text <em>plus setup files plus DDI XML</em>, which is to say: a CSV and two extra documents to make up for what the CSV cannot hold.</p>
+<table>
+<caption><span id="tab:fmt-catalogue">Table 2.3: </span>The formats of this section, and the problem each was invented to solve.</caption>
+<colgroup>
+<col width="21%" />
+<col width="12%" />
+<col width="22%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Format</th>
+<th align="left">Since</th>
+<th align="left">From</th>
+<th align="left">Answers the question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>.csv</code></td>
+<td align="left">1972</td>
+<td align="left">IBM Fortran</td>
+<td align="left">how do I write a table anyone can read?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>.xlsx</code></td>
+<td align="left">2006</td>
+<td align="left">Microsoft, ECMA-376</td>
+<td align="left">how do I keep formatting, formulas and sheets?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>.dta</code> / <code>.sav</code></td>
+<td align="left">1985 / 1968</td>
+<td align="left">Stata, SPSS</td>
+<td align="left">how do I keep types and value labels?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>.rds</code> / <code>.RData</code></td>
+<td align="left">2001</td>
+<td align="left">R 1.4.0</td>
+<td align="left">how do I save an R object exactly as it is?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>.pkl</code> / <code>.npy</code></td>
+<td align="left">2007 (<code>.npy</code>)</td>
+<td align="left">Python, NumPy</td>
+<td align="left">the same, for Python</td>
+</tr>
+<tr class="even">
+<td align="left"><code>.json</code> / <code>.jsonl</code></td>
+<td align="left">2001 / 2013</td>
+<td align="left">Douglas Crockford</td>
+<td align="left">how do I write something that is not a rectangle?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>.parquet</code> / <code>.feather</code></td>
+<td align="left">2013 / 2016</td>
+<td align="left">Twitter &amp; Cloudera, Arrow</td>
+<td align="left">how do I read one column out of a huge table?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>.duckdb</code></td>
+<td align="left">2019</td>
+<td align="left">CWI Amsterdam</td>
+<td align="left">how do I query a file I never loaded?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>.shp</code> (+ 4)</td>
+<td align="left">1998</td>
+<td align="left">Esri</td>
+<td align="left">how do I store a shape rather than a number?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fmt-history" class="section level3 hasAnchor" number="2.5.5">
+<h3><span class="header-section-number">2.5.5</span> Why new formats keep appearing<a href="files-and-formats.html#fmt-history" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Read that last column downwards and the history turns into one sentence repeated with different objects: <em>someone hit a wall that the previous format could not get past.</em></p>
+<p><strong>Position was the first wall</strong>, and you have just seen it. The comma removed the dependence on position — at the price of a new ambiguity, because a comma inside a value now needs an escape. Every solution buys its own problem.</p>
+<p><strong>Meaning was the second.</strong> A CSV column of zeros and ones could be sex, employment or a coin flip; the file cannot say, and the codebook is back in the drawer. Statistical packages therefore built formats that carry the dictionary with the numbers: SPSS from <strong>1968</strong>, Stata from <strong>January 1985</strong>.<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a> The price is that only their own software opens the result.</p>
+<p><strong>Hierarchy was the third.</strong> Some things are not rectangles — a household containing persons containing jobs. XML arrived in <strong>1998</strong> to write such trees, and it was thorough, so thorough that a document could dwarf the data in it. Douglas Crockford published a lighter notation for the same job in <strong>2001</strong>.<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a> JSON became the answer of every web API, which is why Section <a href="remote-data.html#web-apis">2.4.2</a> received one.</p>
+<p><strong>Excel's wall was openness.</strong> The binary <code>.xls</code> was a sealed format only Microsoft fully understood. Its replacement, standardised as ECMA-376 in <strong>December 2006</strong>, is a ZIP archive of XML documents — a spreadsheet rebuilt out of the two formats above.<a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a></p>
+<p><strong>Size was the fourth wall, and it is recent.</strong> When a table has a billion rows and fifty columns and you want three, a row-by-row format makes you read all fifty. Google described the alternative in the <em>Dremel</em> paper of <strong>2010</strong>; Twitter and Cloudera released Parquet in <strong>March 2013</strong>.<a href="#fn34" class="footnote-ref" id="fnref34"><sup>34</sup></a> Three years later Feather let R and Python hand a table to each other without either of them converting anything.<a href="#fn35" class="footnote-ref" id="fnref35"><sup>35</sup></a></p>
+<div class="analysis-takeaway">
+<p>Nobody replaced CSV, and nothing here is obsolete. Each format answers a question the earlier ones could not, and each is still the best answer to its own. Choosing well means knowing which question you are asking.</p>
+</div>
+</div>
+<div id="fmt-text-editor" class="section level3 hasAnchor" number="2.5.6">
+<h3><span class="header-section-number">2.5.6</span> Everything is a text file (until it is not)<a href="files-and-formats.html#fmt-text-editor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There is one way to settle what a file contains, and it works for every format above: look at the bytes.</p>
+<p>Most files in this repository survive that treatment intact, because they <em>are</em> text — the <code>.Rmd</code> files you are reading, the <code>.R</code> scripts, <code>DESCRIPTION</code>, <code>references.bib</code>, <code>.gitignore</code>, every <code>.csv</code>, and the <code>.do</code> file Stata used to build the SOEP practice data.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p>A <strong>plain text file</strong> is one whose bytes are meant to be read as characters. What turns bytes into characters is the <strong>character encoding</strong>, today almost always <strong>UTF-8</strong> — which was sketched out, in Rob Pike's account, <em>"on a placemat in a New Jersey diner one night in September or so 1992"</em>.<a href="#fn36" class="footnote-ref" id="fnref36"><sup>36</sup></a></p>
+<p>Plain text is not a format. It is the material most formats are written on.</p>
+</div>
+<p>Here is the tool for the rest of this section. It reads the first bytes of a file and replaces everything unprintable with a dot, exactly as a hex editor does:</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="files-and-formats.html#cb83-1" tabindex="-1"></a>peek <span class="ot">&lt;-</span> <span class="cf">function</span>(path, <span class="at">n =</span> <span class="dv">240</span>) {</span>
+<span id="cb83-2"><a href="files-and-formats.html#cb83-2" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">readBin</span>(path, <span class="at">what =</span> <span class="st">&quot;raw&quot;</span>, <span class="at">n =</span> n)</span>
+<span id="cb83-3"><a href="files-and-formats.html#cb83-3" tabindex="-1"></a>  keep <span class="ot">&lt;-</span> b <span class="sc">==</span> <span class="fu">as.raw</span>(<span class="dv">9</span>) <span class="sc">|</span> b <span class="sc">==</span> <span class="fu">as.raw</span>(<span class="dv">10</span>) <span class="sc">|</span> (b <span class="sc">&gt;=</span> <span class="fu">as.raw</span>(<span class="dv">32</span>) <span class="sc">&amp;</span> b <span class="sc">&lt;=</span> <span class="fu">as.raw</span>(<span class="dv">126</span>))</span>
+<span id="cb83-4"><a href="files-and-formats.html#cb83-4" tabindex="-1"></a>  b[<span class="sc">!</span>keep] <span class="ot">&lt;-</span> <span class="fu">as.raw</span>(<span class="dv">46</span>)          <span class="co"># 46 is a full stop</span></span>
+<span id="cb83-5"><a href="files-and-formats.html#cb83-5" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">rawToChar</span>(b))</span>
+<span id="cb83-6"><a href="files-and-formats.html#cb83-6" tabindex="-1"></a>}</span></code></pre></div>
+<p>Everything below is that function pointed at one file after another. What you see is what your text editor would show you.</p>
+</div>
+<div id="fmt-csv" class="section level3 hasAnchor" number="2.5.7">
+<h3><span class="header-section-number">2.5.7</span> CSV<a href="files-and-formats.html#fmt-csv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="files-and-formats.html#cb84-1" tabindex="-1"></a><span class="fu">peek</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Course&quot;</span>, <span class="st">&quot;GF_AllTime.csv&quot;</span>), <span class="dv">200</span>)</span>
+<span id="cb84-2"><a href="files-and-formats.html#cb84-2" tabindex="-1"></a><span class="co">#&gt; Term;Academic.level;Gender;Age;Total.Semesters;Background.in.Statistics;Background.in.R;Background.in.Academic.Writing;Expectations.</span></span>
+<span id="cb84-3"><a href="files-and-formats.html#cb84-3" tabindex="-1"></a><span class="co">#&gt; SS 2020;Bachelor;Female;25;6;3;1;3;doing an empirical analysis with</span></span></code></pre></div>
+<p>The whole format is visible in two lines: a header, then one record per line, fields separated — here by semicolons rather than commas, because the file was written by a German spreadsheet, where the comma is already the decimal mark. <code>read_csv2()</code> expects exactly this variant.</p>
+<p><strong>Good for.</strong> Everything is readable, repairable and diffable; every program on earth opens it; a broken file can be fixed by hand.</p>
+<p><strong>Cannot do.</strong> It records no types, no separator, no encoding, no missing-value convention. Whatever the file does not say, the reader invents — and readers invent differently:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="files-and-formats.html#cb85-1" tabindex="-1"></a>csv_demo <span class="ot">&lt;-</span> <span class="st">&quot;postcode,share</span><span class="sc">\n</span><span class="st">01067,0.5</span><span class="sc">\n</span><span class="st">10115,0.25</span><span class="sc">\n</span><span class="st">&quot;</span></span>
+<span id="cb85-2"><a href="files-and-formats.html#cb85-2" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="files-and-formats.html#cb85-3" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="at">text =</span> csv_demo)<span class="sc">$</span>postcode                    <span class="co"># base R</span></span>
+<span id="cb85-4"><a href="files-and-formats.html#cb85-4" tabindex="-1"></a><span class="co">#&gt; [1]  1067 10115</span></span>
+<span id="cb85-5"><a href="files-and-formats.html#cb85-5" tabindex="-1"></a><span class="fu">read_csv</span>(csv_demo, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>postcode   <span class="co"># readr</span></span>
+<span id="cb85-6"><a href="files-and-formats.html#cb85-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;01067&quot; &quot;10115&quot;</span></span></code></pre></div>
+<p><code>01067</code> is the postcode of central Dresden. One reader makes it the number 1067 and loses the zero for good; the other keeps it as text. Nothing failed and nothing warned. The remedy is to stop hoping: <code>col_types = cols(postcode = col_character())</code>.</p>
+</div>
+<div id="fmt-datapackage" class="section level3 hasAnchor" number="2.5.8">
+<h3><span class="header-section-number">2.5.8</span> Putting the codebook back next to the data<a href="files-and-formats.html#fmt-datapackage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The card had a codebook in a drawer; a CSV has the same problem and a modern answer. A <strong>Data Package</strong> is a small <code>datapackage.json</code> file that lies beside your CSV and declares what the CSV cannot: the type of every column, the missing-value markers, constraints, and how tables relate to one another.<a href="#fn37" class="footnote-ref" id="fnref37"><sup>37</sup></a></p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb86-1"><a href="files-and-formats.html#cb86-1" tabindex="-1"></a><span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;soep-practice&quot;</span><span class="fu">,</span></span>
+<span id="cb86-2"><a href="files-and-formats.html#cb86-2" tabindex="-1"></a>  <span class="dt">&quot;resources&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></span>
+<span id="cb86-3"><a href="files-and-formats.html#cb86-3" tabindex="-1"></a>    <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;soep.csv&quot;</span><span class="fu">,</span></span>
+<span id="cb86-4"><a href="files-and-formats.html#cb86-4" tabindex="-1"></a>    <span class="dt">&quot;schema&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;fields&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb86-5"><a href="files-and-formats.html#cb86-5" tabindex="-1"></a>      <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;id&quot;</span><span class="fu">,</span>     <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;integer&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb86-6"><a href="files-and-formats.html#cb86-6" tabindex="-1"></a>      <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;syear&quot;</span><span class="fu">,</span>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;year&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb86-7"><a href="files-and-formats.html#cb86-7" tabindex="-1"></a>      <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;sex&quot;</span><span class="fu">,</span>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;integer&quot;</span><span class="fu">,</span> <span class="dt">&quot;categories&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb86-8"><a href="files-and-formats.html#cb86-8" tabindex="-1"></a>          <span class="fu">{</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span> <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;male&quot;</span> <span class="fu">}</span><span class="ot">,</span> <span class="fu">{</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;female&quot;</span> <span class="fu">}</span> <span class="ot">]</span> <span class="fu">}</span></span>
+<span id="cb86-9"><a href="files-and-formats.html#cb86-9" tabindex="-1"></a>    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb86-10"><a href="files-and-formats.html#cb86-10" tabindex="-1"></a>    <span class="dt">&quot;missingValues&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;&quot;</span><span class="ot">,</span> <span class="st">&quot;-1&quot;</span><span class="ot">,</span> <span class="st">&quot;-2&quot;</span><span class="ot">,</span> <span class="st">&quot;-8&quot;</span><span class="ot">]</span> <span class="fu">}</span></span>
+<span id="cb86-11"><a href="files-and-formats.html#cb86-11" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
+<p>The data stay a plain CSV that anyone can open; the meaning sits in a text file next to them that a machine can read. SAGE Research Methods recommends the arrangement to social scientists for exactly the reason the next box describes.</p>
+</div>
+<div id="fmt-excel" class="section level3 hasAnchor" number="2.5.9">
+<h3><span class="header-section-number">2.5.9</span> Excel<a href="files-and-formats.html#fmt-excel" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="files-and-formats.html#cb87-1" tabindex="-1"></a><span class="fu">peek</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Course&quot;</span>, <span class="st">&quot;CourseData.xlsx&quot;</span>), <span class="dv">120</span>)</span>
+<span id="cb87-2"><a href="files-and-formats.html#cb87-2" tabindex="-1"></a><span class="co">#&gt; PK..........!.b..h^...........[Content_Types].xml ...(..................................................................</span></span></code></pre></div>
+<p><code>PK</code> — the initials of Phil Katz, who wrote the ZIP format. An <code>.xlsx</code> file is a zipped folder, and <code>unzip()</code> lists its contents without extracting anything:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="files-and-formats.html#cb88-1" tabindex="-1"></a>xlsx <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Course&quot;</span>, <span class="st">&quot;CourseData.xlsx&quot;</span>)</span>
+<span id="cb88-2"><a href="files-and-formats.html#cb88-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">unzip</span>(xlsx, <span class="at">list =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>Name, <span class="dv">8</span>)</span>
+<span id="cb88-3"><a href="files-and-formats.html#cb88-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;[Content_Types].xml&quot;        &quot;_rels/.rels&quot;               </span></span>
+<span id="cb88-4"><a href="files-and-formats.html#cb88-4" tabindex="-1"></a><span class="co">#&gt; [3] &quot;xl/_rels/workbook.xml.rels&quot; &quot;xl/workbook.xml&quot;           </span></span>
+<span id="cb88-5"><a href="files-and-formats.html#cb88-5" tabindex="-1"></a><span class="co">#&gt; [5] &quot;xl/sharedStrings.xml&quot;       &quot;xl/theme/theme1.xml&quot;       </span></span>
+<span id="cb88-6"><a href="files-and-formats.html#cb88-6" tabindex="-1"></a><span class="co">#&gt; [7] &quot;xl/styles.xml&quot;              &quot;xl/worksheets/sheet1.xml&quot;</span></span></code></pre></div>
+<p>Inside are XML documents: one for the workbook, one per sheet, one holding every string in the file exactly once. <code>.docx</code> and <code>.pptx</code> are built the same way.</p>
+<p><strong>Good for.</strong> Several sheets in one file, formatting, formulas, and — the honest reason it dominates — everybody already has it and can edit it without learning anything.</p>
+<p><strong>Cannot do.</strong> Leave your values alone. Excel interprets what it reads, and its interpretations are irreversible.</p>
+<div class="amazing">
+<div class="titelamazing">
+<h2>
+The genes that had to be renamed
+</h2>
+</div>
+<p>In 2016 Mark Ziemann and colleagues screened the supplementary Excel files of eighteen genomics journals. In <strong>19.6 %</strong> of the papers, gene names had been silently converted: <em>SEPT2</em> had become the date 2 September, <em>MARCH1</em> had become 1 March.<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a> Five years later the same group repeated the screen. The rate had risen to <strong>30.9 %</strong>.<a href="#fn39" class="footnote-ref" id="fnref39"><sup>39</sup></a></p>
+<p>At which point the field gave up on the software and changed the data. In 2020 the HUGO Gene Nomenclature Committee renamed the affected genes — <em>SEPT1</em> became <em>SEPTIN1</em>, <em>MARCH1</em> became <em>MARCHF1</em> — so that a spreadsheet would stop reinterpreting them.<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a></p>
+<p>Human genetics adjusted its naming conventions to accommodate a file format's opinion about what the data means.</p>
+</div>
+<p>Read Excel files with <code>readxl::read_xlsx()</code>, which never opens Excel and therefore never triggers the conversions. And where a column matters — an ID, a postcode, a gene — pass <code>col_types = "text"</code> and convert deliberately afterwards.</p>
+</div>
+<div id="fmt-stata" class="section level3 hasAnchor" number="2.5.10">
+<h3><span class="header-section-number">2.5.10</span> Stata and SPSS<a href="files-and-formats.html#fmt-stata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="files-and-formats.html#cb89-1" tabindex="-1"></a><span class="fu">peek</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;SOEP&quot;</span>, <span class="st">&quot;practice_en&quot;</span>, <span class="st">&quot;practice_dataset_eng.dta&quot;</span>), <span class="dv">200</span>)</span>
+<span id="cb89-2"><a href="files-and-formats.html#cb89-2" tabindex="-1"></a><span class="co">#&gt; &lt;stata_dta&gt;&lt;header&gt;&lt;release&gt;118&lt;/release&gt;&lt;byteorder&gt;LSF&lt;/byteorder&gt;&lt;K&gt;..&lt;/K&gt;&lt;N&gt;.[......&lt;/N&gt;&lt;label&gt;..&lt;/label&gt;&lt;timestamp&gt;. 6 Jan 2022 15:18&lt;/timestamp&gt;&lt;/header&gt;&lt;map&gt;........................X............</span></span></code></pre></div>
+<p>Markup, then rubble. Since Stata 13 the skeleton of a <code>.dta</code> file is XML-like text — you can read the format version (118), the byte order, and the moment this file was written — while the values themselves are binary.<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a></p>
+<p><strong>Good for.</strong> It carries the codebook. Every column has a label, and coded columns carry a dictionary of what the codes mean. This is why the book reads SOEP data in this format rather than as CSV:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="files-and-formats.html#cb90-1" tabindex="-1"></a><span class="fu">attr</span>(soep<span class="sc">$</span>sex, <span class="st">&quot;label&quot;</span>)             <span class="co"># what the column is</span></span>
+<span id="cb90-2"><a href="files-and-formats.html#cb90-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Sex&quot;</span></span>
+<span id="cb90-3"><a href="files-and-formats.html#cb90-3" tabindex="-1"></a><span class="fu">attr</span>(soep<span class="sc">$</span>sex, <span class="st">&quot;labels&quot;</span>)[<span class="dv">9</span><span class="sc">:</span><span class="dv">11</span>]      <span class="co"># what its codes mean</span></span>
+<span id="cb90-4"><a href="files-and-formats.html#cb90-4" tabindex="-1"></a><span class="co">#&gt;   [0] male [1] female [2] female </span></span>
+<span id="cb90-5"><a href="files-and-formats.html#cb90-5" tabindex="-1"></a><span class="co">#&gt;          0          1          2</span></span></code></pre></div>
+<p><code>haven</code> keeps that dictionary as an attribute; <code>as_factor()</code> turns it into a factor; <code>zap_labels()</code> throws it away.</p>
+<p>And this is the part the punched-card clerk would have envied. You do not have to choose between the code and its meaning, and you do not have to keep a second document open beside the data. R prints both, in the same cell:</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="files-and-formats.html#cb91-1" tabindex="-1"></a>soep <span class="sc">%&gt;%</span> <span class="fu">select</span>(id, syear, sex, erwerb) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">4</span>)</span>
+<span id="cb91-2"><a href="files-and-formats.html#cb91-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 4</span></span>
+<span id="cb91-3"><a href="files-and-formats.html#cb91-3" tabindex="-1"></a><span class="co">#&gt;      id syear sex            erwerb                     </span></span>
+<span id="cb91-4"><a href="files-and-formats.html#cb91-4" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lbl&gt;      &lt;dbl+lbl&gt;                  </span></span>
+<span id="cb91-5"><a href="files-and-formats.html#cb91-5" tabindex="-1"></a><span class="co">#&gt; 1   194  2015 1 [[1] female] 2 [[-2] Employed part-time]</span></span>
+<span id="cb91-6"><a href="files-and-formats.html#cb91-6" tabindex="-1"></a><span class="co">#&gt; 2   194  2016 1 [[1] female] 2 [[-2] Employed part-time]</span></span>
+<span id="cb91-7"><a href="files-and-formats.html#cb91-7" tabindex="-1"></a><span class="co">#&gt; 3   194  2017 1 [[1] female] 2 [[-2] Employed part-time]</span></span>
+<span id="cb91-8"><a href="files-and-formats.html#cb91-8" tabindex="-1"></a><span class="co">#&gt; 4   194  2018 1 [[1] female] 2 [[-2] Employed part-time]</span></span></code></pre></div>
+<p>Look at the column type: <code>&lt;dbl+lbl&gt;</code>, a number <em>plus</em> what the number means. The analysis works with the code, the reader sees the label, and neither has to be converted into the other. Ninety years after a wire dipped into a cup of mercury, the hole and the codebook are finally in the same place — and displayed side by side, which is a separate achievement.</p>
+<p>It is also the fastest way to spot the fault described below: read the <code>erwerb</code> column and you will see the value <code>2</code> carrying the text <code>[-2]</code>.</p>
+<p><strong>Cannot do.</strong> Guarantee the dictionary is right. Labels never appear beside the numbers, and nobody proof-reads them. This very file — used in five chapters — contains two faults:</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="files-and-formats.html#cb92-1" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">as_factor</span>(soep<span class="sc">$</span>sex))            <span class="co"># eleven levels, two of them occupied</span></span>
+<span id="cb92-2"><a href="files-and-formats.html#cb92-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb92-3"><a href="files-and-formats.html#cb92-3" tabindex="-1"></a><span class="co">#&gt;     0     1 </span></span>
+<span id="cb92-4"><a href="files-and-formats.html#cb92-4" tabindex="-1"></a><span class="co">#&gt; 10762 12760</span></span>
+<span id="cb92-5"><a href="files-and-formats.html#cb92-5" tabindex="-1"></a><span class="fu">attr</span>(soep<span class="sc">$</span>erwerb, <span class="st">&quot;labels&quot;</span>)[<span class="dv">8</span><span class="sc">:</span><span class="dv">9</span>]      <span class="co"># the bracketed codes contradict the values</span></span>
+<span id="cb92-6"><a href="files-and-formats.html#cb92-6" tabindex="-1"></a><span class="co">#&gt; [-1] Employed full-time [-2] Employed part-time </span></span>
+<span id="cb92-7"><a href="files-and-formats.html#cb92-7" tabindex="-1"></a><span class="co">#&gt;                       1                       2</span></span></code></pre></div>
+<p>Eleven levels: eight missing-value codes that never occur here, one duplicate <code>female</code>, and the two respondents actually have. And in <code>erwerb</code>, the value <code>1</code> carries the label text <code>[-1] Employed full-time</code> — while negative numbers are precisely what this data set uses for missing values (Section <a href="missing-data.html#missing-data">4.1</a>). The values are sound; their description is not.</p>
+<div class="analysis-takeaway">
+<p>Metadata are data. They can be missing, they can travel with the file, and they can be wrong — and because they are never printed beside the numbers, an error in them survives every check you are likely to run.</p>
+</div>
+</div>
+<div id="fmt-ddi" class="section level3 hasAnchor" number="2.5.11">
+<h3><span class="header-section-number">2.5.11</span> The codebook as its own file<a href="files-and-formats.html#fmt-ddi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Your field solved this a long time ago, and you have probably downloaded the solution without opening it. <strong>DDI</strong> — the Data Documentation Initiative — is an XML standard for describing a data set: every variable, every category, the question wording, the universe, the collection method.<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a> GESIS, ICPSR and the SOEP all publish their codebooks this way.</p>
+<p>It is the punched-card codebook, finally machine-readable and finally shipped in the same box as the deck.</p>
+</div>
+<div id="fmt-rds" class="section level3 hasAnchor" number="2.5.12">
+<h3><span class="header-section-number">2.5.12</span> R's own formats<a href="files-and-formats.html#fmt-rds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>#&gt; ...........Z......,`0.@...&amp;.....w.H+.V...5_6..W.k.Z..4f&gt;D..v</code></pre>
+<p>Nothing readable at all: an <code>.rds</code> file is a compressed dump of R's internal representation, in the serialisation format that has been R's default since version 1.4.0 in December 2001.<a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a></p>
+<p><strong>Good for.</strong> It saves <em>anything</em> — not only tables, but fitted models, lists, functions — and restores them exactly, attributes and labels included. For an intermediate result in a long analysis it is the right choice: <code>saveRDS(model, "model.rds")</code>, <code>model &lt;- readRDS("model.rds")</code>.</p>
+<p><strong>Cannot do.</strong> Be opened by anything but R. Never hand an <code>.rds</code> to a colleague as a deliverable, and never use it as an archive.</p>
+<p><code>.RData</code> (via <code>save()</code> and <code>load()</code>) is the older sibling and stores several objects at once under their own names — which is exactly why it is the worse choice: <code>load()</code> silently overwrites whatever in your workspace shares a name. One object, one file, <code>readRDS()</code>.</p>
+</div>
+<div id="fmt-python" class="section level3 hasAnchor" number="2.5.13">
+<h3><span class="header-section-number">2.5.13</span> What Python uses<a href="files-and-formats.html#fmt-python" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sooner or later a collaborator sends you their data and it is neither CSV nor Excel. Two formats account for most of those messages.</p>
+<p><strong><code>.pkl</code></strong> is Python's <code>.rds</code>: any object, serialised exactly. It has one property that R's has not, and it is worth knowing about before you double-click anything:</p>
+<pre><code>&gt;&gt;&gt; pickle.loads(b&quot;cos\nsystem\n(S&#39;echo hello world&#39;\ntR.&quot;)
+hello world</code></pre>
+<p>That is from Python's own documentation. Unpickling a file <em>runs code from it</em>, so the manual says plainly: "The <code>pickle</code> module <strong>is not secure</strong>. Only unpickle data you trust."<a href="#fn44" class="footnote-ref" id="fnref44"><sup>44</sup></a> A pickle from an unknown source is not a data file; it is a program.</p>
+<p><strong><code>.npy</code></strong> and <strong><code>.npz</code></strong> hold NumPy arrays. They were designed in 2007 precisely because pickle could not do two things a large array needs: be loaded without duplicating itself in memory, and be read from disk in pieces.<a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a> And they open with a header written as readable ASCII — the shape of the array and the type of its values, in plain text, before the numbers begin. The same arrangement as a Stata file, arrived at independently.</p>
+<p>What <code>.npy</code> has not got is column names, because an array does not have any.</p>
+<p>Neither belongs in an exchange between two people. The bridge is the pair from the next section: <strong>Feather</strong> to hand a table across the language boundary in one session, <strong>Parquet</strong> to store one. <code>arrow::read_feather()</code> in R and <code>pandas.read_feather()</code> in Python read the same file, and neither language has to know the other exists.</p>
+</div>
+<div id="fmt-json" class="section level3 hasAnchor" number="2.5.14">
+<h3><span class="header-section-number">2.5.14</span> JSON<a href="files-and-formats.html#fmt-json" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="files-and-formats.html#cb95-1" tabindex="-1"></a><span class="fu">peek</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Geo&quot;</span>, <span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Germany_Coordinator_60.json&quot;</span>), <span class="dv">160</span>)</span>
+<span id="cb95-2"><a href="files-and-formats.html#cb95-2" tabindex="-1"></a><span class="co">#&gt; [[540,332],[522.7839050292969,294.9807434082031],[515.7578125,251.5562744140625],[492.917236328125,214.66256713867188],[502.08544921875,170.2926483154297],[480.</span></span></code></pre></div>
+<p>Brackets inside brackets. That is the point of the format, and it is where the rectangle ends.</p>
+<div class="defbox">
+<div class="titeldefbox">
+<h2>
+Definition
+</h2>
+</div>
+<p><strong>JSON</strong> (JavaScript Object Notation) writes data as nested objects and arrays. A field may hold a value, another object, or a list of any length — so two records in the same file need not have the same fields at all.</p>
+<p>It is not a table format. It is a <strong>tree</strong>, and using it means deciding how to flatten it.</p>
+</div>
+<p><strong>Good for.</strong> Everything with depth: an API answer, a configuration, a record with a variable number of children. Text, so you can read it; nested, so it can describe what a table cannot.</p>
+<p><strong>Cannot do.</strong> Fit into a data frame without a decision from you:</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="files-and-formats.html#cb96-1" tabindex="-1"></a>records <span class="ot">&lt;-</span> <span class="st">&#39;[</span></span>
+<span id="cb96-2"><a href="files-and-formats.html#cb96-2" tabindex="-1"></a><span class="st">  {&quot;id&quot;: 1, &quot;name&quot;: &quot;Anna&quot;,  &quot;langs&quot;: [&quot;de&quot;, &quot;en&quot;, &quot;fr&quot;]},</span></span>
+<span id="cb96-3"><a href="files-and-formats.html#cb96-3" tabindex="-1"></a><span class="st">  {&quot;id&quot;: 2, &quot;name&quot;: &quot;Boris&quot;, &quot;langs&quot;: []}</span></span>
+<span id="cb96-4"><a href="files-and-formats.html#cb96-4" tabindex="-1"></a><span class="st">]&#39;</span></span>
+<span id="cb96-5"><a href="files-and-formats.html#cb96-5" tabindex="-1"></a></span>
+<span id="cb96-6"><a href="files-and-formats.html#cb96-6" tabindex="-1"></a>people <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(records)</span>
+<span id="cb96-7"><a href="files-and-formats.html#cb96-7" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">as_tibble</span>(people) <span class="sc">%&gt;%</span> tidyr<span class="sc">::</span><span class="fu">unnest_longer</span>(langs)</span>
+<span id="cb96-8"><a href="files-and-formats.html#cb96-8" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span id="cb96-9"><a href="files-and-formats.html#cb96-9" tabindex="-1"></a><span class="co">#&gt;      id name  langs</span></span>
+<span id="cb96-10"><a href="files-and-formats.html#cb96-10" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span id="cb96-11"><a href="files-and-formats.html#cb96-11" tabindex="-1"></a><span class="co">#&gt; 1     1 Anna  de   </span></span>
+<span id="cb96-12"><a href="files-and-formats.html#cb96-12" tabindex="-1"></a><span class="co">#&gt; 2     1 Anna  en   </span></span>
+<span id="cb96-13"><a href="files-and-formats.html#cb96-13" tabindex="-1"></a><span class="co">#&gt; 3     1 Anna  fr</span></span></code></pre></div>
+<p>Two people went in and one came out. <code>langs</code> is a column of vectors, and <code>unnest_longer()</code> drops a row whose vector is empty unless you pass <code>keep_empty = TRUE</code>. No warning was issued. Every conversion from a tree to a rectangle contains a choice like this, and it is yours whether you make it deliberately or not.</p>
+</div>
+<div id="fmt-jsonl" class="section level3 hasAnchor" number="2.5.15">
+<h3><span class="header-section-number">2.5.15</span> One object per line<a href="files-and-formats.html#fmt-jsonl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A whole JSON file is a single expression: the reader must consume all of it before any of it is valid. For a log that grows all day, or an export of two million records, that is the wrong shape.</p>
+<p><strong>JSON Lines</strong> — <code>.jsonl</code>, also called newline-delimited JSON — writes one complete object per line:</p>
+<pre><code>{&quot;id&quot;: 1, &quot;name&quot;: &quot;Anna&quot;,  &quot;langs&quot;: [&quot;de&quot;, &quot;en&quot;, &quot;fr&quot;]}
+{&quot;id&quot;: 2, &quot;name&quot;: &quot;Boris&quot;, &quot;langs&quot;: []}</code></pre>
+<p>No enclosing brackets, no commas between records. <code>wc -l</code> counts your cases, <code>head</code> shows you the first ten, a crash costs you the last line rather than the file, and you can append tomorrow's records without rewriting yesterday's. It has become the ordinary way to ship large record collections, and <code>jsonlite::stream_in()</code> reads it.</p>
+<div class="analysis-note">
+<p><strong>When it arrives as one endless line.</strong> Servers omit indentation to save bandwidth, which makes an answer unreadable for humans. <code>jsonlite::prettify()</code> puts it back — the bytes do not change, only what you are shown. <code>xml2::read_xml()</code> does the same for XML.</p>
+</div>
+</div>
+<div id="fmt-parquet" class="section level3 hasAnchor" number="2.5.16">
+<h3><span class="header-section-number">2.5.16</span> Parquet, Feather and DuckDB<a href="files-and-formats.html#fmt-parquet" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="files-and-formats.html#cb98-1" tabindex="-1"></a><span class="fu">peek</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;mtcars.feather&quot;</span>), <span class="dv">80</span>)</span>
+<span id="cb98-2"><a href="files-and-formats.html#cb98-2" tabindex="-1"></a><span class="co">#&gt; ARROW1................</span></span>
+<span id="cb98-3"><a href="files-and-formats.html#cb98-3" tabindex="-1"></a><span class="co">#&gt; .........</span></span>
+<span id="cb98-4"><a href="files-and-formats.html#cb98-4" tabindex="-1"></a><span class="co">#&gt; .............</span></span>
+<span id="cb98-5"><a href="files-and-formats.html#cb98-5" tabindex="-1"></a><span class="co">#&gt; .........</span></span>
+<span id="cb98-6"><a href="files-and-formats.html#cb98-6" tabindex="-1"></a><span class="co">#&gt; .......................</span></span></code></pre></div>
+<p><code>ARROW1</code>, then nothing legible. Both formats store data <strong>by column</strong> rather than by row: to read three of fifty columns you read three fiftieths of the file, and because a column holds values of one kind, it compresses far better than a row that mixes all of them.</p>
+<p>That much they share. What makes them two formats rather than one is a genuinely clever split, and it is worth a paragraph because it is the only case in this section where two formats were designed <em>as a pair</em>.</p>
+<p><strong>Feather is the memory.</strong> Arrow's on-disk layout is byte-for-byte the layout Arrow uses in RAM, so opening the file requires no translation at all: the program maps the file into memory and the columns are simply <em>there</em>.<a href="#fn46" class="footnote-ref" id="fnref46"><sup>46</sup></a> No parsing, no type conversion, no rebuilding of objects — the step that consumes most of the time when you read a CSV does not happen, because there is nothing to convert. That is what "zero-copy" means, and it is why the same file can be handed to R and to Python without either language reformatting it.</p>
+<p><strong>Parquet is the archive.</strong> It spends effort where Feather refuses to: dictionary encoding for repeated strings, run-length encoding for repeated values, compression on top. The result is small and stable enough to publish, at the price that it cannot be used directly — it has to be decoded in blocks before anything can compute with it.</p>
+<p>Parquet trades reading speed for compactness; Feather trades disk space for computing speed. Which is why they are usually found together: store in Parquet, work in Arrow.</p>
+<p><strong>Good for.</strong> Size and speed. The SOEP table above is 1,339 KB as CSV and about 426 KB as Parquet, with the column types preserved.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="files-and-formats.html#cb99-1" tabindex="-1"></a><span class="co"># nanoparquet is tiny and needs no system libraries.</span></span>
+<span id="cb99-2"><a href="files-and-formats.html#cb99-2" tabindex="-1"></a>nanoparquet<span class="sc">::</span><span class="fu">write_parquet</span>(soep, <span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;soep.parquet&quot;</span>))</span></code></pre></div>
+<p><strong>Cannot do.</strong> Be inspected without the right software, or carry a survey codebook.</p>
+<p>And then there is the format that is a database in a single file. <strong>DuckDB</strong> — built at the CWI in Amsterdam, the same institute that produced Python — stores tables column by column inside one <code>.duckdb</code> file, and needs no server at all.<a href="#fn47" class="footnote-ref" id="fnref47"><sup>47</sup></a> Two things make it worth a paragraph in a book about data rather than about engineering.</p>
+<p>First, it reads Parquet and CSV <em>directly</em>, without importing them:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="files-and-formats.html#cb100-1" tabindex="-1"></a>con <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbConnect</span>(duckdb<span class="sc">::</span><span class="fu">duckdb</span>())</span>
+<span id="cb100-2"><a href="files-and-formats.html#cb100-2" tabindex="-1"></a></span>
+<span id="cb100-3"><a href="files-and-formats.html#cb100-3" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con, <span class="st">&quot;</span></span>
+<span id="cb100-4"><a href="files-and-formats.html#cb100-4" tabindex="-1"></a><span class="st">  SELECT syear, AVG(lebensz_org) AS satisfaction</span></span>
+<span id="cb100-5"><a href="files-and-formats.html#cb100-5" tabindex="-1"></a><span class="st">  FROM &#39;data/soep.parquet&#39;          -- the file is never loaded</span></span>
+<span id="cb100-6"><a href="files-and-formats.html#cb100-6" tabindex="-1"></a><span class="st">  WHERE alter BETWEEN 25 AND 65</span></span>
+<span id="cb100-7"><a href="files-and-formats.html#cb100-7" tabindex="-1"></a><span class="st">  GROUP BY syear ORDER BY syear</span></span>
+<span id="cb100-8"><a href="files-and-formats.html#cb100-8" tabindex="-1"></a><span class="st">&quot;</span>)</span></code></pre></div>
+<p>Second, everything you learned in Section <a href="remote-data.html#remote-data">2.4</a> applies unchanged — <code>dbplyr</code> translates the same <code>dplyr</code> verbs, and only the answer arrives in memory. The size limit stops being your computer's memory and becomes your disk.</p>
+<div class="analysis-note">
+<p><strong>Honestly, at this size none of it matters.</strong> 23,522 rows load in under a second whatever the format. These three earn their place because public data are increasingly published as Parquet, and because they are the door to tables that do not fit in memory.</p>
+</div>
+</div>
+<div id="fmt-shapefile" class="section level3 hasAnchor" number="2.5.17">
+<h3><span class="header-section-number">2.5.17</span> Shapefile: one format, five files<a href="files-and-formats.html#fmt-shapefile" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The last entry is the strangest, and it is the bridge out of this chapter. A shapefile is not a file:</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="files-and-formats.html#cb101-1" tabindex="-1"></a><span class="fu">list.files</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Geo&quot;</span>), <span class="at">pattern =</span> <span class="st">&quot;MS_Gebiete&quot;</span>)</span>
+<span id="cb101-2"><a href="files-and-formats.html#cb101-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;MS_Gebiete.dbf&quot; &quot;MS_Gebiete.prj&quot; &quot;MS_Gebiete.qpj&quot; &quot;MS_Gebiete.shp&quot;</span></span>
+<span id="cb101-3"><a href="files-and-formats.html#cb101-3" tabindex="-1"></a><span class="co">#&gt; [5] &quot;MS_Gebiete.shx&quot;</span></span></code></pre></div>
+<p><code>.shp</code> holds the geometry, <code>.shx</code> the index into it, <code>.dbf</code> the attribute table — a format from dBASE, 1983 — and <code>.prj</code> the coordinate reference system. Four are binary. The fifth is plain text:</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="files-and-formats.html#cb102-1" tabindex="-1"></a><span class="fu">peek</span>(<span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Geo&quot;</span>, <span class="st">&quot;MS_Gebiete.prj&quot;</span>), <span class="dv">200</span>)</span>
+<span id="cb102-2"><a href="files-and-formats.html#cb102-2" tabindex="-1"></a><span class="co">#&gt; PROJCS[&quot;Hotine_Oblique_Mercator_Azimuth_Center&quot;,GEOGCS[&quot;GCS_Bessel 1841&quot;,DATUM[&quot;D_unknown&quot;,SPHEROID[&quot;bessel&quot;,6377397.155,299.1528128]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.017453292519943295]],PROJEC</span></span></code></pre></div>
+<p>A projection in Well-Known Text: an oblique Mercator on the Bessel ellipsoid of 1841. Without this file, the numbers in <code>.shp</code> are coordinates on an unnamed planet — which is why sending a colleague only the <code>.shp</code> sends them nothing usable. <code>sf::st_read()</code> reads the whole set when you name the <code>.shp</code>, and Section <a href="geo-data.html#geo-data">3.3</a> does the rest.</p>
+</div>
+<div id="fmt-choosing" class="section level3 hasAnchor" number="2.5.18">
+<h3><span class="header-section-number">2.5.18</span> Choosing<a href="files-and-formats.html#fmt-choosing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<caption><span id="tab:fmt-decision">Table 2.4: </span>Ten questions, ten answers.</caption>
+<colgroup>
+<col width="59%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">If you want to</th>
+<th align="left">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">hand data to someone whose software you do not know</td>
+<td align="left"><code>.csv</code></td>
+</tr>
+<tr class="even">
+<td align="left">hand over a CSV and still say what the columns mean</td>
+<td align="left"><code>.csv</code> + <code>datapackage.json</code></td>
+</tr>
+<tr class="odd">
+<td align="left">keep the codebook attached to the values</td>
+<td align="left"><code>.dta</code> / <code>.sav</code></td>
+</tr>
+<tr class="even">
+<td align="left">save a fitted model or any other R object</td>
+<td align="left"><code>.rds</code></td>
+</tr>
+<tr class="odd">
+<td align="left">store something that is not a rectangle</td>
+<td align="left"><code>.json</code></td>
+</tr>
+<tr class="even">
+<td align="left">append records all day without rewriting the file</td>
+<td align="left"><code>.jsonl</code></td>
+</tr>
+<tr class="odd">
+<td align="left">publish or archive a large table</td>
+<td align="left"><code>.parquet</code></td>
+</tr>
+<tr class="even">
+<td align="left">pass a table between R and Python</td>
+<td align="left"><code>.feather</code></td>
+</tr>
+<tr class="odd">
+<td align="left">query something too large to load</td>
+<td align="left"><code>.duckdb</code></td>
+</tr>
+<tr class="even">
+<td align="left">let a colleague edit it by hand</td>
+<td align="left"><code>.xlsx</code>, and check what it changed</td>
+</tr>
+</tbody>
+</table>
+<p>Three habits cover the rest. <strong>Look at the first bytes before trusting a file</strong> — one call to <code>peek()</code> settles what a download actually contains. <strong>State what you know</strong> instead of letting a reader guess: <code>col_types</code>, the separator, the encoding. And <strong>keep the raw file</strong>, whatever it is. Every conversion loses something, and the only copy that has lost nothing is the one you were given.</p>
+</div>
+<div id="fmt-bridge" class="section level3 hasAnchor" number="2.5.19">
+<h3><span class="header-section-number">2.5.19</span> Where this leaves us<a href="files-and-formats.html#fmt-bridge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Five sections asked what a row means and where the table lives. This one asked what the file promises, and the answers ran from 1890 to 2019 without any of them going out of date.</p>
+<p>The wire dipping into mercury did something no clerk could do at that speed, and it also did something no clerk would ever have done: it counted a hole without knowing what the hole meant. Everything since has been an attempt to put the meaning back into the box with the data — value labels, schemas, DDI, column types in Parquet. That is the whole story of file formats, told as one sentence.</p>
+<p>And the last two entries are a door. A shapefile stores a shape; JSON stores a tree. Neither is a rectangle, and not because they are badly designed — a web page, a paragraph of text and a map have structures of their own that a table cannot hold. HTML is a tree, language has a grammar, geometry has a projection.</p>
+<p>That is what the next chapter is about, and the work in it is always the same walk: from their structure to ours.</p>
+<div class="challenge">
+<div class="titelchallenge">
+<h2>
+Your Turn
+</h2>
+</div>
+<p>Point <code>peek()</code> at three files of your own — a spreadsheet, a download from a public portal, and something exported from a statistics package. Which of the three is text?</p>
+Then the harder question. You receive a table with a column of postcodes and a column of dates. Which format do you ask the sender for, and what exactly can go wrong with each of the others?
+<div class="webex-solution">
+<button>
+A short answer
+</button>
+<p><code>.csv</code> with an agreed encoding is usually right — but only if you read it with explicit <code>col_types</code>, or the postcodes lose their leading zeros and the dates are parsed in whichever order the reader's locale prefers. A <code>datapackage.json</code> beside it removes even that. <code>.xlsx</code> is the dangerous one: the conversion happens before you ever see the file. <code>.dta</code> and <code>.parquet</code> keep the types, at the price of requiring particular software.</p>
+</div>
+</div>
+<div class="reading">
+<div class="titelreading">
+<h2>
+Read More
+</h2>
+</div>
+<p>The <code>haven</code> vignette <em>Conversion semantics</em> explains exactly what <code>as_factor()</code> and <code>zap_labels()</code> do to a labelled column: <a href="https://haven.tidyverse.org/articles/semantics.html" class="uri">https://haven.tidyverse.org/articles/semantics.html</a>. For the columnar idea in its original form, the Dremel paper is unusually readable for a systems paper.<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a> And the Frictionless specification is short enough to read in an afternoon: <a href="https://datapackage.org/" class="uri">https://datapackage.org/</a>.</p>
+</div>
+
+</div>
+</div>
+<!-- </div> -->
+<div class="footnotes">
+<hr />
+<ol start="26">
+<li id="fn26"><p>U.S. Census Bureau, <em>The Hollerith Machine</em>: <a href="https://www.census.gov/about/history/bureau-history/census-innovations/technology/hollerith-machine.html" class="uri">https://www.census.gov/about/history/bureau-history/census-innovations/technology/hollerith-machine.html</a>. In the 1888 trial Hollerith needed 72.5 hours against 144.5 and 100.5 for the competing methods, and 5.5 hours of preparation against 44.5 and 55.5. A clerk could punch about 500 cards a day; an experienced operator could feed 80 cards a minute through the tabulator, which carried 40 counting dials. The 1890 census produced roughly 100 million cards.<a href="files-and-formats.html#fnref26" class="footnote-back">↩︎</a></p></li>
+<li id="fn27"><p>Column layout and the purpose of columns 73-80 as described in R. J. LeVeque's course notes on punched cards, University of Washington: <a href="https://faculty.washington.edu/rjl/classes/am583s2014/notes/punchcard.html" class="uri">https://faculty.washington.edu/rjl/classes/am583s2014/notes/punchcard.html</a><a href="files-and-formats.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<li id="fn28"><p>Teletypewriters printed 72 characters per line, typewriter carriages allowed 80 to 90, and an IBM punched card held 80. The DEC VT52 and VT100 terminals showed 80 columns, the IBM PC text mode was 80 x 25, and the style guides of several languages still recommend the same width.<a href="files-and-formats.html#fnref28" class="footnote-back">↩︎</a></p></li>
+<li id="fn29"><p>The IBM Fortran (level H extended) compiler under OS/360 supported list-directed input with commas between values in 1972; the term <em>comma-separated values</em> was in print by 1983. The format was first written down in Shafranovich, Y. (2005), <em>Common Format and MIME Type for Comma-Separated Values (CSV) Files</em>, RFC 4180, Informational, <a href="https://doi.org/10.17487/RFC4180" class="uri">https://doi.org/10.17487/RFC4180</a>, whose opening sentence concedes the state of affairs: "Surprisingly, while this format is very common, it has never been formally documented."<a href="files-and-formats.html#fnref29" class="footnote-back">↩︎</a></p></li>
+<li id="fn30"><p>UK Data Service, <em>File formats</em>: <a href="https://ukdataservice.ac.uk/learning-hub/research-data-management/format-your-data/file-formats/" class="uri">https://ukdataservice.ac.uk/learning-hub/research-data-management/format-your-data/file-formats/</a>. The corresponding ingest list for Harvard's Dataverse is at <a href="https://guides.dataverse.org/en/latest/user/tabulardataingest/supportedformats.html" class="uri">https://guides.dataverse.org/en/latest/user/tabulardataingest/supportedformats.html</a> — SPSS (<code>.por</code>, <code>.sav</code>), Stata (<code>.dta</code>, versions 4 to 17), R (<code>.RData</code>), Excel (<code>.xlsx</code> only) and CSV.<a href="files-and-formats.html#fnref30" class="footnote-back">↩︎</a></p></li>
+<li id="fn31"><p>SPSS was released in 1968; Stata followed in January 1985, from the Computing Resource Center in California. StataCorp has documented the <code>.dta</code> container since release 13: <a href="https://www.stata.com/help.cgi?dta" class="uri">https://www.stata.com/help.cgi?dta</a>.<a href="files-and-formats.html#fnref31" class="footnote-back">↩︎</a></p></li>
+<li id="fn32"><p>Crockford published json.org in 2001. The format was standardised as ECMA-404 in October 2013 and as RFC 8259 in December 2017.<a href="files-and-formats.html#fnref32" class="footnote-back">↩︎</a></p></li>
+<li id="fn33"><p>ECMA International (2006). <em>ECMA-376: Office Open XML File Formats</em>, approved December 2006; ISO/IEC 29500 followed in 2008. <a href="https://ecma-international.org/publications-and-standards/standards/ecma-376/" class="uri">https://ecma-international.org/publications-and-standards/standards/ecma-376/</a><a href="files-and-formats.html#fnref33" class="footnote-back">↩︎</a></p></li>
+<li id="fn34"><p>Parquet was released by Twitter and Cloudera on 13 March 2013 and became a top-level Apache project on 27 April 2015. It implements the record shredding and assembly algorithm of Google's Dremel.<a href="files-and-formats.html#fnref34" class="footnote-back">↩︎</a></p></li>
+<li id="fn35"><p>McKinney, W., &amp; Wickham, H. (2016). <em>Feather: A Fast On-Disk Format for Data Frames for R and Python, powered by Apache Arrow.</em> RStudio Blog, 29 March 2016. <a href="https://posit.co/blog/feather/" class="uri">https://posit.co/blog/feather/</a><a href="files-and-formats.html#fnref35" class="footnote-back">↩︎</a></p></li>
+<li id="fn36"><p>Pike, R. (2003). <em>UTF-8 history.</em> Electronic mail, 30 April 2003, archived by Markus Kuhn: <a href="https://www.cl.cam.ac.uk/~mgk25/ucs/utf-8-history.txt" class="uri">https://www.cl.cam.ac.uk/~mgk25/ucs/utf-8-history.txt</a><a href="files-and-formats.html#fnref36" class="footnote-back">↩︎</a></p></li>
+<li id="fn37"><p>The Data Package standard is maintained by the Frictionless Data project at Open Knowledge Foundation: <a href="https://datapackage.org/" class="uri">https://datapackage.org/</a>. For the argument in a social science context, see <em>Excel Can Corrupt Research Data - Data Packages to the Rescue</em>, SAGE Research Methods Community.<a href="files-and-formats.html#fnref37" class="footnote-back">↩︎</a></p></li>
+<li id="fn38"><p>Ziemann, M., Eren, Y., &amp; El-Osta, A. (2016). Gene name errors are widespread in the scientific literature. <em>Genome Biology</em> 17, 177. <a href="https://doi.org/10.1186/s13059-016-1044-7" class="uri">https://doi.org/10.1186/s13059-016-1044-7</a><a href="files-and-formats.html#fnref38" class="footnote-back">↩︎</a></p></li>
+<li id="fn39"><p>Abeysooriya, M., Soria, M., Kasu, M. S., &amp; Ziemann, M. (2021). Gene name errors: Lessons not learned. <em>PLoS Computational Biology</em> 17(7), e1008984. <a href="https://doi.org/10.1371/journal.pcbi.1008984" class="uri">https://doi.org/10.1371/journal.pcbi.1008984</a><a href="files-and-formats.html#fnref39" class="footnote-back">↩︎</a></p></li>
+<li id="fn40"><p>Bruford, E. A., Braschi, B., Denny, P., Jones, T. E. M., Seal, R. L., &amp; Tweedie, S. (2020). Guidelines for human gene nomenclature. <em>Nature Genetics</em> 52, 754-758. <a href="https://doi.org/10.1038/s41588-020-0669-3" class="uri">https://doi.org/10.1038/s41588-020-0669-3</a><a href="files-and-formats.html#fnref40" class="footnote-back">↩︎</a></p></li>
+<li id="fn41"><p>The XML-style container was introduced with Stata 13; release 118, used here, is the format of Stata 14 and later.<a href="files-and-formats.html#fnref41" class="footnote-back">↩︎</a></p></li>
+<li id="fn42"><p>Data Documentation Initiative, <a href="https://ddialliance.org/" class="uri">https://ddialliance.org/</a>. DDI Codebook describes a single study; DDI Lifecycle covers the whole research cycle from concept to archive.<a href="files-and-formats.html#fnref42" class="footnote-back">↩︎</a></p></li>
+<li id="fn43"><p>Serialisation format version 2 has been R's default since R 1.4.0, released in December 2001; it added Gzip, Bzip2 and Xz compression. See the Library of Congress format description of the R Data Format Family: <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml" class="uri">https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml</a><a href="files-and-formats.html#fnref43" class="footnote-back">↩︎</a></p></li>
+<li id="fn44"><p>Python Software Foundation, <em>pickle - Python object serialization</em>: <a href="https://docs.python.org/3/library/pickle.html" class="uri">https://docs.python.org/3/library/pickle.html</a>. The example shown is from that page.<a href="files-and-formats.html#fnref44" class="footnote-back">↩︎</a></p></li>
+<li id="fn45"><p>Numpy Enhancement Proposal 1, <em>A simple file format for NumPy arrays</em>, 20 December 2007: <a href="https://numpy.org/neps/nep-0001-npy-format.html" class="uri">https://numpy.org/neps/nep-0001-npy-format.html</a>. The header is a Python dictionary written as ASCII text, holding the dtype, the storage order and the shape.<a href="files-and-formats.html#fnref45" class="footnote-back">↩︎</a></p></li>
+<li id="fn46"><p>Apache Arrow, <em>Frequently Asked Questions</em>: <a href="https://arrow.apache.org/faq/" class="uri">https://arrow.apache.org/faq/</a>. "There is no translation necessary between the on-disk representation and the in-memory representation" — whereas Parquet data "cannot be directly operated on but must be decoded in large chunks".<a href="files-and-formats.html#fnref46" class="footnote-back">↩︎</a></p></li>
+<li id="fn47"><p>Mark Raasveldt and Hannes Mühleisen began DuckDB at the Centrum Wiskunde &amp; Informatica in Amsterdam in 2018 and presented version 0.1 at the SIGMOD conference in 2019: <a href="https://duckdb.org/history/" class="uri">https://duckdb.org/history/</a>. The same institute is where Guido van Rossum started Python.<a href="files-and-formats.html#fnref47" class="footnote-back">↩︎</a></p></li>
+<li id="fn48"><p>Melnik, S., Gubarev, A., Long, J. J., Romer, G., Shivakumar, S., Tolton, M., &amp; Vassilakis, T. (2010). Dremel: Interactive Analysis of Web-Scale Datasets. <em>Proceedings of the VLDB Endowment</em> 3(1), 330-339. <a href="https://doi.org/10.14778/1920841.1920886" class="uri">https://doi.org/10.14778/1920841.1920886</a><a href="files-and-formats.html#fnref48" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 <script>
 
@@ -897,8 +1490,8 @@ window.onload = function() {
           </div>
         </div>
       </div>
-<a href="synthetic-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="relationships.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="remote-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="unstructured-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

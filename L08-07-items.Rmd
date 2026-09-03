@@ -155,7 +155,7 @@ Bock[^irt-bock] handled ordered and unordered categories, and David
 Andrich[^irt-andrich] and Geoff Masters[^irt-masters] extended the Rasch model
 itself to items worth 0, 1 or 2 points — where Section \@ref(rasch-family) picks it
 up. Bock and Aitkin made marginal maximum likelihood practical;[^irt-bockaitkin]
-Thomas Warm removed the bias from likelihood scoring;[^irt-warm] and Robert
+Thomas Warm removed the bias from likelihood scoring; and Robert
 Mislevy, working on the American NAEP survey, invented **plausible values**, without
 which PISA could not exist.[^irt-mislevy] The models went to school from 2000
 onwards[^irt-pisa] — and in Germany, VERA was developed at Koblenz-Landau in 2002,
@@ -1719,7 +1719,10 @@ is to *add* well-targeted tasks, not to delete bad ones.
 ### VERA as an IRT Application {#irt-vera}
 
 VERA stands for *VERgleichsArbeiten*. The assessments are written in Years 3 and
-8, they are not graded, and they are not meant to rank schools. Their purpose is
+8, they are not graded, and they are not meant to rank schools. How each of the
+sixteen *Länder* actually runs them — who marks, who sees the results, whether
+participation is compulsory — differs enough to fill a book chapter of its
+own.[^irt-tarkian] Their purpose is
 to relate what pupils can do to the national educational standards and the
 competence-level models built on them.
 
@@ -1760,6 +1763,103 @@ of that sentence follow directly from the standard errors in Section
 \@ref(irt-how-many).
 :::
 
+#### The whole process on one page {#irt-vera-overview -}
+
+Everything from here to Section \@ref(irt-unambiguous) is a walk through one
+picture. It is worth having in front of you, because the three lanes run on three
+completely different clocks, and most of the confusion about VERA comes from
+mixing them up.
+
+```{r irt-flow-figure, echo=FALSE, fig.cap="The VERA machinery, from the standards to a competence level on a report. The top lane happens once per generation of educational standards, the middle lane once a year for each subject, and the bottom lane every May in every school. The dashed arrows are the only two things that travel between the lanes: a metric and a table of numbers.", fig.align='center', out.width="100%"}
+flow_box <- function(x, y, label, fill) data.frame(x = x, y = y, label = label, fill = fill)
+bw <- 1.72; bh <- 0.95
+
+flow_boxes <- rbind(
+  flow_box(1.1, 7.4, "KMK\nBildungsstandards",                  "a"),
+  flow_box(3.2, 7.4, "Aufgaben-\nentwicklung\n(2-3 years)",      "a"),
+  flow_box(5.3, 7.4, "Normierungs-\nstudie\n~12,000 pupils",     "a"),
+  flow_box(7.4, 7.4, "national scale\nM = 500, SD = 100",        "a"),
+  flow_box(9.5, 7.4, "Kompetenz-\nstufenmodell\n(expert panel)", "a"),
+  flow_box(1.1, 4.4, "Pilotierung\n~2,800 pupils\n20 booklets",  "b"),
+  flow_box(3.2, 4.4, "free Rasch\ncalibration\n(ConQuest)",      "b"),
+  flow_box(5.3, 4.4, "anchor booklet\nmean/mean\nlinking",       "b"),
+  flow_box(7.4, 4.4, "shift to\nRP = .625\n(+0.51 logits)",      "b"),
+  flow_box(9.5, 4.4, "Itemkennwerte-\ntabelle\nlogits + points", "b"),
+  flow_box(1.1, 1.4, "the class\nsits the test\n0/1 per item",   "c"),
+  flow_box(3.2, 1.4, "item parameters\nFIXED\n(not estimated)",  "c"),
+  flow_box(5.3, 1.4, "WLE per pupil\nin logits\n+ standard error","c"),
+  flow_box(7.4, 1.4, "525 + (100/1.105)\nx theta\n= points",     "c"),
+  flow_box(9.5, 1.4, "Kompetenzstufe\n+ feedback\nto the school","c")
+)
+
+column_x <- c(1.1, 3.2, 5.3, 7.4, 9.5)
+flow_across <- do.call(rbind, lapply(c(7.4, 4.4, 1.4), function(y)
+  data.frame(x = column_x[-5] + bw/2, xend = column_x[-1] - bw/2, y = y, yend = y)))
+flow_down <- data.frame(
+  x    = c(7.4, 9.5),          xend = c(5.3, 3.2),
+  y    = c(7.4 - bh/2, 4.4 - bh/2), yend = c(4.4 + bh/2, 1.4 + bh/2),
+  note = c("the metric travels down", "the item parameters travel down"),
+  nx   = c(7.0, 7.2),          ny   = c(5.9, 2.9))
+
+flow_lanes <- data.frame(
+  y = c(7.4, 4.4, 1.4),
+  label = c("ONCE PER GENERATION OF STANDARDS",
+            "EVERY YEAR, FOR EACH SUBJECT",
+            "EVERY MAY, IN EVERY SCHOOL"))
+
+ggplot() +
+  geom_rect(data = flow_boxes,
+            aes(xmin = x - bw/2, xmax = x + bw/2, ymin = y - bh/2, ymax = y + bh/2, fill = fill),
+            colour = "grey45", linewidth = 0.35) +
+  geom_text(data = flow_boxes, aes(x, y, label = label), size = 2.65, lineheight = 0.95) +
+  geom_segment(data = flow_across, aes(x, y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.13, "cm"), type = "closed"),
+               linewidth = 0.35, colour = "grey35") +
+  geom_curve(data = flow_down, aes(x, y, xend = xend, yend = yend),
+             arrow = arrow(length = unit(0.13, "cm"), type = "closed"),
+             linewidth = 0.35, colour = "grey35", curvature = 0.22, linetype = 2) +
+  geom_text(data = flow_down, aes(x = nx, y = ny, label = note),
+            size = 2.6, fontface = "italic", colour = "grey35") +
+  geom_text(data = flow_lanes, aes(x = 0.1, y = y + bh/2 + 0.45, label = label),
+            hjust = 0, size = 2.9, fontface = "bold", colour = "grey30") +
+  scale_fill_manual(values = c(a = "#e8eef6", b = "#eef3e8", c = "#f6efe8"), guide = "none") +
+  scale_x_continuous(limits = c(0.05, 10.5)) +
+  scale_y_continuous(limits = c(0.7, 8.6)) +
+  theme_void()
+```
+
+```{r irt-flow-table, echo=FALSE}
+knitr::kable(
+  data.frame(
+    Lane = c("Norming", "Piloting", "Testing"),
+    `How often` = c("once per generation of standards, roughly every 15 years",
+                    "every year, separately for every subject",
+                    "every year, in every participating school"),
+    `Who takes part` = c("a sample representative of Germany, all 16 Länder",
+                         "randomly drawn classes in several Länder",
+                         "whole cohorts, Year 3 and Year 8"),
+    `What comes out` = c("the point scale and the competence level model",
+                         "item parameters on that scale",
+                         "a competence value per pupil"),
+    `Where it is described` = c(
+      "[the norming study](items.html#irt-norming) and [where zero is](items.html#irt-origin)",
+      "Sections \\@ref(irt-calibration) and \\@ref(irt-bista)",
+      "Sections \\@ref(irt-anchoring) and \\@ref(irt-unambiguous)"),
+    check.names = FALSE
+  ),
+  caption = "The three clocks. A pupil's competence value in May 2026 rests on item parameters estimated in 2025 and on a scale fixed years earlier on entirely different children."
+)
+```
+
+::: {.analysis-takeaway}
+Two arrows carry everything between the lanes. The **metric** comes down from the
+norming study, and it is a definition: it says where zero is and what one point is
+worth. The **item parameters** come down from the pilot study, and they are
+estimates with standard errors. Everything else stays inside its own lane. In
+particular, nothing travels *upwards*: the two million pupils who sit VERA in a
+given year do not improve the item parameters, and they do not re-norm the scale.
+:::
+
 ### Calibration: Where the Difficulties Come From {#irt-calibration}
 
 Section \@ref(irt-how-many) ended with a wall: one class cannot calibrate items.
@@ -1790,15 +1890,90 @@ on thousands of other children.
 
 #### The study that produces the numbers {#irt-norming -}
 
-Item development at the IQB runs over two to three years: drafting with teachers
-and subject-matter specialists, small pre-pilots in single classes, then
-**Pilotierung** in randomly drawn classes across several *Länder*, where each
-item's statistical properties are estimated. The surviving items go into a
-**Normierungsstudie** on a sample representative of Germany, which fixes the scale
-and the competence levels.[^irt-iqb-development]
+Two studies stand behind every VERA item, on two different clocks, and it is worth
+seeing both with real numbers rather than as words.
 
-The whole thing is one `RM()` call on a big matrix. Here is a stand-in with three
-thousand children:
+Item development itself takes two to three years, from drafts written with teachers
+and subject-matter specialists, through pre-pilots in single classes, to the pilot
+study proper.[^irt-iqb-development]
+
+**The Pilotierung happens every year.** For VERA-8 mathematics in the 2025/26
+cycle, the pilot ran in spring 2025 and looked like this:[^irt-techreport]
+
+```{r irt-pilot-table, echo=FALSE}
+knitr::kable(
+  data.frame(
+    Land = c("Baden-Württemberg", "Bremen", "Hamburg", "Niedersachsen",
+             "Nordrhein-Westfalen", "Saarland", "Sachsen-Anhalt", "Thüringen", "Total"),
+    `non-grammar classes` = c(15, 3, 7, 13, 22, 4, 6, 4, 74),
+    `Gymnasium classes`   = c(13, 3, 7,  8, 20, 3, 4, 4, 62),
+    `all classes`         = c(28, 6, 14, 21, 42, 7, 10, 8, 146),
+    check.names = FALSE
+  ),
+  caption = "The realised sample of the VERA-8 mathematics pilot study 2025: 146 classes in eight Länder, 2,827 pupils, average age 14.6 years, 48.9 per cent female. Eight Länder rather than sixteen, because a pilot has to be precise about items, not representative of Germany."
+)
+```
+
+Those 2,827 pupils saw **219 items** — 160 from 75 newly developed tasks, plus 59
+from 35 older tasks brought back for comparison. Nobody saw all of them: the items
+were grouped into blocks, the blocks assigned to **twenty booklets** in a
+multi-matrix design, and each pupil worked through six blocks in eighty minutes.
+A twenty-first booklet contained only already-normed items and did the linking.
+
+Of the 219 items piloted, **27 went into the final test modules**. The rest either
+missed the psychometric thresholds of Section \@ref(irt-checks) or were simply not
+needed; the modules were filled up with items from the pilots of 2019, 2021, 2022,
+2023 and 2024. An operational item pool is a slowly accumulating thing, and any
+given year contributes a small fraction of it.
+
+**The Normierungsstudie happens about once per generation of standards.** The
+current Sek I metric was fixed in norming studies in 2006 and 2007 for mathematics
+and in 2008 for English, and re-normed onto the complete ninth year group in the
+IQB-Ländervergleich 2012, and the technical report gives the resulting standard
+deviation as 1.105 logits. The primary metric is anchored to the
+2011 population of fourth-graders.[^irt-bista-metric] Those are the numbers behind
+the $1.105$ and the $500$ in Section \@ref(irt-bista): a scale in use today rests
+on children who sat a test between fifteen and twenty years ago.
+
+The KMK revised the Bildungsstandards in 2022, so the whole thing is currently
+being rebuilt. New tasks were written from summer 2022, and the
+**Normierungsstudie 2026** ran from early March to early May 2026: roughly
+**12,000 pupils in Years 3 and 4, in about 455 general and special schools, across
+all sixteen Länder**, in German and mathematics. Its data will fix the new point
+scales and provide the basis for the new competence level models, which go into
+use from 2027.[^irt-norming-2026]
+
+```{r irt-two-studies, echo=FALSE}
+knitr::kable(
+  data.frame(
+    ` `            = c("Purpose", "How often", "Sample", "Länder", "Produces"),
+    `Pilotierung`  = c("estimate item parameters",
+                       "every year, per subject",
+                       "~2,800 pupils, 146 classes",
+                       "several (eight in 2025)",
+                       "difficulties for the items of the next cycle"),
+    `Normierung`   = c("fix the scale and the competence levels",
+                       "once per generation of standards, roughly every 15 years",
+                       "~12,000 pupils, ~455 schools",
+                       "all sixteen",
+                       "the metric itself and the Kompetenzstufenmodell"),
+    check.names = FALSE
+  ),
+  caption = "The two studies that stand behind every VERA result. The pilot is precise about items; the norming study is representative of Germany. Confusing them is the commonest way to misread what a VERA number is."
+)
+```
+
+::: {.analysis-note}
+Note what this means for the phrase "500 points". It is not the average of the
+children who sat VERA this year, and not the average of Germany today. It is the
+average of the norming sample of a particular year, carried forward by anchor items
+ever since. A cohort effect, a curriculum change or a pandemic does not move the
+scale; it moves where the children sit on it. That is the entire point of a fixed
+metric — and the reason a trend can be reported at all.
+:::
+
+The statistical core of a norming study is one `RM()` call on a big matrix. Here is
+a stand-in with three thousand children:
 
 ```{r irt-norming-study, echo=TRUE}
 set.seed(1907)
@@ -2188,8 +2363,9 @@ task could be placed next to.
 #### How VERA actually does it {#irt-bista-metric -}
 
 This is not a thought experiment. The IQB publishes a technical report for every
-VERA-8 cycle and subject, and the report states the whole chain, formulas
-included.[^irt-techreport] It is worth walking through, because every step in it
+VERA-8 cycle and subject — the same documents behind the pilot figures in
+Section \@ref(irt-calibration) — and each one states the whole chain, formulas
+included. It is worth walking through, because every step in it
 has appeared somewhere in this section.
 
 **1. Pilot the tasks.** For VERA-8 mathematics 2026, 75 newly developed tasks
@@ -2426,7 +2602,8 @@ Everything in Section \@ref(irt-how-many) is a long version of that sentence.
 VERA-8 tests English reading and listening, and English shows the criterion half
 of this section especially clearly, because its bands were not invented for
 Germany. They are **Common European Framework** levels, and the IQB model maps its
-point scale onto them.[^irt-ksm-english]
+point scale onto them.[^irt-ksm-english] The full descriptors come from the
+language study whose 2008 norming fixed the metric.[^irt-koeller]
 
 ```{r irt-cefr-table, echo=FALSE}
 knitr::kable(
@@ -2953,7 +3130,7 @@ than the naive formula; and plausible values are drawn from a **background model
 that can be multilevel. The VERA-8 technical report's warning that module
 combinations must be entered as dummy variables in the background model of an MML
 scaling is the same problem in miniature: whenever a grouping is real and the model
-does not know about it, something gets underestimated.[^irt-techreport]
+does not know about it, something gets underestimated.
 
 #### Does the answer change with 100 or 10,000? {#irt-sample-stability -}
 
@@ -3321,7 +3498,7 @@ same value on seven hundred is a finding.
 
 It is worth seeing what thresholds a real programme uses, because they are less
 dramatic than most textbook advice. The VERA-8 technical reports state
-theirs:[^irt-techreport] the point-biserial discrimination should exceed $.25$ and
+theirs: the point-biserial discrimination should exceed $.25$ and
 must not fall below $.10$; the **infit should not exceed 1.10**, with values up to
 1.25 tolerated in exceptional cases; and no lower bound is set at all, because an
 item with an infit below 1 fits the Rasch model imperfectly but discriminates
@@ -3433,7 +3610,12 @@ normally leave out: the booklet design, the sample, the coder agreement, the
 estimation software, the item selection thresholds, the equating procedure, the
 transformation formulas, and a frank paragraph about how imprecise an individual
 result is. Sections \@ref(irt-calibration) and \@ref(irt-bista) are, to a large
-extent, a walk through one of them.[^irt-techreport]
+extent, a walk through one of them. They are not secret — they are working
+documents written for the *Länder*, and the numbers quoted in this section come
+from the 2026 mathematics and English reports. What is *not* public is the
+Itemkennwertetabelle that travels with them: the actual difficulty of each live
+item, which would compromise the test if it circulated. The method is open; the
+key is not.
 ::::
 
 ### What You Need for Your Own VERA-Style Analysis {#irt-own-data}
@@ -3470,7 +3652,7 @@ designs, background models and plausible values. In R that means
 book builds; remove `eval=FALSE` to run them.
 
 The choice is not cosmetic, and the VERA-8 technical reports spell out why in a
-passage that reads like a footnote and is not one.[^irt-techreport] If several
+passage that reads like a footnote and is not one. If several
 module combinations of different difficulty are scaled together, MML software such
 as ConQuest or `BILOG-MG` needs the combinations entered as dummy variables in the
 background model — otherwise the differences between the difficulty levels are
@@ -3586,9 +3768,15 @@ have*, but *what would have happened otherwise*.
 - Bond, T. G., Yan, Z., & Heene, M. (2020). *Applying the Rasch Model* (4th ed.). New York: Routledge. The standard applied introduction.
 - De Boeck, P., & Wilson, M. (eds) (2004). *Explanatory Item Response Models*. New York: Springer. IRT as generalised mixed modelling; the source of the `VerbalAggression` data.
 - Mair, P. (2018). *Modern Psychometrics with R*. Cham: Springer. Chapters 4 and 5 are the `eRm` and `mirt` companions to this section.
+- Paul, S., Krüger, S., & Sachse, K. A. (2025). *Vergleichsarbeiten 2026, 8. Jahrgangsstufe, Mathematik: Aufgaben der Einzelmodule. Technischer Bericht.* Berlin: IQB. With the parallel reports for English (Niemietz, Paul, Jungermann & Sachse, 2025) and German (Wagner, Wäckerle & Sachse, 2025). Twenty pages per subject per cycle, and the only place the scaling model, the estimator, the equating method and the transformation formulas are written down together.
+- Tarkian, J., Maritzen, N., Eckert, M., & Thiel, F. (2019). Vergleichsarbeiten (VERA) — Konzeption und Implementation in den 16 Ländern. In F. Thiel et al. (eds), *Datenbasierte Qualitätssicherung und -entwicklung in Schulen* (pp. 41–103). Wiesbaden: Springer VS. [DOI](https://doi.org/10.1007/978-3-658-23240-5_4)
+- Stanat, P., Schipolowski, S., Schneider, R., Sachse, K. A., Weirich, S., & Henschel, S. (eds) (2022). *IQB-Bildungstrend 2021*. Münster: Waxmann. Open access; Chapter 10 is the methods chapter that names the scaling model, the estimator and the plausible values. [DOI](https://doi.org/10.31244/9783830996064)
+- Hartig, J. (2007). Skalierung und Definition von Kompetenzniveaus. In B. Beck & E. Klieme (eds), *Sprachliche Kompetenzen*. Weinheim: Beltz. [pedocs](https://www.pedocs.de/volltexte/2010/3143/)
 - [IQB: VERA overview](https://www.iqb.hu-berlin.de/de/bista/implementation-und-ueberpruefung/vera/)
+- [IQB: Normierungsstudie 2026](https://www.iqb.hu-berlin.de/de/schule/primarstufe/bistatest/normierungsstudie-2026/) · [BiStaTest](https://www.iqb.hu-berlin.de/bista/bistatest)
+- [VERA information site (FAQ and feedback)](https://iqb-berlin.github.io/vera-info/faq.html)
 - [IQB: competence-level models](https://www.iqb.hu-berlin.de/de/bista/entwicklung/kompetenzstufenmodelle/)
-- [IQB: VERA example tasks and materials](https://www2.iqb.hu-berlin.de/vera/vera/aufgaben?view=p)
+- [IQB: VERA example tasks and materials](https://www.iqb.hu-berlin.de/de/schule/aufgaben/)
 - [IQB VERA information: evaluation and interpretation](https://iqb-berlin.github.io/vera-info/intro/feedback.html)
 - [FDZ at IQB: using research data](https://fdz.iqb.hu-berlin.de/de/daten-nutzen/)
 - [OECD: PISA data and methodology](https://www.oecd.org/en/about/programmes/pisa/pisa-data.html)
@@ -3636,15 +3824,23 @@ have*, but *what would have happened otherwise*.
 
 [^irt-warm]: Warm, T. A. (1989). Weighted likelihood estimation of ability in item response theory. *Psychometrika*, 54(3), 427–450. https://doi.org/10.1007/BF02294627
 
-[^irt-iqb-development]: Item development, piloting and norming are described on the IQB's test development page, <https://www.iqb.hu-berlin.de/de/bista/entwicklung/testentwicklung-zu-den-standards/>, and the quoted sentence on task difficulty comes from the VERA FAQ, <https://www.iqb.hu-berlin.de/vera/faq?view=p>. The FAQ also states that the continuous competence scale is divided into five or six substantively described levels, and that the task pool deliberately spans solution rates from about 5–10 per cent to about 90 per cent.
+[^irt-iqb-development]: Item development, piloting and norming are described on the IQB's test development page, <https://www.iqb.hu-berlin.de/de/bista/entwicklung/testentwicklung-zu-den-standards/>, and the quoted sentence on task difficulty comes from the VERA FAQ, <https://iqb-berlin.github.io/vera-info/faq.html>. The FAQ also states that the continuous competence scale is divided into five or six substantively described levels, and that the task pool deliberately spans solution rates from about 5–10 per cent to about 90 per cent.
 
-[^irt-techreport]: Paul, S., Krüger, S., & Sachse, K. A. (2025). *Vergleichsarbeiten 2026, 8. Jahrgangsstufe, Mathematik: Aufgaben der Einzelmodule. Technischer Bericht.* Berlin: Institut zur Qualitätsentwicklung im Bildungswesen. The parallel reports for English (Niemietz, J., Paul, S., Jungermann, D., & Sachse, K. A., 2025) and German (Wagner, K., Wäckerle, M., & Sachse, K. A., 2025) follow the same structure, and each cycle publishes a new one. The equating method is mean/mean equating after Loyd, B. H., & Hoover, H. D. (1980). Vertical equating using the Rasch model. *Journal of Educational Measurement*, 17(3), 179-193. https://doi.org/10.1111/j.1745-3984.1980.tb00825.x
+[^irt-techreport]: Paul, S., Krüger, S., & Sachse, K. A. (2025). *Vergleichsarbeiten 2026, 8. Jahrgangsstufe, Mathematik: Aufgaben der Einzelmodule. Technischer Bericht.* Berlin: Institut zur Qualitätsentwicklung im Bildungswesen. The parallel reports for English (Niemietz, J., Paul, S., Jungermann, D., & Sachse, K. A., 2025) and German (Wagner, K., Wäckerle, M., & Sachse, K. A., 2025) follow the same structure, and each cycle publishes a new one. The equating method is mean/mean equating after Loyd, B. H., & Hoover, H. D. (1980). Vertical equating using the Rasch model. *Journal of Educational Measurement*, 17(3), 179-193. https://doi.org/10.1111/j.1745-3984.1980.tb00825.x These reports are official documents produced for each cycle and passed to the Länder together with the item parameter tables; several Länder republish them or the accompanying didactic handbooks on their own education servers. The item parameter tables themselves are not public, but every method described in this section is.
 
 [^irt-hartig]: Hartig, J. (2007). Skalierung und Definition von Kompetenzniveaus. In B. Beck & E. Klieme (Eds.), *Sprachliche Kompetenzen: Konzepte und Messung* (pp. 83-99). Weinheim: Beltz. https://www.pedocs.de/volltexte/2010/3143/
 
-[^irt-ksm]: Integriertes Kompetenzstufenmodell Mathematik, adopted by the KMK in November 2011. The metric was re-normed in the 2012 IQB-Ländervergleich onto the complete ninth year, which shifted the scale down by 25 points relative to the earlier norming on pupils aiming for at least a Mittlerer Schulabschluss; all level boundaries moved with it, so the meaning of the levels did not change. Cut scores and abbreviated level descriptions are reproduced in Table 1 of the VERA-8 2026 mathematics technical report; the full descriptions are at <https://www.iqb.hu-berlin.de/bista/ksm>.
+[^irt-ksm]: Integriertes Kompetenzstufenmodell Mathematik, adopted by the KMK in November 2011. The metric was re-normed in the 2012 IQB-Ländervergleich onto the complete ninth year, which shifted the scale down by 25 points relative to the earlier norming on pupils aiming for at least a Mittlerer Schulabschluss; all level boundaries moved with it, so the meaning of the levels did not change. Cut scores and abbreviated level descriptions are reproduced in Table 1 of the VERA-8 2026 mathematics technical report; the full descriptions are at <https://www.iqb.hu-berlin.de/de/bista/entwicklung/kompetenzstufenmodelle/>.
 
 [^irt-ksm-english]: Integriertes Kompetenzstufenmodell Englisch (IQB, 2014), adopted by the KMK in November 2014, referring to the KMK Bildungsstandards for the first foreign language (2003, 2004) and to the Common European Framework of Reference (Council of Europe, 2001). The sub-levels follow the equivalent differentiation made in the HarmoS project of the Swiss EDK (2009) and are placed at the midpoint of each CEFR level. Cut scores from Tables 1.1 and 1.2 of the VERA-8 2026 English technical report.
+
+[^irt-bista-metric]: Stanat, P., Schipolowski, S., Schneider, R., Sachse, K. A., Weirich, S., & Henschel, S. (Eds.) (2022). *IQB-Bildungstrend 2021. Kompetenzen in den Fächern Deutsch und Mathematik am Ende der 4. Jahrgangsstufe im dritten Ländervergleich.* Münster: Waxmann. https://doi.org/10.31244/9783830996064 Open access under CC BY-NC-ND 4.0; the quoted sentence and the cut scores are in Chapter 1, the scaling procedure in Chapter 10.
+
+[^irt-norming-2026]: The Normierungsstudie 2026 ran from early March to early May 2026 with roughly 12,000 pupils in Years 3 and 4 at about 455 general and special schools in all sixteen Länder, in German and mathematics. Its purpose, in the IQB's own words, is that "die Normierungsdaten werden zum einen zur Festlegung nationaler Kompetenzskalen (Punkteskalen) genutzt und bilden zum anderen die Grundlage zur Entwicklung von Kompetenzstufenmodellen". See <https://www.iqb.hu-berlin.de/de/schule/primarstufe/bistatest/normierungsstudie-2026/> and, for the wider rebuilding programme, <https://www.iqb.hu-berlin.de/bista/bistatest>.
+
+[^irt-tarkian]: Tarkian, J., Maritzen, N., Eckert, M., & Thiel, F. (2019). Vergleichsarbeiten (VERA) - Konzeption und Implementation in den 16 Ländern. In F. Thiel, J. Tarkian, E.-M. Lankes, N. Maritzen, T. Riecke-Baulecke & A. Kroupa (Eds.), *Datenbasierte Qualitätssicherung und -entwicklung in Schulen* (pp. 41-103). Wiesbaden: Springer VS. https://doi.org/10.1007/978-3-658-23240-5_4 Sixty pages on how sixteen Länder implement the same instrument differently, which is the part no technical report covers.
+
+[^irt-koeller]: Köller, O., Knigge, M., & Tesch, B. (Eds.) (2010). *Sprachliche Kompetenzen im Ländervergleich.* Münster: Waxmann. The report of the language study whose 2008 norming fixed the English metric and whose descriptors the competence level model uses; cited as the source of the full level descriptions in the IQB's own Kompetenzstufenmodell.
 
 [^irt-linacre]: Linacre, J. M. (1994). Sample size and item calibration stability. *Rasch Measurement Transactions*, 7(4), 328. The often-quoted table gives 16–36 persons for ±1 logit at 99% confidence, 64–144 for ±0.5 logit at 95%, and 108–243 for ±0.3 logit at 95% with a well-targeted test.
 
