@@ -14,6 +14,105 @@ The machine is worth picturing, because it explains everything that follows. A c
 
 **The first machine-readable data set in history was a social survey.** The holes recorded age, sex, state of residence, citizenship and race — the variables of any survey since. The 1890 census produced roughly a hundred million cards and finished months ahead of schedule. Hollerith's company later merged into what became IBM.
 
+Figure \@ref(fig:fmt-fig-1890) reconstructs what one of those cards looked like. It is worth a slow look, because everything that follows in this section is a reaction to it.
+
+```{r fmt-card-helpers, include=FALSE}
+# Shared by the three punched-card figures below.
+card_theme <- function() {
+  theme_minimal(base_size = 10) +
+    theme(panel.grid = element_blank(),
+          panel.background = element_blank(),
+          plot.title.position = "plot", plot.caption.position = "plot",
+          axis.text = element_text(family = "mono", size = 7, colour = "grey55"),
+          axis.title = element_text(size = 7.5, colour = "grey60"),
+          plot.title = element_text(face = "bold", size = 12),
+          plot.subtitle = element_text(size = 8.6, colour = "grey30", lineheight = 1.3,
+                                       margin = margin(b = 10)),
+          plot.caption = element_text(size = 7, colour = "grey55", hjust = 0,
+                                      margin = margin(t = 8)),
+          plot.margin = margin(10, 12, 8, 10))
+}
+
+CARD_FILL <- "#FCF8EE"; CARD_HOLE <- "grey10"; CARD_DOT <- "grey80"
+
+card_outline <- function(ncol, nrow_ = 12) {
+  data.frame(x = c(1.7, ncol + .5, ncol + .5, .5, .5),
+             y = c(nrow_ + .8, nrow_ + .8, .2, .2, nrow_ + .1))
+}
+
+card_rows  <- c("12", "11", as.character(0:9))
+card_row_y <- setNames(12:1, card_rows)
+```
+
+```{r fmt-fig-1890, echo=FALSE, fig.width=7.6, fig.height=4.3, fig.align='center', fig.cap="A card from the 1890 census, reconstructed. Every question owns a patch of positions and one hole is punched in each; the position is the answer. Age is the exception, and the reason nobody on such a card can be older than 99."}
+f1 <- tribble(
+  ~field,  ~col, ~rows,                     ~labels,                          ~lab_at,
+  "sex",      1, c(12, 11),                 c("male", "female"),              1.35,
+  "age",      4, 10:1,                      as.character(0:9),                NA,
+  "",         5, 10:1,                      as.character(0:9),                NA,
+  "state",    7, c(12, 11, 10, 9, 8, 7, 6), c("New York", "Pennsylvania", "Ohio",
+                                              "Illinois", "Missouri", "Texas",
+                                              "other"),                       7.35
+)
+
+f1_pos <- f1 %>% rowwise() %>%
+  do(tibble(field = .$field, col = .$col, y = .$rows,
+            label = .$labels, lab_at = .$lab_at)) %>% ungroup() %>%
+  mutate(is_digit = is.na(lab_at))
+
+f1_punch <- bind_rows(
+  f1_pos %>% filter(col == 1, label == "female"),
+  f1_pos %>% filter(col == 4, label == "3"),
+  f1_pos %>% filter(col == 5, label == "4"),
+  f1_pos %>% filter(col == 7, label == "Ohio")
+)
+
+f1_grid  <- expand.grid(col = 1:12, y = 1:12)
+f1_bands <- f1 %>% mutate(xmin = col - .4, xmax = col + .4)
+f1_names <- f1 %>% filter(field != "", field != "age")
+
+ggplot() +
+  geom_polygon(data = card_outline(12), aes(x, y), fill = CARD_FILL,
+               colour = "grey45", linewidth = .6) +
+  geom_rect(data = f1_bands, aes(xmin = xmin, xmax = xmax, ymin = .5, ymax = 12.5),
+            fill = "#00000010") +
+  geom_point(data = f1_grid, aes(col, y), shape = 21, size = 1.5,
+             colour = CARD_DOT, fill = "white", stroke = .3) +
+  geom_point(data = f1_pos, aes(col, y), shape = 21, size = 2.4,
+             colour = "grey55", fill = "white", stroke = .45) +
+  geom_text(data = f1_pos %>% filter(is_digit), aes(col, y, label = label),
+            size = 1.8, colour = "grey55") +
+  geom_text(data = f1_pos %>% filter(!is_digit) %>%
+              anti_join(f1_punch, by = c("col", "label")),
+            aes(lab_at, y, label = label), hjust = 0, size = 2.5, colour = "grey45") +
+  geom_point(data = f1_punch, aes(col, y), shape = 21, size = 3.3,
+             colour = "grey5", fill = CARD_HOLE, stroke = .5) +
+  geom_text(data = f1_punch %>% filter(!is_digit), aes(lab_at, y, label = label),
+            hjust = 0, size = 2.6, colour = "grey5", fontface = "bold") +
+  geom_text(data = f1_names, aes(col, y = 13.5, label = field),
+            hjust = .5, size = 3, colour = "grey25") +
+  geom_segment(data = f1_names, aes(x = col, xend = col, y = 12.7, yend = 13.1),
+               colour = "grey65", linewidth = .3) +
+  annotate("text", x = 4.5, y = 13.5, label = "age", size = 3, colour = "grey25") +
+  annotate("segment", x = 4.5, xend = 4.5, y = 12.7, yend = 13.1,
+           colour = "grey65", linewidth = .3) +
+  annotate("text", x = 4.5, y = -.45, size = 2.4, colour = "grey45",
+           label = "tens and units: 0 to 99") +
+  annotate("label", x = 10.6, y = 6.5, size = 2.5, colour = "grey50", fontface = "italic",
+           fill = CARD_FILL, label.size = 0, label.padding = unit(.35, "lines"),
+           lineheight = 1.05,
+           label = "race,\ncitizenship,\noccupation,\nliteracy,\n...") +
+  scale_x_continuous(breaks = NULL, expand = expansion(add = c(.5, .6))) +
+  scale_y_continuous(breaks = NULL, expand = expansion(add = c(1.3, 1.9))) +
+  labs(title = "1890: the position is the answer",
+       subtitle = paste0(
+         "Every question owns a patch of positions, and the clerk punches one hole per patch. There is no\n",
+         "number anywhere: a hole in the second position of the first patch simply means female."),
+       x = NULL, y = NULL,
+       caption = "Reconstruction of four fields. The card had twelve rows and roughly two dozen columns.") +
+  card_theme()
+```
+
 ### The tyranny of the column {#fmt-columns}
 
 Now the part that matters for your own files. A card has no labels on it. Column 5 means *age* because a codebook somewhere says so, and for no other reason. The data and the meaning of the data travelled separately — the deck in one box, the codebook in a drawer, and every analysis depending on the two not being separated.
@@ -26,6 +125,66 @@ And the last eight columns, 73 to 80, held nothing but a card number. They exist
 
 [^l02-05-file-formats-2]: Column layout and the purpose of columns 73-80 as described in R. J. LeVeque's course notes on punched cards, University of Washington: <https://faculty.washington.edu/rjl/classes/am583s2014/notes/punchcard.html>
 
+The card in Figure \@ref(fig:fmt-fig-ibm) is the same respondent as before, on the machine that replaced Hollerith's. Something has changed in between: the twelve rows have been given names, and the row a hole sits in now *is* a digit. Every answer must therefore be turned into a number before it can be stored at all.
+
+```{r fmt-fig-ibm, echo=FALSE, fig.width=7.6, fig.height=4.5, fig.align='center', fig.cap="The same respondent on an IBM card, seventy-five years later. The row a hole sits in is the digit, so every answer has to become a number first - and no column says what it holds."}
+f2 <- tribble(
+  ~field,        ~start, ~end, ~value,
+  "sex",              1,    1, "2",
+  "age",              2,    3, "34",
+  "state",            4,    5, "39",
+  "race",             6,    6, "1",
+  "citizenship",      7,    7, "1",
+  "occupation",       8,   10, "045",
+  "literacy",        11,   11, "1"
+) %>% mutate(mid = (start + end) / 2, lvl = rep(c(1, 2), length.out = n()))
+
+f2_holes <- f2 %>% rowwise() %>%
+  do(tibble(field = .$field, col = .$start:.$end,
+            digit = as.integer(strsplit(.$value, "")[[1]]))) %>%
+  ungroup() %>% mutate(y = card_row_y[as.character(digit)])
+
+f2_grid <- expand.grid(col = 1:15, rowlab = card_rows, stringsAsFactors = FALSE) %>%
+  mutate(y = card_row_y[rowlab])
+f2_bands <- f2 %>% mutate(xmin = start - .5, xmax = end + .5,
+                          shade = rep(c("a", "b"), length.out = n()))
+
+ggplot() +
+  geom_polygon(data = card_outline(15), aes(x, y), fill = CARD_FILL,
+               colour = "grey45", linewidth = .6) +
+  geom_rect(data = f2_bands, aes(xmin = xmin, xmax = xmax, ymin = .5, ymax = 12.5,
+                                 fill = shade), show.legend = FALSE) +
+  scale_fill_manual(values = c(a = "#00000012", b = "#00000000")) +
+  geom_point(data = f2_grid, aes(col, y), shape = 21, size = 2.2,
+             colour = CARD_DOT, fill = "white", stroke = .35) +
+  geom_point(data = f2_holes, aes(col, y), shape = 22, size = 3.4,
+             colour = "grey5", fill = CARD_HOLE, stroke = .4) +
+  geom_text(data = f2_holes, aes(col, y = -.55, label = digit),
+            family = "mono", size = 3, colour = "grey15") +
+  geom_segment(data = f2, aes(x = mid, xend = mid, y = 12.7,
+                              yend = ifelse(lvl == 1, 13.2, 14.2)),
+               colour = "grey65", linewidth = .3) +
+  geom_text(data = f2, aes(mid, y = ifelse(lvl == 1, 13.5, 14.5), label = field),
+            size = 2.8, colour = "grey25") +
+  annotate("label", x = 13.2, y = 6.5, size = 2.5, colour = "grey50", fontface = "italic",
+           fill = CARD_FILL, label.size = 0, label.padding = unit(.35, "lines"),
+           lineheight = 1.05, label = "and so on,\nto column 80") +
+  scale_x_continuous(breaks = c(1, 5, 10, 15), expand = expansion(add = c(.5, .6))) +
+  scale_y_continuous(breaks = card_row_y, labels = card_rows,
+                     expand = expansion(add = c(1.4, 2.9))) +
+  labs(title = "1965: the hole becomes a digit",
+       subtitle = paste0(
+         "The IBM card keeps twelve rows but gives them names: the row a hole sits in IS the digit. Every\n",
+         "answer must therefore become a number first - female becomes 2, Ohio becomes 39."),
+       x = "column", y = "row",
+       caption = "A letter would take two holes: a zone row (12, 11 or 0) plus a digit row. Schematic.") +
+  card_theme()
+```
+
+Somebody's fix for the tyranny of the column was to put a comma between the values. Position stopped mattering, a mispunched digit became a visible mistake rather than a silent one, and the file could be read by a program that had never seen the codebook. The IBM Fortran compiler under OS/360 could read such lists in **1972**; the name *comma-separated values* appears in print by **1983**; a written specification followed in **2005**.[^l02-05-file-formats-3]
+
+[^l02-05-file-formats-3]: The IBM Fortran (level H extended) compiler under OS/360 supported list-directed input with commas between values in 1972; the term *comma-separated values* was in print by 1983. The format was first written down in Shafranovich, Y. (2005), *Common Format and MIME Type for Comma-Separated Values (CSV) Files*, RFC 4180, Informational, <https://doi.org/10.17487/RFC4180>, whose opening sentence concedes the state of affairs: "Surprisingly, while this format is very common, it has never been formally documented."
+
 ### The codebook never went away {#fmt-codebook}
 
 It would be comfortable to file this under history. It is not history.
@@ -33,6 +192,61 @@ It would be comfortable to file this under history. It is not history.
 Open any CSV of survey data today and you face precisely the questions the card faced. Does `0` mean male or does it mean the first category of something else entirely? Is `1` a yes, a Monday, or a satisfaction of one point on a scale that starts at zero? And what is `-7`?
 
 That last one is not hypothetical. The SOEP data used throughout this book code missing answers as negative numbers — `-1` for *no answer*, `-2` for *does not apply*, `-7` for *only available in the restricted edition* — which is why Section \@ref(missing-data) spends several pages on the difference between a value and the absence of one. Read those columns without the codebook and you compute an average life satisfaction somewhere below zero, on a scale from 0 to 10, and nothing anywhere objects.
+
+Figure \@ref(fig:fmt-fig-codebook) puts the two halves side by side. The digits are the same in 1965 and today; what turns them into a person is a document that travels separately, can be lost, and is written by hand.
+
+```{r fmt-fig-codebook, echo=FALSE, fig.width=7.6, fig.height=3.6, fig.align='center', fig.cap="Eleven digits, and what stands between them and a person. The card and the CSV row hold identical information, and neither can be read without the table in the middle."}
+book <- tribble(
+  ~start, ~end, ~variable,     ~value, ~meaning,
+       1,    1, "sex",         "2",    "female",
+       2,    3, "age",         "34",   "34 years",
+       4,    5, "state",       "39",   "Ohio",
+       6,    6, "race",        "1",    "white",
+       7,    7, "citizenship", "1",    "native born",
+       8,   10, "occupation",  "045",  "code 045",
+      11,   11, "literacy",    "1",    "reads, writes"
+) %>% mutate(mid = (start + end) / 2, lvl = rep(c(1, 2), length.out = n()))
+
+bk_digits <- book %>% rowwise() %>%
+  do(tibble(col = .$start:.$end, d = strsplit(.$value, "")[[1]])) %>% ungroup()
+
+Y_DIG <- 3.1; Y_MEAN <- 1.0
+
+ggplot() +
+  annotate("text", x = -1.4, y = Y_DIG, hjust = 1, size = 2.9, colour = "grey45",
+           label = "what the card holds") +
+  geom_text(data = bk_digits, aes(col, Y_DIG, label = d),
+            family = "mono", size = 4.4, colour = "grey10") +
+  geom_segment(data = book, aes(x = start - .42, xend = end + .42,
+                                y = Y_DIG - .55, yend = Y_DIG - .55),
+               colour = "grey60", linewidth = .35) +
+  geom_segment(data = book, aes(x = mid, xend = mid,
+                                y = Y_DIG - .55, yend = ifelse(lvl == 1, 2.15, 1.75)),
+               colour = "grey60", linewidth = .3) +
+  geom_text(data = book, aes(mid, y = ifelse(lvl == 1, 2.0, 1.6), label = variable),
+            size = 2.7, colour = "grey30") +
+  annotate("text", x = -1.4, y = Y_MEAN - .22, hjust = 1, size = 2.9, colour = "grey45",
+           label = "what the codebook says") +
+  geom_text(data = book, aes(mid, y = ifelse(lvl == 1, Y_MEAN, Y_MEAN - .45),
+                             label = meaning),
+            size = 2.8, colour = "grey5", fontface = "bold") +
+  annotate("text", x = -1.4, y = -.5, hjust = 1, size = 2.9, colour = "grey45",
+           label = "the same row as CSV") +
+  annotate("text", x = 1, y = -.5, hjust = 0, family = "mono", size = 3.4,
+           colour = "grey10", label = "2,34,39,1,1,045,1") +
+  annotate("text", x = 1, y = -1.1, hjust = 0, size = 2.6, colour = "grey50",
+           fontface = "italic",
+           label = "sixty years on, and still nothing in the file says which column is the age") +
+  scale_x_continuous(limits = c(-6.6, 12.4), expand = expansion(add = .2)) +
+  scale_y_continuous(limits = c(-1.5, 3.7), expand = expansion(add = .1)) +
+  labs(title = "The codebook is where the meaning lives",
+       subtitle = paste0(
+         "Eleven digits are not data about a person until something outside them says what the columns are.\n",
+         "That something is the codebook, and it has never stopped being a separate document."),
+       x = NULL, y = NULL, caption = NULL) +
+  card_theme() +
+  theme(axis.text = element_blank())
+```
 
 So the comma solved the problem of *position* and left the problem of *meaning* exactly where it was. Every format invented since is an attempt at the second one, and what separates them is a single question: **does the codebook travel in the same box as the data, or does it stay in the drawer?**
 
@@ -45,16 +259,12 @@ CSV leaves it in the drawer. Excel leaves it in the drawer and rewrites some of 
 
 The IBM card held eighty characters per line. The video terminals that replaced it — DEC's VT52 and VT100 — showed eighty characters per line. The original IBM PC text mode was 80 × 25. And the style guides of Python, Java and R still recommend that a line of code should not exceed eighty characters.
 
-The margin line in your RStudio editor is at column 80. It is the width of a punched card, and nobody has quite got round to changing it.[^l02-05-file-formats-3]
+The margin line in your RStudio editor is at column 80. It is the width of a punched card, and nobody has quite got round to changing it.[^l02-05-file-formats-4]
 ::::
 
-[^l02-05-file-formats-3]: Teletypewriters printed 72 characters per line, typewriter carriages allowed 80 to 90, and an IBM punched card held 80. The DEC VT52 and VT100 terminals showed 80 columns, the IBM PC text mode was 80 x 25, and the style guides of several languages still recommend the same width.
+[^l02-05-file-formats-4]: Teletypewriters printed 72 characters per line, typewriter carriages allowed 80 to 90, and an IBM punched card held 80. The DEC VT52 and VT100 terminals showed 80 columns, the IBM PC text mode was 80 x 25, and the style guides of several languages still recommend the same width.
 
-Somebody's fix for the tyranny of the column was to put a comma between the values. Position stopped mattering, a mispunched digit became a visible mistake rather than a silent one, and the file could be read by a program that had never seen the codebook. The IBM Fortran compiler under OS/360 could read such lists in **1972**; the name *comma-separated values* appears in print by **1983**; a written specification followed in **2005**.[^l02-05-file-formats-4]
-
-[^l02-05-file-formats-4]: The IBM Fortran (level H extended) compiler under OS/360 supported list-directed input with commas between values in 1972; the term *comma-separated values* was in print by 1983. The format was first written down in Shafranovich, Y. (2005), *Common Format and MIME Type for Comma-Separated Values (CSV) Files*, RFC 4180, Informational, <https://doi.org/10.17487/RFC4180>, whose opening sentence concedes the state of affairs: "Surprisingly, while this format is very common, it has never been formally documented."
-
-Fifty-three years later it is still the first thing every statistical office, data portal and survey archive offers you — and, incidentally, the most common file in this book's own `data/` folder. The oldest format is also the most used one, which is the question this section is about. If CSV is enough, why does anyone build anything else?
+CSV is still the first thing every statistical office, data portal and survey archive offers you — and, incidentally, the most common file in this book's own `data/` folder. The oldest format is also the most used one, which is the question this section is about. If CSV is enough, why does anyone build anything else?
 
 ### What a file is, and what a format is {#fmt-what-is-a-file}
 
