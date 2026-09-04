@@ -14,7 +14,7 @@ The machine is worth picturing, because it explains everything that follows. A c
 
 **The first machine-readable data set in history was a social survey.** The holes recorded age, sex, state of residence, citizenship and race — the variables of any survey since. The 1890 census produced roughly a hundred million cards and finished months ahead of schedule. Hollerith's company later merged into what became IBM.
 
-Figure \@ref(fig:fmt-fig-1890) reconstructs what one of those cards looked like. It is worth a slow look, because everything that follows in this section is a reaction to it.
+Figure \@ref(fig:fmt-fig-1890) reconstructs one of those cards, with the labels of the punch board drawn in so that it can be read at all. It is worth a slow look, because everything that follows in this section is a reaction to it.
 
 ```{r fmt-card-helpers, include=FALSE}
 # Shared by the three punched-card figures below.
@@ -44,7 +44,7 @@ card_rows  <- c("12", "11", as.character(0:9))
 card_row_y <- setNames(12:1, card_rows)
 ```
 
-```{r fmt-fig-1890, echo=FALSE, fig.width=7.6, fig.height=4.3, fig.align='center', fig.cap="A card from the 1890 census, reconstructed. Every question owns a patch of positions and one hole is punched in each; the position is the answer. Age is the exception, and the reason nobody on such a card can be older than 99."}
+```{r fmt-fig-1890, echo=FALSE, fig.width=7.6, fig.height=4.3, fig.align='center', fig.cap="A card from the 1890 census, reconstructed with the punch board's labels drawn onto it. Every question owns a patch of positions and one hole is punched in each, so the position is the answer. Age is the exception, and the reason nobody on such a card can be older than 99."}
 f1 <- tribble(
   ~field,  ~col, ~rows,                     ~labels,                          ~lab_at,
   "sex",      1, c(12, 11),                 c("male", "female"),              1.35,
@@ -106,16 +106,26 @@ ggplot() +
   scale_y_continuous(breaks = NULL, expand = expansion(add = c(1.3, 1.9))) +
   labs(title = "1890: the position is the answer",
        subtitle = paste0(
-         "Every question owns a patch of positions, and the clerk punches one hole per patch. There is no\n",
-         "number anywhere: a hole in the second position of the first patch simply means female."),
+         "Every question owns a patch of positions and the clerk punches one hole in each: a hole in the\n",
+         "second position of the first patch simply means female. But the card itself was blank. Every word\n",
+         "you can read here stood on the punch board in front of the clerk, never on the card."),
        x = NULL, y = NULL,
-       caption = "Reconstruction of four fields. The card had twelve rows and roughly two dozen columns.") +
+       caption = "Reconstruction of four of its fields, with the punch board's labels drawn in. The card had twelve rows and roughly two dozen columns.") +
   card_theme()
 ```
 
 ### The tyranny of the column {#fmt-columns}
 
-Now the part that matters for your own files. A card has no labels on it. Column 5 means *age* because a codebook somewhere says so, and for no other reason. The data and the meaning of the data travelled separately — the deck in one box, the codebook in a drawer, and every analysis depending on the two not being separated.
+Now the part that matters for your own files, and it is easy to miss when you look at a reconstruction like Figure \@ref(fig:fmt-fig-1890): **the cards themselves were blank.** Not sparsely labelled — blank. Everything you can read in that figure is a reading aid; a real card from 1890 is a rectangle of cardboard with holes in it and nothing else.
+
+The labels existed, but they were attached to the machine rather than to the data. A clerk punching cards did not look at the card at all: the card sat in the punch station above a **template**, and the clerk moved a stylus across the template, which carried the layout of the fields. To read a deck afterwards there was a second board — Columbia's computing history collection calls it the *decoder ring* for the holes.[^fmt-punchboard] Layout on the board, values on the card, and the two kept in different pieces of furniture.
+
+Why not simply print the field names along the edge? Because the printing would have belonged to the *form*, not to the *record*. A hundred million cards would have carried a hundred million identical copies of the same twenty words, and the census would have paid for the paper. One template served the whole deck.
+
+That economy has never gone away, and neither has its price. One codebook still serves a million rows of a CSV; the file is small and the meaning is somewhere else. Column 5 means *age* because a document in another folder says so, and for no other reason.
+
+[^fmt-punchboard]: The pantograph punch and its celluloid template are described in the Columbia University computing history collection, <https://www.columbia.edu/cu/computinghistory/census-tabulator.html>, and the board itself is in the Smithsonian's National Museum of American History (object nmah_694417), inscribed "The Hollerith Electric Tabulating System, System Patented January 8th 1889". An operator managed about 500 cards a day.
+
 
 The failure mode is the one to remember. Punch a value one column too far to the right and nothing breaks. The card is valid, the machine reads it, the dial turns, and an age of 34 has quietly become something else. There is no error message, because there is no way for a hole to be wrong.
 
